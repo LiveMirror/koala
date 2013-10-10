@@ -30,13 +30,9 @@
 				</property>
 			</activation>
 			<dependencies>
-				<!--<dependency>
-					<groupId>com.sun</groupId>
-					<artifactId>tools</artifactId>
-					<version>1.5.0</version>
-					<scope>system</scope>
-					<systemPath>${java.home}/lib/tools.jar</systemPath>
-				</dependency> -->
+				<!--<dependency> <groupId>com.sun</groupId> <artifactId>tools</artifactId> 
+					<version>1.5.0</version> <scope>system</scope> <systemPath>${java.home}/lib/tools.jar</systemPath> 
+					</dependency> -->
 			</dependencies>
 		</profile>
 	</profiles>
@@ -147,6 +143,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
