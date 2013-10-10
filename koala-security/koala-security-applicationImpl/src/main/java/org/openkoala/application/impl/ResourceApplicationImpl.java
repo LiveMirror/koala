@@ -273,7 +273,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
     }
 
     public void initResource(String type) {
-        String menuIcon = "images/icons/other/node.png";
+        String menuIcon = "/images/icons/other/node.png";
         
         Resource resourceManager = null;
         Resource resource = null;
