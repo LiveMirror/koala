@@ -7,17 +7,23 @@
 	<listener>
 		<listener-class>com.dayatang.spring.webapp.DayatangContextLoaderListener</listener-class>
 	</listener>
-	
-	<!-- 连接池的监控环境开始，项目部署时要删除
-	<servlet>
-		<servlet-name>proxooladmin</servlet-name>
-		<servlet-class>org.logicalcobwebs.proxool.admin.servlet.AdminServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>proxooladmin</servlet-name>
-		<url-pattern>/dbadmin</url-pattern>
-	</servlet-mapping> -->
+
+	<!-- 连接池的监控环境开始，项目部署时要删除 <servlet> <servlet-name>proxooladmin</servlet-name> 
+		<servlet-class>org.logicalcobwebs.proxool.admin.servlet.AdminServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>proxooladmin</servlet-name> <url-pattern>/dbadmin</url-pattern> 
+		</servlet-mapping> -->
 	<!-- 连接池的监控环境结束 -->
+
+
+	<servlet>
+		<servlet-name>jcaptcha</servlet-name>
+		<servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>jcaptcha</servlet-name>
+		<url-pattern>/jcaptcha.jpg</url-pattern>
+	</servlet-mapping>
 
 	<!-- Character Filter -->
 	<filter>

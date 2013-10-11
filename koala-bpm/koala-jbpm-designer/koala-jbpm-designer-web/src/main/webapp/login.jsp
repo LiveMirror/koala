@@ -3,13 +3,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@ include file="/pages/common/header.jsp" %>
-<title>Koala流程设计平台</title>
+<%@ include file="/pages/common/header.jsp"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<title>Koala-流程设计器</title>
 <link href="css.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 @charset "UTF-8";
 /* CSS Document */
-* .* {
+*   .* {
 	margin: 0;
 	padding: 0;
 }
@@ -124,18 +125,30 @@ body {
 }
 </style>
 <script type="text/javascript">
-
-function login(){
-	$('#loginFormId').submit();
-}
-
+	function login() {
+		$('#loginFormId').submit();
+	}
+	
+	function refreshCode(){
+		$('#checkCode').attr('src',"jcaptcha.jpg?"+Math.random());
+	}
+	
+	$(function(){
+		$(document).keydown(function(e){
+		  if(e.keyCode == 13)
+            {
+			   $('#loginFormId').submit();
+            }
+         });
+	});
+	
 </script>
 </head>
 <body>
 	<div class="head"></div>
 	<div class="logo">
 		<img src="images/background/logo.gif" />
-		<div>Koala-流程设计平台</div>
+		<div>Koala-流程设计器</div>
 	</div>
 	<div class="login_con">
 		<div class="login_con_L">
@@ -145,8 +158,17 @@ function login(){
 			<FORM id=loginFormId method=post action="j_spring_security_check">
 				<h3>登录</h3>
 				<ul>
-					<li>用户名：<input type="text" name="j_username" id="j_username"/></li>
-					<li>密&nbsp;&nbsp;码：<input type="password" name="j_password" id="j_password" /></li>
+				    <c:if test="${param.login_error == '1' }">
+				      <li><font color='red'>用户名密码错误</font></li>
+				    </c:if>
+				    <c:if test="${param.login_error == '2' }">
+				      <li><font color='red'>验证码错误</font></li>
+				    </c:if>
+					<li>用户名:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="j_username" id="j_username" /></li>
+					<li>密&nbsp;&nbsp;&nbsp;&nbsp;码:&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="j_password"
+						id="j_password" /></li>
+					<li>验证码:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="jcaptcha" value="" /></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;<img src="jcaptcha.jpg" id="checkCode" onclick="refreshCode();"/></li>
 				</ul>
 				<div class="login_bnt" onclick="javascript:login()"></div>
 			</FORM>
