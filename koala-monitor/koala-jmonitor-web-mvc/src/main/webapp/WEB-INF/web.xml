@@ -28,7 +28,7 @@
 	<listener>
 		<listener-class>com.dayatang.spring.webapp.DayatangContextLoaderListener</listener-class>
 	</listener>
-	
+
 	<!-- ss3过滤器链 -->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -51,6 +51,17 @@
 	<servlet-mapping>
 		<servlet-name>DBInit</servlet-name>
 		<url-pattern>/dbinit</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>jcaptcha</servlet-name>
+		<servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>jcaptcha</servlet-name>
+		<url-pattern>/jcaptcha.jpg</url-pattern>
 	</servlet-mapping>
 
 
@@ -81,7 +92,7 @@
 		<error-code>500</error-code>
 		<location>/pages/errors/500.html</location>
 	</error-page>
-	
+
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
 		<url-pattern>*.css</url-pattern>
@@ -110,10 +121,10 @@
 	</servlet-mapping>
 
 	<welcome-file-list>
-	    <welcome-file>/index.koala</welcome-file>
+		<welcome-file>/pages/login.jsp</welcome-file>
+		<welcome-file>/index.koala</welcome-file>
 		<welcome-file>/login.koala</welcome-file>
 	</welcome-file-list>
-
 
 	<distributable />
 </web-app>

@@ -52,7 +52,7 @@
 		<property name="simultaneousBuildThrottle" value="50" />
 		<property name="maximumActiveTime" value="180000" />
 		<property name="minimumConnectionCount" value="5" />
-		<property name="houseKeepingTestSql" value="select 1 from dual" />
+		<property name="houseKeepingTestSql" value="select 1" />
 	</bean>
 
 	<bean id="km_repository" class="org.openkoala.koala.util.KoalaEntityRepositoryJpa">
