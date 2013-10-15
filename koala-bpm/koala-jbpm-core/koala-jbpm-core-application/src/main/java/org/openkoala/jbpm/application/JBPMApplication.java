@@ -23,21 +23,27 @@ import javax.jws.*;
 public interface JBPMApplication {
 
 	/**
-	 * 启动一个流程
-	 * 
-	 * @param processName
-	 *            流程的名称
-	 * @param params
-	 *            流程的参数，以XML形式传入,以便兼容各种语言 如 <params> <creater>lingen</creater>
-	 *            <isOpen>true</isOpen> </params>
+	 * 发起一个流程
+	 * @param processId 流程 ID
+	 * @param creater   流程的创建者
+	 * @param params    流程的初始化参数，以 XML格式
+	 * <params>
+	 *      <creater>lingen</creater> 
+	 *      <isOpen>true</isOpen> 
+	 * </params>
 	 * @return
 	 */
-	public long startProcess(String processName, String creater, String params);
+	public long startProcess(String processId, String creater, String params);
 
+	
 	/**
-	 * 查询指定用户的待办任务
-	 * 
-	 * @param user
+	 * 查询一个用户的待办任务
+	 * @param user     用户名
+	 * @param groups   用户所属的group,group可以是角色，部门，岗位或其它，由业务决定 ，以 XML格式
+	 * <params>
+	 *      <creater>lingen</creater> 
+	 *      <isOpen>true</isOpen> 
+	 * </params>
 	 * @return
 	 */
 	public List<TaskVO> queryTodoList(String user,String groups);
@@ -72,7 +78,7 @@ public interface JBPMApplication {
 	 * @param processId
 	 * @return
 	 */
-	public List<HistoryLogVo> queryHistoryLog(long processId);
+	public List<HistoryLogVo> queryHistoryLog(long processInstanceId);
 
 	/**
 	 * 返回错误的流程列表
@@ -114,6 +120,11 @@ public interface JBPMApplication {
 	 */
 	public List<ProcessInstanceVO> queryAllActiveProcess(String processId);
 
+	/**
+	 * 查询一个流程下所部署的所有版本
+	 * @param processId  流程的processId
+	 * @return
+	 */
 	public List<KoalaProcessInfoVO> getProcessVersionByProcessId(
 			String processId);
 
