@@ -38,6 +38,7 @@ public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePa
 		checkValidateCode(request);
   
         // 获取Username和Password  
+		
         String username = obtainUsername(request);  
         String password = obtainPassword(request);  
   
