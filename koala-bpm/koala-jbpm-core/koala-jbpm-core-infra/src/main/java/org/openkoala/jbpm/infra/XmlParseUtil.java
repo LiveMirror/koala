@@ -32,6 +32,9 @@ public class XmlParseUtil {
 		SAXReader reader = new SAXReader();
 		Document document = null;
 		List<String> values = new ArrayList<String>();
+		if(xml==null || xml.trim().equals("")){
+			return values;
+		}
 		try {
 			document = reader.read(new ByteArrayInputStream(xml
 					.getBytes("UTF-8")));

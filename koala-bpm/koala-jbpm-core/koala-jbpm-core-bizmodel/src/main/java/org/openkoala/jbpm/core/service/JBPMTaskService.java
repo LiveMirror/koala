@@ -38,7 +38,7 @@ public interface JBPMTaskService {
 
 	public void exitedTask(long processInstanceId);
 
-	public void removeWorkItemInfo(WorkItemInfo info);
+	public void removeWorkItemInfo(long itemId);
 
 	public void saveWorkItem(WorkItemInfo info);
 

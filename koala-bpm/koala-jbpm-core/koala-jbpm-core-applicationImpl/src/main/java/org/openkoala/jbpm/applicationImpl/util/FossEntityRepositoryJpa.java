@@ -40,8 +40,7 @@ public class FossEntityRepositoryJpa implements EntityRepository {
 			.getLogger(FossEntityRepositoryJpa.class);
 
 	@Inject
-	@PersistenceContext(unitName="org.jbpm.persistence.local")
-	EntityManager entityManager;
+	EntityManager jbpmEM;
 
 	public FossEntityRepositoryJpa() {
 	}
@@ -311,7 +310,7 @@ public class FossEntityRepositoryJpa implements EntityRepository {
 	}
 
 	public EntityManager getEntityManager() {
-		return entityManager;
+		return jbpmEM;
 	}
 	
 	
