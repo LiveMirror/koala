@@ -36,6 +36,7 @@ public class ObjectFactory {
     private final static QName _GetPakcages_QNAME = new QName("http://application.jbpm.openkoala.org/", "getPakcages");
     private final static QName _QueryErrorListResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "queryErrorListResponse");
     private final static QName _GetPorcessImageStream_QNAME = new QName("http://application.jbpm.openkoala.org/", "getPorcessImageStream");
+    private final static QName _QueryTodoListWithGroupResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "queryTodoListWithGroupResponse");
     private final static QName _RemovePackageVariable_QNAME = new QName("http://application.jbpm.openkoala.org/", "removePackageVariable");
     private final static QName _RemoveGlobalVariableResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "removeGlobalVariableResponse");
     private final static QName _Delegate_QNAME = new QName("http://application.jbpm.openkoala.org/", "delegate");
@@ -44,8 +45,9 @@ public class ObjectFactory {
     private final static QName _GetProcessInstance_QNAME = new QName("http://application.jbpm.openkoala.org/", "getProcessInstance");
     private final static QName _AssignToNodeResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "assignToNodeResponse");
     private final static QName _GetProcessByPackageResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "getProcessByPackageResponse");
-    private final static QName _SetPackageVariable_QNAME = new QName("http://application.jbpm.openkoala.org/", "setPackageVariable");
+    private final static QName _FetchBackResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "fetchBackResponse");
     private final static QName _GetProcessNodes_QNAME = new QName("http://application.jbpm.openkoala.org/", "getProcessNodes");
+    private final static QName _SetPackageVariable_QNAME = new QName("http://application.jbpm.openkoala.org/", "setPackageVariable");
     private final static QName _GetProcesses_QNAME = new QName("http://application.jbpm.openkoala.org/", "getProcesses");
     private final static QName _CompleteTaskResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "completeTaskResponse");
     private final static QName _AddProcessResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "addProcessResponse");
@@ -56,6 +58,7 @@ public class ObjectFactory {
     private final static QName _GetPakcagesResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "getPakcagesResponse");
     private final static QName _GetProcessByPackage_QNAME = new QName("http://application.jbpm.openkoala.org/", "getProcessByPackage");
     private final static QName _CompleteTask_QNAME = new QName("http://application.jbpm.openkoala.org/", "completeTask");
+    private final static QName _FetchBack_QNAME = new QName("http://application.jbpm.openkoala.org/", "fetchBack");
     private final static QName _SetProcessVariable_QNAME = new QName("http://application.jbpm.openkoala.org/", "setProcessVariable");
     private final static QName _SetPackageVariableResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "setPackageVariableResponse");
     private final static QName _DelegateResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "delegateResponse");
@@ -67,6 +70,8 @@ public class ObjectFactory {
     private final static QName _StartProcessResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "startProcessResponse");
     private final static QName _SetProcessVariableResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "setProcessVariableResponse");
     private final static QName _RemovePackageVariableResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "removePackageVariableResponse");
+    private final static QName _RoolBack_QNAME = new QName("http://application.jbpm.openkoala.org/", "roolBack");
+    private final static QName _RoolBackResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "roolBackResponse");
     private final static QName _RemoveGlobalVariable_QNAME = new QName("http://application.jbpm.openkoala.org/", "removeGlobalVariable");
     private final static QName _QueryDoenTaskResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "queryDoenTaskResponse");
     private final static QName _RepairTaskResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "repairTaskResponse");
@@ -74,6 +79,7 @@ public class ObjectFactory {
     private final static QName _GetProcessesResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "getProcessesResponse");
     private final static QName _QueryErrorList_QNAME = new QName("http://application.jbpm.openkoala.org/", "queryErrorList");
     private final static QName _RemoveProcessInstanceResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "removeProcessInstanceResponse");
+    private final static QName _QueryTodoListWithGroup_QNAME = new QName("http://application.jbpm.openkoala.org/", "queryTodoListWithGroup");
     private final static QName _QueryTodoListResponse_QNAME = new QName("http://application.jbpm.openkoala.org/", "queryTodoListResponse");
     private final static QName _SetGlobalVariable_QNAME = new QName("http://application.jbpm.openkoala.org/", "setGlobalVariable");
     private final static QName _QueryDoenTask_QNAME = new QName("http://application.jbpm.openkoala.org/", "queryDoenTask");
@@ -89,179 +95,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link QueryErrorListResponse }
+     * Create an instance of {@link GetPakcages }
      * 
      */
-    public QueryErrorListResponse createQueryErrorListResponse() {
-        return new QueryErrorListResponse();
-    }
-
-    /**
-     * Create an instance of {@link AssignToNode }
-     * 
-     */
-    public AssignToNode createAssignToNode() {
-        return new AssignToNode();
-    }
-
-    /**
-     * Create an instance of {@link GetProcessInstance }
-     * 
-     */
-    public GetProcessInstance createGetProcessInstance() {
-        return new GetProcessInstance();
-    }
-
-    /**
-     * Create an instance of {@link SetGlobalVariable }
-     * 
-     */
-    public SetGlobalVariable createSetGlobalVariable() {
-        return new SetGlobalVariable();
-    }
-
-    /**
-     * Create an instance of {@link TaskVO }
-     * 
-     */
-    public TaskVO createTaskVO() {
-        return new TaskVO();
-    }
-
-    /**
-     * Create an instance of {@link DelegateResponse }
-     * 
-     */
-    public DelegateResponse createDelegateResponse() {
-        return new DelegateResponse();
-    }
-
-    /**
-     * Create an instance of {@link QueryErrorList }
-     * 
-     */
-    public QueryErrorList createQueryErrorList() {
-        return new QueryErrorList();
-    }
-
-    /**
-     * Create an instance of {@link AddProcessResponse }
-     * 
-     */
-    public AddProcessResponse createAddProcessResponse() {
-        return new AddProcessResponse();
-    }
-
-    /**
-     * Create an instance of {@link SetProcessVariable }
-     * 
-     */
-    public SetProcessVariable createSetProcessVariable() {
-        return new SetProcessVariable();
-    }
-
-    /**
-     * Create an instance of {@link GetPorcessImageStream }
-     * 
-     */
-    public GetPorcessImageStream createGetPorcessImageStream() {
-        return new GetPorcessImageStream();
-    }
-
-    /**
-     * Create an instance of {@link SetProcessVariableResponse }
-     * 
-     */
-    public SetProcessVariableResponse createSetProcessVariableResponse() {
-        return new SetProcessVariableResponse();
-    }
-
-    /**
-     * Create an instance of {@link RemoveGlobalVariableResponse }
-     * 
-     */
-    public RemoveGlobalVariableResponse createRemoveGlobalVariableResponse() {
-        return new RemoveGlobalVariableResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetProcessImageResponse }
-     * 
-     */
-    public GetProcessImageResponse createGetProcessImageResponse() {
-        return new GetProcessImageResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetProcesses }
-     * 
-     */
-    public GetProcesses createGetProcesses() {
-        return new GetProcesses();
-    }
-
-    /**
-     * Create an instance of {@link RemoveGlobalVariable }
-     * 
-     */
-    public RemoveGlobalVariable createRemoveGlobalVariable() {
-        return new RemoveGlobalVariable();
-    }
-
-    /**
-     * Create an instance of {@link ProcessInstanceVO }
-     * 
-     */
-    public ProcessInstanceVO createProcessInstanceVO() {
-        return new ProcessInstanceVO();
-    }
-
-    /**
-     * Create an instance of {@link QueryDoenTask }
-     * 
-     */
-    public QueryDoenTask createQueryDoenTask() {
-        return new QueryDoenTask();
-    }
-
-    /**
-     * Create an instance of {@link RepairTask }
-     * 
-     */
-    public RepairTask createRepairTask() {
-        return new RepairTask();
-    }
-
-    /**
-     * Create an instance of {@link RemoveProcessInstanceResponse }
-     * 
-     */
-    public RemoveProcessInstanceResponse createRemoveProcessInstanceResponse() {
-        return new RemoveProcessInstanceResponse();
-    }
-
-    /**
-     * Create an instance of {@link CompleteTask }
-     * 
-     */
-    public CompleteTask createCompleteTask() {
-        return new CompleteTask();
-    }
-
-    /**
-     * Create an instance of {@link GetProcessByPackage }
-     * 
-     */
-    public GetProcessByPackage createGetProcessByPackage() {
-        return new GetProcessByPackage();
-    }
-
-    /**
-     * Create an instance of {@link GetPakcagesResponse }
-     * 
-     */
-    public GetPakcagesResponse createGetPakcagesResponse() {
-        return new GetPakcagesResponse();
+    public GetPakcages createGetPakcages() {
+        return new GetPakcages();
     }
 
     /**
@@ -273,187 +111,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JbpmNode }
+     * Create an instance of {@link SetGlobalVariable }
      * 
      */
-    public JbpmNode createJbpmNode() {
-        return new JbpmNode();
+    public SetGlobalVariable createSetGlobalVariable() {
+        return new SetGlobalVariable();
     }
 
     /**
-     * Create an instance of {@link SetProcessInstanceVariableResponse }
+     * Create an instance of {@link GetProcessInstance }
      * 
      */
-    public SetProcessInstanceVariableResponse createSetProcessInstanceVariableResponse() {
-        return new SetProcessInstanceVariableResponse();
+    public GetProcessInstance createGetProcessInstance() {
+        return new GetProcessInstance();
     }
 
     /**
-     * Create an instance of {@link GetProcessNodesFromPorcessInstnaceId }
+     * Create an instance of {@link GetProcessesResponse }
      * 
      */
-    public GetProcessNodesFromPorcessInstnaceId createGetProcessNodesFromPorcessInstnaceId() {
-        return new GetProcessNodesFromPorcessInstnaceId();
+    public GetProcessesResponse createGetProcessesResponse() {
+        return new GetProcessesResponse();
     }
 
     /**
-     * Create an instance of {@link AssignToNodeResponse }
+     * Create an instance of {@link TaskVO }
      * 
      */
-    public AssignToNodeResponse createAssignToNodeResponse() {
-        return new AssignToNodeResponse();
-    }
-
-    /**
-     * Create an instance of {@link QueryDoenTaskResponse }
-     * 
-     */
-    public QueryDoenTaskResponse createQueryDoenTaskResponse() {
-        return new QueryDoenTaskResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetProcessByPackageResponse }
-     * 
-     */
-    public GetProcessByPackageResponse createGetProcessByPackageResponse() {
-        return new GetProcessByPackageResponse();
-    }
-
-    /**
-     * Create an instance of {@link SetGlobalVariableResponse }
-     * 
-     */
-    public SetGlobalVariableResponse createSetGlobalVariableResponse() {
-        return new SetGlobalVariableResponse();
-    }
-
-    /**
-     * Create an instance of {@link SetPackageVariable }
-     * 
-     */
-    public SetPackageVariable createSetPackageVariable() {
-        return new SetPackageVariable();
-    }
-
-    /**
-     * Create an instance of {@link RemoveProcessInstance }
-     * 
-     */
-    public RemoveProcessInstance createRemoveProcessInstance() {
-        return new RemoveProcessInstance();
-    }
-
-    /**
-     * Create an instance of {@link RemoveProcessVariable }
-     * 
-     */
-    public RemoveProcessVariable createRemoveProcessVariable() {
-        return new RemoveProcessVariable();
-    }
-
-    /**
-     * Create an instance of {@link Delegate }
-     * 
-     */
-    public Delegate createDelegate() {
-        return new Delegate();
-    }
-
-    /**
-     * Create an instance of {@link GetPorcessImageStreamResponse }
-     * 
-     */
-    public GetPorcessImageStreamResponse createGetPorcessImageStreamResponse() {
-        return new GetPorcessImageStreamResponse();
-    }
-
-    /**
-     * Create an instance of {@link ProcessVO }
-     * 
-     */
-    public ProcessVO createProcessVO() {
-        return new ProcessVO();
-    }
-
-    /**
-     * Create an instance of {@link RemovePackageVariable }
-     * 
-     */
-    public RemovePackageVariable createRemovePackageVariable() {
-        return new RemovePackageVariable();
-    }
-
-    /**
-     * Create an instance of {@link GetProcessNodes }
-     * 
-     */
-    public GetProcessNodes createGetProcessNodes() {
-        return new GetProcessNodes();
-    }
-
-    /**
-     * Create an instance of {@link QueryTodoList }
-     * 
-     */
-    public QueryTodoList createQueryTodoList() {
-        return new QueryTodoList();
-    }
-
-    /**
-     * Create an instance of {@link SetPackageVariableResponse }
-     * 
-     */
-    public SetPackageVariableResponse createSetPackageVariableResponse() {
-        return new SetPackageVariableResponse();
-    }
-
-    /**
-     * Create an instance of {@link CompleteTaskResponse }
-     * 
-     */
-    public CompleteTaskResponse createCompleteTaskResponse() {
-        return new CompleteTaskResponse();
-    }
-
-    /**
-     * Create an instance of {@link RepairTaskResponse }
-     * 
-     */
-    public RepairTaskResponse createRepairTaskResponse() {
-        return new RepairTaskResponse();
-    }
-
-    /**
-     * Create an instance of {@link RemovePackageVariableResponse }
-     * 
-     */
-    public RemovePackageVariableResponse createRemovePackageVariableResponse() {
-        return new RemovePackageVariableResponse();
-    }
-
-    /**
-     * Create an instance of {@link QueryAllProcessResponse }
-     * 
-     */
-    public QueryAllProcessResponse createQueryAllProcessResponse() {
-        return new QueryAllProcessResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetProcessNodesFromPorcessInstnaceIdResponse }
-     * 
-     */
-    public GetProcessNodesFromPorcessInstnaceIdResponse createGetProcessNodesFromPorcessInstnaceIdResponse() {
-        return new GetProcessNodesFromPorcessInstnaceIdResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetProcessNodesResponse }
-     * 
-     */
-    public GetProcessNodesResponse createGetProcessNodesResponse() {
-        return new GetProcessNodesResponse();
+    public TaskVO createTaskVO() {
+        return new TaskVO();
     }
 
     /**
@@ -465,11 +151,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link QueryHistoryLog }
+     * Create an instance of {@link QueryTodoList }
      * 
      */
-    public QueryHistoryLog createQueryHistoryLog() {
-        return new QueryHistoryLog();
+    public QueryTodoList createQueryTodoList() {
+        return new QueryTodoList();
+    }
+
+    /**
+     * Create an instance of {@link SetProcessInstanceVariableResponse }
+     * 
+     */
+    public SetProcessInstanceVariableResponse createSetProcessInstanceVariableResponse() {
+        return new SetProcessInstanceVariableResponse();
     }
 
     /**
@@ -489,11 +183,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link QueryAllActiveProcessResponse }
+     * Create an instance of {@link RoolBack }
      * 
      */
-    public QueryAllActiveProcessResponse createQueryAllActiveProcessResponse() {
-        return new QueryAllActiveProcessResponse();
+    public RoolBack createRoolBack() {
+        return new RoolBack();
+    }
+
+    /**
+     * Create an instance of {@link QueryErrorList }
+     * 
+     */
+    public QueryErrorList createQueryErrorList() {
+        return new QueryErrorList();
+    }
+
+    /**
+     * Create an instance of {@link RoolBackResponse }
+     * 
+     */
+    public RoolBackResponse createRoolBackResponse() {
+        return new RoolBackResponse();
     }
 
     /**
@@ -505,35 +215,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link HistoryLogVo }
+     * Create an instance of {@link CompleteTaskResponse }
      * 
      */
-    public HistoryLogVo createHistoryLogVo() {
-        return new HistoryLogVo();
-    }
-
-    /**
-     * Create an instance of {@link GetProcessesResponse }
-     * 
-     */
-    public GetProcessesResponse createGetProcessesResponse() {
-        return new GetProcessesResponse();
-    }
-
-    /**
-     * Create an instance of {@link QueryHistoryLogResponse }
-     * 
-     */
-    public QueryHistoryLogResponse createQueryHistoryLogResponse() {
-        return new QueryHistoryLogResponse();
-    }
-
-    /**
-     * Create an instance of {@link QueryAllProcess }
-     * 
-     */
-    public QueryAllProcess createQueryAllProcess() {
-        return new QueryAllProcess();
+    public CompleteTaskResponse createCompleteTaskResponse() {
+        return new CompleteTaskResponse();
     }
 
     /**
@@ -545,11 +231,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link QueryAllActiveProcess }
+     * Create an instance of {@link RemoveGlobalVariable }
      * 
      */
-    public QueryAllActiveProcess createQueryAllActiveProcess() {
-        return new QueryAllActiveProcess();
+    public RemoveGlobalVariable createRemoveGlobalVariable() {
+        return new RemoveGlobalVariable();
+    }
+
+    /**
+     * Create an instance of {@link QueryDoenTaskResponse }
+     * 
+     */
+    public QueryDoenTaskResponse createQueryDoenTaskResponse() {
+        return new QueryDoenTaskResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetPorcessImageStream }
+     * 
+     */
+    public GetPorcessImageStream createGetPorcessImageStream() {
+        return new GetPorcessImageStream();
     }
 
     /**
@@ -561,6 +263,230 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AddProcessResponse }
+     * 
+     */
+    public AddProcessResponse createAddProcessResponse() {
+        return new AddProcessResponse();
+    }
+
+    /**
+     * Create an instance of {@link AssignToNodeResponse }
+     * 
+     */
+    public AssignToNodeResponse createAssignToNodeResponse() {
+        return new AssignToNodeResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetPakcagesResponse }
+     * 
+     */
+    public GetPakcagesResponse createGetPakcagesResponse() {
+        return new GetPakcagesResponse();
+    }
+
+    /**
+     * Create an instance of {@link ProcessVO }
+     * 
+     */
+    public ProcessVO createProcessVO() {
+        return new ProcessVO();
+    }
+
+    /**
+     * Create an instance of {@link FetchBackResponse }
+     * 
+     */
+    public FetchBackResponse createFetchBackResponse() {
+        return new FetchBackResponse();
+    }
+
+    /**
+     * Create an instance of {@link RepairTask }
+     * 
+     */
+    public RepairTask createRepairTask() {
+        return new RepairTask();
+    }
+
+    /**
+     * Create an instance of {@link JbpmNode }
+     * 
+     */
+    public JbpmNode createJbpmNode() {
+        return new JbpmNode();
+    }
+
+    /**
+     * Create an instance of {@link AssignToNode }
+     * 
+     */
+    public AssignToNode createAssignToNode() {
+        return new AssignToNode();
+    }
+
+    /**
+     * Create an instance of {@link RemoveProcessVariable }
+     * 
+     */
+    public RemoveProcessVariable createRemoveProcessVariable() {
+        return new RemoveProcessVariable();
+    }
+
+    /**
+     * Create an instance of {@link ProcessInstanceVO }
+     * 
+     */
+    public ProcessInstanceVO createProcessInstanceVO() {
+        return new ProcessInstanceVO();
+    }
+
+    /**
+     * Create an instance of {@link GetProcessNodes }
+     * 
+     */
+    public GetProcessNodes createGetProcessNodes() {
+        return new GetProcessNodes();
+    }
+
+    /**
+     * Create an instance of {@link GetProcesses }
+     * 
+     */
+    public GetProcesses createGetProcesses() {
+        return new GetProcesses();
+    }
+
+    /**
+     * Create an instance of {@link RepairTaskResponse }
+     * 
+     */
+    public RepairTaskResponse createRepairTaskResponse() {
+        return new RepairTaskResponse();
+    }
+
+    /**
+     * Create an instance of {@link QueryAllProcess }
+     * 
+     */
+    public QueryAllProcess createQueryAllProcess() {
+        return new QueryAllProcess();
+    }
+
+    /**
+     * Create an instance of {@link GetPorcessImageStreamResponse }
+     * 
+     */
+    public GetPorcessImageStreamResponse createGetPorcessImageStreamResponse() {
+        return new GetPorcessImageStreamResponse();
+    }
+
+    /**
+     * Create an instance of {@link Delegate }
+     * 
+     */
+    public Delegate createDelegate() {
+        return new Delegate();
+    }
+
+    /**
+     * Create an instance of {@link GetProcessNodesFromPorcessInstnaceIdResponse }
+     * 
+     */
+    public GetProcessNodesFromPorcessInstnaceIdResponse createGetProcessNodesFromPorcessInstnaceIdResponse() {
+        return new GetProcessNodesFromPorcessInstnaceIdResponse();
+    }
+
+    /**
+     * Create an instance of {@link QueryErrorListResponse }
+     * 
+     */
+    public QueryErrorListResponse createQueryErrorListResponse() {
+        return new QueryErrorListResponse();
+    }
+
+    /**
+     * Create an instance of {@link SetProcessVariable }
+     * 
+     */
+    public SetProcessVariable createSetProcessVariable() {
+        return new SetProcessVariable();
+    }
+
+    /**
+     * Create an instance of {@link QueryAllActiveProcess }
+     * 
+     */
+    public QueryAllActiveProcess createQueryAllActiveProcess() {
+        return new QueryAllActiveProcess();
+    }
+
+    /**
+     * Create an instance of {@link HistoryLogVo }
+     * 
+     */
+    public HistoryLogVo createHistoryLogVo() {
+        return new HistoryLogVo();
+    }
+
+    /**
+     * Create an instance of {@link GetProcessByPackageResponse }
+     * 
+     */
+    public GetProcessByPackageResponse createGetProcessByPackageResponse() {
+        return new GetProcessByPackageResponse();
+    }
+
+    /**
+     * Create an instance of {@link QueryAllProcessResponse }
+     * 
+     */
+    public QueryAllProcessResponse createQueryAllProcessResponse() {
+        return new QueryAllProcessResponse();
+    }
+
+    /**
+     * Create an instance of {@link RemoveGlobalVariableResponse }
+     * 
+     */
+    public RemoveGlobalVariableResponse createRemoveGlobalVariableResponse() {
+        return new RemoveGlobalVariableResponse();
+    }
+
+    /**
+     * Create an instance of {@link SetPackageVariableResponse }
+     * 
+     */
+    public SetPackageVariableResponse createSetPackageVariableResponse() {
+        return new SetPackageVariableResponse();
+    }
+
+    /**
+     * Create an instance of {@link QueryAllActiveProcessResponse }
+     * 
+     */
+    public QueryAllActiveProcessResponse createQueryAllActiveProcessResponse() {
+        return new QueryAllActiveProcessResponse();
+    }
+
+    /**
+     * Create an instance of {@link RemoveProcessInstanceResponse }
+     * 
+     */
+    public RemoveProcessInstanceResponse createRemoveProcessInstanceResponse() {
+        return new RemoveProcessInstanceResponse();
+    }
+
+    /**
+     * Create an instance of {@link SetPackageVariable }
+     * 
+     */
+    public SetPackageVariable createSetPackageVariable() {
+        return new SetPackageVariable();
+    }
+
+    /**
      * Create an instance of {@link GetProcessInstanceResponse }
      * 
      */
@@ -569,11 +495,139 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetPakcages }
+     * Create an instance of {@link GetProcessByPackage }
      * 
      */
-    public GetPakcages createGetPakcages() {
-        return new GetPakcages();
+    public GetProcessByPackage createGetProcessByPackage() {
+        return new GetProcessByPackage();
+    }
+
+    /**
+     * Create an instance of {@link RemovePackageVariable }
+     * 
+     */
+    public RemovePackageVariable createRemovePackageVariable() {
+        return new RemovePackageVariable();
+    }
+
+    /**
+     * Create an instance of {@link SetProcessVariableResponse }
+     * 
+     */
+    public SetProcessVariableResponse createSetProcessVariableResponse() {
+        return new SetProcessVariableResponse();
+    }
+
+    /**
+     * Create an instance of {@link QueryHistoryLog }
+     * 
+     */
+    public QueryHistoryLog createQueryHistoryLog() {
+        return new QueryHistoryLog();
+    }
+
+    /**
+     * Create an instance of {@link DelegateResponse }
+     * 
+     */
+    public DelegateResponse createDelegateResponse() {
+        return new DelegateResponse();
+    }
+
+    /**
+     * Create an instance of {@link SetGlobalVariableResponse }
+     * 
+     */
+    public SetGlobalVariableResponse createSetGlobalVariableResponse() {
+        return new SetGlobalVariableResponse();
+    }
+
+    /**
+     * Create an instance of {@link QueryHistoryLogResponse }
+     * 
+     */
+    public QueryHistoryLogResponse createQueryHistoryLogResponse() {
+        return new QueryHistoryLogResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetProcessNodesResponse }
+     * 
+     */
+    public GetProcessNodesResponse createGetProcessNodesResponse() {
+        return new GetProcessNodesResponse();
+    }
+
+    /**
+     * Create an instance of {@link CompleteTask }
+     * 
+     */
+    public CompleteTask createCompleteTask() {
+        return new CompleteTask();
+    }
+
+    /**
+     * Create an instance of {@link QueryDoenTask }
+     * 
+     */
+    public QueryDoenTask createQueryDoenTask() {
+        return new QueryDoenTask();
+    }
+
+    /**
+     * Create an instance of {@link GetProcessImageResponse }
+     * 
+     */
+    public GetProcessImageResponse createGetProcessImageResponse() {
+        return new GetProcessImageResponse();
+    }
+
+    /**
+     * Create an instance of {@link RemovePackageVariableResponse }
+     * 
+     */
+    public RemovePackageVariableResponse createRemovePackageVariableResponse() {
+        return new RemovePackageVariableResponse();
+    }
+
+    /**
+     * Create an instance of {@link FetchBack }
+     * 
+     */
+    public FetchBack createFetchBack() {
+        return new FetchBack();
+    }
+
+    /**
+     * Create an instance of {@link QueryTodoListWithGroup }
+     * 
+     */
+    public QueryTodoListWithGroup createQueryTodoListWithGroup() {
+        return new QueryTodoListWithGroup();
+    }
+
+    /**
+     * Create an instance of {@link GetProcessNodesFromPorcessInstnaceId }
+     * 
+     */
+    public GetProcessNodesFromPorcessInstnaceId createGetProcessNodesFromPorcessInstnaceId() {
+        return new GetProcessNodesFromPorcessInstnaceId();
+    }
+
+    /**
+     * Create an instance of {@link RemoveProcessInstance }
+     * 
+     */
+    public RemoveProcessInstance createRemoveProcessInstance() {
+        return new RemoveProcessInstance();
+    }
+
+    /**
+     * Create an instance of {@link QueryTodoListWithGroupResponse }
+     * 
+     */
+    public QueryTodoListWithGroupResponse createQueryTodoListWithGroupResponse() {
+        return new QueryTodoListWithGroupResponse();
     }
 
     /**
@@ -685,6 +739,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link QueryTodoListWithGroupResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "queryTodoListWithGroupResponse")
+    public JAXBElement<QueryTodoListWithGroupResponse> createQueryTodoListWithGroupResponse(QueryTodoListWithGroupResponse value) {
+        return new JAXBElement<QueryTodoListWithGroupResponse>(_QueryTodoListWithGroupResponse_QNAME, QueryTodoListWithGroupResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link RemovePackageVariable }{@code >}}
      * 
      */
@@ -757,12 +820,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SetPackageVariable }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link FetchBackResponse }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "setPackageVariable")
-    public JAXBElement<SetPackageVariable> createSetPackageVariable(SetPackageVariable value) {
-        return new JAXBElement<SetPackageVariable>(_SetPackageVariable_QNAME, SetPackageVariable.class, null, value);
+    @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "fetchBackResponse")
+    public JAXBElement<FetchBackResponse> createFetchBackResponse(FetchBackResponse value) {
+        return new JAXBElement<FetchBackResponse>(_FetchBackResponse_QNAME, FetchBackResponse.class, null, value);
     }
 
     /**
@@ -772,6 +835,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "getProcessNodes")
     public JAXBElement<GetProcessNodes> createGetProcessNodes(GetProcessNodes value) {
         return new JAXBElement<GetProcessNodes>(_GetProcessNodes_QNAME, GetProcessNodes.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SetPackageVariable }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "setPackageVariable")
+    public JAXBElement<SetPackageVariable> createSetPackageVariable(SetPackageVariable value) {
+        return new JAXBElement<SetPackageVariable>(_SetPackageVariable_QNAME, SetPackageVariable.class, null, value);
     }
 
     /**
@@ -862,6 +934,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "completeTask")
     public JAXBElement<CompleteTask> createCompleteTask(CompleteTask value) {
         return new JAXBElement<CompleteTask>(_CompleteTask_QNAME, CompleteTask.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FetchBack }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "fetchBack")
+    public JAXBElement<FetchBack> createFetchBack(FetchBack value) {
+        return new JAXBElement<FetchBack>(_FetchBack_QNAME, FetchBack.class, null, value);
     }
 
     /**
@@ -964,6 +1045,24 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RoolBack }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "roolBack")
+    public JAXBElement<RoolBack> createRoolBack(RoolBack value) {
+        return new JAXBElement<RoolBack>(_RoolBack_QNAME, RoolBack.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RoolBackResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "roolBackResponse")
+    public JAXBElement<RoolBackResponse> createRoolBackResponse(RoolBackResponse value) {
+        return new JAXBElement<RoolBackResponse>(_RoolBackResponse_QNAME, RoolBackResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link RemoveGlobalVariable }{@code >}}
      * 
      */
@@ -1024,6 +1123,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "removeProcessInstanceResponse")
     public JAXBElement<RemoveProcessInstanceResponse> createRemoveProcessInstanceResponse(RemoveProcessInstanceResponse value) {
         return new JAXBElement<RemoveProcessInstanceResponse>(_RemoveProcessInstanceResponse_QNAME, RemoveProcessInstanceResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link QueryTodoListWithGroup }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://application.jbpm.openkoala.org/", name = "queryTodoListWithGroup")
+    public JAXBElement<QueryTodoListWithGroup> createQueryTodoListWithGroup(QueryTodoListWithGroup value) {
+        return new JAXBElement<QueryTodoListWithGroup>(_QueryTodoListWithGroup_QNAME, QueryTodoListWithGroup.class, null, value);
     }
 
     /**
