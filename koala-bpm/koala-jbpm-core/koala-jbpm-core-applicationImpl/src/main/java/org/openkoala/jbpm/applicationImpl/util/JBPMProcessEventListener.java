@@ -30,6 +30,7 @@ public class JBPMProcessEventListener implements ProcessEventListener {
 		log.setUser((String)in.getVariable("KJ_USER"));
 		log.setProcessInstanceId(event.getProcessInstance().getId());
 		log.setProcessData(XmlParseUtil.paramsToXml(in.getVariables()));
+		log.setProcessId(in.getProcessId());
 		log.save();
 	}
 
@@ -53,6 +54,7 @@ public class JBPMProcessEventListener implements ProcessEventListener {
 		log.setProcessInstanceId(event.getProcessInstance().getId());
 		RuleFlowProcessInstance in = (RuleFlowProcessInstance)event.getProcessInstance();
 		log.setProcessData(XmlParseUtil.paramsToXml(in.getVariables()));
+		log.setProcessId(in.getProcessId());
 		log.save();
 	}
 
@@ -96,6 +98,7 @@ public class JBPMProcessEventListener implements ProcessEventListener {
 			log.setUser((String)event.getNodeInstance().getVariable("KJ_USER"));
 			log.setProcessInstanceId(event.getProcessInstance().getId());
 			log.setProcessData(XmlParseUtil.paramsToXml(in.getVariables()));
+			log.setProcessId(in.getProcessId());
 			log.save();
 		}
 	}

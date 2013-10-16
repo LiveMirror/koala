@@ -362,15 +362,15 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	 * @param pageSize
 	 * @return
 	 */
-	public PageTaskVO pageQueryDoneTask(String user, int currentPage, int pageSize) {
+	public PageTaskVO pageQueryDoneTask(String process,String user, int currentPage, int pageSize) {
 		/**
 		 * 	Page<ProcessInstanceVO> logs = this.queryChannel.queryPagedResult(hql,
 				new Object[] { processId }, firstRow, pageSize);
 		 */
-		String jpql = "select log from HistoryLog log where log.user = ?"; 
+		String jpql = "select log from HistoryLog log where log.user = ? and log.processId = ?"; 
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Page<HistoryLog> pageResults = this.queryChannel.queryPagedResultByPageNo(jpql,
-				new Object[] { user }, currentPage, pageSize);
+				new Object[] { user,process }, currentPage, pageSize);
 		List<HistoryLog> logs = pageResults.getResult();
 		
 		List<Long> ids = new ArrayList<Long>();
@@ -512,6 +512,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			log.setResult("当前任务被委托");
 			log.setUser(userId);
 			log.setProcessInstanceId(task.getTaskData().getProcessInstanceId());
+			log.setProcessId(task.getTaskData().getProcessId());
 			log.save();
 			this.getJbpmSupport().commitTransaction();
 		} catch (RuntimeException e) {
@@ -601,6 +602,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 					log.setUser(user);
 					log.setProcessInstanceId(task.getTaskData()
 							.getProcessInstanceId());
+					log.setProcessId(in.getProcessId());
 					log.save();
 					// 如果会签成功，流转会签
 					String success = joginAssign.queryIsSuccess();
@@ -748,6 +750,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		log.setResult("当前流程任务被管理员变更");
 		log.setUser("Admin");
 		log.setProcessInstanceId(processInstanceId);
+		log.setProcessId(in.getProcessId());
 		log.save();
 	}
 

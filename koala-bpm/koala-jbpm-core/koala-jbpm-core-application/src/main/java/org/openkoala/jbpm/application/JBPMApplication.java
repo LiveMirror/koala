@@ -352,7 +352,7 @@ public interface JBPMApplication {
 	 * @param pageSize
 	 * @return
 	 */
-	public PageTaskVO pageQueryDoneTask(String user, int currentPage, int pageSize);
+	public PageTaskVO pageQueryDoneTask(String process,String user, int currentPage, int pageSize);
 	
 	/**
 	 * 按流程查询待办任务

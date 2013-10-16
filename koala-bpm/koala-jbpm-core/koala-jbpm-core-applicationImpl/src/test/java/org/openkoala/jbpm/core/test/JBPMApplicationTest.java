@@ -174,7 +174,7 @@ public class JBPMApplicationTest {
 
 		getJBPMApplication().completeTask(i, tasks.get(0).getTaskId(), "fhjl",
 				XmlParseUtil.paramsToXml(data), null);
-		PageTaskVO pages = getJBPMApplication().pageQueryDoneTask("fhjl", 1, 10);
+		PageTaskVO pages = getJBPMApplication().pageQueryDoneTask("defaultPackage.Trade","fhjl", 1, 10);
 		Assert.assertTrue(pages.getTotalCount()>0);
 		getJBPMApplication().removeProcessInstance(i);
 	}
