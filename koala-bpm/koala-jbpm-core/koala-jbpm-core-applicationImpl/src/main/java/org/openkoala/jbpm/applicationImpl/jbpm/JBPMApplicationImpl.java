@@ -38,6 +38,7 @@ import org.openkoala.jbpm.application.vo.JBPMNode;
 import org.openkoala.jbpm.application.vo.JoinAssignVO;
 import org.openkoala.jbpm.application.vo.KoalaProcessInfoVO;
 import org.openkoala.jbpm.application.vo.MessageLogVO;
+import org.openkoala.jbpm.application.vo.PageTaskVO;
 import org.openkoala.jbpm.application.vo.ProcessInstanceVO;
 import org.openkoala.jbpm.application.vo.ProcessVO;
 import org.openkoala.jbpm.application.vo.TaskVO;
@@ -163,19 +164,60 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	 * </groups>
 	 * @return
 	 */
-	public List<TaskVO> queryTodoList(String user,String groups){
+	public List<TaskVO> queryTodoListWithGroup(String user,String groups){
 		List<TaskVO> todos = new ArrayList<TaskVO>();
-		 todos.addAll(this.queryTodoListCall(user, groups));
-		 todos.addAll(this.queryDelegateTodoList(user));
+		 todos.addAll(this.queryTodoListCall(user, groups,null));
+		 todos.addAll(this.queryDelegateTodoList(user,null));
 		return todos;
 	}
+	
+	/**
+	 * 
+	 * 根据流程查询待办任务
+	 * @param user  用户
+	 * @param groups  用户所属的组
+	 * 组格式
+	 * <groups>
+	 *   <value>abc</value>
+	 *   <value>bcd</value>
+	 * </groups>
+	 * @return
+	 */
+	public List<TaskVO> processQueryTodoListWithGroup(String process,String user,String groups){
+		
+		List<TaskVO> todos = new ArrayList<TaskVO>();
+		 todos.addAll(this.queryTodoListCall(user, groups,process));
+		 todos.addAll(this.queryDelegateTodoList(user,process));
+		return todos;
+	}
+	
+	
+	/**
+	 * 查询待办任务
+	 * @param user  用户
+	 * @param groups  用户所属的组
+	 * 组格式
+	 * <groups>
+	 *   <value>abc</value>
+	 *   <value>bcd</value>
+	 * </groups>
+	 * @return
+	 */
+	public List<TaskVO> queryTodoList(String user){
+		List<TaskVO> todos = new ArrayList<TaskVO>();
+		 todos.addAll(this.queryTodoListCall(user, null,null));
+		 todos.addAll(this.queryDelegateTodoList(user,null));
+		return todos;
+	}
+	
+	
 	
 	/**
 	 * 获取一个用户的委托待办任务
 	 * @param user
 	 * @return
 	 */
-	public List<TaskVO> queryDelegateTodoList(String user){
+	public List<TaskVO> queryDelegateTodoList(String user,String process){
 		List<TaskSummary> tasks = null;
 		List<TaskVO> todos = new ArrayList<TaskVO>();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -196,8 +238,6 @@ public class JBPMApplicationImpl implements JBPMApplication {
 						} else {
 							// 如果指定了迁移的流程，则只委托指定的流程
 							List<TaskSummary> assignTasks = null;
-							if (!"".equals(userGroupWsUrl)
-									&& !"".equals(userGroupMethod)) {
 							assignTasks = getJbpmSupport().findTaskSummary(user);
 							List<String> allowProcess = new ArrayList<String>();
 							for (KoalaAssignDetail detail : koalaAssignInfo
@@ -212,7 +252,6 @@ public class JBPMApplicationImpl implements JBPMApplication {
 								if (allowProcess.contains(processId)) {
 									agentTasks.add(task);
 								}
-							}
 						}
 					}
 
@@ -261,23 +300,32 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	/**
 	 * 查询待办任务
 	 */
-	public List<TaskVO> queryTodoListCall(String user,String groups) {
+	public List<TaskVO> queryTodoListCall(String user,String groups,String processId) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		List<TaskVO> todos = new ArrayList<TaskVO>();
 
 		List<TaskSummary> tasks = null;
 		List<String> userGroups = XmlParseUtil.parseListXml(groups);
-		if (userGroups.size()>0) {
-			tasks = getJbpmSupport().findTaskSummaryByGroup(user, userGroups);
-		} else {
-			tasks = getJbpmSupport().findTaskSummary(user);
+		if(processId!=null){
+			if (userGroups.size()>0) {
+				tasks = jbpmTaskService.findProcessTaskSummaryByGroups(getJbpmSupport().getAllVersionProcess(processId),user, userGroups);
+			} else {
+				tasks = jbpmTaskService.findProcessTaskSummary(getJbpmSupport().getAllVersionProcess(processId),user);
+			}
+		}else{
+			if (userGroups.size()>0) {
+				tasks = getJbpmSupport().findTaskSummaryByGroup(user, userGroups);
+			} else {
+				tasks = getJbpmSupport().findTaskSummary(user);
+			}
 		}
+		
 		for (TaskSummary task : tasks) {
-			long processId = task.getProcessInstanceId();
+			long processInstanceId = task.getProcessInstanceId();
 			RuleFlowProcessInstance in = null;
 			try {
 				ProcessInstance instance = getJbpmSupport().getProcessInstance(
-						processId);
+						processInstanceId);
 				if (instance == null)
 					continue;
 				in = (RuleFlowProcessInstance) instance;
@@ -285,13 +333,13 @@ public class JBPMApplicationImpl implements JBPMApplication {
 				continue;
 			}
 			ProcessInstanceLog log = jbpmTaskService
-					.findProcessInstance(processId);
+					.findProcessInstance(processInstanceId);
 			TaskVO todo = new TaskVO();
 			Map<String, Object> processParams = in.getVariables();
 			String processData = XmlParseUtil.paramsToXml(processParams);
 			todo.setActualOwner(task.getActualOwner().getId());
 			todo.setActualName(task.getName());
-			todo.setProcessInstanceId(processId);
+			todo.setProcessInstanceId(processInstanceId);
 			todo.setProcessId(in.getProcessId());
 			try {
 				todo.setProcessName(in.getProcessName());
@@ -305,6 +353,55 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			todos.add(todo);
 		}
 		return todos;
+	}
+	
+	/**
+	 * 分页查询已办任务
+	 * @param user
+	 * @param firstRow
+	 * @param pageSize
+	 * @return
+	 */
+	public PageTaskVO pageQueryDoneTask(String user, int currentPage, int pageSize) {
+		/**
+		 * 	Page<ProcessInstanceVO> logs = this.queryChannel.queryPagedResult(hql,
+				new Object[] { processId }, firstRow, pageSize);
+		 */
+		String jpql = "select log from HistoryLog log where log.user = ?"; 
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Page<HistoryLog> pageResults = this.queryChannel.queryPagedResultByPageNo(jpql,
+				new Object[] { user }, currentPage, pageSize);
+		List<HistoryLog> logs = pageResults.getResult();
+		
+		List<Long> ids = new ArrayList<Long>();
+		List<TaskVO> dones = new ArrayList<TaskVO>();
+		
+		for (HistoryLog log : logs) {
+			if (ids.contains(log.getProcessInstanceId()))
+				continue;
+			else {
+				ids.add(log.getProcessInstanceId());
+			}
+			TaskVO todo = new TaskVO();
+			long processId = log.getProcessInstanceId();
+			ProcessInstanceLog processLog = null;
+			try {
+				processLog = jbpmTaskService.findProcessInstance(processId);
+			} catch (Exception e) {
+				continue;
+			}
+			todo.setProcessData(log.getProcessData());
+			todo.setProcessInstanceId(processId);
+			if (processLog != null) {
+				todo.setProcessId(processLog.getProcessId());
+				todo.setProcessName(processLog.getProcessId());
+				todo.setCreateDate(df.format(processLog.getStart()));
+			}
+			dones.add(todo);
+		}
+		
+		return new PageTaskVO(Page.getStartOfPage(currentPage, pageSize), pageResults.getTotalCount(), pageResults.getPageSize(), dones);
+		
 	}
 
 	/**

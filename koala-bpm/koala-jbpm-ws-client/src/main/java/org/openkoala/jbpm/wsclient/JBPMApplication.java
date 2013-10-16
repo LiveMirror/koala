@@ -287,6 +287,26 @@ public interface JBPMApplication {
 
     /**
      * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns java.util.List<org.openkoala.jbpm.wsclient.TaskVO>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "processQueryTodoListWithGroup", targetNamespace = "http://application.jbpm.openkoala.org/", className = "org.openkoala.jbpm.wsclient.ProcessQueryTodoListWithGroup")
+    @ResponseWrapper(localName = "processQueryTodoListWithGroupResponse", targetNamespace = "http://application.jbpm.openkoala.org/", className = "org.openkoala.jbpm.wsclient.ProcessQueryTodoListWithGroupResponse")
+    public List<TaskVO> processQueryTodoListWithGroup(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
+
+    /**
+     * 
      * @param arg0
      * @return
      *     returns java.util.List<java.lang.String>
@@ -366,6 +386,26 @@ public interface JBPMApplication {
         long arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         long arg1);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns org.openkoala.jbpm.wsclient.PageTaskVO
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "pageQueryDoneTask", targetNamespace = "http://application.jbpm.openkoala.org/", className = "org.openkoala.jbpm.wsclient.PageQueryDoneTask")
+    @ResponseWrapper(localName = "pageQueryDoneTaskResponse", targetNamespace = "http://application.jbpm.openkoala.org/", className = "org.openkoala.jbpm.wsclient.PageQueryDoneTaskResponse")
+    public PageTaskVO pageQueryDoneTask(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        int arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        int arg2);
 
     /**
      * 

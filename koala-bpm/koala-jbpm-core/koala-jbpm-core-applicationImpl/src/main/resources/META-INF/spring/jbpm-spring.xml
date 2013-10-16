@@ -13,10 +13,10 @@
 		<property name="className"
 			value="bitronix.tm.resource.jdbc.lrc.LrcXADataSource" />
 		<property name="uniqueName" value="jdbc/jbpm-ds" />
-		<property name="maxPoolSize" value="50" />
-		<property name="minPoolSize" value="20" />
+		<property name="maxPoolSize" value="200" />
+		<property name="minPoolSize" value="50" />
 		<property name="allowLocalTransactions" value="true" />
-		<property name="testQuery" value="SELECT 1 FROM DUAL" />
+		<property name="testQuery" value="SELECT 1" />
 		<property name="driverProperties">
 			<props>
 				<prop key="driverClassName">${db.jdbc.driver}</prop>

@@ -16,6 +16,7 @@ import org.openkoala.jbpm.application.JBPMApplication;
 import org.openkoala.jbpm.application.vo.HistoryLogVo;
 import org.openkoala.jbpm.application.vo.JBPMNode;
 import org.openkoala.jbpm.application.vo.KoalaProcessInfoVO;
+import org.openkoala.jbpm.application.vo.PageTaskVO;
 import org.openkoala.jbpm.application.vo.ProcessInstanceVO;
 import org.openkoala.jbpm.application.vo.ProcessVO;
 import org.openkoala.jbpm.application.vo.TaskVO;
@@ -111,7 +112,7 @@ public class JBPMApplicationTest {
 	@Test
 	public void testQueryTodoList() {
 		long i = getJBPMApplication().startProcess("defaultPackage.Trade", "aaa", null);
-		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl",null);
+		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
 		Assert.assertTrue(tasks.size() > 0);
 		getJBPMApplication().removeProcessInstance(i);
 
@@ -127,13 +128,13 @@ public class JBPMApplicationTest {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("approveStatus", "1");
 		
-		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl",null);
+		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
 		
 		
 	
 		getJBPMApplication().completeTask(i, tasks.get(0).getTaskId(), "fhjl",
 				XmlParseUtil.paramsToXml(data), null);
-		tasks = getJBPMApplication().queryTodoList("fwzy",null);
+		tasks = getJBPMApplication().queryTodoList("fwzy");
 		Assert.assertTrue(tasks.size() > 0);
 		
 		getJBPMApplication().removeProcessInstance(i);
@@ -150,12 +151,31 @@ public class JBPMApplicationTest {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("approveStatus", "1");
 		
-		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl",null);
+		List<TaskVO> tasks = getJBPMApplication().processQueryTodoListWithGroup("defaultPackage.Trade","fhjl",null);
 
 		getJBPMApplication().completeTask(i, tasks.get(0).getTaskId(), "fhjl",
 				XmlParseUtil.paramsToXml(data), null);
 		tasks = getJBPMApplication().queryDoenTask("fhjl");
 		Assert.assertTrue(tasks.size() > 0);
+		getJBPMApplication().removeProcessInstance(i);
+	}
+	
+	/**
+	 * 某询已办任务
+	 */
+	@Test
+	public void testPageQueryDoenTask() {
+		long  i = getJBPMApplication().startProcess("defaultPackage.Trade", "aaa", null);
+
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("approveStatus", "1");
+		
+		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
+
+		getJBPMApplication().completeTask(i, tasks.get(0).getTaskId(), "fhjl",
+				XmlParseUtil.paramsToXml(data), null);
+		PageTaskVO pages = getJBPMApplication().pageQueryDoneTask("fhjl", 1, 10);
+		Assert.assertTrue(pages.getTotalCount()>0);
 		getJBPMApplication().removeProcessInstance(i);
 	}
 
@@ -276,11 +296,11 @@ public class JBPMApplicationTest {
 	@Test
 	public void testDelegate() {
 		long i = getJBPMApplication().startProcess("defaultPackage.Trade", "aaa", null);
-		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl",null);
+		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
 		for (TaskVO task : tasks) {
 			getJBPMApplication().delegate(task.getTaskId(), "fhjl", "aaa");
 		}
-		List<TaskVO> aaaTasks = getJBPMApplication().queryTodoList("aaa",null);
+		List<TaskVO> aaaTasks = getJBPMApplication().queryTodoList("aaa");
 		Assert.assertTrue(aaaTasks.size() > 0);
 		getJBPMApplication().removeProcessInstance(i);
 
@@ -299,7 +319,7 @@ public class JBPMApplicationTest {
 				XmlParseUtil.paramsToXml(data), null);
 
 		getJBPMApplication().roolBack(i, 0, "fwzy");
-		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl",null);
+		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
 		Assert.assertTrue(tasks.size() > 0);
 		getJBPMApplication().removeProcessInstance(i);
 	}
@@ -309,12 +329,12 @@ public class JBPMApplicationTest {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("approveStatus", "1");
 		long i = getJBPMApplication().startProcess("defaultPackage.Trade", "aaa", null);
-		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl",null);
+		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
 		getJBPMApplication().completeTask(i,  tasks.get(0).getTaskId(), "fhjl",
 				XmlParseUtil.paramsToXml(data), null);
 
 		getJBPMApplication().fetchBack(i, 0l, "fhjl");
-		tasks = getJBPMApplication().queryTodoList("fhjl",null);
+		tasks = getJBPMApplication().queryTodoList("fhjl");
 		Assert.assertTrue(tasks.size() > 0);
 		getJBPMApplication().removeProcessInstance(i);
 	}
@@ -326,14 +346,14 @@ public class JBPMApplicationTest {
 	public void testRoolBack2() {
 		long i = getJBPMApplication().startProcess("defaultPackage.Trade",
 				"aaa", null);
-		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl",null);
+		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("approveStatus", "1");
 		getJBPMApplication().completeTask(i, tasks.get(0).getTaskId(), "fhjl",
 				XmlParseUtil.paramsToXml(data), null);
 
 		getJBPMApplication().roolBack(i, 0, "fwzy");
-		tasks = getJBPMApplication().queryTodoList("fhjl",null);
+		tasks = getJBPMApplication().queryTodoList("fhjl");
 		Assert.assertTrue(tasks.size() > 0);
 		getJBPMApplication().removeProcessInstance(i);
 	}

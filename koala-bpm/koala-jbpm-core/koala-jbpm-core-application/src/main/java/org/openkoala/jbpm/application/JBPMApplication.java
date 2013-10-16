@@ -5,6 +5,7 @@ import java.util.List;
 import org.openkoala.jbpm.application.vo.HistoryLogVo;
 import org.openkoala.jbpm.application.vo.JBPMNode;
 import org.openkoala.jbpm.application.vo.KoalaProcessInfoVO;
+import org.openkoala.jbpm.application.vo.PageTaskVO;
 import org.openkoala.jbpm.application.vo.ProcessInstanceVO;
 import org.openkoala.jbpm.application.vo.ProcessVO;
 import org.openkoala.jbpm.application.vo.TaskVO;
@@ -46,7 +47,19 @@ public interface JBPMApplication {
 	 * </params>
 	 * @return
 	 */
-	public List<TaskVO> queryTodoList(String user,String groups);
+	public List<TaskVO> queryTodoListWithGroup(String user,String groups);
+	
+	/**
+	 * 查询一个用户的待办任务
+	 * @param user     用户名
+	 * @param groups   用户所属的group,group可以是角色，部门，岗位或其它，由业务决定 ，以 XML格式
+	 * <params>
+	 *      <creater>lingen</creater> 
+	 *      <isOpen>true</isOpen> 
+	 * </params>
+	 * @return
+	 */
+	public List<TaskVO> queryTodoList(String user);
 
 	/**
 	 * 完成一个工作
@@ -331,5 +344,23 @@ public interface JBPMApplication {
 	 * @param userId
 	 */
 	public void fetchBack(long processInstanceId, long taskId, String userId);
+	
+	/**
+	 * 分页查询已办任务
+	 * @param user
+	 * @param firstRow
+	 * @param pageSize
+	 * @return
+	 */
+	public PageTaskVO pageQueryDoneTask(String user, int currentPage, int pageSize);
+	
+	/**
+	 * 按流程查询待办任务
+	 * @param process
+	 * @param user
+	 * @param groups
+	 * @return
+	 */
+	public List<TaskVO> processQueryTodoListWithGroup(String process,String user,String groups);
 
 }

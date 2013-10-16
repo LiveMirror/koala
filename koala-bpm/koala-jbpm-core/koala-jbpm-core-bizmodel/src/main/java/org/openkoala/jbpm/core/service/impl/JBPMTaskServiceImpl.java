@@ -257,4 +257,30 @@ public class JBPMTaskServiceImpl implements JBPMTaskService {
 				.setParameter("variableId", variableId).getResultList();
 		return result;
 	}
+
+	public List<TaskSummary> findProcessTaskSummary(List<String> processes,
+			String user) {
+		List<TaskSummary> result = jbpmEM
+				.createNamedQuery(
+						"ProcessTasksAssignedAsPotentialOwner")
+				.setParameter("userId", user)
+				.setParameter("language", "en-UK")
+				.setParameter("processes", processes)
+				.getResultList();
+
+		return result;
+	}
+
+	public List<TaskSummary> findProcessTaskSummaryByGroups(List<String> processes,
+			String user, List<String> groups) {
+		List<TaskSummary> result = jbpmEM
+				.createNamedQuery(
+						"ProcessTasksAssignedAsPotentialOwnerWithGroups")
+				.setParameter("userId", user)
+				.setParameter("language", "en-UK")
+				.setParameter("processes", processes)
+				.setParameter("groupIds", groups).getResultList();
+		
+		return result;
+	}
 }

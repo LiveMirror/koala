@@ -1,5 +1,6 @@
 package org.openkoala.jbpm.applicationImpl.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +81,7 @@ public class JbpmSupport {
 
 	private Map<String, Map<String, Object>> variables = new HashMap<String, Map<String, Object>>();// 全局以及包级别的参数
 
-	
+	private Map<String,List<String>> allProcesses = new HashMap<String,List<String>>();
 	@Autowired @Qualifier("jbpmEM")
 	EntityManager jbpmEM;
 	
@@ -321,7 +322,24 @@ public class JbpmSupport {
 			KoalaProcessInfoVO info = new KoalaProcessInfoVO();
 			BeanUtils.copyProperties(process, info);
 			addKoalaProcessInfoVO(info);
+			
+			
 		}
+	}
+	
+	private void updateProcessVersion(String processId,int versionNum){
+		List<String> allVersionProcess = null;
+		if(allProcesses.containsKey(processId)){
+			allVersionProcess = allProcesses.get(processId);
+		}else{
+			allVersionProcess = new ArrayList<String>();
+		}
+		allVersionProcess.add(processId+"@"+versionNum);
+		allProcesses.put(processId, allVersionProcess);
+	}
+	
+	public List<String> getAllVersionProcess(String processId){
+		return allProcesses.get(processId);
 	}
 
 	private void addKoalaProcessInfoVO(KoalaProcessInfoVO info)
@@ -339,6 +357,8 @@ public class JbpmSupport {
 			e.printStackTrace();
 			throw e;
 		}
+		
+		updateProcessVersion(info.getProcessId(),info.getVersionNum());
 	}
 
 	private void addProcess(byte[] data) throws Exception {
@@ -372,6 +392,7 @@ public class JbpmSupport {
 			e.printStackTrace();
 			throw e;
 		}
+		updateProcessVersion(info.getProcessName(),info.getVersionNum());
 	}
 
 }

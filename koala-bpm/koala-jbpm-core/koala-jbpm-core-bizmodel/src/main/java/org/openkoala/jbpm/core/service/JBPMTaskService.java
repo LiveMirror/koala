@@ -76,4 +76,10 @@ public interface JBPMTaskService {
 	public List<ProcessInstanceLog> findProcessInstances(String processId);
 
 	public List<ProcessInstanceLog> findProcessInstances();
+	
+	public List<TaskSummary> findProcessTaskSummary(List<String> processes,
+			String user);
+	
+	public List<TaskSummary> findProcessTaskSummaryByGroups(List<String> processes,
+			String user, List<String> groups);
 }
