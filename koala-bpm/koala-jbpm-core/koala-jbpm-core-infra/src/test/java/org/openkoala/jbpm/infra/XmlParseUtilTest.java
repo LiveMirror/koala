@@ -1,5 +1,8 @@
 package org.openkoala.jbpm.infra;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +38,22 @@ public class XmlParseUtilTest {
 		String resultXml="<params><count type=\"int\">2</count><creater>lingen</creater><isOpen type=\"boolean\">true</isOpen></params>";
 		Map<String,Object> params = XmlParseUtil.xmlToPrams(resultXml);
 		Assert.isTrue(params.get("count") instanceof Integer);
+	}
+	
+	@Test
+	public void testXmlToPramsWithElementFilter() {
+		String content = "<params><name>zyb</name><_age>24</_age><id>1001</id><_nickname>yy</_nickname></params>";
+		Map<String, Object> result = XmlParseUtil.xmlToPrams(content, new ElementFilter() {
+			
+			@Override
+			public String getElementName() {
+				return "^_\\w+";
+			}
+		});
+		assertNull(result.get("name"));
+		assertNull(result.get("id"));
+		assertEquals("24", result.get("_age"));
+		assertEquals("yy", result.get("_nickname"));
 	}
 
 }
