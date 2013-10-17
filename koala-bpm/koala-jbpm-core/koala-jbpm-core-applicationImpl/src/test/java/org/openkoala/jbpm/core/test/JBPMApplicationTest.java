@@ -19,6 +19,7 @@ import org.openkoala.jbpm.application.vo.KoalaProcessInfoVO;
 import org.openkoala.jbpm.application.vo.PageTaskVO;
 import org.openkoala.jbpm.application.vo.ProcessInstanceVO;
 import org.openkoala.jbpm.application.vo.ProcessVO;
+import org.openkoala.jbpm.application.vo.TaskChoice;
 import org.openkoala.jbpm.application.vo.TaskVO;
 import org.openkoala.jbpm.infra.XmlParseUtil;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
@@ -117,6 +118,15 @@ public class JBPMApplicationTest {
 		getJBPMApplication().removeProcessInstance(i);
 
 	}
+	
+	@Test
+	public void testQueryTaskChoice(){
+		long i = getJBPMApplication().startProcess("defaultPackage.Trade", "aaa", null);
+		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
+		List<TaskChoice> choices = getJBPMApplication().queryTaskChoice(i, tasks.get(0).getTaskId());
+		Assert.assertNotNull(choices);
+	}
+	
 
 	/**
 	 * 完成某一个任务

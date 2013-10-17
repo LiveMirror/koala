@@ -8,6 +8,7 @@ import org.openkoala.jbpm.application.vo.KoalaProcessInfoVO;
 import org.openkoala.jbpm.application.vo.PageTaskVO;
 import org.openkoala.jbpm.application.vo.ProcessInstanceVO;
 import org.openkoala.jbpm.application.vo.ProcessVO;
+import org.openkoala.jbpm.application.vo.TaskChoice;
 import org.openkoala.jbpm.application.vo.TaskVO;
 
 import com.dayatang.querychannel.support.Page;
@@ -362,5 +363,13 @@ public interface JBPMApplication {
 	 * @return
 	 */
 	public List<TaskVO> processQueryTodoListWithGroup(String process,String user,String groups);
+	
+	/**
+	 * 查询一个流程任务的选择策略
+	 * @param processInstanceId
+	 * @param taskId
+	 * @return
+	 */
+	public List<TaskChoice> queryTaskChoice(long processInstanceId,long taskId);
 
 }

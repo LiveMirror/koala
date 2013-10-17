@@ -41,6 +41,7 @@ import org.openkoala.jbpm.application.vo.MessageLogVO;
 import org.openkoala.jbpm.application.vo.PageTaskVO;
 import org.openkoala.jbpm.application.vo.ProcessInstanceVO;
 import org.openkoala.jbpm.application.vo.ProcessVO;
+import org.openkoala.jbpm.application.vo.TaskChoice;
 import org.openkoala.jbpm.application.vo.TaskVO;
 import org.openkoala.jbpm.applicationImpl.util.JbpmSupport;
 import org.openkoala.jbpm.core.HistoryLog;
@@ -60,6 +61,7 @@ import org.jbpm.ruleflow.core.RuleFlowProcess;
 import org.jbpm.ruleflow.instance.RuleFlowProcessInstance;
 import org.jbpm.task.AccessType;
 import org.jbpm.task.Content;
+import org.jbpm.task.I18NText;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
@@ -127,9 +129,9 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 	/**
 	 */
-	public byte[] getPorcessImageStream(long instanceId) {
+	public byte[] getPorcessImageStream(long processInstanceId) {
 		RuleFlowProcessInstance in = (RuleFlowProcessInstance) getJbpmSupport()
-				.getProcessInstance(instanceId);
+				.getProcessInstance(processInstanceId);
 		List<Integer> nodes = new ArrayList<Integer>();
 		String processId = null;
 		if (in != null) {
@@ -142,7 +144,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			}
 		} else {
 			ProcessInstanceLog log = jbpmTaskService
-					.findProcessInstance(instanceId);
+					.findProcessInstance(processInstanceId);
 			processId = log.getProcessId();
 		}
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -152,174 +154,239 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		return ImageUtil.getProcessPictureByte(processId, processInfo.getPng(),
 				nodes);
 	}
-	
+
 	/**
-	 * 查询待办任务
-	 * @param user  用户
-	 * @param groups  用户所属的组
-	 * 组格式
-	 * <groups>
-	 *   <value>abc</value>
-	 *   <value>bcd</value>
-	 * </groups>
+	 * 返回流程当前节点的决择策略，比如同意，不同意等
+	 * 
+	 * @param processInstanceId
+	 * @param taskId
 	 * @return
 	 */
-	public List<TaskVO> queryTodoListWithGroup(String user,String groups){
+	public List<TaskChoice> queryTaskChoice(long processInstanceId, long taskId) {
+
+		Task task = getJbpmSupport().getTask(taskId);
+		String taskName = task.getNames().get(0).getText();
+		
+		long contentId = task
+				.getTaskData().getDocumentContentId();
+		Map<String, Object> map = this.getContentId(contentId);
+		
+		List<TaskChoice> choiceList = new ArrayList<TaskChoice>();
+		
+		/*
+		 * KJ_CHOICE_KEY 关键决择KEY   CHOICE
+		 * KJ_CHOICE_TYPE KEY类型     String      
+		 * KJ_CHOICE_VALUE 值映射     同意->1;不同意->2;
+		 * */
+		if(!map.containsKey("KJ_CHOICE_KEY")){
+			return null;
+		}
+		
+		RuleFlowProcessInstance in = (RuleFlowProcessInstance) getJbpmSupport()
+				.getProcessInstance(processInstanceId);
+		
+
+		Collection<org.drools.runtime.process.NodeInstance> actives = in
+				.getNodeInstances();
+
+		HumanTaskNodeInstance activeNode = null;
+		for (NodeInstance active : actives) {
+			if (active instanceof HumanTaskNodeInstance) {
+				HumanTaskNodeInstance node = (HumanTaskNodeInstance) active;
+				String nodeName = (String) ((HumanTaskNodeInstance) active)
+						.getHumanTaskNode().getWork().getParameter("TaskName");
+				if (taskName.equals(nodeName)) {
+					activeNode = node;
+				}
+			}
+		}
+		
+		String key = (String)map.get("KJ_CHOICE_KEY");
+		String type = (String)map.get("KJ_CHOICE_TYPE");
+		String choiceValue = (String)map.get("KJ_CHOICE_VALUE");
+		String[] values = choiceValue.split(";");
+		for(String value:values){
+			String[] choices = value.split("->");
+			String name = choices[0];
+			String keyValue = choices[1];
+			TaskChoice choice = new TaskChoice(key,type,name,keyValue);
+			choiceList.add(choice);
+		}
+		
+		return choiceList;
+	}
+
+	/**
+	 * 查询待办任务
+	 * 
+	 * @param user
+	 *            用户
+	 * @param groups
+	 *            用户所属的组 组格式 <groups> <value>abc</value> <value>bcd</value>
+	 *            </groups>
+	 * @return
+	 */
+	public List<TaskVO> queryTodoListWithGroup(String user, String groups) {
 		List<TaskVO> todos = new ArrayList<TaskVO>();
-		 todos.addAll(this.queryTodoListCall(user, groups,null));
-		 todos.addAll(this.queryDelegateTodoList(user,null));
+		todos.addAll(this.queryTodoListCall(user, groups, null));
+		todos.addAll(this.queryDelegateTodoList(user, null));
 		return todos;
 	}
-	
+
 	/**
 	 * 
 	 * 根据流程查询待办任务
-	 * @param user  用户
-	 * @param groups  用户所属的组
-	 * 组格式
-	 * <groups>
-	 *   <value>abc</value>
-	 *   <value>bcd</value>
-	 * </groups>
+	 * 
+	 * @param user
+	 *            用户
+	 * @param groups
+	 *            用户所属的组 组格式 <groups> <value>abc</value> <value>bcd</value>
+	 *            </groups>
 	 * @return
 	 */
-	public List<TaskVO> processQueryTodoListWithGroup(String process,String user,String groups){
-		
+	public List<TaskVO> processQueryTodoListWithGroup(String process,
+			String user, String groups) {
+
 		List<TaskVO> todos = new ArrayList<TaskVO>();
-		 todos.addAll(this.queryTodoListCall(user, groups,process));
-		 todos.addAll(this.queryDelegateTodoList(user,process));
+		todos.addAll(this.queryTodoListCall(user, groups, process));
+		todos.addAll(this.queryDelegateTodoList(user, process));
 		return todos;
 	}
-	
-	
+
 	/**
 	 * 查询待办任务
-	 * @param user  用户
-	 * @param groups  用户所属的组
-	 * 组格式
-	 * <groups>
-	 *   <value>abc</value>
-	 *   <value>bcd</value>
-	 * </groups>
+	 * 
+	 * @param user
+	 *            用户
+	 * @param groups
+	 *            用户所属的组 组格式 <groups> <value>abc</value> <value>bcd</value>
+	 *            </groups>
 	 * @return
 	 */
-	public List<TaskVO> queryTodoList(String user){
+	public List<TaskVO> queryTodoList(String user) {
 		List<TaskVO> todos = new ArrayList<TaskVO>();
-		 todos.addAll(this.queryTodoListCall(user, null,null));
-		 todos.addAll(this.queryDelegateTodoList(user,null));
+		todos.addAll(this.queryTodoListCall(user, null, null));
+		todos.addAll(this.queryDelegateTodoList(user, null));
 		return todos;
 	}
-	
-	
-	
+
 	/**
 	 * 获取一个用户的委托待办任务
+	 * 
 	 * @param user
 	 * @return
 	 */
-	public List<TaskVO> queryDelegateTodoList(String user,String process){
+	public List<TaskVO> queryDelegateTodoList(String user, String process) {
 		List<TaskSummary> tasks = null;
 		List<TaskVO> todos = new ArrayList<TaskVO>();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		// 以下是查询委托待办
-				List<KoalaAssignInfo> koalaAssignInfoList = jbpmTaskService
-						.queryKoalaAssignInfo(user, new Date());
-				if (koalaAssignInfoList != null && !koalaAssignInfoList.isEmpty()) {
-					Set<String> agetnUserList = new HashSet<String>();
-					// 委托待办任务
-					List<TaskSummary> agentTasks = new ArrayList<TaskSummary>();
-					for (KoalaAssignInfo koalaAssignInfo : koalaAssignInfoList) {
-						agetnUserList.add(koalaAssignInfo.getAssigner());
-						// 如果koalaAssignInfo中指定的流程为空，则表明所有流程都委托，否指定某个流程进行待办
-						if (koalaAssignInfo.getJbpmNames() == null
-								|| koalaAssignInfo.getJbpmNames().size() == 0) {
-							tasks = getJbpmSupport().findTaskSummary(user);
-							agentTasks.addAll(tasks);
-						} else {
-							// 如果指定了迁移的流程，则只委托指定的流程
-							List<TaskSummary> assignTasks = null;
-							assignTasks = getJbpmSupport().findTaskSummary(user);
-							List<String> allowProcess = new ArrayList<String>();
-							for (KoalaAssignDetail detail : koalaAssignInfo
-									.getJbpmNames()) {
-								allowProcess.add(detail.getProcessId());
-							}
-							for (TaskSummary task : assignTasks) {
-								String processId = task.getProcessId();
-								if (processId.contains("@"))
-									processId = processId.substring(0,
-											processId.indexOf("@"));
-								if (allowProcess.contains(processId)) {
-									agentTasks.add(task);
-								}
-						}
+		List<KoalaAssignInfo> koalaAssignInfoList = jbpmTaskService
+				.queryKoalaAssignInfo(user, new Date());
+		if (koalaAssignInfoList != null && !koalaAssignInfoList.isEmpty()) {
+			Set<String> agetnUserList = new HashSet<String>();
+			// 委托待办任务
+			List<TaskSummary> agentTasks = new ArrayList<TaskSummary>();
+			for (KoalaAssignInfo koalaAssignInfo : koalaAssignInfoList) {
+				agetnUserList.add(koalaAssignInfo.getAssigner());
+				// 如果koalaAssignInfo中指定的流程为空，则表明所有流程都委托，否指定某个流程进行待办
+				if (koalaAssignInfo.getJbpmNames() == null
+						|| koalaAssignInfo.getJbpmNames().size() == 0) {
+					tasks = getJbpmSupport().findTaskSummary(user);
+					agentTasks.addAll(tasks);
+				} else {
+					// 如果指定了迁移的流程，则只委托指定的流程
+					List<TaskSummary> assignTasks = null;
+					assignTasks = getJbpmSupport().findTaskSummary(user);
+					List<String> allowProcess = new ArrayList<String>();
+					for (KoalaAssignDetail detail : koalaAssignInfo
+							.getJbpmNames()) {
+						allowProcess.add(detail.getProcessId());
 					}
-
-					for (TaskSummary task : agentTasks) {
-						long processId = task.getProcessInstanceId();
-						RuleFlowProcessInstance in = null;
-						try {
-							ProcessInstance instance = getJbpmSupport()
-									.getProcessInstance(processId);
-							if (instance == null)
-								continue;
-							in = (RuleFlowProcessInstance) instance;
-							// WorkItem workItem = ((WorkItemManager)
-							// in.getKnowledgeRuntime().getWorkItemManager()).getWorkItem(contentId);
-							// Object obj = in.getNodeInstances(workItem.getId());
-							// System.out.println(workItem.getParameters());
-						} catch (Exception e) {
-							continue;
+					for (TaskSummary task : assignTasks) {
+						String processId = task.getProcessId();
+						if (processId.contains("@"))
+							processId = processId.substring(0,
+									processId.indexOf("@"));
+						if (allowProcess.contains(processId)) {
+							agentTasks.add(task);
 						}
-						ProcessInstanceLog log = jbpmTaskService
-								.findProcessInstance(processId);
-						TaskVO todo = new TaskVO();
-						Map<String, Object> processParams = in.getVariables();
-						String processData = XmlParseUtil.paramsToXml(processParams);
-						todo.setActualOwner(task.getActualOwner().getId());
-						todo.setActualName(task.getName());
-						todo.setProcessInstanceId(processId);
-						todo.setProcessId(in.getProcessId());
-						try {
-							todo.setProcessName(in.getProcessName());
-						} catch (Exception e) {
-							todo.setProcessName(in.getProcessId());
-						}
-						todo.setTaskId(task.getId());
-						todo.setProcessData(processData);
-						todo.setCreateDate(df.format(log.getStart()));
-						todo.setAgents("是");
-						// todo.setCreater((String)in.getVariable("_process_creater"));
-						todos.add(todo);
 					}
 				}
+
+				for (TaskSummary task : agentTasks) {
+					long processId = task.getProcessInstanceId();
+					RuleFlowProcessInstance in = null;
+					try {
+						ProcessInstance instance = getJbpmSupport()
+								.getProcessInstance(processId);
+						if (instance == null)
+							continue;
+						in = (RuleFlowProcessInstance) instance;
+						// WorkItem workItem = ((WorkItemManager)
+						// in.getKnowledgeRuntime().getWorkItemManager()).getWorkItem(contentId);
+						// Object obj = in.getNodeInstances(workItem.getId());
+						// System.out.println(workItem.getParameters());
+					} catch (Exception e) {
+						continue;
+					}
+					ProcessInstanceLog log = jbpmTaskService
+							.findProcessInstance(processId);
+					TaskVO todo = new TaskVO();
+					Map<String, Object> processParams = in.getVariables();
+					String processData = XmlParseUtil
+							.paramsToXml(processParams);
+					todo.setActualOwner(task.getActualOwner().getId());
+					todo.setActualName(task.getName());
+
+					todo.setProcessInstanceId(processId);
+					todo.setProcessId(in.getProcessId());
+					try {
+						todo.setProcessName(in.getProcessName());
+					} catch (Exception e) {
+						todo.setProcessName(in.getProcessId());
+					}
+					todo.setTaskId(task.getId());
+					todo.setProcessData(processData);
+					todo.setCreateDate(df.format(log.getStart()));
+					todo.setAgents("是");
+					// todo.setCreater((String)in.getVariable("_process_creater"));
+					todos.add(todo);
+				}
+			}
 		}
-			return todos;
+		return todos;
 	}
 
 	/**
 	 * 查询待办任务
 	 */
-	public List<TaskVO> queryTodoListCall(String user,String groups,String processId) {
+	public List<TaskVO> queryTodoListCall(String user, String groups,
+			String processId) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		List<TaskVO> todos = new ArrayList<TaskVO>();
 
 		List<TaskSummary> tasks = null;
 		List<String> userGroups = XmlParseUtil.parseListXml(groups);
-		if(processId!=null){
-			if (userGroups.size()>0) {
-				tasks = jbpmTaskService.findProcessTaskSummaryByGroups(getJbpmSupport().getAllVersionProcess(processId),user, userGroups);
+		if (processId != null) {
+			if (userGroups.size() > 0) {
+				tasks = jbpmTaskService.findProcessTaskSummaryByGroups(
+						getJbpmSupport().getAllVersionProcess(processId), user,
+						userGroups);
 			} else {
-				tasks = jbpmTaskService.findProcessTaskSummary(getJbpmSupport().getAllVersionProcess(processId),user);
+				tasks = jbpmTaskService.findProcessTaskSummary(getJbpmSupport()
+						.getAllVersionProcess(processId), user);
 			}
-		}else{
-			if (userGroups.size()>0) {
-				tasks = getJbpmSupport().findTaskSummaryByGroup(user, userGroups);
+		} else {
+			if (userGroups.size() > 0) {
+				tasks = getJbpmSupport().findTaskSummaryByGroup(user,
+						userGroups);
+
 			} else {
 				tasks = getJbpmSupport().findTaskSummary(user);
 			}
 		}
-		
+
 		for (TaskSummary task : tasks) {
 			long processInstanceId = task.getProcessInstanceId();
 			RuleFlowProcessInstance in = null;
@@ -354,28 +421,32 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		}
 		return todos;
 	}
-	
+
 	/**
 	 * 分页查询已办任务
+	 * 
 	 * @param user
 	 * @param firstRow
 	 * @param pageSize
 	 * @return
 	 */
-	public PageTaskVO pageQueryDoneTask(String process,String user, int currentPage, int pageSize) {
+	public PageTaskVO pageQueryDoneTask(String process, String user,
+			int currentPage, int pageSize) {
 		/**
-		 * 	Page<ProcessInstanceVO> logs = this.queryChannel.queryPagedResult(hql,
-				new Object[] { processId }, firstRow, pageSize);
+		 * Page<ProcessInstanceVO> logs =
+		 * this.queryChannel.queryPagedResult(hql, new Object[] { processId },
+		 * firstRow, pageSize);
 		 */
-		String jpql = "select log from HistoryLog log where log.user = ? and log.processId = ?"; 
+		String jpql = "select log from HistoryLog log where log.user = ? and log.processId = ?";
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Page<HistoryLog> pageResults = this.queryChannel.queryPagedResultByPageNo(jpql,
-				new Object[] { user,process }, currentPage, pageSize);
+		Page<HistoryLog> pageResults = this.queryChannel
+				.queryPagedResultByPageNo(jpql, new Object[] { user, process },
+						currentPage, pageSize);
 		List<HistoryLog> logs = pageResults.getResult();
-		
+
 		List<Long> ids = new ArrayList<Long>();
 		List<TaskVO> dones = new ArrayList<TaskVO>();
-		
+
 		for (HistoryLog log : logs) {
 			if (ids.contains(log.getProcessInstanceId()))
 				continue;
@@ -399,9 +470,10 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			}
 			dones.add(todo);
 		}
-		
-		return new PageTaskVO(Page.getStartOfPage(currentPage, pageSize), pageResults.getTotalCount(), pageResults.getPageSize(), dones);
-		
+
+		return new PageTaskVO(Page.getStartOfPage(currentPage, pageSize),
+				pageResults.getTotalCount(), pageResults.getPageSize(), dones);
+
 	}
 
 	/**
@@ -568,63 +640,51 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			// 判断是否是会签流程
 			long contentId = getJbpmSupport().getTask(task.getId())
 					.getTaskData().getDocumentContentId();
-			Content content = jbpmTaskService.getContent(contentId);
-			byte[] conByte = content.getContent();
-			ByteArrayInputStream bis = new ByteArrayInputStream(conByte);
-			try {
-				ObjectInputStream ois = new ObjectInputStream(bis);
-				Object obj = ois.readObject();
-				Map<String, Object> map = (Map<String, Object>) obj;
-				if (map.containsKey("KJ_ASSIGN")) {
-					if (in.getVariables().containsKey("KJ_ASSIGN_VAL" + taskId)) {
-						joginAssign = (JoinAssignVO) in
-								.getVariable("KJ_ASSIGN_VAL" + taskId);
-					} else {
-						String name = (String) map.get("KJ_ASSIGN");
-						joginAssign = joinAssignApplication
-								.getJoinAssignByName(name);
-						in.setVariable("KJ_ASSIGN_VAL" + taskId, joginAssign);
-					}
-
-					if (joginAssign.getAllCount() == 0) {
-						joginAssign.setAllCount(task.getPeopleAssignments()
-								.getPotentialOwners().size());
-					}
-					// 获取当前用户的决择
-					String choice = String.valueOf(in.getVariable(joginAssign
-							.getKeyChoice()));
-					joginAssign.addChoice(choice);
-					HistoryLog log = new HistoryLog();
-					log.setComment(user + ":的选择的是:" + choice);
-					log.setCreateDate(new Date());
-					log.setNodeName("会签:");
-					log.setResult("节点会签");
-					log.setUser(user);
-					log.setProcessInstanceId(task.getTaskData()
-							.getProcessInstanceId());
-					log.setProcessId(in.getProcessId());
-					log.save();
-					// 如果会签成功，流转会签
-					String success = joginAssign.queryIsSuccess();
-					System.out.println();
-					if (success != null) {
-						in.setVariable(joginAssign.getKeyChoice(), success);
-						task.getTaskData().setStatus(Status.Reserved);
-						completeTask(task, contentData);
-					}
-					// 如果任务仍然存在，但所有人已经完成投票了，则此次会签失败
-					if (joginAssign.queryIsFinished()) {
-						// 会签失败，将关键值置为0，完成此任务
-						in.setVariable(joginAssign.getKeyChoice(), "FAIL");
-						task.getTaskData().setStatus(Status.Reserved);
-						completeTask(task, contentData);
-					}
-					this.jbpmTaskService.removeTaskUser(taskId, user);
+			Map<String, Object> map = this.getContentId(contentId);
+			if (map.containsKey("KJ_ASSIGN")) {
+				if (in.getVariables().containsKey("KJ_ASSIGN_VAL" + taskId)) {
+					joginAssign = (JoinAssignVO) in.getVariable("KJ_ASSIGN_VAL"
+							+ taskId);
+				} else {
+					String name = (String) map.get("KJ_ASSIGN");
+					joginAssign = joinAssignApplication
+							.getJoinAssignByName(name);
+					in.setVariable("KJ_ASSIGN_VAL" + taskId, joginAssign);
 				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+
+				if (joginAssign.getAllCount() == 0) {
+					joginAssign.setAllCount(task.getPeopleAssignments()
+							.getPotentialOwners().size());
+				}
+				// 获取当前用户的决择
+				String choice = String.valueOf(in.getVariable(joginAssign
+						.getKeyChoice()));
+				joginAssign.addChoice(choice);
+				HistoryLog log = new HistoryLog();
+				log.setComment(user + ":的选择的是:" + choice);
+				log.setCreateDate(new Date());
+				log.setNodeName("会签:");
+				log.setResult("节点会签");
+				log.setUser(user);
+				log.setProcessInstanceId(task.getTaskData()
+						.getProcessInstanceId());
+				log.setProcessId(in.getProcessId());
+				log.save();
+				// 如果会签成功，流转会签
+				String success = joginAssign.queryIsSuccess();
+				if (success != null) {
+					in.setVariable(joginAssign.getKeyChoice(), success);
+					task.getTaskData().setStatus(Status.Reserved);
+					completeTask(task, contentData);
+				}
+				// 如果任务仍然存在，但所有人已经完成投票了，则此次会签失败
+				if (joginAssign.queryIsFinished()) {
+					// 会签失败，将关键值置为0，完成此任务
+					in.setVariable(joginAssign.getKeyChoice(), "FAIL");
+					task.getTaskData().setStatus(Status.Reserved);
+					completeTask(task, contentData);
+				}
+				this.jbpmTaskService.removeTaskUser(taskId, user);
 			}
 
 			if (joginAssign == null) {
@@ -824,12 +884,13 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	public void roolBack(long processInstanceId, long taskId, String userId) {
 		try {
 			this.getJbpmSupport().startTransaction();
-//			RuleFlowProcessInstance in = (RuleFlowProcessInstance) getJbpmSupport()
-//					.getProcessInstance(processInstanceId);
-//			List<String> actives = in.getActiveNodeIds();
-//			if (actives.size() > 1) {
-//				throw new RuntimeException("多个任务情况下不支持回退");
-//			}
+			// RuleFlowProcessInstance in = (RuleFlowProcessInstance)
+			// getJbpmSupport()
+			// .getProcessInstance(processInstanceId);
+			// List<String> actives = in.getActiveNodeIds();
+			// if (actives.size() > 1) {
+			// throw new RuntimeException("多个任务情况下不支持回退");
+			// }
 			HistoryLog historyLog = HistoryLog
 					.queryLastActivedNodeId(processInstanceId);
 			if (historyLog == null || historyLog.getNodeId() == 0) {
@@ -1370,5 +1431,24 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		Page<ProcessInstanceVO> logs = this.queryChannel.queryPagedResult(hql,
 				new Object[] { processId }, firstRow, pageSize);
 		return logs;
+	}
+
+	private Map<String, Object> getContentId(long contentId) {
+		Content content = jbpmTaskService.getContent(contentId);
+		byte[] conByte = content.getContent();
+		ByteArrayInputStream bis = new ByteArrayInputStream(conByte);
+		ObjectInputStream ois;
+		Map<String, Object> map = null;
+		try {
+			ois = new ObjectInputStream(bis);
+			Object obj = ois.readObject();
+			map = (Map<String, Object>) obj;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return map;
+
 	}
 }
