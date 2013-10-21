@@ -19,6 +19,8 @@ public class TaskChoice implements Serializable {
 	
 	/**
 	 * 值的类型
+	 * Int
+	 * Boolean
 	 */
 	private String valueType;
 	

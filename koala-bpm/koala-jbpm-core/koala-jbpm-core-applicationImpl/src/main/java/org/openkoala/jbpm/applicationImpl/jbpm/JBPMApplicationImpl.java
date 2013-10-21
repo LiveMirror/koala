@@ -166,25 +166,22 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 		Task task = getJbpmSupport().getTask(taskId);
 		String taskName = task.getNames().get(0).getText();
-		
-		long contentId = task
-				.getTaskData().getDocumentContentId();
+
+		long contentId = task.getTaskData().getDocumentContentId();
 		Map<String, Object> map = this.getContentId(contentId);
-		
+
 		List<TaskChoice> choiceList = new ArrayList<TaskChoice>();
-		
+
 		/*
-		 * KJ_CHOICE_KEY 关键决择KEY   CHOICE
-		 * KJ_CHOICE_TYPE KEY类型     String      
-		 * KJ_CHOICE_VALUE 值映射     同意->1;不同意->2;
-		 * */
-		if(!map.containsKey("KJ_CHOICE_KEY")){
+		 * KJ_CHOICE_KEY 关键决择KEY CHOICE KJ_CHOICE_TYPE KEY类型 String
+		 * KJ_CHOICE_VALUE 值映射 同意->1;不同意->2;
+		 */
+		if (!map.containsKey("KJ_CHOICE_KEY")) {
 			return null;
 		}
-		
+
 		RuleFlowProcessInstance in = (RuleFlowProcessInstance) getJbpmSupport()
 				.getProcessInstance(processInstanceId);
-		
 
 		Collection<org.drools.runtime.process.NodeInstance> actives = in
 				.getNodeInstances();
@@ -200,19 +197,19 @@ public class JBPMApplicationImpl implements JBPMApplication {
 				}
 			}
 		}
-		
-		String key = (String)map.get("KJ_CHOICE_KEY");
-		String type = (String)map.get("KJ_CHOICE_TYPE");
-		String choiceValue = (String)map.get("KJ_CHOICE_VALUE");
+
+		String key = (String) map.get("KJ_CHOICE_KEY");
+		String type = (String) map.get("KJ_CHOICE_TYPE");
+		String choiceValue = (String) map.get("KJ_CHOICE_VALUE");
 		String[] values = choiceValue.split(";");
-		for(String value:values){
+		for (String value : values) {
 			String[] choices = value.split("->");
 			String name = choices[0];
 			String keyValue = choices[1];
-			TaskChoice choice = new TaskChoice(key,type,name,keyValue);
+			TaskChoice choice = new TaskChoice(key, type, name, keyValue);
 			choiceList.add(choice);
 		}
-		
+
 		return choiceList;
 	}
 
@@ -227,10 +224,22 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	 * @return
 	 */
 	public List<TaskVO> queryTodoListWithGroup(String user, String groups) {
-		List<TaskVO> todos = new ArrayList<TaskVO>();
-		todos.addAll(this.queryTodoListCall(user, groups, null));
-		todos.addAll(this.queryDelegateTodoList(user, null));
-		return todos;
+		try {
+			this.getJbpmSupport().startTransaction();
+			List<TaskVO> todos = new ArrayList<TaskVO>();
+			todos.addAll(this.queryTodoListCall(user, groups, null));
+			todos.addAll(this.queryDelegateTodoList(user, null));
+			return todos;
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			this.getJbpmSupport().rollbackTransaction();
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.getJbpmSupport().rollbackTransaction();
+			throw new RuntimeException(e.getCause());
+		}
+
 	}
 
 	/**
@@ -246,7 +255,6 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	 */
 	public List<TaskVO> processQueryTodoListWithGroup(String process,
 			String user, String groups) {
-
 		List<TaskVO> todos = new ArrayList<TaskVO>();
 		todos.addAll(this.queryTodoListCall(user, groups, process));
 		todos.addAll(this.queryDelegateTodoList(user, process));
@@ -787,7 +795,10 @@ public class JBPMApplicationImpl implements JBPMApplication {
 				isSame = false;
 			}
 		}
-		System.out.println(in.getVariables());
+		
+//		if (isSame)
+//			return;
+		
 		in.setVariable("REMOVE", true);
 		for (org.drools.runtime.process.NodeInstance nodeInstance : instances) {
 			org.jbpm.workflow.instance.NodeInstance removeNode = in
@@ -799,15 +810,15 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			}
 		}
 		jbpmTaskService.exitedTask(processInstanceId);
-		human.internalTrigger(null, "");
+		human.internalTrigger(null, "DROOLS_DEFAULT");
+		
 		jbpmTaskService.removeWorkItemInfo(processInstanceId);
-		if (isSame)
-			return;
+
 		HistoryLog log = new HistoryLog();
 		log.setComment("转移到节点:" + human.getNodeName());
 		log.setCreateDate(new Date());
 		log.setNodeName("人工转移");
-		log.setResult("当前流程任务被管理员变更");
+		log.setResult("流程被变更");
 		log.setUser("Admin");
 		log.setProcessInstanceId(processInstanceId);
 		log.setProcessId(in.getProcessId());
@@ -861,7 +872,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			HistoryLog historyLog = HistoryLog
 					.queryLastActivedNodeId(processInstanceId);
 			assignToNodeCall(processInstanceId, historyLog.getNodeId());
-
+			
 			this.getJbpmSupport().commitTransaction();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
@@ -1449,6 +1460,5 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			e.printStackTrace();
 		}
 		return map;
-
 	}
 }

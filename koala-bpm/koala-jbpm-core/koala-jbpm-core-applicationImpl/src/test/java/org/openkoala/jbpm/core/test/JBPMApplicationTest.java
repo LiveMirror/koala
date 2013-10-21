@@ -99,7 +99,7 @@ public class JBPMApplicationTest {
 	 */
 	@Test
 	public void testStartProcesses() {
-
+		
 		long i = getJBPMApplication().startProcess("defaultPackage.Trade",
 				"aaa", null);
 		Assert.assertTrue(i == 1);
@@ -116,7 +116,6 @@ public class JBPMApplicationTest {
 		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
 		Assert.assertTrue(tasks.size() > 0);
 		getJBPMApplication().removeProcessInstance(i);
-
 	}
 	
 	@Test
