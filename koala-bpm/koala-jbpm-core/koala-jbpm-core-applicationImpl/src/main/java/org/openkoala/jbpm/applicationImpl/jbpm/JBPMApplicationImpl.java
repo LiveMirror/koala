@@ -36,6 +36,7 @@ import org.openkoala.jbpm.application.core.JoinAssignApplication;
 import org.openkoala.jbpm.application.vo.HistoryLogVo;
 import org.openkoala.jbpm.application.vo.JBPMNode;
 import org.openkoala.jbpm.application.vo.JoinAssignVO;
+import org.openkoala.jbpm.application.vo.KoalaBPMVariable;
 import org.openkoala.jbpm.application.vo.KoalaProcessInfoVO;
 import org.openkoala.jbpm.application.vo.MessageLogVO;
 import org.openkoala.jbpm.application.vo.PageTaskVO;
@@ -68,6 +69,7 @@ import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.ContentData;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 import org.jbpm.workflow.core.node.WorkItemNode;
+import org.jbpm.workflow.instance.node.EventBasedNodeInstanceInterface;
 import org.jbpm.workflow.instance.node.HumanTaskNodeInstance;
 import org.mvel2.MVEL;
 import org.slf4j.Logger;
@@ -110,7 +112,9 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	@Inject
 	private JBPMTaskService jbpmTaskService;
 
+	
 	private JbpmSupport jbpmSupport;
+	
 
 	public JbpmSupport getJbpmSupport() {
 		if (jbpmSupport == null) {
@@ -349,17 +353,17 @@ public class JBPMApplicationImpl implements JBPMApplication {
 					todo.setActualName(task.getName());
 
 					todo.setProcessInstanceId(processId);
-					todo.setProcessId(in.getProcessId());
+					todo.setProcessId(getNoVersionProcessId(in.getProcessId()));
 					try {
 						todo.setProcessName(in.getProcessName());
 					} catch (Exception e) {
-						todo.setProcessName(in.getProcessId());
+						todo.setProcessName(getNoVersionProcessId(in.getProcessId()));
 					}
 					todo.setTaskId(task.getId());
 					todo.setProcessData(processData);
 					todo.setCreateDate(df.format(log.getStart()));
 					todo.setAgents("是");
-					// todo.setCreater((String)in.getVariable("_process_creater"));
+					todo.setCreater((String)in.getVariable(KoalaBPMVariable.CREATE_USER));
 					todos.add(todo);
 				}
 			}
@@ -416,16 +420,17 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			todo.setActualOwner(task.getActualOwner().getId());
 			todo.setActualName(task.getName());
 			todo.setProcessInstanceId(processInstanceId);
-			todo.setProcessId(in.getProcessId());
+			
+			todo.setProcessId(getNoVersionProcessId(in.getProcessId()));
 			try {
 				todo.setProcessName(in.getProcessName());
 			} catch (Exception e) {
-				todo.setProcessName(in.getProcessId());
+				todo.setProcessName(getNoVersionProcessId(in.getProcessId()));
 			}
 			todo.setTaskId(task.getId());
 			todo.setProcessData(processData);
 			todo.setCreateDate(df.format(log.getStart()));
-			// todo.setCreater((String)in.getVariable("_process_creater"));
+			todo.setCreater((String)in.getVariable(KoalaBPMVariable.CREATE_USER));
 			todos.add(todo);
 		}
 		return todos;
@@ -531,7 +536,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			Map<String, Object> params = new HashMap<String, Object>();
 			Map<String, Object> globalMap = getJbpmSupport()
 					.getGlobalVariable();
-			globalMap.put("KJ_USER", creater);
+			globalMap.put(KoalaBPMVariable.CREATE_USER, creater);
 			Set<String> keys = globalMap.keySet();
 			for (String key : keys) {
 				params.put(key, globalMap.get(key));
@@ -613,7 +618,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			this.getJbpmSupport().startTransaction();
 			// 更新流程级的参数
 			Map<String, Object> proceeParams = XmlParseUtil.xmlToPrams(params);
-			proceeParams.put("KJ_USER", user);
+			proceeParams.put(KoalaBPMVariable.NODE_USER, user);
 			RuleFlowProcessInstance in = (RuleFlowProcessInstance) getJbpmSupport()
 					.getProcessInstance(processInstanceId);
 			Set<String> keys = proceeParams.keySet();
@@ -800,7 +805,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 //		if (isSame)
 //			return;
 		
-		in.setVariable("REMOVE", true);
+		in.setVariable(KoalaBPMVariable.INGORE_LOG, true);
 		for (org.drools.runtime.process.NodeInstance nodeInstance : instances) {
 			org.jbpm.workflow.instance.NodeInstance removeNode = in
 					.getNodeInstance(nodeInstance.getId());
@@ -810,11 +815,17 @@ public class JBPMApplicationImpl implements JBPMApplication {
 						(HumanTaskNodeInstance) removeNode, false);
 			}
 		}
+		jbpmTaskService.removeWorkItemInfo(processInstanceId);
+		
 		jbpmTaskService.exitedTask(processInstanceId);
-		((WorkItemNode) human.getNode()).setWaitForCompletion(false);
 		human.internalTrigger(null, "DROOLS_DEFAULT");
 		
-		jbpmTaskService.removeWorkItemInfo(processInstanceId);
+		if (human instanceof EventBasedNodeInstanceInterface) {
+			((EventBasedNodeInstanceInterface) human)
+					.addEventListeners();
+		}
+	
+		
 
 		HistoryLog log = new HistoryLog();
 		log.setComment("转移到节点:" + human.getNodeName());
@@ -998,7 +1009,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			todo.setTaskId(task.getId());
 			todo.setProcessData(processData);
 			todo.setCreateDate(df.format(log.getStart()));
-			// todo.setCreater((String)in.getVariable("_process_creater"));
+			todo.setCreater((String)in.getVariable(KoalaBPMVariable.CREATE_USER));
 			todos.add(todo);
 		}
 		return todos;
@@ -1086,7 +1097,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		ProcessInstanceVO vo = new ProcessInstanceVO();
 		vo.setCreateDate(df.format(log.getStart()));
-		// vo.setCreater((String)in.getVariable("_process_creater"));
+		vo.setCreater((String)in.getVariable(KoalaBPMVariable.CREATE_USER));
 		// vo.setParentProcessInstanceId(log.getParentProcessInstanceId());
 		String processVersionId = log.getProcessId();
 		vo.setProcessId(processVersionId.substring(0,
@@ -1462,5 +1473,13 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			e.printStackTrace();
 		}
 		return map;
+	}
+	
+	private String getNoVersionProcessId(String processId){
+		int i = processId.lastIndexOf("@");
+		if(i!=-1){
+			return processId.substring(0,i);
+		}
+		return processId;
 	}
 }

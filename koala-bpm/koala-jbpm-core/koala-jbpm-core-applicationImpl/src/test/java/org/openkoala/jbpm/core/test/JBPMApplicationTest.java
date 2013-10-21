@@ -174,7 +174,9 @@ public class JBPMApplicationTest {
 	 */
 	@Test
 	public void testPageQueryDoenTask() {
-		long  i = getJBPMApplication().startProcess("defaultPackage.Trade", "aaa", null);
+		Map<String,Object> abc  = new HashMap<String,Object>();
+		abc.put("a1", 456);
+		long  i = getJBPMApplication().startProcess("defaultPackage.Trade", "aaa", XmlParseUtil.paramsToXml(abc));
 
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("approveStatus", "1");

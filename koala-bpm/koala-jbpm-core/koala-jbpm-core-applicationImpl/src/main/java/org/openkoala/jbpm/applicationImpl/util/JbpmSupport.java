@@ -44,6 +44,7 @@ import org.openkoala.jbpm.core.KoalaProcessInfo;
 import org.openkoala.jbpm.core.service.JBPMTaskService;
 import org.jbpm.bpmn2.handler.ServiceTaskHandler;
 import org.jbpm.bpmn2.xml.BPMNSemanticModule;
+import org.jbpm.process.ProcessBaseImpl;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.audit.ProcessInstanceLog;
@@ -102,10 +103,13 @@ public class JbpmSupport {
 	 * @throws Exception
 	 */
 	public void initialize() throws Exception {
+		
+		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+		
+		kbuilderAllResurce();// 加载所有流程
 
-		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
-				.newKnowledgeBuilder();
 		kbase = kbuilder.newKnowledgeBase();
+		
 		Environment env = KnowledgeBaseFactory.newEnvironment();
 
 		env.set(EnvironmentName.APP_SCOPED_ENTITY_MANAGER, jbpmEM);
@@ -129,12 +133,16 @@ public class JbpmSupport {
 		ksession =
 
 		JPAKnowledgeService.newStatefulKnowledgeSession(kbase, null, env);
+		
+		
 
 		logger.info("Jbpm Support initialize... ... ...");
 		this.startTransaction();
-		kbuilderAllResurce();// 加载所有流程
+		
 		KoalaWSHumanTaskHandler humanTaskHandler = new KoalaWSHumanTaskHandler(
 				this.localTaskService, ksession);
+		humanTaskHandler.setLocal(true);
+		humanTaskHandler.connect();
 		ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
 				humanTaskHandler);
 		ksession.getWorkItemManager().registerWorkItemHandler("Service Task",
@@ -207,11 +215,6 @@ public class JbpmSupport {
 	public ProcessInstance getProcessInstance(long processInstanceId) {
 		RuleFlowProcessInstance in = (RuleFlowProcessInstance) ksession
 				.getProcessInstance(processInstanceId);
-		try {
-			in.getProcess();
-		} catch (Exception e) {
-			in.setProcess(getProcess(in.getProcessId()));
-		}
 
 		return in;
 	}

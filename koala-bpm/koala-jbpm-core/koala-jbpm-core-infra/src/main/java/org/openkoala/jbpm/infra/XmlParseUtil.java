@@ -65,6 +65,9 @@ public class XmlParseUtil {
 		Set<String> keys = paramsMap.keySet();
 		for (String key : keys) {
 			Object value = paramsMap.get(key);
+			if(key.startsWith("~KJ")){
+				continue;
+			}
 			Element param = root.addElement(key);
 			if (value instanceof Integer) {
 				param.addAttribute("type", "int");
