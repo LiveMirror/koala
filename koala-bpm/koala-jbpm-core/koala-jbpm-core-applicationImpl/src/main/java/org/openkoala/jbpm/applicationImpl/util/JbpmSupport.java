@@ -358,7 +358,7 @@ public class JbpmSupport {
 			throw e;
 		}
 		
-		updateProcessVersion(info.getProcessId(),info.getVersionNum());
+		updateProcessVersion(info.getProcessName(),info.getVersionNum());
 	}
 
 	private void addProcess(byte[] data) throws Exception {
