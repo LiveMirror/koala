@@ -67,6 +67,7 @@ import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.ContentData;
 import org.jbpm.workflow.core.node.HumanTaskNode;
+import org.jbpm.workflow.core.node.WorkItemNode;
 import org.jbpm.workflow.instance.node.HumanTaskNodeInstance;
 import org.mvel2.MVEL;
 import org.slf4j.Logger;
@@ -810,6 +811,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			}
 		}
 		jbpmTaskService.exitedTask(processInstanceId);
+		((WorkItemNode) human.getNode()).setWaitForCompletion(false);
 		human.internalTrigger(null, "DROOLS_DEFAULT");
 		
 		jbpmTaskService.removeWorkItemInfo(processInstanceId);

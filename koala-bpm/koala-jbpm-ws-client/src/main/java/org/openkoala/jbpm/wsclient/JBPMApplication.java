@@ -245,6 +245,23 @@ public interface JBPMApplication {
 
     /**
      * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns java.util.List<org.openkoala.jbpm.wsclient.TaskChoice>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "queryTaskChoice", targetNamespace = "http://application.jbpm.openkoala.org/", className = "org.openkoala.jbpm.wsclient.QueryTaskChoice")
+    @ResponseWrapper(localName = "queryTaskChoiceResponse", targetNamespace = "http://application.jbpm.openkoala.org/", className = "org.openkoala.jbpm.wsclient.QueryTaskChoiceResponse")
+    public List<TaskChoice> queryTaskChoice(
+        @WebParam(name = "arg0", targetNamespace = "")
+        long arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        long arg1);
+
+    /**
+     * 
      * @param arg0
      */
     @WebMethod
