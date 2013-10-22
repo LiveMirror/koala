@@ -215,7 +215,11 @@ public class JbpmSupport {
 	public ProcessInstance getProcessInstance(long processInstanceId) {
 		RuleFlowProcessInstance in = (RuleFlowProcessInstance) ksession
 				.getProcessInstance(processInstanceId);
-
+		try {
+			in.getProcess();
+		} catch (Exception e) {
+			in.setProcess(getProcess(in.getProcessId()));
+		}
 		return in;
 	}
 
