@@ -55,6 +55,7 @@
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.transaction.jta.platform"
 				value="org.hibernate.service.jta.platform.internal.BitronixJtaPlatform" />
+			<property name="hibernate.transaction.factory_class">org.hibernate.engine.transaction.internal.jta.CMTTransactionFactory</property>
 		</properties>
 	</persistence-unit>
 </persistence>

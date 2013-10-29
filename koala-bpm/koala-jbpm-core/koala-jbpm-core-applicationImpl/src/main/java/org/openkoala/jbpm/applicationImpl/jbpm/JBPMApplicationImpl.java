@@ -168,7 +168,8 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	 * @return
 	 */
 	public List<TaskChoice> queryTaskChoice(long processInstanceId, long taskId) {
-
+		try {
+			this.getJbpmSupport().startTransaction();
 		Task task = getJbpmSupport().getTask(taskId);
 		String taskName = task.getNames().get(0).getText();
 
@@ -214,8 +215,19 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			TaskChoice choice = new TaskChoice(key, type, name, keyValue);
 			choiceList.add(choice);
 		}
-
+		this.getJbpmSupport().commitTransaction();
 		return choiceList;
+	} catch (RuntimeException e) {
+		e.printStackTrace();
+		this.getJbpmSupport().rollbackTransaction();
+		throw e;
+	} catch (Exception e) {
+		e.printStackTrace();
+		this.getJbpmSupport().rollbackTransaction();
+		throw new RuntimeException(e.getCause());
+	}
+
+		
 	}
 
 	/**
@@ -935,6 +947,8 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 	public List<JBPMNode> getProcessNodesFromPorcessInstnaceId(
 			long processInstanceId) {
+		try {
+			this.getJbpmSupport().startTransaction();
 		List<JBPMNode> jbpmNodes = new ArrayList<JBPMNode>();
 		RuleFlowProcessInstance in = (RuleFlowProcessInstance) getJbpmSupport()
 				.getProcessInstance(processInstanceId);
@@ -946,7 +960,17 @@ public class JBPMApplicationImpl implements JBPMApplication {
 				jbpmNodes.add(jbpmNode);
 			}
 		}
+		getJbpmSupport().commitTransaction();
 		return jbpmNodes;
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+				this.getJbpmSupport().rollbackTransaction();
+				throw e;
+			} catch (Exception e) {
+				this.getJbpmSupport().rollbackTransaction();
+				e.printStackTrace();
+				throw new RuntimeException(e.getCause());
+			}
 	}
 
 	public void repairTask(long taskId) {

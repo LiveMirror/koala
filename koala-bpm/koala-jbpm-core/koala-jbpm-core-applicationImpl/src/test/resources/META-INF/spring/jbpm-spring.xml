@@ -18,7 +18,6 @@
 		<property name="allowLocalTransactions" value="true" />
 		<property name="testQuery" value="SELECT 1" />
 		<property name="enableJdbc4ConnectionTest" value="true"></property>
-		<property name="automaticEnlistingEnabled" value="false" />
 		<property name="driverProperties">
 			<props>
 				<prop key="driverClassName">${db.jdbc.driver}</prop>
