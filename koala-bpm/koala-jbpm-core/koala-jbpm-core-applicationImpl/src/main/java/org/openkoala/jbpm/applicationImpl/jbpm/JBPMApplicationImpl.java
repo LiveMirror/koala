@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.jws.WebMethod;
@@ -24,7 +23,6 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
-
 import org.drools.definition.process.Node;
 import org.drools.persistence.info.WorkItemInfo;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -97,12 +95,6 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	private static final Logger logger = LoggerFactory
 			.getLogger(JBPMApplicationImpl.class);
 
-	@Value("${koala.userGroupWsUrl}")
-	private String userGroupWsUrl;
-
-	@Value("${koala.userGroupMethod}")
-	private String userGroupMethod;
-
 	@Inject
 	private QueryChannelService queryChannel;
 
@@ -112,9 +104,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	@Inject
 	private JBPMTaskService jbpmTaskService;
 
-	
 	private JbpmSupport jbpmSupport;
-	
 
 	public JbpmSupport getJbpmSupport() {
 		if (jbpmSupport == null) {
@@ -256,7 +246,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			this.getJbpmSupport().rollbackTransaction();
 			throw new RuntimeException(e.getCause());
 		}
-
+		
 	}
 
 	/**
@@ -803,6 +793,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 		HumanTaskNodeInstance human = (HumanTaskNodeInstance) in
 				.getNodeInstance(node);
+		
 		// 如果流程当前节点与要激活的节点一样，则不转移
 		boolean isSame = true;
 
@@ -814,10 +805,11 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			}
 		}
 		
-//		if (isSame)
-//			return;
+		if (isSame)
+			return;
 		
 		in.setVariable(KoalaBPMVariable.INGORE_LOG, true);
+		
 		for (org.drools.runtime.process.NodeInstance nodeInstance : instances) {
 			org.jbpm.workflow.instance.NodeInstance removeNode = in
 					.getNodeInstance(nodeInstance.getId());
@@ -827,18 +819,14 @@ public class JBPMApplicationImpl implements JBPMApplication {
 						(HumanTaskNodeInstance) removeNode, false);
 			}
 		}
+		
 		jbpmTaskService.removeWorkItemInfo(processInstanceId);
 		
 		jbpmTaskService.exitedTask(processInstanceId);
-		human.internalTrigger(null, "DROOLS_DEFAULT");
 		
-		if (human instanceof EventBasedNodeInstanceInterface) {
-			((EventBasedNodeInstanceInterface) human)
-					.addEventListeners();
-		}
-	
+		human.trigger(null, "DROOLS_DEFAULT");
+		human.setNodeInstanceContainer(in);
 		
-
 		HistoryLog log = new HistoryLog();
 		log.setComment("转移到节点:" + human.getNodeName());
 		log.setCreateDate(new Date());
@@ -848,6 +836,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		log.setProcessInstanceId(processInstanceId);
 		log.setProcessId(in.getProcessId());
 		log.save();
+		
 	}
 
 	private Map<String, Object> parseVar(Map<String, Object> params,

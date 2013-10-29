@@ -240,7 +240,6 @@ public class JBPMApplicationTest {
 		getJBPMApplication().completeTask(i, 1l, "fhjl",
 				XmlParseUtil.paramsToXml(data), null);
 		
-		
 		// [id=2, name=分行经理审批]
 		getJBPMApplication().assignToNode(i, 2l);
 		
@@ -252,8 +251,8 @@ public class JBPMApplicationTest {
 		getJBPMApplication().completeTask(i, tasks.get(0).getTaskId(), "fhjl",
 				XmlParseUtil.paramsToXml(data), null);
 		
-//		tasks = getJBPMApplication().queryTodoList("fwzy");
-//		Assert.assertTrue(tasks.size() > 0);
+		tasks = getJBPMApplication().queryTodoList("fwzy");
+		Assert.assertTrue(tasks.size() > 0);
 //		
 		getJBPMApplication().removeProcessInstance(i);
 	}

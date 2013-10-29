@@ -7,7 +7,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 		http://drools.org/schema/drools-spring http://drools.org/schema/drools-spring-1.5.0.xsd"
 	default-autowire="byName">
-	
+
 	<bean id="dataSource" class="bitronix.tm.resource.jdbc.PoolingDataSource"
 		init-method="init" destroy-method="close">
 		<property name="className"
@@ -39,7 +39,6 @@
 	<bean id="btmConfig" factory-method="getConfiguration"
 		class="bitronix.tm.TransactionManagerServices">
 	</bean>
-
 
 	<bean id="BitronixTransactionManager" factory-method="getTransactionManager"
 		class="bitronix.tm.TransactionManagerServices" depends-on="btmConfig"
@@ -77,7 +76,6 @@
 		depends-on="internalTaskService">
 		<constructor-arg ref="internalTaskService" />
 	</bean>
-
 
 	<bean id="jbpmEM"
 		class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
