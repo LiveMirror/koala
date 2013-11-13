@@ -14,8 +14,11 @@ public class EhCacheImpl implements com.dayatang.cache.Cache  {
 	private String name;
 
 	public Object get(String key) {
-		Element el = (Element)cache.get(key);
-		return el.getObjectValue();
+		Element el = (Element) cache.get(key);
+		if (el != null) {
+			return el.getObjectValue();
+		}
+		return null;
 	}
 
 	public Map<String, Object> get(String... arg0) {

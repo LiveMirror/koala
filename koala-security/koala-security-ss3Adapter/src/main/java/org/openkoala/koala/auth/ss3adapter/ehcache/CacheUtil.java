@@ -1,8 +1,10 @@
 package org.openkoala.koala.auth.ss3adapter.ehcache;
 
 import org.openkoala.koala.auth.AuthDataService;
+import org.openkoala.koala.auth.UserDetails;
 import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
+
 import com.dayatang.domain.InstanceFactory;
 
 public class CacheUtil {
@@ -40,14 +42,18 @@ public class CacheUtil {
 
 	public static void refreshUserAttributes(String user) {
 		if (!getUserCache().isKeyInCache(user)) {
-			return;
+			getUserCache().put(user, getUserDetails(user));
 		}
 		CustomUserDetails cd = (CustomUserDetails) getUserCache().get(user);
 		cd.getAuthorities().clear();
-		for (String role : getAuthDataService().loadUserByUseraccount(user).getAuthorities()) {
+		for (String role : getUserDetails(user).getAuthorities()) {
 			GrantedAuthorityImpl gai = new GrantedAuthorityImpl(role);
 			cd.getAuthorities().add(gai);
 		}
+	}
+
+	private static UserDetails getUserDetails(String user) {
+		return getAuthDataService().loadUserByUseraccount(user);
 	}
 
 	public static void removeUserFromCache(String user) {
