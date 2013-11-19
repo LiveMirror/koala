@@ -174,7 +174,8 @@ public class LocalDataPolicyHandler extends BaseSchedulerBean implements DataPol
 		vo.setServerStatus(ServerStatusCollector.getServerAllStatus());
 		//第三方服务
 		vo.setAbnormalServices(ServiceConnectionCheckTask.getBadSevices());
-		vo.setServiceCheckTime(DATE_FORMAT.format(ServiceConnectionCheckTask.getLastCheckTime()));
+		//TODO DATE_FORMAT
+		//vo.setServiceCheckTime(DATE_FORMAT.format(ServiceConnectionCheckTask.getLastCheckTime()));
 		return vo;
 	}
 

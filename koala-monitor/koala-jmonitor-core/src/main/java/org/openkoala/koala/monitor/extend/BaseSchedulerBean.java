@@ -27,10 +27,11 @@ import org.apache.commons.lang.StringUtils;
 import org.openkoala.koala.config.domain.SchedulerConfg;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.TriggerKey;
+import org.quartz.impl.triggers.CronTriggerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.quartz.CronTriggerBean;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
@@ -44,16 +45,12 @@ import com.dayatang.domain.InstanceFactory;
  *   
  * 功能描述：定时任务基类  <br />
  *  
- * 创建日期：2012-2-13上午11:04:13  <br />   
- * 
- * 版本信息：v 1.0<br />
+ * 创建日期：2012-2-13上午11:04:13  <br />
  * 
  * 版权信息：Copyright (c) 2011 Csair All Rights Reserved<br />
  * 
  * 作    者：<a href="mailto:jiangwei@openkoala.com">vakin jiang</a><br />
  * 
- * 修改记录： <br />
- * 修 改 者    修改日期     文件版本   修改说明    
  */
 public abstract class BaseSchedulerBean {
     private static final Logger logger = LoggerFactory.getLogger(BaseSchedulerBean.class);
@@ -119,15 +116,17 @@ public abstract class BaseSchedulerBean {
     public void checkConExpr(String latestConExpr) {
         try {
             //check cronExpr valid
-            CronTriggerBean trigger = (CronTriggerBean) getScheduler().getTrigger(triggerName, Scheduler.DEFAULT_GROUP);
+        	CronTriggerImpl trigger = (CronTriggerImpl) getScheduler().getTrigger(new TriggerKey(triggerName, Scheduler.DEFAULT_GROUP));
             String originConExpression = trigger.getCronExpression();
             //判断任务时间是否更新过
             if (!originConExpression.equalsIgnoreCase(latestConExpr)) {
+            	logger.info("reset ConExpression[{}] To [{}] ",originConExpression,latestConExpr);
                 trigger.setCronExpression(latestConExpr);
-                getScheduler().rescheduleJob(triggerName, Scheduler.DEFAULT_GROUP, trigger);
+                getScheduler().rescheduleJob(new TriggerKey(triggerName, Scheduler.DEFAULT_GROUP), trigger);
             }
         } catch (Exception e) {
             // TODO: handle exception
+        	e.printStackTrace();
         }
     }
 
@@ -195,7 +194,7 @@ public abstract class BaseSchedulerBean {
 
     public void resumeTrigger() {
         try {
-            getScheduler().resumeTriggerGroup(Scheduler.DEFAULT_GROUP);
+            getScheduler().resumeTrigger(new TriggerKey(triggerName,Scheduler.DEFAULT_GROUP));
             logger.info("当前运行状态：" + getScheduler().isStarted());
         } catch (SchedulerException e) {
             throw new RuntimeException("重新运行定时任务失败，异常信息：" + e.getMessage());

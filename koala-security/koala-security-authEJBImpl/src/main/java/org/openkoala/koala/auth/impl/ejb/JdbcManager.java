@@ -72,18 +72,6 @@ public class JdbcManager {
 		return null;
 	}
 
-	public ResultSet getResAuth(String res) {
-		try {
-			stmt = con.prepareStatement(secConfig.getQueryResAuth());
-			stmt.setString(1, res);
-			stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-			return stmt.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	public JdbcSecurityConfig getSecConfig() {
 		return secConfig;
 	}
