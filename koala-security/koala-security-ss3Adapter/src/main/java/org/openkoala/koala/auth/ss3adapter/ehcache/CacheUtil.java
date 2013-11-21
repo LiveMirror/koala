@@ -1,5 +1,7 @@
 package org.openkoala.koala.auth.ss3adapter.ehcache;
 
+import java.util.ArrayList;
+
 import org.openkoala.koala.auth.AuthDataService;
 import org.openkoala.koala.auth.UserDetails;
 import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
@@ -42,7 +44,12 @@ public class CacheUtil {
 
 	public static void refreshUserAttributes(String user) {
 		if (!getUserCache().isKeyInCache(user)) {
-			getUserCache().put(user, getUserDetails(user));
+			UserDetails userdetail = getUserDetails(user);
+			CustomUserDetails userCd = new CustomUserDetails(userdetail.getPassword(), userdetail.getUseraccount(), userdetail
+					.isAccountNonExpired(), userdetail.isAccountNonLocked(), userdetail.isCredentialsNonExpired(),
+					userdetail.isEnabled(), new ArrayList());
+			getUserCache().put(user, userCd);
+			
 		}
 		CustomUserDetails cd = (CustomUserDetails) getUserCache().get(user);
 		cd.getAuthorities().clear();
