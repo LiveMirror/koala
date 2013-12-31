@@ -1,7 +1,10 @@
 package org.openkoala.framework.i18n.tag; 
 
 import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import org.openkoala.framework.i18n.I18NManager;
@@ -34,7 +37,13 @@ public class I18nTag extends SimpleTagSupport {
 
 	@Override
 	public void doTag() throws JspException, IOException {
-		String message = I18NManager.getMessage(key, locale);
+		HttpServletRequest request = (HttpServletRequest)((PageContext) this.getJspContext()).getRequest();
+		String message = null;
+		if ("".equals(locale)) {
+			message = I18NManager.getMessage(key, request.getLocale().getLanguage());
+		} else {
+			message = I18NManager.getMessage(key, locale);
+		}
 		// 将取出的国际化信息写入到页面中 
 		this.getJspContext().getOut().write(message);
 	}
