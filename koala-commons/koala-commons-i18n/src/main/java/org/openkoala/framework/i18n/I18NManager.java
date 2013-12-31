@@ -90,7 +90,7 @@ public class I18NManager {
 		if ("".equals(locale) || locale == null) {
 			String message = null;
 			try {
-				message = accessor.getMessage(key);
+				message = accessor.getMessage(key, Locale.getDefault());
 			} catch (NoSuchMessageException e) {
 				// 如果key在资源文件中不存在，就直接把key作为默认值返回
 				return accessor.getMessage(key, key);
