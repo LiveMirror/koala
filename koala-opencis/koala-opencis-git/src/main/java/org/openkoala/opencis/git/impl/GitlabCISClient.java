@@ -6,14 +6,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.InitCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -55,15 +47,8 @@ public class GitlabCISClient implements CISClient {
      */
     private Set<GitlabUser> currentGitlabUsers;
 
-
-    public GitlabCISClient() {
-    }
-
     public GitlabCISClient(GitlabConfiguration gitLabConfiguration) {
         this.gitLabConfiguration = gitLabConfiguration;
-        gitlabAPI = GitlabAPI.connect(gitLabConfiguration.getGitHostURL(), gitLabConfiguration.getToken());
-        gitlabHTTPRequestor = new GitlabHTTPRequestor(gitlabAPI);
-        currentGitlabUsers = getCurrentGitlabUsers(gitlabHTTPRequestor);
     }
 
 
@@ -95,13 +80,50 @@ public class GitlabCISClient implements CISClient {
 
     @Override
     public void createProject(Project project) {
+        if (projectExist(project)) {
+            return;
+        }
         createProjectInGitLab(project);
         pushProjectToGitLab(project);
     }
 
+    public GitlabProject getGitlabProjectBy(Project project) {
+        try {
+            for (GitlabProject gitlabProject : gitlabAPI.getProjects()) {
+                if (gitlabProject.getName().equals(project.getProjectName())) {
+                    return gitlabProject;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("gitClient'method:projectExist IOEXception", e);
+        }
+        return null;
+    }
+
+    public boolean projectExist(Project project) {
+        return getGitlabProjectBy(project) != null;
+    }
+
     @Override
     public void removeProject(Project project) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!projectExist(project)) {
+            return;
+        }
+        try {
+            gitlabHTTPRequestor.method("DELETE").with("id", getGitlabProjectIdBy(project))
+                    .to("/projects/" + getGitlabProjectIdBy(project), GitlabProject.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("gitlab removeProject failure", e);
+        }
+    }
+
+    public Integer getGitlabProjectIdBy(Project project) {
+        if (!projectExist(project)) {
+            throw new CISClientBaseRuntimeException("project not found");
+        }
+        return getGitlabProjectBy(project).getId();
     }
 
     /**
@@ -115,8 +137,9 @@ public class GitlabCISClient implements CISClient {
             gitlabProject = gitlabHTTPRequestor.method("POST")
                     .with("name", project.getProjectName()).with("description", project.getDescription()).with("public", true)
                     .to(GitlabProject.URL, GitlabProject.class);
+
         } catch (IOException e) {
-            throw new CISClientBaseRuntimeException("gitlab.createProject.IOException");
+            throw new CISClientBaseRuntimeException("gitlab.createProject.IOException", e);
         }
         return gitlabProject;
     }
@@ -170,7 +193,7 @@ public class GitlabCISClient implements CISClient {
 
         String projectPath = project.getPhysicalPath();
         if (StringUtils.isBlank(projectPath)) {
-            return false;
+            throw new CISClientBaseRuntimeException("project's physicalPath must bet not null!");
         }
 
         init.setDirectory(new File(projectPath));
@@ -199,7 +222,8 @@ public class GitlabCISClient implements CISClient {
                     gitLabConfiguration.getAdminEmail()).setMessage("init project").call();
 
             CredentialsProvider credentialsProvider =
-                    new UsernamePasswordCredentialsProvider(gitLabConfiguration.getAdminUsername(), gitLabConfiguration.getAdminPassword());
+                    new UsernamePasswordCredentialsProvider(gitLabConfiguration.getAdminUsername(),
+                            gitLabConfiguration.getAdminPassword());
             git.push().setCredentialsProvider(credentialsProvider).call();
         } catch (URISyntaxException e) {
             throw new CISClientBaseRuntimeException("gitlab.pushProjectToGitLab.URISyntaxException");
@@ -251,29 +275,10 @@ public class GitlabCISClient implements CISClient {
 
     @Override
     public boolean authenticate() {
-
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost post = new HttpPost("http://10.108.1.138:99/api/v3/session");
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("login", "root"));
-        params.add(new BasicNameValuePair("password", "root"));
-
-
-        try {
-
-            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
-            post.setEntity(entity);
-
-            HttpResponse response = httpClient.execute(post);
-
-            System.out.println(EntityUtils.toString(response.getEntity()));
-
-
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new CISClientBaseRuntimeException("gitlab.getCurrentUser.IOException", e);
-        }
+        gitlabAPI = GitlabAPI.connect(gitLabConfiguration.getGitHostURL(), gitLabConfiguration.getToken());
+        gitlabHTTPRequestor = new GitlabHTTPRequestor(gitlabAPI);
+        currentGitlabUsers = getCurrentGitlabUsers(gitlabHTTPRequestor);
+        return gitlabAPI != null;
     }
 
     /**
