@@ -27,11 +27,14 @@ import org.openkoala.opencis.CISClientBaseRuntimeException;
 
 /**
  * 连接GitLab服务器并实现创建项目等操作的客户端.
+ * zhaizhijun，注：目前使用第三方库来实现，第三方库中有个GitlabHTTPRequestor，如果重复使用它，<p/>
+ * 可能会有不可预知的问题，所以，每次使用它都需要重新创建一个。下个版本进行重写!TODO
  *
  * @author xmfang
  */
 public class GitlabCISClient implements CISClient {
 
+    public final static int DEVELOPER = 30;
 
     /*
      * gitlab配置
@@ -40,24 +43,18 @@ public class GitlabCISClient implements CISClient {
 
     private GitlabAPI gitlabAPI;
 
-    private GitlabHTTPRequestor gitlabHTTPRequestor;
-
-    /*
-     * 当前gitlab上的用户集
-     */
-    private Set<GitlabUser> currentGitlabUsers;
-
     public GitlabCISClient(GitlabConfiguration gitLabConfiguration) {
         this.gitLabConfiguration = gitLabConfiguration;
     }
 
 
-    private Set<GitlabUser> getCurrentGitlabUsers(GitlabHTTPRequestor gitlabHTTPRequestor) {
+    private Set<GitlabUser> getCurrentGitlabUsers() {
         Set<GitlabUser> currentGitlabUsers = new HashSet<GitlabUser>();
         List<LinkedHashMap<String, Object>> usersMap = null;
         try {
-            usersMap = gitlabHTTPRequestor.method("GET").to(GitlabUser.URL, List.class);
+            usersMap = createGitlabHTTPRequestor().method("GET").to(GitlabUser.URL, List.class);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new CISClientBaseRuntimeException("gitlab.getUsers.IOException", e);
         }
         for (LinkedHashMap<String, Object> userMap : usersMap) {
@@ -80,11 +77,11 @@ public class GitlabCISClient implements CISClient {
 
     @Override
     public void createProject(Project project) {
-        if (projectExist(project)) {
+        if (isProjectExist(project)) {
             return;
         }
         createProjectInGitLab(project);
-        pushProjectToGitLab(project);
+        pushProjectToGitLab(project, gitLabConfiguration);
     }
 
     public GitlabProject getGitlabProjectBy(Project project) {
@@ -101,17 +98,17 @@ public class GitlabCISClient implements CISClient {
         return null;
     }
 
-    public boolean projectExist(Project project) {
+    public boolean isProjectExist(Project project) {
         return getGitlabProjectBy(project) != null;
     }
 
     @Override
     public void removeProject(Project project) {
-        if (!projectExist(project)) {
+        if (!isProjectExist(project)) {
             return;
         }
         try {
-            gitlabHTTPRequestor.method("DELETE").with("id", getGitlabProjectIdBy(project))
+            createGitlabHTTPRequestor().method("DELETE").with("id", getGitlabProjectIdBy(project))
                     .to("/projects/" + getGitlabProjectIdBy(project), GitlabProject.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,7 +117,7 @@ public class GitlabCISClient implements CISClient {
     }
 
     public Integer getGitlabProjectIdBy(Project project) {
-        if (!projectExist(project)) {
+        if (!isProjectExist(project)) {
             throw new CISClientBaseRuntimeException("project not found");
         }
         return getGitlabProjectBy(project).getId();
@@ -134,48 +131,29 @@ public class GitlabCISClient implements CISClient {
     private GitlabProject createProjectInGitLab(Project project) {
         GitlabProject gitlabProject = null;
         try {
-            gitlabProject = gitlabHTTPRequestor.method("POST")
-                    .with("name", project.getProjectName()).with("description", project.getDescription()).with("public", true)
+            gitlabProject = createGitlabHTTPRequestor().method("POST")
+                    .with("name", project.getProjectName())
+                    .with("description", project.getDescription())
+                    .with("public", true)
                     .to(GitlabProject.URL, GitlabProject.class);
 
         } catch (IOException e) {
+            e.printStackTrace();
             throw new CISClientBaseRuntimeException("gitlab.createProject.IOException", e);
         }
         return gitlabProject;
     }
 
-    /**
-     * 分配Gitlab用户到所创建的项目中，用户如果不存在则创建之.
-     *
-     * @param project
-     */
-    private void addProjectTeamMember(Project project, GitlabProject gitlabProject) {
-        for (Developer developer : project.getDevelopers()) {
-            createUserIfNecessary(project, developer);
-            Integer userId = getUserIdByUsername(developer.getId());
-            if (userId == null) {
-                continue;
-            }
-            String wsUrl = "/projects/" + gitlabProject.getId() + "/members";
-            try {
-                gitlabHTTPRequestor.method("POST")
-                        .with("id", gitlabProject.getId()).with("user_id", userId).with("access_level", "30")
-                        .to(wsUrl, gitlabProject);
-            } catch (IOException e) {
-                throw new CISClientBaseRuntimeException("gitlab.addProjectTeamMember.IOException", e);
-            }
-        }
-    }
 
     /**
      * 根据用户帐号获取Gitlab用户的id.
      *
-     * @param username
+     * @param developer
      * @return
      */
-    private Integer getUserIdByUsername(String username) {
-        for (GitlabUser user : currentGitlabUsers) {
-            if (user.getUsername().equals(username)) {
+    public Integer getUserIdByDeveloper(Developer developer) {
+        for (GitlabUser user : getCurrentGitlabUsers()) {
+            if (user.getUsername().equals(developer.getId())) {
                 return user.getId();
             }
         }
@@ -187,7 +165,7 @@ public class GitlabCISClient implements CISClient {
      *
      * @param project
      */
-    private boolean pushProjectToGitLab(Project project) {
+    private boolean pushProjectToGitLab(Project project, GitlabConfiguration gitlabConfiguration) {
         Repository repository = null;
         InitCommand init = new InitCommand();
 
@@ -226,11 +204,14 @@ public class GitlabCISClient implements CISClient {
                             gitLabConfiguration.getAdminPassword());
             git.push().setCredentialsProvider(credentialsProvider).call();
         } catch (URISyntaxException e) {
-            throw new CISClientBaseRuntimeException("gitlab.pushProjectToGitLab.URISyntaxException");
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("gitlab.pushProjectToGitLab.URISyntaxException", e);
         } catch (IOException e) {
-            throw new CISClientBaseRuntimeException("gitlab.pushProjectToGitLab.IOException");
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("gitlab.pushProjectToGitLab.IOException", e);
         } catch (GitAPIException e) {
-            throw new CISClientBaseRuntimeException("gitlab.pushProjectToGitLab.GitAPIException");
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("gitlab.pushProjectToGitLab.GitAPIException", e);
         }
         return true;
     }
@@ -243,7 +224,7 @@ public class GitlabCISClient implements CISClient {
     private GitlabUser getCurrentUser() {
         GitlabUser result = null;
         try {
-            result = gitlabHTTPRequestor.method("GET").to("/user", GitlabUser.class);
+            result = createGitlabHTTPRequestor().method("GET").to("/user", GitlabUser.class);
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("gitlab.getCurrentUser.IOException", e);
         }
@@ -252,67 +233,86 @@ public class GitlabCISClient implements CISClient {
 
     @Override
     public void createUserIfNecessary(Project project, Developer developer) {
-        if (isUserExist(developer.getId())) {
+        if (isUserExist(developer)) {
             return;
         }
-        createNewUser(developer);
+        try {
+            createGitlabHTTPRequestor().method("POST")
+                    .with("email", developer.getEmail()).with("username",
+                    developer.getId()).with("name", developer.getName()).with("password", developer.getPassword())
+                    .to(GitlabUser.URL, GitlabUser.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("gitlab.createUser.IOException", e);
+        }
     }
 
     @Override
     public void removeUser(Project project, Developer developer) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isUserExist(developer)) {
+            return;
+        }
+        try {
+            createGitlabHTTPRequestor().method("DELETE").with("id", getUserIdByDeveloper(developer))
+                    .to(GitlabUser.URL + "/" + getUserIdByDeveloper(developer), GitlabUser.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("gitlab removeUser failure!", e);
+        }
     }
 
     @Override
     public void createRoleIfNecessary(Project project, String roleName) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // do nothing
     }
 
     @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {
+        for (Developer developer : developers) {
+            Integer userId = getUserIdByDeveloper(developer);
+            if (userId == null) {
+                continue;
+            }
+            String wsUrl = "/projects/" + getGitlabProjectIdBy(project) + "/members";
+            try {
+                createGitlabHTTPRequestor().method("POST")
+                        .with("id", getGitlabProjectIdBy(project))
+                        .with("user_id", userId).with("access_level", DEVELOPER)
+                        .to(wsUrl, GitlabUser.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new CISClientBaseRuntimeException("gitlab.addProjectTeamMember.IOException", e);
+            }
+        }
 
     }
 
     @Override
     public boolean authenticate() {
         gitlabAPI = GitlabAPI.connect(gitLabConfiguration.getGitHostURL(), gitLabConfiguration.getToken());
-        gitlabHTTPRequestor = new GitlabHTTPRequestor(gitlabAPI);
-        currentGitlabUsers = getCurrentGitlabUsers(gitlabHTTPRequestor);
         return gitlabAPI != null;
     }
 
     /**
      * 根据用户帐号检查该帐号是否已经存在
      *
-     * @param userAccount
+     * @param developer
      * @return
      */
-    private boolean isUserExist(String userAccount) {
-        for (GitlabUser user : currentGitlabUsers) {
-            if (user.getUsername().equals(userAccount)) {
+    public boolean isUserExist(Developer developer) {
+        for (GitlabUser user : getCurrentGitlabUsers()) {
+            if (user.getUsername().equals(developer.getId())) {
                 return true;
             }
         }
         return false;
     }
 
-    /**
-     * 创建新用户
-     *
-     * @param developer
-     */
-    private void createNewUser(Developer developer) {
-        GitlabUser gitlabUser;
-        try {
-            gitlabUser = gitlabHTTPRequestor.method("POST")
-                    .with("email", developer.getEmail()).with("username",
-                            developer.getId()).with("name", developer.getName()).with("password", developer.getId())
-                    .to(GitlabUser.URL, GitlabUser.class);
-        } catch (IOException e) {
-            throw new CISClientBaseRuntimeException("gitlab.createUser.IOException", e);
-        }
 
-        currentGitlabUsers.add(gitlabUser);
+    private GitlabHTTPRequestor createGitlabHTTPRequestor() {
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitLabConfiguration.getGitHostURL(), gitLabConfiguration.getToken());
+        GitlabHTTPRequestor gitlabHTTPRequestor = new GitlabHTTPRequestor(gitlabAPI);
+        return gitlabHTTPRequestor;
     }
 
 
