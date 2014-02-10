@@ -33,7 +33,6 @@ public class JenkinsCISClientIntegrationTest {
 
         client.createProject(project);
 
-
         client.createUserIfNecessary(project, getDeveloper("hhh00"));
         client.createUserIfNecessary(project, getDeveloper("hhh100"));
         client.createUserIfNecessary(project, getDeveloper("hhh200"));
