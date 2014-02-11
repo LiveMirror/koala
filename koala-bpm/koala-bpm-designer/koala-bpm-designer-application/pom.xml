@@ -11,6 +11,7 @@
 	<name>koala-bpm-designer-application</name>
 	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
+	<description>Koala BPM流程设计器的接口层</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.type>applicationInterface</project.type>

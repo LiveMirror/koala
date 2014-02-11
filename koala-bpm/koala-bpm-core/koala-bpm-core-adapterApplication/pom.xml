@@ -10,7 +10,8 @@
     <artifactId>koala-bpm-core-adapterApplication</artifactId>
     <name>koala-bpm-core-adapterApplication</name>
     <packaging>jar</packaging>  
-    <url>http://maven.apache.org</url>  
+    <url>http://maven.apache.org</url> 
+    <description>Koala BPM流程引擎的适配接口，主要提供在流程中调用WS，同第三方系统进行数据交互</description>
     <properties> 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
         <project.type>applicationInterface</project.type> 

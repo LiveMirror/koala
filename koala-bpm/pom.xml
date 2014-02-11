@@ -11,7 +11,7 @@
 	<artifactId>koala-bpm</artifactId>
 	<packaging>pom</packaging>
 	<name>koala-bpm</name>
-	<description >Koala BPM流程组件 </description>
+	<description >Koala BPM流程平台的父项目，包含流程引擎，流程设计器，流程业务支撑系统等子功能</description>
 
 	<modules>
 		<module>koala-bpm-core</module>

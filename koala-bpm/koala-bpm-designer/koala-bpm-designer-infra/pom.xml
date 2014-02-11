@@ -11,6 +11,7 @@
 	<name>koala-bpm-designer-infra</name>
 	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
+	<description>Koala BPM流程设计器的基础设施支持，提供配置的读取等支撑功能</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.type>infra</project.type>
