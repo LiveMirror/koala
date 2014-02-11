@@ -11,7 +11,7 @@
 	<artifactId>koala-bpm-core</artifactId>
 	<packaging>pom</packaging>
 	<name>koala-bpm-core</name>
-	<description />
+	<description>Koala BPM流程引擎核心项目，加载流程并提供WS API以供第三方系统调用</description>
 	<modules>
 		<module>koala-bpm-core-infra</module>
 		<module>koala-bpm-core-bizmodel</module>

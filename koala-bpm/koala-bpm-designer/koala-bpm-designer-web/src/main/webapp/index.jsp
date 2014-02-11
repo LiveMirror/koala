@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.Date"%>
 <%
-    Long time = new Date().getTime();
-    String gunvorServerUrl = org.openkoala.koala.jbpm.util.EnvConfigHelper.getInstance().getProperty("gunvor.server.url");
+	Long time = new Date().getTime();
+    String gunvorServerUrl = org.openkoala.bpm.designer.infra.EnvConfigHelper.getInstance().getProperty("gunvor.server.url");
 %>
 <!DOCTYPE html>
 <html lang="zh-CN">

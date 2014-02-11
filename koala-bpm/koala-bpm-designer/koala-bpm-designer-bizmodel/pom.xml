@@ -11,6 +11,7 @@
     <name>koala-bpm-designer-bizmodel</name>  
     <packaging>jar</packaging>  
     <url>http://maven.apache.org</url>  
+    <description>Koala BPM流程设计器的领域核心层，包含流程发布等领域逻辑</description>
     <properties> 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
         <project.type>bizModel</project.type> 
