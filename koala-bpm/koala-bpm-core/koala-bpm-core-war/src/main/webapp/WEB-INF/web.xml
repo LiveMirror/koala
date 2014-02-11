@@ -7,16 +7,11 @@
 	<listener>
 		<listener-class>com.dayatang.spring.webapp.DayatangContextLoaderListener</listener-class>
 	</listener>
-	
-	<!-- 连接池的监控环境开始，项目部署时要删除
-	<servlet>
-		<servlet-name>proxooladmin</servlet-name>
-		<servlet-class>org.logicalcobwebs.proxool.admin.servlet.AdminServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>proxooladmin</servlet-name>
-		<url-pattern>/dbadmin</url-pattern>
-	</servlet-mapping> -->
+
+	<!-- 连接池的监控环境开始，项目部署时要删除 <servlet> <servlet-name>proxooladmin</servlet-name> 
+		<servlet-class>org.logicalcobwebs.proxool.admin.servlet.AdminServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>proxooladmin</servlet-name> <url-pattern>/dbadmin</url-pattern> 
+		</servlet-mapping> -->
 	<!-- 连接池的监控环境结束 -->
 
 	<!-- Character Filter -->
@@ -28,6 +23,11 @@
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 	<servlet>
 		<servlet-name>processImage</servlet-name>
