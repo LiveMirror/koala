@@ -22,8 +22,6 @@
 		<property name="alias" value="default" />
 	</bean>
 
-
-
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceXmlLocation" value="classpath:META-INF/spring/persistence.xml" />
@@ -39,8 +37,7 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-
-	<bean id="koalaBPMSession" class="org.openkoala.jbpm.applicationImpl.util.KoalaBPMSession"
+	<bean id="koalaBPMSession" class="org.openkoala.bpm.impl.util.KoalaBPMSession"
 		init-method="initialize" />
 
 </beans>

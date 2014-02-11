@@ -3,8 +3,10 @@ package org.openkoala.koala.jbpm.designer.jbpmDesigner.web.action.jbpm;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
+
 import javax.inject.Inject;
-import org.openkoala.jbpm.application.vo.ProcessVO;
+
+import org.openkoala.bpm.application.vo.ProcessVO;
 import org.openkoala.koala.jbpm.designer.application.core.BpmDesignerApplication;
 import org.openkoala.koala.jbpm.designer.application.vo.PublishURLVO;
 import org.openkoala.koala.jbpm.jbpmDesigner.application.GunvorApplication;
