@@ -51,12 +51,13 @@ public class KoalaJiraService {
         jiraService.createProjectRole(token, remoteProjectRole);
     }
 
-    public boolean projectExists(Project project) {
+    public boolean isProjectExist(Project project) {
         RemoteProject[] remoteProjectArray = getAllProjects();
         if (remoteProjectArray == null || remoteProjectArray.length == 0) {
             return false;
         }
         for (RemoteProject remoteProject : remoteProjectArray) {
+
             if (remoteProject.getKey().equals(project.getProjectName())
                     || remoteProject.getName().equals(project.getProjectName())) {
                 return true;
@@ -98,10 +99,10 @@ public class KoalaJiraService {
         return false;
     }
 
-    public boolean userExists(String userName) {
+    public boolean isUserExist(String username_or_developId) {
         RemoteUser remoteUser = null;
         try {
-            remoteUser = jiraService.getUser(token, userName);
+            remoteUser = jiraService.getUser(token, username_or_developId);
         } catch (RemotePermissionException e1) {
             throw new CISClientBaseRuntimeException("该账号没有权限查询用户！");
         } catch (RemoteAuthenticationException e1) {
@@ -111,6 +112,10 @@ public class KoalaJiraService {
         }
         return remoteUser != null;
 
+    }
+
+    public boolean isUserExist(Developer developer) {
+        return isUserExist(developer.getId());
     }
 
     public void deleteProject(String projectName) throws RemoteException {
@@ -181,7 +186,7 @@ public class KoalaJiraService {
     }
 
     public void createUser(Developer developer) throws RemoteException {
-        jiraService.createUser(token, developer.getName(), developer.getPassword(), developer.getFullName(), developer.getEmail());
+        jiraService.createUser(token, developer.getId(), developer.getPassword(), developer.getName(), developer.getEmail());
     }
 
     public void deleteUser(String userName) throws RemoteException {

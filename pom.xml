@@ -125,8 +125,7 @@
             </snapshots>
         </repository>
     </repositories>
-
-
+   
     <modules>
         <module>koala-commons</module>
         <module>koala-security</module>
