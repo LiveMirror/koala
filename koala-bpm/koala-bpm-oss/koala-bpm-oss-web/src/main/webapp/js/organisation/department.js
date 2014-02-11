@@ -50,7 +50,7 @@ var department = function(){
 		}
 		$.post(baseUrl + url, org).done(function(data){
 			if(data.result == 'success'){
-				$('body').message({
+				$('#departmentDetail').message({
 					type: 'success',
 					content: '撤销成功'
 				});
@@ -105,8 +105,9 @@ var department = function(){
 				'hidden.bs.modal': function(){
 					$(this).remove();
 				},
-				'complete': function(event, type){
-					$('body').message({
+				'complete': function(event, data){
+					var type = data.type
+					$('#departmentDetail').message({
 						type: 'success',
 						content: '保存成功'
 					});
@@ -118,13 +119,13 @@ var department = function(){
                         elementData.description = description.val();
                         $element.data(elementData);
                         if(type == 'updateCompany'){
-                        	$element.find('.tree-folder-name').html(elementData.name);
+                        	$element.find('.tree-folder-name').html(elementData.name).click();
                         }else{
-                        	$element.find('.tree-item-name').html(elementData.name);
+                        	$element.find('.tree-item-name').html(elementData.name).click();
                         }
                     }else{
                         $('#departmentTree').off().empty().data('koala.tree', null)
-                        getTree();
+                        getTree(data.id);
                     }
 					$(this).modal('hide');
 				}
@@ -167,7 +168,7 @@ var department = function(){
 		var data = getAllData(id, type);
 		$.post(url, data).done(function(data){
 			if(data.result == 'success'){
-				dialog.trigger('complete', type);
+				dialog.trigger('complete', {type:type, id: data.id});
 			}else{
 				dialog.find('.modal-content').message({
 					type: 'error',
@@ -254,7 +255,7 @@ var department = function(){
 	/**
 	 * 生成部门树
 	 */
-	var getTree = function(){
+	var getTree = function(id){
         $.get(baseUrl + 'orgTree.koala').done(function(data){
             var zNodes = new Array();
             $.each(data, function(){
@@ -325,7 +326,16 @@ var department = function(){
                             }
                         });
                     }
-                }).find('.tree-folder-header').click();
+                })
+            	if(id){
+            		var $element = $('#departmentTree').find('#'+id).click();
+            		if($element.hasClass('tree-folder')){
+            			$element.find('.tree-folder-header:first').click();
+            		}
+            		$('#departmentTree').find('.tree-folder-content').show();
+            	}else{
+            		$('#departmentTree').find('.tree-folder-header:first').click();
+            	}
         });
 	};
     var createRightMenu = function(ev){
@@ -445,13 +455,18 @@ var department = function(){
 			identity: 'id',
 			columns: cols,
 			buttons: buttons,
-			querys: [{title: '姓名', value: 'example.name'}],
+			querys: [{title: '姓名', value: 'name'}],
 			url:  contextPath + '/employee/pagingquery-by-org.koala?organizationId='+id
 		});
 		departmentEmployeeGrid.find('#queryAllChildren').on('click', function(){
 			var $span = $(this).find('span');
 			departmentEmployeeGrid.data('koala.grid').search({queryAllChildren: !$span.hasClass('checked')});
 			$span.toggleClass('checked');
+			if ($span.hasClass('checked')) {
+				employeeListDialog.find('#deleteRelation').hide();
+			} else {
+				employeeListDialog.find('#deleteRelation').show();
+			}
 		});
 	};
 	var deleteEmployeeRelation = function(employeeListDialog, id, items, grid){
