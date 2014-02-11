@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.openkoala.bpm.infra.XmlParseUtil;
 
 import com.dayatang.utils.Assert;
 

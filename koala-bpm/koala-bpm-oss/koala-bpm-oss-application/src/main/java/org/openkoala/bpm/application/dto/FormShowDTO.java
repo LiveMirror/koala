@@ -3,8 +3,8 @@ package org.openkoala.bpm.application.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import org.openkoala.jbpm.application.vo.HistoryLogVo;
-import org.openkoala.jbpm.application.vo.TaskChoice;
+import org.openkoala.bpm.application.vo.HistoryLogVo;
+import org.openkoala.bpm.application.vo.TaskChoice;
 
 public class FormShowDTO implements Serializable {
 

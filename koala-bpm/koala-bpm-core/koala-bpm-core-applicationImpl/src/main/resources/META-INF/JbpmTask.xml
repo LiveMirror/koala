@@ -7,7 +7,7 @@
 
 	<named-query name="pageQueryRunningProcess">
 		<query>
-			select new org.openkoala.jbpm.application.vo.ProcessInstanceVO(log.processId,log.processInstanceId,exlog.processName,log.start,log.end,exlog.processData) from ProcessInstanceLog log , ProcessInstanceExpandLog exlog where
+			select new org.openkoala.bpm.application.vo.ProcessInstanceVO(log.processId,log.processInstanceId,exlog.processName,log.start,log.end,exlog.processData) from ProcessInstanceLog log , ProcessInstanceExpandLog exlog where
 			exlog.instanceLogId = log.id and exlog.state = 1
 		</query>
 	</named-query>

@@ -29,7 +29,7 @@
 			<result>index02.jsp</result>
 		</action>
 		<action name="*-*-*" 
-			class="org.openkoala.jbpm.core.jbpm.action.{1}.{2}Action" method="{3}">
+			class="org.openkoala.bpm.action.{1}.{2}Action" method="{3}">
 			<result name="JSON" type="json">
 				<param name="excludeProperties">.*Application$,.*Temp$</param>
 				<param name="includeProperties"></param>

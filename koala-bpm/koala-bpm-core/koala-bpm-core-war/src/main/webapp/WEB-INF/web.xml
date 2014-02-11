@@ -31,7 +31,7 @@
 
 	<servlet>
 		<servlet-name>processImage</servlet-name>
-		<servlet-class>org.openkoala.koala.jbpm.servlet.ProcessImageServlet</servlet-class>
+		<servlet-class>org.openkoala.bpm.servlet.ProcessImageServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

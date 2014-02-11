@@ -2,7 +2,7 @@ package org.openkoala.bpm.application.dto;
 
 import java.io.Serializable;
 
-import org.openkoala.jbpm.application.vo.TaskChoice;
+import org.openkoala.bpm.application.vo.TaskChoice;
 
 
 

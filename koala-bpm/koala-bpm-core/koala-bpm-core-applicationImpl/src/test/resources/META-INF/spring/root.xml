@@ -11,7 +11,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 	<context:annotation-config />
 	<context:property-placeholder location="classpath*:META-INF/*.properties" />
-	<context:component-scan base-package="org.openkoala.jbpm" />
+	<context:component-scan base-package="org.openkoala.bpm" />
 	<import resource="classpath:META-INF/spring/jbpm-spring.xml" />
 	<!-- 
 	<import resource="classpath:META-INF/conf/data-access.xml" />
