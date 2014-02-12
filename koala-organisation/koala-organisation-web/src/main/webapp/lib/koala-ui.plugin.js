@@ -63,7 +63,7 @@
 			this.pages = this.$element.find('.pages');
 			this.grid = this.$element.find('.grid');
 			this.gridBody = this.$element.find('.grid-body').css('width', this.$element.width());
-			this.gridTableHead = this.$element.find('.grid-table-head');
+			this.gridTableHead = this.$element.find('.grid-table-head').css('min-width', this.$element.width());
 			this.gridTableHeadTable = this.gridTableHead.find('table');
 			this.gridTableBody = this.$element.find('.grid-table-body').css('width', this.$element.width());
 			this.gridTableBodyTable = this.gridTableBody.find('table');
@@ -133,7 +133,7 @@
 				this.gridTableBodyTable.css('width', totalColumnWidth);
 			}else{
 				this.gridTableHead.css('width', this.$element.width());
-				this.gridTableHeadTable.find('th:last').css('width', 'auto');
+				this.gridTableHeadTable.find('th:last').attr('width', 'auto');
 				this.options.columns[this.options.columns.length-1].width = 'auto';
 			}
 			this.gridTableHeadTable.find('[data-role="selectAll"]').on('click',function(e) {
@@ -429,9 +429,11 @@
 				self.items = self.initTreeItems(new Array(), self.items);
 			}
 			var items = self.items;
+			items = JSON.parse(JSON.stringify(items).replace('<script>', '<script*>'));
 			var trHtmls = new Array();
 			for(var i= 0,j=items.length; i<j; i++){
 				var item = items[i];
+				
                 self.itemsMap[item.id] = item;
 				var trHtml = new Array();
 				if(self.options.tree && self.options.tree.column){
@@ -803,8 +805,8 @@
 		}
 		this.$element.appendTo($('body'))
 			.fadeIn(400, function(){
-				var width = self.$element.find('[data-toggle="content"]').outerWidth(true)*0.5 + 20;
-				var height = self.$element.find('[data-toggle="content"]').outerHeight(true)*0.5 + 20;
+				var width = self.$element.outerWidth(true)*0.5;
+				var height = self.$element.outerHeight(true)*0.5;
 				var left = self.container.offset().left + self.container.outerWidth(true)*0.5 - width;
 				var top = self.container.offset().top + self.container.outerHeight(true)*0.5 - height;
 				
