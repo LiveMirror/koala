@@ -4,11 +4,32 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 	<display-name>koalaMonitor-web</display-name>
+
+	<!-- monitor config begin -->
+	<listener>
+		<listener-class>org.openkoala.koala.monitor.core.KoalaMonitorListener</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>monitor-config</param-name>
+		<param-value>WEB-INF/monitor/koala-monitor.xml</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>PageDetectFilter</filter-name>
+		<filter-class>org.openkoala.koala.monitor.component.http.DetectFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>PageDetectFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- monitor config end -->
+
 	<listener>
 		<listener-class>com.dayatang.spring.webapp.DayatangContextLoaderListener</listener-class>
 	</listener>
-	
-	<listener>
+
+ 	<listener>
 		<listener-class>org.openkoala.koala.auth.web.InitSuperUserListener</listener-class>
 	</listener>
 
@@ -26,7 +47,7 @@
 		<servlet-name>jcaptcha</servlet-name>
 		<servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>jcaptcha</servlet-name>
 		<url-pattern>/jcaptcha.jpg</url-pattern>
@@ -71,7 +92,7 @@
 		<error-code>404</error-code>
 		<location>/pages/errors/404.html</location>
 	</error-page>
-	
+
 	<error-page>
 		<error-code>500</error-code>
 		<location>/pages/errors/500.html</location>

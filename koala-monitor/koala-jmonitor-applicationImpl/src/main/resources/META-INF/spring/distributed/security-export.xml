@@ -40,9 +40,5 @@
 	</bean>
 	
 	<tx:annotation-driven transaction-manager="transactionManager_security" />
-	
-	<jpa:repositories base-package="org.openkoala.koala"
-		entity-manager-factory-ref="km_entityManagerFactory"
-		transaction-manager-ref="km_transactionManager" />
 	<!-- security datasource 的配置   结束-->
 </beans>
