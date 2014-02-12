@@ -346,7 +346,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 		StringBuilder jpql = new StringBuilder("select user from User user where user not in("
 				+ "select user from RoleUserAuthorization auth" //
 				+ " join auth.user user join auth.role role where role.id=? and auth.abolishDate>?)" //
-				+ " and user.abolishDate>?");
+				+ " and user.abolishDate>? and user.isSuper = false ");
 		
 		if (userVO != null && !StringUtils.isEmpty(userVO.getName())) {
 			jpql.append(" and user.name like ? ");
