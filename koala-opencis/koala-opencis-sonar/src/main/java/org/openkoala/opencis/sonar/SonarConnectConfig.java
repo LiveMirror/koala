@@ -17,7 +17,6 @@ public class SonarConnectConfig {
     private URL addressURL;
 
     public SonarConnectConfig(String address, String username, String password) {
-
         this.address = address;
         this.username = username;
         this.password = password;
