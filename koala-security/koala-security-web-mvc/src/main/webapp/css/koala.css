@@ -77,7 +77,7 @@
 	background-image: -ms-linear-gradient(top, #fdfdfd 0%, #eaeaea 100%);
 	background-image: -o-linear-gradient(top, #fdfdfd 0%, #eaeaea 100%);
 	background-image: linear-gradient(top, #fdfdfd 0%, #eaeaea 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdfd', endColorstr='#eaeaea',GradientType=0 );
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdfd', endColorstr='#f6f5ec',GradientType=0 );
 }
 .grid-table-head table th .colResize {
 	float: right;

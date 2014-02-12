@@ -7,12 +7,12 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openkoala.jbpm.application.JBPMApplication;
-import org.openkoala.jbpm.application.vo.HistoryLogVo;
-import org.openkoala.jbpm.application.vo.PageTaskVO;
-import org.openkoala.jbpm.application.vo.ProcessVO;
-import org.openkoala.jbpm.application.vo.TaskChoice;
-import org.openkoala.jbpm.application.vo.TaskVO;
+import org.openkoala.bpm.application.JBPMApplication;
+import org.openkoala.bpm.application.vo.HistoryLogVo;
+import org.openkoala.bpm.application.vo.PageTaskVO;
+import org.openkoala.bpm.application.vo.ProcessVO;
+import org.openkoala.bpm.application.vo.TaskChoice;
+import org.openkoala.bpm.application.vo.TaskVO;
 import org.springframework.context.ApplicationContext;
 
 /**

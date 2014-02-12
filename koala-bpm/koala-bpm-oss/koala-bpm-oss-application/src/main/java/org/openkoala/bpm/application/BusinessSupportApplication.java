@@ -7,9 +7,9 @@ import org.openkoala.bpm.application.dto.DynaProcessHistoryValueDTO;
 import org.openkoala.bpm.application.dto.FormShowDTO;
 import org.openkoala.bpm.application.dto.TaskDTO;
 import org.openkoala.bpm.application.dto.TaskVerifyDTO;
+import org.openkoala.bpm.application.vo.ProcessVO;
 import org.openkoala.bpm.processdyna.core.DynaProcessKey;
 import org.openkoala.bpm.processdyna.core.DynaProcessTemplate;
-import org.openkoala.jbpm.application.vo.ProcessVO;
 
 import com.dayatang.querychannel.support.Page;
 

@@ -165,7 +165,3 @@ var changeHeight = function(){
     sidebarHeight < height && sidebar.css('height', height);
     $('.g-mainc').css('min-height', height);
 };
-
-$(window).on('resize', function(){
-    changeHeight();
-});

@@ -12,6 +12,7 @@
 	<name>koala-bpm-designer-web</name>
 	<packaging>war</packaging>
 	<url>http://maven.apache.org</url>
+	<description>Koala BPM流程设计器的WEB模块，提供WEB方式的界面进行流程的创建，修改，发布等</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.type>war</project.type>

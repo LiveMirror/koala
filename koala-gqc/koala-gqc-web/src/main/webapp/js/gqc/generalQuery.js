@@ -133,12 +133,21 @@ var generalQuery = function(){
 					var dataSourceId = $(this).getValue();
 					var url = baseUrl + 'findAllTable.koala?id='+ dataSourceId;
 					$.get(url).done(function(data){
+						if(data.result){
+							dialog.message({
+								type: 'error',
+								content: data.result
+							});
+							$(this).find('[data-toggle="item"]').text('请选择');
+							return;
+						}
 						var tableList = data.tableList;
 						var contents = new Array();
 						for(var i=0, j=tableList.length; i<j; i++){
 							contents.push({value: tableList[i], title: tableList[i]});
 						}
 						tableSelect.setSelectItems(contents);
+						tableSelect.setValue(tableList[0]);
 						dialog.trigger('dataSourceSelectComplete.koala')
 					})
 			})

@@ -40,15 +40,15 @@
 		<class>org.jbpm.task.OnParentAbortAllSubTasksEndStrategy</class>
 		<class>org.jbpm.task.OnAllSubTasksEndParentEndStrategy</class>
 		<class>org.jbpm.task.User</class>
-		<class>org.openkoala.jbpm.core.KoalaProcessInfo</class>
-		<class>org.openkoala.jbpm.core.HistoryLog</class>
-		<class>org.openkoala.jbpm.core.MessageLog</class>
-		<class>org.openkoala.jbpm.core.FormEntity</class>
-		<class>org.openkoala.jbpm.core.KoalaAssignInfo</class>
-		<class>org.openkoala.jbpm.core.KoalaAssignDetail</class>
-		<class>org.openkoala.jbpm.core.KoalaJbpmVariable</class>
-		<class>org.openkoala.jbpm.core.ProcessInstanceExpandLog</class>
-		<class>org.openkoala.jbpm.core.JoinAssign</class>
+		<class>org.openkoala.bpm.core.KoalaProcessInfo</class>
+		<class>org.openkoala.bpm.core.HistoryLog</class>
+		<class>org.openkoala.bpm.core.MessageLog</class>
+		<class>org.openkoala.bpm.core.FormEntity</class>
+		<class>org.openkoala.bpm.core.KoalaAssignInfo</class>
+		<class>org.openkoala.bpm.core.KoalaAssignDetail</class>
+		<class>org.openkoala.bpm.core.KoalaJbpmVariable</class>
+		<class>org.openkoala.bpm.core.ProcessInstanceExpandLog</class>
+		<class>org.openkoala.bpm.core.JoinAssign</class>
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.dialect" value="${db.jdbc.dialect}" />
