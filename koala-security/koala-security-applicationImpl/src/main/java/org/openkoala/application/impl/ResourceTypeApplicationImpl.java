@@ -57,6 +57,10 @@ public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTyp
 	public void delete(ResourceTypeVO[] resourceTypeVOs) {
 		for (ResourceTypeVO resourceTypeVO : resourceTypeVOs) {
 			ResourceType resourceType = ResourceType.load(ResourceType.class, Long.valueOf(resourceTypeVO.getId()));
+			//如果ResourceType已经被引用,则抛出异常
+			if(resourceType.getResources().size()>0){
+				throw new ApplicationException("resourceType.hasResource");
+			}
 			resourceType.setAbolishDate(new Date());
 			removeResourceTypeAssignment(resourceType);
 		}
