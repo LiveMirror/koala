@@ -153,8 +153,7 @@
 		<tomcat.version>6.0.35</tomcat.version>
 		<aether.connector.version>1.13.1</aether.connector.version>
 		<koala.version>2.1.0-SNAPSHOT</koala.version>
-
-
+		
 	</properties>
 
 	<profiles>
@@ -173,7 +172,7 @@
 				<hibernate.show_sql>true</hibernate.show_sql>
 				<hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
 				<db.jdbcDriver>org.h2.Driver</db.jdbcDriver>
-				<db.connectionURL>jdbc:h2:~/db/koala;MVCC=true</db.connectionURL>
+				<db.connectionURL>jdbc:h2:${basedir}/target/koala;MVCC=true</db.connectionURL>
 				<db.username>sa</db.username>
 				<db.password />
 				<db.Type>H2</db.Type>
@@ -184,7 +183,7 @@
 				<test.hibernate.show_sql>true</test.hibernate.show_sql>
 				<test.hibernate.dialect>org.hibernate.dialect.H2Dialect</test.hibernate.dialect>
 				<test.db.jdbcDriver>org.h2.Driver</test.db.jdbcDriver>
-				<test.db.connectionURL>jdbc:h2:~/db/test</test.db.connectionURL>
+				<test.db.connectionURL>jdbc:h2:mem:testdb</test.db.connectionURL>
 				<test.db.username>sa</test.db.username>
 				<test.db.password />
 				<test.db.Type>H2</test.db.Type>
