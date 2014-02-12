@@ -40,7 +40,7 @@ public class KoalaJiraService {
 
 
     public void createProject(Project project, String jiraServerAddress) throws RemoteException {
-        jiraService.createProject(token, project.getProjectName(), project.getProjectName(),
+        jiraService.createProject(token, project.getProjectName().toUpperCase(), project.getProjectName(),
                 project.getDescription(), jiraServerAddress, project.getProjectLead(),
                 jiraService.getPermissionSchemes(token)[0], null, null);
     }
@@ -51,18 +51,32 @@ public class KoalaJiraService {
         jiraService.createProjectRole(token, remoteProjectRole);
     }
 
-    public boolean projectExists(Project project) {
-        RemoteProject[] remoteProjectArray = getAllProjects();
-        if (remoteProjectArray == null || remoteProjectArray.length == 0) {
+    public boolean isProjectExist(Project project) {
+
+        try {
+            return jiraService.getProjectByKey(token, getProjectKey(project)) != null;
+        } catch (RemoteException e) {
+          //  e.printStackTrace();
+            //找不到会抛异常
             return false;
         }
-        for (RemoteProject remoteProject : remoteProjectArray) {
-            if (remoteProject.getKey().equals(project.getProjectName())
-                    || remoteProject.getName().equals(project.getProjectName())) {
-                return true;
+
+    }
+
+    private RemoteProjectRole getRemoteProjectRole(String roleName) {
+        RemoteProjectRole[] allProjectRoles = getAllRoles();
+        if (allProjectRoles == null || allProjectRoles.length == 0) {
+            return null;
+        }
+
+        for (RemoteProjectRole role : allProjectRoles) {
+            if (role.getName().equals(roleName)) {
+                return role;
             }
         }
-        return false;
+
+        return null;
+
     }
 
     /**
@@ -80,7 +94,7 @@ public class KoalaJiraService {
         return remoteProjectRoleArray;
     }
 
-    public boolean roleExists(String roleName) {
+    public boolean isRoleExist(String roleName) {
         List<String> roleNames = null;
         try {
             roleNames = getAllProjectRoleNames();
@@ -98,10 +112,10 @@ public class KoalaJiraService {
         return false;
     }
 
-    public boolean userExists(String userName) {
+    public boolean isUserExist(String username_or_developId) {
         RemoteUser remoteUser = null;
         try {
-            remoteUser = jiraService.getUser(token, userName);
+            remoteUser = jiraService.getUser(token, username_or_developId);
         } catch (RemotePermissionException e1) {
             throw new CISClientBaseRuntimeException("该账号没有权限查询用户！");
         } catch (RemoteAuthenticationException e1) {
@@ -113,41 +127,29 @@ public class KoalaJiraService {
 
     }
 
-    public void deleteProject(String projectName) throws RemoteException {
-        jiraService.deleteProject(token, projectName);
+    public void deleteProject(Project project) throws RemoteException {
+        jiraService.deleteProject(token, getProjectKey(project));
     }
 
-    public RemoteProjectRole getRemoteProjectRoleId(String roleName) {
-        RemoteProjectRole[] remoteProjectRoleArray = getAllRoles();
-        for (RemoteProjectRole remoteProjectRole : remoteProjectRoleArray) {
-            if (remoteProjectRole.getName().equals(roleName)) {
-                return remoteProjectRole;
-            }
-        }
-        return null;
-    }
 
-    public RemoteProject getRemoteProjectByProjectName(String projectName) {
+    public RemoteProject getRemoteProjectByProjectKey(String projectKey) {
         RemoteProject remoteProject = null;
         try {
-            remoteProject = jiraService.getProjectByKey(token, projectName);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            remoteProject = jiraService.getProjectByKey(token, projectKey);
+        } catch (RemotePermissionException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("getRemoteProjectByProjectKey RemotePermissionException", e);
+        } catch (RemoteAuthenticationException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("getRemoteProjectByProjectKey RemoteAuthenticationException", e);
+        } catch (com.atlassian.jira.rpc.soap.client.RemoteException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("getRemoteProjectByProjectKey RemoteException", e);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("getRemoteProjectByProjectKey RemoteException", e);
         }
         return remoteProject;
-    }
-
-    public RemoteProject[] getAllProjects() {
-        RemoteProject[] remoteProjectArray = null;
-        try {
-            remoteProjectArray = jiraService.getProjectsNoSchemes(token);
-        } catch (RemotePermissionException e) {
-            throw new CISClientBaseRuntimeException("jira.remotePermissionException", e);
-
-        } catch (Exception e) {
-            throw new CISClientBaseRuntimeException("jira.unkownException", e);
-        }
-        return remoteProjectArray;
     }
 
 
@@ -168,33 +170,32 @@ public class KoalaJiraService {
         return token;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public JiraSoapService getJiraService() {
         return jiraService;
     }
 
-    public void setJiraService(JiraSoapService jiraService) {
-        this.jiraService = jiraService;
-    }
-
     public void createUser(Developer developer) throws RemoteException {
-        jiraService.createUser(token, developer.getName(), developer.getPassword(), developer.getFullName(), developer.getEmail());
+        jiraService.createUser(token, developer.getId(), developer.getPassword(), developer.getName(),
+                developer.getEmail());
     }
 
     public void deleteUser(String userName) throws RemoteException {
         jiraService.deleteUser(token, userName);
     }
 
-    public void addActorsToProjectRole(String projectName, String userName, String projectRoleName) throws RemoteException {
+    public void addActorsToProjectRole(String projectKey, String userName, String projectRoleName) throws RemoteException {
         String[] userNames = new String[]{userName};
-        RemoteProjectRole remoteProjectRole = getRemoteProjectRoleId(projectRoleName);
-        RemoteProject remoteProject = getRemoteProjectByProjectName(projectName);
+        RemoteProjectRole remoteProjectRole = getRemoteProjectRole(projectRoleName);
+        RemoteProject remoteProject = getRemoteProjectByProjectKey(projectKey);
         //只有两种类型：atlassian-user-role-actor  atlassian-group-role-actor
         String actorType = "atlassian-user-role-actor";
+
         jiraService.addActorsToProjectRole(token, userNames, remoteProjectRole, remoteProject, actorType);
 
+    }
+
+    protected static String getProjectKey(Project project) {
+        return project.getProjectName().toUpperCase();
     }
 }
