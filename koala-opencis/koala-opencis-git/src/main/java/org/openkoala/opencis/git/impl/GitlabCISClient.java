@@ -3,6 +3,7 @@ package org.openkoala.opencis.git.impl;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
@@ -239,7 +240,7 @@ public class GitlabCISClient implements CISClient {
         try {
             createGitlabHTTPRequestor().method("POST")
                     .with("email", developer.getEmail()).with("username",
-                    developer.getId()).with("name", developer.getName()).with("password", developer.getPassword())
+                    developer.getId()).with("name", URLEncoder.encode(developer.getName(), "UTF-8")).with("password", developer.getPassword())
                     .to(GitlabUser.URL, GitlabUser.class);
         } catch (IOException e) {
             e.printStackTrace();

@@ -10,7 +10,7 @@ import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.Session;
 
 /**
- * svn分配用户到某个角色
+ * svn分配某个角色到该项目下并拥有rw操作权限
  */
 public class SvnAuthzCommand extends SvnCommand {
 

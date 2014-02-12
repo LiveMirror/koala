@@ -103,7 +103,7 @@ public class SvnCISClient implements CISClient {
     @Override
     public void createProject(Project project) {
         createProjectInSvn(project);
-//        commitToServer(project);
+        commitToServer(project);
     }
     
     /**
@@ -112,12 +112,17 @@ public class SvnCISClient implements CISClient {
      */
     private void createProjectInSvn(Project project){
     	isProjectInfoNotBlank(project);
+    	//创建一个默认的Koala开发者
+    	Developer koalaDeveloper = new KoalaDeveloper();
         SvnCommand command = new SvnCreateProjectCommand(configuration, project);
         SvnCommand clearProjectPasswdFileContentCommand = new SvnClearProjectPasswdFileContentCommand(configuration, project);
+        SvnCommand createKoalaUserCommand = new SvnCreateUserCommand(koalaDeveloper, configuration, project);
+        assignUsersToRole(project,"admin",koalaDeveloper);
         SvnCommand createAuthzFileCommand = new SvnCreateAuthFileCommand(configuration, project);
         try {
             executor.addCommand(command);
             executor.addCommand(clearProjectPasswdFileContentCommand);
+            executor.addCommand(createKoalaUserCommand);
             executor.addCommand(createAuthzFileCommand);
             success = executor.executeBatch();
         } catch (ProjectExistenceException e) {
@@ -228,7 +233,7 @@ public class SvnCISClient implements CISClient {
      * @param project
      * @return
      */
-    public boolean commitToServer(Project project){
+    private boolean commitToServer(Project project){
     	LocalCommand cmdCheckout = new SvnLocalCheckoutCommand(configuration, project);
     	LocalCommand cmdAdd = new SvnLocalAddCommand(configuration, project);
     	LocalCommand cmdSubmit = new SvnLocalCommitCommand(configuration, project);
@@ -240,7 +245,7 @@ public class SvnCISClient implements CISClient {
 			success = executor.executeBatch();
 		} catch (Exception e) {
 			// TODO: handle exception
-			throw new RuntimeException("提交本地Maven项目到SVN服务器时出错：" + e.getMessage());
+			throw new CreateProjectException("创建项目异常", e);
 		}
     	return success;
     }
