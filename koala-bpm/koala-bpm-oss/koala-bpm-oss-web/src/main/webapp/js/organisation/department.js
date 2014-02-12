@@ -54,11 +54,13 @@ var department = function(){
 					type: 'success',
 					content: '撤销成功'
 				});
+				var departmentTree = $('#departmentTree');
                 if($element.hasClass('tree-item')){
-                    $('#departmentTree').tree('removeChildren', $element);
+                    departmentTree.tree('removeChildren', $element);
                 }else{
-                    $('#departmentTree').tree('removeChildren', $element.parent());
+                    departmentTree.tree('removeChildren', $element.parent());
                 }
+                departmentTree.find('.tree-folder-header:first').click();
 			}else{
 				$('body').message({
 					type: 'error',
