@@ -6,8 +6,12 @@ import org.openkoala.opencis.CISClientBaseRuntimeException;
 import org.openkoala.opencis.api.CISClient;
 import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
+
 import javax.xml.rpc.ServiceException;
 
+/**
+ * 目前只支持jira 6及以下版本
+ */
 public class JiraCISClient implements CISClient {
 
 
@@ -38,36 +42,40 @@ public class JiraCISClient implements CISClient {
     public void createProject(Project project) {
         project.validate();
 
-        if (jiraService.projectExists(project)) {
-            return;
+        if (!jiraService.isUserExist(project.getProjectLead())) {
+            throw new CISClientBaseRuntimeException("jira.projectLeadNotExists");
         }
 
-        if (!jiraService.userExists(project.getProjectLead())) {
-            throw new CISClientBaseRuntimeException("jira.projectLeadNotExists");
+        if (jiraService.isProjectExist(project)) {
+            return;
         }
 
         try {
             jiraService.createProject(project, jiraServerAddress);
         } catch (RemotePermissionException e) {
-            throw new CISClientBaseRuntimeException("jira createProject permission denied");
+            throw new CISClientBaseRuntimeException("jira createProject permission denied", e);
         } catch (RemoteValidationException e) {
-            throw new CISClientBaseRuntimeException("jira RemoteValidationException");
+
+            throw new CISClientBaseRuntimeException("jira RemoteValidationException", e);
         } catch (RemoteAuthenticationException e) {
-            throw new CISClientBaseRuntimeException("jira RemoteAuthenticationException");
+            throw new CISClientBaseRuntimeException("jira RemoteAuthenticationException", e);
         } catch (RemoteException e) {
-            throw new CISClientBaseRuntimeException("jira RemoteException");
+            throw new CISClientBaseRuntimeException("jira RemoteException", e);
         } catch (java.rmi.RemoteException e) {
-            throw new CISClientBaseRuntimeException("jira RemoteException");
+            throw new CISClientBaseRuntimeException("jira RemoteException", e);
         }
+    }
+
+    public boolean isProjectExist(Project project) {
+        return jiraService.isProjectExist(project);
     }
 
 
     @Override
     public void createUserIfNecessary(Project project, Developer developer) {
         developer.validate();
-        project.validate();
         //用户存在，则不创建，忽略
-        if (jiraService.userExists(developer.getName())) {
+        if (isDeveloperExist(developer)) {
             return;
         }
         try {
@@ -86,7 +94,7 @@ public class JiraCISClient implements CISClient {
     @Override
     public void removeUser(Project project, Developer developer) {
         try {
-            jiraService.deleteUser(developer.getName());
+            jiraService.deleteUser(developer.getId());
         } catch (RemotePermissionException e) {
             throw new CISClientBaseRuntimeException("jira.remotePermissionException");
         } catch (Exception e) {
@@ -96,11 +104,17 @@ public class JiraCISClient implements CISClient {
 
     @Override
     public void createRoleIfNecessary(Project project, String roleName) {
+        assert roleName != null && !"".equals(roleName.trim());
         //角色存在，则不创建
-        if (jiraService.roleExists(roleName)) {
+        if (jiraService.isRoleExist(roleName)) {
             return;
         }
-        createRole(roleName);
+        try {
+            jiraService.createRole(roleName);
+        } catch (java.rmi.RemoteException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("createRoleIfNecessary failure", e);
+        }
     }
 
 
@@ -109,41 +123,31 @@ public class JiraCISClient implements CISClient {
         JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
         jiraSoapServiceLocator.setJirasoapserviceV2EndpointAddress(jiraServerAddress
                 + "/rpc/soap/jirasoapservice-v2?wsdl");
+        String token = null;
         try {
-            JiraSoapService jiraSoapService  = jiraSoapServiceLocator.getJirasoapserviceV2();
-            String token = jiraSoapService.login(adminUserName, adminPassword);
+            JiraSoapService jiraSoapService = jiraSoapServiceLocator.getJirasoapserviceV2();
+            token = jiraSoapService.login(adminUserName, adminPassword);
             jiraService = new KoalaJiraService(token, jiraSoapService);
         } catch (ServiceException e) {
             throw new CISClientBaseRuntimeException("jira.authenticationServiceException", e);
         } catch (RemoteAuthenticationException e) {
-            throw new CISClientBaseRuntimeException("jira.authenticationRemoteAuthenticationException", e);
+            // Invalid username or password
+            return false;
         } catch (RemoteException e) {
             throw new CISClientBaseRuntimeException("jira.authenticationRemoteException", e);
         } catch (java.rmi.RemoteException e) {
             throw new CISClientBaseRuntimeException("jira.authenticationRemoteException", e);
         }
-        return jiraService != null;
+        return token != null;
     }
 
-
-    /**
-     * 创建角色到JIRA
-     */
-    private boolean createRole(String roleName) {
-        try {
-            jiraService.createRole(roleName);
-        } catch (java.rmi.RemoteException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
 
     @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {
         for (Developer each : developers) {
-            checkProjectRoleUserAllExist(project, each.getName(), role);
+            checkProjectRoleUserAllExist(project, each.getId(), role);
             try {
-                jiraService.addActorsToProjectRole(project.getProjectName(), each.getName(), role);
+                jiraService.addActorsToProjectRole(KoalaJiraService.getProjectKey(project), each.getId(), role);
             } catch (java.rmi.RemoteException e) {
                 throw new CISClientBaseRuntimeException("jira.assignUsersToRoleRemoteException", e);
             }
@@ -156,17 +160,21 @@ public class JiraCISClient implements CISClient {
      *
      * @return
      */
-    private boolean checkProjectRoleUserAllExist(Project project, String userName, String roleName) {
-        if (!jiraService.projectExists(project)) {
+    private void checkProjectRoleUserAllExist(Project project, String userName, String roleName) {
+        if (!jiraService.isProjectExist(project)) {
             throw new CISClientBaseRuntimeException("jira.projectNotExists");
         }
-        if (!jiraService.userExists(userName)) {
+        if (!jiraService.isUserExist(userName)) {
             throw new CISClientBaseRuntimeException("jira.userNotExists");
         }
-        if (!jiraService.roleExists(roleName)) {
-            throw new CISClientBaseRuntimeException("jira.roleNotExists");
-        }
-        return true;
+//        if (!jiraService.isRoleExist(roleName)) {
+//            throw new CISClientBaseRuntimeException("jira.roleNotExists");
+//        }
+    }
+
+
+    public boolean isRoleExist(String roleName) {
+        return jiraService.isRoleExist(roleName);
     }
 
 
@@ -175,12 +183,20 @@ public class JiraCISClient implements CISClient {
      */
     public void removeProject(Project project) {
         try {
-            jiraService.deleteProject(project.getProjectName());
+            if (!jiraService.isProjectExist(project)) {
+                return;
+            }
+            jiraService.deleteProject(project);
         } catch (RemotePermissionException e) {
             throw new CISClientBaseRuntimeException("jira.remotePermissionException");
         } catch (java.rmi.RemoteException e) {
             throw new CISClientBaseRuntimeException("jira.remoteException");
         }
+    }
+
+
+    public boolean isDeveloperExist(Developer developer) {
+        return jiraService.isUserExist(developer.getId());
     }
 
 

@@ -99,7 +99,7 @@ public class GitlabCISClientIntegrationTest {
 
     private GitlabConfiguration getConfiguration() {
         GitlabConfiguration configuration = new GitlabConfiguration();
-        System.out.println(getToken());
+
         configuration.setToken(getToken());
         configuration.setGitHostURL("http://127.0.0.1");
         configuration.setAdminUsername("root");
