@@ -49,6 +49,14 @@ public interface UserApplication {
      * @return
      */
     Page<UserVO> pageQueryUser(int currentPage, int pageSize);
+    
+    /**
+     * 分页查询用户
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    Page<UserVO> pageQueryUser(UserVO userVO, int currentPage, int pageSize);
 
     /**
      * 自定义分页查询用户

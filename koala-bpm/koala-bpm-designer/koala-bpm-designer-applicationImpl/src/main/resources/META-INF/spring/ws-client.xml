@@ -13,7 +13,7 @@
 	<!-- all application configure should configure in this file -->
     <context:property-placeholder location="classpath:META-INF/props/ws-client.properties" />
     
-	<jaxrs:client id="jbpmApplication" address="http://localhost:8180/ws/jbpmService" serviceClass="org.openkoala.jbpm.application.JBPMApplication">
+	<jaxrs:client id="jbpmApplication" address="${JbpmApplication.ws.url}" serviceClass="org.openkoala.bpm.application.JBPMApplication">
 	</jaxrs:client>
 	
 </beans>

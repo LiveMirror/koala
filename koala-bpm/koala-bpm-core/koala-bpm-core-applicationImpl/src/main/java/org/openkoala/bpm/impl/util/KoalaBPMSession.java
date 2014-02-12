@@ -86,7 +86,7 @@ public class KoalaBPMSession {
 		ksession.getWorkItemManager().registerWorkItemHandler("Service Task",
 				new ServiceTaskHandler());
 		System.setProperty("jbpm.usergroup.callback",
-				"org.openkoala.jbpm.usergroup.KoalaBPMUserGroupCallBack");// 引入流程用户初始化接口
+				"org.openkoala.bpm.usergroup.KoalaBPMUserGroupCallBack");// 引入流程用户初始化接口
 		ksession.addEventListener(new JBPMProcessEventListener());
 		new JPAWorkingMemoryDbLogger(ksession);// 引入流程历史记录接口
 		JPAProcessInstanceDbLog.setEnvironment(ksession.getEnvironment());// 引入流程历史记录的ksesson
