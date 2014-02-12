@@ -8,7 +8,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>koala-businesslog-web</artifactId>
     <packaging>war</packaging>
-    <name>koala-businesslog-web</name>
+    <name>Business Log Web Application</name>
+    <description>业务日志子系统Web前端</description>
+
     <dependencies>
         <dependency>
             <groupId>org.openkoala.businesslog</groupId>
@@ -45,13 +47,11 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
-            <version>2.2</version>
             <scope>provided</scope>
         </dependency>
 
@@ -59,7 +59,6 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

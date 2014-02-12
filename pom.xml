@@ -9,7 +9,7 @@
 	<packaging>pom</packaging>
 	<name>koala project</name>
 	<url>http://www.openkoala.org/</url>
-	<description />
+	<description>Koala Project,Koala所有功能模块的父项目</description>
 
 	<developers>
 		<developer>
@@ -167,7 +167,7 @@
 
 				<db.groupId>com.h2database</db.groupId>
 				<db.artifactId>h2</db.artifactId>
-				<db.version>1.3.168</db.version>
+				<db.version>1.3.174</db.version>
 
 				<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
 				<hibernate.show_sql>true</hibernate.show_sql>
@@ -328,11 +328,6 @@
 			</dependency>
 			<dependency>
 				<groupId>com.dayatang.commons</groupId>
-				<artifactId>dayatang-commons-utils</artifactId>
-				<version>${dayatang.commons.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.dayatang.commons</groupId>
 				<artifactId>dayatang-commons-hibernate</artifactId>
 				<version>${dayatang.commons.version}</version>
 			</dependency>
@@ -467,6 +462,11 @@
 				<artifactId>spring-security-acl</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-cas</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
 			<!-- 加入Spring对JPA的支持 -->
 			<dependency>
 				<groupId>org.springframework.data</groupId>
@@ -595,12 +595,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>javassist</groupId>
-				<artifactId>javassist</artifactId>
-				<version>3.12.1.GA</version>
-			</dependency>
-
-			<dependency>
 				<groupId>jsr94</groupId>
 				<artifactId>jsr94</artifactId>
 				<version>1.1</version>
@@ -702,7 +696,7 @@
 			<dependency>
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
-				<version>1.3.168</version>
+				<version>1.3.174</version>
 			</dependency>
 
 			<dependency>
@@ -740,12 +734,12 @@
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
 				<artifactId>jackson-core-asl</artifactId>
-				<version>1.9.0</version>
+				<version>1.9.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
 				<artifactId>jackson-mapper-asl</artifactId>
-				<version>1.9.0</version>
+				<version>1.9.2</version>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.ehcache</groupId>
@@ -1074,6 +1068,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 				<version>2.7</version>
+				<configuration>
+					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Named;
+
+import org.openkoala.bpm.application.JBPMApplication;
 import org.openkoala.bpm.application.ProcessFormOperApplication;
 import org.openkoala.bpm.application.dto.DynaProcessFormDTO;
 import org.openkoala.bpm.application.dto.DynaProcessKeyDTO;
@@ -12,6 +14,7 @@ import org.openkoala.bpm.application.dto.DynaProcessTemplateDTO;
 import org.openkoala.bpm.application.dto.ProcessDTO;
 import org.openkoala.bpm.application.dto.SelectOptions;
 import org.openkoala.bpm.application.utils.EntityTurnToDTOUtil;
+import org.openkoala.bpm.application.vo.ProcessVO;
 import org.openkoala.bpm.processdyna.core.DynaProcessForm;
 import org.openkoala.bpm.processdyna.core.DynaProcessKey;
 import org.openkoala.bpm.processdyna.core.DynaProcessTemplate;
@@ -19,8 +22,6 @@ import org.openkoala.bpm.processdyna.core.DynaType;
 import org.openkoala.bpm.processdyna.core.FieldType;
 import org.openkoala.bpm.processdyna.core.ValidateRule;
 import org.openkoala.exception.base.BaseException;
-import org.openkoala.jbpm.application.JBPMApplication;
-import org.openkoala.jbpm.application.vo.ProcessVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;

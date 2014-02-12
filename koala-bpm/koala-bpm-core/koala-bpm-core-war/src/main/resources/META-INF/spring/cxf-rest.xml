@@ -37,7 +37,7 @@ http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
 
 	<bean id="jbpmApplication"
-		class="org.openkoala.jbpm.applicationImpl.jbpm.JBPMApplicationImpl" />
+		class="org.openkoala.bpm.impl.JBPMApplicationImpl" />
 		
 	<jaxrs:server id="jbpmService" address="/jbpmService">
 		<jaxrs:serviceBeans>

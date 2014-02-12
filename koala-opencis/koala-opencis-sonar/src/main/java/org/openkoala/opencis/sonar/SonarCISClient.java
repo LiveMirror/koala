@@ -3,13 +3,11 @@ package org.openkoala.opencis.sonar;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.*;
 import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.AuthState;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
@@ -31,7 +29,7 @@ import org.openkoala.opencis.api.Project;
 
 public class SonarCISClient implements CISClient {
 
-    protected static final String SONAN_PERMISSION_USER = "user";
+    protected static final String SONAR_PERMISSION_USER = "user";
 
     private SonarConnectConfig connectConfig;
 
@@ -255,7 +253,7 @@ public class SonarCISClient implements CISClient {
         for (Developer each : developers) {
             HttpPost httpPost = new HttpPost(connectConfig.getAddress() + "/api/permissions/add");
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("permission", SONAN_PERMISSION_USER));
+            params.add(new BasicNameValuePair("permission", SONAR_PERMISSION_USER));
             params.add(new BasicNameValuePair("user", each.getId()));
             params.add(new BasicNameValuePair("component", getKeyOf(project)));
             CloseableHttpResponse response = null;
