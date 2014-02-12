@@ -13,9 +13,9 @@
     <import resource="classpath:META-INF/spring/distributed/security-export.xml" />
     
 	<import resource="classpath*:META-INF/spring/spring-security.xml"/>
-	<import resource="classpath:spring/koala-security-http.xml"/>
+	<import resource="classpath:META-INF/spring/koala-security-http.xml"/>
 	
-	<import resource="classpath:spring/security-custom.xml"/>
+	<import resource="classpath:META-INF/spring/security-custom.xml"/>
 	<import resource="classpath*:META-INF/spring/spring-ehcache.xml"/>
     
 </beans>

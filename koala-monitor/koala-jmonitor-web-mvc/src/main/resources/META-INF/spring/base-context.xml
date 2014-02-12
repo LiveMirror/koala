@@ -14,6 +14,5 @@
 	   <context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-	<context:property-placeholder location="classpath*:props/*.properties" ignore-unresolvable="true"/>
 	<context:property-placeholder location="classpath*:META-INF/props/*.properties" ignore-unresolvable="true"/>
 </beans>
