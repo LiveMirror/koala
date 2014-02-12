@@ -102,7 +102,10 @@ public class UserController {
 		Page<UserVO> all = null;
 		
 		if (roleId == null) {
-			all = userApplication.pageQueryUser(page, pagesize);
+			UserVO userVO = new UserVO();
+			userVO.setName(userNameForSearch);
+			userVO.setUserAccount(userAccountForSearch);
+			all = userApplication.pageQueryUser(userVO, page, pagesize);
 		} else {
 			all = roleApplication.pageQueryUserByRole(roleVoForFind, page, pagesize);
 		}

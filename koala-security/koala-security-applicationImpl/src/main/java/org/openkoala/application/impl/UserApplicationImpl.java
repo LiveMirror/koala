@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.auth.application.UserApplication;
 import org.openkoala.auth.application.vo.QueryConditionVO;
@@ -102,6 +103,34 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
             results.add(userVO);
         }
         return new Page<UserVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), results);
+    }
+    
+    public Page<UserVO> pageQueryUser(UserVO userVO, int currentPage, int pageSize) {
+    	List<UserVO> results = new ArrayList<UserVO>();
+    	StringBuilder jpql = new StringBuilder("select m from User m where m.isSuper is false and m.abolishDate>? ");
+    	List<Object> conditions = new ArrayList<Object>();
+		conditions.add(new Date());
+    	
+    	if(userVO!=null){
+	    	if (!StringUtils.isEmpty(userVO.getUserAccount())) {
+				jpql.append(" and m.userAccount like ? ");
+				conditions.add("%" + userVO.getUserAccount() + "%");
+			}
+			
+			if (!StringUtils.isEmpty(userVO.getName())) {
+				jpql.append(" and m.name like ? ");
+				conditions.add("%" + userVO.getName() + "%");
+			}
+		}
+    	Page<User> pages = queryChannel().queryPagedResultByPageNo( //
+    			jpql.toString(), //
+    			conditions.toArray(), currentPage, pageSize); //
+    	for (User each : pages.getResult()) {
+    		UserVO user = new UserVO();
+    		user.domain2Vo(each);
+    		results.add(user);
+    	}
+    	return new Page<UserVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), results);
     }
 
     public UserVO findByUserAccount(String userAccount) {
