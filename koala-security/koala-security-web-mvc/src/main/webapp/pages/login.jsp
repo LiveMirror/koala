@@ -174,15 +174,6 @@ body {
 					});
 		     	</script>
 			</c:if>
-			
-			<c:if test="${param.login_error == '4' }">
-		      	<script>
-		     		$('.login_con_R').message({
-						type: 'error',
-						content: '该用户已被禁用!'
-					});
-		     	</script>
-			</c:if>
 			<FORM id="loginFormId" method=post action="j_spring_security_check" onsubmit="return dologin();" class="form-horizontal">
 				<div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
@@ -210,9 +201,10 @@ body {
 	</div>
 	<div class="login_footer">Koala 版权信息 2013</div>
 	<script>
-    var btnLogin = $('.btn-login');
-    var form = $('#loginFormId');
     $(function(){
+     	var btnLogin = $('.btn-login');
+    	var form = $('#loginFormId');
+    	$('#j_username').focus();
         $('body').keydown(function(e) {
             if (e.keyCode == 13) {
             	btnLogin.attr('disabled', 'disabled').html('正在登录...');

@@ -201,9 +201,10 @@ body {
 	</div>
 	<div class="login_footer">Koala 版权信息 2013</div>
 	<script>
-    var btnLogin = $('.btn-login');
-    var form = $('#loginFormId');
     $(function(){
+     	var btnLogin = $('.btn-login');
+    	var form = $('#loginFormId');
+    	$('#j_username').focus();
         $('body').keydown(function(e) {
             if (e.keyCode == 13) {
             	btnLogin.attr('disabled', 'disabled').html('正在登录...');
