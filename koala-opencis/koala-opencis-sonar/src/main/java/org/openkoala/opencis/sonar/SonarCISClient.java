@@ -142,8 +142,6 @@ public class SonarCISClient implements CISClient {
         developer.validate();
 
 
-
-
         HttpPost httpPost = new HttpPost(connectConfig.getAddress() + "/api/users/create");
 
         CloseableHttpResponse response = null;
@@ -152,7 +150,7 @@ public class SonarCISClient implements CISClient {
             params.add(new BasicNameValuePair("login", developer.getId()));
             params.add(new BasicNameValuePair("password", developer.getPassword()));
             params.add(new BasicNameValuePair("password_confirmation", developer.getPassword()));
-            params.add(new BasicNameValuePair("name", URLEncoder.encode(developer.getName(), "UTF-8")));
+            params.add(new BasicNameValuePair("name", developer.getName()));
             params.add(new BasicNameValuePair("email", developer.getEmail()));
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
             httpPost.setEntity(entity);
