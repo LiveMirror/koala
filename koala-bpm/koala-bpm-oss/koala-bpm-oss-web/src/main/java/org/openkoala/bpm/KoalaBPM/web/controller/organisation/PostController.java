@@ -6,14 +6,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Inject;
+
+import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.OrganizationHasPrincipalYetException;
+import org.openkoala.organisation.PostExistException;
 import org.openkoala.organisation.SnIsExistException;
 import org.openkoala.organisation.TerminateHasEmployeePostException;
 import org.openkoala.organisation.application.PostApplication;
 import org.openkoala.organisation.application.dto.PostDTO;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +35,7 @@ import com.dayatang.querychannel.support.Page;
 @RequestMapping("/post")
 public class PostController extends BaseController {
 
-	@Autowired
+	@Inject
 	private PostApplication postApplication;
 	
 	/**
@@ -68,6 +71,10 @@ public class PostController extends BaseController {
 			post.setOrganization(getBaseApplication().getEntity(Organization.class, organizationId));
 			getBaseApplication().saveParty(post);
 			dataMap.put("result", "success");
+		} catch (NameExistException exception) {
+			dataMap.put("result", "岗位名称: " + post.getName() + " 已经存在！");
+		} catch (PostExistException exception) {
+			dataMap.put("result", "该岗位已经存在，请不要在相同机构中创建相同职务的岗位！");
 		} catch (OrganizationHasPrincipalYetException exception) {
 			dataMap.put("result", "该机构已经有负责岗位！");
 		} catch (SnIsExistException exception) {
@@ -105,10 +112,7 @@ public class PostController extends BaseController {
     @RequestMapping("/query-post-by-org")
 	public Map<String, Object> queryPostsOfOrganization(Long organizationId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		Organization organization = getBaseApplication().getEntity(Organization.class, organizationId);
-		if (organization != null) {
-			dataMap.put("result", organization.getPosts(new Date()));
-		}
+		dataMap.put("result", postApplication.findPostsByOrganizationId(organizationId));
 		return dataMap;
 	}
 
@@ -136,7 +140,7 @@ public class PostController extends BaseController {
 	public Map<String, Object> get(@PathVariable("id") Long id) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
-			dataMap.put("data", PostDTO.generateDtoBy(getBaseApplication().getEntity(Post.class, id)));
+			dataMap.put("data", postApplication.getPostById(id));
 		} catch (Exception e) {
 			dataMap.put("error", "查询指定岗位失败！");
 			e.printStackTrace();

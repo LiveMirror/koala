@@ -95,17 +95,16 @@ public class JobController extends BaseController {
 	@ResponseBody
     @RequestMapping("/update")
 	public Map<String, Object> updateJob(Job job) {
-		Map<String, Object> dataMap = null;
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
-			dataMap = new HashMap<String, Object>();
 			getBaseApplication().updateParty(job);
 			dataMap.put("result", "success");
 		} catch (SnIsExistException exception) {
 			dataMap.put("result", "职务编码: " + job.getSn() + " 已被使用！");
+		} catch (NameExistException exception) {
+			dataMap.put("result", "职务名称: " + job.getName() + " 已经存在！");
 		} catch (Exception e) {
-			if(dataMap != null){
-				dataMap.put("result", "修改失败！");
-			}
+			dataMap.put("result", "修改失败！");
 		}
 		return dataMap;
 	}

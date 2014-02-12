@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.SnIsExistException;
+import org.openkoala.organisation.TheJobHasPostAccountabilityException;
 import org.openkoala.organisation.application.JobApplication;
 import org.openkoala.organisation.domain.Job;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +30,7 @@ import com.dayatang.querychannel.support.Page;
 @RequestMapping("/job")
 public class JobController extends BaseController {
 
-	@Autowired
+	@Inject
 	private JobApplication jobApplication;
 	
 	/**
@@ -76,6 +79,8 @@ public class JobController extends BaseController {
 			dataMap.put("result", "success");
 		} catch (SnIsExistException exception) {
 			dataMap.put("result", "职务编码: " + job.getSn() + " 已被使用！");
+		} catch (NameExistException exception) {
+			dataMap.put("result", "职务名称: " + job.getName() + " 已经存在！");
 		} catch (Exception e) {
 			dataMap.put("result", "保存失败！");
 		}
@@ -90,17 +95,16 @@ public class JobController extends BaseController {
 	@ResponseBody
     @RequestMapping("/update")
 	public Map<String, Object> updateJob(Job job) {
-		Map<String, Object> dataMap = null;
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
-			dataMap = new HashMap<String, Object>();
 			getBaseApplication().updateParty(job);
 			dataMap.put("result", "success");
 		} catch (SnIsExistException exception) {
 			dataMap.put("result", "职务编码: " + job.getSn() + " 已被使用！");
+		} catch (NameExistException exception) {
+			dataMap.put("result", "职务名称: " + job.getName() + " 已经存在！");
 		} catch (Exception e) {
-			if(dataMap != null){
-				dataMap.put("result", "修改失败！");
-			}
+			dataMap.put("result", "修改失败！");
 		}
 		return dataMap;
 	}
@@ -127,8 +131,12 @@ public class JobController extends BaseController {
     @RequestMapping("/terminate")
 	public Map<String, Object> terminateJob(Job job) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		getBaseApplication().terminateParty(job);
-		dataMap.put("result", "success");
+		try {
+			getBaseApplication().terminateParty(job);
+			dataMap.put("result", "success");
+		} catch (TheJobHasPostAccountabilityException exception) {
+			dataMap.put("result", "职务：" + job.getName() + "已经被相关关联岗位，不能被撤销！");
+		}
 		return dataMap;
 	}
 	
@@ -141,8 +149,13 @@ public class JobController extends BaseController {
     @RequestMapping(value = "/terminateJobs", method = RequestMethod.POST, consumes = "application/json")
 	public Map<String, Object> terminateJobs(@RequestBody Job[] jobs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		getBaseApplication().terminateParties(new HashSet<Job>(Arrays.asList(jobs)));
-		dataMap.put("result", "success");
+		try {
+			getBaseApplication().terminateParties(new HashSet<Job>(Arrays.asList(jobs)));
+			dataMap.put("result", "success");
+		} catch (TheJobHasPostAccountabilityException exception) {
+			dataMap.put("result", "该职务已经被相关关联岗位，不能被撤销！");
+		}
+		
 		return dataMap;
 	}
 	
