@@ -59,7 +59,6 @@
 		<dependency>
 			<groupId>${db.groupId}</groupId>
 			<artifactId>${db.artifactId}</artifactId>
-			<version>${db.version}</version>
 		</dependency>
 		
 		<dependency>

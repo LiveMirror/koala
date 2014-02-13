@@ -48,12 +48,12 @@ public abstract class Party extends OrganizationAbstractEntity {
 	}
 
 	public Party(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 
 	public Party(String name, String sn) {
-		this.name = name;
-		this.sn = sn;
+		this.name = name.trim();
+		this.sn = sn.trim();
 	}
 
 	public String getSn() {
@@ -61,7 +61,7 @@ public abstract class Party extends OrganizationAbstractEntity {
 	}
 
 	public void setSn(String sn) {
-		this.sn = sn;
+		this.sn = sn.trim();
 	}
 
 	public String getName() {
@@ -69,7 +69,7 @@ public abstract class Party extends OrganizationAbstractEntity {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 
 	public Date getCreateDate() {
