@@ -10,8 +10,10 @@ import nl.tudelft.jenkins.jobs.Job;
 import org.openkoala.opencis.CISClientBaseRuntimeException;
 import org.openkoala.opencis.api.*;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,8 +88,13 @@ public class JenkinsCISClient implements CISClient {
     @Override
     public void createUserIfNecessary(Project project, Developer developer) {
         developer.validate();
-        client.createUser(developer.getId(), developer.getPassword(),
-                developer.getEmail(), developer.getName());
+        try {
+            client.createUser(developer.getId(), developer.getPassword(),
+                    developer.getEmail(), URLEncoder.encode(developer.getName(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("jenkins.createUserIfNecessary", e);
+        }
 
     }
 
@@ -112,7 +119,7 @@ public class JenkinsCISClient implements CISClient {
 
     @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {
-        Job job ;
+        Job job;
         try {
             job = client.retrieveJob(project.getProjectName());
         } catch (NoSuchJobException e) {

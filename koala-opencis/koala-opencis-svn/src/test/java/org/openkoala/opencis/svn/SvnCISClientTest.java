@@ -24,7 +24,7 @@ import org.openkoala.opencis.exception.UserOrPasswordErrorException;
 import org.openkoala.opencis.support.SSHConnectConfig;
 import org.openkoala.opencis.support.SvnConfig;
 
-@Ignore
+//@Ignore
 public class SvnCISClientTest {
 
     private SvnConfig configuration;
@@ -37,8 +37,8 @@ public class SvnCISClientTest {
 
     @Before
     public void setUp() throws Exception {
-        configuration = new SvnConfig("10.108.1.106", "root", "password","/opencis/svn/"
-        		,"http://10.108.1.106/svn/test","zjh","password");
+        configuration = new SvnConfig("10.108.1.41", "zjh", "password","/opencis/server/svn/"
+        		,"http://10.108.1.41/svn/test","Koala","Koala");
         this.initProjectInfo();
         this.initDeveloperInfo();
     }
@@ -100,7 +100,6 @@ public class SvnCISClientTest {
     @Test
     public void testProjectExistence() {
         instance = new SvnCISClient(configuration);
-//        instance.createProject(project);
         try {
             instance.createProject(project);
         } catch (ProjectExistenceException e) {
@@ -114,7 +113,7 @@ public class SvnCISClientTest {
     public void testCommitToSVN(){
     	instance = new SvnCISClient(configuration);
     	try {
-    		instance.commitToServer(project);
+//    		instance.commitToServer(project);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -221,7 +220,7 @@ public class SvnCISClientTest {
     private void initProjectInfo() {
         project = new Project();
         project.setProjectName(projectName);
-        project.setPhysicalPath("E:/files");
+        project.setPhysicalPath("/opencis/client/svn");
     }
 
     private void initDeveloperInfo() {

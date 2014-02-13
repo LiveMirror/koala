@@ -49,11 +49,12 @@ public class CommandExecutor {
 			for(Command command:commands){
 				command.execute();
 			}
-			commands.clear();
-			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
+		}finally{
+			commands.clear();
 		}
-		
+		return true;
 	}
 }

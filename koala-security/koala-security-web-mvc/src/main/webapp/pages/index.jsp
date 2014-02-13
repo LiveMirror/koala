@@ -107,7 +107,7 @@
                 }
                 $.get(contextPath + '/auth/Menu/findTopMenuByUser.koala').done(function(data){
                     $.each(data.data, function(){
-                        var $li = $('<li><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.icon+'"></span>&nbsp;'+this.name+'&nbsp;'+
+                        var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.icon+'"></span>&nbsp;'+this.name+'&nbsp;'+
                             '<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu in"></ul></li>');
                         $('.first-level-menu').append($li);
                         renderSubMenu(this.id, $li);
@@ -134,7 +134,7 @@
 						var subMenus = new Array();
 						$.each(data.data, function(){
 							if(this.menuType == "2"){
-		                        var $li = $('<li><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.icon+'"></span>&nbsp;'+this.name+'&nbsp;'+
+		                        var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.icon+'"></span>&nbsp;'+this.name+'&nbsp;'+
 		                            '<i class="glyphicon glyphicon-chevron-right pull-right" style="position: relative; right: 12px;font-size: 12px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu collapse"></ul></li>');
 		                        $li.appendTo($menu.find('.second-level-menu:first')).find('a').css('padding-left', parseInt(this.level)*18+'px');
 		                        renderSubMenu(this.id, $li);
@@ -144,13 +144,28 @@
 		                        $li.appendTo($menu.find('.second-level-menu:first')).find('a').css('padding-left', parseInt(this.level)*18+'px');
 		                    }
 						});
+	                    $menu.find('[data-toggle="collapse"]').each(function(){
+	                        var $this = $(this);
+	                        $menu.find($(this).attr('href')).on({
+	                            'shown.bs.collapse': function(e){
+	                            	e.stopPropagation();
+	                            	e.preventDefault();
+	                                $this.find('i:last').addClass('glyphicon-chevron-left').removeClass('glyphicon-chevron-right');
+	                            },
+	                            'hidden.bs.collapse': function(e){
+	                            	e.stopPropagation();
+	                            	e.preventDefault();
+	                                $this.find('i:last').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-right');
+	                            }
+	                        });
+	                    });
 						$menu.find('li.submenu').on('click', function(){
 								var $this = $(this);
 								$('.first-level-menu').find('li').each(function(){
 									var $menuLi = $(this);
 									$menuLi.hasClass('active') && $menuLi.removeClass('active').parent().parent().removeClass('active');
 								});
-								$this.addClass('active').parent().closest('li').addClass('active').parent().closest('li').addClass('active');
+								$this.addClass('active').parents().filter('.folder').addClass('active');
 								var target = $this.data('target');
 								var title = $this.data('title');
 								var mark = $this.data('mark');

@@ -321,7 +321,7 @@ var monitorNodeManager = {
 
 			var total = diskInfo['total'];
 			var used = diskInfo['used'];
-			$.jqplot(diskpieId, [[['total', total], ['used', used]]], {
+			$.jqplot(diskpieId, [[['未使用', total], ['已使用', used]]], {
 				gridPadding : {
 					top : 0,
 					bottom : 38,

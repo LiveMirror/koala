@@ -93,8 +93,4 @@
 			expression="execution(* org.openkoala.koala.monitor..*ApplicationImpl.*(..)) and execution(* org.openkoala.koala.monitor..*.*ServiceImpl.*(..))" />
 		<aop:advisor advice-ref="km_txAdvice" pointcut-ref="km_pointcut" />
 	</aop:config>
-
-	<jpa:repositories base-package="org.openkoala.koala"
-		entity-manager-factory-ref="km_entityManagerFactory"
-		transaction-manager-ref="km_transactionManager" />
 </beans>
