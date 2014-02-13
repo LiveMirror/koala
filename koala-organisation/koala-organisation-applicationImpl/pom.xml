@@ -37,7 +37,6 @@
 		<dependency>
 			<groupId>${db.groupId}</groupId>
 			<artifactId>${db.artifactId}</artifactId>
-			<version>${db.version}</version>
 			<scope>test</scope>
 		</dependency>
 

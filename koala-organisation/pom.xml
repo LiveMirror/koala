@@ -30,14 +30,24 @@
 			<properties>
 				<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
 				<hibernate.show_sql>true</hibernate.show_sql>
-				<hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
-				<db.jdbcDriver>org.h2.Driver</db.jdbcDriver>
-				<db.connectionURL>jdbc:h2:~/db/organisation;MVCC=true</db.connectionURL>
-				<db.username>sa</db.username>
-				<db.password />
-				<db.Type>H2</db.Type>
-				<db.groupId>com.h2database</db.groupId>
-				<db.artifactId>h2</db.artifactId>
+				<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
+				<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
+				<db.connectionURL>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8</db.connectionURL>
+				<db.username>root</db.username>
+				<db.password>xmfang</db.password>
+				<db.Type>MYSQL</db.Type>
+				<db.groupId>mysql</db.groupId>
+				<db.artifactId>mysql-connector-java</db.artifactId>
+				
+				<test.hibernate.hbm2ddl.auto>update</test.hibernate.hbm2ddl.auto>
+				<test.hibernate.show_sql>true</test.hibernate.show_sql>
+				<test.hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</test.hibernate.dialect>
+				<test.db.jdbcDriver>com.mysql.jdbc.Driver</test.db.jdbcDriver>
+				<test.db.connectionURL>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8</test.db.connectionURL>
+				<test.db.username>root</test.db.username>
+				<test.db.password>xmfang</test.db.password>
+				<test.db.Type>mysql</test.db.Type>
+				<test.db.generateDdl>true</test.db.generateDdl>
 			</properties>
 		</profile>
 	</profiles>
