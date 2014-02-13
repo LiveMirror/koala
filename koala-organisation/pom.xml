@@ -21,7 +21,6 @@
 		<module>koala-organisation-web</module>
 	</modules>
 
-	
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
