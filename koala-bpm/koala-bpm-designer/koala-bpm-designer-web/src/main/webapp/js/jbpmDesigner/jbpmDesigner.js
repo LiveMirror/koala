@@ -3,6 +3,13 @@ $(function(){
    // var data = [{"parentId":"root","menu":{"id":"001","title":"权限管理","href":"#"},"children":{"001001":{"parentId":"001","menu":{"id":"001001","title":"用户管理","href":"#"},"children":{"001001001":{"parentId":"001001","menu":{"id":"001001001","title":"添加新用户","href":"#"},"children":{}},"001001002":{"parentId":"001001","menu":{"id":"001001002","title":"系统用户查询","href":"#"},"children":{}}}},"001002":{"parentId":"001","menu":{"id":"001002","title":"角色管理","href":"#"},"children":{"001002001":{"parentId":"001002","menu":{"id":"001002001","title":"添加新角色","href":"#"},"children":{}},"001002002":{"parentId":"001002","menu":{"id":"001002002","title":"用户角色配置","href":"#"},"children":{}},"001002003":{"parentId":"001002","menu":{"id":"001002003","title":"角色权限配置","href":"#"},"children":{}}}},"001003":{"parentId":"001","menu":{"id":"001003","title":"菜单管理","href":"#"},"children":{}}}},{"parentId":"root","menu":{"id":"002","title":"系统管理","href":"#"},"children":{"002001":{"parentId":"002","menu":{"id":"002001","title":"功能配置","href":"#"},"children":{}},"002002":{"parentId":"002","menu":{"id":"002002","title":"系统访问记录","href":"#"},"children":{}}}},{"parentId":"root","menu":{"id":"003","title":"日志管理","href":"#"},"children":{"003001":{"parentId":"003","menu":{"id":"003001","title":"日志查询","href":"#"},"children":{}}}}];
     var menuTree = $('#menuTree');
     $.get(contextPath + '/jbpm-Jbpm-findPackages.action').done(function(data){
+    	if(data.errors){
+    		 $('body').message({
+                 type: 'error',
+                 content: '获取流程失败:'+data.errors
+             });
+    		 return;
+    	}
         gunvorServerUrl = data.gunvorServerUrl;
         var children = data.packages || [];
         var rootNode = {menu:{id:'root', title:'流程', level: 0}, parentId:"root", type: 'parent'};
