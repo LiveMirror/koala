@@ -41,7 +41,7 @@
         <browser>org.openqa.selenium.firefox.FirefoxDriver</browser>
     </properties>
 
-    <profiles>
+    <!--<profiles>
         <profile>
             <id>businesslog</id>
             <activation>
@@ -87,7 +87,7 @@
 
 
         </profile>
-    </profiles>
+    </profiles>-->
 
 
     <developers>
