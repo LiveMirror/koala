@@ -12,7 +12,6 @@ import java.io.IOException;
  * Date: 11/29/13
  * Time: 8:42 AM
  */
-@Ignore
 public class MainIntegrationTest {
 
 
@@ -43,7 +42,7 @@ public class MainIntegrationTest {
         String host = (String)properties.get("host");
         String port = (String)properties.get("port");
         String context = (String)properties.get("context");*/
-        return "http://localhost:6699/";
+        return "http://localhost:7651/";
     }
 
 
