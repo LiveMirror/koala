@@ -31,19 +31,6 @@
         <dbProtocol>${Project.dbProtocol}</dbProtocol>
         <mvcProtocol>${Project.mvcProtocol}</mvcProtocol>
 
-        <!--test DB -->
-        <test.hibernate.hbm2ddl.auto>update</test.hibernate.hbm2ddl.auto>
-        <test.hibernate.show_sql>true</test.hibernate.show_sql>
-        <test.hibernate.dialect>org.hibernate.dialect.H2Dialect</test.hibernate.dialect>
-        <test.db.jdbcDriver>org.h2.Driver</test.db.jdbcDriver>
-        <test.db.connectionURL>jdbc:h2:mem:test;MODE=Oracle;DB_CLOSE_DELAY=-1</test.db.connectionURL>
-        <test.db.username>sa</test.db.username>
-        <test.db.password></test.db.password>
-        <test.db.Type>H2</test.db.Type>
-        <test.db.generateDdl>true</test.db.generateDdl>
-        <test.db.groupId>com.h2database</test.db.groupId>
-        <test.db.artifactId>h2</test.db.artifactId>
-
     </properties>
 
     <profiles>
@@ -174,7 +161,7 @@
             </properties>
         </profile>
 
-        <!--  Sybase DB  -->
+        <!--  Sql Server 2008  -->
         <profile>
             <id>SqlServer2008</id>
             <activation>
@@ -813,6 +800,12 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>5.1.22</version>
             </dependency>
+		
+		    <dependency>
+		       <groupId>com.microsoft.sqlserver</groupId>
+		       <artifactId>sqljdbc4</artifactId>
+		       <version>1.0</version>
+		    </dependency>
 
             <dependency>
                 <groupId>com.oracle</groupId>
