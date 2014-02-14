@@ -1,0 +1,97 @@
+<div id="projectGrid"></div>
+<script>
+	$(function(){
+			var columns = [
+			{
+				title : '项目名称',
+				name : 'name',
+				width : 150
+			},
+			{
+				title : '开发者',
+				name : 'developers',
+				width : 250,
+				render: function(item, name, index){
+					var developers = [];
+					$.each(item[name], function(){
+						developers.push(this.developer.name);
+					});
+					return developers.join(',');
+				}
+			},
+			{
+				title : '集成工具',
+				name : 'tools',
+				width : 250,
+				render: function(item, name, index){
+					var tools = [];
+					$.each(item[name], function(){
+						tools.push(this.toolConfiguration.name);
+					});
+					return tools.join(',');
+				}
+			},
+			{
+				title : '项目状态',
+				name : 'projectStatus',
+				width : 150
+			},
+			{
+				title : '创建时间',
+				name : 'createDate',
+				width : 150
+			},
+			{
+				title : '操作',
+				name : 'projectSavePath',
+				width : 120,
+				render : function(item, name, index) {
+					return '<a onclick="showProjectDetail(' + item.id + ')"><span class="glyphicon glyphicon-search"></span>&nbsp;详细</a>';
+				}
+			}
+		];
+		$('#projectGrid').grid({
+			identity : 'id',
+			columns : columns,
+			querys: [{title: '项目名称', value: 'name'}],
+			url : 'project/pagingquery'
+		});
+	});
+	
+	var showProjectDetail = function(id){
+		$.get('project/detail/'+id).done(function(project){
+			$.get('pages/cis/project-detail.html').done(function(data){
+				var dialog = $(data);
+				dialog.find('#name').html(project.name);
+				dialog.find('#groupId').html(project.projectDetail.groupId);
+				dialog.find('#artifactId').html(project.projectDetail.artifactId);
+				dialog.find('#projectStatus').html(project.projectStatus);
+				dialog.find('#projectSavePath').html(project.projectDetail.projectSavePath);
+				dialog.find('#createDate').html(project.createDate);
+				var devlopers = [];
+				$.each(project.developers, function(){
+					devlopers.push(this.developer.name);
+				});
+				dialog.find('#devlopers').html(devlopers.join(','));
+				var tools = [];
+				$.each(project.tools, function(){
+					var html = [];
+					html.push('<div class="panel panel-default"><div class="panel-heading">'+this.toolConfiguration.name+'</div><table class="table"><thead><tr><th>创建过程</th><th>时间</th><th>结果</th><th>原因</th></tr></thead><tbody>');
+					$.each(this.toolInterfaceImplements, function(){
+						html.push('<tr><td>'+this.toolInterface+'</td><td>'+this.executeDate+'</td><td>'+this.success+'</td><td>'+this.record+'</td></tr>');
+					});
+					html.push('</tbody></table></div>');
+					tools.push(html.join(''));
+				});
+				dialog.find('#tools').html(tools.join(''));
+				dialog.modal({
+					keyboard: false
+				}).on({
+					'hidden.bs.modal': function(){
+						$(this).remove();
+					}
+				});
+			});
+		});
+	}
+</script>

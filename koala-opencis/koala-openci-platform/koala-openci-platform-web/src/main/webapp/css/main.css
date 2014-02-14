@@ -1,0 +1,303 @@
+@media (max-width: 1366px) {
+	html, body {
+		font-size: 12px!important;
+	}
+}
+a, button {
+	outline: none !important;
+	text-decoration: none;
+	cursor: pointer;
+}
+.content {
+	margin-left: auto;
+	margin-right: auto;
+	width: 81%;
+}
+.g-header {
+	background-color: #3F9FD9;
+}
+
+.g-header .navbar {
+	margin: 0;
+	padding: 0;
+	border-left-width: 0;
+	background-color: #3F9FD9;
+}
+
+.g-header .navbar-brand, .g-header .navbar-brand:hover, .g-header .navbar-brand:focus {
+	color: #FFFFFF;
+	font-size: 1.2em;
+	font-size: 1.2rem;
+}
+
+.g-header .navbar-brand img {
+	height: 32px;
+	width: 50px;
+	margin-right: 10px;
+}
+
+.g-header .btn-group {
+	position: relative;
+	top: 15px;
+}
+
+.g-main {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15px;
+	min-height: 500px;
+}
+
+.g-main .sidebar-nav {
+	border-radius: 5px;
+	margin-bottom: 0;
+	min-height: 0;
+	box-shadow: 0 0 10px #DDDDDD;
+	padding-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.g-main .nav-header {
+	font-size: 1.2em;
+	font-size: 1.2rem;
+	position: relative;
+	left: 12px;
+	top: -6px;
+}
+
+.g-main .nav-header i {
+	margin-right: 10px;
+}
+
+.g-main .u-menu {
+	margin: 0;
+	padding: 0;
+}
+
+.g-main .u-menu li.nav-header i {
+	opacity: .4;
+	filter: alpha(opacity=40);
+}
+
+.g-main .u-menu li:not(.nav-header) {
+	margin-top: 0px;
+}
+
+.g-main .u-menu li a {
+	border: 1px solid #DDDDDD;
+	margin-left: 0px;
+	-moz-transition: all 0.2s ease;
+	-webkit-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+}
+
+.g-main .u-menu li a:hover {
+	margin-left: 4px;
+}
+
+.g-main .u-menu li.active a {
+	background-color: #FFFFFF;
+}
+
+.g-main .breadcrumb li {
+	font-size: 1.2em;
+	font-size: 1.2rem;
+}
+
+.system-config form {
+	width: 100%;
+	border: 1px solid #DDDDDD;
+	padding: 15px;
+	margin-bottom: 15px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.project-add .m-buttons,
+.system-config .form-group {
+	width: 90%;
+}
+
+.system-config .m-buttons{
+	text-align: center;
+}
+
+.project-add .required {
+	position: relative;
+	top: 6px;
+}
+
+.g-main .project-add .form-control,
+.g-main .system-config .form-control,
+.developer .form-control {
+	min-width: 150px;
+	max-width: 300px;
+}
+
+.project-add .form-control,
+.g-main .system-config .form-control,
+.developer .form-control {
+	display: inline;
+	width: 96%;
+}
+
+.project-add .checker {
+	width: auto!important;	
+}
+
+.project-add .checker label {
+	position: relative;
+	margin-left: 15px;
+	top: -3px;
+	cursor: pointer
+}
+
+.required {
+	color: red;
+}
+
+.modual .modal-dialog {
+	width: 1100px;	
+}
+
+.modual .grid-table-body {
+	height: 240px;
+}
+
+.modual .form-control {
+	display: inline;
+	width: 94%;	
+}
+
+.select-sub-system {
+	margin-top: 25px;
+}
+
+.select-sub-system .checker {
+	float: right;	
+	position: relative;
+    top: 6px;
+}
+
+.select-sub-system .form-group .control-label {
+	text-align: left!important;	
+}
+
+.select-developer {
+	padding-top: 10px;
+}
+
+.select-tools .grid-table-body {
+	height: 265px!important;
+}
+
+.select-tools .checker {
+	margin-right: 15px;
+}
+
+.select-tools .form-control {
+	max-width: 320px;
+}
+
+.select-developer .modal-dialog {
+   width: 900px;
+}
+
+.select-developer .grid-table-body {
+	height:240px!important; 
+}
+
+.tool-manage .form-control {
+	display: inline;
+	width: 95%;
+	min-width: 150px;
+	max-width: 350px;
+}
+
+.tool-manage .cas-config {
+	margin-top: 45px;
+}
+
+.tool-manage .cas-config .form-group:last-child {
+	margin-left: -10%;
+    margin-top: 35px;
+    text-align: center;
+}
+
+.tools .panel {
+	float: left;
+	width: 48%;
+}
+
+.tools .panel:nth-child(2n+1) {
+	margin-right: 4%;
+}
+
+.wizard {
+	border:1px solid #d4d4d4;
+	font-size:14px;
+	margin:20px auto 15px;
+	overflow:hidden;
+	position:relative;
+	-webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+	  *zoom: 1;
+	  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+	     -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+	          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+}
+
+.wizard  > ul > li >a{
+  	font-size: 1.2em;
+  	font-size: 1.2rem;
+  	padding: 7px 15px;
+}
+.wizard .items {
+	clear:both; 
+	position: relative;
+}
+
+.wizard .items .page{
+	padding:20px 15px 10px;
+	width: 20%;
+	float:left;
+}
+
+.wizard .wizard-buttons {
+	text-align: center;
+	margin: 15px 0;
+}
+
+.wizard .page .grid-table-body {
+	height: 265px!important;
+}
+
+.wizard .items .page .btn_nav{
+	height:36px; 
+	line-height:36px; 
+	margin-top: 10%;
+	text-align: center;
+}
+
+.g-footer {
+	height: 30px;
+	text-align: center;
+}
+
+.grid .role {
+	width: auto!important;
+	cursor: pointer!important;
+	margin: 3px 10px;
+}
+
+.grid .role label {
+	position: relative;
+	top: -4px;
+	font-weight: normal;
+}
+.g-footer span {
+	font-size: 1.4em;
+	font-size: 1.4rem;
+}

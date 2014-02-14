@@ -1,0 +1,144 @@
+<div class="project-add wizard">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<a href="#">
+				基本信息
+			</a>
+		</li>
+		<li>
+			<a href="#" >
+				模块配置
+			</a>
+		</li>
+		<li>
+			<a href="#" >
+				子系统选择
+			</a>
+		</li>
+		<li>
+			<a href="#" >
+				开发者选择
+			</a>
+		</li>
+		<li>
+			<a href="#" >
+				工具选择
+			</a>
+		</li>
+	</ul>
+
+	<div class="items">
+		<div class="page">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<label for="projectName" class="col-lg-4 control-label">项目名称:</label>
+					<input type="text" class="col-lg-8 form-control" id="projectName" name="projectName"  dataType="UNChinese" placeholder="输入项目名称" require/>
+					<span class="required">*</span>
+				</div>
+				<div class="form-group">
+					<label for="groupId" class="col-lg-4 control-label">GroupID:</label>
+					<input type="text" class="col-lg-8 form-control" id="groupId" name="groupId"　 dataType="Require" placeholder="输入GroupID" value="org.openkoala" require/>
+					<span class="required">*</span>
+				</div>
+				<div class="form-group">
+					<label for="aritifactId" class="col-lg-4 control-label">AritifactID:</label>
+					<input type="text"  class="col-lg-8 form-control" id="artifactId" name="artifactId"　 dataType="Require"  placeholder="输入AritifactID" require/>
+					<span class="required">*</span>
+				</div>
+				<div class="form-group">
+					<label for="projectName" class="col-lg-4 control-label">Version:</label>
+					<input type="text" class="col-lg-8 form-control" id="version" name="version"　 dataType="Require" placeholder="输入Version" value="1.0-SNAPSHOT"/>
+					<span class="required">*</span>
+				</div>
+				<div class="form-group">
+					<label for="dbProtocol" class="col-lg-4 control-label">Repository实现方式:</label>
+					<div class="btn-group select" id="dbProtocol"></div>
+					<input type="hidden"  id="dbProtocolValue"　name="dbProtocolValue" dataType="Require"/>
+					<span class="required">*</span>
+				</div>
+				<div class="form-group">
+					<label for="projectName" class="col-lg-4 control-label">MVC实现方式:</label>
+					<div class="btn-group select" id="mvcProtocol"></div>
+					<input type="hidden"  id="mvcProtocolValue"　name="mvcProtocolValue" dataType="Require"/>
+					<span class="required">*</span>
+				</div>
+			</form>
+		</div>
+		<div class="page">
+			<div id="modualGrid"></div>
+		</div>
+		<div class="page">
+			<form class="form-horizontal select-sub-system">
+				<div class="form-group">
+					<div class="col-sm-5">
+						<div class="checker">
+							<span id="securitySystem"> </span>
+							<label>权限系统</label>
+						</div>
+					</div>
+					<label class="col-sm-1 control-label" style="width: 12%; padding-left: 3%;">缓存类型:</label>
+					<div class="col-sm-5">
+						<div class="btn-group select" id="cacheType"></div>
+						<input type="hidden" id="cacheTypeValue">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-5">
+						<div class="checker">
+							<span id="monitorSystem"> </span>
+							<label>监控系统</label>
+						</div>
+					</div>
+					<label class="col-sm-1 control-label" style="width: 12%; padding-left: 3%;">安装方式:</label>
+					<div class="col-sm-5">
+						<div class="btn-group select" id="monitorType"></div>
+						<input type="hidden" id="monitorTypeValue">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-5" style="margin-left:2.5%;">
+						<div class="checker">
+							<span id="generquerySystem"> </span>
+							<label>通用查询系统</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-5">
+						<div class="checker">
+							<span id="organisationSystem"> </span>
+							<label>组织系统</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-5">
+						<div class="checker">
+							<span id="logSystem"> </span>
+							<label>日志系统</label>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="page select-developer">
+			<div id="developerGrid"></div>
+		</div>
+		<div class="page  select-tools">
+			<div id="toolsGrid"></div>
+		</div>
+	</div>
+
+	<div class="wizard-buttons">
+		<button id="prevBtn" class="btn btn-default" >
+			<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;上一步
+		</button>
+		<button id="nextBtn" class="btn btn-default" data-action="step2">
+			下一步&nbsp;<span class="glyphicon glyphicon-arrow-right"></span>
+		</button>
+		<button id="complateBtn" class="btn btn-success" id="complateBtn">
+			<span class="glyphicon glyphicon-ok"></span>&nbsp;完成
+		</button>
+	</div>
+</div>
+<script src="js/cis/preject-add.js"></script>

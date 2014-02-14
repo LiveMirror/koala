@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title> OPENCIS WEB平台 </title>
+		<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/koala.css" />
+		<link rel="stylesheet" href="css/main.css" />
+		<style>
+			html {
+				font-size: 14px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="g-header">
+			<nav class="navbar navbar-default">
+				<a class="navbar-brand" href="http://openkoala.org/display/koala/Home" target="_">
+					<img src="images/global.logo.png"/>
+					OPENCIS WEB平台
+				</a>
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+					<div class="btn-group navbar-right">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							<i class="glyphicon glyphicon-user"></i>
+							<span>&nbsp;
+								admin </span>
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li id="modifyPwd">
+								<a href="#">
+									修改密码
+								</a>
+							</li>
+							<li id="loginOutBtn">
+								<a href="#">
+									注销
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+		<div class="g-main">
+			<div class="col-xs-2">
+				<div class="well nav-collapse sidebar-nav">
+					<ul class="nav nav-stacked u-menu">
+						<li class="nav-header">
+							<i class="glyphicon glyphicon-home"></i>&nbsp;菜单
+						</li>
+						<li data-href="pages/cis/project-list.html" data-title="项目列表" class="active" id="projectList">
+							<a href="#" >
+								<i class="glyphicon glyphicon-list"></i>&nbsp;<span>项目列表</span>
+							</a>
+						</li>
+						<li data-href="pages/cis/project-add.html" data-title="创建项目">
+							<a href="#" >
+								<i class="glyphicon glyphicon-edit"></i>&nbsp;<span>创建项目</span>
+							</a>
+						</li>
+						<li data-href="pages/cis/role-list.html" data-title="角色管理">
+							<a href="#">
+								<i class="glyphicon glyphicon-user"></i>&nbsp;<span>角色管理</span>
+							</a>
+						</li>
+						<li data-href="pages/cis/developer-list.html" data-title="开发人员管理">
+							<a href="#">
+								<i class="glyphicon glyphicon-user"></i>&nbsp;<span>开发人员管理</span>
+							</a>
+						</li>
+						<li data-href="pages/cis/tool-list.html" data-title="工具配置">
+							<a href="#">
+								<i class="glyphicon glyphicon-cog"></i>&nbsp;<span>工具配置</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-xs-10 content">
+				<ol class="breadcrumb">
+					<li>
+						<a href="#">
+							首页
+						</a>
+					</li>
+					<li class="active" id="contentTitle">
+						项目列表
+					</li>
+				</ol>
+				<div id="content">
+
+				</div>
+			</div>
+		</div>
+		<div class="g-footer">
+			 <span>Copyright © 2011-2013 Koala</span>
+		</div>
+		<script src="lib/jquery-1.8.3.min.js"></script>
+		<script src="lib/bootstrap/js/bootstrap.js"></script>
+		<script src="lib/respond.min.js"></script>
+		<script src="lib/koala-ui.plugin.js"></script>
+		<script src="lib/koala_wizard.js"></script>
+		<script src="lib/validate.js"></script>
+		<script src="js/main.js" ></script>
+		<script src="js/cis/developer.js"></script>
+		<script src="js/cis/tool.js"></script>
+		<script src="js/cis/module.js"></script>
+		<script src="js/cis/role.js"></script>
+	</body>
+</html>
