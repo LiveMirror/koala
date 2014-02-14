@@ -54,6 +54,7 @@ public class JbpmAction {
 			gunvorServerUrl = gunvorApplication.getGunvorServerUrl();
 			packages = gunvorApplication.getPackages();
 		} catch (Exception e) {
+			this.errors = e.getMessage();
 			e.printStackTrace();
 		}
 		return "json2";
@@ -65,6 +66,7 @@ public class JbpmAction {
 					URLEncoder.encode(packageName, "UTF-8"),
 					URLEncoder.encode(bpmnName, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
+			this.errors = e.getMessage();
 			e.printStackTrace();
 		}
 		return "json2";
@@ -74,6 +76,7 @@ public class JbpmAction {
 		try {
 			this.bpmns = gunvorApplication.getBpmn2s(packageName);
 		} catch (Exception e) {
+			this.errors = e.getMessage();
 			e.printStackTrace();
 		}
 		return "json2";

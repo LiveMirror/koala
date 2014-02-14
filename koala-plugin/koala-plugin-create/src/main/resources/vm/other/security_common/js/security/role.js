@@ -316,6 +316,9 @@ var roleManager = function(){
 		$.get(contextPath + '/auth/Menu/findMenuTreeSelectItemByRole.koala?time='+new Date().getTime()+'&roleId='+roleId).done(function(result){
 			var zNodes = new Array();
 			var items = result.data;
+			if(!items){
+				return;
+			}
 			for(var i=0, j=items.length; i<j; i++){
 				var item = items[i];
 				var zNode = {};

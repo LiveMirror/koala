@@ -87,7 +87,13 @@
 				this.selectChildren(ev.currentTarget);
 			}, this));
 			//父节点点击的时候
-			this.$element.on('click', '.tree-folder-header', $.proxy( function(ev) { this.selectParent(ev.currentTarget); }, this));
+			this.$element.on('click', '.tree-folder>input', $.proxy(function(ev) {
+				this.checkParent(ev.currentTarget);
+			}, this));
+			//父节点点击的时候
+			this.$element.on('click', '.tree-folder-header', $.proxy(function(ev) {
+				this.selectParent(ev.currentTarget);
+			}, this));
 			//打开子节点
 			this.$element.on('click', '.tree-folder-header i', $.proxy(function(ev) {
 				this.toggleFolder(ev);
@@ -161,7 +167,7 @@
 					if (value.menu.icon) {
 						$entity.children('.tree-folder-header').children("i").addClass(value.menu.icon).attr("icon", value.menu.icon);
 					}
-					if (self.isEmpty(value.children) && value.menu.checked) {
+					if (value.menu.checked) {
 						$entity.find('>input').prop('checked', true);
 						var data = $entity.find('.tree-folder-header').data();
 						self.selectedDatas[data.id] = data;
@@ -265,7 +271,7 @@
 				this.$element.find('.tree-selected').removeClass('tree-selected');
 				this.selectedDatas = {};
 			}
-			if(!this.options.useChkBox){
+			if (!this.options.useChkBox) {
 				this.selectedDatas[data.id] = data;
 			}
 			if (!this.options.useChkBox) {
@@ -275,6 +281,18 @@
 				element : $el,
 				data : data
 			});
+		},
+
+		checkParent : function(el) {
+			var $input = $(el);
+			var folder = $input.parent();
+			if ($input.is(':checked')) {
+				folder.trigger('selectCheckBox');
+			} else {
+				if (folder.find('>.tree-selected').length == 0 && folder.find('>.tree-folder>input:checked').length == 0) {
+					folder.trigger('disSelectCheckBox');
+				}
+			}
 		},
 
 		toggleFolder : function(e) {
@@ -317,16 +335,6 @@
 					self.selectedDatas[value.menu.id] = value.menu;
 				}
 			});
-		},
-		//新加函数，勾选父节点的复选框时，下面所有的子节点的复选框都要同样的勾选状态
-		checkParent : function(el, ev) {
-			var $el = $(el);
-			var isChecked = $el.prop("checked");
-			if (isChecked) {
-				$el.parent().find('.tree-item').addClass('tree-selected').find(":checkbox").prop("checked", 'checked');
-			} else {
-				$el.parent().find('.tree-item').removeClass('tree-selected').find(":checkbox").prop("checked", '');
-			}
 		}
 		//新加函数，弹出菜单
 		,

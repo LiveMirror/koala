@@ -67,7 +67,8 @@ public class GeneralQueryController {
         
         List<GeneralQueryVo> generalQueryVos = new ArrayList<GeneralQueryController.GeneralQueryVo>();
         for (GeneralQuery generalQuery : all.getResult()) {
-        	generalQueryVos.add(new GeneralQueryVo(generalQuery.getId(), generalQuery.getDataSource().getDataSourceId(), generalQuery.getQueryName(), 
+        	generalQueryVos.add(new GeneralQueryVo(generalQuery.getId(), generalQuery.getDataSource().getDataSourceId(), 
+        			generalQuery.getDataSource().getId(), generalQuery.getQueryName(), 
         			generalQuery.getTableName(), generalQuery.getDescription(), generalQuery.getCreateDate()));
         }
         
@@ -306,9 +307,14 @@ public class GeneralQueryController {
 		private Long id;
 		
 		/**
-		 * 数据源id
+		 * 数据源业务id
 		 */
 		private String dataSourceId;
+		
+		/**
+		 * 数据源主键id
+		 */
+		private Long dsId;
 
 		/**
 		 * 查询器名称
@@ -345,9 +351,10 @@ public class GeneralQueryController {
 		 */
 		private List<FieldDetail> fieldDetails = new ArrayList<FieldDetail>();
 
-		GeneralQueryVo(Long id, String dataSourceId, String queryName, String tableName, String description, Date createDate) {
+		GeneralQueryVo(Long id, String dataSourceId, Long dsId, String queryName, String tableName, String description, Date createDate) {
 			this.id = id;
 			this.dataSourceId = dataSourceId;
+			this.dsId = dsId;
 			this.queryName = queryName;
 			this.tableName = tableName;
 			this.description = description;
@@ -369,6 +376,14 @@ public class GeneralQueryController {
 
 		public void setDataSourceId(String dataSourceId) {
 			this.dataSourceId = dataSourceId;
+		}
+
+		public Long getDsId() {
+			return dsId;
+		}
+
+		public void setDsId(Long dsId) {
+			this.dsId = dsId;
 		}
 
 		public String getQueryName() {

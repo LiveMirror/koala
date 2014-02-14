@@ -531,8 +531,23 @@ var generalQuery = function(){
 		});
 		return data;
 	};
-	var preview = function(id){
-		window.open(contextPath + '/pages/gqc/previewTemplate.jsp?id='+id,'预览');
+	var preview = function(id, dataSourceId){
+		$.get(contextPath + "/dataSource/checkDataSourceById.koala?id=" + dataSourceId).done(function(data){
+			if (data.result == "该数据源不可用") {
+				$('#generalQueryGrid').message({
+					type: 'error',
+					content: "数据源不可用！"
+				});
+			} else if (data.result == "该数据源可用") {
+				window.open(contextPath + '/pages/gqc/previewTemplate.jsp?id='+id,'预览');
+			} else {
+				$('#generalQueryGrid').message({
+					type: 'error',
+					content: data.error
+				});
+			}
+		});
+		
 	};
 	/**
 	 * 检查变量是否不为空  true:不空   false:空
