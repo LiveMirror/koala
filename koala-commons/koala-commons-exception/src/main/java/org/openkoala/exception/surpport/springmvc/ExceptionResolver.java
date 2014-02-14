@@ -22,39 +22,41 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 	protected ModelAndView doResolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {
 		String exceptionMsg = WebErrUtils.formatException(ex);
-		String viewName = determineViewName(ex, request);
-		if (viewName != null) {
-			viewName = viewName.substring(0, viewName.indexOf(".jsp"));
-			if (!isAsynRequest(request)) {
-				Integer statusCode = determineStatusCode(request, viewName);
-				if (statusCode != null) {
-					applyStatusCodeIfPossible(request, response, statusCode);
-				}
-				ex.printStackTrace();
-				Map<String, String> result = new HashMap<String, String>();
-				result.put(WebErrUtils.ERROR_KEY, exceptionMsg);
-				return new ModelAndView(viewName, result);
-			} else {
-				writeJSON(response, "actionError", exceptionMsg);
-				ex.printStackTrace();
-				return null;
+		if (!isAsynRequest(request)) {
+			String viewName = determineViewName(ex, request);
+			viewName = viewName.substring(0, viewName.lastIndexOf("."));
+			Integer statusCode = determineStatusCode(request, viewName);
+			if (statusCode != null) {
+				applyStatusCodeIfPossible(request, response, statusCode);
 			}
+			ex.printStackTrace();
+			Map<String, String> result = new HashMap<String, String>();
+			result.put(WebErrUtils.ERROR_KEY, exceptionMsg);
+			return new ModelAndView(viewName, result);
+		} else {
+			writeJSON(response, "koalaError", exceptionMsg);
+			ex.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	/**
 	 * 向页面输出JSON数据
-	 * @param response	response对象
-	 * @param key		JSON中的键
-	 * @param value		JSON中的值
+	 * 
+	 * @param response
+	 *            response对象
+	 * @param key
+	 *            JSON中的键
+	 * @param value
+	 *            JSON中的值
 	 */
-	private void writeJSON(HttpServletResponse response, String key, String value) {
+	private void writeJSON(HttpServletResponse response, String key,
+			String value) {
 		Writer writer = null;
 		try {
 			response.setContentType("text/x-json;charset=UTF-8");
 			writer = response.getWriter();
-			writer.write(String.format("{\"%s\":\"%s\"}", key , value));
+			writer.write(String.format("{\"%s\":\"%s\"}", key, value));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -74,8 +76,8 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 	 */
 	private boolean isAsynRequest(HttpServletRequest request) {
 		return (request.getHeader("accept").indexOf("application/json") != -1 || (request
-				.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With")
-				.indexOf("XMLHttpRequest") != -1));
+				.getHeader("X-Requested-With") != null && request.getHeader(
+				"X-Requested-With").indexOf("XMLHttpRequest") != -1));
 	}
 
 }

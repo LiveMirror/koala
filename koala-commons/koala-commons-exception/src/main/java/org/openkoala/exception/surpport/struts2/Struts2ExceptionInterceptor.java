@@ -80,7 +80,7 @@ public class Struts2ExceptionInterceptor extends ExceptionMappingInterceptor {
      * @return
      */
     private String buildErrorMsg2Json(String errorMsg){
-        String json = "{\"actionError\":\"{message}\"}";
+        String json = "{\"koalaError\":\"{message}\"}";
         WebErrUtils.writeJSON(json.replace("{message}", errorMsg));
         return null;
     }
