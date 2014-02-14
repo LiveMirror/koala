@@ -113,7 +113,7 @@ public class RoleTest extends KoalaBaseSpringTestCase {
 		role.abolishResource(resource);
 		role.abolishResource(resource1);
 		
-		assertTrue(role.getIdentityResourceAuthorizations().isEmpty());
+		assertTrue(role.findIdentityResourceAuthorizations().isEmpty());
 	}
 	
 	/**

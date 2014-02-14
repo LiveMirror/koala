@@ -53,6 +53,12 @@
 			<artifactId>jstl-api</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-application</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
 		<!-- 加入对spring security 支持 -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -74,10 +80,10 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-acl</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-cas</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-cas</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.octo.captcha</groupId>

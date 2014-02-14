@@ -62,7 +62,7 @@ public class User extends Identity {
 	 * 获取用户所拥有的角色
 	 * @return
 	 */
-	public Set<RoleUserAuthorization> getRoles() {
+	public Set<RoleUserAuthorization> findRoles() {
 		return new HashSet<RoleUserAuthorization>(RoleUserAuthorization.findAuthorizationByUser(this));
 	}
 

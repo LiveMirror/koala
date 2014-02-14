@@ -92,6 +92,14 @@ public interface RoleApplication {
      * @return
      */
     List<RoleVO> findRoleByUserAccount(String userAccount);
+    
+    
+    /**
+     * 根据角色名查询其所拥有的资源
+     * @param roleName
+     * @return
+     */
+    List<ResourceVO> findResourceByRoleName(String roleName);
 
     /**
      * 根据角色查找用户

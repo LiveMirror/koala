@@ -126,7 +126,7 @@ public class Role extends Identity {
 	/**
 	 * 获取角色的资源授权
 	 */
-	public List<IdentityResourceAuthorization> getIdentityResourceAuthorizations() {
+	public List<IdentityResourceAuthorization> findIdentityResourceAuthorizations() {
 		return IdentityResourceAuthorization.findAuthorizationByRole(getId());
 	}
 	
@@ -134,7 +134,7 @@ public class Role extends Identity {
 	 * 获取用户角色的授权
 	 * @return
 	 */
-	public List<RoleUserAuthorization> getRoleUserAuthorizations() {
+	public List<RoleUserAuthorization> findRoleUserAuthorizations() {
 		return RoleUserAuthorization.findUserAuthorizationByRole(getId());
 	}
 	

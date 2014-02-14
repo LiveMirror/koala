@@ -76,7 +76,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
     public void removeUser(Long userId) {
         User user = User.load(User.class, userId);
         user.setAbolishDate(new Date());
-        for (RoleUserAuthorization each : user.getRoles()) {
+        for (RoleUserAuthorization each : user.findRoles()) {
         	each.setAbolishDate(new Date());
         }
     }
