@@ -176,6 +176,9 @@ var userManager = function() {
 		if (!Validation.notNull(dialog, userAccount, userAccount.val(), '请输入用户账号')) {
 			return false;
 		}
+		if (!Validation.checkByRegExp(dialog, userAccount, '^[0-9a-zA-Z]*$', userAccount.val(), '用户账号不能带中文')) {
+			return false;
+		}
 		if (!Validation.notNull(dialog, email, email.val(), '请输入用户邮箱')) {
 			return false;
 		}
