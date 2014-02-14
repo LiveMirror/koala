@@ -37,6 +37,7 @@ public class SecurityManagerImpl implements SecurityManager {
 			Class.forName(config.getDbdriver());
 			return DriverManager.getConnection(config.getDburl(), config.getDbuser(), config.getDbpassword());
 		} catch (Exception e) {
+			e.printStackTrace();
 			LOGGER.info(e.getMessage());
 		}
 		return null;

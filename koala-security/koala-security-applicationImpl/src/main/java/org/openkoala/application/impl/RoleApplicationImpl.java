@@ -1,12 +1,16 @@
 package org.openkoala.application.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.interceptor.Interceptors;
+
 import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.auth.application.RoleApplication;
 import org.openkoala.auth.application.vo.QueryConditionVO;
@@ -18,9 +22,13 @@ import org.openkoala.koala.auth.core.domain.Resource;
 import org.openkoala.koala.auth.core.domain.Role;
 import org.openkoala.koala.auth.core.domain.RoleUserAuthorization;
 import org.openkoala.koala.auth.core.domain.User;
+import org.openkoala.util.RoleBeanUtil;
+import org.openkoala.util.UserBeanUtil;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.dayatang.dsrouter.context.memory.ContextHolder;
 import com.dayatang.querychannel.support.Page;
+import com.dayatang.utils.DateUtils;
 
 @Named("roleApplication")
 @Transactional(value="transactionManager_security")
@@ -32,7 +40,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 	public RoleVO getRole(Long roleId) {
 		Role role = Role.get(Role.class, roleId);
 		RoleVO roleVO = new RoleVO();
-		roleVO.domain2Vo(role);
+		RoleBeanUtil.roleToRoleVO(role, roleVO);
 		return roleVO;
 	}
 
@@ -40,7 +48,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 		String cx = ContextHolder.getContextType();
 		ContextHolder.setContextType("security");
 		Role role = new Role();
-		roleVO.vo2Domain(role);
+		RoleBeanUtil.roleVOToRole(role, roleVO);
 		isRoleExist(role);
 		role.save();
 		roleVO.setId(role.getId());
@@ -77,7 +85,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 	 * @param role
 	 */
 	private void removeResourceAuthorizations(Role role) {
-		for (IdentityResourceAuthorization each : role.getIdentityResourceAuthorizations()) {
+		for (IdentityResourceAuthorization each : role.findIdentityResourceAuthorizations()) {
 			each.setAbolishDate(new Date());
 		}
 	}
@@ -87,7 +95,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 	 * @param role
 	 */
 	private void removeUserAuthorizations(Role role) {
-		for (RoleUserAuthorization authorization : role.getRoleUserAuthorizations()) {
+		for (RoleUserAuthorization authorization : role.findRoleUserAuthorizations()) {
 			authorization.setAbolishDate(new Date());
 		}
 	}
@@ -97,7 +105,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 		List<Role> roles = Role.findAll(Role.class);
 		for (Role each : roles) {
 			RoleVO roleVO = new RoleVO();
-			roleVO.domain2Vo(each);
+			RoleBeanUtil.roleToRoleVO(each, roleVO);
 			results.add(roleVO);
 		}
 		return results;
@@ -140,6 +148,20 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 		}
 		return result;
 	}
+	
+	public List<ResourceVO> findResourceByRoleName(String roleName){
+		 List<ResourceVO> result = new ArrayList<ResourceVO>();
+		 Role role = Role.findRoleByName(roleName);
+		 if(role!=null){
+			 List<Resource> queryResult = Resource.findResourceByRole(role.getId());
+				for (Resource res : queryResult) {
+					ResourceVO resourceVO = new ResourceVO();
+					resourceVO.domain2Vo(res);
+					result.add(resourceVO);
+				}
+		 }
+		 return result;
+	 }
 
 	public Page<RoleVO> pageQueryRole(int currentPage, int pageSize) {
 		List<RoleVO> results = new ArrayList<RoleVO>();
@@ -148,7 +170,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 				currentPage, pageSize);
 		for (Role each : pages.getResult()) {
 			RoleVO roleVO = new RoleVO();
-			roleVO.domain2Vo(each);
+			RoleBeanUtil.roleToRoleVO(each, roleVO);
 			results.add(roleVO);
 		}
 		return new Page<RoleVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), results);
@@ -160,7 +182,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 				currentPage, pageSize);
 		for (Role role : pages.getResult()) {
 			RoleVO roleVO = new RoleVO();
-			roleVO.domain2Vo(role);
+			RoleBeanUtil.roleToRoleVO(role, roleVO);
 			result.add(roleVO);
 		}
 		return new Page<RoleVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), result);
@@ -243,7 +265,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 		List<Role> roles = Role.findRoleByUserAccount(userAccount);
 		for (Role each : roles) {
 			RoleVO roleVO = new RoleVO();
-			roleVO.domain2Vo(each);
+			RoleBeanUtil.roleToRoleVO(each, roleVO);
 			results.add(roleVO);
 		}
 		return results;
@@ -258,9 +280,13 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 				new Object[] { roleVO.getId(), new Date(), new Date() }, currentPage, pageSize);
 		for (User user : pages.getResult()) {
 			UserVO userVO = new UserVO();
-			userVO.domain2Vo(user);
+			UserBeanUtil.userToUserVO(user, userVO);
 			result.add(userVO);
 		}
 		return new Page<UserVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), result);
 	}
+	
+	
+	
+	
 }

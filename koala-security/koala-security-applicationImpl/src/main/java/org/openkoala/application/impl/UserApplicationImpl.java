@@ -3,10 +3,12 @@ package org.openkoala.application.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.interceptor.Interceptors;
+
 import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.auth.application.UserApplication;
 import org.openkoala.auth.application.vo.QueryConditionVO;
@@ -15,8 +17,12 @@ import org.openkoala.auth.application.vo.UserVO;
 import org.openkoala.koala.auth.core.domain.Role;
 import org.openkoala.koala.auth.core.domain.RoleUserAuthorization;
 import org.openkoala.koala.auth.core.domain.User;
+import org.openkoala.util.RoleBeanUtil;
+import org.openkoala.util.UserBeanUtil;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.dayatang.querychannel.support.Page;
+import com.dayatang.utils.DateUtils;
 
 @Named("userApplication")
 @Transactional(value="transactionManager_security")
@@ -28,13 +34,13 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
     public UserVO getUser(Long userId) {
         User user = User.get(User.class, userId);
         UserVO userVO = new UserVO();
-        userVO.domain2Vo(user);
+        UserBeanUtil.userToUserVO(user, userVO);
         return userVO;
     }
 
     public UserVO saveUser(UserVO userVO) {
 		User user = new User();
-		userVO.vo2Domain(user);
+		UserBeanUtil.userVOToUser(user, userVO);
         // 检查用户账号是否已经存在
         if (user.isAccountExist()) {
         	throw new ApplicationException("userAccount.exist", null);
@@ -64,7 +70,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
     public void removeUser(Long userId) {
         User user = User.load(User.class, userId);
         user.setAbolishDate(new Date());
-        for (RoleUserAuthorization each : user.getRoles()) {
+        for (RoleUserAuthorization each : user.findRoles()) {
         	each.setAbolishDate(new Date());
         }
     }
@@ -74,7 +80,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
         List<User> users = User.findAll(User.class);
         for (User each : users) {
             UserVO userVO = new UserVO();
-            userVO.domain2Vo(each);
+            UserBeanUtil.userToUserVO(each, userVO);
             results.add(userVO);
         }
         return results;
@@ -86,7 +92,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
         		new Object[] { new Date() }, currentPage, pageSize);
         for (User each : pages.getResult()) {
             UserVO userVO = new UserVO();
-            userVO.domain2Vo(each);
+            UserBeanUtil.userToUserVO(each, userVO);
             results.add(userVO);
         }
         return new Page<UserVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), results);
@@ -98,7 +104,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
         	return null;
         }
         UserVO userVO = new UserVO();
-        userVO.domain2Vo(user);
+        UserBeanUtil.userToUserVO(user, userVO);
         return userVO;
     }
 
@@ -142,7 +148,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
         
         for (Role each : pages.getResult()) {
             RoleVO roleVO = new RoleVO();
-            roleVO.domain2Vo(each);
+            RoleBeanUtil.roleToRoleVO(each, roleVO);
             results.add(roleVO);
         }
         
@@ -155,9 +161,12 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
         		new Object[] { new Date() }, currentPage, pageSize);
         for (User each : pages.getResult()) {
             UserVO userVO = new UserVO();
-            userVO.domain2Vo(each);
+            UserBeanUtil.userToUserVO(each, userVO);
             results.add(userVO);
         }
         return new Page<UserVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), results);
     }
+    
+
+
 }

@@ -10,12 +10,12 @@
     <name>koala project</name>
     <description />
     <modules>
-        <module>koala-plugin</module>
         <module>koala-commons</module>
         <module>koala-security</module>
         <module>koala-bpm</module>
         <module>koala-gqc</module>
         <module>koala-monitor</module>
+		<module>koala-plugin</module>
     </modules>
 
     <properties>
@@ -787,7 +787,7 @@
     <repositories>
         <repository>
             <id>koala-snapshots</id>
-            <url>http://nexus.openkoala.org/nexus/content/groups/Koala-snapshots/</url>
+            <url>http://nexus.openkoala.org/content/groups/Koala-snapshots/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
@@ -798,7 +798,7 @@
 
         <repository>
             <id>koala-release</id>
-            <url>http://nexus.openkoala.org/nexus/content/groups/Koala-release/</url>
+            <url>http://nexus.openkoala.org/content/groups/Koala-release/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

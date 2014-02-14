@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.NoResultException;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import com.dayatang.domain.InstanceFactory;
 import com.dayatang.utils.DateUtils;
 
 /**
@@ -56,7 +55,7 @@ public class User extends Identity {
 		this.userDesc = desc;
 	}
 
-	public Set<RoleUserAuthorization> getRoles() {
+	public Set<RoleUserAuthorization> findRoles() {
 		return new HashSet<RoleUserAuthorization>(RoleUserAuthorization.findAuthorizationByUser(this));
 	}
 

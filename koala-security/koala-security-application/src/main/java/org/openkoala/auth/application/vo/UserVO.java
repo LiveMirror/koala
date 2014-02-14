@@ -78,32 +78,5 @@ public class UserVO extends IdentityVO implements Serializable {
 
 	}
 
-	public void domain2Vo(User user) {
-        this.setId(user.getId());
-        this.setLastLoginTime(user.getLastLoginTime() == null ? "" : user.getLastLoginTime().toString());
-        this.setUserAccount(user.getUserAccount());
-        this.setUserPassword(user.getUserPassword());
-        this.setUserDesc(user.getUserDesc());
-        this.setAbolishDate(user.getAbolishDate() == null ? "" : user.getAbolishDate().toString());
-        this.setCreateDate(user.getCreateDate() == null ? "" : user.getCreateDate().toString());
-        this.setCreateOwner(user.getCreateOwner());
-        this.setName(user.getName());
-        this.setSerialNumber(user.getSerialNumber());
-        this.setSortOrder(user.getSortOrder());
-        this.setValid(user.isValid());
-	}
-	
-	public void vo2Domain(User user) {
-		user.setAbolishDate(DateUtils.MAX_DATE);
-        user.setCreateDate(new Date());
-        user.setUserAccount(this.getUserAccount());
-        user.setUserPassword(this.getUserPassword());
-        user.setUserDesc(this.getUserDesc());
-        user.setCreateOwner(this.getCreateOwner());
-        user.setName(this.getName());
-        user.setSerialNumber(this.getSerialNumber());
-        user.setSortOrder(this.getSortOrder());
-        user.setValid(this.isValid());
-	}
 	
 }

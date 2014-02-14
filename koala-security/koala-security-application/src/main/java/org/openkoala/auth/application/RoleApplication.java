@@ -120,6 +120,11 @@ public interface RoleApplication {
      * @return
      */
     List<ResourceVO> findResourceByRole(RoleVO roleVO);
+    
+    
+    List<ResourceVO> findResourceByRoleName(String roleName);
+    
+    
 
     /**
      * 废除菜单

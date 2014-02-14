@@ -56,6 +56,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-application</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
 		<!-- 加入对spring security 支持 -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -101,6 +107,8 @@
 			<artifactId>filters</artifactId>
 			<version>2.0.235-1</version>
 		</dependency>
+
+
 
 	</dependencies>
 </project>
