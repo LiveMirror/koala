@@ -40,10 +40,10 @@ var dataSource = function(){
 					content: '删除成功'
 				});
 				dataGrid.grid('refresh');
-			}else{
+			} else {
 				dataGrid.message({
 					type: 'error',
-					content: '删除失败'
+					content: data.result
 				});
 			}
 		}).fail(function(data){
@@ -147,13 +147,8 @@ var dataSource = function(){
 		$.post(url,getAllData()).done(function(data){
 			if(data.result == 'success'){
 				dialog.trigger('complete');
-			}else if(data.result == '该数据源ID已存在'){
-				showErrorMessage(dataSourceId, '该数据源ID已存在');
-			}else{
-				dialog.find('.modal-content').message({
-					type: 'error',
-					content: '系统繁忙'
-				});
+			}else {
+				showErrorMessage(dataSourceId, data.result);
 			}
 			dialog.find('#dataSourceSave').removeAttr('disabled');
 		});

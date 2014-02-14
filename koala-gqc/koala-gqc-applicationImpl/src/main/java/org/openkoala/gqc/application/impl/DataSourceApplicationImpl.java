@@ -16,6 +16,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.openkoala.gqc.application.DataSourceApplication;
 import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.core.domain.DataSourceType;
+import org.openkoala.gqc.core.domain.GeneralQuery;
 import org.openkoala.gqc.infra.util.DatabaseUtils;
 import org.openkoala.gqc.vo.DataSourceVO;
 import org.springframework.transaction.annotation.Transactional;
@@ -159,6 +160,9 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 	public void removeDataSources(Long[] ids) {
 		for (int i = 0; i < ids.length; i++) {
 			DataSource dataSource = DataSource.load(DataSource.class, ids[i]);
+			if (!GeneralQuery.findByDatasource(dataSource).isEmpty()) {
+				throw new RuntimeException("数据源已被使用！");
+			}
 			dataSource.remove();
 		}
 	}

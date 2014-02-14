@@ -244,10 +244,6 @@ public class DataSource extends GeneralQueryEntity {
 		int result = 1;
 		result = prime * result
 				+ ((connectUrl == null) ? 0 : connectUrl.hashCode());
-		result = prime
-				* result
-				+ ((dataSourceDescription == null) ? 0 : dataSourceDescription
-						.hashCode());
 		result = prime * result
 				+ ((dataSourceId == null) ? 0 : dataSourceId.hashCode());
 		return result;
@@ -270,13 +266,6 @@ public class DataSource extends GeneralQueryEntity {
 				return false;
 			}
 		} else if (!connectUrl.equals(other.connectUrl)){
-			return false;
-		}
-		if (dataSourceDescription == null) {
-			if (other.dataSourceDescription != null){
-				return false;
-			}
-		} else if (!dataSourceDescription.equals(other.dataSourceDescription)){
 			return false;
 		}
 		if (dataSourceId == null) {

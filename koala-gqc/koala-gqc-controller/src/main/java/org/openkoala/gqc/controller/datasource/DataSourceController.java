@@ -39,12 +39,9 @@ public class DataSourceController{
 	@ResponseBody
 	@RequestMapping("/add")
 	public Map<String,Object> add(DataSourceVO dataSourceVO) {
-		//Json对象
-		Map<String, Object> dataMap = null;
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		
 		try {
-			dataMap = new HashMap<String, Object>();
-		    
             String errorMsg = dataSourceApplication.saveDataSource(dataSourceVO);
             if(errorMsg == null){
                 dataMap.put("result", "success");
@@ -52,9 +49,7 @@ public class DataSourceController{
                 dataMap.put("result", errorMsg);
             }
         } catch (Exception e) {
-        	if(dataMap != null){
-                dataMap.put("result", "新增失败！");
-        	}
+            dataMap.put("result", "新增失败！");
         }
         
 		return dataMap;
@@ -120,11 +115,8 @@ public class DataSourceController{
     @ResponseBody
     @RequestMapping("/delete")
 	public Map<String,Object> delete(String ids) {
-		//Json对象
-		Map<String, Object> dataMap = null;
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
-			dataMap = new HashMap<String, Object>();
-			
 			if(ids != null){
 	            String[] idArrs = ids.split(",");
 	            Long[] idsLong = new Long[idArrs.length];
@@ -135,10 +127,11 @@ public class DataSourceController{
 	        }
 	        
 			dataMap.put("result", "success");
+		} catch (RuntimeException e) {
+            dataMap.put("result", e.getMessage());
 		} catch (Exception e) {
-        	if(dataMap != null){
-                dataMap.put("result", "删除失败！");
-        	}
+            dataMap.put("result", "删除失败！");
+            e.printStackTrace();
 		}
 		return dataMap;
 	}

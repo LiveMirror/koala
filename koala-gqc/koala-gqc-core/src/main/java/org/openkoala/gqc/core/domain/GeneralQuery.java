@@ -314,6 +314,16 @@ public class GeneralQuery extends GeneralQueryEntity {
 		}
 		return null;
 	}
+    
+	/**
+	 * 查找使用同一个数据源的通用查询实例
+	 * @param dataSource
+	 * @return
+	 */
+    public static List<GeneralQuery> findByDatasource(DataSource dataSource) {
+    	return getRepository().find(QuerySettings.create(GeneralQuery.class)
+    			.eq("dataSource", dataSource));
+    }
 	
 	@Override
 	public int hashCode() {
