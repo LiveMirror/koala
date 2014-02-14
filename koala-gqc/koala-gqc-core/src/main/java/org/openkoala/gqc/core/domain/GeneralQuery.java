@@ -325,6 +325,25 @@ public class GeneralQuery extends GeneralQueryEntity {
     			.eq("dataSource", dataSource));
     }
 	
+    @Override
+    public void save() {
+    	if (queryNameIsExist()) {
+    		throw new RuntimeException("查询器名称已存在！");
+    	}
+    	super.save();
+    }
+    
+	private boolean queryNameIsExist() {
+		QuerySettings<GeneralQuery> querySettings =QuerySettings.create(GeneralQuery.class);
+		querySettings.eq("queryName", queryName);
+		
+		if (getId() != null) {
+			querySettings.notEq("id", getId());
+		}
+		
+		return !getRepository().find(querySettings).isEmpty();
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

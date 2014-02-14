@@ -132,5 +132,10 @@ public class GqcApplicationImpl implements GqcApplication {
 	public Page<Map<String, Object>> pagingQuery(GeneralQuery generalQuery, int currentPage, int pagesize) {
 		return generalQuery.pagingQueryPage(currentPage, pagesize);
 	}
+
+	@Override
+	public void saveGeneralQuery(GeneralQuery generalQuery) {
+		generalQuery.save();
+	}
 	
 }

@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.openkoala.gqc.application.DataSourceApplication;
 import org.openkoala.gqc.application.GqcApplication;
 import org.openkoala.gqc.core.domain.DynamicQueryCondition;
@@ -87,17 +85,16 @@ public class GeneralQueryController {
     @ResponseBody
     @RequestMapping("/add")
     public Map<String,Object> add(GeneralQuery generalQuery) {
-    	//Json对象
-	    Map<String, Object> dataMap = null;
+	    Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-        	dataMap = new HashMap<String, Object>();
             generalQuery.setCreateDate(new Date());
-            gqcApplication.saveEntity(generalQuery);
+            gqcApplication.saveGeneralQuery(generalQuery);
             dataMap.put("result", "success");
+        } catch (RuntimeException e) {
+            dataMap.put("result", e.getMessage());
         } catch (Exception e) {
-        	if(dataMap != null){
-                dataMap.put("result", "保存失败！");
-        	}
+            dataMap.put("result", "保存失败！");
+            e.printStackTrace();
         }
         
         return dataMap;
@@ -141,17 +138,15 @@ public class GeneralQueryController {
     @ResponseBody
     @RequestMapping("/update")
     public Map<String,Object> update(GeneralQuery generalQuery) {
-    	//Json对象
-	    Map<String, Object> dataMap = null;
+	    Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-        	dataMap = new HashMap<String, Object>();
             generalQuery.setCreateDate(new Date());
-            gqcApplication.updateEntity(generalQuery);
+            gqcApplication.saveGeneralQuery(generalQuery);
             dataMap.put("result", "success");
+        } catch (RuntimeException e) {
+            dataMap.put("result", e.getMessage());
         } catch (Exception e) {
-        	if(dataMap != null){
-                dataMap.put("result", "保存失败！");
-        	}
+            dataMap.put("result", "保存失败！");
         }
         
         return dataMap;
