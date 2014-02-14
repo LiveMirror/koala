@@ -261,7 +261,7 @@ public class GunvorApplicationImpl implements GunvorApplication {
 			return packages;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			throw new RuntimeException(e);
 		} finally {
 			if (is != null) {
 				try {
@@ -339,13 +339,14 @@ public class GunvorApplicationImpl implements GunvorApplication {
 			return EntityUtils.toString(entity);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
 			HttpClientUtils.closeQuietly(response);
 			HttpClientUtils.closeQuietly(httpclient);
 		}
-		return null;
 	}
 
 	private void doHttpDeleteRequest(String url){

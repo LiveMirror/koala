@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class Developer {
 
+    public final int PASSWORD_MIN_LENGTH = 8;
+
     /**
      * 用户 ID
      */
@@ -47,7 +49,8 @@ public class Developer {
 
     public boolean validate() {
         if (StringUtils.isBlank(name) || StringUtils.isBlank(password)
-                || StringUtils.isBlank(email) || !email.matches(EMAIL_REG)) {
+                || StringUtils.isBlank(email) || !email.matches(EMAIL_REG)
+                || StringUtils.length(password) < PASSWORD_MIN_LENGTH) {
             throw new DeveloperValidateFailureException("Developer is invalid");
         }
         return true;
