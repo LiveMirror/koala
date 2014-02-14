@@ -1,7 +1,6 @@
 package org.openkoala.opencis.trac;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openkoala.opencis.api.CISClient;
@@ -12,7 +11,6 @@ import org.openkoala.opencis.exception.HostCannotConnectException;
 import org.openkoala.opencis.exception.UserOrPasswordErrorException;
 import org.openkoala.opencis.support.CommandExecutor;
 import org.openkoala.opencis.support.SSHConnectConfig;
-import org.openkoala.opencis.trac.command.TracAssignUserToRoleCommand;
 import org.openkoala.opencis.trac.command.TracCommand;
 import org.openkoala.opencis.trac.command.TracCreatePasswdCommand;
 import org.openkoala.opencis.trac.command.TracCreateProjectCommand;
@@ -37,7 +35,7 @@ import com.trilead.ssh2.Connection;
 public class TracCISClient implements CISClient {
 
     private SSHConnectConfig configuration = null;
-    private static final Logger logger = Logger.getLogger(TracCISClient.class);
+    private static final Logger logger = Logger.getLogger(TracCISClient.class.getName());
 
     private CommandExecutor executor = new CommandExecutor();
     

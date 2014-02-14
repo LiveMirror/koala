@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.openkoala.opencis.ProjectValidateFailureException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 项目相关属性的接口

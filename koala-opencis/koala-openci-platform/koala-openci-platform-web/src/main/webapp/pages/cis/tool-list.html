@@ -1,0 +1,254 @@
+<div id="toolManagement" class="tool-manage">
+	<ul class="nav nav-tabs"></ul>
+	<div id="toolGrid" style="margin-top: 10px;"></div>
+	<div class="cas-config" style="display: none;">
+		<form class="form-horizontal">
+			<div class="form-group" >
+				<label for="serviceUrl" class="col-lg-4 control-label">CAS地址:</label>
+				<input type="text" class="col-lg-8 form-control" id="serviceUrl" name="serviceUrl"  dataType="English" placeholder="输入CAS地址" require/>
+				<span class="required">*</span>
+			</div>
+			<div class="form-group" >
+				<label for="username" class="col-lg-4 control-label">用户名:</label>
+				<input type="text" class="col-lg-8 form-control" id="username" name="username"  dataType="English" placeholder="输入用户名" require/>
+				<span class="required">*</span>
+			</div>
+			<div class="form-group" >
+				<label for="password" class="col-lg-4 control-label">密码:</label>
+				<input type="password" class="col-lg-8 form-control" id="password" name="password"  dataType="English" placeholder="输入密码" require/>
+				<span class="required">*</span>
+			</div>
+			<div class="form-group" style="text-align:center;">
+				<button class="btn btn-default" type="button" id="resetBtn">
+					重置
+				</button>
+				<button class="btn btn-success" type="button" id="saveBtn">
+					保存
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	$(function() {
+		var toolManagement = $('#toolManagement');
+		var toolTab = toolManagement.find('.nav-tabs');
+		var toolGrid = toolManagement.find('#toolGrid');
+		var casConfig = toolManagement.find('.cas-config');
+		$.get('toolconfiguration/get-tool-type').done(function(data) {
+			for (type in data) {
+				var $li = $('<li data-tool-type="' + type + '"></li>');
+				$li.html('<a href="#">' + type + '</>');
+				toolTab.append($li);
+			}
+			toolTab.find('li').on('click', function() {
+				var $this = $(this);
+				if (!$this.hasClass('active')) {
+					toolTab.find('li.active').removeClass('active');
+					$this.addClass('active');
+				}
+				var toolType = $this.data('tool-type');
+				if (toolType == 'CAS_USER_MANAGE') {
+					casConfig.show();
+					toolGrid.hide();
+					initCasConfig();
+					return;
+				}
+				casConfig.hide();
+				toolGrid.show();
+				var columns = [{
+					title : '工具名称',
+					name : 'name',
+					width : 120
+				}, {
+					title : '工具地址',
+					name : 'serviceUrl',
+					width : 200
+				}, {
+					title : '用户名',
+					name : 'username',
+					width : 120
+				}, {
+					title : '密码',
+					name : 'password',
+					width : '120px'
+				}, {
+					title : '是否可用',
+					name : 'usable',
+					width : 100,
+					render : function(item, name, index) {
+						return item[name] ? '<span id="usable' + index + '" class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>' : '<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>'
+					}
+				}, {
+					title : '操作',
+					name : 'usable',
+					width : '150px',
+					render : function(item, name, index) {
+						return '<a onclick="toolManager.testConnection(' + item.id + ', ' + index + ')"><span id="usable' + index + '" class="glyphicon glyphicon-transfer"></span>&nbsp;测试连接</a>';
+					}
+				}];
+				var url = 'tracconfiguration/pagingquery';
+				switch(toolType) {
+					case 'TRAC':
+						columns.splice(2, 0, {
+							title : '保存路径',
+							name : 'savePath',
+							width : '180px'
+						});
+						url = 'tracconfiguration/pagingquery';
+						break;
+					case 'JIRA':
+						url = 'jirasconfiguration/pagingquery';
+						break;
+					case 'SONAR':
+						url = 'sonarconfiguration/pagingquery';
+						break;
+					case 'JENKINS':
+					    columns.splice(3, 1);
+					    columns.splice(3, 0, {
+							title : 'Token',
+							name : 'password',
+							width : '180px'
+						});
+						url = 'jenkinsconfiguration/pagingquery';
+						break;
+					case 'GIT':
+						columns.splice(4, 0, {
+							title : 'Token',
+							name : 'token',
+							width : '180px'
+						});
+						columns.splice(3, 0, {
+							title : '邮箱',
+							name : 'email',
+							width : '180px'
+						});
+						url = 'gitconfiguration/pagingquery';
+						break;
+					case 'SVN':
+						columns.splice(2, 0, {
+							title : '保存路径',
+							name : 'savePath',
+							width : '180px'
+						});
+						columns.splice(3, 0, {
+							title : '请求根路径',
+							name : 'requestRootAddress',
+							width : '150px'
+						});
+						url = 'svnconfiguration/pagingquery';
+						break;
+					default:
+						break;
+				}
+				var buttons = [{
+					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>',
+					action : 'add'
+				}, {
+					content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>',
+					action : 'modify'
+				}, {
+					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
+					action : 'delete'
+				}];
+				toolGrid.off().empty().data('koala.grid', null).grid({
+					identity : 'id',
+					columns : columns,
+					buttons : buttons,
+					url : url
+				}).on({
+					'add' : function() {
+						toolManager.add(toolType, $(this));
+					},
+					'modify' : function(e, data) {
+						var indexs = data.data;
+						var $this = $(this);
+						if (indexs.length == 0) {
+							$this.message({
+								type : 'warning',
+								content : '请选择一条记录进行修改'
+							});
+							return;
+						}
+						if (indexs.length > 1) {
+							$this.message({
+								type : 'warning',
+								content : '只能选择一条记录进行修改'
+							});
+							return;
+						}
+						toolManager.update(toolType, $this, data.item[0]);
+					},
+					'delete' : function(e, data) {
+						var indexs = data.data;
+						var $this = $(this)
+						if (indexs.length == 0) {
+							$this.message({
+								type : 'warning',
+								content : '请选择要操作的记录'
+							});
+							return;
+						}
+						$this.confirm({
+							content : '确定要删除所选记录吗?',
+							callBack : function() {
+								toolManager.del(toolType, $this, data.item);
+							}
+						});
+					}
+				});
+			});
+			toolTab.find('li:first').click();
+		});
+
+		var initCasConfig = function() {
+			$.get('casuserconfiguration/get').done(function(result) {
+				var data = {
+					name : 'CAS_USER_MANAGE'
+				};
+				var serviceUrl = casConfig.find('#serviceUrl');
+				var username = casConfig.find('#username');
+				var password = casConfig.find('#password');
+				var url = 'casuserconfiguration/create';
+				if (result.result) {
+					data = result.data;
+					serviceUrl.val(data.serviceUrl);
+					username.val(data.username);
+					password.val(data.password);
+					url = 'casuserconfiguration/update';
+				}
+				casConfig.find('#saveBtn').on('click', function() {
+
+					if (!Validation.notNull($('body'), serviceUrl, serviceUrl.val(), '请输入CAS地址')) {
+						return false;
+					}
+					if (!Validation.notNull($('body'), username, username.val(), '请输入用户名')) {
+						return false;
+					}
+					if (!Validation.notNull($('body'), password, password.val(), '请输入密码')) {
+						return false;
+					}
+					data.serviceUrl = serviceUrl.val();
+					data.username = username.val();
+					data.password = password.val();
+					$.post(url, data).done(function(data) {
+						if (data.result) {
+							$('.content').message({
+								type : 'success',
+								content : '保存成功'
+							});
+						} else {
+							$('.content').message({
+								type : 'error',
+								content : data.actionError
+							});
+						}
+					});
+				});
+				casConfig.find('#resetBtn').on('click', function() {
+					casConfig.find('input').val('');
+				});
+			});
+		}
+	}); 
+</script>

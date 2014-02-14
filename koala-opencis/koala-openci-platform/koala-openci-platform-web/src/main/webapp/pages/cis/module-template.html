@@ -1,0 +1,51 @@
+<div class="modal fade modual">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title">添加模块</h4>
+			</div>
+			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-lg-1 control-label" style="width: 10%;">模块名称:</label>
+						<div class="col-lg-2" style="width: 20%;">
+							<input type="text" class="form-control" id="moduleName">
+							<span class="required">*</span>
+						</div>
+						<label class="col-lg-1 control-label">包路径:</label>
+						<div class="col-lg-4">
+							<input type="text" class="form-control" id="basePackage">
+							<span class="required">*</span>
+						</div>
+						<label class="col-lg-2 control-label" style="width: 10%;">模块类型:</label>
+						<div class="col-lg-2">
+							<div class="btn-group select" id="moduleType"></div>
+							<span class="required">*</span>
+						</div>
+					</div>
+					<div class="form-group" style="min-height: 250px;padding-bottom:0;margin-bottom:0">
+						<div class="col-lg-6">
+							<h4>功能依赖</h4>
+							<div id="functionsGrid"></div>
+						</div>
+						<div class="col-lg-6">
+							<h4>模块依赖</h4>
+							 <div id="dependenciesGrid"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer" style="margin-top:0;">
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					取消
+				</button>
+				<button type="button" class="btn btn-success" id="save">
+					保存
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

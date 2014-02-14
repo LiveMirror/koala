@@ -24,7 +24,7 @@ import org.openkoala.opencis.exception.UserOrPasswordErrorException;
 import org.openkoala.opencis.support.SSHConnectConfig;
 import org.openkoala.opencis.support.SvnConfig;
 
-//@Ignore
+@Ignore
 public class SvnCISClientTest {
 
     private SvnConfig configuration;
