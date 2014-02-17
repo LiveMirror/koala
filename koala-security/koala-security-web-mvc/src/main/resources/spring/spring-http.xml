@@ -58,6 +58,7 @@
 		<property name="passwordNotCorrectUrl" value="/login.koala?login_error=2" />
 		<property name="validateCodeNotCorrectUrl" value="/login.koala?login_error=3" />
 		<property name="userDisableUrl" value="/login.koala?login_error=4" />
+		<property name="otherFailureUrl" value="/login.koala" />
 	</bean>
 
 	<!-- 验证码过滤器 -->

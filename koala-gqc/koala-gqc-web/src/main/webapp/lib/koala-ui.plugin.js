@@ -92,7 +92,7 @@
 			var self = this;
 			var columns = this.options.columns;
 			if(!columns || columns.length == 0){
-				$('body').message({
+				self.$element.message({
 					type: 'warning',
 					content: '没有列数据'
 				});
@@ -233,7 +233,7 @@
 				}
 				var condition = self.condition.getValue();
 				if(!condition){
-					$('body').message({
+					self.$element.message({
 						type: 'warning',
 						content: '请选择查询条件'
 					});
@@ -279,7 +279,7 @@
 				dataType: 'json'
 			}).done(function(result){
 					if(!result.Rows){
-						$('body').message({
+						self.$element.message({
 							type: 'error',
 							content: '查询失败'
 						});
@@ -633,6 +633,7 @@
 			for(var prop in conditions){
 				this.searchCondition[prop] = conditions[prop];
 			}
+			this.pageNo = 1;
 			this._loadData();
 		},
 		/**

@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
@@ -21,10 +20,9 @@ import org.openkoala.opencis.exception.RoleBlankException;
 import org.openkoala.opencis.exception.UserBlankException;
 import org.openkoala.opencis.exception.UserListBlankException;
 import org.openkoala.opencis.exception.UserOrPasswordErrorException;
-import org.openkoala.opencis.support.SSHConnectConfig;
 import org.openkoala.opencis.support.SvnConfig;
 
-@Ignore
+//@Ignore
 public class SvnCISClientTest {
 
     private SvnConfig configuration;
@@ -37,8 +35,8 @@ public class SvnCISClientTest {
 
     @Before
     public void setUp() throws Exception {
-        configuration = new SvnConfig("10.108.1.41", "zjh", "password","/opencis/server/svn/"
-        		,"http://10.108.1.41/svn/test","Koala","Koala");
+        configuration = new SvnConfig("10.108.1.136", "zjh", "password","/opencis/server/svn/"
+        		,"http://10.108.1.136/svn/test","Koala","Koala");
         this.initProjectInfo();
         this.initDeveloperInfo();
     }

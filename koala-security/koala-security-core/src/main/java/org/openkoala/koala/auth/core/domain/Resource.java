@@ -204,7 +204,7 @@ public class Resource extends Party {
 	 * 删除资源
 	 */
 	public void removeResource() {
-		removeResourceLineAssignment();
+		removeResourceLineAssignment(this.getId());
 		removeIdentityResourceAuthorization();
 		removeResourceTypeAssignment();
 		this.setAbolishDate(new Date());
@@ -230,11 +230,12 @@ public class Resource extends Party {
 	/**
 	 * 删除垂直关系
 	 */
-	private void removeResourceLineAssignment() {
-		for (ResourceLineAssignment assignment : ResourceLineAssignment.findRelationByResource(this.getId())) {
+	private void removeResourceLineAssignment(Long id) {
+		for (ResourceLineAssignment assignment : ResourceLineAssignment.findRelationByResource(id)) {
 			assignment.setAbolishDate(new Date());
 			if (assignment.getChild() != null && assignment.getChild().getAbolishDate().after(new Date())) {
 				assignment.getChild().setAbolishDate(new Date());
+				removeResourceLineAssignment(assignment.getChild().getId());
 			}
 		}
 	}

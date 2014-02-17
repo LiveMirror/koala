@@ -14,20 +14,23 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 /**
  * 登录失败处理
+ * 
  * @author zhuyuanbiao
  * @date 2014年1月13日 上午9:43:47
- *
+ * 
  */
 public class LoginFailureHandler implements AuthenticationFailureHandler {
-	
+
 	private String userAccountNotFoundUrl;
-	
+
 	private String passwordNotCorrectUrl;
-	
+
 	private String validateCodeNotCorrectUrl;
-	
+
 	private String userDisableUrl;
-	
+
+	private String otherFailureUrl;
+
 	public String getUserAccountNotFoundUrl() {
 		return userAccountNotFoundUrl;
 	}
@@ -60,28 +63,32 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 		this.userDisableUrl = userDisableUrl;
 	}
 
+	public void setOtherFailureUrl(String otherFailureUrl) {
+		this.otherFailureUrl = otherFailureUrl;
+	}
+
 	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException exception) throws IOException, ServletException {
+	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException,
+			ServletException {
 		if (exception instanceof UsernameNotFoundException) {
 			request.getRequestDispatcher(userAccountNotFoundUrl).forward(request, response);
 			return;
 		}
-		
+
 		if (exception instanceof BadCredentialsException) {
 			request.getRequestDispatcher(passwordNotCorrectUrl).forward(request, response);
 			return;
 		}
-		
+
 		if (exception instanceof BadValidateCodeException) {
 			request.getRequestDispatcher(validateCodeNotCorrectUrl).forward(request, response);
 			return;
 		}
-		
+
 		if (exception instanceof DisabledException) {
 			request.getRequestDispatcher(userDisableUrl).forward(request, response);
 		}
-		
+		response.sendRedirect(otherFailureUrl);
 	}
 
 }

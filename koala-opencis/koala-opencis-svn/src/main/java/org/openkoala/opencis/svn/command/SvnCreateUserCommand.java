@@ -34,6 +34,7 @@ public class SvnCreateUserCommand extends SvnCommand {
 
 		String createUserCommand = "htpasswd -b " +  filePath + " " + developer.getId() + " " 
 								+ developer.getPassword();
+		System.out.println("SVN创建用户命令：" + createUserCommand);
 		return createUserCommand;
 	}
 

@@ -147,6 +147,7 @@ public class SvnCISClient implements CISClient {
             //用户存在，则不再创建用户
 //            return true;
         } catch (Exception e) {
+        	e.printStackTrace();
             throw new CreateUserException("创建用户异常，原因：" + e.getMessage(), e);
         }
 //        return false;
