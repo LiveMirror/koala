@@ -139,41 +139,6 @@ body {
 		</div>
 		<div class="login_con_R">
 			<h4>登录</h4>
-			 <c:if test="${param.login_error == '1' }">
-		     	<script>
-		     		$('.login_con_R').message({
-						type: 'error',
-						content: '用户名错误!'
-					});
-		     	</script>
-		    </c:if>
-		    
-			<c:if test="${param.login_error == '2' }">
-		      	<script>
-		     		$('.login_con_R').message({
-						type: 'error',
-						content: '密码错误!'
-					});
-		     	</script>
-			</c:if>
-			
-			<c:if test="${param.login_error == '3' }">
-		      	<script>
-		     		$('.login_con_R').message({
-						type: 'error',
-						content: '验证码错误!'
-					});
-		     	</script>
-			</c:if>
-			
-			<c:if test="${param.login_error == '4' }">
-		      	<script>
-		     		$('.login_con_R').message({
-						type: 'error',
-						content: '该用户已被禁用!'
-					});
-		     	</script>
-			</c:if>
 			<FORM id="loginFormId" method=post action="j_spring_security_check" class="form-horizontal">
 				<div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
@@ -229,5 +194,45 @@ body {
 	    }
     });
 	</script>
+	<c:if test="${param.login_error == '1' }">
+     	<script>
+     		$('.login_con_R').message({
+				type: 'error',
+				content: '用户名错误!'
+			});
+     		$("#j_username").focus();
+	 		$("#j_username").select();
+     	</script>
+    </c:if>
+    
+	<c:if test="${param.login_error == '2' }">
+      	<script>
+     		$('.login_con_R').message({
+				type: 'error',
+				content: '密码错误!'
+			});
+     		$("#j_password").focus();
+	 		$("#j_password").select();
+     	</script>
+	</c:if>
+	
+	<c:if test="${param.login_error == '3' }">
+      	<script>
+     		$('.login_con_R').message({
+				type: 'error',
+				content: '验证码错误!'
+			});
+     		$('#jcaptcha').focus();
+     	</script>
+	</c:if>
+	
+	<c:if test="${param.login_error == '4' }">
+      	<script>
+     		$('.login_con_R').message({
+				type: 'error',
+				content: '该用户已被禁用!'
+			});
+     	</script>
+	</c:if>
 </body>
 </html>
