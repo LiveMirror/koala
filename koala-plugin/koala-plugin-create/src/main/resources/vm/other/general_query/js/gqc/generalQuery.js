@@ -117,7 +117,7 @@ var generalQuery = function(){
 	/**
 	 * 填充选择框
 	 */
-	var fillSelectData = function(){
+	var fillSelectData = function(id){
 		$.get(baseUrl + 'findAllDataSource.koala').done(function(data){
 			var dataSourceList = data.dataSourceList;
 			var contents = new Array();
@@ -147,8 +147,11 @@ var generalQuery = function(){
 							contents.push({value: tableList[i], title: tableList[i]});
 						}
 						tableSelect.setSelectItems(contents);
-						tableSelect.setValue(tableList[0]);
-						dialog.trigger('dataSourceSelectComplete.koala')
+						if(id){
+							dialog.trigger('dataSourceSelectComplete.koala')
+						}else{
+							tableSelect.setValue(tableList[0]);							
+						}
 					})
 			})
 		});
