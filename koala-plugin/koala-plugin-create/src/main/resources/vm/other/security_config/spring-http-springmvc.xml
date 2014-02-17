@@ -38,10 +38,19 @@
 
 		<!-- 过滤器，不能修改 -->
 		<s:custom-filter ref="securityFilter" before="FILTER_SECURITY_INTERCEPTOR" />
-
+		<s:custom-filter ref="sessionTimeoutFilter" before="SESSION_MANAGEMENT_FILTER" />
+		
 	</s:http>
 
-
+	<!-- Session过期处理 -->
+	<bean id="sessionTimeoutFilter" class="org.openkoala.koala.auth.ss3adapter.filter.SessionTimeoutFilter">
+		<property name="invalidSessionStrategy" ref="sessionTimeoutStrategy" />
+	</bean>
+	
+	<bean id="sessionTimeoutStrategy" class="org.openkoala.koala.auth.ss3adapter.SessionTimeoutStrategy">
+		<property name="invlidSessionUrl" value="/login.koala" />
+	</bean>
+	
 	<!-- 登录成功 -->
 	<bean id="loginLogAuthenticationSuccessHandler"
 		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">

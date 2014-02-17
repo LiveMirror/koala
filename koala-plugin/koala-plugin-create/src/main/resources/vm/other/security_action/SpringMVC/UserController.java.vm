@@ -54,7 +54,7 @@ public class UserController {
 			dataMap.put("result", "success");
 			CacheUtil.refreshUserAttributes(username);
 		} else {
-			dataMap.put("result", "failure");
+			dataMap.put("result", "原始密码不正确！");
 		}
 		return dataMap;
 	}
@@ -102,7 +102,10 @@ public class UserController {
 		Page<UserVO> all = null;
 		
 		if (roleId == null) {
-			all = userApplication.pageQueryUser(page, pagesize);
+			UserVO userVO = new UserVO();
+			userVO.setName(userNameForSearch);
+			userVO.setUserAccount(userAccountForSearch);
+			all = userApplication.pageQueryUser(userVO, page, pagesize);
 		} else {
 			all = roleApplication.pageQueryUserByRole(roleVoForFind, page, pagesize);
 		}
