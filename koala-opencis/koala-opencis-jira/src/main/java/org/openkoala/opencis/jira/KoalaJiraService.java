@@ -1,6 +1,7 @@
 package org.openkoala.opencis.jira;
 
 import com.atlassian.jira.rpc.soap.client.*;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.openkoala.opencis.CISClientBaseRuntimeException;
 import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
@@ -20,6 +21,8 @@ public class KoalaJiraService {
 
     private JiraSoapService jiraService;
 
+    public final static int MAX_JIRA_KEY_NAME_LENGTH = 10;
+
 
     private KoalaJiraService() {
     }
@@ -38,9 +41,8 @@ public class KoalaJiraService {
         return jiraService.getUser(token, userName);
     }
 
-
     public void createProject(Project project, String jiraServerAddress) throws RemoteException {
-        jiraService.createProject(token, project.getProjectName().toUpperCase(), project.getProjectName(),
+        jiraService.createProject(token, KoalaJiraService.getProjectKey(project), project.getProjectName(),
                 project.getDescription(), jiraServerAddress, project.getProjectLead(),
                 jiraService.getPermissionSchemes(token)[0], null, null);
     }
@@ -56,8 +58,7 @@ public class KoalaJiraService {
         try {
             return jiraService.getProjectByKey(token, getProjectKey(project)) != null;
         } catch (RemoteException e) {
-          //  e.printStackTrace();
-            //找不到会抛异常
+            //找不到该项目
             return false;
         }
 
@@ -99,7 +100,7 @@ public class KoalaJiraService {
         try {
             roleNames = getAllProjectRoleNames();
         } catch (java.rmi.RemoteException e) {
-            throw new CISClientBaseRuntimeException("jira.getAllRoleNameFailure");
+            throw new CISClientBaseRuntimeException("jira.getAllRoleNameFailure", e);
         }
         if (roleNames.isEmpty()) {
             return false;
@@ -116,12 +117,12 @@ public class KoalaJiraService {
         RemoteUser remoteUser = null;
         try {
             remoteUser = jiraService.getUser(token, username_or_developId);
-        } catch (RemotePermissionException e1) {
-            throw new CISClientBaseRuntimeException("该账号没有权限查询用户！");
+        } catch (RemotePermissionException e) {
+            throw new CISClientBaseRuntimeException("该账号没有权限查询用户！", e);
         } catch (RemoteAuthenticationException e1) {
             throw new RuntimeException("the token is invalid or the SOAP session has timed out,please login again.", e1);
         } catch (java.rmi.RemoteException e1) {
-            throw new RuntimeException(e1);
+            return false;
         }
         return remoteUser != null;
 
@@ -196,6 +197,16 @@ public class KoalaJiraService {
     }
 
     protected static String getProjectKey(Project project) {
-        return project.getProjectName().toUpperCase();
+        String encode = DigestUtils.sha256Hex(project.getProjectName());
+
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (char c : encode.toCharArray()) {
+            if (c >= 'a' && c <= 'z' && i < MAX_JIRA_KEY_NAME_LENGTH) {
+                sb.append(c);
+                i++;
+            }
+        }
+        return sb.toString().toUpperCase();
     }
 }
