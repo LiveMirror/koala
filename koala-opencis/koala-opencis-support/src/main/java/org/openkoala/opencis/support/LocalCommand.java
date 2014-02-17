@@ -31,6 +31,7 @@ public abstract class LocalCommand extends AbstractCommand{
 		// TODO Auto-generated method stub
 		Runtime runtime = Runtime.getRuntime();
 		String strCmd = getCommand();
+		System.out.println("执行本地命令：" + strCmd);
 		Process process = runtime.exec(strCmd);
 		String result = readOutput(process.getInputStream());
 		System.out.println(result);
