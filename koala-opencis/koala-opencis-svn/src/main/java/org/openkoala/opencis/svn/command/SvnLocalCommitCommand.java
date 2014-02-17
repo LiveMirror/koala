@@ -24,7 +24,7 @@ public class SvnLocalCommitCommand extends LocalCommand {
 	@Override
 	public String getCommand() {
 		// TODO Auto-generated method stub
-		String strCmd = "svn commit " + CommonUtil.validatePath(project.getPhysicalPath()) + project.getProjectName() + 
+		String strCmd = "svn commit " + project.getPhysicalPath() + 
 				" -m \"" + "import project " + project.getProjectName() + "\"";
 		return strCmd;
 	}

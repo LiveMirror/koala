@@ -1,5 +1,6 @@
 package org.openkoala.opencis.svn.command;
 
+import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
 import org.openkoala.opencis.support.CommonUtil;
 import org.openkoala.opencis.support.LocalCommand;
@@ -20,14 +21,20 @@ public class SvnLocalCheckoutCommand extends LocalCommand {
 		super(config, project);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public SvnLocalCheckoutCommand(SvnConfig config, Project project,Developer developer) {
+		this(config, project);
+		this.userName = developer.getId();
+		this.password = developer.getPassword();
+	}
 
 
 	@Override
 	public String getCommand() {
 		// TODO Auto-generated method stub
 		// http://10.108.1.138/svn/ddd    test/test
-		String strCmd = "svn checkout " + svnAddress 
-				+ " " + CommonUtil.validatePath(project.getPhysicalPath()) + project.getProjectName()
+		String strCmd = "svn checkout " + svnAddress + "/" + project.getProjectName()
+				+ " " + project.getPhysicalPath() 
 				+ " --username " + userName + " --password " + password;
 		return strCmd;
 	}
