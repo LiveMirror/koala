@@ -1,9 +1,7 @@
 package org.openkoala.koala.auth.core.domain;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NoResultException;
@@ -62,8 +60,8 @@ public class User extends Identity {
 	 * 获取用户所拥有的角色
 	 * @return
 	 */
-	public Set<RoleUserAuthorization> findRoles() {
-		return new HashSet<RoleUserAuthorization>(RoleUserAuthorization.findAuthorizationByUser(this));
+	public List<RoleUserAuthorization> findRoles() {
+		return RoleUserAuthorization.findAuthorizationByUser(this);
 	}
 
 	public Date getLastLoginTime() {

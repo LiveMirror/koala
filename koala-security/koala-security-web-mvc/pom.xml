@@ -125,6 +125,7 @@
 		<dependency>
 			<groupId>javax.servlet.jsp.jstl</groupId>
 			<artifactId>jstl-api</artifactId>
+			<scope>compile</scope>
 		</dependency>
 
 
