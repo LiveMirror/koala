@@ -93,6 +93,10 @@ public class JiraCISClient implements CISClient {
 
     @Override
     public void removeUser(Project project, Developer developer) {
+        if (!jiraService.isUserExist(developer.getId())) {
+            return;
+        }
+
         try {
             jiraService.deleteUser(developer.getId());
         } catch (RemotePermissionException e) {
@@ -167,9 +171,6 @@ public class JiraCISClient implements CISClient {
         if (!jiraService.isUserExist(userName)) {
             throw new CISClientBaseRuntimeException("jira.userNotExists");
         }
-//        if (!jiraService.isRoleExist(roleName)) {
-//            throw new CISClientBaseRuntimeException("jira.roleNotExists");
-//        }
     }
 
 

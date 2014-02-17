@@ -6,9 +6,7 @@
 
 	<named-query name="findRelationByResource">
 		<query>
-			select distinct m from ResourceLineAssignment m
-			join m.child
-			child join m.parent parent where child.id=? or parent.id=?
+			select distinct m from ResourceLineAssignment m where m.child.id=? or m.parent.id=?
 		</query>
 	</named-query>
 

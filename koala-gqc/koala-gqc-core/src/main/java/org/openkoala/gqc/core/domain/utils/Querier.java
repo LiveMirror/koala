@@ -133,16 +133,17 @@ public abstract class Querier {
 				ResultSetMetaData resultSetMetaData = rs.getMetaData();
 				Map<String, Object> map = new HashMap<String, Object>();
 				for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
-					if (rs.getObject(i + 1) instanceof java.sql.Date) {
-						if (resultSetMetaData.getColumnTypeName(i + 1).equals("YEAR")) {
-							map.put(resultSetMetaData.getColumnName(i + 1), new SimpleDateFormat("yyyy").format(rs.getDate(i + 1)));
+					int columnIndex = i + 1;
+					if (rs.getObject(columnIndex) instanceof java.sql.Date) {
+						if (resultSetMetaData.getColumnTypeName(columnIndex).equals("YEAR")) {
+							map.put(resultSetMetaData.getColumnName(columnIndex), new SimpleDateFormat("yyyy").format(rs.getDate(columnIndex)));
 						} else {
-							map.put(resultSetMetaData.getColumnName(i + 1), new SimpleDateFormat("yyyy-MM-dd").format(rs.getDate(i + 1)));
+							map.put(resultSetMetaData.getColumnName(columnIndex), new SimpleDateFormat("yyyy-MM-dd").format(rs.getDate(columnIndex)));
 						}
-					} else if (rs.getObject(i + 1) instanceof Timestamp) {
-						map.put(resultSetMetaData.getColumnName(i + 1), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getTimestamp(i + 1)));
+					} else if (rs.getObject(columnIndex) instanceof Timestamp) {
+						map.put(resultSetMetaData.getColumnName(columnIndex), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getTimestamp(columnIndex)));
 					} else {
-						map.put(resultSetMetaData.getColumnName(i + 1), rs.getObject(i + 1));
+						map.put(resultSetMetaData.getColumnName(columnIndex), rs.getObject(columnIndex));
 					}
 				}
 				result.add(map);

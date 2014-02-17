@@ -89,6 +89,7 @@ public class ServiceMonitorApplicationIpml implements ServiceMonitorApplication 
 		try {
 			SchedulerConfg confg = SchedulerConfg.get(SchedulerConfg.class, triggerName);
 			BeanUtils.copyProperties(result, confg);
+			result.setLastBeginRunTime(confg.getLastBeginRunTime());
 		} catch (Exception e) {
 			
 		}
