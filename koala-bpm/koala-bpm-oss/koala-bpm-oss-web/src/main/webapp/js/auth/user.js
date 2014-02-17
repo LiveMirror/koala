@@ -323,6 +323,7 @@ var userManager = function() {
 		for (var i = 0, j = users.length; i < j; i++) {
 			data['users[' + i + '].id'] = users[i].id;
 		}
+		dataGrid = grid;
 		data.roleId = roleId;
 		$.post(baseUrl + 'removeUserForRole.koala', data).done(function(data) {
 			if (data.result == 'success') {
