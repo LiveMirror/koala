@@ -65,6 +65,8 @@ import org.openkoala.bpm.impl.util.KoalaBPMSession;
 import org.openkoala.bpm.infra.ImageUtil;
 import org.openkoala.bpm.infra.XmlParseUtil;
 import org.jbpm.process.audit.ProcessInstanceLog;
+import org.jbpm.process.core.context.variable.Variable;
+import org.jbpm.process.core.context.variable.VariableScope;
 import org.jbpm.ruleflow.core.RuleFlowProcess;
 import org.jbpm.ruleflow.instance.RuleFlowProcessInstance;
 import org.jbpm.task.AccessType;
@@ -85,6 +87,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.querychannel.service.QueryChannelService;
@@ -619,7 +622,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 	// defaultPackage.Trade@1
 	// defaultPackage.Trade
-	public synchronized long startProcess(String processName, String creater,
+	public long startProcess(String processName, String creater,
 			String paramsString) {
 		UserTransaction owner = null;
 		owner = startUserTransaction();
@@ -636,8 +639,9 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			String activeProcessName = getKoalaBPMSession().getActiveProcess(
 					processName);
 
-			org.drools.definition.process.Process process = koalaBPMApiApplication
+			RuleFlowProcess process = (RuleFlowProcess) koalaBPMApiApplication
 					.getProcess(activeProcessName);
+			VariableScope vs = process.getVariableScope();
 			if (process == null) {
 				throw new RuntimeException("不存在的流程，请检查");
 			}
@@ -661,6 +665,10 @@ public class JBPMApplicationImpl implements JBPMApplication {
 					.xmlToPrams(paramsString);
 			if (userParams != null) {
 				params.putAll(userParams);
+			}
+			Set<String> paramsKeys = params.keySet();
+			for(String key:paramsKeys){
+				updateVariableDefinition(process, key);
 			}
 			RuleFlowProcessInstance instance = (RuleFlowProcessInstance) koalaBPMApiApplication.startProcess(activeProcessName, params);
 			commitUserTransaction(owner);
@@ -720,8 +728,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 					.getProcessInstance(processInstanceId);
 			Set<String> keys = proceeParams.keySet();
 			for (String key : keys) {
-				in.setVariable(key, proceeParams.get(key));
-
+				setVariable(in,key,proceeParams.get(key));
 			}
 			Task task = koalaBPMApiApplication.getTask(taskId);
 			// 更新TASK参数
@@ -761,7 +768,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 					String name = (String) map.get("KJ_ASSIGN");
 					joginAssign = joinAssignApplication
 							.getJoinAssignByName(name);
-					in.setVariable("KJ_ASSIGN_VAL" + taskId, joginAssign);
+					setVariable(in,"KJ_ASSIGN_VAL" + taskId,joginAssign);
 				}
 
 				if (joginAssign.getAllCount() == 0) {
@@ -785,14 +792,15 @@ public class JBPMApplicationImpl implements JBPMApplication {
 				// 如果会签成功，流转会签
 				String success = joginAssign.queryIsSuccess();
 				if (success != null) {
-					in.setVariable(joginAssign.getKeyChoice(), success);
+					setVariable(in,joginAssign.getKeyChoice(), success);
 					task.getTaskData().setStatus(Status.Reserved);
 					completeTask(task, contentData);
 				}
 				// 如果任务仍然存在，但所有人已经完成投票了，则此次会签失败
 				if (joginAssign.queryIsFinished()) {
 					// 会签失败，将关键值置为0，完成此任务
-					in.setVariable(joginAssign.getKeyChoice(), "FAIL");
+					setVariable(in,joginAssign.getKeyChoice(), "FAIL");
+					
 					task.getTaskData().setStatus(Status.Reserved);
 					completeTask(task, contentData);
 				}
@@ -906,7 +914,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		if (isSame)
 			return;
 
-		in.setVariable(KoalaBPMVariable.INGORE_LOG, true);
+		setVariable(in,KoalaBPMVariable.INGORE_LOG, true);
 
 		for (org.drools.runtime.process.NodeInstance nodeInstance : instances) {
 			org.jbpm.workflow.instance.NodeInstance removeNode = in
@@ -1200,6 +1208,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 	public ProcessInstanceVO getProcessInstance(long processId) {
 		RuleFlowProcessInstance in = (RuleFlowProcessInstance) koalaBPMApiApplication.getProcessInstance(processId);
+		System.out.println(in.getVariables());
 		ProcessInstanceLog log = jbpmTaskService.findProcessInstance(processId);
 		return getProcessInstanceVO(in, log);
 	}
@@ -1506,19 +1515,20 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			RuleFlowProcessInstance in = (RuleFlowProcessInstance) koalaBPMApiApplication.getProcessInstance(processInstanceId);
 			String typeValue = type.toUpperCase();
 			if ("STRING".equals(typeValue)) {
-				in.setVariable(key, value);
+				
+				setVariable(in,key, value);
 			}
 			if ("INT".equals(typeValue)) {
-				in.setVariable(key, Integer.parseInt(value));
+				setVariable(in,key, Integer.parseInt(value));
 			}
 			if ("LONG".equals(typeValue)) {
-				in.setVariable(key, Long.parseLong(value));
+				setVariable(in,key, Long.parseLong(value));
 			}
 			if ("DOUBLE".equals(typeValue)) {
-				in.setVariable(key, Double.parseDouble(value));
+				setVariable(in,key, Double.parseDouble(value));
 			}
 			if ("BOOLEAN".equals(typeValue)) {
-				in.setVariable(key, Boolean.parseBoolean(value));
+				setVariable(in,key, Boolean.parseBoolean(value));
 			}
 			commitUserTransaction(owner);
 		} catch (Exception e) {
@@ -1652,5 +1662,23 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (SystemException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void setVariable(RuleFlowProcessInstance instance,String key,Object value){
+		updateVariableDefinition( (RuleFlowProcess) instance.getProcess(),key);
+		instance.setVariable(key, value);
+	}
+	
+	private void updateVariableDefinition(RuleFlowProcess process,String key){
+		List<Variable> variables = process.getVariableScope().getVariables();
+		for(Variable variable:variables){
+			if(variable.getName().equals(key)){
+				return;
+			}
+		}
+		Variable newVariable = new Variable();
+		newVariable.setName(key);
+		variables.add(newVariable);
+		process.getVariableScope().setVariables(variables);
 	}
 }
