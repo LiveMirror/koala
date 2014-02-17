@@ -58,6 +58,9 @@ public class SvnCISClient implements CISClient {
     private Connection conn;
 
     private CommandExecutor executor = new CommandExecutor();
+    
+  //创建一个默认的Koala开发者
+	private Developer koalaDeveloper = new KoalaDeveloper();
 
     /**
      * 执行结果
@@ -112,8 +115,7 @@ public class SvnCISClient implements CISClient {
      */
     private void createProjectInSvn(Project project){
     	isProjectInfoNotBlank(project);
-    	//创建一个默认的Koala开发者
-    	Developer koalaDeveloper = new KoalaDeveloper();
+    	
         SvnCommand command = new SvnCreateProjectCommand(configuration, project);
         SvnCommand clearProjectPasswdFileContentCommand = new SvnClearProjectPasswdFileContentCommand(configuration, project);
         SvnCommand createKoalaUserCommand = new SvnCreateUserCommand(koalaDeveloper, configuration, project);
@@ -235,7 +237,7 @@ public class SvnCISClient implements CISClient {
      * @return
      */
     private boolean commitToServer(Project project){
-    	LocalCommand cmdCheckout = new SvnLocalCheckoutCommand(configuration, project);
+    	LocalCommand cmdCheckout = new SvnLocalCheckoutCommand(configuration, project,koalaDeveloper);
     	LocalCommand cmdAdd = new SvnLocalAddCommand(configuration, project);
     	LocalCommand cmdSubmit = new SvnLocalCommitCommand(configuration, project);
     	try {
