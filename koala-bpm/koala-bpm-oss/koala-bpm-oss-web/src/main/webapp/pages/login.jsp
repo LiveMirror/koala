@@ -174,7 +174,7 @@ body {
 					});
 		     	</script>
 			</c:if>
-			<FORM id="loginFormId" method=post action="j_spring_security_check" onsubmit="return dologin();" class="form-horizontal">
+			<FORM id="loginFormId" method=post action="j_spring_security_check" class="form-horizontal">
 				<div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                     <input type="text" class="form-control" placeholder="用户名"  name="j_username" id="j_username">
@@ -207,28 +207,27 @@ body {
     	$('#j_username').focus();
         $('body').keydown(function(e) {
             if (e.keyCode == 13) {
-            	btnLogin.attr('disabled', 'disabled').html('正在登录...');
-                form.submit();
+            	dologin();
             }
         });
         btnLogin.on('click',function() {
-        	btnLogin.attr('disabled', 'disabled').html('正在登录...');
-            form.submit();
+        	dologin();
         });
+	    var dologin = function() {
+	        var userNameElement = $("#j_username");
+	        var passwordElement = $("#j_password");
+	        var username = userNameElement.val();
+	        var password = passwordElement.val();
+	        if (!Validation.notNull($('body'), userNameElement, username, '用户名不能为空')) {
+	            return false;
+	        }
+	        if (!Validation.notNull($('body'), passwordElement, password, '密码不能为空')) {
+	            return false;
+	        }
+	        btnLogin.attr('disabled', 'disabled').html('正在登录...');
+	        form.submit();
+	    }
     });
-    var dologin = function() {
-        var userNameElement = $("#j_username");
-        var passwordElement = $("#j_password");
-        var username = userNameElement.val();
-        var password = passwordElement.val();
-        if (!Validation.notNull($('body'), userNameElement, username, '用户名不能为空')) {
-            return false;
-        }
-        if (!Validation.notNull($('body'), passwordElement, password, '密码不能为空')) {
-            return false;
-        }
-        return true;
-    }
 	</script>
 </body>
 </html>
