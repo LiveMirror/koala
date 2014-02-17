@@ -134,7 +134,11 @@ public abstract class Querier {
 				Map<String, Object> map = new HashMap<String, Object>();
 				for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
 					if (rs.getObject(i + 1) instanceof java.sql.Date) {
-						map.put(resultSetMetaData.getColumnName(i + 1), new SimpleDateFormat("yyyy-MM-dd").format(rs.getDate(i + 1)));
+						if (resultSetMetaData.getColumnTypeName(i + 1).equals("YEAR")) {
+							map.put(resultSetMetaData.getColumnName(i + 1), new SimpleDateFormat("yyyy").format(rs.getDate(i + 1)));
+						} else {
+							map.put(resultSetMetaData.getColumnName(i + 1), new SimpleDateFormat("yyyy-MM-dd").format(rs.getDate(i + 1)));
+						}
 					} else if (rs.getObject(i + 1) instanceof Timestamp) {
 						map.put(resultSetMetaData.getColumnName(i + 1), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getTimestamp(i + 1)));
 					} else {
