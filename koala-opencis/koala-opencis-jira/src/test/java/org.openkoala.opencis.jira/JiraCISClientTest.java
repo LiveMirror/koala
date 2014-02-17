@@ -1,11 +1,14 @@
 package org.openkoala.opencis.jira;
 
+import com.atlassian.jira.rpc.soap.client.RemoteIssue;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
+
+import java.lang.reflect.Field;
 
 /**
  * User: zjzhai
@@ -38,6 +41,7 @@ public class JiraCISClientTest {
         JiraCISClient developClient = new JiraCISClient("http://localhost:8080/", getDeveloper().getId(), getDeveloper().getPassword());
         assert !developClient.authenticate();
 
+
         client.removeProject(getProject());
         assert !client.isProjectExist(getProject());
 
@@ -52,15 +56,6 @@ public class JiraCISClientTest {
         client.createProject(getProject());
 
         assert client.isProjectExist(getProject());
-
-        String role = "admin111";
-
-      /*  client.createRoleIfNecessary(getProject(), role);
-
-        client.assignUsersToRole(getProject(), null, getDeveloper());
-
-      assert client.isRoleExist(role);
-*/
 
     }
 
