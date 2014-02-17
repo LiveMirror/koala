@@ -59,11 +59,21 @@
     float: left;
     min-height: 540px;
     width: 25%;
+    margin-left: 4px;
+    margin-top: 4px;
     border-right: 1px solid #DDDDDD!important;
+}
+.tree-shrink {
+    position: absolute;
+    left: 205px;
+    top: 250px
+}
+.tree-shrink a {
+    cursor: pointer;
 }
 .right-content {
     float: left;
-    width: 75%;
+    width: 72%;
     padding: 15px;
 }
 .department-detail {
@@ -121,10 +131,12 @@
 }
 .changePost .postGrid {
    height: 310px;
-   max-width: 640px;
+   max-width: 650px;
+   max-width: 620px\9;
 }
 .changePost .grid-table-body {
-	height:210px;
+	height:230px;
+	height: 210px\9;
 }
 .changePost .grid-table-head th,  .changePost .grid-table-body td {
 	text-align: center;

@@ -70,10 +70,10 @@ public class TracCISClient implements CISClient {
     	//2、创建项目路径下的conf/passwd文件
         //初始化命令
         TracCommand createProjectCmd = new TracCreateProjectCommand(configuration, project);
-        TracCommand createPasswdCmd = new TracCreatePasswdCommand(configuration, project);
+//        TracCommand createPasswdCmd = new TracCreatePasswdCommand(configuration, project);
         try {
         	executor.addCommand(createProjectCmd);
-        	executor.addCommand(createPasswdCmd);
+//        	executor.addCommand(createPasswdCmd);
             success = executor.executeBatch();
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
@@ -86,12 +86,15 @@ public class TracCISClient implements CISClient {
     @Override
     public void createUserIfNecessary(Project project, Developer developer) {
     	 //使用java SSH来创建角色
-        //1、读取project的配置信息，包括该角色(用户组)默认的权限
-        //2、用命令CommandExecutor来执行TracCreateRoleCommand子类
+    	//1、无论passwd文件是否存在，都先用touch命令尝试
+        //2、读取project的配置信息，包括该角色(用户组)默认的权限
+        //3、用命令CommandExecutor来执行TracCreateRoleCommand子类
+    	TracCommand createPasswdCommand = new TracCreatePasswdCommand(configuration, project);
     	TracCommand createUserCommand = new TracCreateUserCommand(configuration, project, developer);
         TracCommand createUserToRoleCommand = new TracCreateUserToRoleCommand(configuration, developer.getId(), project);
         
         try {
+        	executor.addCommand(createPasswdCommand);
         	executor.addCommand(createUserCommand);
         	executor.addCommand(createUserToRoleCommand);
             success = executor.executeBatch();

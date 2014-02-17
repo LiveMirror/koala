@@ -139,14 +139,49 @@ body {
 		</div>
 		<div class="login_con_R">
 			<h4>登录</h4>
-			<FORM id="loginFormId" method=post action="j_spring_security_check" onsubmit="return dologin();" class="form-horizontal">
+			 <c:if test="${param.login_error == '1' }">
+		     	<script>
+		     		$('.login_con_R').message({
+						type: 'error',
+						content: '用户名错误!'
+					});
+		     	</script>
+		    </c:if>
+		    
+			<c:if test="${param.login_error == '2' }">
+		      	<script>
+		     		$('.login_con_R').message({
+						type: 'error',
+						content: '密码错误!'
+					});
+		     	</script>
+			</c:if>
+			
+			<c:if test="${param.login_error == '3' }">
+		      	<script>
+		     		$('.login_con_R').message({
+						type: 'error',
+						content: '验证码错误!'
+					});
+		     	</script>
+			</c:if>
+			
+			<c:if test="${param.login_error == '4' }">
+		      	<script>
+		     		$('.login_con_R').message({
+						type: 'error',
+						content: '该用户已被禁用!'
+					});
+		     	</script>
+			</c:if>
+			<FORM id="loginFormId" method=post action="j_spring_security_check" class="form-horizontal">
 				<div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                    <input type="text" class="form-control" placeholder="用户名"  name="j_username" id="j_username" value='${j_username }'>
+                    <input type="text" class="form-control" placeholder="用户名"  name="j_username" id="j_username">
 				</div>
                 <div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                    <input type="password" name="j_password" id="j_password" class="form-control" placeholder="密码" value='${j_password}'/>
+                    <input type="password" name="j_password" id="j_password" class="form-control" placeholder="密码"/>
                 </div>
 				<div class="form-group input-group">
 				    <span class="input-group-addon"><span class="glyphicon glyphicon-magnet"></span></span>
@@ -169,76 +204,30 @@ body {
     $(function(){
      	var btnLogin = $('.btn-login');
     	var form = $('#loginFormId');
+    	$('#j_username').focus();
         $('body').keydown(function(e) {
             if (e.keyCode == 13) {
-            	if(!dologin()){
-            		return;
-            	}
-            	btnLogin.attr('disabled', 'disabled').html('正在登录...');
-                form.submit();
+            	dologin();
             }
         });
         btnLogin.on('click',function() {
-        	if(!dologin()){
-        		return;
-        	}
-        	btnLogin.attr('disabled', 'disabled').html('正在登录...');
-            form.submit();
+        	dologin();
         });
+	    var dologin = function() {
+	        var userNameElement = $("#j_username");
+	        var passwordElement = $("#j_password");
+	        var username = userNameElement.val();
+	        var password = passwordElement.val();
+	        if (!Validation.notNull($('body'), userNameElement, username, '用户名不能为空')) {
+	            return false;
+	        }
+	        if (!Validation.notNull($('body'), passwordElement, password, '密码不能为空')) {
+	            return false;
+	        }
+	        btnLogin.attr('disabled', 'disabled').html('正在登录...');
+	        form.submit();
+	    }
     });
-    var dologin = function() {
-        var userNameElement = $("#j_username");
-        var passwordElement = $("#j_password");
-        var username = userNameElement.val();
-        var password = passwordElement.val();
-        if (!Validation.notNull($('body'), userNameElement, username, '用户名不能为空')) {
-            return false;
-        }
-        if (!Validation.notNull($('body'), passwordElement, password, '密码不能为空')) {
-            return false;
-        }
-        return true;
-    }
 	</script>
-	<c:if test="${param.login_error == '1' }">
-	 	<script>
-	 		$('.login_con_R').message({
-				type: 'error',
-				content: '用户名错误!'
-			});
-	 		$("#j_username").focus();
-	 		$("#j_username").select();
-	 	</script>
-	</c:if>
-	
-	<c:if test="${param.login_error == '2' }">
-	  	<script>
-	 		$('.login_con_R').message({
-				type: 'error',
-				content: '密码错误!'
-			});
-	 		$("#j_password").focus();
-	 		$("#j_password").select();
-	 	</script>
-	</c:if>
-	
-	<c:if test="${param.login_error == '3' }">
-	  	<script>
-	 		$('.login_con_R').message({
-				type: 'error',
-				content: '验证码错误!'
-			});
-	 		$('#jcaptcha').focus();
-	 	</script>
-	</c:if>
-	
-	<c:if test="${param.login_error == '4' }">
-	  	<script>
-	 		$('.login_con_R').message({
-				type: 'error',
-				content: '该用户已被禁用!'
-			});
-	 	</script>
-	</c:if>
 </body>
 </html>
