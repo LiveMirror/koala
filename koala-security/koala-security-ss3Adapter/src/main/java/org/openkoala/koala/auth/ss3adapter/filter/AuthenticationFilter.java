@@ -67,7 +67,8 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 		if (postOnly && !request.getMethod().equals("POST")) {
 			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
 		}
-		
+		request.setAttribute(SPRING_SECURITY_FORM_USERNAME_KEY, request.getParameter(SPRING_SECURITY_FORM_USERNAME_KEY));
+		request.setAttribute(SPRING_SECURITY_FORM_PASSWORD_KEY, request.getParameter(SPRING_SECURITY_FORM_PASSWORD_KEY));
 		handle(request, response);
 		
         UsernamePasswordAuthenticationToken authRequest = 
