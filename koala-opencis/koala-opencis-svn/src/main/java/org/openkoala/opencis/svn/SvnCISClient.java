@@ -140,11 +140,13 @@ public class SvnCISClient implements CISClient {
         isUserInfoBlank(developer);
         SvnCommand isUserExistencecommand = new SvnIsUserExistenceCommand(developer.getId(),
                 configuration, project);
+        SvnCommand createPasswdCommand = new SvnClearProjectPasswdFileContentCommand(configuration, project);
+        SvnCommand createUsercommand = new SvnCreateUserCommand(developer, configuration, project);
         try {
-            executor.executeSync(isUserExistencecommand);
-
-            SvnCommand createUsercommand = new SvnCreateUserCommand(developer, configuration, project);
-            success = executor.executeSync(createUsercommand);
+            executor.addCommand(isUserExistencecommand);
+            executor.addCommand(createPasswdCommand);
+            executor.addCommand(createUsercommand);
+            success = executor.executeBatch();
         } catch (UserExistenceException e) {
             //用户存在，则不再创建用户
 //            return true;
