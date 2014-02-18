@@ -7,6 +7,8 @@ package org.openkoala.opencis.api;
  */
 public interface CISClient {
 
+    // TODO 解除与开发者之间的关系的API目前还没有
+
 
     /**
      * 创建CIS某个工具中创建一个项目
