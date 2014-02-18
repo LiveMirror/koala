@@ -1,6 +1,7 @@
 package org.openkoala.gqc.controller.generalquery;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -212,6 +213,7 @@ public class GeneralQueryController {
         	dataMap = new HashMap<String, Object>();
             
             List<String> tableList = dataSourceApplication.findAllTable(id);
+            Collections.sort(tableList);
             dataMap.put("tableList", tableList);
         } catch (Exception e) {
             e.printStackTrace();

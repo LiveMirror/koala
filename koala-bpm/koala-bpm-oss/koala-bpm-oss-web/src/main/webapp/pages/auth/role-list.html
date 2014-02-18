@@ -43,7 +43,7 @@
 		if(userAccount){
 			url += '?userAccount='+userAccount;
 		}
-		$('[data-role="roleGrid"]').grid({
+		$('[data-role="roleGrid"]').off().grid({
 			 identity: 'id',
              columns: columns,
              buttons: getButtons(),
