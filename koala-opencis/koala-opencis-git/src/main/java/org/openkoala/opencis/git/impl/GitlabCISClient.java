@@ -181,7 +181,7 @@ public class GitlabCISClient implements CISClient {
             StoredConfig config = repository.getConfig();
             RemoteConfig remoteConfig = new RemoteConfig(config, "origin");
 
-            URIish uri = new URIish(gitLabConfiguration.getGitHostURL()
+            URIish uri = new URIish(gitlabConfiguration.getGitHostURL()
                     + "/" + getCurrentUser().getUsername()
                     + "/" + project.getProjectName().toLowerCase() + ".git");
 
@@ -196,12 +196,12 @@ public class GitlabCISClient implements CISClient {
             repository.close();
 
             git.add().addFilepattern(".").call();
-            git.commit().setCommitter(gitLabConfiguration.getAdminUsername(),
-                    gitLabConfiguration.getAdminEmail()).setMessage("init project").call();
+            git.commit().setCommitter(gitlabConfiguration.getAdminUsername(),
+                    gitlabConfiguration.getAdminEmail()).setMessage("init project").call();
 
             CredentialsProvider credentialsProvider =
-                    new UsernamePasswordCredentialsProvider(gitLabConfiguration.getAdminUsername(),
-                            gitLabConfiguration.getAdminPassword());
+                    new UsernamePasswordCredentialsProvider(gitlabConfiguration.getAdminUsername(),
+                            gitlabConfiguration.getAdminPassword());
             git.push().setCredentialsProvider(credentialsProvider).call();
         } catch (URISyntaxException e) {
             e.printStackTrace();
