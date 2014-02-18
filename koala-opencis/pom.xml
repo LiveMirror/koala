@@ -21,6 +21,7 @@
         <module>koala-opencis-sonar</module>
         <module>koala-opencis-api</module>
         <module>koala-opencis-support</module>
+        <module>koala-opencis-github</module>
     </modules>
 
 

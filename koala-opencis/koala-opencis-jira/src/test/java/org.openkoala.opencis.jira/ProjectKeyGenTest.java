@@ -1,7 +1,5 @@
 package org.openkoala.opencis.jira;
 
-import com.sun.xml.internal.messaging.saaj.util.Base64;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.openkoala.opencis.api.Project;
