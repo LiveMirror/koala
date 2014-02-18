@@ -277,6 +277,10 @@
 			if (!this.options.useChkBox) {
 				$el.addClass('tree-selected');
 			}
+			var icon = $el.find('i');
+			if(!icon.hasClass('glyphicon-folder-open')){
+				icon.click();
+			}
 			this.$element.trigger('selectParent', {
 				element : $el,
 				data : data
