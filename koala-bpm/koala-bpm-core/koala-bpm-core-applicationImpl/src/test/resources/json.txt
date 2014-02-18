@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.omg.org/bpmn20" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:drools="http://www.jboss.org/drools" id="_aW8iMHahEeO4_chcLa8R-Q" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" targetNamespace="http://www.omg.org/bpmn20">
   <bpmn2:itemDefinition id="_approveStatusItem" structureRef="String"/>
+   <bpmn2:itemDefinition id="_KJ_USER" structureRef="String"/>
   <bpmn2:itemDefinition id="_formIdItem" structureRef="String"/>
   <bpmn2:itemDefinition id="_tradeAssignItem" structureRef="org.foreveross.jbpm.core.JoinAssign"/>
   <bpmn2:itemDefinition id="_createrItem" structureRef="String"/>
@@ -10,6 +11,7 @@
   <bpmn2:process id="defaultPackage.Trade@1" drools:packageName="defaultPackage" name="&#25151;&#20135;&#20132;&#26131;" isExecutable="true">
     <bpmn2:property id="approveStatus" itemSubjectRef="_approveStatusItem"/>
     <bpmn2:property id="formId" itemSubjectRef="_formIdItem"/>
+    <bpmn2:property id="KJ_USER" itemSubjectRef="_formIdItem"/>
     <bpmn2:property id="tradeAssign" itemSubjectRef="_tradeAssignItem"/>
     <bpmn2:property id="creater" itemSubjectRef="_createrItem"/>
     <bpmn2:startEvent id="_8BA978FD-9769-46DB-83C3-9B63A730D0AB" drools:bgcolor="#9acd32" drools:selectable="true" name="">
@@ -89,7 +91,7 @@
       </bpmn2:dataInputAssociation>
       <bpmn2:potentialOwner id="_aW9JQ3ahEeO4_chcLa8R-Q">
         <bpmn2:resourceAssignmentExpression id="_aW9JRHahEeO4_chcLa8R-Q">
-          <bpmn2:formalExpression id="_aW9JRXahEeO4_chcLa8R-Q">aaa</bpmn2:formalExpression>
+          <bpmn2:formalExpression id="_aW9JRXahEeO4_chcLa8R-Q">#{KJ_USER}</bpmn2:formalExpression>
         </bpmn2:resourceAssignmentExpression>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
