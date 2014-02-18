@@ -106,7 +106,7 @@
 .grid-table-head  .sort span {
 	float: right;
 	position: relative;
-	top: 4px;
+	top: 1px;
 }
 .grid-table-head  th[class*="sorting-"] {
 	color: #269abc;

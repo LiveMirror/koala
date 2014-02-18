@@ -806,8 +806,8 @@
 		}
 		this.$element.appendTo($('body'))
 			.fadeIn(400, function(){
-				var width = self.$element.outerWidth(true)*0.5;
-				var height = self.$element.outerHeight(true)*0.5;
+				var width = self.$element.find('[data-toggle="content"]').outerWidth(true)*0.5 + 20;
+				var height = self.$element.find('[data-toggle="content"]').outerHeight(true)*0.5 + 20;
 				var left = self.container.offset().left + self.container.outerWidth(true)*0.5 - width;
 				var top = self.container.offset().top + self.container.outerHeight(true)*0.5 - height;
 				
@@ -821,7 +821,7 @@
 	};
 	Message.DEFAULTS.TEMPLATE = '<div class="alert message" style="min-width: 120px;max-width: 300px; padding: 8px;text-align: left;z-index: 20000;">' +
 		'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
-		'<span data-toggle="content" style="font-size:14px;"></span>&nbsp;&nbsp;</div>';
+		'<span data-toggle="content" style="font-size:14px; word-wrap:break-word;"></span>&nbsp;&nbsp;</div>';
 	var old = $.fn.message;
 	$.fn.message = function(option){
 		return this.each(function(){
@@ -992,7 +992,7 @@
 		'</div>' +
 		'<div class="modal-footer"> ' +
 		'<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>' +
-		'<button type="button" class="btn btn-primary" data-toggle="save">保存</button>' +
+		'<button type="button" class="btn btn-success" data-toggle="save">保存</button>' +
 		'</div>' +
 		'</div>  ' +
 		'</div>  ' +
