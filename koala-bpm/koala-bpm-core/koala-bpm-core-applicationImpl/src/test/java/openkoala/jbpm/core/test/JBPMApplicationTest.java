@@ -93,6 +93,7 @@ public class JBPMApplicationTest {
 		values.put("creater", "abc");
 		long i = getJBPMApplication().startProcess("defaultPackage.Trade", "aaa", XmlParseUtil.paramsToXml(values));
 		byte[] png = getJBPMApplication().getPorcessImageStream(i);
+		getJBPMApplication().getProcessInstance(i);
 		Assert.assertNotNull(png);
 	}
 
@@ -147,18 +148,16 @@ public class JBPMApplicationTest {
 	@Test
 	public void testCompleteTask() {
 		
-		long i = getJBPMApplication().startProcess("defaultPackage.Trade", "aaa", null);
+		long i = getJBPMApplication().startProcess("defaultPackage.Trade", "abcd", null);
 
 		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("approveStatus", "1");
+		data.put("approveStatus", "0");
 		
 		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
 		
-		
-	
 		getJBPMApplication().completeTask(i, tasks.get(0).getTaskId(), "fhjl",
 				XmlParseUtil.paramsToXml(data), null);
-		tasks = getJBPMApplication().queryTodoList("fwzy");
+		tasks = getJBPMApplication().queryTodoList("abcd");
 		Assert.assertTrue(tasks.size() > 0);
 		
 		//getJBPMApplication().removeProcessInstance(i);
