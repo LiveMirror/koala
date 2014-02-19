@@ -32,20 +32,32 @@ public class GithubClient {
         }
     }
 
+    /**
+     * 创建项目仓库
+     *
+     * @param repositoryName
+     * @param description
+     */
     public void createRepository(String repositoryName, String description) {
         if (isRepositoryExist(repositoryName)) {
             return;
         }
 
         String emptyHomePage = "";
+        Boolean PUBLIC = true;
         try {
-            github.createRepository(repositoryName, description, emptyHomePage, true/*public*/);
+            github.createRepository(repositoryName, description, emptyHomePage, PUBLIC);
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("github.createProject.failure", e);
         }
 
     }
 
+    /**
+     * 移除项目仓库
+     *
+     * @param repositoryName
+     */
     public void removeRepository(String repositoryName) {
         if (!isRepositoryExist(repositoryName)) {
             return;
@@ -58,6 +70,12 @@ public class GithubClient {
         }
     }
 
+    /**
+     * 移除协作者
+     *
+     * @param repositoryName
+     * @param developsGithubAccounts
+     */
     public void removeCollaborators(String repositoryName, String... developsGithubAccounts) {
         if (!isRepositoryExist(repositoryName)) {
             return;
@@ -74,6 +92,12 @@ public class GithubClient {
         }
     }
 
+    /**
+     * 添加协作者
+     *
+     * @param repositoryName
+     * @param developsGithubAccounts
+     */
     public void addCollaborators(String repositoryName, String... developsGithubAccounts) {
         if (!isRepositoryExist(repositoryName)) {
             return;
@@ -91,6 +115,11 @@ public class GithubClient {
         }
     }
 
+    /**
+     * 认证
+     *
+     * @return
+     */
     public boolean authenticate() {
         try {
             return github.isCredentialValid();
@@ -100,6 +129,12 @@ public class GithubClient {
     }
 
 
+    /**
+     * 仓库是否存在
+     *
+     * @param repositoryName
+     * @return
+     */
     public boolean isRepositoryExist(String repositoryName) {
         if (repositoryName == null || "".equals(repositoryName.trim())) {
             throw new CISClientBaseRuntimeException("project'name must not be empty");
@@ -114,11 +149,33 @@ public class GithubClient {
     }
 
 
+    /**
+     * 得到仓库全名。
+     *
+     * @param repository
+     * @return 帐号名/仓库名
+     */
     public String getRepositoryFullName(String repository) {
         return username + "/" + repository;
     }
 
+    public String getRemoteRepositoryUrl(String repository) {
+        try {
+            return github.getRepository(getRepositoryFullName(repository)).getUrl();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("github.getRepositoryFullName", e);
+        }
 
+    }
+
+
+    /**
+     * github帐号是否存在
+     *
+     * @param account
+     * @return
+     */
     public boolean isAccountExist(String account) {
         try {
             return github.getUser(account) != null;

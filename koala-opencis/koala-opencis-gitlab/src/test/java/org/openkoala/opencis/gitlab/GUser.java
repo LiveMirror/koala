@@ -1,4 +1,4 @@
-package org.openkoala.opencis.git.impl;
+package org.openkoala.opencis.gitlab;
 
 /**
  * just for test

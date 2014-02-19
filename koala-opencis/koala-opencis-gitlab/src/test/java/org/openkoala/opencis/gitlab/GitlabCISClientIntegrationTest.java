@@ -1,7 +1,9 @@
-package org.openkoala.opencis.git.impl;
+package org.openkoala.opencis.gitlab;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
@@ -125,6 +127,7 @@ public class GitlabCISClientIntegrationTest {
             HttpResponse response = httpClient.execute(post);
 
             String jsonStr = EntityUtils.toString(response.getEntity());
+
 
             Gson gson = new Gson();
 
