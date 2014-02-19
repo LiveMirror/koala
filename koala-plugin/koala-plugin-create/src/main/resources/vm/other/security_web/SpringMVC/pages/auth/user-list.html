@@ -58,7 +58,7 @@
 		if(roleId){
 			url += '?roleId='+roleId;
 		}
-		$('[data-role="userGrid"]').grid({
+		$('[data-role="userGrid"]').off().grid({
 			 identity: 'id',
              columns: columns,
              buttons: getButtons(),

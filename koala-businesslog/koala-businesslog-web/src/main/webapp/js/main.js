@@ -167,3 +167,12 @@ var changeHeight = function(){
     sidebarHeight < height && sidebar.css('height', height);
     $('.g-mainc').css('min-height', height);
 };
+
+$.ajaxSetup({ 
+	contentType : "application/x-www-form-urlencoded;charset=utf-8", 
+	error : function(XMLHttpRequest, textStatus) { 
+		if(XMLHttpRequest.status == 499){
+			window.location.href = contextPath+"/j_spring_security_logout";
+		}
+	} 
+}); 
