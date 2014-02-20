@@ -150,7 +150,7 @@ body {
                 </div>
 				<div class="form-group input-group">
 				    <span class="input-group-addon"><span class="glyphicon glyphicon-magnet"></span></span>
-					<input type="text" id="jcaptcha" name="jcaptcha" value="" class="form-control" placeholder="验证码"/>
+					<input type="text" id="jcaptcha" name="jcaptcha" value="" class="form-control" placeholder="验证码" autocomplete="off"/>
 				</div>
 				<div class="form-group">
 					<label class="col-lg-3"></label>
