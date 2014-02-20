@@ -2,11 +2,10 @@ package org.openkoala.auth.application;
 
 import java.util.List;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.vo.QueryConditionVO;
 import org.openkoala.auth.application.vo.RoleVO;
 import org.openkoala.auth.application.vo.UserVO;
-
-import com.dayatang.querychannel.support.Page;
 
 public interface UserApplication {
 

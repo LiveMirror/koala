@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.monitor.application.MonitorNodeManageApplication;
 import org.openkoala.koala.monitor.application.ServiceMonitorApplication;
 import org.openkoala.koala.monitor.model.GeneralMonitorStatusVo;
@@ -19,8 +20,6 @@ import org.openkoala.koala.monitor.model.ServerStatusVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
 
 @Controller
 @RequestMapping("/monitor/NodeInfo")
@@ -141,10 +140,10 @@ public class NodeInfoController {
     	MonitorWarnInfoVo search = new MonitorWarnInfoVo();
     	Page<MonitorWarnInfoVo> pageInfo = monitorNodeManageApplication.queryMonitorWarnInfos(search, page, pagesize);
     	//Page<AccountVO> all = accountApplication.pageQueryAccount(accountVO, page, pagesize);
-		dataMap.put("Rows", pageInfo.getResult());
+		dataMap.put("Rows", pageInfo.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", pageInfo.getTotalCount());
+		dataMap.put("Total", pageInfo.getResultCount());
     	return dataMap;
     }
 

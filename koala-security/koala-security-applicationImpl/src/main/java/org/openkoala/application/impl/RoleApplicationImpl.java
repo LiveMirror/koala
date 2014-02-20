@@ -1,6 +1,7 @@
 package org.openkoala.application.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dayatang.querychannel.Page;
 import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.auth.application.RoleApplication;
 import org.openkoala.auth.application.vo.QueryConditionVO;
@@ -23,14 +25,11 @@ import org.openkoala.koala.auth.core.domain.RoleUserAuthorization;
 import org.openkoala.koala.auth.core.domain.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dayatang.dsrouter.context.memory.ContextHolder;
-import com.dayatang.querychannel.support.Page;
-
 @Remote
 @Named("roleApplication")
 @Stateless(name = "RoleApplication")
 @Transactional(value = "transactionManager_security")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 
 	public RoleVO getRole(Long roleId) {
@@ -41,18 +40,13 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 	}
 
 	public RoleVO saveRole(RoleVO roleVO) {
-		String cx = ContextHolder.getContextType();
-		ContextHolder.setContextType("security");
 		Role role = new Role();
 		roleVO.vo2Domain(role);
-
 		if (isRoleExist(role)) {
 			throw new ApplicationException("role.exist");
 		}
-
 		role.save();
 		roleVO.setId(role.getId());
-		ContextHolder.setContextType(cx);
 		return roleVO;
 	}
 
@@ -147,12 +141,11 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 	}
 
 	public List<UserVO> findUserByRole(RoleVO roleVO) {
-		return queryChannel()
-				.queryResult(
+		return queryChannel().createJpqlQuery(
 						"select new org.openkoala.auth.application.vo.UserVO(user.id,user.name,"
 								+ "user.sortOrder,user.userAccount,user.userDesc,user.isValid,user.email,user.lastLoginTime) "
-								+ "from RoleUserAuthorization rua join rua.user user join rua.role role where role.id=? and rua.abolishDate>?",
-						new Object[] { roleVO.getId(), new Date() });
+								+ "from RoleUserAuthorization rua join rua.user user join rua.role role where role.id=:roleId and rua.abolishDate>:abolishDate").addParameter("roleId",  roleVO.getId())
+								.addParameter("abolishDate", new Date()).list();
 	}
 
 	public Page<UserVO> pageQueryUserByRole(RoleVO roleVO, int currentPage,
@@ -177,11 +170,10 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 			conditions.add("%" + roleVO.getName() + "%");
 		}
 
-		Page<UserVO> pages = queryChannel().queryPagedResultByPageNo(
-				jpql.toString(), conditions.toArray(), currentPage, pageSize);
+		Page<UserVO> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions.toArray()).setPage(currentPage, pageSize).pagedList();
 
-		return new Page<UserVO>(pages.getCurrentPageNo(),
-				pages.getTotalCount(), pages.getPageSize(), pages.getResult());
+		return new Page<UserVO>(pages.getPageIndex(),
+				pages.getResultCount(), pages.getPageSize(), pages.getData());
 	}
 
 	public List<ResourceVO> findMenuByRole(RoleVO roleVO) {
@@ -210,51 +202,46 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 
 	public Page<RoleVO> pageQueryRole(int currentPage, int pageSize) {
 		List<RoleVO> results = new ArrayList<RoleVO>();
-		Page<Role> pages = queryChannel().queryPagedResultByPageNo(
-				"select m from Role m where m.abolishDate>?", //
-				new Object[] { new Date() }, //
-				currentPage, pageSize);
-		for (Role each : pages.getResult()) {
+		Page<Role> pages = queryChannel().createJpqlQuery(
+				"select m from Role m where m.abolishDate>:abolishDate").addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
+
+		for (Role each : pages.getData()) {
 			RoleVO roleVO = new RoleVO();
 			roleVO.domain2Vo(each);
 			results.add(roleVO);
 		}
-		return new Page<RoleVO>(pages.getCurrentPageNo(),
-				pages.getTotalCount(), pages.getPageSize(), results);
+		return new Page<RoleVO>(pages.getPageIndex(),
+				pages.getResultCount(), pages.getPageSize(), results);
 	}
 
 	public Page<RoleVO> pageQueryRoleByUseraccount(int currentPage,
 			int pageSize, String useraccount) {
 		List<RoleVO> results = new ArrayList<RoleVO>();
-		Page<Role> pages = queryChannel()
-				.queryPagedResultByPageNo(
+		Page<Role> pages = queryChannel().createJpqlQuery(
 						"select role from RoleUserAuthorization rau "
-								+ "join rau.role role join rau.user user where user.userAccount=? "
-								+ "and rau.abolishDate>?",
-						new Object[] { useraccount, new Date() }, currentPage,
-						pageSize);
-		for (Role each : pages.getResult()) {
+								+ "join rau.role role join rau.user user where user.userAccount=:useraccount "
+								+ "and rau.abolishDate>:abolishDate").addParameter("useraccount", useraccount).addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
+		for (Role each : pages.getData()) {
 			RoleVO roleVO = new RoleVO();
 			roleVO.domain2Vo(each);
 			results.add(roleVO);
 		}
-		return new Page<RoleVO>(pages.getCurrentPageNo(),
-				pages.getTotalCount(), pages.getPageSize(), results);
+		return new Page<RoleVO>(pages.getPageIndex(),
+				pages.getResultCount(), pages.getPageSize(), results);
 	}
 
 	public Page<RoleVO> pageQueryByRoleCustom(int currentPage, int pageSize,
 			QueryConditionVO query) {
 		List<RoleVO> result = new ArrayList<RoleVO>();
-		Page<Role> pages = queryChannel().queryPagedResultByPageNo(
-				genQueryCondition(query), new Object[] { new Date() },
-				currentPage, pageSize);
-		for (Role role : pages.getResult()) {
+		Page<Role> pages = queryChannel().createJpqlQuery(genQueryCondition(query)).addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
+				
+		for (Role role : pages.getData()) {
 			RoleVO roleVO = new RoleVO();
 			roleVO.domain2Vo(role);
 			result.add(roleVO);
 		}
-		return new Page<RoleVO>(pages.getCurrentPageNo(),
-				pages.getTotalCount(), pages.getPageSize(), result);
+		return new Page<RoleVO>(pages.getPageIndex(),
+				pages.getResultCount(), pages.getPageSize(), result);
 	}
 
 	public Page<RoleVO> pageQueryNotAssignRoleByUseraccount(int currentPage,
@@ -277,14 +264,12 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 			conditions.add("%" + roleVO.getName() + "%");
 		}
 
-		Page<RoleVO> pages = queryChannel().queryPagedResultByPageNo( //
-				jpql.toString(), //
-				conditions.toArray(), //
-				currentPage, pageSize);
+		Page<RoleVO> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions)
+				.setPage(currentPage, pageSize).pagedList();
 
-		return new Page<RoleVO>(pages.getCurrentPageNo(),
-				pages.getTotalCount(), //
-				pages.getPageSize(), pages.getResult());
+		return new Page<RoleVO>(pages.getPageIndex(),
+				pages.getPageCount(), //
+				pages.getPageSize(), pages.getData());
 	}
 
 	public void assignUser(RoleVO roleVO, UserVO userVO) {
@@ -394,17 +379,15 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 			conditions.add("%" + userVO.getUserAccount() + "%");
 		}
 
-		Page<User> pages = queryChannel().queryPagedResultByPageNo( //
-				jpql.toString(), //
-				conditions.toArray(), currentPage, pageSize);
+		Page<User> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions).setPage(currentPage, pageSize).pagedList();
 
-		for (User user : pages.getResult()) {
+		for (User user : pages.getData()) {
 			UserVO vo = new UserVO();
 			vo.domain2Vo(user);
 			result.add(vo);
 		}
 
-		return new Page<UserVO>(pages.getCurrentPageNo(),
-				pages.getTotalCount(), pages.getPageSize(), result);
+		return new Page<UserVO>(pages.getPageIndex(),
+				pages.getResultCount(), pages.getPageSize(), result);
 	}
 }

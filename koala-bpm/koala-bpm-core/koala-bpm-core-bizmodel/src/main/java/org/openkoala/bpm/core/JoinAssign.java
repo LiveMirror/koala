@@ -1,10 +1,11 @@
 package org.openkoala.bpm.core;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 @Entity
 @Table
@@ -24,7 +25,7 @@ public class JoinAssign extends AbstractEntity {
 
 	private String monitorVal;
 
-
+	@Column
 	public String getName() {
 		return name;
 	}
@@ -32,7 +33,8 @@ public class JoinAssign extends AbstractEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	@Column
 	public String getType() {
 		return type;
 	}
@@ -41,6 +43,7 @@ public class JoinAssign extends AbstractEntity {
 		this.type = type;
 	}
 
+	@Column
 	public String getSuccessResult() {
 		return successResult;
 	}
@@ -49,6 +52,7 @@ public class JoinAssign extends AbstractEntity {
 		this.successResult = successResult;
 	}
 
+	@Column
 	public String getKeyChoice() {
 		return keyChoice;
 	}
@@ -57,7 +61,7 @@ public class JoinAssign extends AbstractEntity {
 		this.keyChoice = keyChoice;
 	}
 
-
+	@Column
 	public String getDescription() {
 		return description;
 	}
@@ -65,7 +69,7 @@ public class JoinAssign extends AbstractEntity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	@Column
 	public String getMonitorVal() {
 		return monitorVal;
 	}
@@ -78,20 +82,19 @@ public class JoinAssign extends AbstractEntity {
 	 * 保存，不允许保存同名称的会签
 	 */
 	public void save() {
-		String jpql = "from JoinAssign j where j.name = ?";
-		List<JoinAssign> assigns = getRepository().find(jpql,
-				new Object[] { this.name }, JoinAssign.class);
+		String jpql = "from JoinAssign j where j.name = :name";
+		List<JoinAssign> assigns = getRepository().createJpqlQuery(jpql).addParameter("name", name).list();
 		if (assigns != null && assigns.size() > 0) {
 			throw new RuntimeException("已存在的JoinAssign");
 		}
 		super.save();
 	}
 
+	
 	public static JoinAssign getJoinAssignByName(String name) {
 		JoinAssign joginAssign = null;
-		String jpql = "from JoinAssign j where j.name = ? ";
-		List<JoinAssign> assigns = getRepository().find(jpql,
-				new Object[] { name }, JoinAssign.class);
+		String jpql = "from JoinAssign j where j.name = :name ";
+		List<JoinAssign> assigns = getRepository().createJpqlQuery(jpql).addParameter("name", name).list();
 		if (assigns == null || assigns.size() == 0) {
 			return null;
 		} else {
@@ -149,6 +152,12 @@ public class JoinAssign extends AbstractEntity {
 	public String toString() {
 		return "JoinAssign [name=" + name + ", keyChoice=" + keyChoice
 				+ ", type=" + type + ", successResult=" + successResult + "]";
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

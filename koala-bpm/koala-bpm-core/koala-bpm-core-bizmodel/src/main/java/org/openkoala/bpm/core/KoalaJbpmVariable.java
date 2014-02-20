@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 
 @Entity
@@ -20,16 +20,19 @@ public class KoalaJbpmVariable extends AbstractEntity {
 	
 	public static final String KOALA_PROCESS = "&KOALA_PROCESS_";
 
-	/*
-	 * 变量名 
+	/**
+	 * 全局及包名
+	 * 全局 -- &KOALA_ALL
+	 * 包名变量 -- &KOALA_PACKAGE
+	 * 流程变量，在流程中定义
+	 * 变量的范围
 	 */
-	@Column(name = "var_key")
 	private String key;
 	
 	/**
 	 * 变量值 
 	 */
-	@Column(name = "var_value")
+	
 	private String value;
 	
 	/**
@@ -40,21 +43,15 @@ public class KoalaJbpmVariable extends AbstractEntity {
 	 * double
 	 * 
 	 */
-	@Column(name = "var_type")
+	
 	private String type;
 	
-	/**
-	 * 全局及包名
-	 * 全局 -- &KOALA_ALL
-	 * 包名变量 -- &KOALA_PACKAGE
-	 * 流程变量，在流程中定义
-	 * 变量的范围
-	 */
-	@Column(name = "var_scope")
+
+	
 	private String scope;
 	
 	
-	
+	@Column(name = "var_key")
 	public String getKey() {
 		return key;
 	}
@@ -63,6 +60,7 @@ public class KoalaJbpmVariable extends AbstractEntity {
 		this.key = key;
 	}
 
+	@Column(name = "var_value")
 	public String getValue() {
 		return value;
 	}
@@ -71,6 +69,7 @@ public class KoalaJbpmVariable extends AbstractEntity {
 		this.value = value;
 	}
 
+	@Column(name = "var_type")
 	public String getType() {
 		return type;
 	}
@@ -79,6 +78,7 @@ public class KoalaJbpmVariable extends AbstractEntity {
 		this.type = type;
 	}
 
+	@Column(name = "var_scope")
 	public String getScope() {
 		return scope;
 	}
@@ -90,8 +90,7 @@ public class KoalaJbpmVariable extends AbstractEntity {
 	public static void setProcessVariable(String processId,String key,String value,String type){
 		String scopeValue = type.toUpperCase();
 		if("STRING".equals(scopeValue) || "BOOLEAN".equals(scopeValue) || "INT".equals(scopeValue) || "LONG".equals(scopeValue) || "DOUBLE".equals(scopeValue)){
-			List<KoalaJbpmVariable> variables = KoalaJbpmVariable.getRepository().find("from KoalaJbpmVariable k where k.scope = '"+KOALA_PROCESS+processId+"' and k.key = ? ",new Object[]{key}, KoalaJbpmVariable.class);
-			
+			List<KoalaJbpmVariable> variables = KoalaJbpmVariable.getRepository().createJpqlQuery("from KoalaJbpmVariable k where k.scope = '"+KOALA_PROCESS+processId+"' and k.key = :key ").addParameter("key", key).list();
 			if(variables!=null && variables.size()>0){
 				for(KoalaJbpmVariable variable:variables){
 					variable.setValue(value);
@@ -113,7 +112,7 @@ public class KoalaJbpmVariable extends AbstractEntity {
 	
 	
 	public static void removeProcessVariable(String processId,String key){
-		KoalaJbpmVariable variable = KoalaJbpmVariable.getRepository().getSingleResult("from KoalaJbpmVariable k where k.scope = '"+KOALA_PROCESS+processId+"' and k.key = ? ",new Object[]{key}, KoalaJbpmVariable.class);
+		KoalaJbpmVariable variable = KoalaJbpmVariable.getRepository().createJpqlQuery("from KoalaJbpmVariable k where k.scope = '"+KOALA_PROCESS+processId+"' and k.key = :key ").addParameter("key", key).singleResult();
 	    if(variable!=null){
 	    	variable.remove();
 	    }
@@ -124,7 +123,7 @@ public class KoalaJbpmVariable extends AbstractEntity {
 	public static void setGlobalVariable(String key,String value,String type){
 		String scopeValue = type.toUpperCase();
 		if("STRING".equals(scopeValue) || "BOOLEAN".equals(scopeValue) || "INT".equals(scopeValue) || "LONG".equals(scopeValue) || "DOUBLE".equals(scopeValue)){
-			List<KoalaJbpmVariable> variables = KoalaJbpmVariable.getRepository().find("from KoalaJbpmVariable k where k.scope = '"+KOALA_GLOBAL+"' and k.key = ? ",new Object[]{key}, KoalaJbpmVariable.class);
+			List<KoalaJbpmVariable> variables = KoalaJbpmVariable.getRepository().createJpqlQuery("from KoalaJbpmVariable k where k.scope = '"+KOALA_GLOBAL+"' and k.key = :key ").addParameter("key", key).list();
 			if(variables!=null && variables.size()>0){
 				for(KoalaJbpmVariable variable:variables){
 					variable.setValue(value);
@@ -145,22 +144,26 @@ public class KoalaJbpmVariable extends AbstractEntity {
 	}
 	
 	public static void removeGlobalVariable(String key){
-		KoalaJbpmVariable variable = KoalaJbpmVariable.getRepository().getSingleResult("from KoalaJbpmVariable k where k.scope = '"+KOALA_GLOBAL+"' and k.key = ? ",new Object[]{key}, KoalaJbpmVariable.class);
+		KoalaJbpmVariable variable = KoalaJbpmVariable.getRepository().createJpqlQuery("from KoalaJbpmVariable k where k.scope = '"+KOALA_GLOBAL+"' and k.key = :key ").addParameter("key", key).singleResult();
 	    if(variable!=null){
 	    	variable.remove();
 	    }
 	}
 	
+	
 	public static boolean isVariableExists(String scope,String key){
-		List<KoalaJbpmVariable> variables = KoalaJbpmVariable.getRepository().find("from KoalaJbpmVariable k where k.scope = ? and k.key = ? ",new Object[]{scope,key}, KoalaJbpmVariable.class);
+		List<KoalaJbpmVariable> variables = KoalaJbpmVariable.getRepository().createJpqlQuery("from KoalaJbpmVariable k where k.scope = :scope and k.key = :key").addParameter("scope", scope).addParameter("key", key).list();
 		if(variables.size()>0)return true;
 		return false;
 	}
 	
 	public static void setPackageVariable(String packageName,String key,String value,String type){
 		String scopeValue = type.toUpperCase();
+		
 		if("STRING".equals(scopeValue) || "BOOLEAN".equals(scopeValue) || "INT".equals(scopeValue) || "LONG".equals(scopeValue) || "DOUBLE".equals(scopeValue)){
-			List<KoalaJbpmVariable> variables = KoalaJbpmVariable.getRepository().find("from KoalaJbpmVariable k where k.scope = '"+KOALA_PACKAGE+packageName+"' and k.key = ? ",new Object[]{key}, KoalaJbpmVariable.class);
+			String jqpl = "from KoalaJbpmVariable k where k.scope = :scope and k.key = :key";
+			//
+			List<KoalaJbpmVariable> variables = getRepository().createJpqlQuery(jqpl).addParameter("scope", KOALA_PACKAGE+packageName).addParameter("key", key).list();
 			if(variables!=null && variables.size()>0){
 				for(KoalaJbpmVariable variable:variables){
 					variable.setValue(value);
@@ -180,7 +183,8 @@ public class KoalaJbpmVariable extends AbstractEntity {
 		}
 	}
 	
-	public Object getObjValue(){
+	
+	public Object toObjValue(){
 		if("STRING".equals(this.type.toUpperCase())){
 			return value;
 		}
@@ -200,7 +204,8 @@ public class KoalaJbpmVariable extends AbstractEntity {
 	}
 	
 	public static void removePackageVariable(String packageName,String key){
-		KoalaJbpmVariable variable = KoalaJbpmVariable.getRepository().getSingleResult("from KoalaJbpmVariable k where k.scope = '"+KOALA_PACKAGE+packageName+"' and k.key = ? ",new Object[]{key}, KoalaJbpmVariable.class);
+		String jpql = "from KoalaJbpmVariable k where k.scope = :scope and k.key = :key ";
+		KoalaJbpmVariable variable = KoalaJbpmVariable.getRepository().createJpqlQuery(jpql).addParameter("scope", KOALA_PACKAGE+packageName).addParameter("key", key).singleResult();
 	    if(variable!=null){
 	    	variable.remove();
 	    }
@@ -253,6 +258,12 @@ public class KoalaJbpmVariable extends AbstractEntity {
 	public String toString() {
 		return "KoalaJbpmVariable [key=" + key + ", value=" + value + ", type="
 				+ type + ", scope=" + scope + "]";
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return new String[]{};
 	}
 
 }

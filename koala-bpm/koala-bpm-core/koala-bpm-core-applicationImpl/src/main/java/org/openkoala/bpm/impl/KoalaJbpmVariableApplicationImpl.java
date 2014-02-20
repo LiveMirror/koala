@@ -7,13 +7,14 @@ import java.text.MessageFormat;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import com.dayatang.querychannel.support.Page;
-import com.dayatang.querychannel.service.QueryChannelService;
+
 import org.openkoala.bpm.application.KoalaJbpmVariableApplication;
 import org.openkoala.bpm.application.vo.*;
 import org.openkoala.bpm.core.*;
 import org.openkoala.exception.extend.KoalaException;
 import org.apache.commons.beanutils.BeanUtils;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 
 @Named
 public class KoalaJbpmVariableApplicationImpl implements KoalaJbpmVariableApplication {
@@ -23,8 +24,8 @@ public class KoalaJbpmVariableApplicationImpl implements KoalaJbpmVariableApplic
 	
 	public KoalaJbpmVariableVO getKoalaJbpmVariable(Long id) {
 			
-	   	String jpql = "select _koalaJbpmVariable from KoalaJbpmVariable _koalaJbpmVariable  where _koalaJbpmVariable.id=?";
-	   	KoalaJbpmVariable koalaJbpmVariable = (KoalaJbpmVariable) queryChannel.querySingleResult(jpql, new Object[] { id });
+	   	String jpql = "select _koalaJbpmVariable from KoalaJbpmVariable _koalaJbpmVariable  where _koalaJbpmVariable.id=:id";
+	   	KoalaJbpmVariable koalaJbpmVariable = (KoalaJbpmVariable) queryChannel.createJpqlQuery(jpql).addParameter("id", id).singleResult();
 		KoalaJbpmVariableVO koalaJbpmVariableVO = new KoalaJbpmVariableVO();
 		// 将domain转成VO
 		try {
@@ -113,8 +114,8 @@ public class KoalaJbpmVariableApplicationImpl implements KoalaJbpmVariableApplic
 	   		conditionVals.add(MessageFormat.format("%{0}%", queryVo.getScope()));
 	   	}		
 	   		   		   		   		   		   		   		   		   	
-        Page<KoalaJbpmVariable> pages = queryChannel.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pageSize);
-        for (KoalaJbpmVariable koalaJbpmVariable : pages.getResult()) {
+        Page<KoalaJbpmVariable> pages = queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
+        for (KoalaJbpmVariable koalaJbpmVariable : pages.getData()) {
             KoalaJbpmVariableVO koalaJbpmVariableVO = new KoalaJbpmVariableVO();
             // 将domain转成VO
             try {
@@ -139,7 +140,7 @@ public class KoalaJbpmVariableApplicationImpl implements KoalaJbpmVariableApplic
             																											
             result.add(koalaJbpmVariableVO);
         }
-        return new Page<KoalaJbpmVariableVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), result);
+        return new Page<KoalaJbpmVariableVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 	
 	

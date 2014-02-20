@@ -9,6 +9,9 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.EntityRepository;
+import org.dayatang.querychannel.QueryChannelService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,14 +23,8 @@ import org.openkoala.gqc.core.domain.FieldDetail;
 import org.openkoala.gqc.core.domain.GeneralQuery;
 import org.openkoala.gqc.core.domain.PreQueryCondition;
 import org.openkoala.gqc.core.domain.QueryOperation;
-import org.openkoala.gqc.infra.util.DatabaseUtils;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-
-import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.EntityRepository;
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
 
 @PrepareForTest({ AbstractEntity.class})
 public class GqcApplicationImplTest {

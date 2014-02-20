@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 /**
  * CAS用户
@@ -126,6 +126,12 @@ public class AppUser extends AbstractEntity {
 	public String toString() {
 		return "AppUser [username=" + username + ", password=" + password
 				+ ", email=" + email + "]";
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

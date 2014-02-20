@@ -3,13 +3,13 @@ package org.openkoala.koala.auth.ss3adapter;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
+
+import org.dayatang.domain.InstanceFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * ClassName:AccessDecisionManager Function: 决策类 当请求访问时，判断用户是否具有访问所需的所有权限
@@ -29,7 +29,7 @@ public class AccessDecisionManager implements org.springframework.security.acces
 			return;
 		}
 
-		com.dayatang.cache.Cache userCache = InstanceFactory.getInstance(com.dayatang.cache.Cache.class, "user_cache");
+		org.dayatang.cache.Cache userCache = InstanceFactory.getInstance(org.dayatang.cache.Cache.class, "user_cache");
 		CustomUserDetails currentUser = (CustomUserDetails) userCache.get(authentication.getName());
 		
 		if (currentUser.isSuper()) {

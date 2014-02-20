@@ -31,6 +31,9 @@ import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 
 import org.apache.commons.net.util.Base64;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.drools.definition.process.Node;
 import org.drools.persistence.info.WorkItemInfo;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -88,10 +91,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 流程的实现
@@ -547,12 +546,11 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		 * this.queryChannel.queryPagedResult(hql, new Object[] { processId },
 		 * firstRow, pageSize);
 		 */
-		String jpql = "select log from HistoryLog log where log.user = ? and log.processId = ?";
+		String jpql = "select log from HistoryLog log where log.user = :user and log.processId = :process";
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Page<HistoryLog> pageResults = this.queryChannel
-				.queryPagedResultByPageNo(jpql, new Object[] { user, process },
-						currentPage, pageSize);
-		List<HistoryLog> logs = pageResults.getResult();
+		Page<HistoryLog> pageResults = this.queryChannel.createJpqlQuery(jpql).addParameter(user, user)
+				.addParameter("process", process).setPage(currentPage, currentPage).pagedList();
+		List<HistoryLog> logs = pageResults.getData();
 
 		List<Long> ids = new ArrayList<Long>();
 		List<TaskVO> dones = new ArrayList<TaskVO>();
@@ -582,7 +580,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		}
 
 		return new PageTaskVO(Page.getStartOfPage(currentPage, pageSize),
-				pageResults.getTotalCount(), pageResults.getPageSize(), dones);
+				pageResults.getResultCount(), pageResults.getPageSize(), dones);
 
 	}
 
@@ -593,9 +591,8 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 		List<TaskVO> dones = new ArrayList<TaskVO>();
-		List<HistoryLog> logs = queryChannel.queryResult(
-				"select log from HistoryLog log where log.user = ?",
-				new Object[] { user });
+		List<HistoryLog> logs = queryChannel.createJpqlQuery("select log from HistoryLog log where log.user = :user")
+				.addParameter("user", user).list();
 		List<Long> ids = new ArrayList<Long>();
 		for (HistoryLog log : logs) {
 			if (ids.contains(log.getProcessInstanceId()))
@@ -844,10 +841,8 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	}
 
 	public List<HistoryLogVo> queryHistoryLog(long processInstanceId) {
-		List<HistoryLog> lists = queryChannel
-				.queryResult(
-						"select log from HistoryLog log where log.processInstanceId = ? order by log.createDate",
-						new Object[] { processInstanceId });
+		List<HistoryLog> lists = queryChannel.createJpqlQuery(
+						"select log from HistoryLog log where log.processInstanceId = :processInstanceId order by log.createDate").addParameter("processInstanceId", processInstanceId).list();
 		List<HistoryLogVo> logs = new ArrayList<HistoryLogVo>();
 
 		for (HistoryLog vo : lists) {
@@ -861,9 +856,8 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 	@Deprecated
 	public List<MessageLogVO> getMessages(String user) {
-		List<MessageLog> lists = queryChannel.queryResult(
-				"select log from MessageLog log where log.user = ?",
-				new Object[] { user });
+		List<MessageLog> lists = queryChannel.createJpqlQuery(
+				"select log from MessageLog log where log.user = :user").addParameter("user", user).list();
 		List<MessageLogVO> messages = new ArrayList<MessageLogVO>();
 		for (MessageLog log : lists) {
 			MessageLogVO vo = new MessageLogVO();
@@ -1191,8 +1185,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 				hql = hql + " and log.processId like '" + processId + "@%'";
 			}
 		}
-		Page<ProcessInstanceVO> logs = this.queryChannel.queryPagedResult(hql,
-				new Object[] {}, firstRow, pageSize);
+		Page<ProcessInstanceVO> logs = this.queryChannel.createJpqlQuery(hql).setFirstResult((int)firstRow).setPageSize(pageSize).pagedList();
 		return logs;
 	}
 
@@ -1210,8 +1203,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 				hql = hql + " and log.processId like '" + processId + "@%'";
 			}
 		}
-		Page<ProcessInstanceVO> logs = this.queryChannel.queryPagedResult(hql,
-				new Object[] {}, firstRow, pageSize);
+		Page<ProcessInstanceVO> logs = this.queryChannel.createJpqlQuery(hql).setFirstResult((int)firstRow).setPageSize(pageSize).pagedList();
 		return logs;
 	}
 
@@ -1581,9 +1573,9 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	public Page<ProcessInstanceVO> queryRunningProcessInstancesByProcessId(
 			String processId, long firstRow, int pageSize) {
 		String hql = "select new org.openkoala.jbpm.application.vo.ProcessInstanceVO(log.processId,log.processInstanceId,exlog.processName,log.start,log.end,exlog.processData) from ProcessInstanceLog log , ProcessInstanceExpandLog exlog where"
-				+ "  log.processId = ? and exlog.instanceLogId = log.id and exlog.state = 1";
-		Page<ProcessInstanceVO> logs = this.queryChannel.queryPagedResult(hql,
-				new Object[] { processId }, firstRow, pageSize);
+				+ "  log.processId = :processId and exlog.instanceLogId = log.id and exlog.state = 1";
+		Page<ProcessInstanceVO> logs = this.queryChannel.createJpqlQuery(hql)
+				.addParameter("processId", processId).setFirstResult((int)firstRow).setPageSize(pageSize).pagedList();
 		return logs;
 	}
 
@@ -1600,8 +1592,8 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			String processId, long firstRow, int pageSize) {
 		String hql = "select new org.openkoala.jbpm.application.vo.ProcessInstanceVO(log.processId,log.processInstanceId,exlog.processName,log.start,log.end,exlog.processData) from ProcessInstanceLog log , ProcessInstanceExpandLog exlog where"
 				+ " and log.processId = ? and exlog.instanceLogId = log.id and exlog.state = 0";
-		Page<ProcessInstanceVO> logs = this.queryChannel.queryPagedResult(hql,
-				new Object[] { processId }, firstRow, pageSize);
+		Page<ProcessInstanceVO> logs = this.queryChannel.createJpqlQuery(hql)
+				.setFirstResult((int)firstRow).setPageSize(pageSize).pagedList();
 		return logs;
 	}
 

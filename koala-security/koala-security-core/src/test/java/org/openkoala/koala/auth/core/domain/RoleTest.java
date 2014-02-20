@@ -7,11 +7,10 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
+import org.dayatang.utils.DateUtils;
 import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-
-import com.dayatang.utils.DateUtils;
 
 /**
  * 角色测试

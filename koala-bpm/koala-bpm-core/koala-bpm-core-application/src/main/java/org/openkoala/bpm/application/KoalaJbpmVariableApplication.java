@@ -3,8 +3,7 @@ package org.openkoala.bpm.application;
 
 import java.util.List;
 
-import com.dayatang.querychannel.support.Page;
-
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.application.vo.*;
 
 public interface KoalaJbpmVariableApplication {

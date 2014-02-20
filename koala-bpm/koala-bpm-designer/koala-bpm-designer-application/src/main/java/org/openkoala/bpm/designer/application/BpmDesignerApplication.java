@@ -3,9 +3,8 @@ package org.openkoala.bpm.designer.application;
 
 import java.util.List;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.designer.application.dto.PublishURLVO;
-
-import com.dayatang.querychannel.support.Page;
 
 public interface BpmDesignerApplication {
 

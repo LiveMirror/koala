@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.openkoala.bpm</groupId>
 		<artifactId>koala-bpm-form</artifactId>
-		<version>2.1.0-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>koala-bpm-form-applicationImpl</artifactId>
 	<name>koala-bpm-form-applicationImpl</name>
@@ -50,23 +50,18 @@
 		</dependency>
 		<!-- 加入对查询通道的依赖 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-querychannel</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-query-channel</artifactId>
 		</dependency>
 		<!-- 加入对dayatang的DB的支持 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-db</artifactId>
-		</dependency>
-		<!-- 加入对dayatang的spring的实现 -->
-		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-spring</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-db</artifactId>
 		</dependency>
 		<!-- 加入对dayatang的hibernate的实现 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-hibernate</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-persistence-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>proxool</groupId>
@@ -82,8 +77,8 @@
 			<artifactId>c3p0</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-spring-test</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<!-- 加入Spring对JPA的支持 -->
@@ -94,10 +89,6 @@
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>

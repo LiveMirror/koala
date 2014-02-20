@@ -2,9 +2,8 @@ package org.openkoala.businesslog.utils;
 
 import static org.openkoala.businesslog.common.ContextKeyConstant.*;
 
-import com.dayatang.domain.InstanceFactory;
-
 import org.aspectj.lang.JoinPoint;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.businesslog.*;
 import org.openkoala.businesslog.common.BusinessLogPropertiesConfig;
 import org.openkoala.businesslog.common.LogEngineThread;

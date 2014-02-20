@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.monitor.application.MonitorDataManageApplication;
 import org.openkoala.koala.monitor.application.MonitorNodeManageApplication;
 import org.openkoala.koala.monitor.common.Constant;
@@ -26,8 +27,6 @@ import org.openkoala.koala.monitor.model.MonitorNodeVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
 
 @Controller
 @RequestMapping("/monitor/Monitor")
@@ -97,10 +96,10 @@ public class MonitorController {
 							pagesize, mainStatVo);
 		}
 
-		dataMap.put("Rows", result.getResult());
+		dataMap.put("Rows", result.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getTotalCount());
+		dataMap.put("Total", result.getResultCount());
 		dataMap.put("timeStart", mainStatVo.getBeginTimeStr());
 		dataMap.put("timeEnd", mainStatVo.getEndTimeStr());
 		return dataMap;
@@ -118,10 +117,10 @@ public class MonitorController {
 		Page<HttpDetailsVo> result = monitorDataManageApplication
 				.pageGetHttpMonitorDetails(page,pagesize,
 						this.packagingHttpDetailsVo(request));
-		dataMap.put("Rows", result.getResult());
+		dataMap.put("Rows", result.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getTotalCount());
+		dataMap.put("Total", result.getResultCount());
 		return dataMap;
 	}
 
@@ -137,10 +136,10 @@ public class MonitorController {
 		Page<MethodDetailsVo> result = monitorDataManageApplication
 				.pageGetMethodMonitorDetails(page,pagesize,
 						this.packagingMethodDetailsVo(request));
-		dataMap.put("Rows", result.getResult());
+		dataMap.put("Rows", result.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getTotalCount());
+		dataMap.put("Total", result.getResultCount());
 		return dataMap;
 	}
 
@@ -171,10 +170,10 @@ public class MonitorController {
 		Page<JdbcStatementDetailsVo> result = monitorDataManageApplication
 				.getSqlsMonitorDetails(page, pagesize,
 						this.packagingJdbcStatementDetailsVo(request));
-		dataMap.put("Rows", result.getResult());
+		dataMap.put("Rows", result.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getTotalCount());
+		dataMap.put("Total", result.getResultCount());
 		return dataMap;
 	}
 

@@ -3,7 +3,7 @@ package org.openkoala.gqc.core.domain;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-import com.dayatang.domain.ValueObject;
+import org.dayatang.domain.ValueObject;
 
 /**
  * 字段明细，用于记录查询界面要显示的字段。

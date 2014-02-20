@@ -1,11 +1,11 @@
 package org.openkoala.koala.auth.web;
 
 import javax.inject.Named;
+
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.koala.auth.ss3adapter.AuthUserUtil;
 import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
 import org.openkoala.koala.auth.ss3adapter.SecurityMetadataSource;
-
-import com.dayatang.domain.InstanceFactory;
 
 @Named("owner")
 public class PermissionController {

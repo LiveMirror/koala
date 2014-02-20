@@ -81,7 +81,7 @@
 		<dependency>
 			<groupId>org.openkoala.plugin</groupId>
 			<artifactId>koala-plugin-create</artifactId>
-			<version>2.1.0-SNAPSHOT</version>
+			<version>3.0.0-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.jdom</groupId>
@@ -97,7 +97,7 @@
 	</dependencies>
 
 	<properties>
-		<koala.opencis.version>2.1.0-SNAPSHOT</koala.opencis.version>
+		<koala.opencis.version>3.0.0-SNAPSHOT</koala.opencis.version>
 	</properties>
 	
 </project>

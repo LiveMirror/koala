@@ -5,8 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import com.dayatang.querychannel.support.Page;
-
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.action.BaseAction;
 import org.openkoala.bpm.application.JBPMApplication;
 import org.openkoala.bpm.application.KoalaAssignInfoApplication;
@@ -44,10 +43,10 @@ public class KoalaAssignInfoAction extends BaseAction {
 	
 	public String pageJson() {
 		Page<KoalaAssignInfoVO> all = koalaAssignInfoApplication.pageQueryKoalaAssignInfo(koalaAssignInfoVO, page, pagesize);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 	
@@ -79,10 +78,10 @@ public class KoalaAssignInfoAction extends BaseAction {
 
 	public String findJbpmNamesByKoalaAssignInfo() {
 		Page<KoalaAssignDetailVO> all = koalaAssignInfoApplication.findJbpmNamesByKoalaAssignInfo(koalaAssignInfoVO.getId(), page, pagesize);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}		
 	

@@ -11,14 +11,12 @@ import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.organisation.application.JobApplication;
 import org.openkoala.organisation.domain.Job;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
-
 @Named
 @Transactional(value="transactionManager_org")
 @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
@@ -58,7 +56,7 @@ public class JobApplicationImpl implements JobApplication {
 			conditionVals.add(MessageFormat.format("%{0}%", jobSearchExample.getSn()));
 		}
 
-		return getQueryChannelService().queryPagedResultByPageNo(jpql.toString(),conditionVals.toArray(), currentPage, pageSize);
+		return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
 	}
 
 }

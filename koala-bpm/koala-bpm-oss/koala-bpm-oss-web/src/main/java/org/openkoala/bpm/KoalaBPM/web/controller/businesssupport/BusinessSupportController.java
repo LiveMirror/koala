@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.KoalaBPM.infra.common.ConstantUtil;
 import org.openkoala.bpm.application.BusinessSupportApplication;
 import org.openkoala.bpm.application.dto.FormShowDTO;
@@ -24,9 +25,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
-
 @Controller
 @RequestMapping("/businessSupport")
 public class BusinessSupportController {
@@ -92,10 +90,10 @@ public class BusinessSupportController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<TaskDTO> pageTaskVO = businessSupportApplication.getDoneTasks(processId, 
 				AuthUserUtil.getLoginUserName(), page, pagesize);
-		dataMap.put("Rows", pageTaskVO.getResult());
+		dataMap.put("Rows", pageTaskVO.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", pageTaskVO.getTotalCount());
+		dataMap.put("Total", pageTaskVO.getResultCount());
 		return dataMap;
 	}
 	

@@ -3,13 +3,15 @@ package org.openkoala.koala.auth.core.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import com.dayatang.domain.Entity;
-import com.dayatang.domain.QuerySettings;
+
+import org.dayatang.domain.Entity;
 
 /**
  * 时刻时段类实体。代表仅在一个确定的时间段内有效的一大类实体。
@@ -22,14 +24,10 @@ public abstract class TimeIntervalEntity extends KoalaSecurityEntity {
 
 	private static final long serialVersionUID = 858481853210607590L;
 
-	@Column(name = "CREATE_DATE", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	@NotNull(message = "createDate.is.null")
+	
 	private Date createDate;
 
-	@Column(name = "ABOLISH_DATE", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	@NotNull(message = "abolishDate.is.null")
+	
 	private Date abolishDate;
 
 	public TimeIntervalEntity() {
@@ -39,6 +37,9 @@ public abstract class TimeIntervalEntity extends KoalaSecurityEntity {
 		this.createDate = createDate;
 	}
 
+	@Column(name = "CREATE_DATE", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@NotNull(message = "createDate.is.null")
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -47,6 +48,9 @@ public abstract class TimeIntervalEntity extends KoalaSecurityEntity {
 		this.createDate = createDate;
 	}
 
+	@Column(name = "ABOLISH_DATE", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@NotNull(message = "abolishDate.is.null")
 	public Date getAbolishDate() {
 		return abolishDate;
 	}
@@ -93,9 +97,8 @@ public abstract class TimeIntervalEntity extends KoalaSecurityEntity {
 	 * @return
 	 */
 	public static <T extends Entity> List<T> findAll(Class<T> clazz, Date queryDate) {
-		return getRepository().find(QuerySettings.create(clazz)
-				.le("createDate", queryDate)
-				.gt("abolishDate", queryDate));
+		return getRepository().createCriteriaQuery(clazz).le("createDate", queryDate)
+		.gt("abolishDate", queryDate).list();
 	}
 	
 	/**
@@ -159,18 +162,48 @@ public abstract class TimeIntervalEntity extends KoalaSecurityEntity {
 	 * @return
 	 */
 	public static <T extends Entity> List<T> findAll(Class<T> clazz) {
-		return getRepository().find(QuerySettings.create(clazz));
+		return getRepository().findAll(clazz);
+	}
+
+	@Override
+	public String toString() {
+		return "TimeIntervalEntity [createDate=" + createDate
+				+ ", abolishDate=" + abolishDate + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((abolishDate == null) ? 0 : abolishDate.hashCode());
+		result = prime * result
+				+ ((createDate == null) ? 0 : createDate.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof TimeIntervalEntity))
+			return false;
+		TimeIntervalEntity other = (TimeIntervalEntity) obj;
+		if (abolishDate == null) {
+			if (other.abolishDate != null)
+				return false;
+		} else if (!abolishDate.equals(other.abolishDate))
+			return false;
+		if (createDate == null) {
+			if (other.createDate != null)
+				return false;
+		} else if (!createDate.equals(other.createDate))
+			return false;
+		return true;
 	}
 	
-	/**
-	 * 根据命名查询查找实体
-	 * @param queryName
-	 * @param params
-	 * @param clazz
-	 * @return
-	 */
-	public static <T extends Entity> List<T> findByNamedQuery(String queryName, Object[] params, Class<T> clazz) {
-		return getRepository().findByNamedQuery(queryName, params, clazz);
-	}
+	
 }
 

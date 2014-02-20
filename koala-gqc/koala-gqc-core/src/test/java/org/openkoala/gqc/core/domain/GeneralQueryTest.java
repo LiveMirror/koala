@@ -10,13 +10,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.dayatang.querychannel.Page;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 
@@ -75,7 +74,7 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 	 */
 	@Test
 	public void testPagingQuery() {
-		List<Map<String, Object>> list = generalQuery.pagingQuery(1, 10);
+		List<Map<String, Object>> list = generalQuery.pagingQuery(0, 10);
 		assertTrue("查询结果总记录应该为空！", list.isEmpty());
 	}
 
@@ -84,8 +83,8 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 	 */
 	@Test
 	public void testPagingQueryPage() {
-		Page<Map<String, Object>> page = generalQuery.pagingQueryPage(1, 10);
-		assertTrue(page.getResult().isEmpty());
+		Page<Map<String, Object>> page = generalQuery.pagingQueryPage(0, 10);
+		assertTrue(page.getData().isEmpty());
 	}
 
 	/**

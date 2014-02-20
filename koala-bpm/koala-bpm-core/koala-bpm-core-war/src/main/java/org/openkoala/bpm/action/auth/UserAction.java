@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.struts2.ServletActionContext;
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.RoleApplication;
 import org.openkoala.auth.application.UserApplication;
 import org.openkoala.auth.application.vo.QueryConditionVO;
@@ -19,7 +20,6 @@ import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
 import org.openkoala.koala.auth.ss3adapter.ehcache.CacheUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.dayatang.querychannel.support.Page;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class UserAction extends ActionSupport {
@@ -179,10 +179,10 @@ public class UserAction extends ActionSupport {
 		initSearchCondition();
 		Page<UserVO> all = userApplication.pageQueryUserCustom(start, limit, search);
 		if(all!=null){
-			dataMap.put("Rows", all.getResult());
+			dataMap.put("Rows", all.getData());
 			dataMap.put("start", start * limit - limit);
 			dataMap.put("limit", limit);
-			dataMap.put("Total", all.getTotalCount());
+			dataMap.put("Total", all.getResultCount());
 		}
 		return "JSON";
 	}
@@ -204,10 +204,10 @@ public class UserAction extends ActionSupport {
 			}
 		}
 
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 
@@ -219,10 +219,10 @@ public class UserAction extends ActionSupport {
 		roleVoForFind.setId(roleId);
 		Page<UserVO> all = roleApplication.pageQueryNotAssignUserByRole(start, limit, null, roleVoForFind);
 
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 
@@ -237,7 +237,7 @@ public class UserAction extends ActionSupport {
 		if (roleId != null) {
 			RoleVO role = new RoleVO();
 			role.setId(roleId);
-			List<UserVO> users = all.getResult();
+			List<UserVO> users = all.getData();
 			try {
 				for (UserVO user : roleApplication.findUserByRole(role)) {
 					users.remove(user);
@@ -247,10 +247,10 @@ public class UserAction extends ActionSupport {
 			}
 		}
 
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 
 		return "JSON";
 	}

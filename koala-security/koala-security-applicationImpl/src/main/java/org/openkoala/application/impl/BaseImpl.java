@@ -2,11 +2,10 @@ package org.openkoala.application.impl;
 
 import java.text.MessageFormat;
 
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.auth.application.vo.QueryConditionVO;
 import org.openkoala.auth.application.vo.QueryItemVO;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
 
 public class BaseImpl {
 	private static QueryChannelService queryChannel;
@@ -25,7 +24,7 @@ public class BaseImpl {
 			result.append(MessageFormat.format(" and m.{0} {1} {2}", qi.getPropName(), //
 					QueryConditionVO.genOperatorStirng(qi.getOperaType()), qi.getPropValue()));
 		}
-		result.append(" and m.abolishDate>?");
+		result.append(" and m.abolishDate>:abolishDate");
 		return result.toString();
 	}
 

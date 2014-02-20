@@ -4,13 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.organisation.application.dto.EmployeeDTO;
 import org.openkoala.organisation.application.dto.ResponsiblePostDTO;
 import org.openkoala.organisation.domain.Employee;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 员工应用层接口

@@ -1,5 +1,7 @@
 package org.openkoala.koalacommons.i18n;
 
+import java.util.Locale;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openkoala.framework.i18n.I18NManager;
@@ -13,7 +15,8 @@ public class I18nTest {
 
 	@Test
 	public void shouldUsingDefaultLocale(){
-		String value = I18NManager.getMessage("name");
+		System.out.println(new Locale("ZH_CN").getDisplayLanguage());
+		String value = I18NManager.getMessage("name","zh_cn");
 		Assert.assertTrue(value.equals("考拉"));
 	}
 	

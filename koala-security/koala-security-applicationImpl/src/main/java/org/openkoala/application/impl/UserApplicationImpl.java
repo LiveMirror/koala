@@ -7,9 +7,9 @@ import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dayatang.querychannel.Page;
 import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.auth.application.UserApplication;
 import org.openkoala.auth.application.vo.QueryConditionVO;
@@ -20,17 +20,16 @@ import org.openkoala.koala.auth.core.domain.RoleUserAuthorization;
 import org.openkoala.koala.auth.core.domain.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dayatang.querychannel.support.Page;
-
 @Remote
 @Named("userApplication")
 @Stateless(name = "UserApplication")
 @Transactional(value="transactionManager_security")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class UserApplicationImpl extends BaseImpl implements UserApplication {
 
     public UserVO getUser(Long userId) {
-    	User user = queryChannel().querySingleResult("select user from User user where user.abolishDate>?", new Object[] { new Date() });
+    	User user = (User) queryChannel().createJpqlQuery("select user from User user where user.abolishDate>:abolishDate").addParameter("abolishDate", new Date()).singleResult();
+    	
     	if (user != null) {
 	        UserVO userVO = new UserVO();
 	        userVO.domain2Vo(user);
@@ -94,15 +93,14 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
 
     public Page<UserVO> pageQueryUser(int currentPage, int pageSize) {
         List<UserVO> results = new ArrayList<UserVO>();
-        Page<User> pages = queryChannel().queryPagedResultByPageNo( //
-        		"select m from User m where m.isSuper is false and m.abolishDate>?", //
-        		new Object[] { new Date() }, currentPage, pageSize); //
-        for (User each : pages.getResult()) {
+        Page<User> pages = queryChannel().createJpqlQuery( //
+        		"select m from User m where m.super is false and m.abolishDate>:abolishDate").addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
+        for (User each : pages.getData()) {
             UserVO userVO = new UserVO();
             userVO.domain2Vo(each);
             results.add(userVO);
         }
-        return new Page<UserVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), results);
+        return new Page<UserVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
     }
     
     public Page<UserVO> pageQueryUser(UserVO userVO, int currentPage, int pageSize) {
@@ -122,15 +120,13 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
 				conditions.add("%" + userVO.getName() + "%");
 			}
 		}
-    	Page<User> pages = queryChannel().queryPagedResultByPageNo( //
-    			jpql.toString(), //
-    			conditions.toArray(), currentPage, pageSize); //
-    	for (User each : pages.getResult()) {
+    	Page<User> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions).setPage(currentPage, pageSize).pagedList();
+    	for (User each : pages.getData()) {
     		UserVO user = new UserVO();
     		user.domain2Vo(each);
     		results.add(user);
     	}
-    	return new Page<UserVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), results);
+    	return new Page<UserVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
     }
 
     public UserVO findByUserAccount(String userAccount) {
@@ -173,33 +169,32 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
     public Page<RoleVO> pageQueryNotAssignRoleByUser(int currentPage, int pageSize, UserVO userVO) {
         List<RoleVO> results = new ArrayList<RoleVO>();
         
-        Page<Role> pages = queryChannel().queryPagedResultByPageNo( //
+        Page<Role> pages = queryChannel().createJpqlQuery(
 	        "select role from Role role where role.id not in" + //
 	        "(select role from RoleUserAuthorization rau join " + //
-	        "rau.role role join rau.user user where user.id=? " + //
-	        "and rau.abolishDate>?) and role.abolishDate>?",  //
-	        new Object[] { userVO.getId(), new Date(), new Date() }, 
-	        currentPage, pageSize);
+	        "rau.role role join rau.user user where user.id=userId " + //
+	        "and rau.abolishDate>:rauAbolishDate) and role.abolishDate>:roleAbolishDate").addParameter("userId", userVO.getId()) 
+	        .addParameter("rauAbolishDate", new Date()).addParameter("roleAbolishDate", new Date()).setPage(currentPage, pageSize).pagedList();//
         
-        for (Role each : pages.getResult()) {
+        for (Role each : pages.getData()) {
             RoleVO roleVO = new RoleVO();
             roleVO.domain2Vo(each);
             results.add(roleVO);
         }
         
-        return new Page<RoleVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), results);
+        return new Page<RoleVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
     }
 
     public Page<UserVO> pageQueryUserCustom(int currentPage, int pageSize, QueryConditionVO query) {
         List<UserVO> results = new ArrayList<UserVO>();
-        Page<User> pages = queryChannel().queryPagedResultByPageNo(genQueryCondition(query), //
-        		new Object[] { new Date() }, currentPage, pageSize);
-        for (User each : pages.getResult()) {
+        
+        Page<User> pages = queryChannel().createJpqlQuery(genQueryCondition(query)).addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
+        for (User each : pages.getData()) {
             UserVO userVO = new UserVO();
             userVO.domain2Vo(each);
             results.add(userVO);
         }
-        return new Page<UserVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), results);
+        return new Page<UserVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
     }
 
 	@Override

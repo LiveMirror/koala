@@ -182,9 +182,9 @@ public class MonitorNode extends KmBaseLegacyEntity {
 		return existed() == false;
 	}
 
-	@Override
+	
 	public boolean existed(String propertyName, Object propertyValue) {
-		MonitorNode result = getRepository().getSingleResult("from MonitorNode where "+propertyName+" = ?", new Object[]{propertyValue}, MonitorNode.class);
+		MonitorNode result = getRepository().createCriteriaQuery(getClass()).eq(propertyName, propertyValue).singleResult();
 		return result != null;
 	}
 	

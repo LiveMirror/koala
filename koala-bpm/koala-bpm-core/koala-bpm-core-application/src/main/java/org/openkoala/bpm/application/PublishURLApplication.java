@@ -3,9 +3,8 @@ package org.openkoala.bpm.application;
 
 import java.util.List;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.application.vo.PublishURLVO;
-
-import com.dayatang.querychannel.support.Page;
 
 public interface PublishURLApplication {
 
@@ -23,6 +22,5 @@ public interface PublishURLApplication {
 	
 	public Page<PublishURLVO> pageQueryPublishURL(PublishURLVO publishURL, int currentPage, int pageSize) throws Exception;
 	
-
 }
 

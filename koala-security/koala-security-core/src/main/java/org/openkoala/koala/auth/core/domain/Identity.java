@@ -1,6 +1,7 @@
 package org.openkoala.koala.auth.core.domain;
 
 import java.util.List;
+
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -26,15 +27,15 @@ public abstract class Identity extends Party {
 
 	private static final long serialVersionUID = -3878339448106527391L;
 
-	@Column(name = "ISVALID")
 	private boolean isValid;
 
-	@Column(name = "CREATE_OWNER")
+	
 	private String createOwner;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "identity")
+	
 	private List<IdentityResourceAuthorization> authorizations;
 
+	@Column(name = "ISVALID")
 	public boolean isValid() {
 		return isValid;
 	}
@@ -42,7 +43,9 @@ public abstract class Identity extends Party {
 	public void setValid(boolean isValid) {
 		this.isValid = isValid;
 	}
-
+	
+	
+	@Column(name = "CREATE_OWNER")
 	public String getCreateOwner() {
 		return createOwner;
 	}
@@ -65,7 +68,14 @@ public abstract class Identity extends Party {
 		return null;
 	}
 
+	
 	public List<IdentityResourceAuthorization> findIdentityResourceAuthorizations() {
+		return authorizations;
+	}
+	
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "identity")
+	public List<IdentityResourceAuthorization> getAuthorizations() {
 		return authorizations;
 	}
 
@@ -76,4 +86,47 @@ public abstract class Identity extends Party {
 	public void deleteByCreateOwner() {
 		return;
 	}
+
+	@Override
+	public String toString() {
+		return "Identity [isValid=" + isValid + ", createOwner=" + createOwner
+				+ ", authorizations=" + authorizations + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((authorizations == null) ? 0 : authorizations.hashCode());
+		result = prime * result
+				+ ((createOwner == null) ? 0 : createOwner.hashCode());
+		result = prime * result + (isValid ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof Identity))
+			return false;
+		Identity other = (Identity) obj;
+		if (authorizations == null) {
+			if (other.authorizations != null)
+				return false;
+		} else if (!authorizations.equals(other.authorizations))
+			return false;
+		if (createOwner == null) {
+			if (other.createOwner != null)
+				return false;
+		} else if (!createOwner.equals(other.createOwner))
+			return false;
+		if (isValid != other.isValid)
+			return false;
+		return true;
+	}
+	
 }

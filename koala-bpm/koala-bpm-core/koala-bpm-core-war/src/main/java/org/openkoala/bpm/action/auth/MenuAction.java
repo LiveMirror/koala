@@ -7,8 +7,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.inject.Inject;
+
 import org.apache.struts2.ServletActionContext;
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.MenuApplication;
 import org.openkoala.auth.application.ResourceTypeApplication;
 import org.openkoala.auth.application.vo.ResourceVO;
@@ -16,7 +19,7 @@ import org.openkoala.auth.application.vo.RoleVO;
 import org.openkoala.koala.auth.ss3adapter.AuthUserUtil;
 import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
-import com.dayatang.querychannel.support.Page;
+
 import com.opensymphony.xwork2.ActionSupport;
 
 public class MenuAction extends ActionSupport {
@@ -248,10 +251,10 @@ public class MenuAction extends ActionSupport {
 		int start = Integer.parseInt(this.page);
 		int limit = Integer.parseInt(this.pagesize);
 		Page<ResourceVO> all = this.menuApplication.pageQueryMenu(start, limit);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 
 	}

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.OrganizationHasPrincipalYetException;
 import org.openkoala.organisation.PostExistException;
@@ -23,9 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
-
 /**
  * 岗位管理Controller
  * @author xmfang
@@ -51,10 +49,10 @@ public class PostController extends BaseController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<PostDTO> posts = postApplication.pagingQueryPosts(post, page, pagesize);
 		
-		dataMap.put("Rows", posts.getResult());
+		dataMap.put("Rows", posts.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", posts.getTotalCount());
+		dataMap.put("Total", posts.getResultCount());
 		return dataMap;
 	}
 
@@ -123,10 +121,10 @@ public class PostController extends BaseController {
 		Organization organization = getBaseApplication().getEntity(Organization.class, organizationId);
 		Page<PostDTO> posts = postApplication.pagingQueryPostsOfOrganizatoin(organization, example, page, pagesize);
 		
-		dataMap.put("Rows", posts.getResult());
+		dataMap.put("Rows", posts.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", posts.getTotalCount());
+		dataMap.put("Total", posts.getResultCount());
 		return dataMap;
 	}
 	

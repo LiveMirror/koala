@@ -4,10 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dayatang.utils.Assert;
 import org.junit.Test;
 import org.openkoala.bpm.infra.XmlParseUtil;
-
-import com.dayatang.utils.Assert;
 
 public class XmlParseUtilTest {
 

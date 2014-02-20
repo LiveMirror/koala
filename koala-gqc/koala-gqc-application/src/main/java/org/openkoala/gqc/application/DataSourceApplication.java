@@ -4,10 +4,9 @@ package org.openkoala.gqc.application;
 import java.util.List;
 import java.util.Map;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.vo.DataSourceVO;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 数据源应用层接口，处理数据源的增删改查

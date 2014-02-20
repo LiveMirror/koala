@@ -11,9 +11,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.gqc.core.exception.SystemDataSourceNotExistException;
-
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * 查询数据源

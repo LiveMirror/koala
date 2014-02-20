@@ -9,6 +9,8 @@ import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
+import org.dayatang.querychannel.Page;
+import org.dayatang.utils.DateUtils;
 import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.auth.application.ResourceTypeApplication;
 import org.openkoala.auth.application.vo.ResourceTypeVO;
@@ -16,19 +18,20 @@ import org.openkoala.koala.auth.core.domain.ResourceType;
 import org.openkoala.koala.auth.core.domain.ResourceTypeAssignment;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dayatang.querychannel.support.Page;
-import com.dayatang.utils.DateUtils;
-
 @Named
 @Remote
 @Stateless(name = "ResourceTypeApplication")
 @Transactional(value = "transactionManager_security")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTypeApplication {
 
 	public boolean isExist(ResourceTypeVO resourceTypeVO) {
-		ResourceType resourceType = queryChannel().querySingleResult("from ResourceType o where o.name=? and o.abolishDate>?",
-				new Object[] { resourceTypeVO.getName(), new Date() });
+		String queryJpql = "from ResourceType o where o.name=:name and o.abolishDate>:abolishDate";
+		
+		ResourceType resourceType = (ResourceType) queryChannel().createJpqlQuery(queryJpql).addParameter("name",  resourceTypeVO.getName())
+				.addParameter("abolishDate", new Date()).singleResult();
+				
+	
 		if (resourceType != null) {
 			return true;
 		}
@@ -91,17 +94,20 @@ public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTyp
 	}
 
 	public Page<ResourceTypeVO> pageQuery(int currentPage, int pageSize) {
-		Page<ResourceType> page = queryChannel().queryPagedResultByPageNo(
-				"from ResourceType o where o.name<>? and o.name<>? and o.abolishDate>?",
-				new Object[] { "KOALA_MENU", "KOALA_DIRETORY", new Date() }, currentPage, pageSize);
+		String queryJpql = "from ResourceType o where o.name<>:name1 and o.name<>:name2 and o.abolishDate>:abolishDate";
+		
+	
+		Page<ResourceType> page = queryChannel().createJpqlQuery(queryJpql).addParameter("name1",  "KOALA_MENU").addParameter("name2",  "KOALA_DIRETORY")
+		.addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
+
 		List<ResourceTypeVO> list = new ArrayList<ResourceTypeVO>();
-		for (ResourceType resourceType : page.getResult()) {
+		for (ResourceType resourceType : page.getData()) {
 			ResourceTypeVO resourceTypeVO = new ResourceTypeVO();
 			resourceTypeVO.setId(String.valueOf(resourceType.getId()));
 			resourceTypeVO.setName(resourceType.getName());
 			list.add(resourceTypeVO);
 		}
-		return new Page<ResourceTypeVO>(page.getCurrentPageNo(), page.getTotalCount(), page.getPageSize(), list);
+		return new Page<ResourceTypeVO>(page.getPageIndex(), page.getResultCount(), page.getPageSize(), list);
 	}
 
 

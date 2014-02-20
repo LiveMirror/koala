@@ -9,9 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.bpm.application.JBPMApplication;
-
-import com.dayatang.domain.InstanceFactory;
 
 public class ProcessImageServlet extends HttpServlet {
 

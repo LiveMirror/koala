@@ -5,8 +5,9 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
-import com.dayatang.utils.DateUtils;
+import org.dayatang.utils.DateUtils;
 
 /**
  * 角色实体类
@@ -19,9 +20,10 @@ public class Role extends Identity {
 
 	private static final long serialVersionUID = -8345993710464457036L;
 
-	@Column(name = "ROLE_DESC")
+	
 	private String roleDesc;
 
+	@Column(name = "ROLE_DESC")
 	public String getRoleDesc() {
 		return roleDesc;
 	}
@@ -73,10 +75,14 @@ public class Role extends Identity {
 	 * @param resource
 	 */
 	public void abolishResource(Resource resource) {
-		List<IdentityResourceAuthorization> authorizations = IdentityResourceAuthorization.getRepository().find( //
-				"select m from IdentityResourceAuthorization m where m.identity.id=? and " //
-				+ "m.resource.id=? and m.abolishDate>?", new Object[] { this.getId(), resource.getId(), new Date() }, //
-				IdentityResourceAuthorization.class);
+		String jpql = "select m from IdentityResourceAuthorization m where m.identity.id=:identityId and " //
+				+ "m.resource.id=:resourceId and m.abolishDate>:abolishDate";
+		
+		
+		List<IdentityResourceAuthorization> authorizations = getRepository().createJpqlQuery(jpql)
+				.addParameter("identityId", this.getId()).addParameter("resourceId", resource.getId()).addParameter("abolishDate", new Date()).list();
+				
+			
 		for (IdentityResourceAuthorization authorization : authorizations) {
 			authorization.setAbolishDate(new Date());
 		}
@@ -87,10 +93,10 @@ public class Role extends Identity {
 	 * @param user
 	 */
 	public void abolishUser(User user) {
-		List<RoleUserAuthorization> authorizations = RoleUserAuthorization.getRepository().find( //
-				"select m from RoleUserAuthorization m where m.user.id=? and m.role.id=? and m.abolishDate>?", //
-				new Object[] { user.getId(), this.getId(), new Date() }, //
-				RoleUserAuthorization.class);
+		String jpql ="select m from RoleUserAuthorization m where m.user.id=:userId and m.role.id=:roleId and m.abolishDate>:abolishDate";
+		
+		List<RoleUserAuthorization> authorizations = getRepository().createJpqlQuery(jpql).addParameter("userId", user.getId())
+				.addParameter("roleId", getId()).addParameter("abolishDate", new Date()).list();
 		for (RoleUserAuthorization authorization : authorizations) {
 			authorization.setAbolishDate(new Date());
 		}
@@ -102,7 +108,7 @@ public class Role extends Identity {
 	 * @return
 	 */
 	public static Role findRoleByName(String roleName){
-		return getRepository().findByNamedQuery("findRoleByName", new Object[] { roleName, new Date() }, Role.class).get(0);
+		return getRepository().createNamedQuery("findRoleByName").addParameter("roleName", roleName).addParameter("abolishDate", new Date()).singleResult();
 	}
 
 	/**
@@ -111,7 +117,7 @@ public class Role extends Identity {
 	 * @return
 	 */
 	public static List<Role> findRoleByUserAccount(String userAccount) {
-		return findByNamedQuery("findRoleByUserAccount", new Object[] { userAccount, new Date() }, Role.class);
+		return getRepository().createNamedQuery("findRoleByUserAccount").addParameter("userAccount", userAccount).addParameter("abolishDate", new Date()).list();
 	}
 
 	/**
@@ -119,8 +125,10 @@ public class Role extends Identity {
 	 * 
 	 * @return
 	 */
+	@Transient
 	public boolean isRoleExist() {
-		return !findByNamedQuery("isRoleExist", new Object[] { getName(), new Date() }, Role.class).isEmpty();
+		return !getRepository().createNamedQuery("isRoleExist").addParameter("name", getName()).addParameter("abolishDate", new Date()).list().isEmpty();
+		
 	}
 	
 	/**
@@ -139,37 +147,54 @@ public class Role extends Identity {
 	}
 	
 	public static List<Role> findAllRoles() {
-		return Role.getRepository().findByNamedQuery("findAllRoles", new Object[] { new Date() }, Role.class);
+		
+		return getRepository().createNamedQuery("findAllRoles").addParameter("abolishDate", new Date()).list();
+	}
+
+	@Override
+	public String[] businessKeys() {
+		return new String[]{getName(),getAbolishDate().toString()};
+	}
+
+	@Override
+	public String toString() {
+		return "Role [roleDesc=" + roleDesc + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+		int result = super.hashCode();
+		result = prime * result
+				+ ((getName() == null) ? 0 : getName().hashCode());
+		result = prime * result
+				+ ((getAbolishDate() == null) ? 0 : getAbolishDate().hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (!super.equals(obj))
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (!(obj instanceof Role))
 			return false;
-		}
 		Role other = (Role) obj;
 		if (getName() == null) {
-			if (other.getName() != null) {
+			if (other.getName() != null)
 				return false;
-			}
-		} else if (!getName().equals(other.getName())) {
+		} else if (!getName().equals(other.getName()))
 			return false;
-		}
+		
+		if (getAbolishDate() == null) {
+			if (other.getAbolishDate() != null)
+				return false;
+		} else if (!getAbolishDate().equals(other.getAbolishDate()))
+			return false;
+		
 		return true;
 	}
-
+	
+	
 }

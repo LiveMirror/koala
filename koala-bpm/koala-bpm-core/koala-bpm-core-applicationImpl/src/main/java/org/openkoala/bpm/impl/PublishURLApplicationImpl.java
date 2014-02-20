@@ -8,13 +8,12 @@ import java.util.List;
 import javax.inject.Named;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.bpm.application.PublishURLApplication;
 import org.openkoala.bpm.application.vo.PublishURLVO;
 import org.openkoala.bpm.core.PublishURL;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 @Named
 public class PublishURLApplicationImpl implements PublishURLApplication {
@@ -30,8 +29,8 @@ public class PublishURLApplicationImpl implements PublishURLApplication {
 	
 	public PublishURLVO getPublishURL(Long id) throws Exception {
 			
-	   	String jpql = "select _publishURL from PublishURL _publishURL  where _publishURL.id=?";
-	   	PublishURL publishURL = (PublishURL) queryChannel().querySingleResult(jpql, new Object[] { id });
+	   	String jpql = "select _publishURL from PublishURL _publishURL  where _publishURL.id= :id";
+	   	PublishURL publishURL = (PublishURL) queryChannel().createJpqlQuery(jpql).addParameter("id", id).singleResult();
 		PublishURLVO publishURLVO = new PublishURLVO();
 		// 将domain转成VO
 		BeanUtils.copyProperties(publishURLVO, publishURL);
@@ -94,15 +93,15 @@ public class PublishURLApplicationImpl implements PublishURLApplication {
 	   		conditionVals.add(MessageFormat.format("%{0}%", queryVo.getUrl()));
 	   	}		
 	   		   		   		   		   		   		   		   	
-        Page<PublishURL> pages = queryChannel().queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pageSize);
-        for (PublishURL publishURL : pages.getResult()) {
+        Page<PublishURL> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
+        for (PublishURL publishURL : pages.getData()) {
             PublishURLVO publishURLVO = new PublishURLVO();
             // 将domain转成VO
             BeanUtils.copyProperties(publishURLVO, publishURL);
             																					
             result.add(publishURLVO);
         }
-        return new Page<PublishURLVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), result);
+        return new Page<PublishURLVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 	
 	

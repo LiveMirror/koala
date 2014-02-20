@@ -8,9 +8,10 @@ import java.text.MessageFormat;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import com.dayatang.querychannel.support.Page;
-import com.dayatang.querychannel.service.QueryChannelService;
+
 import org.apache.commons.beanutils.BeanUtils;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.bpm.application.JoinAssignApplication;
 import org.openkoala.bpm.application.vo.*;
 import org.openkoala.bpm.core.*;
@@ -23,8 +24,8 @@ public class JoinAssignApplicationImpl implements JoinAssignApplication {
 	
 	public JoinAssignVO getJoinAssign(Long id) {
 			
-	   	String jpql = "select _joinAssign from JoinAssign _joinAssign  where _joinAssign.id=?";
-	   	JoinAssign joinAssign = (JoinAssign) queryChannel.querySingleResult(jpql, new Object[] { id });
+	   	String jpql = "select _joinAssign from JoinAssign _joinAssign  where _joinAssign.id=:id";
+	   	JoinAssign joinAssign = (JoinAssign) queryChannel.createJpqlQuery(jpql).addParameter("id", id).singleResult();
 	   	
 	   	if (joinAssign == null) {
 	   		throw new RuntimeException("This entity is not exist, id:" + id);
@@ -125,8 +126,8 @@ public class JoinAssignApplicationImpl implements JoinAssignApplication {
 	   		conditionVals.add(MessageFormat.format("%{0}%", queryVo.getMonitorVal()));
 	   	}		
 	   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   	
-        Page<JoinAssign> pages = queryChannel.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pageSize);
-        for (JoinAssign joinAssign : pages.getResult()) {
+        Page<JoinAssign> pages = queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
+        for (JoinAssign joinAssign : pages.getData()) {
             JoinAssignVO joinAssignVO = new JoinAssignVO();
             try {
             	BeanUtils.copyProperties(joinAssignVO, joinAssign);
@@ -136,7 +137,7 @@ public class JoinAssignApplicationImpl implements JoinAssignApplication {
             																																							
             result.add(joinAssignVO);
         }
-        return new Page<JoinAssignVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), result);
+        return new Page<JoinAssignVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 	
 	public JoinAssignVO getJoinAssignByName(String name){

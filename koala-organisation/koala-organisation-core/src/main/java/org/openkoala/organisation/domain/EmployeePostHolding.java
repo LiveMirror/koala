@@ -17,8 +17,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.dayatang.domain.QuerySettings;
-
 /**
  * 员工与岗位的责任关系
  * @author xmfang
@@ -39,7 +37,7 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 
 	private static final long serialVersionUID = 7390804525640459582L;
 
-	@Column(name = "is_principal")
+	
 	private boolean principal = true;
 
 	EmployeePostHolding() {
@@ -54,6 +52,7 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 		setPrincipal(isPrincipal);
 	}
 
+	@Column(name = "is_principal")
 	public boolean isPrincipal() {
 		return principal;
 	}
@@ -69,11 +68,8 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 * @return
 	 */
 	public static List<Post> findPostsOfEmployee(Employee employee, Date date) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("employee", employee);
-		params.put("date", date);
-		return getRepository().findByNamedQuery("getPostsOfEmployee", params,
-				Post.class);
+		return getRepository().createNamedQuery("getPostsOfEmployee").addParameter("employee", employee)
+				.addParameter("date", date).list();
 	}
 
 	/**
@@ -83,11 +79,12 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 * @return
 	 */
 	public static Post getPrincipalPostByEmployee(Employee employee, Date date) {
-		EmployeePostHolding holding = getRepository().getSingleResult(QuerySettings.create(EmployeePostHolding.class)
+		
+		EmployeePostHolding holding = getRepository().createCriteriaQuery(Employee.class)
 				.eq("responsible", employee)
 				.eq("principal", true)
 				.le("fromDate", date)
-				.gt("toDate", date));
+				.gt("toDate", date).singleResult();
 		return holding == null ? null : holding.getCommissioner();
 	}
 
@@ -98,11 +95,9 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 * @return
 	 */
 	public static List<Post> findAdditionalPostsByEmployee(Employee employee, Date queryDate) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("employee", employee);
-		params.put("date", queryDate);
-		params.put("principal", false);
-		return getRepository().findByNamedQuery("getAdditionalPostsOfEmployee", params, Post.class);
+		return getRepository().createNamedQuery("getAdditionalPostsOfEmployee").addParameter("employee", employee).addParameter("date", queryDate)
+				.addParameter("principal", false).list();
+		
 	}
 
 	/**
@@ -112,10 +107,7 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 * @return
 	 */
 	public static List<Employee> findEmployeesOfPost(Post post, Date date) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("post", post);
-		params.put("date", date);
-		return getRepository().findByNamedQuery("getEmployeesOfPost", params, Employee.class);
+		return getRepository().createNamedQuery("getEmployeesOfPost").addParameter("post", post).addParameter("date", date).list();
 	}
 
 	/**
@@ -128,7 +120,8 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("job", job);
 		params.put("date", date);
-		return getRepository().findByNamedQuery("getEmployeesOfJob", params, Employee.class);
+		return getRepository().createNamedQuery("getEmployeesOfJob").addParameter("job", job).addParameter("date", date)
+				.list();
 	}
 
 	/**
@@ -149,10 +142,10 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 * @return
 	 */
 	public static List<EmployeePostHolding> getByEmployee(Employee employee, Date date) {
-		return getRepository().find(QuerySettings.create(EmployeePostHolding.class)
+		return getRepository().createCriteriaQuery(EmployeePostHolding.class)
 				.eq("responsible", employee)
 				.le("fromDate", date)
-				.gt("toDate", date));
+				.gt("toDate", date).list();
 	}
 
 	/**
@@ -162,10 +155,10 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 * @return
 	 */
 	public static List<EmployeePostHolding> getByPost(Post post, Date date) {
-		return getRepository().find(QuerySettings.create(EmployeePostHolding.class)
+		return getRepository().createCriteriaQuery(EmployeePostHolding.class)
 				.eq("commissioner", post)
 				.le("fromDate", date)
-				.gt("toDate", date));
+				.gt("toDate", date).list();
 	}
 
 	/**
@@ -176,11 +169,8 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 * @return 在指定查询日期指定机构的负责人。
 	 */
 	public static List<Employee> getManagerOfOrganization(Organization organization, Date date) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("organization", organization);
-		params.put("principal", true);
-		params.put("date", date);
-		return getRepository().findByNamedQuery("getManagerOfOrganization", params, Employee.class);
+		return getRepository().createNamedQuery("getManagerOfOrganization").addParameter("organization", organization).addParameter("principal", true)
+				.addParameter("date", date).list();
 	}
 	
 	/**
@@ -190,10 +180,7 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 * @return
 	 */
 	public static Long getEmployeeCountOfPost(Post post, Date date) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("post", post);
-		params.put("date", date);
-		List<Long> account = getRepository().findByNamedQuery("getEmployeeCountOfPost", params, Long.class);
+		List<Long> account = getRepository().createNamedQuery("getEmployeeCountOfPost").addParameter("post", post).addParameter("date", date).list();
 		return account.isEmpty() ? 0 : account.get(0);
 	}
 
@@ -208,10 +195,7 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 		Set<Organization> organizations = new HashSet<Organization>();
 		organizations.add(organization);
 		organizations.addAll(organization.getAllChildren(date));
-		
-		params.put("organizations", organizations);
-		params.put("date", date);
-		return getRepository().findByNamedQuery("findEmployeesOfOrganization", params, Employee.class);
+		return getRepository().createNamedQuery("findEmployeesOfOrganization").addParameter("organizations", organizations).addParameter("date", date).list();
 	}
 	
 	/**
@@ -225,8 +209,10 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 		params.put("employee", employee);
 		params.put("principal", true);
 		params.put("date", date);
-		List<Organization> organization =  getRepository().findByNamedQuery("getOrganizationOfEmployee", params, Organization.class);
 		
+		List<Organization> organization =  getRepository().createNamedQuery("getOrganizationOfEmployee")
+				.addParameter("employee", employee).addParameter("principal", true).addParameter("date", date).list();
+
 		return organization.isEmpty() ? null : organization.get(0);
 	}
 	

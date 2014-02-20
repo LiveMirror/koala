@@ -3,13 +3,12 @@ package org.openkoala.koala.auth.ss3adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.auth.application.RoleApplication;
 import org.openkoala.auth.application.vo.ResourceVO;
 import org.openkoala.auth.application.vo.RoleVO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import com.dayatang.domain.InstanceFactory;
 
 public class AuthUserUtil {
 	

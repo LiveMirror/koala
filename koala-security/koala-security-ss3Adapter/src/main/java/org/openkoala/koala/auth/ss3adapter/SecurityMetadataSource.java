@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.dayatang.cache.Cache;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.koala.auth.AuthDataService;
 import org.openkoala.koala.auth.vo.DefaultUserDetailsImpl;
 import org.springframework.beans.factory.InitializingBean;
@@ -15,9 +17,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
-
-import com.dayatang.cache.Cache;
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * ClassName:SecurityMetadataSource Function: 资源与权限建立管理

@@ -4,11 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
+import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.organisation.utils.OrganisationUtils;
-
-import com.dayatang.utils.DateUtils;
 
 /**
  * OrganizationLineManagement集成测试

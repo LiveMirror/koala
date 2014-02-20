@@ -19,10 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.bpm.processdyna.infra.TemplateContent;
-
-import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * 流程自定义表单
@@ -200,10 +199,9 @@ public class DynaProcessForm extends AbstractEntity {
 	 * 创建一个新的流程自定义表单，包括表单定义及 KEY 值定义
 	 */
 	public void save() {
-		String batchUpdateProcess = "update DynaProcessForm dynaProcessForm set dynaProcessForm.active = false where dynaProcessForm.processId = ?";
+		String batchUpdateProcess = "update DynaProcessForm dynaProcessForm set dynaProcessForm.active = false where dynaProcessForm.processId = :processId";
 		
-		getRepository().executeUpdate(batchUpdateProcess,
-				new Object[] { processId });
+		getRepository().createJpqlQuery(batchUpdateProcess).addParameter("processId", processId).executeUpdate();
 		this.setActive(true);
 		super.save();
 	}
@@ -215,9 +213,7 @@ public class DynaProcessForm extends AbstractEntity {
 	 */
 	public static DynaProcessForm queryActiveDynaProcessFormById(
 			Long id) {
-		List<DynaProcessForm> results = getRepository()
-				.findByNamedQuery("queryActiveDynaProcessFormById",
-						new Object[] { id }, DynaProcessForm.class);
+		List<DynaProcessForm> results = getRepository().createNamedQuery("queryActiveDynaProcessFormById").setParameters(id).list();
 		if (results.size() == 0) {
 			return null;
 		} else {
@@ -234,9 +230,7 @@ public class DynaProcessForm extends AbstractEntity {
 	 */
 	public static DynaProcessForm queryActiveDynaProcessFormByProcessId(
 			String processId) {
-		List<DynaProcessForm> results = getRepository()
-				.findByNamedQuery("queryActiveDynaProcessFormByProcessId",
-						new Object[] { processId }, DynaProcessForm.class);
+		List<DynaProcessForm> results = getRepository().createNamedQuery("queryActiveDynaProcessFormByProcessId").setParameters(processId).list();
 		if (results.size() == 0) {
 			return null;
 		} else {
@@ -253,9 +247,7 @@ public class DynaProcessForm extends AbstractEntity {
 	 */
 	public static List<DynaProcessForm> queryDynaProcessFormByProcessId(
 			String processId) {
-		List<DynaProcessForm> result = DynaProcessForm.getRepository()
-				.findByNamedQuery("queryDynaProcessFormByProcessId",
-						new Object[] { processId }, DynaProcessForm.class);
+		List<DynaProcessForm> result = DynaProcessForm.getRepository().createNamedQuery("queryDynaProcessFormByProcessId").setParameters(processId).list();
 		return result;
 	}
 
@@ -313,9 +305,8 @@ public class DynaProcessForm extends AbstractEntity {
 		DynaProcessForm dynaProcessFormInstance = queryActiveDynaProcessFormByProcessId(processId);
 		Set<DynaProcessKey> dynaProcessKeys = dynaProcessFormInstance.getKeys();
 		for(DynaProcessKey key : dynaProcessKeys){
-			List<DynaProcessValue> results = getRepository()
-					.findByNamedQuery("queryDynaProcessValueByProcessInstanceIdAndKeyId",
-							new Object[] { processInstanceId, key.getKeyId() }, DynaProcessValue.class);
+			List<DynaProcessValue> results = getRepository().createNamedQuery("queryDynaProcessValueByProcessInstanceIdAndKeyId").setParameters(processInstanceId, key.getKeyId()).list();
+					
 			if (results.size() == 0) {
 				key.setKeyValueForShow("");
 			} else {
@@ -323,5 +314,10 @@ public class DynaProcessForm extends AbstractEntity {
 			}
 		}
 		return dynaProcessFormInstance;
+	}
+
+	@Override
+	public String[] businessKeys() {
+		return new String[]{};
 	}
 }

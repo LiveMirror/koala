@@ -5,9 +5,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.dayatang.utils.DateUtils;
 import org.openkoala.koala.auth.core.domain.Role;
-
-import com.dayatang.utils.DateUtils;
 
 public class RoleVO extends IdentityVO implements Serializable {
 

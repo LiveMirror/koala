@@ -37,10 +37,9 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
-import com.dayatang.domain.Entity;
-import com.dayatang.domain.EntityRepository;
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.domain.QuerySettings;
+import org.dayatang.domain.Entity;
+import org.dayatang.domain.EntityRepository;
+import org.dayatang.domain.InstanceFactory;
 
 
 /**
@@ -102,12 +101,12 @@ public abstract class KmBaseEntity implements Entity {
 		this.version = version;
 	}
 
-	@Override
+	
 	public boolean isNew() {
 		return id == null || id.intValue() == 0;
 	}
 
-	@Override
+	
 	public boolean existed() {
 		if (isNew()) {
 			return false;
@@ -120,9 +119,10 @@ public abstract class KmBaseEntity implements Entity {
 		return ! existed();
 	}
 	
-	@Override
+	
 	public boolean existed(String propertyName, Object propertyValue) {
-		List<?> entities = getRepository().find(QuerySettings.create(getClass()).eq(propertyName, propertyValue)); 
+		
+		List<?> entities = getRepository().createCriteriaQuery(getClass()).eq(propertyName, propertyValue).list(); 
 		return !(entities.isEmpty());
 	}
 
@@ -171,7 +171,7 @@ public abstract class KmBaseEntity implements Entity {
 	}
 
 	public static <T extends Entity> List<T> findAll(Class<T> clazz) {
-		return getRepository().find(QuerySettings.create(clazz));
+		return getRepository().findAll(clazz);
 	}
 
 

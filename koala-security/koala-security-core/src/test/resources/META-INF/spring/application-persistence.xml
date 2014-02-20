@@ -46,28 +46,21 @@
 		<property name="prototypeCount" value="5" />
 		<property name="maximumConnectionCount" value="200" />
 		<property name="minimumConnectionCount" value="20" />
-		<property name="alias" value="security"/>
+		<property name="alias" value="security" />
 	</bean>
 
 
-	<bean id="repository_ss" class="org.openkoala.koala.util.KoalaEntityRepositoryJpa">
-		<property name="entityManager">
-			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-				<property name="persistenceUnitName" value="security" />
-			</bean>
-		</property>
+
+	<bean id="repository_ss" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
+		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory_security" />
 	</bean>
 
-	<bean id="queryChannel_ss" class="org.openkoala.koala.util.KoalaQueryChannelServiceJpa">
-		<property name="entityManager">
-			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-				<property name="persistenceUnitName" value="security" />
-			</bean>
-		</property>
+	<bean id="queryChannel_ss" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+		<constructor-arg name="repository" ref="repository_ss" />
 	</bean>
 
 
 	<tx:annotation-driven transaction-manager="transactionManager_security" />
-	
+
 	<!-- security datasource 的配置 结束 -->
 </beans>

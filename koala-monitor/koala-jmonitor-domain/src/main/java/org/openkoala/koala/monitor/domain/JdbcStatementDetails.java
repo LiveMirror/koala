@@ -25,7 +25,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 /**
  * 功能描述：SQL执行明细<br />
@@ -154,6 +154,12 @@ public class JdbcStatementDetails extends AbstractEntity{
 		return "JdbcSqlDetails [jdbcConn=" + jdbcConn.getId() + ", beginTime="
 				+ beginTime + ", timeConsume=" + timeConsume + ", sql=" + sql
 				+ ", type=" + type + "]";
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

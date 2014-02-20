@@ -39,4 +39,12 @@
 
 	<bean id="koalaBPMSession" class="org.openkoala.bpm.impl.util.KoalaBPMSession"
 		init-method="initialize" />
+
+	<bean id="repository" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
+		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+		<constructor-arg name="repository" ref="repository" />
+	</bean>
 </beans>

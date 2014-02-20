@@ -1,6 +1,6 @@
 package org.openkoala.businesslog.impl;
 
-import com.dayatang.domain.InstanceFactory;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.businesslog.BusinessLogExporter;
 import org.openkoala.businesslog.BusinessLog;
 import org.openkoala.businesslog.application.BusinessLogApplication;

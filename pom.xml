@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.openkoala</groupId>
     <artifactId>koala-project</artifactId>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>koala project</name>
     <url>http://www.openkoala.org/</url>
@@ -141,7 +141,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dayatang.commons.version>3.5</dayatang.commons.version>
+        <dddlib.version>4.0.4-SNAPSHOT</dddlib.version>
         <struts2.version>2.3.16</struts2.version>
         <spring.version>3.2.6.RELEASE</spring.version>
         <spring.security.version>3.2.0.RELEASE</spring.security.version>
@@ -153,7 +153,7 @@
         <mina.version>2.0.7</mina.version>
         <tomcat.version>6.0.35</tomcat.version>
         <aether.connector.version>1.13.1</aether.connector.version>
-        <koala.version>2.1.0-SNAPSHOT</koala.version>
+        <koala.version>3.0.0-SNAPSHOT</koala.version>
 
     </properties>
 
@@ -173,24 +173,11 @@
                 <hibernate.show_sql>true</hibernate.show_sql>
                 <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
                 <db.jdbcDriver>org.h2.Driver</db.jdbcDriver>
-                <db.connectionURL>jdbc:h2:${basedir}/target/koala;MVCC=true</db.connectionURL>
+                <db.connectionURL>jdbc:h2:mem:testdb</db.connectionURL>
                 <db.username>sa</db.username>
                 <db.password/>
                 <db.Type>H2</db.Type>
                 <generateDdl>true</generateDdl>
-
-                <!--test DB Config -->
-                <test.hibernate.hbm2ddl.auto>update</test.hibernate.hbm2ddl.auto>
-                <test.hibernate.show_sql>true</test.hibernate.show_sql>
-                <test.hibernate.dialect>org.hibernate.dialect.H2Dialect</test.hibernate.dialect>
-                <test.db.jdbcDriver>org.h2.Driver</test.db.jdbcDriver>
-                <test.db.connectionURL>jdbc:h2:mem:testdb</test.db.connectionURL>
-                <test.db.username>sa</test.db.username>
-                <test.db.password/>
-                <test.db.Type>H2</test.db.Type>
-                <test.db.generateDdl>true</test.db.generateDdl>
-                <test.db.groupId>com.h2database</test.db.groupId>
-                <test.db.artifactId>h2</test.db.artifactId>
             </properties>
         </profile>
 
@@ -316,73 +303,80 @@
                 <artifactId>commons-io</artifactId>
                 <version>2.4</version>
             </dependency>
-            <!-- dddlib -->
+           
+            <!-- DDDLIB -->
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-utils</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-utils</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-domain</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-domain</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-db</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-db</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-spring</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-spring</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-hibernate</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-hibernate</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-querychannel</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-query-channel</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-spring-test</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-spring-test</artifactId>
+                <version>${dddlib.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-jpa</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-persistence-jpa</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-cache</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-cache-memcached</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-dsrouter</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-dsrouter</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-excel</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-excel</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-i18n</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-i18n</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.dayatang.commons</groupId>
-                <artifactId>dayatang-commons-rule</artifactId>
-                <version>${dayatang.commons.version}</version>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-rule</artifactId>
+                <version>${dddlib.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-ioc-spring</artifactId>
+                <version>${dddlib.version}</version>
+            </dependency>
+            
             <!-- Springframework -->
             <dependency>
                 <groupId>org.springframework</groupId>

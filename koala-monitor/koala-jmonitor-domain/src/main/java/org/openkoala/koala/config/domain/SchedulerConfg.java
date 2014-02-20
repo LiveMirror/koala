@@ -159,7 +159,7 @@ public class SchedulerConfg extends KmBaseLegacyEntity{
 		return false;
 	}
 
-	@Override
+
 	public boolean existed(String propertyName, Object propertyValue) {
 		// TODO Auto-generated method stub
 		return false;

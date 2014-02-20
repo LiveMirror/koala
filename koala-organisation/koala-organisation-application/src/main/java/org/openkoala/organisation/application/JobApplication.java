@@ -1,8 +1,7 @@
 package org.openkoala.organisation.application;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.organisation.domain.Job;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 职务应用层接口

@@ -12,8 +12,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 /**
  * 流程中表单自定义的 VALUE 值
@@ -111,7 +110,7 @@ public class DynaProcessValue extends AbstractEntity {
 	 * @return
 	 */
 	public static List<DynaProcessValue> queryDynaProcessValueByProcessInstanceId(long processInstanceId){
-		List<DynaProcessValue> results = DynaProcessValue.getRepository().findByNamedQuery("queryDynaProcessValueByProcessInstanceId", new Object[]{processInstanceId}, DynaProcessValue.class);
+		List<DynaProcessValue> results = DynaProcessValue.getRepository().createNamedQuery("queryDynaProcessValueByProcessInstanceId").setParameters(processInstanceId).list();
         return results;
 	}
 	
@@ -120,9 +119,15 @@ public class DynaProcessValue extends AbstractEntity {
 	 * @param processInstanceId
 	 */
 	public static void transferToHistory(long processInstanceId){
-		List<DynaProcessValue> results = DynaProcessValue.getRepository().findByNamedQuery("queryDynaProcessValueByProcessInstanceId", new Object[]{processInstanceId}, DynaProcessValue.class);
+		List<DynaProcessValue> results = DynaProcessValue.getRepository().createNamedQuery("queryDynaProcessValueByProcessInstanceId").setParameters(processInstanceId).list();
 		for(DynaProcessValue value:results){
 			DynaProcessHistoryValue.copyDynaProcessValue(value);
 		}
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

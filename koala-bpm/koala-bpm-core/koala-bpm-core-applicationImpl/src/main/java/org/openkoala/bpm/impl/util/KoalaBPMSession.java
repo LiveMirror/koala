@@ -159,7 +159,7 @@ public class KoalaBPMSession {
 			} else {
 				values = new HashMap<String, Object>();
 			}
-			values.put(variable.getKey(), variable.getObjValue());
+			values.put(variable.getKey(), variable.toObjValue());
 
 			variables.put(key, values);
 		}

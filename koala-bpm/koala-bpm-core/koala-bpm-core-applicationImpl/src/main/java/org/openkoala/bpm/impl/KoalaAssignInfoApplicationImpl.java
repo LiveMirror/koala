@@ -9,12 +9,13 @@ import java.text.MessageFormat;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import com.dayatang.querychannel.support.Page;
-import com.dayatang.querychannel.service.QueryChannelService;
+
 import org.openkoala.bpm.application.KoalaAssignInfoApplication;
 import org.openkoala.bpm.application.vo.*;
 import org.openkoala.bpm.core.*;
 import org.apache.commons.beanutils.BeanUtils;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 
 @Named
 public class KoalaAssignInfoApplicationImpl implements KoalaAssignInfoApplication {
@@ -24,13 +25,13 @@ public class KoalaAssignInfoApplicationImpl implements KoalaAssignInfoApplicatio
 	
 	public KoalaAssignInfoVO getKoalaAssignInfo(Long id) {
 			
-	   	String jpql = "select _koalaAssignInfo from KoalaAssignInfo _koalaAssignInfo left join _koalaAssignInfo.jbpmNames  where _koalaAssignInfo.id=?";
-	   	KoalaAssignInfo koalaAssignInfo = (KoalaAssignInfo) queryChannel.querySingleResult(jpql, new Object[] { id });
+	   	String jpql = "select _koalaAssignInfo from KoalaAssignInfo _koalaAssignInfo left join _koalaAssignInfo.jbpmNames  where _koalaAssignInfo.id=:id";
+	   	KoalaAssignInfo koalaAssignInfo = (KoalaAssignInfo) queryChannel.createJpqlQuery(jpql).addParameter("id", id).singleResult();
 		KoalaAssignInfoVO koalaAssignInfoVO = new KoalaAssignInfoVO();
 		// 将domain转成VO
 		try {
 			BeanUtils.copyProperties(koalaAssignInfoVO, koalaAssignInfo);
-			koalaAssignInfoVO.setRelativeProcess(koalaAssignInfo.getRelativeProcess());
+			koalaAssignInfoVO.setRelativeProcess(koalaAssignInfo.findRelativeProcess());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -139,8 +140,8 @@ public class KoalaAssignInfoApplicationImpl implements KoalaAssignInfoApplicatio
 	   		conditionVals.add(MessageFormat.format("%{0}%", queryVo.getCreater()));
 	   	}		
 	   		   		   		   		   		   		   		   		   		   		   		   		   		   		   	
-        Page<KoalaAssignInfo> pages = queryChannel.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pageSize);
-        for (KoalaAssignInfo koalaAssignInfo : pages.getResult()) {
+        Page<KoalaAssignInfo> pages = queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
+        for (KoalaAssignInfo koalaAssignInfo : pages.getData()) {
             KoalaAssignInfoVO koalaAssignInfoVO = new KoalaAssignInfoVO();
             // 将domain转成VO
             try {
@@ -151,14 +152,14 @@ public class KoalaAssignInfoApplicationImpl implements KoalaAssignInfoApplicatio
             																																							
             result.add(koalaAssignInfoVO);
         }
-        return new Page<KoalaAssignInfoVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), result);
+        return new Page<KoalaAssignInfoVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 	
 	public Page<KoalaAssignDetailVO> findJbpmNamesByKoalaAssignInfo(Long id, int currentPage, int pageSize) {
 		List<KoalaAssignDetailVO> result = new ArrayList<KoalaAssignDetailVO>();
-		String jpql = "select e from KoalaAssignInfo o right join o.jbpmNames e where o.id=?";
-		Page<KoalaAssignDetail> pages = queryChannel.queryPagedResultByPageNo(jpql, new Object[] { id }, currentPage, pageSize);
-        for (KoalaAssignDetail entity : pages.getResult()) {
+		String jpql = "select e from KoalaAssignInfo o right join o.jbpmNames e where o.id=:id";
+		Page<KoalaAssignDetail> pages = queryChannel.createJpqlQuery(jpql).addParameter("id", id).setPage(currentPage, pageSize).pagedList();
+        for (KoalaAssignDetail entity : pages.getData()) {
             KoalaAssignDetailVO vo = new KoalaAssignDetailVO();
             // 将domain转成VO
             if (result != null) {
@@ -170,7 +171,7 @@ public class KoalaAssignInfoApplicationImpl implements KoalaAssignInfoApplicatio
             }
             result.add(vo);
         }
-        return new Page<KoalaAssignDetailVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), result);
+        return new Page<KoalaAssignDetailVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
 	}		
 	
 }

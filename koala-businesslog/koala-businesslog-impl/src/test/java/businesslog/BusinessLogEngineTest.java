@@ -1,12 +1,10 @@
 package businesslog;
 
 import static org.mockito.Mockito.*;
-
 import business.*;
-import business.ContractApplicationImpl;
-import business.ProjectApplicationImpl;
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.domain.InstanceProvider;
+
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.domain.InstanceProvider;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.businesslog.BusinessLogEngine;
@@ -34,12 +32,10 @@ public class BusinessLogEngineTest {
         String operation = "Invoice business.InvoiceApplication.addInvoice(String,long)";
 
         InstanceFactory.setInstanceProvider(provider);
-
-
-        when(provider.getInstance(Class.forName("business.ProjectApplication"), "projectApplication"))
+        when((ProjectApplication)provider.getInstance(Class.forName("business.ProjectApplication"), "projectApplication"))
                 .thenReturn(new ProjectApplicationImpl());
 
-        when(provider.getInstance(Class.forName("business.ContractApplication"), "contractApplication"))
+        when((ContractApplication)provider.getInstance(Class.forName("business.ContractApplication"), "contractApplication"))
                 .thenReturn(new ContractApplicationImpl());
 
         BusinessLogXmlConfigDefaultAdapter adapter = new BusinessLogXmlConfigDefaultAdapter();

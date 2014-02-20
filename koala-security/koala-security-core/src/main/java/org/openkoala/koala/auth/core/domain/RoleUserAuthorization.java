@@ -2,6 +2,7 @@ package org.openkoala.koala.auth.core.domain;
 
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,17 +19,17 @@ import javax.persistence.Table;
 @Table(name = "KS_ROLE_USER_AUTH")
 public class RoleUserAuthorization extends Accountability {
 	
-	@ManyToOne
-	@JoinColumn(name = "ROLE_ID", nullable = false)
+	
 	private Role role;
 	
-	@ManyToOne
-	@JoinColumn(name = "USER_ID", nullable = false)
+	
 	private User user;
 	
 
 	private static final long serialVersionUID = 8314855131825344365L;
 
+	@ManyToOne
+	@JoinColumn(name = "ROLE_ID", nullable = false)
 	public Role getRole() {
 		return role;
 	}
@@ -38,6 +39,8 @@ public class RoleUserAuthorization extends Accountability {
 		this.role = role;
 	}
 	
+	@ManyToOne
+	@JoinColumn(name = "USER_ID", nullable = false)
 	public User getUser() {
 		return user;
 	}
@@ -52,7 +55,7 @@ public class RoleUserAuthorization extends Accountability {
 	 * @return
 	 */
 	public static List<RoleUserAuthorization> findAuthorizationByUser(User user) {
-		return findByNamedQuery("findAuthorizationByUser", new Object[] { user, new Date() }, RoleUserAuthorization.class);
+		return getRepository().createNamedQuery("findAuthorizationByUser").addParameter("user", user).addParameter("abolishDate", new Date()).list();
 	}
 	
 	/**
@@ -61,6 +64,12 @@ public class RoleUserAuthorization extends Accountability {
 	 * @return
 	 */
 	public static List<RoleUserAuthorization> findUserAuthorizationByRole(long roleId) {
-		return findByNamedQuery("findUserAuthorizationByRole", new Object[] { roleId, new Date() }, RoleUserAuthorization.class);
+		return getRepository().createNamedQuery("findUserAuthorizationByRole").addParameter("roleId", roleId).addParameter("abolishDate", new Date()).list();
+	}
+
+
+	@Override
+	public String[] businessKeys() {
+		return new String[]{role.getName(),user.getName(),getAbolishDate().toString()};
 	}
 }

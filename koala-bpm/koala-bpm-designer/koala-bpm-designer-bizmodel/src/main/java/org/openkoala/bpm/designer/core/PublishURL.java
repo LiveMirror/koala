@@ -2,8 +2,7 @@ package org.openkoala.bpm.designer.core;
 
 import javax.persistence.Entity;
 
-import com.dayatang.domain.AbstractEntity;
-
+import org.dayatang.domain.AbstractEntity;
 @Entity
 public class PublishURL extends AbstractEntity{
 	
@@ -63,6 +62,11 @@ public class PublishURL extends AbstractEntity{
 	@Override
 	public String toString() {
 		return "PublishURL [name=" + name + ", url=" + url + "]";
+	}
+
+	@Override
+	public String[] businessKeys() {
+		return new String[]{};
 	}
 	
 }

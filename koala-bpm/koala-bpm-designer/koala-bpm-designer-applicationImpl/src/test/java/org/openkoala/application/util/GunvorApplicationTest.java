@@ -30,10 +30,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.dayatang.utils.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import com.dayatang.utils.Assert;
 
 public class GunvorApplicationTest {
 	

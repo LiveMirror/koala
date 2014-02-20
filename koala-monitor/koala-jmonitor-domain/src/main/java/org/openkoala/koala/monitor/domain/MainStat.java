@@ -171,12 +171,6 @@ public class MainStat extends KmBaseLegacyEntity {
 	}
 
 	@Override
-	public boolean existed(String propertyName, Object propertyValue) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

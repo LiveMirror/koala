@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.application.BusinessSupportApplication;
 import org.openkoala.bpm.application.ProcessFormOperApplication;
 import org.openkoala.bpm.application.dto.DynaProcessFormDTO;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
-import com.dayatang.querychannel.support.Page;
 
 @Controller
 @RequestMapping("/processform")
@@ -55,10 +55,10 @@ public class FormMgrController {
 	public Map<String, Object> getFormList(HttpServletRequest request,Integer page,int pagesize) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<DynaProcessFormDTO> pageObj = processFormOperApplication.queryDynaProcessFormsByPage(null, page, pagesize);
-		dataMap.put("Rows", pageObj.getResult());
+		dataMap.put("Rows", pageObj.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", pageObj.getTotalCount());
+		dataMap.put("Total", pageObj.getResultCount());
 		return dataMap;
 	}
 

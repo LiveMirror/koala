@@ -17,12 +17,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.dayatang.domain.CriteriaQuery;
+import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.core.domain.utils.PagingQuerier;
 import org.openkoala.gqc.core.domain.utils.QueryAllQuerier;
 import org.openkoala.gqc.core.domain.utils.SqlStatmentMode;
-
-import com.dayatang.domain.QuerySettings;
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 通用查询
@@ -228,7 +227,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * @return
 	 */
 	public static GeneralQuery findByQueryName(String queryName) {
-		return getRepository().getSingleResult(QuerySettings.create(GeneralQuery.class).containsText("queryName", queryName));
+		return getRepository().createCriteriaQuery(GeneralQuery.class).containsText("queryName", queryName).singleResult();
 	}
 	
 	
@@ -321,8 +320,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * @return
 	 */
     public static List<GeneralQuery> findByDatasource(DataSource dataSource) {
-    	return getRepository().find(QuerySettings.create(GeneralQuery.class)
-    			.eq("dataSource", dataSource));
+    	return getRepository().createCriteriaQuery(GeneralQuery.class).eq("dataSource", dataSource).list();
     }
 	
     @Override
@@ -334,14 +332,13 @@ public class GeneralQuery extends GeneralQueryEntity {
     }
     
 	private boolean queryNameIsExist() {
-		QuerySettings<GeneralQuery> querySettings =QuerySettings.create(GeneralQuery.class);
-		querySettings.eq("queryName", queryName);
-		
+		CriteriaQuery query = getRepository().createCriteriaQuery(GeneralQuery.class).eq("queryName", queryName);
+	
 		if (getId() != null) {
-			querySettings.notEq("id", getId());
+			query.notEq("id", getId());
 		}
 		
-		return !getRepository().find(querySettings).isEmpty();
+		return !query.list().isEmpty();
 	}
 
 	@Override

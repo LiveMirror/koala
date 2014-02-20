@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.application.vo.HistoryLogVo;
 import org.openkoala.bpm.application.vo.JBPMNode;
 import org.openkoala.bpm.application.vo.KoalaProcessInfoVO;
@@ -21,8 +22,6 @@ import org.openkoala.bpm.application.vo.ProcessInstanceVO;
 import org.openkoala.bpm.application.vo.ProcessVO;
 import org.openkoala.bpm.application.vo.TaskChoice;
 import org.openkoala.bpm.application.vo.TaskVO;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 流程接口

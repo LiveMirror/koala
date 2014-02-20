@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import org.dayatang.querychannel.Page;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,10 +23,6 @@ import org.openkoala.organisation.SnIsExistException;
 import org.openkoala.organisation.application.BaseApplication;
 import org.openkoala.organisation.application.JobApplication;
 import org.openkoala.organisation.domain.Job;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.support.Page;
-import com.dayatang.spring.factory.SpringInstanceProvider;
 
 /**
  * JobController单元测试
@@ -49,7 +46,7 @@ public class JobControllerTest {
 		Page<Job> jobPage = new Page<Job>(1, 2, 10, generateJobs());
 		
 		when(jobApplication.pagingQueryJobs(new Job(), 1, 10)).thenReturn(jobPage);
-		assertEquals(jobPage.getResult(), jobController.pagingQuery(1, 10, new Job()).get("Rows"));
+		assertEquals(jobPage.getData(), jobController.pagingQuery(1, 10, new Job()).get("Rows"));
 	}
 
 	@Test

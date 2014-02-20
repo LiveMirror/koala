@@ -6,9 +6,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.dayatang.domain.ValueObject;
 import org.openkoala.gqc.core.domain.utils.SqlStatmentMode;
-
-import com.dayatang.domain.ValueObject;
 
 /**
  * 查询条件基类	

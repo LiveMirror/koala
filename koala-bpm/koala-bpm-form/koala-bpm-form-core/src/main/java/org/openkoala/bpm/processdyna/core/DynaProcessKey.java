@@ -9,8 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 /**
  * 流程表单自定义中的 KEY 表值
@@ -267,6 +266,12 @@ public class DynaProcessKey extends AbstractEntity implements Comparable<DynaPro
 		}else{
 			return this.getShowOrder() - key.getShowOrder();
 		}
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

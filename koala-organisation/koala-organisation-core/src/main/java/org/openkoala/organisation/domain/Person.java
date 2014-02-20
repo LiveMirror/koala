@@ -12,10 +12,8 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.dayatang.domain.AbstractEntity;
 import org.openkoala.organisation.IdNumberIsExistException;
-
-import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.QuerySettings;
 
 /**
  * 人
@@ -24,22 +22,22 @@ import com.dayatang.domain.QuerySettings;
  */
 @Entity
 @Table(name = "persons")
-public class Person extends AbstractEntity {
+public class Person extends OrganizationAbstractEntity {
 
 	private static final long serialVersionUID = 4180083929142881138L;
 
 	private String name;
 
-	@Enumerated(EnumType.STRING)
+	
 	private Gender gender;
 	
-	@Column(name = "id_number", unique = true)
+	
 	private String idNumber;
 	
-	@Column(name = "mobile_phone")
+	
 	private String mobilePhone;
 	
-	@Column(name = "family_phone")
+	
 	private String familyPhone;
 	
 	private String email;
@@ -59,6 +57,7 @@ public class Person extends AbstractEntity {
 		this.name = name;
 	}
 
+	@Column(name = "id_number", unique = true)
 	public String getIdNumber() {
 		return idNumber;
 	}
@@ -67,6 +66,7 @@ public class Person extends AbstractEntity {
 		this.idNumber = idNumber;
 	}
 
+	@Enumerated(EnumType.STRING)
 	public Gender getGender() {
 		return gender;
 	}
@@ -75,6 +75,7 @@ public class Person extends AbstractEntity {
 		this.gender = gender;
 	}
 
+	@Column(name = "mobile_phone")
 	public String getMobilePhone() {
 		return mobilePhone;
 	}
@@ -83,6 +84,7 @@ public class Person extends AbstractEntity {
 		this.mobilePhone = mobilePhone;
 	}
 
+	@Column(name = "family_phone")
 	public String getFamilyPhone() {
 		return familyPhone;
 	}
@@ -122,8 +124,8 @@ public class Person extends AbstractEntity {
 	}
 	
 	public static boolean isExistIdNumber(String sn, Date date) {
-		List<Person> parties = getRepository().find(QuerySettings.create(Person.class)
-				.eq("idNumber", sn));
+		List<Person> parties = getRepository().createCriteriaQuery(Person.class)
+				.eq("idNumber", sn).list();
 		return parties.isEmpty() ? false : true;
 	}
 

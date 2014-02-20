@@ -4,7 +4,7 @@
     <parent>
         <artifactId>koala-opencis</artifactId>
         <groupId>org.openkoala.opencis</groupId>
-        <version>2.1.0-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>koala-opencis-github</artifactId>
     <packaging>jar</packaging>
