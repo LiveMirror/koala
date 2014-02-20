@@ -170,7 +170,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 			conditions.add("%" + roleVO.getName() + "%");
 		}
 
-		Page<UserVO> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions.toArray()).setPage(currentPage, pageSize).pagedList();
+		Page<UserVO> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions.toArray()).setPage(currentPage-1, pageSize).pagedList();
 
 		return new Page<UserVO>(pages.getPageIndex(),
 				pages.getResultCount(), pages.getPageSize(), pages.getData());
@@ -220,7 +220,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 		Page<Role> pages = queryChannel().createJpqlQuery(
 						"select role from RoleUserAuthorization rau "
 								+ "join rau.role role join rau.user user where user.userAccount=:useraccount "
-								+ "and rau.abolishDate>:abolishDate").addParameter("useraccount", useraccount).addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
+								+ "and rau.abolishDate>:abolishDate").addParameter("useraccount", useraccount).addParameter("abolishDate", new Date()).setPage(currentPage-1, pageSize).pagedList();
 		for (Role each : pages.getData()) {
 			RoleVO roleVO = new RoleVO();
 			roleVO.domain2Vo(each);
@@ -233,7 +233,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 	public Page<RoleVO> pageQueryByRoleCustom(int currentPage, int pageSize,
 			QueryConditionVO query) {
 		List<RoleVO> result = new ArrayList<RoleVO>();
-		Page<Role> pages = queryChannel().createJpqlQuery(genQueryCondition(query)).addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
+		Page<Role> pages = queryChannel().createJpqlQuery(genQueryCondition(query)).addParameter("abolishDate", new Date()).setPage(currentPage-1, pageSize).pagedList();
 				
 		for (Role role : pages.getData()) {
 			RoleVO roleVO = new RoleVO();
@@ -265,7 +265,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 		}
 
 		Page<RoleVO> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions)
-				.setPage(currentPage, pageSize).pagedList();
+				.setPage(currentPage-1, pageSize).pagedList();
 
 		return new Page<RoleVO>(pages.getPageIndex(),
 				pages.getPageCount(), //
@@ -379,7 +379,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 			conditions.add("%" + userVO.getUserAccount() + "%");
 		}
 
-		Page<User> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions).setPage(currentPage, pageSize).pagedList();
+		Page<User> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions).setPage(currentPage-1, pageSize).pagedList();
 
 		for (User user : pages.getData()) {
 			UserVO vo = new UserVO();

@@ -98,7 +98,7 @@ public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTyp
 		
 	
 		Page<ResourceType> page = queryChannel().createJpqlQuery(queryJpql).addParameter("name1",  "KOALA_MENU").addParameter("name2",  "KOALA_DIRETORY")
-		.addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
+		.addParameter("abolishDate", new Date()).setPage(currentPage-1, pageSize).pagedList();
 
 		List<ResourceTypeVO> list = new ArrayList<ResourceTypeVO>();
 		for (ResourceType resourceType : page.getData()) {

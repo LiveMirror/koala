@@ -116,7 +116,7 @@ public class MonitorDataManageApplicationTest extends KoalaBaseSpringTestCase {
 		search.setSortname("timeConsume");
 		search.setSortorder("desc");
 
-		Page<HttpDetailsVo> details = application.pageGetHttpMonitorDetails(0, 10, search);
+		Page<HttpDetailsVo> details = application.pageGetHttpMonitorDetails(1, 10, search);
 		Assert.assertNotNull(details);
 	}
 	
@@ -128,7 +128,7 @@ public class MonitorDataManageApplicationTest extends KoalaBaseSpringTestCase {
 		mainStatVo.setBeginTime(KoalaDateUtils.parseDate("2013-08-01"));
 		mainStatVo.setEndTime(KoalaDateUtils.parseDate("2013-08-02"));
 
-		Page<CountVo> page = application.pageGetMethodMonitorCount(0, 10, mainStatVo);
+		Page<CountVo> page = application.pageGetMethodMonitorCount(1, 10, mainStatVo);
 		Assert.assertNotNull(page);
 	}
 	
@@ -140,7 +140,7 @@ public class MonitorDataManageApplicationTest extends KoalaBaseSpringTestCase {
 		mainStatVo.setBeginTime(KoalaDateUtils.parseDate("2013-08-01"));
 		mainStatVo.setEndTime(KoalaDateUtils.parseDate("2013-08-02"));
 
-		Page<CountVo> page = application.pageGetMethodMonitorAvgTimeConsume(0, 10, mainStatVo);
+		Page<CountVo> page = application.pageGetMethodMonitorAvgTimeConsume(1, 10, mainStatVo);
 		Assert.assertNotNull(page);
 	}
 	
@@ -152,7 +152,7 @@ public class MonitorDataManageApplicationTest extends KoalaBaseSpringTestCase {
 		mainStatVo.setBeginTime(KoalaDateUtils.parseDate("2013-08-01"));
 		mainStatVo.setEndTime(KoalaDateUtils.parseDate("2013-08-02"));
 
-		Page<CountVo> page = application.pageGetMethodMonitorExceptionCount(0, 10, mainStatVo);
+		Page<CountVo> page = application.pageGetMethodMonitorExceptionCount(1, 10, mainStatVo);
 		Assert.assertNotNull(page);
 	}
 	
@@ -167,7 +167,7 @@ public class MonitorDataManageApplicationTest extends KoalaBaseSpringTestCase {
 		methodDetailsVo.setBeginTime(KoalaDateUtils.parseDate("2013-08-01"));
 		methodDetailsVo.setEndTime(KoalaDateUtils.parseDate("2013-08-02"));
 
-		Page<MethodDetailsVo> page = application.pageGetMethodMonitorDetails(0, 10, methodDetailsVo);
+		Page<MethodDetailsVo> page = application.pageGetMethodMonitorDetails(1, 10, methodDetailsVo);
 		Assert.assertNotNull(page);
 	}
 	
@@ -180,7 +180,7 @@ public class MonitorDataManageApplicationTest extends KoalaBaseSpringTestCase {
 		search.setSortname("timeConsume");
 		search.setSortorder("desc");
 
-		Page<JdbcStatementDetailsVo> page = application.getSqlsMonitorDetails(0, 10, search);
+		Page<JdbcStatementDetailsVo> page = application.getSqlsMonitorDetails(1, 10, search);
 		Assert.assertNotNull(page);
 	}
 	

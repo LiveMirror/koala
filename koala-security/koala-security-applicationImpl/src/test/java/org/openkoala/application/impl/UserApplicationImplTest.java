@@ -97,7 +97,7 @@ public class UserApplicationImplTest extends KoalaBaseSpringTestCase {
 			userApplication.saveUser(userVO);
 			assertNotNull(userVO.getId());
 		}
-		Page<UserVO> page = userApplication.pageQueryUser(0, 10);
+		Page<UserVO> page = userApplication.pageQueryUser(1, 10);
 		assertNotNull(page);
 		assertNotNull(page.getData());
 		assertTrue(page.getResultCount() >= 50);

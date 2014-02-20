@@ -29,6 +29,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.openkoala.koala.base.KmBaseLegacyEntity;
 import org.openkoala.koala.monitor.def.ComponentDef;
@@ -53,28 +54,28 @@ public class MonitorNode extends KmBaseLegacyEntity {
 	
 	private static final Map<String,MonitorNode> nodeCache = new HashMap<String, MonitorNode>();
 
-	@Id
-	@Column(name="NODE_ID")
+	
 	private String nodeId;
 	
-	@Column(name="NODE_URI")
+	
 	private String nodeUri;
 	
-	@Column(name="NODE_NAME")
+	
 	private String nodeName;
 	
-	@Column(name="IS_ACTIVE")
+	
 	private boolean active;
 	
-	private transient Date latestSessionTime;
+	private Date latestSessionTime;
 	
-	private transient int maxCacheSize;//最大缓存数
+	private int maxCacheSize;//最大缓存数
 	
-	private transient int cacheExpireTime;//缓存超时时间（单位：分钟）
+	private int cacheExpireTime;//缓存超时时间（单位：分钟）
 	
-	private transient Set<MonitorComponent> conponents;
+	private Set<MonitorComponent> conponents;
 	
-
+	@Id
+	@Column(name="NODE_ID")
 	public String getNodeId() {
 		return nodeId;
 	}
@@ -82,7 +83,8 @@ public class MonitorNode extends KmBaseLegacyEntity {
 	public void setNodeId(String nodeId) {
 		this.nodeId = nodeId;
 	}
-
+	
+	@Column(name="NODE_URI")
 	public String getNodeUri() {
 		return nodeUri;
 	}
@@ -91,6 +93,7 @@ public class MonitorNode extends KmBaseLegacyEntity {
 		this.nodeUri = nodeUri;
 	}
 	
+	@Column(name="IS_ACTIVE")
 	public boolean isActive() {
 		return active;
 	}
@@ -99,6 +102,7 @@ public class MonitorNode extends KmBaseLegacyEntity {
 		this.active = active;
 	}
 
+	@Column(name="NODE_NAME")
 	public String getNodeName() {
 		return nodeName;
 	}
@@ -107,6 +111,7 @@ public class MonitorNode extends KmBaseLegacyEntity {
 		this.nodeName = nodeName;
 	}
 
+	@Transient
 	public Date getLatestSessionTime() {
 		return latestSessionTime;
 	}
@@ -115,7 +120,7 @@ public class MonitorNode extends KmBaseLegacyEntity {
 		this.latestSessionTime = latestSessionTime;
 	}
 	
-
+	@Transient
 	public int getMaxCacheSize() {
 		return maxCacheSize;
 	}
@@ -124,6 +129,7 @@ public class MonitorNode extends KmBaseLegacyEntity {
 		this.maxCacheSize = maxCacheSize;
 	}
 
+	@Transient
 	public int getCacheExpireTime() {
 		return cacheExpireTime;
 	}
@@ -132,6 +138,7 @@ public class MonitorNode extends KmBaseLegacyEntity {
 		this.cacheExpireTime = cacheExpireTime;
 	}
 
+	@Transient
 	public Set<MonitorComponent> getConponents() {
 		if(conponents == null)conponents = new HashSet<MonitorComponent>();
 		return conponents;
@@ -168,6 +175,7 @@ public class MonitorNode extends KmBaseLegacyEntity {
 	}
 
 	@Override
+	@Transient
 	public String getId() {
 		return getNodeId();
 	}

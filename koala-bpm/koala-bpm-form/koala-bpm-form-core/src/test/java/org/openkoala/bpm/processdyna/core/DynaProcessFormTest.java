@@ -24,6 +24,7 @@ public class DynaProcessFormTest extends KoalaBaseSpringTestCase{
 	@Test(expected=ConstraintViolationException.class)
 	public void testProcessFormValidation(){
 		DynaProcessForm form =new DynaProcessForm();
+		form.setProcessId("AAA");
 		form.save();
 	}
 	

@@ -27,18 +27,17 @@ public class DynaProcessHistoryValue extends AbstractEntity {
 	private static final long serialVersionUID = 5053473713859436953L;
 	
 
-	@Column(name = "PROCESS_INSTANCE_ID")
+	
 	private long processInstanceId;
 	
 
-	@Column(name = "KEY_VALUE")
+	
 	private String keyValue;
 	
 
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = true)
-	@JoinColumn(name = "KEY_ID")
 	private DynaProcessKey dynaProcessKey;
 
+	@Column(name = "PROCESS_INSTANCE_ID")
 	public long getProcessInstanceId() {
 		return processInstanceId;
 	}
@@ -47,6 +46,7 @@ public class DynaProcessHistoryValue extends AbstractEntity {
 		this.processInstanceId = processInstanceId;
 	}
 
+	@Column(name = "KEY_VALUE")
 	public String getKeyValue() {
 		return keyValue;
 	}
@@ -55,6 +55,8 @@ public class DynaProcessHistoryValue extends AbstractEntity {
 		this.keyValue = keyValue;
 	}
 
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = true)
+	@JoinColumn(name = "KEY_ID")
 	public DynaProcessKey getDynaProcessKey() {
 		return dynaProcessKey;
 	}

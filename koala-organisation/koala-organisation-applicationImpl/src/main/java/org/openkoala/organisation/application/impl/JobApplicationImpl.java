@@ -56,7 +56,7 @@ public class JobApplicationImpl implements JobApplication {
 			conditionVals.add(MessageFormat.format("%{0}%", jobSearchExample.getSn()));
 		}
 
-		return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
+		return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pageSize).pagedList();
 	}
 
 }

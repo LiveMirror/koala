@@ -131,8 +131,8 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 	private Page<EmployeeDTO> queryResult(EmployeeDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals,
 			int currentPage, int pagesize) {
 		assembleJpqlAndConditionValues(example, jpql, conditionPrefix, conditionVals);
-		Page<Employee> employeePage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
-		return new Page<EmployeeDTO>(Page.getStartOfPage(currentPage, pagesize), 
+		Page<Employee> employeePage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
+		return new Page<EmployeeDTO>(employeePage.getPageIndex(), 
 				employeePage.getResultCount(), pagesize, transformToDtos(employeePage.getData()));
 	}
 	

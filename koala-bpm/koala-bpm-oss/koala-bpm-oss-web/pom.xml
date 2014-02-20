@@ -113,13 +113,13 @@
 			<artifactId>koala-gqc-controller</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>org.openkoala.bpm</groupId>
-		  <artifactId>koala-bpm-form-infra-impl</artifactId>
-		  <version>${project.parent.version}</version>
+			<groupId>org.openkoala.bpm</groupId>
+			<artifactId>koala-bpm-form-infra-impl</artifactId>
+			<version>${project.parent.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openkoala.gqc</groupId>
 			<artifactId>koala-gqc-applicationImpl</artifactId>
@@ -132,6 +132,11 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-ioc-spring</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito</artifactId>
 			<scope>test</scope>
@@ -141,25 +146,25 @@
 			<artifactId>powermock-module-junit4</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openkoala.organisation</groupId>
 			<artifactId>koala-organisation-core</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openkoala.organisation</groupId>
 			<artifactId>koala-organisation-application</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openkoala.organisation</groupId>
 			<artifactId>koala-organisation-applicationImpl</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		
+
 	</dependencies>
 	<build>
 		<plugins>

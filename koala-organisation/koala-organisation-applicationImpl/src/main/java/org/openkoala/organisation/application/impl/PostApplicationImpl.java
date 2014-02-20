@@ -69,9 +69,9 @@ public class PostApplicationImpl implements PostApplication {
 	private Page<PostDTO> queryResult(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals,
 			int currentPage, int pagesize) {
 		assembleJpqlAndConditionValues(example, jpql, conditionPrefix, conditionVals);
-		Page<Post> postPage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
+		Page<Post> postPage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
 	
-		return new Page<PostDTO>(Page.getStartOfPage(currentPage, pagesize), 
+		return new Page<PostDTO>(postPage.getPageIndex(), 
 				postPage.getResultCount(), pagesize, transformToDtos(postPage.getData()));
 	}
 	

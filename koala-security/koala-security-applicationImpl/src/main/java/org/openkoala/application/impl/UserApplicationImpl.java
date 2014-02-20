@@ -94,7 +94,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
     public Page<UserVO> pageQueryUser(int currentPage, int pageSize) {
         List<UserVO> results = new ArrayList<UserVO>();
         Page<User> pages = queryChannel().createJpqlQuery( //
-        		"select m from User m where m.super is false and m.abolishDate>:abolishDate").addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
+        		"select m from User m where m.super is false and m.abolishDate>:abolishDate").addParameter("abolishDate", new Date()).setPage(currentPage-1, pageSize).pagedList();
         for (User each : pages.getData()) {
             UserVO userVO = new UserVO();
             userVO.domain2Vo(each);
@@ -120,7 +120,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
 				conditions.add("%" + userVO.getName() + "%");
 			}
 		}
-    	Page<User> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions).setPage(currentPage, pageSize).pagedList();
+    	Page<User> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions).setPage(currentPage-1, pageSize).pagedList();
     	for (User each : pages.getData()) {
     		UserVO user = new UserVO();
     		user.domain2Vo(each);

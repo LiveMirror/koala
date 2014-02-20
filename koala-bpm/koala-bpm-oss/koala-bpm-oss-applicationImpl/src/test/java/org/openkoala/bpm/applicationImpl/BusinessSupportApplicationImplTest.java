@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.dayatang.domain.EntityRepository;
+import org.dayatang.domain.NamedQuery;
 import org.dayatang.querychannel.Page;
 import org.junit.After;
 import org.junit.Assert;
@@ -97,7 +98,9 @@ public class BusinessSupportApplicationImplTest {
 
 	@Test(expected = FormHavenDefinedException.class)
 	public void testGetTemplateHtmlCodeByProcessId() {
-		List results = new ArrayList<DynaProcessForm>();
+		List<Object> results = new ArrayList<Object>();
+		NamedQuery named = new NamedQuery(repository, "queryActiveDynaProcessFormByProcessId");
+		when(repository.createNamedQuery("queryActiveDynaProcessFormByProcessId")).thenReturn(named);
 		when(repository.createNamedQuery("queryActiveDynaProcessFormByProcessId").setParameters(processIdCannotFindForm).list()).thenReturn(results);
 		instance.findTemplateHtmlCodeByProcessId(processIdCannotFindForm);
 	}
@@ -108,6 +111,8 @@ public class BusinessSupportApplicationImplTest {
 		DynaProcessForm dynaProcessForm = new DynaProcessForm();
 		dynaProcessForm.setTemplate(template);
 		results.add(dynaProcessForm);
+		NamedQuery named = new NamedQuery(repository, "queryActiveDynaProcessFormByProcessId");
+		when(repository.createNamedQuery("queryActiveDynaProcessFormByProcessId")).thenReturn(named);
 		when(repository.createNamedQuery("queryActiveDynaProcessFormByProcessId").setParameters(processIdCanFindForm).list()).thenReturn(results);
 		
 		when(templateContent.process(new HashMap<String,Object>(), null)).thenReturn(null);
@@ -134,6 +139,8 @@ public class BusinessSupportApplicationImplTest {
 	@Test
 	public void testGetDynaProcessHistoryValuesByProcessInstanceId() {
 		List list = new ArrayList<DynaProcessHistoryValue>();
+		NamedQuery named = new NamedQuery(repository, "queryDynaProcessHistoryValuesByProcessInstanceId");
+		when(repository.createNamedQuery("queryDynaProcessHistoryValuesByProcessInstanceId")).thenReturn(named);
 		when(repository.createNamedQuery("queryDynaProcessHistoryValuesByProcessInstanceId").setParameters(processInstanceId).list()).thenReturn(list);
 		List<DynaProcessHistoryValueDTO> resultList = instance
 				.getDynaProcessHistoryValuesByProcessInstanceId(processInstanceId);
@@ -153,6 +160,8 @@ public class BusinessSupportApplicationImplTest {
 		List list = new ArrayList<DynaProcessForm>();
 		DynaProcessForm dynaProcessForm = new DynaProcessForm();
 		list.add(dynaProcessForm);
+		NamedQuery named = new NamedQuery(repository, "queryActiveDynaProcessFormByProcessId");
+		when(repository.createNamedQuery("queryActiveDynaProcessFormByProcessId")).thenReturn(named);
 		when(repository.createNamedQuery("queryActiveDynaProcessFormByProcessId").setParameters(processIdCanFindForm).list()).thenReturn(list);
 		Set<DynaProcessKey> keys = instance.getDynaProcessKeysByProcessId(processIdCanFindForm);
 		Assert.assertEquals(dynaProcessForm.getKeys().size(), keys.size());
@@ -172,6 +181,8 @@ public class BusinessSupportApplicationImplTest {
 		DynaProcessForm dynaProcessForm = new DynaProcessForm();
 		dynaProcessForm.setTemplate(template);
 		list.add(dynaProcessForm);
+		NamedQuery named = new NamedQuery(repository, "queryActiveDynaProcessFormByProcessId");
+		when(repository.createNamedQuery("queryActiveDynaProcessFormByProcessId")).thenReturn(named);
 		when(repository.createNamedQuery("queryActiveDynaProcessFormByProcessId").setParameters(processIdCanFindForm).list()).thenReturn(list);
 		
 		FormShowDTO formShowDTO = instance.getDynaProcessTaskContentForVerify(processIdCanFindForm, processInstanceId, taskId);
@@ -188,7 +199,9 @@ public class BusinessSupportApplicationImplTest {
 		List list = new ArrayList<DynaProcessForm>();
 		DynaProcessForm dynaProcessForm = new DynaProcessForm();
 		dynaProcessForm.setTemplate(template);
-		
+		list.add(dynaProcessForm);
+		NamedQuery named = new NamedQuery(repository, "queryActiveDynaProcessFormByProcessId");
+		when(repository.createNamedQuery("queryActiveDynaProcessFormByProcessId")).thenReturn(named);
 		when(repository.createNamedQuery("queryActiveDynaProcessFormByProcessId").setParameters(processIdCanFindForm).list()).thenReturn(list);
 		
 		FormShowDTO formShowDTO = instance.getDynaProcessTaskContentForHistory(processIdCanFindForm, processInstanceId, taskId);

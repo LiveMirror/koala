@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -179,6 +180,7 @@ public class Post extends Party {
 		super.save();
 	}
 	
+	@Transient
 	private boolean isOrganizationPrincipalBefore() {
 		return getRepository().get(Post.class, getId()).isOrganizationPrincipal();
 	}

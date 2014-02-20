@@ -94,7 +94,6 @@ public class Role extends Identity {
 	 */
 	public void abolishUser(User user) {
 		String jpql ="select m from RoleUserAuthorization m where m.user.id=:userId and m.role.id=:roleId and m.abolishDate>:abolishDate";
-		
 		List<RoleUserAuthorization> authorizations = getRepository().createJpqlQuery(jpql).addParameter("userId", user.getId())
 				.addParameter("roleId", getId()).addParameter("abolishDate", new Date()).list();
 		for (RoleUserAuthorization authorization : authorizations) {

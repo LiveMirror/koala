@@ -116,7 +116,7 @@ public abstract class Accountability<C extends Party, R extends Party> extends O
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("party", party);
 		params.put("date", date);
-		return getRepository().createNamedQuery("Accountability.findAccountabilitiesByParty").setParameters(Arrays.asList(params)).list();
+		return getRepository().createNamedQuery("Accountability.findAccountabilitiesByParty").addParameter("party", party).addParameter("date", date).list();
 	}
 
 }

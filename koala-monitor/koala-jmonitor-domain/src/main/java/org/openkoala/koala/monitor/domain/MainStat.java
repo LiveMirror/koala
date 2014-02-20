@@ -26,6 +26,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.openkoala.koala.base.KmBaseLegacyEntity;
 
@@ -47,32 +48,28 @@ public class MainStat extends KmBaseLegacyEntity {
 
 	private static final long serialVersionUID = -4332257257969974945L;
 
-	@Id
-	@Column(name="THREAD_KEY")
+	
 	protected String threadKey;
 	
-	@ManyToOne(targetEntity = MonitorNode.class)
-	@JoinColumn(name="FK_NODE_ID")
+	
 	private MonitorNode belongNode;
 	
-	@Column(name="BEGIN_TIME")
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	private Date beginTime;
 	
-	@Column(name="END_TIME")
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	private Date endTime;
 	
-	@Column(name="YEAR")
+	
 	private int year;
 	
-	@Column(name="MONTH")
+	
 	private int month;
 	
-	@Column(name="DAY")
+	
 	private int day;
 	
-	@Column(name="HOUR")
+	
 	private int hour;
 	
 
@@ -90,6 +87,8 @@ public class MainStat extends KmBaseLegacyEntity {
 		
 	}
 	
+	@Id
+	@Column(name="THREAD_KEY")
 	public String getThreadKey() {
 		return threadKey;
 	}
@@ -98,11 +97,13 @@ public class MainStat extends KmBaseLegacyEntity {
 		this.threadKey = threadKey;
 	}
 
+	@Transient
 	public String getId() {
 		return getThreadKey();
 	}
 	
-
+	@ManyToOne(targetEntity = MonitorNode.class)
+	@JoinColumn(name="FK_NODE_ID")
 	public MonitorNode getBelongNode() {
 		return belongNode;
 	}
@@ -111,6 +112,8 @@ public class MainStat extends KmBaseLegacyEntity {
 		this.belongNode = belongNode;
 	}
 
+	@Column(name="BEGIN_TIME")
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getBeginTime() {
 		return beginTime;
 	}
@@ -119,6 +122,8 @@ public class MainStat extends KmBaseLegacyEntity {
 		this.beginTime = beginTime;
 	}
 
+	@Column(name="END_TIME")
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -127,6 +132,7 @@ public class MainStat extends KmBaseLegacyEntity {
 		this.endTime = endTime;
 	}
 
+	@Column(name="YEAR")
 	public int getYear() {
 		return year;
 	}
@@ -135,6 +141,7 @@ public class MainStat extends KmBaseLegacyEntity {
 		this.year = year;
 	}
 
+	@Column(name="MONTH")
 	public int getMonth() {
 		return month;
 	}
@@ -143,6 +150,7 @@ public class MainStat extends KmBaseLegacyEntity {
 		this.month = month;
 	}
 
+	@Column(name="DAY")
 	public int getDay() {
 		return day;
 	}
@@ -150,7 +158,8 @@ public class MainStat extends KmBaseLegacyEntity {
 	public void setDay(int day) {
 		this.day = day;
 	}
-
+	
+	@Column(name="HOUR")
 	public int getHour() {
 		return hour;
 	}

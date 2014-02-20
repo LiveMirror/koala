@@ -44,13 +44,13 @@ public class JdbcConnDetails extends BaseMonitorDetails {
 
 	private static final long serialVersionUID = -3440499796426034417L;
 	
-	@OneToMany(cascade = {CascadeType.REMOVE,CascadeType.PERSIST},mappedBy ="jdbcConn",fetch = FetchType.EAGER) 
+	
 	private List<JdbcStatementDetails> statements = new ArrayList<JdbcStatementDetails>();
 	
-	@Column(name = "IS_CLOSED")
+	
 	private boolean closed;
 
-
+	@OneToMany(cascade = {CascadeType.REMOVE,CascadeType.PERSIST},mappedBy ="jdbcConn",fetch = FetchType.EAGER) 
 	public List<JdbcStatementDetails> getStatements() {
 		return statements;
 	}
@@ -58,7 +58,8 @@ public class JdbcConnDetails extends BaseMonitorDetails {
 	public void setStatements(List<JdbcStatementDetails> statements) {
 		this.statements = statements;
 	}
-
+	
+	@Column(name = "IS_CLOSED")
 	public boolean isClosed() {
 		return closed;
 	}

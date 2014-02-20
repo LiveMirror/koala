@@ -23,6 +23,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -51,25 +52,23 @@ public class SchedulerConfg extends KmBaseLegacyEntity{
 
     private static final long serialVersionUID = 1L;
     
-    @Id
-    @Column(name = "TRIGGER_NAME", length = 64)
+   
     private String triggerName;
     
-    @Column(name = "SCHE_NAME", length = 64)
+   
     private String schedulerName;
 
     
-    @Column(name = "IS_RUNNING")
+    
     private boolean running = false;//是否运行中
    
-    @Column(name = "IS_ACTIVE")
+    
     private boolean active = true;//是否启用
     
-    @Column(name = "CRON_EXPR",length = 32)
+   
     private String cronExpr; //
     
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "LAST_BEGIN_RUN_TIME")
+   
     private Date lastBeginRunTime;//上一次运行开始时间
     
     public SchedulerConfg() {}
@@ -86,7 +85,8 @@ public class SchedulerConfg extends KmBaseLegacyEntity{
         this.cronExpr = cronExpr;
     }
 
-
+    @Id
+    @Column(name = "TRIGGER_NAME", length = 64)
     public String getTriggerName() {
         return triggerName;
     }
@@ -95,6 +95,7 @@ public class SchedulerConfg extends KmBaseLegacyEntity{
         this.triggerName = triggerName;
     }
 
+    @Column(name = "SCHE_NAME", length = 64)
     public String getSchedulerName() {
         return schedulerName;
     }
@@ -103,6 +104,7 @@ public class SchedulerConfg extends KmBaseLegacyEntity{
         this.schedulerName = schedulerName;
     }
 
+    @Column(name = "IS_RUNNING")
     public boolean isRunning() {
         return running;
     }
@@ -111,6 +113,7 @@ public class SchedulerConfg extends KmBaseLegacyEntity{
         this.running = running;
     }
 
+    @Column(name = "IS_ACTIVE")
     public boolean isActive() {
 		return active;
 	}
@@ -119,6 +122,7 @@ public class SchedulerConfg extends KmBaseLegacyEntity{
 		this.active = active;
 	}
 
+	@Column(name = "CRON_EXPR",length = 32)
 	public String getCronExpr() {
         return cronExpr;
     }
@@ -127,6 +131,8 @@ public class SchedulerConfg extends KmBaseLegacyEntity{
         this.cronExpr = cronExpr;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "LAST_BEGIN_RUN_TIME")
     public Date getLastBeginRunTime() {
         return lastBeginRunTime;
     }
@@ -144,9 +150,12 @@ public class SchedulerConfg extends KmBaseLegacyEntity{
      *@see com.dayatang.domain.Entity#getId()
      */
     @Override
+    @Transient
     public String getId() {
         return schedulerName;
     }
+    
+   
 
 	@Override
 	public boolean existed() {

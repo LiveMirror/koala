@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -44,6 +45,7 @@ public abstract class KmBaseLegacyEntity implements Entity {
 	 * 
 	 * @return
 	 */
+	@Transient
 	public boolean isNew() {
 		return getId() == null;
 	}

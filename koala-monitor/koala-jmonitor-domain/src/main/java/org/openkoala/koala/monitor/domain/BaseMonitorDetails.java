@@ -42,20 +42,20 @@ public class BaseMonitorDetails extends KmBaseEntity {
 
 	private static final long serialVersionUID = 8169169675085993313L;
 	
-	@Column(name="THREAD_KEY")
+	
 	protected String threadKey;
 	
-	@Column(name="NODE_ID")
+	
 	protected String nodeId;
 	
-	@Column(name="BEGIN_TIME")
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	protected Date beginTime;
 	
-	@Column(name="TIME_CONSUME")
+	
 	protected long timeConsume;
 	
 
+	@Column(name="NODE_ID")
 	public String getNodeId() {
 		return nodeId;
 	}
@@ -64,6 +64,7 @@ public class BaseMonitorDetails extends KmBaseEntity {
 		this.nodeId = nodeId;
 	}
 
+	@Column(name="THREAD_KEY")
 	public String getThreadKey() {
 		return threadKey;
 	}
@@ -72,6 +73,8 @@ public class BaseMonitorDetails extends KmBaseEntity {
 		this.threadKey = threadKey;
 	}
 
+	@Column(name="BEGIN_TIME")
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getBeginTime() {
 		return beginTime;
 	}
@@ -80,6 +83,7 @@ public class BaseMonitorDetails extends KmBaseEntity {
 		this.beginTime = beginTime;
 	}
 
+	@Column(name="TIME_CONSUME")
 	public long getTimeConsume() {
 		return timeConsume;
 	}

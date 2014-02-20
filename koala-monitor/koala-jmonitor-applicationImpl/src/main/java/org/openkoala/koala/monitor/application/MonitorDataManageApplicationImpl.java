@@ -127,7 +127,7 @@ private QueryChannelService queryChannel;
 				httpDetailsVo.getEndTime()};
 //		Object[] params = new Object[]{httpDetailsVo.getSystem(), httpDetailsVo.getBeginTimeStr(), 
 //				httpDetailsVo.getEndTimeStr()};
-		Page<HttpDetails> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
+		Page<HttpDetails> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage-1, pageSize).pagedList();
 		
 		List<HttpDetailsVo> list = KoalaBeanUtils.getNewList(pageEntity.getData(), HttpDetailsVo.class);
 		
@@ -143,7 +143,7 @@ private QueryChannelService queryChannel;
 		String queryStr = "select method,count(*) from MethodDetails where nodeId = ? and beginTime>=? and beginTime<?  group by method order by count(*) desc ";
 		Object[] params = new Object[]{mainStatVo.getPrincipal(), mainStatVo.getBeginTime(), 
 				mainStatVo.getEndTime()};
-		Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
+		Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage-1, pageSize).pagedList();
 		List<CountVo> list = this.turnToCountVoList(pageEntity.getData());
 		
 		return new Page<CountVo>(currentPage, pageEntity.getResultCount(), pageSize, list);
@@ -155,11 +155,11 @@ private QueryChannelService queryChannel;
 		String queryStr = " select method,avg(timeConsume) from MethodDetails where nodeId = ? and beginTime>=? and beginTime<? group by method order by avg(timeConsume) desc ";
 		Object[] params = new Object[]{mainStatVo.getPrincipal(), mainStatVo.getBeginTime(), 
 				mainStatVo.getEndTime()};
-		Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
+		Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setParameters(Arrays.asList(params)).setPage(currentPage-1, pageSize).pagedList();
 	
 		List<CountVo> list = this.turnToCountVoAvgTimeConsumeList(pageEntity.getData());
 		
-		return new Page<CountVo>(currentPage, pageEntity.getResultCount(), pageSize, list);
+		return new Page<CountVo>(currentPage-1, pageEntity.getResultCount(), pageSize, list);
 	}
 
 	@Override
@@ -169,11 +169,11 @@ private QueryChannelService queryChannel;
 				" and nodeId = ? and beginTime>=? and beginTime<? group by method order by count(successed) desc ";
 		Object[] params = new Object[]{mainStatVo.getPrincipal(), mainStatVo.getBeginTime(), 
 				mainStatVo.getEndTime()};
-		Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setPage(currentPage, pageSize).setParameters(Arrays.asList(params)).pagedList();
+		Page<Object[]> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).setPage(currentPage-1, pageSize).setParameters(Arrays.asList(params)).pagedList();
 		
 		List<CountVo> list = this.turnToCountVoExceptionList(pageEntity.getData());
 		
-		return new Page<CountVo>(currentPage, pageEntity.getResultCount(), pageSize, list);
+		return new Page<CountVo>(currentPage-1, pageEntity.getResultCount(), pageSize, list);
 	}
 	
 	@Override
@@ -214,10 +214,10 @@ private QueryChannelService queryChannel;
 				jpql.append(" ").append(methodDetailsVo.getSortorder());
 			}
 		}
-		Page<MethodDetails> pageEntity = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
+		Page<MethodDetails> pageEntity = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(params).setPage(currentPage-1, pageSize).pagedList();
 	    List<MethodDetailsVo> list = KoalaBeanUtils.getNewList(pageEntity.getData(), MethodDetailsVo.class);
 		
-		return new Page<MethodDetailsVo>(currentPage, pageEntity.getResultCount(), pageSize, list);
+		return new Page<MethodDetailsVo>(currentPage-1, pageEntity.getResultCount(), pageSize, list);
 	}
 
 	
@@ -228,10 +228,10 @@ private QueryChannelService queryChannel;
 				" where b.threadKey=(select c.threadKey from MethodDetails c where c.id=:methodId )) order by " +
 				jdbcStatementDetailsVo.getSortname() + " " + jdbcStatementDetailsVo.getSortorder();
 		
-		Page<JdbcStatementDetails> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).addParameter("methodId", jdbcStatementDetailsVo.getMethodId()).setPage(currentPage, pageSize).pagedList();
+		Page<JdbcStatementDetails> pageEntity = getQueryChannelService().createJpqlQuery(queryStr).addParameter("methodId", jdbcStatementDetailsVo.getMethodId()).setPage(currentPage-1, pageSize).pagedList();
 		
 		List<JdbcStatementDetailsVo> list = KoalaBeanUtils.getNewList(pageEntity.getData(), JdbcStatementDetailsVo.class);
-		return new Page<JdbcStatementDetailsVo>(currentPage, pageEntity.getResultCount(), pageSize, list);
+		return new Page<JdbcStatementDetailsVo>(currentPage-1, pageEntity.getResultCount(), pageSize, list);
 	}
 	
 	@Override

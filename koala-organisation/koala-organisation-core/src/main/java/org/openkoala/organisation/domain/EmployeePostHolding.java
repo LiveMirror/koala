@@ -80,7 +80,7 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 */
 	public static Post getPrincipalPostByEmployee(Employee employee, Date date) {
 		
-		EmployeePostHolding holding = getRepository().createCriteriaQuery(Employee.class)
+		EmployeePostHolding holding = getRepository().createCriteriaQuery(EmployeePostHolding.class)
 				.eq("responsible", employee)
 				.eq("principal", true)
 				.le("fromDate", date)

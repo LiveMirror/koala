@@ -66,7 +66,7 @@ public class ResourceTypeApplicationImplTest extends KoalaBaseSpringTestCase {
 
 	@Test
 	public void testPageQuery() {
-		Page<ResourceTypeVO> page = resourceTypeApplication.pageQuery(0, 10);
+		Page<ResourceTypeVO> page = resourceTypeApplication.pageQuery(1, 10);
 		assertNotNull(page);
 		assertTrue(page.getPageSize() == 10);
 		assertTrue(page.getData().size() > 0);

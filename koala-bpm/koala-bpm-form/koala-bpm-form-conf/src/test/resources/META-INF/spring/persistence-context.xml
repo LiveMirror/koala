@@ -43,20 +43,13 @@
 		</property>
 	</bean>
 
-    <bean id="repository" class="org.openkoala.koala.util.KoalaEntityRepositoryJpa">
-		<property name="entityManager">
-			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-				<property name="persistenceUnitName" value="default" />
-			</bean>
-		</property>
+   	
+	<bean id="repository" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
+		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
 	</bean>
-	
-	<bean id="queryChannel" class="org.openkoala.koala.util.KoalaQueryChannelServiceJpa">
-		<property name="entityManager">
-			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-				<property name="persistenceUnitName" value="default" />
-			</bean>
-		</property>
+
+	<bean id="queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+		<constructor-arg name="repository" ref="repository"/>
 	</bean>
 		
 	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
