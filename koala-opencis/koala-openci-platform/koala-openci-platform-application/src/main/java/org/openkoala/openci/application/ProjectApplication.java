@@ -1,11 +1,10 @@
 package org.openkoala.openci.application;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.openci.core.Project;
 import org.openkoala.openci.core.Tool;
 import org.openkoala.openci.dto.ProjectDto;
 import org.openkoala.openci.dto.ProjectQueryDto;
-
-import com.dayatang.querychannel.support.Page;
 
 public interface ProjectApplication {
 

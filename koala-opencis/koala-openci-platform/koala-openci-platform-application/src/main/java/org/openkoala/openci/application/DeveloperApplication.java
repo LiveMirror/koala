@@ -2,9 +2,8 @@ package org.openkoala.openci.application;
 
 import java.util.Collection;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.openci.core.Developer;
-
-import com.dayatang.querychannel.support.Page;
 
 public interface DeveloperApplication {
 

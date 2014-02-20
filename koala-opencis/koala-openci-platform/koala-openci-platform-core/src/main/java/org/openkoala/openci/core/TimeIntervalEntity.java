@@ -10,10 +10,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.Entity;
-import com.dayatang.domain.QuerySettings;
-import com.dayatang.utils.DateUtils;
+import org.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.Entity;
+import org.dayatang.utils.DateUtils;
 
 @MappedSuperclass
 public abstract class TimeIntervalEntity extends AbstractEntity {
@@ -76,31 +75,31 @@ public abstract class TimeIntervalEntity extends AbstractEntity {
 	}
 
 	public static <T extends Entity> T get(Class<T> clazz, Serializable id, Date queryDate) {
-		return getRepository().getSingleResult(QuerySettings.create(clazz)
+		return getRepository().createCriteriaQuery(clazz)
 				.le("createDate", queryDate)
 				.gt("abolishDate", queryDate)
-				.eq("id", id));
+				.eq("id", id).singleResult();
 	}
 
 	public static <T extends Entity> T get(Class<T> clazz, Serializable id) {
 		Date now = new Date();
-		return getRepository().getSingleResult(QuerySettings.create(clazz)
+		return getRepository().createCriteriaQuery(clazz)
 				.le("createDate", now)
 				.gt("abolishDate", now)
-				.eq("id", id));
+				.eq("id", id).singleResult();
 	}
 	
 	public static <T extends Entity> List<T> findAll(Class<T> clazz, Date queryDate) {
-		return getRepository().find(QuerySettings.create(clazz)
+		return getRepository().createCriteriaQuery(clazz)
 				.le("createDate", queryDate)
-				.gt("abolishDate", queryDate));
+				.gt("abolishDate", queryDate).list();
 	}
 	
 	public static <T extends Entity> List<T> findAll(Class<T> clazz) {
 		Date now = new Date();
-		return getRepository().find(QuerySettings.create(clazz)
+		return getRepository().createCriteriaQuery(clazz)
 				.le("createDate", now)
-				.gt("abolishDate", now));
+				.gt("abolishDate", now).list();
 	}
 
 }

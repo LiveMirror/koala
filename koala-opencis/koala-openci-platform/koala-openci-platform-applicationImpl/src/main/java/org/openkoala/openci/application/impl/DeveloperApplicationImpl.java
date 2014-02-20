@@ -10,12 +10,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.openci.application.DeveloperApplication;
 import org.openkoala.openci.core.Developer;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 @Named("developerApplication")
 @Transactional("transactionManager_opencis")
@@ -45,7 +44,7 @@ public class DeveloperApplicationImpl implements DeveloperApplication {
 			conditionVals.add(MessageFormat.format("%{0}%", example.getEmail()));
 		}
 
-		return queryChannel.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pagesize);
+		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
 	}
 
 	public void createDeveloper(Developer developer) {

@@ -8,8 +8,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 @Entity
 @Table(name = "project_details")
@@ -108,6 +107,12 @@ public class ProjectDetail extends AbstractEntity {
 	@Override
 	public String toString() {
 		return getArtifactId() + getGroupId();
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

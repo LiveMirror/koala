@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.openkoala.openci</groupId>
 		<artifactId>koala-openci-platform</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>koala-openci-platform-application</artifactId>
 	<name>koala-openci-platform-application</name>
@@ -23,46 +23,46 @@
 		<dependency>
 			<groupId>org.openkoala.opencis</groupId>
 			<artifactId>koala-opencis-api</artifactId>
-			<version>${koala.opencis.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.opencis</groupId>
 			<artifactId>koala-opencis-git</artifactId>
-			<version>${koala.opencis.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.opencis</groupId>
 			<artifactId>koala-opencis-svn</artifactId>
-			<version>${koala.opencis.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.opencis</groupId>
 			<artifactId>koala-opencis-jenkins</artifactId>
-			<version>${koala.opencis.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.opencis</groupId>
 			<artifactId>koala-opencis-sonar</artifactId>
-			<version>${koala.opencis.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.opencis</groupId>
 			<artifactId>koala-opencis-jira</artifactId>
-			<version>${koala.opencis.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.opencis</groupId>
 			<artifactId>koala-opencis-trac</artifactId>
-			<version>${koala.opencis.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.opencis</groupId>
 			<artifactId>koala-opencis-support</artifactId>
-			<version>${koala.opencis.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-querychannel</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-query-channel</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>org.hibernate</groupId>
@@ -95,9 +95,5 @@
 			<version>2.0.2</version>
 		</dependency>
 	</dependencies>
-
-	<properties>
-		<koala.opencis.version>3.0.0-SNAPSHOT</koala.opencis.version>
-	</properties>
 	
 </project>

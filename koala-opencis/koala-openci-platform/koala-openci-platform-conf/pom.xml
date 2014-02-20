@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.openkoala.openci</groupId>
 		<artifactId>koala-openci-platform</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>koala-openci-platform-conf</artifactId>
@@ -17,22 +17,26 @@
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-support</artifactId>
-			<version>3.0.0-SNAPSHOT</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-test-support</artifactId>
-			<version>3.0.0-SNAPSHOT</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>proxool</groupId>
 			<artifactId>proxool</artifactId>
-			<version>0.9.1</version>
 		</dependency>
 		<dependency>
 			<groupId>proxool</groupId>
 			<artifactId>proxool-cglib</artifactId>
-			<version>0.9.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>${db.groupId}</groupId>
+			<artifactId>${db.artifactId}</artifactId>
+			<version>${db.version}</version>
 		</dependency>
 
 	</dependencies>

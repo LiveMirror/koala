@@ -1,5 +1,6 @@
 package businesslog;
 
+import business.ContractApplication;
 import business.ContractApplicationImpl;
 import business.Project;
 
@@ -30,7 +31,7 @@ public class BusinessLogDefaultContextQueryTest {
 
         InstanceFactory.setInstanceProvider(provider);
 
-       // when(provider.getInstance(Class.forName("business.ContractApplication"))).thenReturn(new ContractApplicationImpl());
+        when(provider.getInstance(ContractApplication.class)).thenReturn(new ContractApplicationImpl());
 
         String queryContextKey = "project";
         BusinessLogDefaultContextQuery query = new BusinessLogDefaultContextQuery();

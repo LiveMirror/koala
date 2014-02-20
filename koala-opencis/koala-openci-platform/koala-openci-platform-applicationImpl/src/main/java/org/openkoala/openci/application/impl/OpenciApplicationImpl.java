@@ -2,11 +2,10 @@ package org.openkoala.openci.application.impl;
 
 import javax.inject.Named;
 
+import org.dayatang.domain.AbstractEntity;
 import org.openkoala.openci.EntityNullException;
 import org.openkoala.openci.application.OpenciApplication;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.AbstractEntity;
 
 @Named
 @Transactional("transactionManager_opencis")

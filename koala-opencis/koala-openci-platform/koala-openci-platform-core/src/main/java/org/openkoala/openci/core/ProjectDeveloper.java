@@ -14,8 +14,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 @Entity
 @Table(name = "project_developers")
@@ -23,16 +22,12 @@ public class ProjectDeveloper extends AbstractEntity {
 
 	private static final long serialVersionUID = -5833807367997029745L;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "project_developer_role_relations", joinColumns = { @JoinColumn(name = "project_developer_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
 	private Set<Role> roles = new HashSet<Role>();
 
-	@OneToOne
-	@JoinColumn(name = "developer_id")
+	
 	private Developer developer;
 
-	@ManyToOne
-	@JoinColumn(name = "project_id")
+	
 	private Project project;
 
 	ProjectDeveloper() {
@@ -50,12 +45,38 @@ public class ProjectDeveloper extends AbstractEntity {
 		save();
 	}
 
+	@OneToOne
+	@JoinColumn(name = "developer_id")
 	public Developer getDeveloper() {
 		return developer;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "project_developer_role_relations", joinColumns = { @JoinColumn(name = "project_developer_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
+	
 	public Set<Role> getRoles() {
 		return roles;
+	}
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "project_id")
+	public Project getProject() {
+		return project;
+	}
+	
+	
+
+	protected void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	protected void setDeveloper(Developer developer) {
+		this.developer = developer;
+	}
+
+	protected void setProject(Project project) {
+		this.project = project;
 	}
 
 	@Override
@@ -79,6 +100,12 @@ public class ProjectDeveloper extends AbstractEntity {
 	@Override
 	public String toString() {
 		return getDeveloper().toString();
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

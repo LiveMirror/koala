@@ -273,7 +273,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 				conditionVals.add(MessageFormat.format("%{0}%", queryVo.getPassword()));
 			}
 
-			Page<DataSource> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
+			Page<DataSource> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pageSize).pagedList();
 			for (DataSource dataSource : pages.getData()) {
 				DataSourceVO dataSourceVO = new DataSourceVO();
 				// 将domain转成VO

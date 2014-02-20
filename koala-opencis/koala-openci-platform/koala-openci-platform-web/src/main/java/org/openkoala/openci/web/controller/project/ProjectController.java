@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.queryvo.TypeDef;
 import org.openkoala.koala.util.ModuleDependencyUtils;
 import org.openkoala.koala.widget.Module;
@@ -29,8 +30,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
 
 @Controller
 @RequestMapping("/project")
@@ -117,10 +116,10 @@ public class ProjectController extends BaseController {
 	public Map<String, Object> pagingQuery(ProjectQueryDto projectQueryDto, int page, int pagesize) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<org.openkoala.openci.core.Project> projectPage = projectApplication.pagingQueryProject(projectQueryDto, page, pagesize);
-		dataMap.put("Rows", projectPage.getResult());
+		dataMap.put("Rows", projectPage.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", projectPage.getTotalCount());
+		dataMap.put("Total", projectPage.getResultCount());
 		return dataMap;
 	}
 	

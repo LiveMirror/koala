@@ -79,7 +79,7 @@ public class ToolConfigurationApplicationImplTest extends AbstractIntegrationTes
 		ToolConfiguration toolConfiguration2 = new JenkinsConfiguration("test2", null, null, null);
 		toolConfiguration2.save();
 
-		List<JenkinsConfiguration> toolConfigurations = toolConfigurationApplication.pagingQeuryJenkinsConfigurations(1, 1).getResult();
+		List<JenkinsConfiguration> toolConfigurations = toolConfigurationApplication.pagingQeuryJenkinsConfigurations(1, 1).getData();
 		assertEquals(1, toolConfigurations.size());
 
 		toolConfiguration.remove();

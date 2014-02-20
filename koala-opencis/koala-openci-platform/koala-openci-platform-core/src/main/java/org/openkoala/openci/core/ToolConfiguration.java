@@ -13,9 +13,7 @@ import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.QuerySettings;
+import org.dayatang.domain.AbstractEntity;
 
 @Entity
 @Table(name = "tool_configurations")
@@ -24,10 +22,10 @@ public abstract class ToolConfiguration extends AbstractEntity {
 
 	private static final long serialVersionUID = -7992490907551882249L;
 
-	@Column(nullable = false, unique = true)
+	
 	private String name;
 	
-	@Column(name = "service_url")
+	
 	private String serviceUrl;
 	
 	private String username;
@@ -51,7 +49,7 @@ public abstract class ToolConfiguration extends AbstractEntity {
 	}
 
 	public static List<ToolConfiguration> findByUsable() {
-		return getRepository().find(QuerySettings.create(ToolConfiguration.class).eq("usable", true));
+		return getRepository().createCriteriaQuery(ToolConfiguration.class).eq("usable", true).list();
 	}
 	
 	public void usabled() {
@@ -64,10 +62,12 @@ public abstract class ToolConfiguration extends AbstractEntity {
 		save();
 	}
 
+	@Column(nullable = false, unique = true)
 	public String getName() {
 		return name;
 	}
 	
+	@Column(name = "service_url")
 	public String getServiceUrl() {
 		return serviceUrl;
 	}
@@ -102,6 +102,14 @@ public abstract class ToolConfiguration extends AbstractEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	protected void setUsable(boolean usable) {
+		this.usable = usable;
+	}
+
+	protected void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 	@Override

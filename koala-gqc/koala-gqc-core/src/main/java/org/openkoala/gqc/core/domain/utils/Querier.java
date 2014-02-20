@@ -17,6 +17,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.domain.IocException;
+import org.dayatang.domain.IocInstanceNotFoundException;
 import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.core.domain.DataSourceType;
 import org.openkoala.gqc.core.exception.SystemDataSourceNotExistException;
@@ -106,7 +107,7 @@ public abstract class Querier {
 				javax.sql.DataSource systemDataSource = InstanceFactory.getInstance(javax.sql.DataSource.class, dataSource.getDataSourceId());
 			    result = systemDataSource.getConnection();
 			} catch (IocException exception) {
-				if (exception.getCause() instanceof NoSuchBeanDefinitionException) {
+				if (exception instanceof IocInstanceNotFoundException) {
 					throw new SystemDataSourceNotExistException("系统数据源不存在！", exception);
 				}
 			}
