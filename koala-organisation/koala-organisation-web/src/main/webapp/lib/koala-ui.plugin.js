@@ -902,16 +902,37 @@
 	ModifyPassword.prototype.save = function(){
 		var self = this;
 		if(!Validation.notNull(self.$element, this.oldPwd, this.oldPwd.val(), '原始密码不能为空')){
-			return;
+			return false;
+		}
+		if (!Validation.checkByRegExp(self.$element, this.oldPwd, '^[0-9a-zA-Z]*$', this.oldPwd.val(), '只能输入字母及数字')) {
+			return false;
+		}
+		if(this.oldPwd.val().length < 6 || this.oldPwd.val().length > 10){
+			showErrorMessage(self.$element, this.oldPwd, '请输入6-10位数字或者字母');
+			return false;
 		}
 		if(!Validation.notNull(self.$element, this.newPwd, this.newPwd.val(), '新密码不能为空')){
-			return;
+			return false;
+		}
+		if (!Validation.checkByRegExp(self.$element, this.newPwd, '^[0-9a-zA-Z]*$', this.newPwd.val(), '只能输入字母及数字')) {
+			return false;
+		}
+		if(this.newPwd.val().length < 6 || this.newPwd.val().length > 10){
+			showErrorMessage(self.$element, this.newPwd, '请输入6-10位数字或者字母');
+			return false;
 		}
 		if(!Validation.notNull(self.$element, this.confirmPwd, this.confirmPwd.val(), '确认密码不能为空')){
-			return;
+			return false;
+		}
+		if (!Validation.checkByRegExp(self.$element, this.confirmPwd, '^[0-9a-zA-Z]*$', this.confirmPwd.val(), '只能输入字母及数字')) {
+			return false;
+		}
+		if(this.confirmPwd.val().length < 6 || this.confirmPwd.val().length > 10){
+			showErrorMessage(self.$element, this.confirmPwd, '请输入6-10位数字或者字母');
+			return false;
 		}
 		if(this.newPwd.val() != this.confirmPwd.val()){
-			$('body').message({
+			self.$element.find('.modal-content').message({
 				type: 'error',
 				content: '新密码与确认密码不一致'
 			});
@@ -930,13 +951,13 @@
 					});
 					self.$element.modal('hide');
 				}else{
-					$('body').message({
+					self.$element.find('.modal-content').message({
 						type: 'error',
 						content: msg.result
 					});
 				}
 			}).fail(function(msg){
-				$('body').message({
+				self.$element.find('.modal-content').message({
 						type: 'error',
 						content: '修改失败'
 				});

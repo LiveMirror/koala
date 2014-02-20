@@ -176,7 +176,7 @@ var userManager = function() {
 		if (!Validation.notNull(dialog, userAccount, userAccount.val(), '请输入用户账号')) {
 			return false;
 		}
-		if (!Validation.checkByRegExp(dialog, userAccount, '^[0-9a-zA-Z]*$', userAccount.val(), '用户账号不能带中文')) {
+		if (!Validation.checkByRegExp(dialog, userAccount, '^[0-9a-zA-Z]*$', userAccount.val(), '用户帐号只能输入字母及数字')) {
 			return false;
 		}
 		if (!Validation.notNull(dialog, email, email.val(), '请输入用户邮箱')) {
@@ -186,6 +186,13 @@ var userManager = function() {
 			return false;
 		}
 		if (!item && !Validation.notNull(dialog, userPassword, userPassword.val(), '请输入用户密码')) {
+			return false;
+		}
+		if (!Validation.checkByRegExp(dialog, userPassword, '^[0-9a-zA-Z]*$', userPassword.val(), '只能输入字母及数字')) {
+			return false;
+		}
+		if(userPassword.val().length < 6 || userPassword.val().length > 10){
+			showErrorMessage(dialog, userPassword, '请输入6-10位数字或者字母');
 			return false;
 		}
 		return true;

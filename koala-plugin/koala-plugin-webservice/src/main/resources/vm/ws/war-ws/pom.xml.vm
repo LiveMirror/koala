@@ -37,7 +37,6 @@
         <dependency>
 	      <groupId>org.springframework</groupId>
 	      <artifactId>spring-webmvc</artifactId>
-	      <version>3.1.2.RELEASE</version>
         </dependency>
       
         <!-- 加入对dayatang的spring的实现 -->

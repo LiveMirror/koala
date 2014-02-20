@@ -1,7 +1,9 @@
-package org.openkoala.opencis.git.impl;
+package org.openkoala.opencis.gitlab;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
@@ -26,12 +28,12 @@ public class GitlabCISClientIntegrationTest {
 
     private String token;
 
-    private GitlabCISClient cisClient;
+    private GitlabClient cisClient;
 
     @Before
     public void setUp() throws Exception {
         token = getToken();
-        cisClient = new GitlabCISClient(getConfiguration());
+        cisClient = new GitlabClient(getConfiguration());
         assert cisClient.authenticate();
     }
 
@@ -59,7 +61,7 @@ public class GitlabCISClientIntegrationTest {
 
 
         for (Developer developer : createDevelops()) {
-            GitlabCISClient cisClient1 = new GitlabCISClient(getConfiguration());
+            GitlabClient cisClient1 = new GitlabClient(getConfiguration());
             cisClient1.removeUser(project, developer);
         }
 
@@ -101,10 +103,10 @@ public class GitlabCISClientIntegrationTest {
         GitlabConfiguration configuration = new GitlabConfiguration();
 
         configuration.setToken(getToken());
-        configuration.setGitHostURL("http://127.0.0.1");
-        configuration.setAdminUsername("root");
-        configuration.setAdminEmail("admin@local.com");
-        configuration.setAdminPassword("5iveL!fe");
+        configuration.setGitlabHostURL("http://127.0.0.1");
+        configuration.setUsername("root");
+        configuration.setEmail("admin@local.com");
+        configuration.setPassword("5iveL!fe");
         return configuration;
     }
 
@@ -125,6 +127,7 @@ public class GitlabCISClientIntegrationTest {
             HttpResponse response = httpClient.execute(post);
 
             String jsonStr = EntityUtils.toString(response.getEntity());
+
 
             Gson gson = new Gson();
 

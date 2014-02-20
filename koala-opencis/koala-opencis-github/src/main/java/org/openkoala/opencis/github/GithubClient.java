@@ -1,11 +1,10 @@
 package org.openkoala.opencis.github;
 
+import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.openkoala.opencis.CISClientBaseRuntimeException;
-import org.openkoala.opencis.api.CISClient;
-import org.openkoala.opencis.api.Developer;
-import org.openkoala.opencis.api.Project;
+import org.openkoala.opencis.git.GitClient;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,80 +12,114 @@ import java.io.IOException;
 /**
  * github客户端
  */
-public class GithubClient implements CISClient {
+public class GithubClient {
 
     private GitHub github = null;
 
     private String username;
 
-
     public GithubClient(String username, String password) {
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+            throw new CISClientBaseRuntimeException("username or password must not bet empty");
+        }
+
         try {
             this.username = username;
             github = GitHub.connectUsingPassword(username, password);
         } catch (IOException e) {
             // 因为目前只是设置参数，github未实际连接，所以，不需要处理
+            throw new CISClientBaseRuntimeException("Unknown exception", e);
         }
     }
 
-    @Override
-    public void createProject(Project project) {
-        if (isProjectExist(project)) {
+    /**
+     * 创建项目仓库
+     *
+     * @param repositoryName
+     * @param description
+     */
+    public void createRepository(String repositoryName, String description) {
+        if (isRepositoryExist(repositoryName)) {
             return;
         }
 
         String emptyHomePage = "";
+        Boolean PUBLIC = true;
         try {
-            github.createRepository(project.getProjectName(), project.getDescription(), emptyHomePage, true/*public*/);
+            github.createRepository(repositoryName, description, emptyHomePage, PUBLIC);
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("github.createProject.failure", e);
         }
 
     }
 
-    @Override
-    public void removeProject(Project project) {
-        if (!isProjectExist(project)) {
+    /**
+     * 移除项目仓库
+     *
+     * @param repositoryName
+     */
+    public void removeRepository(String repositoryName) {
+        if (!isRepositoryExist(repositoryName)) {
             return;
         }
         try {
-            GHRepository repository = github.getRepository(getRepositoryName(project));
+            GHRepository repository = github.getRepository(getRepositoryFullName(repositoryName));
             repository.delete();
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("github.removeProject.failure", e);
         }
     }
 
-    @Override
-    public void createUserIfNecessary(Project project, Developer developer) {
-        // do nothing
-    }
-
-    @Override
-    public void removeUser(Project project, Developer developer) {
-        // do nothing
-    }
-
-    @Override
-    public void createRoleIfNecessary(Project project, String roleName) {
-        // do nothing
-    }
-
-    @Override
-    public void assignUsersToRole(Project project, String role, Developer... developers) {
-        if (!isProjectExist(project)) {
+    /**
+     * 移除协作者
+     *
+     * @param repositoryName
+     * @param developsGithubAccounts
+     */
+    public void removeCollaborators(String repositoryName, String... developsGithubAccounts) {
+        if (!isRepositoryExist(repositoryName)) {
             return;
         }
         try {
-            GHRepository repository = github.getRepository(getRepositoryName(project));
-            repository.addCollaborators();
+            GHRepository repository = github.getRepository(getRepositoryFullName(repositoryName));
+            for (String login : developsGithubAccounts) {
+                if (isAccountExist(login)) {
+                    repository.removeCollaborators(github.getUser(login));
+                }
+            }
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("github.assignUsersToRole.failure", e);
         }
-
     }
 
-    @Override
+    /**
+     * 添加协作者
+     *
+     * @param repositoryName
+     * @param developsGithubAccounts
+     */
+    public void addCollaborators(String repositoryName, String... developsGithubAccounts) {
+        if (!isRepositoryExist(repositoryName)) {
+            return;
+        }
+        try {
+            GHRepository repository = github.getRepository(getRepositoryFullName(repositoryName));
+            for (String login : developsGithubAccounts) {
+                if (isAccountExist(login)) {
+                    repository.addCollaborators(github.getUser(login));
+
+                }
+            }
+        } catch (IOException e) {
+            throw new CISClientBaseRuntimeException("github.assignUsersToRole.failure", e);
+        }
+    }
+
+    /**
+     * 认证
+     *
+     * @return
+     */
     public boolean authenticate() {
         try {
             return github.isCredentialValid();
@@ -96,9 +129,18 @@ public class GithubClient implements CISClient {
     }
 
 
-    public boolean isProjectExist(Project project) {
+    /**
+     * 仓库是否存在
+     *
+     * @param repositoryName
+     * @return
+     */
+    public boolean isRepositoryExist(String repositoryName) {
+        if (repositoryName == null || "".equals(repositoryName.trim())) {
+            throw new CISClientBaseRuntimeException("project'name must not be empty");
+        }
         try {
-            return github.getRepository(getRepositoryName(project)) != null;
+            return github.getRepository(getRepositoryFullName(repositoryName)) != null;
         } catch (FileNotFoundException e) {
             return false;
         } catch (IOException e) {
@@ -107,13 +149,39 @@ public class GithubClient implements CISClient {
     }
 
 
-    public String getRepositoryName(Project project) {
-        return username + "/" + project.getProjectName();
+    /**
+     * 得到仓库全名。
+     *
+     * @param repository
+     * @return 帐号名/仓库名
+     */
+    public String getRepositoryFullName(String repository) {
+        return username + "/" + repository;
     }
 
+    public String getHttpTransportUrl(String repository) {
+        try {
+            return github.getRepository(getRepositoryFullName(repository)).gitHttpTransportUrl();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("github.getRepositoryFullName", e);
+        }
+    }
 
-    @Override
-    public void close() {
-
+    /**
+     * github帐号是否存在
+     *
+     * @param account
+     * @return
+     */
+    public boolean isAccountExist(String account) {
+        try {
+            return github.getUser(account) != null;
+        } catch (FileNotFoundException e) {
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CISClientBaseRuntimeException("find github account failure", e);
+        }
     }
 }
