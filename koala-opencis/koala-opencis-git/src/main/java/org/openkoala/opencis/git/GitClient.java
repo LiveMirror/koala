@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
  *
  * @author xmfang
  */
-public class GitCISClient {
+public class GitClient {
 
     private String username;
     private String password;
@@ -32,7 +32,13 @@ public class GitCISClient {
     private String localRepositoryPath;
 
 
-    public GitCISClient(String username, String password, String email, String localRepositoryPath) {
+    public GitClient(String username, String password, String email, String localRepositoryPath) {
+        if (StringUtils.isEmpty(username)
+                || StringUtils.isEmpty(password)
+                || StringUtils.isEmpty(email)
+                || StringUtils.isEmpty(localRepositoryPath)) {
+            throw new CISClientBaseRuntimeException("username, password, email, localRepositoryPath must no be empty!");
+        }
 
         this.username = username;
         this.password = password;

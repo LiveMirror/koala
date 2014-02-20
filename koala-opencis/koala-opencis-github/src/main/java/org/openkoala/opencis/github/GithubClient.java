@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.openkoala.opencis.CISClientBaseRuntimeException;
+import org.openkoala.opencis.git.GitClient;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,7 +17,6 @@ public class GithubClient {
     private GitHub github = null;
 
     private String username;
-
 
     public GithubClient(String username, String password) {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
@@ -159,16 +159,14 @@ public class GithubClient {
         return username + "/" + repository;
     }
 
-    public String getRemoteRepositoryUrl(String repository) {
+    public String getHttpTransportUrl(String repository) {
         try {
-            return github.getRepository(getRepositoryFullName(repository)).getUrl();
+            return github.getRepository(getRepositoryFullName(repository)).gitHttpTransportUrl();
         } catch (IOException e) {
             e.printStackTrace();
             throw new CISClientBaseRuntimeException("github.getRepositoryFullName", e);
         }
-
     }
-
 
     /**
      * github帐号是否存在

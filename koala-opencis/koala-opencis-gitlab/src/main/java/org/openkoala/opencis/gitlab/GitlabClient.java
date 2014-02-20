@@ -1,12 +1,6 @@
 package org.openkoala.opencis.gitlab;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.InitCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.lib.StoredConfig;
-import org.eclipse.jgit.transport.*;
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.http.GitlabHTTPRequestor;
 import org.gitlab.api.models.GitlabProject;
@@ -15,10 +9,9 @@ import org.openkoala.opencis.CISClientBaseRuntimeException;
 import org.openkoala.opencis.api.CISClient;
 import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
+import org.openkoala.opencis.git.GitClient;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -28,23 +21,22 @@ import java.util.Set;
 /**
  * 连接GitLab服务器并实现创建项目等操作的客户端.
  * zhaizhijun，注：目前使用第三方库来实现，第三方库中有个GitlabHTTPRequestor，如果重复使用它，<p/>
- * 可能会有不可预知的问题，所以，每次使用它都需要重新创建一个。下个版本进行重写!TODO
  *
  * @author xmfang
  */
-public class GitlabCISClient implements CISClient {
+public class GitlabClient implements CISClient {
 
-    public final static int DEVELOPER = 30;
+    public final static int DEVELOPER_MODE = 30;
 
     /*
      * gitlab配置
      */
-    private GitlabConfiguration gitLabConfiguration;
+    private GitlabConfiguration config;
 
-    private GitlabAPI gitlabAPI;
+    private GitlabAPI gitlab;
 
-    public GitlabCISClient(GitlabConfiguration gitLabConfiguration) {
-        this.gitLabConfiguration = gitLabConfiguration;
+    public GitlabClient(GitlabConfiguration config) {
+        this.config = config;
     }
 
 
@@ -81,12 +73,12 @@ public class GitlabCISClient implements CISClient {
             return;
         }
         createProjectInGitLab(project);
-        pushProjectToGitLab(project, gitLabConfiguration);
+        pushProjectToGitLab(project, config);
     }
 
     public GitlabProject getGitlabProjectBy(Project project) {
         try {
-            for (GitlabProject gitlabProject : gitlabAPI.getProjects()) {
+            for (GitlabProject gitlabProject : gitlab.getProjects()) {
                 if (gitlabProject.getName().equals(project.getProjectName())) {
                     return gitlabProject;
                 }
@@ -165,71 +157,28 @@ public class GitlabCISClient implements CISClient {
      *
      * @param project
      */
-    private boolean pushProjectToGitLab(Project project, GitlabConfiguration gitlabConfiguration) {
-        Repository repository = null;
-        InitCommand init = new InitCommand();
-
+    private void pushProjectToGitLab(Project project, GitlabConfiguration config) {
         String projectPath = project.getPhysicalPath();
         if (StringUtils.isBlank(projectPath)) {
             throw new CISClientBaseRuntimeException("project's physicalPath must bet not null!");
         }
 
-        init.setDirectory(new File(projectPath));
+        GitClient.init(project.getPhysicalPath(), getHttpTransportUrl(project.getPhysicalPath(), config));
 
-        try {
-            Git git = init.call();
-            repository = git.getRepository();
-            StoredConfig config = repository.getConfig();
-            RemoteConfig remoteConfig = new RemoteConfig(config, "origin");
+        GitClient gitClient = new GitClient(config.getUsername(), config.getPassword(), config.getEmail(), project.getPhysicalPath());
 
-            URIish uri = new URIish(gitlabConfiguration.getGitHostURL()
-                    + "/" + getCurrentUser().getUsername()
-                    + "/" + project.getProjectName().toLowerCase() + ".git");
+        gitClient.add(".");
 
-            RefSpec refSpec = new RefSpec("+refs/heads/*:*");
-            remoteConfig.addFetchRefSpec(refSpec);
-            remoteConfig.addPushRefSpec(refSpec);
-            remoteConfig.addURI(uri);
-            remoteConfig.addPushURI(uri);
+        gitClient.commit("init project");
 
-            remoteConfig.update(config);
-            config.save();
-            repository.close();
+        gitClient.pushRepositoryToRemote(getHttpTransportUrl(project.getProjectName(), config));
 
-            git.add().addFilepattern(".").call();
-            git.commit().setCommitter(gitlabConfiguration.getAdminUsername(),
-                    gitlabConfiguration.getAdminEmail()).setMessage("init project").call();
-
-            CredentialsProvider credentialsProvider =
-                    new UsernamePasswordCredentialsProvider(gitlabConfiguration.getAdminUsername(),
-                            gitlabConfiguration.getAdminPassword());
-            git.push().setCredentialsProvider(credentialsProvider).call();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new CISClientBaseRuntimeException("gitlab.pushProjectToGitLab.URISyntaxException", e);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new CISClientBaseRuntimeException("gitlab.pushProjectToGitLab.IOException", e);
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-            throw new CISClientBaseRuntimeException("gitlab.pushProjectToGitLab.GitAPIException", e);
-        }
-        return true;
     }
 
-    /**
-     * 获取当前登录用户
-     *
-     * @return
-     */
-    private GitlabUser getCurrentUser() {
-        GitlabUser result = null;
-        try {
-            result = createGitlabHTTPRequestor().method("GET").to("/user", GitlabUser.class);
-        } catch (IOException e) {
-            throw new CISClientBaseRuntimeException("gitlab.getCurrentUser.IOException", e);
-        }
-        return result;
+    private String getHttpTransportUrl(String projectName, GitlabConfiguration gitlabConfiguration) {
+        assert StringUtils.isNotEmpty(projectName);
+        return gitlabConfiguration.getGitlabUserUrl()
+                + "/" + projectName.toLowerCase() + ".git";
     }
 
     @Override
@@ -278,7 +227,7 @@ public class GitlabCISClient implements CISClient {
             try {
                 createGitlabHTTPRequestor().method("POST")
                         .with("id", getGitlabProjectIdBy(project))
-                        .with("user_id", userId).with("access_level", DEVELOPER)
+                        .with("user_id", userId).with("access_level", DEVELOPER_MODE)
                         .to(wsUrl, GitlabUser.class);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -290,8 +239,8 @@ public class GitlabCISClient implements CISClient {
 
     @Override
     public boolean authenticate() {
-        gitlabAPI = GitlabAPI.connect(gitLabConfiguration.getGitHostURL(), gitLabConfiguration.getToken());
-        return gitlabAPI != null;
+        gitlab = GitlabAPI.connect(config.getGitlabHostURL(), config.getToken());
+        return gitlab != null;
     }
 
     /**
@@ -311,7 +260,7 @@ public class GitlabCISClient implements CISClient {
 
 
     private GitlabHTTPRequestor createGitlabHTTPRequestor() {
-        GitlabAPI gitlabAPI = GitlabAPI.connect(gitLabConfiguration.getGitHostURL(), gitLabConfiguration.getToken());
+        GitlabAPI gitlabAPI = GitlabAPI.connect(config.getGitlabHostURL(), config.getToken());
         GitlabHTTPRequestor gitlabHTTPRequestor = new GitlabHTTPRequestor(gitlabAPI);
         return gitlabHTTPRequestor;
     }
