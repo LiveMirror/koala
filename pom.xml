@@ -150,10 +150,10 @@
     <modules>
         <module>koala-commons</module>
         <module>koala-security</module>
+        <module>koala-organisation</module>
         <module>koala-bpm</module>
         <module>koala-gqc</module>
         <module>koala-monitor</module>
-        <module>koala-organisation</module>
         <module>koala-opencis</module>
         <module>koala-businesslog</module>
         <module>koala-plugin</module>

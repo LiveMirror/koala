@@ -19,18 +19,17 @@ public class LogFilter extends BusinessLogServletFilter {
      * @param resp
      * @param chain
      */
+    @Override
     public void beforeFilter(ServletRequest req, ServletResponse resp, FilterChain chain) {
         addIpContext(getIp(req));
         addUserContext(req.getParameter("user"));
     }
 
 
-  
     public void init(FilterConfig filterConfig) throws ServletException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-  
     public void destroy() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
