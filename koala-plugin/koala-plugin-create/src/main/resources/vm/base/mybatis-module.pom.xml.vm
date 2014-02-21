@@ -53,8 +53,8 @@
         #if ($Module.moduleType == "bizModel")
 		<!-- 加入对DOMAIN层的依赖 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-domain</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-domain</artifactId>
 		</dependency>
 		
 		  
@@ -70,13 +70,9 @@
  
   #if ($Module.moduleType == "applicationInterface")
   	     <dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-querychannel</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-query-channel</artifactId>
 			<exclusions>
-				<exclusion>
-					<groupId>com.dayatang.commons</groupId>
-					<artifactId>dayatang-commons-domain</artifactId>
-				</exclusion>
 				<exclusion>
 					<groupId>org.hibernate</groupId>
 					<artifactId>hibernate-core</artifactId>
@@ -114,22 +110,22 @@
 		
 		<!-- 加入对查询通道的依赖 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-querychannel</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-query-channel</artifactId>
 		</dependency>
 		
 		
 
 		<!-- 加入对dayatang的DB的支持 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-db</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-db</artifactId>
 		</dependency>
 
 		<!-- 加入对dayatang的spring的实现 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-spring</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-ioc-spring</artifactId>
 		</dependency>
 
 		
@@ -149,8 +145,8 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-spring-test</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -173,8 +169,8 @@
   
   <!-- 加入对dayatang的spring的实现 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-spring</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-ioc-spring</artifactId>
 		</dependency>
 		
 	   <dependency>
@@ -239,8 +235,8 @@
 	#if ($function == "cache")
 		<!-- 加入对dayatang的缓存实现 -->
 		<dependency>
-	    	<groupId>com.dayatang.commons</groupId>
-	    	<artifactId>dayatang-commons-cache</artifactId>
+	    	<groupId>org.dayatang.dddlib</groupId>
+	    	<artifactId>dddlib-cache-memcached</artifactId>
     	</dependency>
     	<dependency>
 			<groupId>org.springframework</groupId>
@@ -259,24 +255,24 @@
 	#if($function == "i18n")
 		<!-- 加入对dayatang的i18n实现 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-i18n</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-i18n</artifactId>
 		</dependency>
 	#end
 	
 	#if ($function == "excel")
 		<!-- 加入对dayatang的excel实现 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-excel</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-excel</artifactId>
 		</dependency>
 	#end
 	
 	#if ($function == "rule")
 		<!-- 加入对dayatang的rule实现 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-rule</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-rule</artifactId>
 		</dependency>
 			<dependency>
 			<groupId>jsr94</groupId>
@@ -347,8 +343,8 @@
 	
 	#if ($function == "org.openkoala.businesslog.utils")
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-utils</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-utils</artifactId>
 		</dependency>
 	#end
 	
