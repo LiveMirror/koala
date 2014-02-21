@@ -90,7 +90,7 @@ body {
 }
 
 .login_con_R  form {
-	padding-top: 7%;
+	padding-top: 10%;
 	padding-left: 7%;
 	padding-right: 7%;
 }
@@ -100,6 +100,9 @@ body {
     margin-right: auto;
 }
 .checkCode {
+	position: absolute;
+	left/*\**/:160px;
+	top/*\**/:-10px;
 	height: 50px;
 }
 .btn-login {
@@ -139,26 +142,56 @@ body {
 		</div>
 		<div class="login_con_R">
 			<h4>登录</h4>
+			 <c:if test="${param.login_error == '1' }">
+		     	<script>
+		     		$('.login_con_R').message({
+						type: 'error',
+						content: '用户名错误!'
+					});
+		     	</script>
+		    </c:if>
+		    
+			<c:if test="${param.login_error == '2' }">
+		      	<script>
+		     		$('.login_con_R').message({
+						type: 'error',
+						content: '密码错误!'
+					});
+		     	</script>
+			</c:if>
+			
+			<c:if test="${param.login_error == '3' }">
+		      	<script>
+		     		$('.login_con_R').message({
+						type: 'error',
+						content: '验证码错误!'
+					});
+		     	</script>
+			</c:if>
+			
+			<c:if test="${param.login_error == '4' }">
+		      	<script>
+		     		$('.login_con_R').message({
+						type: 'error',
+						content: '该用户已被禁用!'
+					});
+		     	</script>
+			</c:if>
 			<FORM id="loginFormId" method=post action="j_spring_security_check" class="form-horizontal">
 				<div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                    <input type="text" class="form-control" placeholder="用户名"  name="j_username" id="j_username" value="${j_username }"/>
+                    <input type="text" class="form-control" placeholder="用户名"  name="j_username" id="j_username">
 				</div>
                 <div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                    <input type="password" name="j_password" id="j_password" class="form-control" placeholder="密码" value="${j_password }"/>
+                    <input type="password" name="j_password" id="j_password" class="form-control" placeholder="密码"/>
                 </div>
 				<div class="form-group input-group">
 				    <span class="input-group-addon"><span class="glyphicon glyphicon-magnet"></span></span>
-					<input type="text" id="jcaptcha" name="jcaptcha" value="" class="form-control" placeholder="验证码" autocomplete="off"/>
+					<input type="text" id="jcaptcha" style="width:120px;" name="jcaptcha" value="" class="form-control" placeholder="验证码"  autocomplete="off"/>
+					<img src="jcaptcha.jpg" id="checkCode" onclick="refreshCode();" class="checkCode"/>
 				</div>
-				<div class="form-group">
-					<label class="col-lg-3"></label>
-					<div class="col-lg-9">
-						<img src="jcaptcha.jpg" id="checkCode" onclick="refreshCode();" class="checkCode"/>
-					</div>
-				</div>
-				<div class="form-group input-group">
+				<div class="form-group input-group" style="margin-top: 10%;">
 					<button type="button"  class="btn btn-primary btn-login">登录</button>
 				</div>
 			</FORM>
@@ -169,6 +202,7 @@ body {
     $(function(){
      	var btnLogin = $('.btn-login');
     	var form = $('#loginFormId');
+    	$('#j_username').focus();
         $('body').keydown(function(e) {
             if (e.keyCode == 13) {
             	dologin();
@@ -193,45 +227,5 @@ body {
 	    }
     });
 	</script>
-	<c:if test="${param.login_error == '1' }">
-     	<script>
-     		$('.login_con_R').message({
-				type: 'error',
-				content: '用户名错误!'
-			});
-     		$("#j_username").focus();
-	 		$("#j_username").select();
-     	</script>
-    </c:if>
-    
-	<c:if test="${param.login_error == '2' }">
-      	<script>
-     		$('.login_con_R').message({
-				type: 'error',
-				content: '密码错误!'
-			});
-     		$("#j_password").focus();
-	 		$("#j_password").select();
-     	</script>
-	</c:if>
-	
-	<c:if test="${param.login_error == '3' }">
-      	<script>
-     		$('.login_con_R').message({
-				type: 'error',
-				content: '验证码错误!'
-			});
-     		$('#jcaptcha').focus();
-     	</script>
-	</c:if>
-	
-	<c:if test="${param.login_error == '4' }">
-      	<script>
-     		$('.login_con_R').message({
-				type: 'error',
-				content: '该用户已被禁用!'
-			});
-     	</script>
-	</c:if>
 </body>
 </html>
