@@ -25,9 +25,6 @@ import java.util.List;
  */
 public class JenkinsCISClient implements CISClient {
 
-    private String jenkinsUrl;
-
-
     /**
      * 源码版本控制 svn or git
      */
@@ -36,7 +33,6 @@ public class JenkinsCISClient implements CISClient {
     private JenkinsClient client;
 
     public JenkinsCISClient(String jenkinsUrl, String username, String passwordOrAPIToken) {
-        this.jenkinsUrl = jenkinsUrl;
         JenkinsClientFactory factory = new JenkinsClientFactory(convert(jenkinsUrl), username, passwordOrAPIToken);
         client = factory.getJenkinsClient();
     }
