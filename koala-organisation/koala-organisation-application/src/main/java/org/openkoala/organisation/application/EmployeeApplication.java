@@ -66,8 +66,7 @@ public interface EmployeeApplication {
 	/**
 	 * 创建员工及其任职信息和机构关系责任信息
 	 * @param employee
-	 * @param job
-	 * @param organization
+	 * @param post
 	 */
 	void createEmployeeWithPost(Employee employee, Post post);
 	
