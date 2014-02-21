@@ -66,6 +66,11 @@
 			<groupId>commons-dbutils</groupId>
 			<artifactId>commons-dbutils</artifactId>
 		</dependency>
+        <dependency>
+        	<groupId>com.oracle</groupId>
+        	<artifactId>ojdbc14</artifactId>
+        	<version>10.2.0.4.0</version>
+        </dependency>
 		
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>

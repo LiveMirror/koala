@@ -44,7 +44,7 @@
 		<query>
 			select distinct resource from ResourceTypeAssignment assignment 
 			left join assignment.resource resource left join assignment.resourceType resourceType
-			where resource.level=1 and resource.abolishDate>:abolishDate order by resource.sortOrder
+			where resource.level=1 and resource.abolishDate>:abolishDate order by resource.sortOrder ,resource.createDate
 		</query>
 	</named-query>
 	

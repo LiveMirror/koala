@@ -101,7 +101,10 @@ public class DataSource extends GeneralQueryEntity {
 	}
 
 	public void setConnectUrl(String connectUrl) {
-		this.connectUrl = connectUrl;
+		if (connectUrl == null) {
+			return;
+		}
+		this.connectUrl = connectUrl.trim();
 	}
 
 	@Column(name = "JDBC_DRIVER")
