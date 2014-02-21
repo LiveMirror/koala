@@ -40,14 +40,6 @@ public interface CISClient {
 
 
     /**
-     * 在 CIS 某个工具中创建一个角色，如果此角色不存在
-     *
-     * @param roleName
-     */
-    void createRoleIfNecessary(Project project, String roleName);
-
-
-    /**
      * 在 CIS 某个工具中将角色同某个用户列表关联
      */
     void assignUsersToRole(Project project, String role, Developer... developers);

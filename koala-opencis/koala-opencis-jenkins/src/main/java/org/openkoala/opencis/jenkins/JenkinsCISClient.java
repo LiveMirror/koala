@@ -113,11 +113,6 @@ public class JenkinsCISClient implements CISClient {
     }
 
     @Override
-    public void createRoleIfNecessary(Project project, String roleName) {
-
-    }
-
-    @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {
         Job job;
         try {
