@@ -50,7 +50,7 @@ public class OrganizationController extends BaseController {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
 		Company parent = getBaseApplication().getEntity(Company.class, parentId);
     	try {
-        	company = organizationApplication.createCompany(parent, company);
+    		company = organizationApplication.createCompany(parent, company);
         	dataMap.put("result", "success");
         	dataMap.put("id", company.getId());
     	} catch (SnIsExistException exception) {
@@ -77,7 +77,7 @@ public class OrganizationController extends BaseController {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
 		Organization parent = getBaseApplication().getEntity(Organization.class, parentId);
     	try {
-        	department = organizationApplication.createDepartment(parent, department);
+    		department = organizationApplication.createDepartment(parent, department);
         	dataMap.put("result", "success");
         	dataMap.put("id", department.getId());
     	} catch (SnIsExistException exception) {

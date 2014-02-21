@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.ResourceApplication;
 import org.openkoala.auth.application.RoleApplication;
 import org.openkoala.auth.application.UserApplication;
@@ -20,8 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
 
 @Controller
 @RequestMapping("/auth/Role")
@@ -101,10 +100,10 @@ public class RoleController {
 		} else {
 			all = roleApplication.pageQueryRoleByUseraccount(start, limit, userAccount);
 		}
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 
 		return dataMap;
 	}
@@ -119,10 +118,10 @@ public class RoleController {
 		initSearchCondition(search,roleNameForSearch);
 
 		Page<RoleVO> all = roleApplication.pageQueryByRoleCustom(start, limit, search);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return dataMap;
 	}
 
@@ -138,10 +137,10 @@ public class RoleController {
 		Page<RoleVO> all = roleApplication.pageQueryNotAssignRoleByUseraccount(page, pagesize, // 
 				userAccount, roleVO);
 
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 
 		return dataMap;
 	}
@@ -174,10 +173,10 @@ public class RoleController {
 		userVoForFind.setId(userId);
 		Page<RoleVO> all = userApplication.pageQueryNotAssignRoleByUser(start, limit, userVoForFind);
 
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 
 		return dataMap;
 	}

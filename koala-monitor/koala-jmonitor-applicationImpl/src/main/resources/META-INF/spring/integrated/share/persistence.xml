@@ -17,7 +17,7 @@
 		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
 	<bean id="km_repository" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
-		<constructor-arg name="entityManagerFactory" ref="km_entityManagerFactory"/>
+		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
 	</bean>
 
 	<bean id="km_queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
