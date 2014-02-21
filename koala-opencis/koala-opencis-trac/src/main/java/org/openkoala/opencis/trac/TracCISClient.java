@@ -38,7 +38,7 @@ public class TracCISClient implements CISClient {
     private static final Logger logger = Logger.getLogger(TracCISClient.class.getName());
 
     private CommandExecutor executor = new CommandExecutor();
-    
+
     private Connection conn;
     /**
      * 执行结果
@@ -67,46 +67,40 @@ public class TracCISClient implements CISClient {
     public void createProject(Project project) {
         //使用java SSH来创建项目
         //1、创建项目
-    	//2、创建项目路径下的conf/passwd文件
+        //2、创建项目路径下的conf/passwd文件
         //初始化命令
         TracCommand createProjectCmd = new TracCreateProjectCommand(configuration, project);
 //        TracCommand createPasswdCmd = new TracCreatePasswdCommand(configuration, project);
         try {
-        	executor.addCommand(createProjectCmd);
+            executor.addCommand(createProjectCmd);
 //        	executor.addCommand(createPasswdCmd);
             success = executor.executeBatch();
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
-            throw new CreateProjectException("创建Trac项目" + project.getProjectName() + "失败，原因：" 
-            		+ e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+            throw new CreateProjectException("创建Trac项目" + project.getProjectName() + "失败，原因："
+                    + e.getMessage(), e);
         }
 
     }
 
     @Override
     public void createUserIfNecessary(Project project, Developer developer) {
-    	 //使用java SSH来创建角色
-    	//1、无论passwd文件是否存在，都先用touch命令尝试
+        //使用java SSH来创建角色
+        //1、无论passwd文件是否存在，都先用touch命令尝试
         //2、读取project的配置信息，包括该角色(用户组)默认的权限
         //3、用命令CommandExecutor来执行TracCreateRoleCommand子类
-    	TracCommand createPasswdCommand = new TracCreatePasswdCommand(configuration, project);
-    	TracCommand createUserCommand = new TracCreateUserCommand(configuration, project, developer);
+        TracCommand createPasswdCommand = new TracCreatePasswdCommand(configuration, project);
+        TracCommand createUserCommand = new TracCreateUserCommand(configuration, project, developer);
         TracCommand createUserToRoleCommand = new TracCreateUserToRoleCommand(configuration, developer.getId(), project);
-        
+
         try {
-        	executor.addCommand(createPasswdCommand);
-        	executor.addCommand(createUserCommand);
-        	executor.addCommand(createUserToRoleCommand);
+            executor.addCommand(createPasswdCommand);
+            executor.addCommand(createUserCommand);
+            executor.addCommand(createUserToRoleCommand);
             success = executor.executeBatch();
         } catch (Exception e) {
-        	logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
         }
-    }
-
-    @Override
-    public void createRoleIfNecessary(Project project, String roleName) {
-        // TODO Auto-generated method stub
-       
     }
 
     public boolean assignUserToRole(Project project, String usrId, String role) {
@@ -124,38 +118,38 @@ public class TracCISClient implements CISClient {
     }
 
 
-	@Override
-	public void removeProject(Project project) {
-		// TODO Auto-generated method stub
-		TracCommand command = new TracRemoveProjectCommand(configuration,project);
-		try {
-			success = executor.executeSync(command);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error(e.getMessage(),e);
-		}
-	}
+    @Override
+    public void removeProject(Project project) {
+        // TODO Auto-generated method stub
+        TracCommand command = new TracRemoveProjectCommand(configuration, project);
+        try {
+            success = executor.executeSync(command);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            logger.error(e.getMessage(), e);
+        }
+    }
 
-	@Override
-	public void removeUser(Project project, Developer developer) {
-		// TODO Auto-generated method stub
-		TracCommand removeUserFromRoleCommand = new TracRemoveUserFromRoleCommand(configuration,developer.getId(),project);
-		TracCommand removeUserCommand = new TracRemoveUserCommand(developer, configuration, project);
-		try {
-			executor.addCommand(removeUserFromRoleCommand);
-			executor.addCommand(removeUserCommand);
-			success = executor.executeBatch();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error(e.getMessage(),e);
-		}
-	}
+    @Override
+    public void removeUser(Project project, Developer developer) {
+        // TODO Auto-generated method stub
+        TracCommand removeUserFromRoleCommand = new TracRemoveUserFromRoleCommand(configuration, developer.getId(), project);
+        TracCommand removeUserCommand = new TracRemoveUserCommand(developer, configuration, project);
+        try {
+            executor.addCommand(removeUserFromRoleCommand);
+            executor.addCommand(removeUserCommand);
+            success = executor.executeBatch();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            logger.error(e.getMessage(), e);
+        }
+    }
 
 
-	@Override
-	public boolean authenticate() {
-		// TODO Auto-generated method stub
-		try {
+    @Override
+    public boolean authenticate() {
+        // TODO Auto-generated method stub
+        try {
             if (conn != null) {
                 return true;
             }
@@ -175,16 +169,16 @@ public class TracCISClient implements CISClient {
             conn = null;
             throw new HostCannotConnectException("无法连接到主机！");
         }
-	}
-	
+    }
 
-	@Override
-	public void assignUsersToRole(Project project, String role, Developer... developers) {
-		// TODO Auto-generated method stub
-		for(Developer developer:developers){
-			assignUserToRole(project, developer.getId(), role);
-		}
-	}
+
+    @Override
+    public void assignUsersToRole(Project project, String role, Developer... developers) {
+        // TODO Auto-generated method stub
+        for (Developer developer : developers) {
+            assignUserToRole(project, developer.getId(), role);
+        }
+    }
 
 
     public boolean isSuccess() {

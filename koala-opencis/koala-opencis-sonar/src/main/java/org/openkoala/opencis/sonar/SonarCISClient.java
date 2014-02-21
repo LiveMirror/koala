@@ -240,10 +240,6 @@ public class SonarCISClient implements CISClient {
         }
     }
 
-    @Override
-    public void createRoleIfNecessary(Project project, String roleName) {
-        // do thing
-    }
 
     @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {

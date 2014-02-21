@@ -212,11 +212,6 @@ public class GitlabClient implements CISClient {
     }
 
     @Override
-    public void createRoleIfNecessary(Project project, String roleName) {
-        // do nothing
-    }
-
-    @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {
         for (Developer developer : developers) {
             Integer userId = getUserIdByDeveloper(developer);
