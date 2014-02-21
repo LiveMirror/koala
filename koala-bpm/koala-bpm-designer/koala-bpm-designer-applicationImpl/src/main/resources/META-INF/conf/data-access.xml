@@ -30,31 +30,26 @@
 		</property>
 	</bean>
 
-	<!-- <bean id="repository" class="com.dayatang.jpa.EntityRepositoryJpa" 
-		/> <bean id="queryChannel" class="com.dayatang.querychannel.service.impl.QueryChannelServiceJpa" 
-		/> -->
-
-<!-- 
-	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName">
-			<value>java:comp/env/jdbc/test</value>
-		</property>
-	</bean>
- -->
- 
 	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
 		<property name="driver" value="${db.jdbc.driver}" />
 		<property name="driverUrl" value="${db.jdbc.connection.url}" />
 		<property name="user" value="${db.jdbc.username}" />
 		<property name="password" value="${db.jdbc.password}" />
-		<property name="maximumActiveTime" value="900000"/>
+		<property name="maximumActiveTime" value="900000" />
 		<property name="prototypeCount" value="5" />
-		<property name="maximumConnectionCount" value="200" />
+		<property name="maximumConnectionCount" value="50" />
 		<property name="minimumConnectionCount" value="20" />
 		<property name="alias" value="default" />
 	</bean>
 
-	<jpa:repositories base-package="org.openkoala.koala.jbpm"
-		entity-manager-factory-ref="entityManagerFactory"
-		transaction-manager-ref="transactionManager" />
+
+	<bean id="repository" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
+		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+		<constructor-arg name="repository" ref="repository" />
+	</bean>
+
+
 </beans>

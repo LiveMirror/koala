@@ -10,6 +10,9 @@ import javax.transaction.TransactionManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.util.Base64;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.ioc.spring.factory.SpringInstanceProvider;
+import org.dayatang.querychannel.Page;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,10 +28,6 @@ import org.openkoala.bpm.application.vo.TaskVO;
 import org.openkoala.bpm.infra.XmlParseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.support.Page;
-import com.dayatang.spring.factory.SpringInstanceProvider;
 
 /**
  * JBPMApplication的核心测试
@@ -305,7 +304,7 @@ public class JBPMApplicationTest {
 		Page<ProcessInstanceVO> vos = getJBPMApplication()
 				.queryRunningProcessInstances("defaultPackage.Trade", "1", 0,
 						100);
-		Assert.assertTrue(vos.getResult().size() > 0);
+		Assert.assertTrue(vos.getData().size() > 0);
 		getJBPMApplication().removeProcessInstance(i);
 	}
 
@@ -317,7 +316,7 @@ public class JBPMApplicationTest {
 		Page<ProcessInstanceVO> vos = getJBPMApplication()
 				.queryCompleteProcessInstances("defaultPackage.Trade", "1", 0,
 						10);
-		Assert.assertTrue(vos.getResult().size() == 0);
+		Assert.assertTrue(vos.getData().size() == 0);
 	}
 
 	/**

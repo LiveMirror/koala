@@ -1,9 +1,13 @@
 package org.openkoala.application.impl;
 
 import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
+
+import org.dayatang.querychannel.Page;
 import org.junit.Test;
 import org.openkoala.auth.application.RoleApplication;
 import org.openkoala.auth.application.UserApplication;
@@ -11,7 +15,6 @@ import org.openkoala.auth.application.vo.RoleVO;
 import org.openkoala.auth.application.vo.UserVO;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import com.dayatang.querychannel.support.Page;
 
 /**
  * UserApplicationImpl测试类
@@ -76,6 +79,7 @@ public class UserApplicationImplTest extends KoalaBaseSpringTestCase {
 		for (int i = 0; i < 5; i++) {
 			UserVO userVO = createUserVO();
 			userVO.setUserAccount(String.valueOf(i));
+			userVO.setEmail(String.valueOf(i)+"@noemail.com");
 			userApplication.saveUser(userVO);
 			assertNotNull(userVO.getId());
 		}
@@ -89,14 +93,15 @@ public class UserApplicationImplTest extends KoalaBaseSpringTestCase {
 		for (int i = 0; i < 50; i++) {
 			UserVO userVO = createUserVO();
 			userVO.setUserAccount(String.valueOf(i));
+			userVO.setEmail(String.valueOf(i)+"@noemail.com");
 			userApplication.saveUser(userVO);
 			assertNotNull(userVO.getId());
 		}
 		Page<UserVO> page = userApplication.pageQueryUser(1, 10);
 		assertNotNull(page);
-		assertNotNull(page.getResult());
-		assertTrue(page.getTotalCount() >= 50);
-		assertTrue(page.getTotalPageCount() >= 5);
+		assertNotNull(page.getData());
+		assertTrue(page.getResultCount() >= 50);
+		assertTrue(page.getPageCount() >= 5);
 	}
 
 	@Test
@@ -156,6 +161,7 @@ public class UserApplicationImplTest extends KoalaBaseSpringTestCase {
 		userVO.setUserAccount("testUser");
 		userVO.setName("testUser");
 		userVO.setUserPassword("testUser");
+		userVO.setEmail("testUser@noemail.com");
 		return userVO;
 	}
 

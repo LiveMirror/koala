@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.bpm.application.JBPMApplication;
 import org.openkoala.bpm.application.ProcessFormOperApplication;
 import org.openkoala.bpm.application.dto.DynaProcessFormDTO;
@@ -25,10 +28,6 @@ import org.openkoala.exception.base.BaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 
 @Transactional
@@ -107,17 +106,17 @@ public class ProcessFormOperApplicationImpl implements
 	public Page<DynaProcessFormDTO> queryDynaProcessFormsByPage(DynaProcessFormDTO search,int currentPage, int pageSize) {
 		
         List<DynaProcessFormDTO> datas = new ArrayList<DynaProcessFormDTO>();
-		String jpql = "select df from DynaProcessForm df join df.template as dt where df.active = ?";
-		Page<DynaProcessForm> page = getQueryChannelService().queryPagedResultByPageNo(jpql, new Object[]{true}, currentPage, pageSize);
+		String jpql = "select df from DynaProcessForm df join df.template as dt where df.active is true";
+		Page<DynaProcessForm> page = getQueryChannelService().createJpqlQuery(jpql).setPage(currentPage, pageSize).pagedList();
 		
-		for (DynaProcessForm processForm : page.getResult()) {
+		for (DynaProcessForm processForm : page.getData()) {
 			processForm.setKeys(null);
 //			datas.add(DynaProcessForm2DTO(processForm));
 			datas.add(EntityTurnToDTOUtil.DynaProcessForm2DTO(processForm));
 			
 		}
-		long start = (page.getCurrentPageNo() - 1)*pageSize;
-		return new Page<DynaProcessFormDTO>(start, page.getTotalPageCount(), pageSize, datas);
+		long start = (page.getPageCount() - 1)*pageSize;
+		return new Page<DynaProcessFormDTO>(start, page.getResultCount(), pageSize, datas);
 	}
 
 	public List<SelectOptions> getDataTypeList() {
@@ -145,9 +144,9 @@ public class ProcessFormOperApplicationImpl implements
 		try {
 			List<ProcessVO> processes = getJBPMApplication().getProcesses();
 			if(processes == null)return datas;
-			String jpql = "select df.processId from DynaProcessForm df where df.active = ?";
+			String jpql = "select df.processId from DynaProcessForm df where df.active is true";
 			//已绑定form的流程列表
-			List<String> existsProcessIds = getQueryChannelService().queryResult(jpql, new Object[]{true});
+			List<String> existsProcessIds = getQueryChannelService().createJpqlQuery(jpql).list();
 			for (ProcessVO process : processes) {
 				//排除已绑定的流程和忽略排除列表
 				if(ignoreExcludeIdList.contains(process.getId()) 
@@ -180,7 +179,7 @@ public class ProcessFormOperApplicationImpl implements
 
 	public DynaProcessFormDTO getDynaProcessFormById(Long id) {
 		String jpql = "from DynaProcessForm fetch all properties where id = ?";
-		List<DynaProcessForm> list = getQueryChannelService().queryResult(jpql, new Object[]{id});
+		List<DynaProcessForm> list = getQueryChannelService().createJpqlQuery(jpql).setParameters(id).list();
 		if(list != null && list.size()>0){
 			DynaProcessForm processForm = list.get(0);
 //			return DynaProcessForm2DTO(processForm);
@@ -198,7 +197,7 @@ public class ProcessFormOperApplicationImpl implements
 		}
 		sb.deleteCharAt(sb.length() - 1).append(")");
 		String jpql = "from DynaProcessForm fetch all properties where id in" + sb.toString();
-		List<DynaProcessForm> list = getQueryChannelService().queryResult(jpql, new Object[0]);
+		List<DynaProcessForm> list = getQueryChannelService().createJpqlQuery(jpql).list();
 		for (DynaProcessForm dynaProcessForm : list) {
 			dynaProcessForm.remove();
 		}

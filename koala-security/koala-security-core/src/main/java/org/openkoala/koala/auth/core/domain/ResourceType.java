@@ -2,10 +2,12 @@ package org.openkoala.koala.auth.core.domain;
 
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import com.dayatang.utils.DateUtils;
+import javax.persistence.Transient;
+
+import org.dayatang.utils.DateUtils;
 
 /**
  * 资源类型
@@ -26,8 +28,8 @@ public class ResourceType extends Party {
 	 * @return
 	 */
 	public static List<ResourceType> findAllResourceType() {
-		return findByNamedQuery("findAllResourceType", new Object[] { "KOALA_MENU", "KOALA_DIRETORY", new Date() },
-				ResourceType.class);
+		return getRepository().createNamedQuery("findAllResourceType").addParameter("name1", "KOALA_MENU").addParameter("name2", "KOALA_DIRETORY")
+				.addParameter("abolishDate", new Date()).list();
 	}
 	
 	/**
@@ -35,8 +37,8 @@ public class ResourceType extends Party {
 	 * @return
 	 */
 	public static List<ResourceType> findMenuType() {
-		return findByNamedQuery("findMenuType", new Object[] { "KOALA_MENU", "KOALA_DIRETORY", new Date() },
-				ResourceType.class);
+		return getRepository().createNamedQuery("findMenuType").addParameter("name1", "KOALA_MENU").addParameter("name2", "KOALA_DIRETORY")
+		.addParameter("abolishDate", new Date()).list();
 	}
 
 	/**
@@ -47,12 +49,10 @@ public class ResourceType extends Party {
 	public static ResourceType newResourceType(String name){
 	    
 	    ResourceType type  = null;
-        List<ResourceType> resources = Resource.getRepository().find("select r from ResourceType r where r.name=?", // 
-        		new Object[]{name}, ResourceType.class);
-        
-        if (resources != null && resources.size() > 0) {
-            type = resources.get(0);
-        }
+	    String jpql = "select r from ResourceType r where r.name=:name";
+	    
+	    type = getRepository().createJpqlQuery(jpql).addParameter("name", name).singleResult();
+
         
         if (type == null) {
 	      type = new ResourceType();
@@ -67,6 +67,7 @@ public class ResourceType extends Party {
 	 * 根据资源类型ID获取资源类型与资源的关系
 	 * @return
 	 */
+	@Transient
 	public List<ResourceTypeAssignment> getResources() {
 		return ResourceTypeAssignment.findResourceByType(getId());
 	}
@@ -75,42 +76,13 @@ public class ResourceType extends Party {
 	 * 删除所有资源类型
 	 */
 	public static void removeAll(){
-		ResourceType.getRepository().executeUpdate("DELETE FROM ResourceType", new Object[]{});
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-		return result;
+		
+		getRepository().createSqlQuery("DELETE FROM ResourceType").executeUpdate();
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		ResourceType other = (ResourceType) obj;
-		if (getName() == null) {
-			if (other.getName() != null) {
-				return false;
-			}
-		} else if (!getName().equals(other.getName())) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+	public String[] businessKeys() {
+		return new String[]{getName(),getAbolishDate().toString()};
 	}
 
 }

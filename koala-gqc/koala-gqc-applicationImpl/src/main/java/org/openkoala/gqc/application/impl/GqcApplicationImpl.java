@@ -10,16 +10,14 @@ import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
+import org.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.gqc.application.GqcApplication;
 import org.openkoala.gqc.core.domain.GeneralQuery;
 import org.openkoala.gqc.core.domain.GeneralQueryEntity;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
-
 /**
  * 通用查询器应用层实现，提供增删改查功能
  *
@@ -85,7 +83,7 @@ public class GqcApplicationImpl implements GqcApplication {
 		try {
 			jpql = new StringBuilder("select _generalQuery from GeneralQuery _generalQuery");
 			conditionVals = new ArrayList<Object>();
-			return getQueryChannelService().queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pagesize);
+			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
 		} catch (Exception e) {
 			throw new RuntimeException("查询失败！", e);
 		}
@@ -121,8 +119,7 @@ public class GqcApplicationImpl implements GqcApplication {
 				jpql = jpql.append(" where _generalQuery.queryName like ?");
 				conditionVals.add("%" + queryName + "%");
 			}
-			
-			return getQueryChannelService().queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pagesize);
+			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
 		} catch (Exception e) {
 			throw new RuntimeException("查询失败！", e);
 		}

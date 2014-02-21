@@ -9,11 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.dayatang.utils.DateUtils;
 import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-
-import com.dayatang.utils.DateUtils;
 
 /**
  * 资源测试
@@ -289,6 +288,7 @@ public class ResourceTest extends KoalaBaseSpringTestCase {
 		resource.setCreateDate(new Date());
 		resource.setName("testResource");
 		resource.setIdentifier("testIdentifier");
+		resource.save();
 		return resource;
 	}
 }

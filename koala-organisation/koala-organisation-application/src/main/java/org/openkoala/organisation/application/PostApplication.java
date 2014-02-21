@@ -2,10 +2,9 @@ package org.openkoala.organisation.application;
 
 import java.util.Set;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.organisation.application.dto.PostDTO;
 import org.openkoala.organisation.domain.Organization;
-
-import com.dayatang.querychannel.support.Page;
 
 public interface PostApplication {
 

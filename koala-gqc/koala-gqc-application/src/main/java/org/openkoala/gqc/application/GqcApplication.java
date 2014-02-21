@@ -3,10 +3,9 @@ package org.openkoala.gqc.application;
 import java.util.Map;
 import java.util.Set;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.core.domain.GeneralQuery;
 import org.openkoala.gqc.core.domain.GeneralQueryEntity;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 

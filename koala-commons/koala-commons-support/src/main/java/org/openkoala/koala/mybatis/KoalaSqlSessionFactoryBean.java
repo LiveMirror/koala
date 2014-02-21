@@ -35,6 +35,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.type.TypeHandler;
+import org.dayatang.domain.Entity;
 import org.jboss.vfs.VirtualFile;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
@@ -47,8 +48,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
-
-import com.dayatang.domain.Entity;
 
 public class KoalaSqlSessionFactoryBean implements
 		FactoryBean<SqlSessionFactory>, InitializingBean,

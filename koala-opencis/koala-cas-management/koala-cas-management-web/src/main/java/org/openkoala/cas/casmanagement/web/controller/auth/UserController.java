@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.RoleApplication;
 import org.openkoala.auth.application.UserApplication;
 import org.openkoala.auth.application.vo.QueryConditionVO;
@@ -22,9 +23,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
-
 @Controller
 @RequestMapping("/auth/User")
 public class UserController {
@@ -81,10 +79,10 @@ public class UserController {
 		initSearchCondition(search,userNameForSearch,userAccountForSearch);
 		Page<UserVO> all = userApplication.pageQueryUserCustom(start, limit,
 				search);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return dataMap;
 	}
 
@@ -108,10 +106,10 @@ public class UserController {
 		}
 		
 
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return dataMap;
 	}
 
@@ -126,10 +124,10 @@ public class UserController {
 		Page<UserVO> all = roleApplication.pageQueryNotAssignUserByRole(page,
 				pagesize, null, roleVoForFind);
 
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return dataMap;
 	}
 
@@ -148,10 +146,10 @@ public class UserController {
 		
 		Page<UserVO> all = roleApplication.pageQueryNotAssignUserByRole(page, pagesize, userVO, roleVO);
 
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 
 		return dataMap;
 	}

@@ -1,6 +1,6 @@
 package com.springapp.mvc;
 
-import com.dayatang.domain.InstanceFactory;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.businesslog.application.BusinessLogApplication;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
 import org.springframework.stereotype.Controller;

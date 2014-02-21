@@ -2,6 +2,7 @@ package org.openkoala.openci.domain;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.openci.AbstractIntegrationTest;
 import org.openkoala.openci.core.GitConfiguration;
@@ -17,6 +18,7 @@ public class ToolConfigurationTest extends AbstractIntegrationTest {
 	private static final String TEST_STR3 = "test3";
 	
 	@Test
+	@Ignore
 	public void testSave() {
 		ToolConfiguration gitConfiguration = createGitConfiguration();
 		ToolConfiguration svnConfiguration = createSvnConfiguration();

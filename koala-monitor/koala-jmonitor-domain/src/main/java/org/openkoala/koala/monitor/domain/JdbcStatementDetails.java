@@ -25,7 +25,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 /**
  * 功能描述：SQL执行明细<br />
@@ -45,27 +45,27 @@ public class JdbcStatementDetails extends AbstractEntity{
 
 	private static final long serialVersionUID = -8440851401946155623L;
 
-	@ManyToOne(optional = true)  
-	@JoinColumn(name="FK_CONN_ID")//
+	
 	private JdbcConnDetails jdbcConn;
 	
-	@Column(name="BEGIN_TIME")
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	private Date beginTime;
 	
-	@Column(name="TIME_CONSUME")
+	
 	private Long timeConsume;
 	
-	@Column(name = "EXECUTE_SQL",length = 1000)
+	
 	private String sql;
 	
-	@Column(name = "DML_TYPE")
+	
 	private String type;
 	
-	@Column(name = "IS_CLOSED")
+	
 	private boolean closed;
 
 
+	@ManyToOne(optional = true)  
+	@JoinColumn(name="FK_CONN_ID")//
 	public JdbcConnDetails getJdbcConn() {
 		return jdbcConn;
 	}
@@ -74,6 +74,8 @@ public class JdbcStatementDetails extends AbstractEntity{
 		this.jdbcConn = jdbcConn;
 	}
 
+	@Column(name="BEGIN_TIME")
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getBeginTime() {
 		return beginTime;
 	}
@@ -82,6 +84,7 @@ public class JdbcStatementDetails extends AbstractEntity{
 		this.beginTime = beginTime;
 	}
 
+	@Column(name="TIME_CONSUME")
 	public Long getTimeConsume() {
 		return timeConsume;
 	}
@@ -90,6 +93,7 @@ public class JdbcStatementDetails extends AbstractEntity{
 		this.timeConsume = timeConsume;
 	}
 
+	@Column(name = "EXECUTE_SQL",length = 1000)
 	public String getSql() {
 		return sql;
 	}
@@ -103,6 +107,7 @@ public class JdbcStatementDetails extends AbstractEntity{
 		}
 	}
 	
+	@Column(name = "DML_TYPE")
 	public String getType() {
 		return type;
 	}
@@ -111,7 +116,7 @@ public class JdbcStatementDetails extends AbstractEntity{
 		this.type = type;
 	}
 
-
+	@Column(name = "IS_CLOSED")
 	public boolean isClosed() {
 		return closed;
 	}
@@ -154,6 +159,12 @@ public class JdbcStatementDetails extends AbstractEntity{
 		return "JdbcSqlDetails [jdbcConn=" + jdbcConn.getId() + ", beginTime="
 				+ beginTime + ", timeConsume=" + timeConsume + ", sql=" + sql
 				+ ", type=" + type + "]";
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

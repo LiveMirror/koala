@@ -1,11 +1,23 @@
 package org.openkoala.businesslog.model;
 
-import com.dayatang.domain.*;
 
-import javax.persistence.*;
-import javax.persistence.Entity;
+
+import org.dayatang.domain.Entity;
+import org.dayatang.domain.EntityRepository;
+import org.dayatang.domain.InstanceFactory;
+
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 
 /**
  * User: zjzhai
@@ -14,23 +26,20 @@ import java.util.List;
  */
 @MappedSuperclass
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
-public abstract class AbstractBusinessLog implements com.dayatang.domain.Entity {
+public abstract class AbstractBusinessLog implements Entity {
 
     private static final String ENTITY_REPOSITORY = "repository_businessLog";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+   
     private Long id;
 
-    @Version
-    @Column(name = "VERSION")
+    
     private int version;
 
-    @Column(name = "LOG_CATEGORY")
+   
     private String category;
 
-    @Column(name = "LOG_CONTENT")
+    
     private String log;
 
     /**
@@ -38,6 +47,9 @@ public abstract class AbstractBusinessLog implements com.dayatang.domain.Entity 
      *
      * @return 实体的标识
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     public Long getId() {
         return id;
     }
@@ -51,6 +63,7 @@ public abstract class AbstractBusinessLog implements com.dayatang.domain.Entity 
         this.id = id;
     }
 
+    @Column(name = "LOG_CONTENT")
     public String getLog() {
         return log;
     }
@@ -59,6 +72,7 @@ public abstract class AbstractBusinessLog implements com.dayatang.domain.Entity 
         this.log = log;
     }
 
+    @Column(name = "LOG_CATEGORY")
     public String getCategory() {
         return category;
     }
@@ -72,6 +86,8 @@ public abstract class AbstractBusinessLog implements com.dayatang.domain.Entity 
      *
      * @return 实体的版本号
      */
+    @Version
+    @Column(name = "VERSION")
     public int getVersion() {
         return version;
     }
@@ -85,12 +101,13 @@ public abstract class AbstractBusinessLog implements com.dayatang.domain.Entity 
         this.version = version;
     }
 
-    @Override
+ 
+    @Transient
     public boolean isNew() {
         return id == null || id.intValue() == 0;
     }
 
-    @Override
+  
     public boolean existed() {
         if (isNew()) {
             return false;
@@ -98,14 +115,15 @@ public abstract class AbstractBusinessLog implements com.dayatang.domain.Entity 
         return getRepository().exists(getClass(), id);
     }
 
-    @Override
+    
     public boolean notExisted() {
         return !existed();
     }
 
-    @Override
+   
     public boolean existed(String propertyName, Object propertyValue) {
-        List<?> entities = getRepository().find(QuerySettings.create(getClass()).eq(propertyName, propertyValue));
+    	
+        List<?> entities = getRepository().createCriteriaQuery(getClass()).eq(propertyName, propertyValue).list();
         return !(entities.isEmpty());
     }
 
@@ -138,24 +156,24 @@ public abstract class AbstractBusinessLog implements com.dayatang.domain.Entity 
      * @return
      */
     @Deprecated
-    public static <T extends com.dayatang.domain.Entity> boolean exists(Class<T> clazz, Serializable id) {
+    public static <T extends org.dayatang.domain.Entity> boolean exists(Class<T> clazz, Serializable id) {
         return getRepository().exists(clazz, id);
     }
 
-    public static <T extends com.dayatang.domain.Entity> T get(Class<T> clazz, Serializable id) {
+    public static <T extends org.dayatang.domain.Entity> T get(Class<T> clazz, Serializable id) {
         return getRepository().get(clazz, id);
     }
 
-    public static <T extends com.dayatang.domain.Entity> T getUnmodified(Class<T> clazz, T entity) {
+    public static <T extends org.dayatang.domain.Entity> T getUnmodified(Class<T> clazz, T entity) {
         return getRepository().getUnmodified(clazz, entity);
     }
 
-    public static <T extends com.dayatang.domain.Entity> T load(Class<T> clazz, Serializable id) {
+    public static <T extends org.dayatang.domain.Entity> T load(Class<T> clazz, Serializable id) {
         return getRepository().load(clazz, id);
     }
 
-    public static <T extends com.dayatang.domain.Entity> List<T> findAll(Class<T> clazz) {
-        return getRepository().find(QuerySettings.create(clazz));
+    public static <T extends org.dayatang.domain.Entity> List<T> findAll(Class<T> clazz) {
+        return getRepository().findAll(clazz);
     }
 
 

@@ -7,14 +7,14 @@
 	<named-query name="findRoleByUserAccount">
 		<query>
 			select role from RoleUserAuthorization rau
-			join rau.role role join rau.user user where user.userAccount=? 
-			and rau.abolishDate>?
+			join rau.role role join rau.user user where user.userAccount=:userAccount
+			and rau.abolishDate>:abolishDate
 		</query>
 	</named-query>
 	
 	<named-query name="isRoleExist">
 		<query>
-			select role from Role role where role.name=? and role.abolishDate>? 
+			select role from Role role where role.name=:name and role.abolishDate>:abolishDate
 		</query>
 	</named-query>
 	
@@ -26,7 +26,7 @@
 	
 	<named-query name="findAllRoles">
 		<query>
-			select role from Role role where role.abolishDate>? 
+			select role from Role role where role.abolishDate>:abolishDate
 		</query>
 	</named-query>
 	

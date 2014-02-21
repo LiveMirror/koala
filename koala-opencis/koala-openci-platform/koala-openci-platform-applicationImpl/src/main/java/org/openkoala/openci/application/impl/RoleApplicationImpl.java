@@ -7,13 +7,12 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.openci.EntityNullException;
 import org.openkoala.openci.application.RoleApplication;
 import org.openkoala.openci.core.Role;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 @Named("roleApplication")
 @Transactional("transactionManager_opencis")
@@ -49,7 +48,7 @@ public class RoleApplicationImpl implements RoleApplication {
 		Date now = new Date();
 		conditionVals.add(now);
 		conditionVals.add(now);
-		return queryChannel.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pagesize);
+		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
 	}
 
 	public void abolishRole(Role[] roles) {

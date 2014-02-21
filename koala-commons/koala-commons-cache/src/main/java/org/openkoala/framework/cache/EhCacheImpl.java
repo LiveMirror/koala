@@ -16,7 +16,7 @@ import net.sf.ehcache.Element;
 * @author lingen.liu  <a href=mailto:lingen.liu@gmail.com">lingen.liu@gmail.com</a> 
 * @date 2013-8-16 下午10:43:34
  */
-public class EhCacheImpl implements com.dayatang.cache.Cache  {
+public class EhCacheImpl implements org.dayatang.cache.Cache  {
 
 	/**
 	 * cache属性

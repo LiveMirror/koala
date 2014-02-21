@@ -1,5 +1,6 @@
 package org.openkoala.gqc.core.domain.utils;
 
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,16 +13,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import oracle.sql.TIMESTAMP;
+
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.domain.IocException;
+import org.dayatang.domain.IocInstanceNotFoundException;
 import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.core.domain.DataSourceType;
 import org.openkoala.gqc.core.exception.SystemDataSourceNotExistException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-
-import com.dayatang.IocException;
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * 抽象查询器
@@ -107,7 +110,7 @@ public abstract class Querier {
 				javax.sql.DataSource systemDataSource = InstanceFactory.getInstance(javax.sql.DataSource.class, dataSource.getDataSourceId());
 			    result = systemDataSource.getConnection();
 			} catch (IocException exception) {
-				if (exception.getCause() instanceof NoSuchBeanDefinitionException) {
+				if (exception instanceof IocInstanceNotFoundException) {
 					throw new SystemDataSourceNotExistException("系统数据源不存在！", exception);
 				}
 			}
@@ -142,6 +145,11 @@ public abstract class Querier {
 						}
 					} else if (rs.getObject(columnIndex) instanceof Timestamp) {
 						map.put(resultSetMetaData.getColumnName(columnIndex), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getTimestamp(columnIndex)));
+					} else if (rs.getObject(columnIndex) instanceof TIMESTAMP) {
+						TIMESTAMP ts = (TIMESTAMP) rs.getObject(columnIndex);
+						map.put(resultSetMetaData.getColumnName(columnIndex), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ts.dateValue()));
+					} else if (rs.getObject(columnIndex) instanceof Clob) {
+						map.put(resultSetMetaData.getColumnName(columnIndex), "Clob data is not support display in the list!");
 					} else {
 						map.put(resultSetMetaData.getColumnName(columnIndex), rs.getObject(columnIndex));
 					}

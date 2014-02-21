@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.organisation.application.OrganizationApplication;
@@ -17,9 +18,6 @@ import org.openkoala.organisation.application.impl.utils.OrganisationUtils;
 import org.openkoala.organisation.domain.Company;
 import org.openkoala.organisation.domain.Department;
 import org.openkoala.organisation.domain.Organization;
-
-import com.dayatang.utils.DateUtils;
-
 /**
  * 组织机构应用实现集成测试
  * @author xmfang

@@ -3,6 +3,7 @@ $(function() {
 	$.get(contextPath + '/employee/get/' + employeeId + '.koala').done(function(result) {
 		var data = result.data;
 		var employeeDetail = $('.employee-detail');
+		$('#navTabs').find('[href="#employeeDetail"] span').html(data.name);
 		employeeDetail.find('[data-id="sn"]').html(data.sn);
 		employeeDetail.find('[data-id="name"]').html(data.name);
 		employeeDetail.find('[data-id="gender"]').html(data.gender == 'MALE' ? '男' : '女');

@@ -13,6 +13,9 @@ import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.gqc.application.DataSourceApplication;
 import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.core.domain.DataSourceType;
@@ -20,10 +23,6 @@ import org.openkoala.gqc.core.domain.GeneralQuery;
 import org.openkoala.gqc.infra.util.DatabaseUtils;
 import org.openkoala.gqc.vo.DataSourceVO;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 数据源应用层实现，处理数据源的增删改查
@@ -85,10 +84,9 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 	}
 
 	public DataSourceVO getDataSourceVoByDataSourceId(String dataSourceId) {
-		String jpql = " select _dataSource from DataSource _dataSource  where _dataSource.dataSourceId = ? ";
+		String jpql = " select _dataSource from DataSource _dataSource  where _dataSource.dataSourceId = :dataSourceId ";
 		try {
-			DataSource dataSource = (DataSource) getQueryChannelService().querySingleResult(jpql,
-					new Object[] { dataSourceId });
+			DataSource dataSource = (DataSource) getQueryChannelService().createJpqlQuery(jpql).addParameter("dataSourceId", dataSourceId).singleResult();
 			if (dataSource != null) {
 				DataSourceVO dataSourceVO = new DataSourceVO();
 				BeanUtils.copyProperties(dataSourceVO, dataSource);
@@ -275,9 +273,8 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 				conditionVals.add(MessageFormat.format("%{0}%", queryVo.getPassword()));
 			}
 
-			Page<DataSource> pages = getQueryChannelService().queryPagedResultByPageNo(jpql.toString(),
-					conditionVals.toArray(), currentPage, pageSize);
-			for (DataSource dataSource : pages.getResult()) {
+			Page<DataSource> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pageSize).pagedList();
+			for (DataSource dataSource : pages.getData()) {
 				DataSourceVO dataSourceVO = new DataSourceVO();
 				// 将domain转成VO
 				try {
@@ -290,7 +287,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 				result.add(dataSourceVO);
 			}
 			
-			return new Page<DataSourceVO>(pages.getCurrentPageNo(), pages.getTotalCount(),
+			return new Page<DataSourceVO>(pages.getPageIndex(), pages.getResultCount(),
 					pages.getPageSize(), result);
 		} catch (Exception e) {
 			throw new RuntimeException("查询数据源列表失败！", e);
@@ -323,6 +320,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 			BeanUtils.copyProperties(dataSource, dataSourceVO);
 			return dataSource.testConnection();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

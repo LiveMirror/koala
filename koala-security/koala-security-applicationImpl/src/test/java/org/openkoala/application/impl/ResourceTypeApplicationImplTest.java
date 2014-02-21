@@ -6,14 +6,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.auth.application.ResourceTypeApplication;
 import org.openkoala.auth.application.vo.ResourceTypeVO;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * ResourceTypeApplicationImpl测试
@@ -70,7 +69,7 @@ public class ResourceTypeApplicationImplTest extends KoalaBaseSpringTestCase {
 		Page<ResourceTypeVO> page = resourceTypeApplication.pageQuery(1, 10);
 		assertNotNull(page);
 		assertTrue(page.getPageSize() == 10);
-		assertTrue(page.getResult().size() > 0);
+		assertTrue(page.getData().size() > 0);
 	}
 
 	@Test

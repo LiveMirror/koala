@@ -1,5 +1,6 @@
 package org.openkoala.organisation.domain;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,16 +15,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.dayatang.domain.CriteriaQuery;
 import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.OrganizationHasPrincipalYetException;
 import org.openkoala.organisation.PostExistException;
 import org.openkoala.organisation.TerminateHasEmployeePostException;
-
-import com.dayatang.domain.QuerySettings;
 
 @Entity
 @DiscriminatorValue("Post")
@@ -34,18 +35,16 @@ public class Post extends Party {
 
 	private static final long serialVersionUID = -2205967098970951498L;
 
-	@ManyToOne
-	@JoinColumn(name = "org_id")
+	
 	private Organization organization;
 
-	@ManyToOne
-	@JoinColumn(name = "job_id")
+	
 	private Job job;
 
-	@Column(name = "description")
+	
 	private String description;
 
-	@Column(name = "org_principal")
+	
 	private boolean organizationPrincipal;
 	
 	public Post() {
@@ -66,6 +65,8 @@ public class Post extends Party {
 		this.organization = organization;
 	}
 
+	@ManyToOne
+	@JoinColumn(name = "org_id")
 	public Organization getOrganization() {
 		return organization;
 	}
@@ -74,6 +75,8 @@ public class Post extends Party {
 		this.organization = organization;
 	}
 
+	@ManyToOne
+	@JoinColumn(name = "job_id")
 	public Job getJob() {
 		return job;
 	}
@@ -82,6 +85,7 @@ public class Post extends Party {
 		this.job = job;
 	}
 
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -90,6 +94,7 @@ public class Post extends Party {
 		this.description = description;
 	}
 
+	@Column(name = "org_principal")
 	public boolean isOrganizationPrincipal() {
 		return organizationPrincipal;
 	}
@@ -112,7 +117,8 @@ public class Post extends Party {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("job", job);
 		params.put("date", date);
-		return getRepository().findByNamedQuery("findByJob", params, Post.class);
+		return getRepository().createNamedQuery("findByJob").addParameter("job", job).addParameter("date", date).list();
+		
 	}
 	
 	/**
@@ -125,7 +131,8 @@ public class Post extends Party {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("organization", organization);
 		params.put("date", date);
-		return getRepository().findByNamedQuery("findByOrganization", params, Post.class);
+		return getRepository().createNamedQuery("findByOrganization").addParameter("organization", organization).addParameter("date", date).list();
+			
 	}
 
 	/**
@@ -144,11 +151,11 @@ public class Post extends Party {
 	 * @return
 	 */
 	public static boolean hasPrincipalPostOfOrganization(Organization organization, Date date) {
-		List<Post> posts = getRepository().find(QuerySettings.create(Post.class)
+		List<Post> posts = getRepository().createCriteriaQuery(Post.class)
 				.eq("organization", organization)
 				.eq("organizationPrincipal", true)
 				.le("createDate", date)
-				.gt("terminateDate", date));
+				.gt("terminateDate", date).list();
 		return posts.isEmpty() ? false : true;
 	}
 	
@@ -173,38 +180,37 @@ public class Post extends Party {
 		super.save();
 	}
 	
+	@Transient
 	private boolean isOrganizationPrincipalBefore() {
 		return getRepository().get(Post.class, getId()).isOrganizationPrincipal();
 	}
 	
 	private boolean nameExist() {
 		Date now = new Date();
-		QuerySettings<Post> querySettings = QuerySettings.create(Post.class);
-		querySettings.eq("name", getName())
+		CriteriaQuery query = getRepository().createCriteriaQuery(Post.class).eq("name", getName())
 			.le("createDate", now)
 			.gt("terminateDate", now);
 		
 		if (getId() != null) {
-			querySettings.notEq("id", getId());
+			query.notEq("id", getId());
 		}
 		
-		Post post = getRepository().getSingleResult(querySettings);
+		Post post =query.singleResult();
 		return post != null;
 	}
 	
 	private boolean postExist() {
 		Date now = new Date();
-		QuerySettings<Post> querySettings = QuerySettings.create(Post.class);
-		querySettings.eq("organization", organization)
+		CriteriaQuery query = getRepository().createCriteriaQuery(Post.class).eq("organization", organization)
 			.eq("job", job)
 			.le("createDate", now)
 			.gt("terminateDate", now);
 		
 		if (getId() != null) {
-			querySettings.notEq("id", getId());
+			query.notEq("id", getId());
 		}
 		
-		Post post = getRepository().getSingleResult(querySettings);
+		Post post = query.singleResult();
 		return post != null;
 	}
 	

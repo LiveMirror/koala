@@ -16,13 +16,13 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
+import org.dayatang.domain.CriteriaQuery;
+import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.core.domain.utils.PagingQuerier;
 import org.openkoala.gqc.core.domain.utils.QueryAllQuerier;
 import org.openkoala.gqc.core.domain.utils.SqlStatmentMode;
-
-import com.dayatang.domain.QuerySettings;
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 通用查询
@@ -38,57 +38,48 @@ public class GeneralQuery extends GeneralQueryEntity {
 	/**
 	 * 数据源
 	 */
-	@ManyToOne
-	@JoinColumn(name = "DATA_SOURCE_ID", nullable = false)
 	private DataSource dataSource;
 	
 	/**
 	 * 查询名称
 	 */
-	@Column(name = "QUERY_NAME", unique = true)
+	
 	private String queryName;
 	
 	/**
 	 * 表名
 	 */
-	@Column(name = "TABLE_NAME", nullable = false)
+	
 	private String tableName;
 	
 	/**
 	 * 描述
 	 */
-	@Column(name = "DESCRIPTION")
+	
 	private String description;
 	
 	/**
 	 * 创建日期
 	 */
-	@Temporal(TemporalType.DATE)
-	@Column(name = "CREATE_DATE")
+	
 	private Date createDate;
 	
 	/**
 	 * 静态查询条件
 	 */
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "GQ_PRE_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
-	@OrderColumn(name = "ORDER_COLUMN")
+	
 	private List<PreQueryCondition> preQueryConditions = new ArrayList<PreQueryCondition>();
 	
 	/**
 	 * 动态查询条件
 	 */
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "GQ_DYNAMIC_QUERIES", joinColumns = @JoinColumn(name = "GQ_ID"))
-	@OrderColumn(name = "ORDER_COLUMN")
+	
 	private List<DynamicQueryCondition> dynamicQueryConditions = new ArrayList<DynamicQueryCondition>();
 	
 	/**
 	 * 查询结果要显示的字段
 	 */
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "GQ_FIELD_DETAILS", joinColumns = @JoinColumn(name = "GQ_ID"))
-	@OrderColumn(name = "ORDER_COLUMN")
+	
 	private List<FieldDetail> fieldDetails = new ArrayList<FieldDetail>();
 	
 	/**
@@ -105,6 +96,8 @@ public class GeneralQuery extends GeneralQueryEntity {
 		
 	}
 	
+	@ManyToOne
+	@JoinColumn(name = "DATA_SOURCE_ID", nullable = false)
 	public DataSource getDataSource() {
 		return dataSource;
 	}
@@ -113,6 +106,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.dataSource = dataSource;
 	}
 
+	@Column(name = "QUERY_NAME", unique = true)
 	public String getQueryName() {
 		return queryName;
 	}
@@ -125,6 +119,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.tableName = tableName;
 	}
 	
+	@Column(name = "TABLE_NAME", nullable = false)
 	public String getTableName() {
 		return tableName;
 	}
@@ -133,6 +128,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.tableName = tableName;
 	}
 
+	@Column(name = "DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}
@@ -141,6 +137,8 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.description = description;
 	}
  
+	@Temporal(TemporalType.DATE)
+	@Column(name = "CREATE_DATE")
 	public Date getCreateDate() {
 		return new Date(createDate.getTime());
 	}
@@ -149,6 +147,9 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.createDate = createDate;
 	}
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "GQ_PRE_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
+	@OrderColumn(name = "ORDER_COLUMN")
 	public List<PreQueryCondition> getPreQueryConditions() {
 		return preQueryConditions;
 	}
@@ -157,6 +158,9 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.preQueryConditions = preQueryConditions;
 	}
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "GQ_DYNAMIC_QUERIES", joinColumns = @JoinColumn(name = "GQ_ID"))
+	@OrderColumn(name = "ORDER_COLUMN")
 	public List<DynamicQueryCondition> getDynamicQueryConditions() {
 		return dynamicQueryConditions;
 	}
@@ -166,6 +170,9 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.dynamicQueryConditions = dynamicQueryConditions;
 	}
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "GQ_FIELD_DETAILS", joinColumns = @JoinColumn(name = "GQ_ID"))
+	@OrderColumn(name = "ORDER_COLUMN")
 	public List<FieldDetail> getFieldDetails() {
 		return fieldDetails;
 	}
@@ -174,6 +181,8 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.fieldDetails = fieldDetails;
 	}
 
+	
+	@Transient
 	public QueryAllQuerier getQueryAllQuerier() {
 		if (queryAllQuerier == null) {
 			queryAllQuerier = new QueryAllQuerier(getQuerySql(), dataSource);
@@ -183,6 +192,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 		return queryAllQuerier;
 	}
 
+	@Transient
 	public PagingQuerier getPagingQuerier() {
 		if (pagingQuerier == null) {
 			pagingQuerier = new PagingQuerier(getQuerySql(), dataSource);
@@ -228,7 +238,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * @return
 	 */
 	public static GeneralQuery findByQueryName(String queryName) {
-		return getRepository().getSingleResult(QuerySettings.create(GeneralQuery.class).containsText("queryName", queryName));
+		return getRepository().createCriteriaQuery(GeneralQuery.class).containsText("queryName", queryName).singleResult();
 	}
 	
 	
@@ -236,6 +246,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * 生成查询SQL语句
 	 * @return
 	 */
+	@Transient
 	public SqlStatmentMode getQuerySql() {
 		return generateCommonQuerySql();
 	}
@@ -244,6 +255,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * 获得可现实的静态条件
 	 * @return
 	 */
+	@Transient
 	public List<PreQueryCondition> getVisiblePreQueryConditions() {
 		List<PreQueryCondition> results = new ArrayList<PreQueryCondition>();
 		for (PreQueryCondition preQueryCondition : preQueryConditions) {
@@ -321,8 +333,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * @return
 	 */
     public static List<GeneralQuery> findByDatasource(DataSource dataSource) {
-    	return getRepository().find(QuerySettings.create(GeneralQuery.class)
-    			.eq("dataSource", dataSource));
+    	return getRepository().createCriteriaQuery(GeneralQuery.class).eq("dataSource", dataSource).list();
     }
 	
     @Override
@@ -334,14 +345,13 @@ public class GeneralQuery extends GeneralQueryEntity {
     }
     
 	private boolean queryNameIsExist() {
-		QuerySettings<GeneralQuery> querySettings =QuerySettings.create(GeneralQuery.class);
-		querySettings.eq("queryName", queryName);
-		
+		CriteriaQuery query = getRepository().createCriteriaQuery(GeneralQuery.class).eq("queryName", queryName);
+	
 		if (getId() != null) {
-			querySettings.notEq("id", getId());
+			query.notEq("id", getId());
 		}
 		
-		return !getRepository().find(querySettings).isEmpty();
+		return !query.list().isEmpty();
 	}
 
 	@Override

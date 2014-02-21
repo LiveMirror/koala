@@ -12,8 +12,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 /**
  * 流程中表单自定义的 VALUE 值
@@ -27,14 +26,13 @@ public class DynaProcessValue extends AbstractEntity {
 	
 	private static final long serialVersionUID = 5053473713859436953L;
 	
-	@Column(name="PROCESS_INSTANCE_ID")
+	
 	private long processInstanceId;
 	
-	@Column(name="KEY_VALUE")
+	
 	private String keyValue;
 	
-	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH }, optional = true,fetch = FetchType.EAGER)  
-	@JoinColumn(name="KEY_ID")
+	
 	private DynaProcessKey dynaProcessKey;
 	
 	
@@ -79,6 +77,7 @@ public class DynaProcessValue extends AbstractEntity {
 				+ dynaProcessKey + "]";
 	}
 	
+	@Column(name="PROCESS_INSTANCE_ID")
 	public long getProcessInstanceId() {
 		return processInstanceId;
 	}
@@ -87,6 +86,7 @@ public class DynaProcessValue extends AbstractEntity {
 		this.processInstanceId = processInstanceId;
 	}
 
+	@Column(name="KEY_VALUE")
 	public String getKeyValue() {
 		return keyValue;
 	}
@@ -95,6 +95,8 @@ public class DynaProcessValue extends AbstractEntity {
 		this.keyValue = keyValue;
 	}
 
+	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH }, optional = true,fetch = FetchType.EAGER)  
+	@JoinColumn(name="KEY_ID")
 	public DynaProcessKey getDynaProcessKey() {
 		return dynaProcessKey;
 	}
@@ -111,7 +113,7 @@ public class DynaProcessValue extends AbstractEntity {
 	 * @return
 	 */
 	public static List<DynaProcessValue> queryDynaProcessValueByProcessInstanceId(long processInstanceId){
-		List<DynaProcessValue> results = DynaProcessValue.getRepository().findByNamedQuery("queryDynaProcessValueByProcessInstanceId", new Object[]{processInstanceId}, DynaProcessValue.class);
+		List<DynaProcessValue> results = DynaProcessValue.getRepository().createNamedQuery("queryDynaProcessValueByProcessInstanceId").setParameters(processInstanceId).list();
         return results;
 	}
 	
@@ -120,9 +122,15 @@ public class DynaProcessValue extends AbstractEntity {
 	 * @param processInstanceId
 	 */
 	public static void transferToHistory(long processInstanceId){
-		List<DynaProcessValue> results = DynaProcessValue.getRepository().findByNamedQuery("queryDynaProcessValueByProcessInstanceId", new Object[]{processInstanceId}, DynaProcessValue.class);
+		List<DynaProcessValue> results = DynaProcessValue.getRepository().createNamedQuery("queryDynaProcessValueByProcessInstanceId").setParameters(processInstanceId).list();
 		for(DynaProcessValue value:results){
 			DynaProcessHistoryValue.copyDynaProcessValue(value);
 		}
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

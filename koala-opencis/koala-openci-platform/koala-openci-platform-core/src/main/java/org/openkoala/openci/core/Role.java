@@ -71,4 +71,10 @@ public class Role extends TimeIntervalEntity {
 		return getName();
 	}
 
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

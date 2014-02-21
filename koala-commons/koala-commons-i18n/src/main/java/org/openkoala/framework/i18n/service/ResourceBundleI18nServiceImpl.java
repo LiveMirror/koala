@@ -1,7 +1,7 @@
 package org.openkoala.framework.i18n.service; 
 
-import com.dayatang.i18n.impl.ResourceBundleI18nService;
-import com.dayatang.i18n.support.I18nServiceAccessor;
+import org.dayatang.i18n.impl.ResourceBundleI18nService;
+import org.dayatang.i18n.support.I18nServiceAccessor;
 
 /**
  * I18nService实现类

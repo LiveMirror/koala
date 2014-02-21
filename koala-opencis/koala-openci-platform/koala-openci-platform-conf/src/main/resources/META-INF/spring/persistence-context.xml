@@ -14,7 +14,7 @@
 	<!-- Instructs Spring to perfrom declarative transaction managemenet on 
 		annotated classes -->
 	<tx:annotation-driven transaction-manager="transactionManager_opencis" />
-	
+
 	<!-- Drives transactions using local JPA APIs -->
 	<bean id="transactionManager_opencis" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
@@ -34,53 +34,46 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="database" value="${db.type}"></property>
-				<property name="showSql" value="${hibernate.show_sql}"></property>
+				<property name="database" value="${opencis.db.Type}"></property>
+				<property name="showSql" value="${opencis.hibernate.show_sql}"></property>
 				<property name="generateDdl" value="true"></property>
-				<property name="databasePlatform" value="${hibernate.dialect}"></property>
+				<property name="databasePlatform" value="${opencis.db.jdbc.dialect}"></property>
 			</bean>
 		</property>
 	</bean>
 
-	<bean id="repository" class="org.openkoala.koala.util.KoalaEntityRepositoryJpa">
-		<property name="entityManager">
-			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-				<property name="persistenceUnitName" value="opencis" />
-			</bean>
-		</property>
+	<bean id="repository" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
+		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-	<bean id="queryChannel" class="org.openkoala.koala.util.KoalaQueryChannelServiceJpa">
-		<property name="entityManager">
-			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-				<property name="persistenceUnitName" value="opencis" />
-			</bean>
-		</property>
+	<bean id="queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+		<constructor-arg name="repository" ref="repository" />
 	</bean>
 
 	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
-		<property name="driver" value="${jdbc.driverClassName}" />
-		<property name="driverUrl" value="${jdbc.url}" />
-		<property name="user" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
+		<property name="driver" value="${opencis.db.jdbc.driver}" />
+		<property name="driverUrl" value="${opencis.db.jdbc.connection.url}" />
+		<property name="user" value="${opencis.db.jdbc.username}" />
+		<property name="password" value="${opencis.db.jdbc.password}" />
 		<property name="prototypeCount" value="5" />
-		<property name="maximumConnectionCount" value="50" />
+		<property name="maximumConnectionCount" value="20" />
 		<property name="minimumConnectionCount" value="10" />
 		<property name="houseKeepingTestSql" value="select 1" />
 		<property name="testBeforeUse" value="true" />
-		<property name="alias" value="opencis" />
+		<property name="alias" value="gqc" />
 	</bean>
-	
-	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-        <property name="corePoolSize" value="10"/>
-        <property name="maxPoolSize" value="50"/>
-        <property name="queueCapacity" value="1000"/>
-        <property name="keepAliveSeconds" value="300"/>
-        <property name="rejectedExecutionHandler">
-            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
-        </property>
-    </bean>
-    
-    <bean id="toolIntegrationExecutor" class="org.openkoala.openci.executor.ToolIntegrationExecutor" />
-    
+
+	<bean id="taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="10" />
+		<property name="maxPoolSize" value="50" />
+		<property name="queueCapacity" value="1000" />
+		<property name="keepAliveSeconds" value="300" />
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+		</property>
+	</bean>
+
+	<bean id="toolIntegrationExecutor" class="org.openkoala.openci.executor.ToolIntegrationExecutor" />
+
 </beans>

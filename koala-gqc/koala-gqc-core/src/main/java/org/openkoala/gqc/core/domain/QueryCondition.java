@@ -6,9 +6,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.dayatang.domain.ValueObject;
 import org.openkoala.gqc.core.domain.utils.SqlStatmentMode;
-
-import com.dayatang.domain.ValueObject;
 
 /**
  * 查询条件基类	
@@ -23,22 +22,22 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 	/**
 	 * 字段名称
 	 */
-	@Column(name = "FIELD_NAME")
+	
 	private String fieldName;
 
 	/**
 	 * 查询操作
 	 */
-	@Enumerated(EnumType.STRING)
-	@Column(name = "QUERY_OPERATION")
+	
 	private QueryOperation queryOperation;
 	
 	/**
      * 字段数据类型（匹配java.sql.Types中的常量）
      */
-	@Transient
+	
     private Integer fieldType;
 	
+	@Column(name = "FIELD_NAME")
 	public String getFieldName() {
 		return fieldName;
 	}
@@ -47,6 +46,8 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 		this.fieldName = fieldName;
 	}
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "QUERY_OPERATION")
 	public QueryOperation getQueryOperation() {
 		return queryOperation;
 	}
@@ -58,7 +59,8 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 	public int compareTo(QueryCondition other) {
 		return getFieldName().compareTo(other.getFieldName());
 	}
-
+	
+	@Transient
     public Integer getFieldType() {
         return fieldType;
     }

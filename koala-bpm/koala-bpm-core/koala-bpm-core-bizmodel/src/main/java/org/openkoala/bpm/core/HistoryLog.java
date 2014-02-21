@@ -3,11 +3,12 @@ package org.openkoala.bpm.core;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 @Entity
 @Table
@@ -32,12 +33,13 @@ public class HistoryLog extends AbstractEntity {
 	
 	private String comment;//备注
 	
-	@Lob
+	
 	private String processData;//流程级参数
 	
-	@Lob
+	
 	private String taskData;//节点级参数
 	
+	@Column
 	public String getUser() {
 		return user;
 	}
@@ -45,7 +47,8 @@ public class HistoryLog extends AbstractEntity {
 	public void setUser(String user) {
 		this.user = user;
 	}
-
+	
+	@Column
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -54,7 +57,7 @@ public class HistoryLog extends AbstractEntity {
 		this.createDate = createDate;
 	}
 	
-	
+	@Column
 	public String getNodeName() {
 		return nodeName;
 	}
@@ -63,6 +66,7 @@ public class HistoryLog extends AbstractEntity {
 		this.nodeName = nodeName;
 	}
 
+	@Column
 	public String getResult() {
 		return result;
 	}
@@ -71,6 +75,7 @@ public class HistoryLog extends AbstractEntity {
 		this.result = result;
 	}
 
+	@Column
 	public String getComment() {
 		return comment;
 	}
@@ -87,6 +92,7 @@ public class HistoryLog extends AbstractEntity {
 		this.processInstanceId = processInstanceId;
 	}
 
+	@Lob
 	public String getProcessData() {
 		return processData;
 	}
@@ -95,6 +101,7 @@ public class HistoryLog extends AbstractEntity {
 		this.processData = processData;
 	}
 
+	@Lob
 	public String getTaskData() {
 		return taskData;
 	}
@@ -103,6 +110,7 @@ public class HistoryLog extends AbstractEntity {
 		this.taskData = taskData;
 	}
 
+	@Column
 	public long getNodeId() {
 		return nodeId;
 	}
@@ -133,6 +141,7 @@ public class HistoryLog extends AbstractEntity {
 		return result;
 	}
 
+	@Column
 	public String getProcessId() {
 		return processId;
 	}
@@ -213,12 +222,18 @@ public class HistoryLog extends AbstractEntity {
 	 * @return
 	 */
 	public static HistoryLog queryLastActivedNodeId(long processInstanceId){
-		String jpql = "from HistoryLog where processInstanceId = ? order by id desc";
-		List<HistoryLog> historys = HistoryLog.getRepository().find(jpql, new Object[]{processInstanceId}, HistoryLog.class);
+		String jpql = "from HistoryLog where processInstanceId = :processInstanceId order by id desc";
+		List<HistoryLog> historys = HistoryLog.getRepository().createJpqlQuery(jpql).addParameter("processInstanceId", processInstanceId).list();
 		if(historys==null){
 			return null;
 		}
 		return historys.get(0);
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

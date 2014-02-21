@@ -2,9 +2,11 @@ package org.openkoala.cas.casmanagement.application.impl;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.ws.rs.core.Application;
+
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.cas.casmanagement.application.CasUserApplication;
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * 从Spring容器中获取bean

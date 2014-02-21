@@ -14,6 +14,9 @@ import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.organisation.EmployeeMustHaveAtLeastOnePostException;
 import org.openkoala.organisation.application.EmployeeApplication;
 import org.openkoala.organisation.application.dto.EmployeeDTO;
@@ -23,10 +26,6 @@ import org.openkoala.organisation.domain.EmployeePostHolding;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 员工应用实现层类
@@ -132,10 +131,9 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 	private Page<EmployeeDTO> queryResult(EmployeeDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals,
 			int currentPage, int pagesize) {
 		assembleJpqlAndConditionValues(example, jpql, conditionPrefix, conditionVals);
-		Page<Employee> employeePage = getQueryChannelService().queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pagesize);
-		
-		return new Page<EmployeeDTO>(Page.getStartOfPage(currentPage, pagesize), 
-				employeePage.getTotalCount(), pagesize, transformToDtos(employeePage.getResult()));
+		Page<Employee> employeePage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
+		return new Page<EmployeeDTO>(employeePage.getPageIndex(), 
+				employeePage.getResultCount(), pagesize, transformToDtos(employeePage.getData()));
 	}
 	
 	private void assembleJpqlAndConditionValues(EmployeeDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals) {

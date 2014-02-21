@@ -19,10 +19,8 @@ import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.dayatang.domain.AbstractEntity;
 import org.openkoala.openci.EntityNullException;
-
-import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.QuerySettings;
 
 @Entity
 @Table(name = "projects")
@@ -32,22 +30,19 @@ public class Project extends AbstractEntity {
 
 	private String name;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "project_detail_id")
+	
 	private ProjectDetail projectDetail;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "project_status")
+	
 	private ProjectStatus projectStatus;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+	
 	private Set<ProjectDeveloper> developers = new HashSet<ProjectDeveloper>();
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+	
 	private Set<Tool> tools = new HashSet<Tool>();
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "create_date")
+	
 	private Date createDate = new Date();
 
 	public Project() {
@@ -71,7 +66,7 @@ public class Project extends AbstractEntity {
 	}
 
 	public static boolean isExixtByName(String name) {
-		List<Project> projects = getRepository().find(QuerySettings.create(Project.class).eq("name", name));
+		List<Project> projects = getRepository().createCriteriaQuery(Project.class).eq("name", name).list();
 		return projects.size() > 0;
 	}
 	
@@ -91,19 +86,25 @@ public class Project extends AbstractEntity {
 		this.tools = tools;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
 	public Set<ProjectDeveloper> getDevelopers() {
 		return developers;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
 	public Set<Tool> getTools() {
 		return tools;
 	}
 
 	@SuppressWarnings("deprecation")
-	public String getCreateDate() {
-		return createDate.toLocaleString();
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "create_date")
+	public Date getCreateDate() {
+		return createDate;
 	}
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "project_detail_id")
 	public ProjectDetail getProjectDetail() {
 		return projectDetail;
 	}
@@ -112,12 +113,20 @@ public class Project extends AbstractEntity {
 		this.projectDetail = projectDetail;
 	}
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "project_status")
 	public ProjectStatus getProjectStatus() {
 		return projectStatus;
 	}
 
 	public void setProjectStatus(ProjectStatus projectStatus) {
 		this.projectStatus = projectStatus;
+	}
+	
+	
+
+	protected void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 	@Override
@@ -140,6 +149,12 @@ public class Project extends AbstractEntity {
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

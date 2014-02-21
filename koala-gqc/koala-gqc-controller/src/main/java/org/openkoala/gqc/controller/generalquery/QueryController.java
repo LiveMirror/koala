@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.application.GqcApplication;
 import org.openkoala.gqc.core.domain.DynamicQueryCondition;
 import org.openkoala.gqc.core.domain.GeneralQuery;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 查询控制器
@@ -117,10 +116,10 @@ public class QueryController {
 		
 		Page<Map<String, Object>> data = gqcApplication.pagingQuery(generalQuery, page, pagesize);
 
-		result.put("Rows", data.getResult());
+		result.put("Rows", data.getData());
 		result.put("start", page * pagesize - pagesize);
 		result.put("limit", pagesize);
-		result.put("Total", data.getTotalCount());
+		result.put("Total", data.getResultCount());
 		return result;
 	}
 

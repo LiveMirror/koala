@@ -2,6 +2,7 @@ package org.openkoala.openci.application;
 
 import java.util.List;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.openci.core.CasUserConfiguration;
 import org.openkoala.openci.core.GitConfiguration;
 import org.openkoala.openci.core.JenkinsConfiguration;
@@ -10,8 +11,6 @@ import org.openkoala.openci.core.SonarConfiguration;
 import org.openkoala.openci.core.SvnConfiguration;
 import org.openkoala.openci.core.ToolConfiguration;
 import org.openkoala.openci.core.TracConfiguration;
-
-import com.dayatang.querychannel.support.Page;
 
 public interface ToolConfigurationApplication {
 

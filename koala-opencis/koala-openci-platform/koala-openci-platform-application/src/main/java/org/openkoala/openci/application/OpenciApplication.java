@@ -1,6 +1,7 @@
 package org.openkoala.openci.application;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
+
 
 public interface OpenciApplication {
 

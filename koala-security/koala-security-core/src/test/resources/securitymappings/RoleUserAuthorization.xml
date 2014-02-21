@@ -6,15 +6,14 @@
 
 	<named-query name="findAuthorizationByUser">
 		<query>
-			select rua from RoleUserAuthorization rua where rua.user=? 
-			and rua.abolishDate>?
+			select rua from RoleUserAuthorization rua where rua.user=:user
+			and rua.abolishDate>:abolishDate
 		</query>
 	</named-query>
 	
 	<named-query name="findUserAuthorizationByRole">
 		<query>
-			select auth from RoleUserAuthorization auth
-			join auth.role role where role.id=? and auth.abolishDate>?
+			select auth from RoleUserAuthorization auth where auth.role.id=:roleId and auth.abolishDate>:abolishDate
 		</query>
 	</named-query>
 	

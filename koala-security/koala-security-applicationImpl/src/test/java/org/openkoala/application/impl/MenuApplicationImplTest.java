@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +17,6 @@ import org.openkoala.auth.application.vo.ResourceVO;
 import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * MenuApplicationImpl测试
@@ -87,7 +86,7 @@ public class MenuApplicationImplTest extends KoalaBaseSpringTestCase {
 	public void testPageQueryMenu() {
 		Page<ResourceVO> page = menuApplication.pageQueryMenu(1, 10);
 		assertNotNull(page);
-		assertTrue(page.getResult().size() > 0);
+		assertTrue(page.getData().size() > 0);
 	}
 
 	@Test

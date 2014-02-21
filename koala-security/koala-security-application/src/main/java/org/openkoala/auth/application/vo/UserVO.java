@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.dayatang.utils.DateUtils;
 import org.openkoala.koala.auth.core.domain.User;
-
-import com.dayatang.utils.DateUtils;
 
 public class UserVO extends IdentityVO implements Serializable {
 	/**

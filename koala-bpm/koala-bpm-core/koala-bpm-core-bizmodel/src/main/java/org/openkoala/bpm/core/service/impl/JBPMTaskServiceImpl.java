@@ -26,8 +26,6 @@ import org.openkoala.bpm.core.KoalaProcessInfo;
 import org.openkoala.bpm.core.ProcessInstanceExpandLog;
 import org.openkoala.bpm.core.service.JBPMTaskService;
 
-import com.dayatang.domain.QuerySettings;
-
 @Named("jbpmTaskService")
 @SuppressWarnings("unchecked")
 public class JBPMTaskServiceImpl implements JBPMTaskService {
@@ -89,7 +87,7 @@ public class JBPMTaskServiceImpl implements JBPMTaskService {
 	}
 
 	public List<KoalaProcessInfo> findActiveProcess() {
-		String sql = "from KoalaProcessInfo k where k.isActive is true";
+		String sql = "from KoalaProcessInfo k where k.active is true";
 		return jbpmEM.createQuery(sql).getResultList();
 	}
 
@@ -103,12 +101,7 @@ public class JBPMTaskServiceImpl implements JBPMTaskService {
 	}
 
 	public KoalaProcessInfo getKoalaProcessInfo(Map<String, Object> params) {
-		QuerySettings<KoalaProcessInfo> qSetting = QuerySettings
-				.create(KoalaProcessInfo.class);
-		for (String prop : params.keySet()) {
-			qSetting.eq(prop, params.get(prop));
-		}
-		return KoalaProcessInfo.findKoalaProcessInfo(qSetting);
+		return KoalaProcessInfo.findKoalaProcessInfo(params);
 	}
 
 	public void addProcessInfo(KoalaProcessInfo info) {

@@ -19,14 +19,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import com.dayatang.domain.Entity;
-import com.dayatang.domain.EntityRepository;
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.domain.QuerySettings;
+import org.dayatang.domain.Entity;
+import org.dayatang.domain.EntityRepository;
+import org.dayatang.domain.InstanceFactory;
 
 /**
  * 抽象实体类，可作为所有遗留系统领域实体的基类。
@@ -46,6 +45,7 @@ public abstract class KmBaseLegacyEntity implements Entity {
 	 * 
 	 * @return
 	 */
+	@Transient
 	public boolean isNew() {
 		return getId() == null;
 	}
@@ -87,7 +87,7 @@ public abstract class KmBaseLegacyEntity implements Entity {
 	}
 
 	public static <T extends Entity> List<T> findAll(Class<T> clazz) {
-		return getRepository().find(QuerySettings.create(clazz));
+		return getRepository().findAll(clazz);
 	}
 
 	@Override

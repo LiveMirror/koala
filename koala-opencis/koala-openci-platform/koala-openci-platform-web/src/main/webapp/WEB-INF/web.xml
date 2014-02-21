@@ -46,7 +46,7 @@
 	</filter-mapping>
 	
 	<listener>
-		<listener-class>com.dayatang.spring.webapp.DayatangContextLoaderListener</listener-class>
+		<listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
 	</listener>
 
 	<session-config>

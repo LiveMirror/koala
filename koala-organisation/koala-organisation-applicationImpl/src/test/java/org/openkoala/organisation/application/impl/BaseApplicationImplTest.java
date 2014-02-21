@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.dayatang.domain.AbstractEntity;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +24,6 @@ import org.openkoala.organisation.domain.Party;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import com.dayatang.domain.AbstractEntity;
-
 /**
  * BaseApplicationImpl单元测试
  * @author xmfang

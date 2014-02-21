@@ -2,9 +2,8 @@ package org.openkoala.auth.application;
 
 import java.util.List;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.vo.ResourceTypeVO;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 资源类型应用层接口

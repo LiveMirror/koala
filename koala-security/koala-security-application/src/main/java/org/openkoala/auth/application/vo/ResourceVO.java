@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.dayatang.utils.DateUtils;
 import org.openkoala.koala.auth.core.domain.Resource;
-
-import com.dayatang.utils.DateUtils;
 
 public class ResourceVO extends PartyVO implements Serializable {
 

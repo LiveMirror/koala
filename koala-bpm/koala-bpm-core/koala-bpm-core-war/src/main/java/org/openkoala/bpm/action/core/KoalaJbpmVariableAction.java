@@ -3,8 +3,7 @@ package org.openkoala.bpm.action.core;
 
 import javax.inject.Inject;
 
-import com.dayatang.querychannel.support.Page;
-
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.action.BaseAction;
 import org.openkoala.bpm.application.KoalaJbpmVariableApplication;
 import org.openkoala.bpm.application.vo.*;
@@ -33,10 +32,10 @@ public class KoalaJbpmVariableAction extends BaseAction {
 	
 	public String pageJson() {
 		Page<KoalaJbpmVariableVO> all = koalaJbpmVariableApplication.pageQueryKoalaJbpmVariable(koalaJbpmVariableVO, page, pagesize);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 	

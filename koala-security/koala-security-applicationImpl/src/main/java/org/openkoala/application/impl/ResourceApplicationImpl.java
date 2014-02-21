@@ -1,6 +1,7 @@
 package org.openkoala.application.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dayatang.querychannel.Page;
+import org.dayatang.utils.DateUtils;
 import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.auth.application.ResourceApplication;
 import org.openkoala.auth.application.vo.ResourceVO;
@@ -22,14 +25,11 @@ import org.openkoala.koala.auth.core.domain.Role;
 import org.openkoala.util.DateFormatUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dayatang.querychannel.support.Page;
-import com.dayatang.utils.DateUtils;
-
 @Remote
 @Named("urlApplication")
 @Stateless(name = "ResourceApplication")
 @Transactional(value = "transactionManager_security")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class ResourceApplicationImpl extends BaseImpl implements ResourceApplication {
 	
     public static  ResourceVO domainObject2Vo(Resource resource) {
@@ -68,7 +68,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
     
     public boolean isResourceEmpty(){
     	String jpql = "select count(r.name) from Resource r";
-    	Long count = queryChannel().querySingleResult(jpql, new Object[]{});
+    	Long count = (Long) queryChannel().createJpqlQuery(jpql).singleResult();
     	if(count==0){
     		return true;
     	}
@@ -99,7 +99,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
             }
         }
         
-        List<Resource> list = queryChannel().queryResult(hql.toString(), conditionVals.toArray());
+        List<Resource> list = queryChannel().createJpqlQuery(hql.toString()).setParameters(conditionVals).list();
         if(list != null){
             for (Resource o : list) {
                 result.add(domainObject2Vo(o));
@@ -261,11 +261,11 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 
     private Page<ResourceVO> basePageQuery(String query, Object[] params, int currentPage, int pageSize) {
         List<ResourceVO> result = new ArrayList<ResourceVO>();
-        Page<Resource> pages = queryChannel().queryPagedResultByPageNo(query, params, currentPage, pageSize);
-        for (Resource ne : pages.getResult()) {
+        Page<Resource> pages = queryChannel().createJpqlQuery(query).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
+        for (Resource ne : pages.getData()) {
             result.add(domainObject2Vo(ne));
         }
-        Page<ResourceVO> returnPage = new Page<ResourceVO>(pages.getCurrentPageNo(), pages.getTotalCount(),
+        Page<ResourceVO> returnPage = new Page<ResourceVO>(pages.getPageIndex(), pages.getResultCount(),
                 pages.getPageSize(), result);
         return returnPage;
     }
@@ -276,7 +276,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
                         + "not in(select r.id from org.openkoala.koala.auth.core.domain.Role m,"
                         + "org.openkoala.koala.auth.core.domain.UrlResource r,"
                         + " org.openkoala.koala.auth.core.domain.IdentityResourceAuthorization t where m.id=t.identity.id and r.id=t.resource.id "
-                        + " and m.id=?1)", new Object[] {roleVO.getId() }, currentPage, pageSize);
+                        + " and m.id=?1)", new Object[] {roleVO.getId() }, currentPage-1, pageSize);
     }
 
     public boolean isNameExist(ResourceVO resourceVO) {

@@ -2,8 +2,10 @@ package org.openkoala.bpm.KoalaBPM.web.controller.auth;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.ResourceApplication;
 import org.openkoala.auth.application.ResourceTypeApplication;
 import org.openkoala.auth.application.vo.ResourceVO;
@@ -12,8 +14,6 @@ import org.openkoala.koala.auth.ss3adapter.ehcache.CacheUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
 
 @Controller
 @RequestMapping("/auth/Resource")
@@ -40,10 +40,10 @@ public class ResourceController {
 		int start = Integer.parseInt(page);
 		int limit = Integer.parseInt(pagesize);
 		Page<ResourceVO> all = resourceApplication.pageQueryNotAssignByRole(start, limit, roleVO);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return dataMap;
 	}
 

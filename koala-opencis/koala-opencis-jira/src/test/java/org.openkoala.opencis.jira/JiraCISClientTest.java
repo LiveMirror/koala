@@ -18,9 +18,9 @@ import java.lang.reflect.Field;
 @Ignore
 public class JiraCISClientTest {
 
-    private String username = "xxxx";
+    private String username = "foreverosstest";
 
-    private JiraCISClient client = new JiraCISClient("http://localhost:8080/", username, "12345678");
+    private JiraCISClient client = new JiraCISClient("http://localhost:8080/", username, "f12345678");
 
     @Before
     public void setUp() throws Exception {

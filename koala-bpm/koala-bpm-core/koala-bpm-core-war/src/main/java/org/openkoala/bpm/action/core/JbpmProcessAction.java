@@ -4,14 +4,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.action.BaseAction;
 import org.openkoala.bpm.application.JBPMApplication;
 import org.openkoala.bpm.application.vo.HistoryLogVo;
 import org.openkoala.bpm.application.vo.KoalaProcessInfoVO;
 import org.openkoala.bpm.application.vo.ProcessInstanceVO;
 import org.openkoala.bpm.application.vo.ProcessVO;
-
-import com.dayatang.querychannel.support.Page;
 
 public class JbpmProcessAction extends BaseAction{
 
@@ -63,10 +62,10 @@ public class JbpmProcessAction extends BaseAction{
 	 */
 	public String queryRunningProcess(){
 		Page<ProcessInstanceVO> all = this.jbpmApplication.queryRunningProcessInstances(processId,versionNum,page, pagesize);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 	
@@ -76,10 +75,10 @@ public class JbpmProcessAction extends BaseAction{
 	 */
 	public String queryCompleteProcess(){ 
 		Page<ProcessInstanceVO> all = this.jbpmApplication.queryCompleteProcessInstances(processId,versionNum,page, pagesize);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 	
@@ -109,10 +108,10 @@ public class JbpmProcessAction extends BaseAction{
 	
 	public String queryProcessByProcessId(){
 		Page<ProcessInstanceVO> all = null;//this.jbpmApplication.queryAllProcess(processId)
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 	

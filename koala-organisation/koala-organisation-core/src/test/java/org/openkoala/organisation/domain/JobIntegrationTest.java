@@ -2,13 +2,12 @@ package org.openkoala.organisation.domain;
 
 import java.util.Date;
 
+import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.organisation.TheJobHasPostAccountabilityException;
 import org.openkoala.organisation.utils.OrganisationUtils;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-
-import com.dayatang.utils.DateUtils;
 
 /**
  * 职务集成测试

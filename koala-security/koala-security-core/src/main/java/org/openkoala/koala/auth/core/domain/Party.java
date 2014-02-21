@@ -4,9 +4,9 @@
 package org.openkoala.koala.auth.core.domain;
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import com.dayatang.domain.QuerySettings;
 
 /**
  * "当事人"实体类。是机构（Organization）、岗位（Post）和员工（Employee）的共同基类。
@@ -21,15 +21,10 @@ public abstract class Party extends TimeIntervalEntity {
 
 	private static final long serialVersionUID = 4024294648318993439L;
 	
-	@Column(name="NAME",nullable = false)
-	//@Size(min = 1, message = "name.is.empty")
 	private String name;
 
-	@Column(name = "SERIAL_NUMBER")
-	//@Size(min = 1, message = "serialNumber.is.empty")
 	private String serialNumber;
 
-	@Column(name = "SORT_ORDER")
 	private int sortOrder;
 
 	public Party() {
@@ -40,6 +35,7 @@ public abstract class Party extends TimeIntervalEntity {
 		this.serialNumber = serialNumber;
 	}
 
+	@Column(name="NAME",nullable = false)
 	public String getName() {
 		return name;
 	}
@@ -48,6 +44,7 @@ public abstract class Party extends TimeIntervalEntity {
 		this.name = name;
 	}
 
+	@Column(name = "SERIAL_NUMBER")
 	public String getSerialNumber() {
 		return serialNumber;
 	}
@@ -56,6 +53,7 @@ public abstract class Party extends TimeIntervalEntity {
 		this.serialNumber = serialNumber;
 	}
 
+	@Column(name = "SORT_ORDER")
 	public int getSortOrder() {
 		return sortOrder;
 	}
@@ -84,10 +82,9 @@ public abstract class Party extends TimeIntervalEntity {
 	 * @return
 	 */
 	public static <T extends Party> T getBySerialNumber(Class<T> partyClass, String serialNumber, Date queryDate) {
-		return getRepository().getSingleResult(QuerySettings.create(partyClass)
-				.eq("serialNumber", serialNumber)
+		return getRepository().createCriteriaQuery(partyClass).eq("serialNumber", serialNumber)
 				.le("createDate", queryDate)
-				.gt("abolishDate", queryDate));
+				.gt("abolishDate", queryDate).singleResult();
 	}
 
 	/**
@@ -113,14 +110,52 @@ public abstract class Party extends TimeIntervalEntity {
 	 * @return
 	 */
 	public static <T extends Party> T findByName(Class<T> partyClass, String name) {
-		return getRepository().getSingleResult(QuerySettings.create(partyClass)
-				.eq("Name", name));
+		return getRepository().createCriteriaQuery(partyClass).eq("Name", name).singleResult();
 	}
 
 
 	@Override
 	public String toString() {
-		return "[" + serialNumber + "]" + name;
+		return "Party [name=" + name + ", serialNumber=" + serialNumber
+				+ ", sortOrder=" + sortOrder + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((serialNumber == null) ? 0 : serialNumber.hashCode());
+		result = prime * result + sortOrder;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof Party))
+			return false;
+		Party other = (Party) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (serialNumber == null) {
+			if (other.serialNumber != null)
+				return false;
+		} else if (!serialNumber.equals(other.serialNumber))
+			return false;
+		if (sortOrder != other.sortOrder)
+			return false;
+		return true;
+	}
+	
+	
+	
 }
 

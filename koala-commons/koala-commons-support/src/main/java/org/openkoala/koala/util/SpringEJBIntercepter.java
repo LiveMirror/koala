@@ -20,12 +20,11 @@ import javax.interceptor.InvocationContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.domain.InstanceProvider;
+import org.dayatang.ioc.spring.factory.SpringInstanceProvider;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.domain.InstanceProvider;
-import com.dayatang.spring.factory.SpringProvider;
 
 /**
  * EJB拦截器，用于返回SpringBean的调用，
@@ -146,7 +145,7 @@ public class SpringEJBIntercepter {
 				property = CONFIG_VALUE_DEFAULT;
 			}
 			try {
-				instanceProvider = new SpringProvider(new String[] { property });
+				instanceProvider = new SpringInstanceProvider(new String[] { property });
 				InstanceFactory.setInstanceProvider(instanceProvider);
 			} catch (Exception e) {
 				logger.error(

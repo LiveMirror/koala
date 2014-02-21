@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.organisation.application.PostApplication;
@@ -17,9 +18,6 @@ import org.openkoala.organisation.domain.Company;
 import org.openkoala.organisation.domain.Department;
 import org.openkoala.organisation.domain.Job;
 import org.openkoala.organisation.domain.Post;
-
-import com.dayatang.utils.DateUtils;
-
 /**
  * 岗位应用接口实现集成测试
  * @author xmfang
@@ -53,10 +51,10 @@ public class PostApplicationImplIntegrationTest extends AbstractIntegrationTest 
 
 	@Test
 	public void testPagingQueryPosts() {
-		List<PostDTO> postDTOs = postApplication.pagingQueryPosts(new PostDTO(), 1, 1).getResult();
+		List<PostDTO> postDTOs = postApplication.pagingQueryPosts(new PostDTO(), 1, 1).getData();
 		assertEquals(1, postDTOs.size());
 		
-		List<PostDTO> postDTOs2 = postApplication.pagingQueryPosts(new PostDTO(), 1, 10).getResult();
+		List<PostDTO> postDTOs2 = postApplication.pagingQueryPosts(new PostDTO(), 1, 10).getData();
 		assertTrue(postDTOs2.contains(PostDTO.generateDtoBy(post1)));
 		assertTrue(postDTOs2.contains(PostDTO.generateDtoBy(post2)));
 	}
@@ -66,10 +64,10 @@ public class PostApplicationImplIntegrationTest extends AbstractIntegrationTest 
 		Job job3 = organisationUtils.createJob("出纳", "JOB-XXX3", date);
 		Post post3 = organisationUtils.createPost("出纳", "POST-XXX3", job3, department, date);
 		
-		List<PostDTO> postDTOs = postApplication.pagingQueryPostsOfOrganizatoin(department, new PostDTO(), 1, 1).getResult();
+		List<PostDTO> postDTOs = postApplication.pagingQueryPostsOfOrganizatoin(department, new PostDTO(), 1, 1).getData();
 		assertEquals(1, postDTOs.size());
 		
-		List<PostDTO> postDTOs2 = postApplication.pagingQueryPostsOfOrganizatoin(department, new PostDTO(), 1, 10).getResult();
+		List<PostDTO> postDTOs2 = postApplication.pagingQueryPostsOfOrganizatoin(department, new PostDTO(), 1, 10).getData();
 		assertEquals(2, postDTOs2.size());
 		assertTrue(postDTOs2.contains(PostDTO.generateDtoBy(post1)));
 		assertTrue(postDTOs2.contains(PostDTO.generateDtoBy(post3)));

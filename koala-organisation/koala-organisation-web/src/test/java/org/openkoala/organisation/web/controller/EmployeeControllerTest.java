@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.dayatang.querychannel.Page;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,10 +38,6 @@ import org.openkoala.organisation.domain.Post;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.support.Page;
-import com.dayatang.spring.factory.SpringInstanceProvider;
 
 /**
  * EmployeeController单元测试
@@ -74,7 +71,7 @@ public class EmployeeControllerTest {
 		when(employeeApplication.pagingQueryEmployees(new EmployeeDTO(), 1, 10))
 				.thenReturn(employeePage);
 		assertEquals(
-				employeePage.getResult(),
+				employeePage.getData(),
 				employeeController.pagingQuery(1, 10, new EmployeeDTO()).get(
 						"Rows"));
 	}
@@ -91,7 +88,7 @@ public class EmployeeControllerTest {
 				employeeApplication.pagingQueryEmployeesByOrganization(
 						new EmployeeDTO(), organization, 1, 10)).thenReturn(
 				employeePage);
-		assertEquals(employeePage.getResult(), employeeController
+		assertEquals(employeePage.getData(), employeeController
 				.pagingQueryByOrganization(1, 10, new EmployeeDTO(), 1L, false)
 				.get("Rows"));
 	}
@@ -109,7 +106,7 @@ public class EmployeeControllerTest {
 						.pagingQueryEmployeesByOrganizationAndChildren(
 								new EmployeeDTO(), organization, 1, 10))
 				.thenReturn(employeePage);
-		assertEquals(employeePage.getResult(), employeeController
+		assertEquals(employeePage.getData(), employeeController
 				.pagingQueryByOrganization(1, 10, new EmployeeDTO(), 1L, true)
 				.get("Rows"));
 	}

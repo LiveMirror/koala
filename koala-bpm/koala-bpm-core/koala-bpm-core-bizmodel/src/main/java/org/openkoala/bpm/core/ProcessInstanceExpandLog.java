@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
-import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.QuerySettings;
+import org.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.CriteriaQuery;
 
 @Entity
 @Table
@@ -19,7 +19,7 @@ public class ProcessInstanceExpandLog extends AbstractEntity{
 	
 	private String processName;//步骤名称
 	
-	@Lob
+	
 	private String processData;//流程级参数
 	
 	private int state;
@@ -43,14 +43,13 @@ public class ProcessInstanceExpandLog extends AbstractEntity{
 	
 		this.processName = processName;
 	}
-
-	public String getProcessData() {
 	
+	@Lob
+	public String getProcessData() {
 		return processData;
 	}
 
 	public void setProcessData(String processData) {
-	
 		this.processData = processData;
 	}
 
@@ -65,13 +64,14 @@ public class ProcessInstanceExpandLog extends AbstractEntity{
 	}
 	
 	public static ProcessInstanceExpandLog find(Map<String,Object> params){
-		QuerySettings<ProcessInstanceExpandLog> qSetting = QuerySettings.create(ProcessInstanceExpandLog.class);
+		CriteriaQuery query = getRepository().createCriteriaQuery(ProcessInstanceExpandLog.class);
+		
 		for(String prop:params.keySet()){
 			if(params.get(prop)!=null){
-				qSetting.eq(prop, params.get(prop));
+				query.eq(prop, params.get(prop));
 			}
 		}
-		return getRepository().getSingleResult(qSetting);
+		return query.singleResult();
 	}
 	
 	@Override
@@ -105,6 +105,12 @@ public class ProcessInstanceExpandLog extends AbstractEntity{
 	@Override
 	public String toString() {
 		return "ProcessInstanceExpandLog [processName=" + processName + "]";
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

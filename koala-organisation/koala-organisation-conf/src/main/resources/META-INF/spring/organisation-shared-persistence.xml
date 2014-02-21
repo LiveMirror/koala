@@ -16,20 +16,13 @@
 		http://www.springframework.org/schema/aop 
 		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-	<bean id="repository_org" class="org.openkoala.koala.util.KoalaEntityRepositoryJpa">
-		<property name="entityManager">
-			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-				<property name="persistenceUnitName" value="default" />
-			</bean>
-		</property>
+
+	<bean id="repository_org" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
+		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-	<bean id="queryChannel_org" class="org.openkoala.koala.util.KoalaQueryChannelServiceJpa">
-		<property name="entityManager">
-			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-				<property name="persistenceUnitName" value="default" />
-			</bean>
-		</property>
+	<bean id="queryChannel_org" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+		<constructor-arg name="repository" ref="repository_org" />
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager_org" />

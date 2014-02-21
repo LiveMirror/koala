@@ -2,10 +2,9 @@ package org.openkoala.auth.application;
 
 import java.util.List;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.vo.ResourceVO;
 import org.openkoala.auth.application.vo.RoleVO;
-
-import com.dayatang.querychannel.support.Page;
 
 public interface MenuApplication {
 

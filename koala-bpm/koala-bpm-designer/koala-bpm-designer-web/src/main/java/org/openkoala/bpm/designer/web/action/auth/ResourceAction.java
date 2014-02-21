@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.inject.Inject;
+
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.ResourceApplication;
 import org.openkoala.auth.application.ResourceTypeApplication;
 import org.openkoala.auth.application.vo.ResourceVO;
 import org.openkoala.auth.application.vo.RoleVO;
 import org.openkoala.koala.auth.ss3adapter.ehcache.CacheUtil;
-import com.dayatang.querychannel.support.Page;
+
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ResourceAction extends ActionSupport {
@@ -103,10 +106,10 @@ public class ResourceAction extends ActionSupport {
 		int start = Integer.parseInt(page);
 		int limit = Integer.parseInt(pagesize);
 		Page<ResourceVO> all = resourceApplication.pageQueryNotAssignByRole(start, limit, roleVO);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getResultCount());
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 

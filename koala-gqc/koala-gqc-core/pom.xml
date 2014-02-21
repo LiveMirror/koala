@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.openkoala.gqc</groupId>
 		<artifactId>koala-gqc</artifactId>
-		<version>2.1.0-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>koala-gqc-core</artifactId>
 	<name>koala-gqc-core</name>
@@ -32,12 +32,12 @@
 		</dependency>
 		<!-- 加入对DOMAIN层的依赖 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-domain</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-domain</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-querychannel</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-query-channel</artifactId>
 		</dependency>
 		<!-- 加入CONF依赖 -->
 		<dependency>
@@ -66,6 +66,11 @@
 			<groupId>commons-dbutils</groupId>
 			<artifactId>commons-dbutils</artifactId>
 		</dependency>
+        <dependency>
+        	<groupId>com.oracle</groupId>
+        	<artifactId>ojdbc14</artifactId>
+        	<version>10.2.0.4.0</version>
+        </dependency>
 		
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>

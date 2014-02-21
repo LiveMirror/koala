@@ -1,7 +1,5 @@
 package org.openkoala.bpm.designer.impl;
 
-import com.dayatang.utils.Assert;
-
 import org.apache.commons.net.util.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -26,6 +24,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.dayatang.utils.Assert;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;

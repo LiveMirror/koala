@@ -1,9 +1,10 @@
 package org.openkoala.koala.auth.ss3adapter.ehcache;
 
+import org.dayatang.cache.Cache;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.koala.auth.AuthDataService;
 import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * 缓存工具类
@@ -14,8 +15,8 @@ public final class CacheUtil {
 
 	private static AuthDataService provider;
 
-	private static com.dayatang.cache.Cache userCache = null;
-	private static com.dayatang.cache.Cache resourceCache = null;
+	private static Cache userCache = null;
+	private static Cache resourceCache = null;
 	
 	private CacheUtil() {
 		
@@ -32,9 +33,9 @@ public final class CacheUtil {
 	 * 获取资源缓存信息
 	 * @return
 	 */
-	public static com.dayatang.cache.Cache getResourceCache() {
+	public static Cache getResourceCache() {
 		if (resourceCache == null) {
-			resourceCache = InstanceFactory.getInstance(com.dayatang.cache.Cache.class, "resource_cache");
+			resourceCache = InstanceFactory.getInstance(Cache.class, "resource_cache");
 		}
 		return resourceCache;
 	}
@@ -43,9 +44,9 @@ public final class CacheUtil {
 	 * 获取用户缓存信息
 	 * @return
 	 */
-	public static com.dayatang.cache.Cache getUserCache() {
+	public static Cache getUserCache() {
 		if (userCache == null) {
-			userCache = InstanceFactory.getInstance(com.dayatang.cache.Cache.class, "user_cache");
+			userCache = InstanceFactory.getInstance(Cache.class, "user_cache");
 		}
 		return userCache;
 	}

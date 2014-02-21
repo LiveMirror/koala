@@ -6,8 +6,6 @@ import java.util.Set;
 import org.openkoala.organisation.domain.OrganizationAbstractEntity;
 import org.openkoala.organisation.domain.Party;
 
-import com.dayatang.domain.AbstractEntity;
-
 /**
  * 组织系统基础应用接口，提供了一些通用的应用服务.
  * @author xmfang

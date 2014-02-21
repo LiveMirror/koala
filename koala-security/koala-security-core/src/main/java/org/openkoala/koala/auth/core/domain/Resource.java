@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.dayatang.utils.DateUtils;
+import org.dayatang.utils.DateUtils;
 
 /**
  * 资源的父类
@@ -30,32 +30,32 @@ public class Resource extends Party {
 	private static final long serialVersionUID = 7184025731035256920L;
 
 	/** 是否有效 **/
-	@Column(name = "ISVALID")
+	
 	private boolean isValid;
 
 	/** 资源标识 **/
-	@Column(name = "IDENTIFIER", nullable = false)
+	
 	private String identifier;
 
 	/** 资源级别 **/
-	@Column(name = "[LEVEL]")
+	
 	private String level;
 
 	/** 资源图标 **/
-	@Column(name = "MENU_ICON")
+	
 	private String menuIcon;
 
 	/** 资源描述 **/
-	@Column(name = "DESCRIPTION")
+	
 	private String desc;
 
 	/** 角色资源授权关系 **/
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resource")
 	private Set<IdentityResourceAuthorization> authorizations = new HashSet<IdentityResourceAuthorization>();
 	
-	@Transient
+	
 	private Resource parent;
 	
+	@Transient
 	public Resource getParent() {
 		return parent;
 	}
@@ -64,6 +64,7 @@ public class Resource extends Party {
 		this.parent = parent;
 	}
 
+	@Transient
 	public List<Resource> getChildren() {
 		return children;
 	}
@@ -72,9 +73,10 @@ public class Resource extends Party {
 		this.children.add(child);
 	}
 
-	@Transient
+	
 	private List<Resource> children = new ArrayList<Resource>();
 
+	@Column(name = "IDENTIFIER", nullable = false)
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -84,7 +86,7 @@ public class Resource extends Party {
 	}
 
 	
-	
+	@Column(name = "[LEVEL]")
 	public String getLevel() {
 		return level;
 	}
@@ -93,6 +95,7 @@ public class Resource extends Party {
 		this.level = level;
 	}
 
+	@Column(name = "DESCRIPTION")
 	public String getDesc() {
 		return desc;
 	}
@@ -101,6 +104,7 @@ public class Resource extends Party {
 		this.desc = desc;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "resource")
 	public Set<IdentityResourceAuthorization> getAuthorizations() {
 		return authorizations;
 	}
@@ -109,6 +113,7 @@ public class Resource extends Party {
 		this.authorizations = authorizations;
 	}
 
+	@Column(name = "ISVALID")
 	public boolean isValid() {
 		return isValid;
 	}
@@ -117,6 +122,7 @@ public class Resource extends Party {
 		this.isValid = isValid;
 	}
 
+	@Column(name = "MENU_ICON")
 	public String getMenuIcon() {
 		return menuIcon;
 	}
@@ -161,7 +167,7 @@ public class Resource extends Party {
 	 * @return
 	 */
 	public static List<Resource> findResourceByRole(Long roleId) {
-		return Resource.findByNamedQuery("findResourceByRole", new Object[] { roleId, new Date() }, Resource.class);
+		return getRepository().createNamedQuery("findResourceByRole").addParameter("roleId", roleId).addParameter("abolishDate", new Date()).list();
 	}
 
 	/**
@@ -171,9 +177,9 @@ public class Resource extends Party {
 	 */
 	public static List<Resource> findChildByParent(Long parentId) {
 		if (parentId == null) {
-			return Resource.findByNamedQuery("findTopLevelResource", new Object[] { "1", new Date() }, Resource.class);
+			return getRepository().createNamedQuery("findTopLevelResource").addParameter("abolishDate", new Date()).list();
 		} 
-		return Resource.findByNamedQuery("findChildByParent", new Object[] { parentId, new Date() }, Resource.class);
+		return getRepository().createNamedQuery("findChildByParent").addParameter("parentId", parentId).addParameter("abolishDate", new Date()).list();
 	}
 
 	/**
@@ -185,18 +191,14 @@ public class Resource extends Party {
 	public static List<Resource> findChildByParentAndUser(Long parentId, String userAccount) {
 		if (parentId == null) {
 			if ("".equals(userAccount)) {
-				return Resource.findByNamedQuery("findTopLevelResource", //
-						new Object[] { "1", new Date() }, Resource.class);
+				return getRepository().createNamedQuery("findTopLevelResource").addParameter("abolishDate",  new Date() ).list();
 			}
-			return Resource.findByNamedQuery("findTopLevelResourceByUser", //
-					new Object[] { userAccount, new Date(), new Date() }, Resource.class);
+			return getRepository().createNamedQuery("findTopLevelResourceByUser").addParameter("userAccount", userAccount).addParameter("roleUserAuthorizationAbolishDate", new Date()).addParameter("identityResourceAuthorizationAbolishDate", new Date()).list();
 		} else {
 			if ("".equals(userAccount)) {
-				return Resource.findByNamedQuery("findChildByParent",  //
-						new Object[] { parentId, new Date() }, Resource.class);
+				return getRepository().createNamedQuery("findChildByParent").addParameter("parentId", parentId).addParameter("abolishDate", new Date()).list();
 			} 
-			return Resource.findByNamedQuery("findChildByParentAndUser", //
-					new Object[] { parentId, userAccount, new Date(), new Date() }, Resource.class);
+			return getRepository().createNamedQuery("findChildByParentAndUser").addParameter("parentId", parentId).addParameter("userAccount", userAccount).addParameter("identityResourceAuthorizationAbolishDate", new Date()).addParameter("roleUserAuthorizationAbolishDate", new Date()).list();
 		}
 	}
 
@@ -274,7 +276,7 @@ public class Resource extends Party {
 	 * @return
 	 */
 	public static List<Role> findRoleByResource(String identifier) {
-		return Resource.findByNamedQuery("findRoleByResource", new Object[] { identifier }, Role.class);
+		return getRepository().createNamedQuery("findRoleByResource").addParameter("identifier", identifier).list();
 	}
 
 	/**
@@ -284,9 +286,9 @@ public class Resource extends Party {
 	 * @return
 	 */
 	public static boolean hasPrivilegeByRole(Long resId, Long roleId) {
-		List<IdentityResourceAuthorization> ls = Resource.findByNamedQuery("queryPrivilegeByRole", //
-				new Object[] { resId, roleId, new Date() }, //
-				IdentityResourceAuthorization.class);
+		List<IdentityResourceAuthorization> ls = getRepository().createNamedQuery("queryPrivilegeByRole").addParameter("resId", resId)
+				.addParameter("roleId", roleId).addParameter("abolishDate", new Date()).list();
+				
 		return !ls.isEmpty();
 	}
 
@@ -297,9 +299,9 @@ public class Resource extends Party {
 	 * @return
 	 */
 	public static boolean hasPrivilegeByUser(String identifier, String userAccount) {
-		List<IdentityResourceAuthorization> ls = Resource.findByNamedQuery("queryPrivilegeByUser", //
-				new Object[] { identifier, userAccount }, //
-				IdentityResourceAuthorization.class);
+		
+		List<IdentityResourceAuthorization> ls = getRepository().createNamedQuery("queryPrivilegeByUser").addParameter("identifier", identifier)
+				.addParameter("userAccount", userAccount).list();
 		return !ls.isEmpty();
 	}
 
@@ -309,7 +311,7 @@ public class Resource extends Party {
 	 * @return
 	 */
 	public static boolean hasChildByParent(Long parentId) {
-		return !Resource.findByNamedQuery("hasChildByParent", new Object[] { parentId }, Resource.class).isEmpty();
+		return !getRepository().createNamedQuery("hasChildByParent").addParameter("parentId", parentId).list().isEmpty();
 	}
 
 	/**
@@ -319,8 +321,9 @@ public class Resource extends Party {
 	 * @return
 	 */
 	public static boolean isMenu(Resource resource) {
-		List<Resource> resources = Resource.findByNamedQuery("findResourceById", new Object[] { "KOALA_MENU", //
-				"KOALA_DIRETORY", resource.getId() }, Resource.class);
+		
+		List<Resource> resources = getRepository().createNamedQuery("findResourceById").addParameter("name1", "KOALA_MENU")
+				.addParameter("name2", "KOALA_DIRETORY").addParameter("id", resource.getId()).list();
 		if (resources != null && !resources.isEmpty()) {
 			return true;
 		}
@@ -337,8 +340,11 @@ public class Resource extends Party {
 	 */
 	public static Resource newResource(String name, String identifier, String level, String menuIcon) {
 	    Resource resource  = null;
-	    List<Resource> resources = Resource.getRepository().find("select r from Resource r where r.name = ? " + //
-	    		"and r.identifier = ?", new Object[]{name,identifier}, Resource.class);
+	    String jpql = "select r from Resource r where r.name =:name " + //
+	    		"and r.identifier = :identifier";
+	    
+	    List<Resource> resources = getRepository().createJpqlQuery(jpql).addParameter("name", name)
+	    		.addParameter("identifier", identifier).list();
 	    if (resources!=null && resources.size()>0){
 	        resource = resources.get(0);
 	    }
@@ -362,18 +368,18 @@ public class Resource extends Party {
 	 * 
 	 * @return
 	 */
+	@Transient
 	public boolean isNameExist() {
-		return !Resource.findByNamedQuery("isResouceNameExist", 
-				new Object[] { getName(), new Date() }, 
-				Resource.class).isEmpty();
+		return !getRepository().createNamedQuery("isResouceNameExist").addParameter("name", getName())
+				.addParameter("abolishDate", new Date()).list().isEmpty();
 	}
 	
 	/**
 	 * 删除所有资源
 	 */
 	public static void removeAll(){
-		String sql = "DELETE FROM Resource";
-		Resource.getRepository().executeUpdate(sql, new Object[]{});
+		String sql = "DELETE FROM KS_RESOURCE";
+		getRepository().createSqlQuery(sql).executeUpdate();
 	}
 
 	/**
@@ -381,9 +387,9 @@ public class Resource extends Party {
 	 * 
 	 * @return
 	 */
+	@Transient
 	public boolean isIdentifierExist() {
-		return !Resource.findByNamedQuery("isResourceIdentifierExist", new Object[] { getIdentifier(), new Date() },
-				Resource.class).isEmpty();
+		return !getRepository().createNamedQuery("isResourceIdentifierExist").addParameter("abolishDate", new Date()).addParameter("identifier", getIdentifier() ).list().isEmpty();
 	}
 	
 	public static List<Resource> getRootResources() {
@@ -413,43 +419,55 @@ public class Resource extends Party {
 		return results;
 	}
 
+
+	@Override
+	public String toString() {
+		return "Resource [isValid=" + isValid + ", identifier=" + identifier
+				+ ", level=" + level + ", menuIcon=" + menuIcon + ", desc="
+				+ desc + ", authorizations=" + authorizations + ", parent="
+				+ parent + ", children=" + children + "]";
+	}
+
+	public static List<Resource> hasParent() {
+		return getRepository().createNamedQuery("hasParent").addParameter("abolishDate", new Date()).list();
+	}
+
+	@Override
+	public String[] businessKeys() {
+		return new String[]{identifier};
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
+		int result = super.hashCode();
+		result = prime * result
+				+ ((getName() == null) ? 0 : getName().hashCode());
+		result = prime * result + ((getAbolishDate() == null) ? 0 : getAbolishDate().hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (!super.equals(obj))
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (!(obj instanceof Resource))
 			return false;
-		}
 		Resource other = (Resource) obj;
-		if (identifier == null) {
-			if (other.identifier != null) {
+		if (getName() == null) {
+			if (other.getName() != null)
 				return false;
-			}
-		} else if (!identifier.equals(other.identifier)) {
+		} else if (!getName().equals(other.getName()))
 			return false;
-		}
+		if (getAbolishDate() == null) {
+			if (other.getAbolishDate() != null)
+				return false;
+		} else if (!getAbolishDate().equals(other.getAbolishDate()))
+			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Resource [name=" + this.getName() + ",children=" + children + "]";
-	}
-
-	public static List<Resource> hasParent() {
-		return Resource.getRepository().findByNamedQuery("hasParent", new Object[]{new Date()}, Resource.class);
-	}
+	
 
 }

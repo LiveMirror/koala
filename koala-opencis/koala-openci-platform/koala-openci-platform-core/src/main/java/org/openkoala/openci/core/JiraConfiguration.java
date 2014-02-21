@@ -17,4 +17,10 @@ public class JiraConfiguration extends ToolConfiguration {
 		super(name, serviceUrl, username, password);
 	}
 
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

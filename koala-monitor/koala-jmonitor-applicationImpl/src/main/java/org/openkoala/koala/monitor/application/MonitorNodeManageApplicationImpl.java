@@ -17,6 +17,7 @@ package org.openkoala.koala.monitor.application;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,9 @@ import javax.interceptor.Interceptors;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.exception.base.BaseException;
 import org.openkoala.koala.commons.KoalaDateUtils;
 import org.openkoala.koala.monitor.core.DataPolicyHandler;
@@ -45,10 +49,6 @@ import org.openkoala.koala.monitor.model.ServerStatusVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 功能描述：<br />
@@ -173,7 +173,7 @@ public class MonitorNodeManageApplicationImpl implements
 	@Override
 	public Page<MonitorWarnInfoVo> queryMonitorWarnInfos(
 			MonitorWarnInfoVo search, int page, int pagesize) {
-		
+		//TODO
 		return null;
 	}
 
@@ -188,37 +188,38 @@ public class MonitorNodeManageApplicationImpl implements
 			
 			String jpql = "select AVG(h.timeConsume) from HttpDetails h where h.timeConsume>0 and h.beginTime>?";
 			Object[] params = new Object[]{todayBegin};
-			Double avg = getQueryChannelService().querySingleResult(jpql, params);
+			Double avg = (Double) getQueryChannelService().createJpqlQuery(jpql).setParameters(Arrays.asList(params)).singleResult();
 			if(avg != null){
 				avg = new BigDecimal(avg/1000).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue(); 
 				monitorStatus.setPageAvgResponseTime(avg);
 				
 			}
 			jpql = "select AVG(h.timeConsume),h.uri from HttpDetails h where h.timeConsume>0 and h.beginTime>? group by h.uri order by AVG(h.timeConsume) desc";
-			Object[] objs = getQueryChannelService().querySingleResult(jpql, params);
+			Object[] objs = (Object[]) getQueryChannelService().createJpqlQuery(jpql).setParameters(Arrays.asList(params)).singleResult();
 			if(objs !=null && objs.length>1){
 				monitorStatus.setMaxAvgTimePage(objs[1].toString());
 			}
 			
 			jpql = "select count(*) from MethodDetails m where m.beginTime>?";
-			Long count = getQueryChannelService().querySingleResult(jpql, params);
+			Long count = (Long) getQueryChannelService().createJpqlQuery(jpql).setParameters(Arrays.asList(params)).singleResult();
 			monitorStatus.setMethodCallCount(Integer.parseInt(count +""));
 			
 			jpql = "select count(*) from MethodDetails m where m.beginTime>? and m.successed=?";
 			params = new Object[]{todayBegin,false};
-			count = getQueryChannelService().querySingleResult(jpql, params);
+			count = (Long) getQueryChannelService().createJpqlQuery(jpql).setParameters(Arrays.asList(params)).singleResult();
 			monitorStatus.setMethodExceptionCount(Integer.parseInt(count +""));
 			
 			jpql = "select count(m.method),m.method from MethodDetails m where m.beginTime>? group by m.method order by count(m.method) desc";
 			params = new Object[]{todayBegin};
-			objs = getQueryChannelService().querySingleResult(jpql, params);
+			objs = (Object[]) getQueryChannelService().createJpqlQuery(jpql).setParameters(Arrays.asList(params)).singleResult();
 			if(objs !=null && objs.length>1){
 				monitorStatus.setMostCallMethod(objs[1].toString());
 			}
 			
 			jpql = "select AVG(m.timeConsume),m.method from MethodDetails m where m.beginTime>? group by m.method order by AVG(m.timeConsume) desc";
 			params = new Object[]{todayBegin};
-			objs = getQueryChannelService().querySingleResult(jpql, params);
+			objs = (Object[]) getQueryChannelService().createJpqlQuery(jpql).setParameters(Arrays.asList(params)).singleResult();
+					
 			if(objs !=null && objs.length>1){
 				monitorStatus.setMaxAvgTimeMethod(objs[1].toString());
 			}

@@ -7,15 +7,15 @@
 	<named-query name="findByResource">
 		<query>
 			select assignment from ResourceTypeAssignment assignment left join
-			assignment.resource resource where resource.id=? and assignment.abolishDate>?
+			assignment.resource resource where resource.id=:resourceId and assignment.abolishDate>:abolishDate
 		</query>
 	</named-query>
 	
 	<named-query name="findResourceByType">
 		<query>
 			select assignment from ResourceTypeAssignment assignment join
-    		assignment.resourceType resourceType where resourceType.id=?
-    		and assignment.abolishDate>?
+    		assignment.resourceType resourceType where resourceType.id=:resourceTypeId
+    		and assignment.abolishDate>:abolishDate
 		</query>
 	</named-query>
 	

@@ -20,6 +20,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,8 +34,6 @@ import org.openkoala.koala.monitor.model.JdbcStatementDetailsVo;
 import org.openkoala.koala.monitor.model.MainStatVo;
 import org.openkoala.koala.monitor.model.MethodDetailsVo;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 功能描述：<br />
