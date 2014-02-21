@@ -71,7 +71,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>  
                 <configuration> 
                     <!-- 设置扫描target/classes内部文件变化时间间隔 -->  
-                    <!--<scanIntervalSeconds>10</scanIntervalSeconds>-->  
+                    <scanIntervalSeconds>1000000</scanIntervalSeconds>
                     <webApp> 
                         <contextPath>/</contextPath> 
                     </webApp> 

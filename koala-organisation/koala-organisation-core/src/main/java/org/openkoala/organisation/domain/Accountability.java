@@ -19,7 +19,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.dayatang.domain.AbstractEntity;
 import com.dayatang.domain.QuerySettings;
 import com.dayatang.utils.DateUtils;
 

@@ -98,7 +98,7 @@ public class DataSource extends GeneralQueryEntity {
 	}
 
 	public void setConnectUrl(String connectUrl) {
-		this.connectUrl = connectUrl;
+		this.connectUrl = connectUrl.trim();
 	}
 
 	public String getJdbcDriver() {

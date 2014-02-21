@@ -1,5 +1,6 @@
 package org.openkoala.gqc.core.domain.utils;
 
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import oracle.sql.TIMESTAMP;
 
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -142,6 +145,11 @@ public abstract class Querier {
 						}
 					} else if (rs.getObject(columnIndex) instanceof Timestamp) {
 						map.put(resultSetMetaData.getColumnName(columnIndex), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getTimestamp(columnIndex)));
+					} else if (rs.getObject(columnIndex) instanceof TIMESTAMP) {
+						TIMESTAMP ts = (TIMESTAMP) rs.getObject(columnIndex);
+						map.put(resultSetMetaData.getColumnName(columnIndex), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ts.dateValue()));
+					} else if (rs.getObject(columnIndex) instanceof Clob) {
+						map.put(resultSetMetaData.getColumnName(columnIndex), "Clob data is not support display in the list!");
 					} else {
 						map.put(resultSetMetaData.getColumnName(columnIndex), rs.getObject(columnIndex));
 					}
