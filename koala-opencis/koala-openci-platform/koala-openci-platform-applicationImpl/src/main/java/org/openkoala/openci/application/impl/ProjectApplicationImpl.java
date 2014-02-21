@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.koala.mojo.KoalaProjectCreate;
 import org.openkoala.openci.EntityNullException;
 import org.openkoala.openci.application.ProjectApplication;
@@ -18,9 +20,6 @@ import org.openkoala.openci.core.Tool;
 import org.openkoala.openci.dto.ProjectDto;
 import org.openkoala.openci.dto.ProjectQueryDto;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 @Named
 @Transactional("transactionManager_opencis")
@@ -105,7 +104,7 @@ public class ProjectApplicationImpl implements ProjectApplication {
 				conditionVals.add(projectQueryDto.getEndDate());
 			}
 		}
-		return queryChannel.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pagesize);
+		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
 	}
 
 	public Project getDetail(long projectId) {

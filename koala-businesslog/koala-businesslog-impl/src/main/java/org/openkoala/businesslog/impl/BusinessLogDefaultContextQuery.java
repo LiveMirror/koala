@@ -1,6 +1,6 @@
 package org.openkoala.businesslog.impl;
 
-import com.dayatang.domain.InstanceFactory;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.businesslog.QueryMethodInvokeException;
 import org.openkoala.businesslog.common.ContextQueryHelper;
 import org.openkoala.businesslog.config.BusinessLogContextQuery;

@@ -1,55 +1,61 @@
 package org.openkoala.opencis.gitlab;
 
+import java.text.MessageFormat;
+
 public class GitlabConfiguration {
 
-	private String token;
-	
-	private String gitHostURL;
+    private String token;
 
-	private String adminUsername;
-	
-	private String adminPassword;
-	
-	private String adminEmail;
-	
-	public String getToken() {
-		return token;
-	}
+    private String gitlabHostURL;
 
-	public void setToken(String token) {
-		this.token = token;
-	}
+    private String username;
 
-	public String getGitHostURL() {
-		return gitHostURL;
-	}
+    private String password;
 
-	public void setGitHostURL(String gitHostURL) {
-		this.gitHostURL = gitHostURL;
-	}
+    private String email;
 
-	public String getAdminUsername() {
-		return adminUsername;
-	}
+    public String getGitlabUserUrl() {
+        return MessageFormat.format("{0}/{1}/", gitlabHostURL, username);
+    }
 
-	public void setAdminUsername(String adminUsername) {
-		this.adminUsername = adminUsername;
-	}
+    public String getToken() {
+        return token;
+    }
 
-	public String getAdminPassword() {
-		return adminPassword;
-	}
+    public void setToken(String token) {
+        this.token = token;
+    }
 
-	public void setAdminPassword(String adminPassword) {
-		this.adminPassword = adminPassword;
-	}
+    public String getGitlabHostURL() {
+        return gitlabHostURL;
+    }
 
-	public String getAdminEmail() {
-		return adminEmail;
-	}
+    public void setGitlabHostURL(String gitlabHostURL) {
+        this.gitlabHostURL = gitlabHostURL;
+    }
 
-	public void setAdminEmail(String adminEmail) {
-		this.adminEmail = adminEmail;
-	}
-	
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }

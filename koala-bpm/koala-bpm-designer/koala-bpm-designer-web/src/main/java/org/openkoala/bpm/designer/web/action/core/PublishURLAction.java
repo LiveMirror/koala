@@ -10,10 +10,9 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.designer.application.BpmDesignerApplication;
 import org.openkoala.bpm.designer.application.dto.PublishURLVO;
-
-import com.dayatang.querychannel.support.Page;
 
 public class PublishURLAction extends ActionSupport {
 		
@@ -60,10 +59,10 @@ public class PublishURLAction extends ActionSupport {
 	public String pageJson() {
 		try {
 			Page<PublishURLVO> all = publishURLApplication.pageQueryPublishURL(publishURLVO, page, pagesize);
-			dataMap.put("Rows", all.getResult());
+			dataMap.put("Rows", all.getData());
 			dataMap.put("start", page * pagesize - pagesize);
 			dataMap.put("limit", pagesize);
-			dataMap.put("Total", all.getTotalCount());
+			dataMap.put("Total", all.getResultCount());
 		} catch (Exception e) {
 		    e.printStackTrace();
 			dataMap.put("result", "error");

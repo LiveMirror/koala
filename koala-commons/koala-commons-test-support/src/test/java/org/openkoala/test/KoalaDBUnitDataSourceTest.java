@@ -3,12 +3,11 @@ package org.openkoala.test;
 
 import javax.sql.DataSource;
 
+import org.dayatang.domain.InstanceFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.koala.util.KoalaDataSourceDBUnitTestCase;
 import org.springframework.util.Assert;
-
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * 写一个测试类，继承KoalaDataSourceDBUnitTestCase

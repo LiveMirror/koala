@@ -38,5 +38,11 @@ public class GitConfiguration extends ToolConfiguration {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

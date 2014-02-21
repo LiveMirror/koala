@@ -1,29 +1,15 @@
 package businesslog;
 
 import business.*;
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.domain.InstanceProvider;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.openkoala.businesslog.utils.BusinessLogInterceptor;
 import org.openkoala.businesslog.utils.ThreadLocalBusinessLogContext;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 @Ignore

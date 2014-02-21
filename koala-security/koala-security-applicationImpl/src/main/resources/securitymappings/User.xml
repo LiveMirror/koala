@@ -6,13 +6,13 @@
 
 	<named-query name="isAccountExisted">
 		<query>
-			select user from User user where user.userAccount=? and user.abolishDate>?
+			select user from User user where user.userAccount=:userAccount and user.abolishDate>:abolishDate
 		</query>
 	</named-query>
 	
 	<named-query name="isEmailExisted">
 		<query>
-			select user from User user where user.email=? and user.abolishDate>?
+			select user from User user where user.email=:email and user.abolishDate>:abolishDate
 		</query>
 	</named-query>
 	

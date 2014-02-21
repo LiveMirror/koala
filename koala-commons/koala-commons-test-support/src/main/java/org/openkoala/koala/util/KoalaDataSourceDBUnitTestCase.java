@@ -2,10 +2,9 @@ package org.openkoala.koala.util;
 
 import javax.sql.DataSource;
 
+import org.dayatang.domain.InstanceFactory;
 import org.dbunit.DataSourceDatabaseTester;
 import org.dbunit.IDatabaseTester;
-
-import com.dayatang.domain.InstanceFactory;
 
 public abstract class KoalaDataSourceDBUnitTestCase extends KoalaDBUnitTestCase {
 

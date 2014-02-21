@@ -5,6 +5,7 @@ package org.openkoala.gqc.controller.datasource;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.application.DataSourceApplication;
 import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.vo.DataSourceVO;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 
@@ -95,10 +94,10 @@ public class DataSourceController{
 			
 			Page<DataSourceVO> all = dataSourceApplication.pageQueryDataSource(new DataSourceVO(), page, pagesize);
 			
-	        dataMap.put("Rows", all.getResult());
+	        dataMap.put("Rows", all.getData());
 	        dataMap.put("start", page * pagesize - pagesize);
 	        dataMap.put("limit", pagesize);
-	        dataMap.put("Total", all.getTotalCount());
+	        dataMap.put("Total", all.getResultCount());
 		} catch (Exception e) {
         	if(dataMap != null){
                 dataMap.put("result", "查询数据源列表失败！");

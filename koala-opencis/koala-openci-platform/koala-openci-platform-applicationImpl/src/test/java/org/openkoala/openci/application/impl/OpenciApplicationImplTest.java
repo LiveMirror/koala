@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.dayatang.domain.AbstractEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +16,6 @@ import org.openkoala.openci.AbstractIntegrationTest;
 import org.openkoala.openci.EntityNullException;
 import org.openkoala.openci.application.OpenciApplication;
 import org.openkoala.openci.core.Developer;
-
-import com.dayatang.domain.AbstractEntity;
 
 public class OpenciApplicationImplTest extends AbstractIntegrationTest {
 	

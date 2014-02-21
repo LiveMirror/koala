@@ -8,11 +8,10 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.action.BaseAction;
 import org.openkoala.bpm.application.JoinAssignApplication;
 import org.openkoala.bpm.application.vo.JoinAssignVO;
-
-import com.dayatang.querychannel.support.Page;
 
 public class JoinAssignAction extends BaseAction {
 		
@@ -37,10 +36,10 @@ public class JoinAssignAction extends BaseAction {
 	
 	public String pageJson() {
 		Page<JoinAssignVO> all = joinAssignApplication.pageQueryJoinAssign(joinAssignVO, page, pagesize);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 	

@@ -25,6 +25,7 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.auth.application.vo.UserVO;
 
@@ -34,6 +35,7 @@ import org.openkoala.auth.application.vo.UserVO;
  * @date 2013年12月12日 下午2:28:13
  *
  */
+@Ignore
 public class CasUserManagementWebServiceApiTest {
 	
 	private static final String APPLICATION_JSON = "application/json";

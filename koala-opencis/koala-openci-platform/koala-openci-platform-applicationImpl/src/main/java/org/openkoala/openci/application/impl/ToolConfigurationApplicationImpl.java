@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.openci.EntityNullException;
 import org.openkoala.openci.application.ToolConfigurationApplication;
 import org.openkoala.openci.core.CasUserConfiguration;
@@ -27,9 +29,6 @@ import org.openkoala.openci.pojo.ToolConfigurationPojo;
 import org.openkoala.openci.pojo.TracConfigurationPojo;
 import org.openkoala.opencis.api.CISClient;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 @Named("toolConfigurationApplication")
 @Transactional("transactionManager_opencis")
@@ -93,32 +92,32 @@ public class ToolConfigurationApplicationImpl implements ToolConfigurationApplic
 
 	public Page<JenkinsConfiguration> pagingQeuryJenkinsConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from JenkinsConfiguration _toolconfiguration");
-		return queryChannel.queryPagedResultByPageNo(jpql.toString(), null, currentPage, pagesize);
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
 	}
 
 	public Page<SvnConfiguration> pagingQeurySvnConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from SvnConfiguration _toolconfiguration");
-		return queryChannel.queryPagedResultByPageNo(jpql.toString(), null, currentPage, pagesize);
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
 	}
 
 	public Page<GitConfiguration> pagingQeuryGitConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from GitConfiguration _toolconfiguration");
-		return queryChannel.queryPagedResultByPageNo(jpql.toString(), null, currentPage, pagesize);
-	}
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
+		}
 
 	public Page<SonarConfiguration> pagingQeurySonarConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from SonarConfiguration _toolconfiguration");
-		return queryChannel.queryPagedResultByPageNo(jpql.toString(), null, currentPage, pagesize);
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
 	}
 
 	public Page<JiraConfiguration> pagingQeuryJiraConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from JiraConfiguration _toolconfiguration");
-		return queryChannel.queryPagedResultByPageNo(jpql.toString(), null, currentPage, pagesize);
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
 	}
 
 	public Page<TracConfiguration> pagingQeuryTracConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from TracConfiguration _toolconfiguration");
-		return queryChannel.queryPagedResultByPageNo(jpql.toString(), null, currentPage, pagesize);
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
 	}
 
 	public CasUserConfiguration getUniqueInstance() {

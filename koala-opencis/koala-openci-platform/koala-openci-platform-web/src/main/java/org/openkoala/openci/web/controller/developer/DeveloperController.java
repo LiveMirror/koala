@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.openci.application.DeveloperApplication;
 import org.openkoala.openci.core.Developer;
 import org.openkoala.openci.web.controller.BaseController;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
 
 @Controller
 @RequestMapping("/developer")
@@ -31,10 +30,10 @@ public class DeveloperController extends BaseController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<Developer> developerPage = developerApplication.pagingQeuryDevelopers(example, page, pagesize);
 		
-		dataMap.put("Rows", developerPage.getResult());
+		dataMap.put("Rows", developerPage.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", developerPage.getTotalCount());
+		dataMap.put("Total", developerPage.getResultCount());
 		return dataMap;
 	}
 	

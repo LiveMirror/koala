@@ -19,9 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.dayatang.domain.QuerySettings;
-import com.dayatang.utils.DateUtils;
-
+import org.dayatang.utils.DateUtils;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
@@ -31,20 +29,16 @@ public abstract class Accountability<C extends Party, R extends Party> extends O
 
 	private static final long serialVersionUID = 3456398163374995470L;
 
-	@ManyToOne(targetEntity = Party.class, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "commissioner_id")
+	
 	private C commissioner;
 
-	@ManyToOne(targetEntity = Party.class, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "responsible_id")
+	
 	private R responsible;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "from_date")
+	
 	private Date fromDate;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "to_date")
+	
 	private Date toDate;
 
 	Accountability() {
@@ -57,6 +51,8 @@ public abstract class Accountability<C extends Party, R extends Party> extends O
 		this.toDate = DateUtils.MAX_DATE;
 	}
 
+	@ManyToOne(targetEntity = Party.class, cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "commissioner_id")
 	public C getCommissioner() {
 		return commissioner;
 	}
@@ -65,6 +61,8 @@ public abstract class Accountability<C extends Party, R extends Party> extends O
 		this.commissioner = commissioner;
 	}
 
+	@ManyToOne(targetEntity = Party.class, cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "responsible_id")
 	public R getResponsible() {
 		return responsible;
 	}
@@ -73,10 +71,22 @@ public abstract class Accountability<C extends Party, R extends Party> extends O
 		this.responsible = responsible;
 	}
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "from_date")
 	public Date getFromDate() {
 		return fromDate;
 	}
 
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "to_date")
 	public Date getToDate() {
 		return toDate;
 	}
@@ -88,16 +98,16 @@ public abstract class Accountability<C extends Party, R extends Party> extends O
 
 	@SuppressWarnings("rawtypes")
 	public static <T extends Accountability> T getByCommissionerAndResponsible(Class<T> accountabilityClass, Party commissioner, Party responsible, Date date) {
-		return getRepository().getSingleResult(QuerySettings.create(accountabilityClass)
+		return getRepository().createCriteriaQuery(accountabilityClass)
 				.eq("commissioner", commissioner)
 				.eq("responsible", responsible)
 				.le("fromDate", date)
-				.gt("toDate", date));
+				.gt("toDate", date).singleResult();
 	}
 	
 	@SuppressWarnings("rawtypes")
 	public static <T extends Accountability> List<T> findAccountabilities(Class<T> accountabilityClass, Date date) {
-		return getRepository().find(QuerySettings.create(accountabilityClass).le("fromDate", date).gt("toDate", date));
+		return getRepository().createCriteriaQuery(accountabilityClass).le("fromDate", date).gt("toDate", date).list();
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -105,7 +115,7 @@ public abstract class Accountability<C extends Party, R extends Party> extends O
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("party", party);
 		params.put("date", date);
-		return getRepository().findByNamedQuery("Accountability.findAccountabilitiesByParty", params, Accountability.class);
+		return getRepository().createNamedQuery("Accountability.findAccountabilitiesByParty").addParameter("party", party).addParameter("date", date).list();
 	}
 
 }

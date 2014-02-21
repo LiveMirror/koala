@@ -3,6 +3,8 @@ package org.openkoala.koala.auth.ss3adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dayatang.cache.Cache;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.koala.auth.AuthDataService;
 import org.openkoala.koala.auth.vo.DefaultUserDetailsImpl;
 import org.slf4j.Logger;
@@ -13,9 +15,6 @@ import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import com.dayatang.cache.Cache;
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * ClassName:UserDetailManager Function: 查询出用户所具有的权限等信息并进行封装得到UserDetails

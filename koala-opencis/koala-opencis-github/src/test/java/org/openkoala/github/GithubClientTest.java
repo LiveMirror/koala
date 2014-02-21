@@ -3,8 +3,10 @@ package org.openkoala.github;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kohsuke.github.GitHub;
+import org.openkoala.opencis.git.GitClient;
 import org.openkoala.opencis.github.GithubClient;
 
+import java.io.File;
 import java.lang.reflect.Field;
 
 /**
@@ -36,6 +38,9 @@ public class GithubClientTest {
 
         assert client.isAccountExist(otherAccount);
 
+
+        assert ("https://github.com/foreverosstest/" + repository + ".git").equals(client.getHttpTransportUrl(repository));
+
         client.addCollaborators(repository, otherAccount);
 
         Field githubField = GithubClient.class.getDeclaredField("github");
@@ -49,9 +54,22 @@ public class GithubClientTest {
         assert !github.getRepository(client.getRepositoryFullName(repository)).getCollaboratorNames().contains(otherAccount);
 
 
+        GitClient gitClient = new GitClient(account, pwd, "foreverosstest@163.com", GithubClientTest.class.getResource("/ProjectTest").getFile());
+
+
+        gitClient.pushRepositoryToRemote(client.getHttpTransportUrl(repository));
+
+        String downToPath = GithubClientTest.class.getResource("/").getFile() ;
+
+        File downToPathFile = new File(downToPath);
+
+        assert !new File(downToPathFile,"/" + repository).exists();
+
+        gitClient.clone(client.getHttpTransportUrl(repository), downToPathFile);
+
+        assert new File(downToPathFile,"/" + repository).exists();
+
         client.removeRepository(repository);
-
-
         assert !client.isRepositoryExist(repository);
 
 

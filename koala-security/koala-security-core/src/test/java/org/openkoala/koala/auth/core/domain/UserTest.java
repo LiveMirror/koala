@@ -6,12 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.dayatang.utils.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-
-import com.dayatang.utils.DateUtils;
 
 /**
  * 用户测试类

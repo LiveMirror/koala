@@ -7,15 +7,15 @@
 	<named-query name="findAllResourceType">
 		<query>
 			<![CDATA[
-			select o from ResourceType o where o.name<>? and o.name<>?
-			and o.abolishDate>?
+			select o from ResourceType o where o.name<>:name1 and o.name<>:name2
+			and o.abolishDate>:abolishDate
 			]]>
 		</query>
 	</named-query>
 	
 	<named-query name="findMenuType">
 		<query>
-			select o from ResourceType o where o.name in(?,?) and o.abolishDate>?
+			select o from ResourceType o where o.name in(:name1,:name2) and o.abolishDate>:abolishDate
 		</query>	
 	</named-query>
 	

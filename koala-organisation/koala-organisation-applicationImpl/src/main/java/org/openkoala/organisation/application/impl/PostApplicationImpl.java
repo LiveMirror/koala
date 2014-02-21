@@ -13,15 +13,14 @@ import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.organisation.application.PostApplication;
 import org.openkoala.organisation.application.dto.PostDTO;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
 
 @Named
 @Transactional(value="transactionManager_org")
@@ -70,10 +69,10 @@ public class PostApplicationImpl implements PostApplication {
 	private Page<PostDTO> queryResult(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals,
 			int currentPage, int pagesize) {
 		assembleJpqlAndConditionValues(example, jpql, conditionPrefix, conditionVals);
-		Page<Post> postPage = getQueryChannelService().queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pagesize);
-		
-		return new Page<PostDTO>(Page.getStartOfPage(currentPage, pagesize), 
-				postPage.getTotalCount(), pagesize, transformToDtos(postPage.getResult()));
+		Page<Post> postPage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
+	
+		return new Page<PostDTO>(postPage.getPageIndex(), 
+				postPage.getResultCount(), pagesize, transformToDtos(postPage.getData()));
 	}
 	
 	private void assembleJpqlAndConditionValues(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals) {

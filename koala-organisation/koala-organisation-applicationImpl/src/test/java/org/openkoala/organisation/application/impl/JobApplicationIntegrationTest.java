@@ -8,13 +8,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.organisation.application.JobApplication;
 import org.openkoala.organisation.application.impl.utils.OrganisationUtils;
 import org.openkoala.organisation.domain.Job;
-
-import com.dayatang.utils.DateUtils;
 
 /**
  * 职务应用实现集成测试
@@ -39,10 +38,10 @@ public class JobApplicationIntegrationTest extends AbstractIntegrationTest {
 
 	@Test
 	public void testPagingQueryJobs() {
-		List<Job> jobs1 = jobApplication.pagingQueryJobs(new Job(), 1, 1).getResult();
+		List<Job> jobs1 = jobApplication.pagingQueryJobs(new Job(), 1, 1).getData();
 		assertEquals(1, jobs1.size());
 		
-		List<Job> jobs2 = jobApplication.pagingQueryJobs(new Job(), 1, 10).getResult();
+		List<Job> jobs2 = jobApplication.pagingQueryJobs(new Job(), 1, 10).getData();
 		assertTrue(jobs2.contains(job1));
 		assertTrue(jobs2.contains(job2));
 	}

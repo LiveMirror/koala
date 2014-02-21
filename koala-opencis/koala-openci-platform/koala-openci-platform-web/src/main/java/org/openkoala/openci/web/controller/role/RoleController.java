@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.openci.application.RoleApplication;
 import org.openkoala.openci.core.Role;
 import org.openkoala.openci.web.controller.BaseController;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
 
 @Controller
 @RequestMapping("/role")
@@ -59,10 +58,10 @@ public class RoleController extends BaseController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<Role> rolePage = roleApplication.pagingQeuryRoles(page, pagesize);
 
-		dataMap.put("Rows", rolePage.getResult());
+		dataMap.put("Rows", rolePage.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", rolePage.getTotalCount());
+		dataMap.put("Total", rolePage.getResultCount());
 		return dataMap;
 	}
 

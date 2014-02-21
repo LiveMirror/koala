@@ -11,9 +11,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.gqc.core.exception.SystemDataSourceNotExistException;
-
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * 查询数据源
@@ -29,46 +28,47 @@ public class DataSource extends GeneralQueryEntity {
 	/**
 	 * 数据源类型
 	 */
-	@Enumerated(EnumType.STRING)
-	@Column(name = "DATA_SOURCE_TYPE")
+	
 	private DataSourceType dataSourceType;
 	
 	/**
 	 * 数据源ID
 	 */
-	@Column(name = "DATA_SOURCE_ID")
+	
 	private String dataSourceId;
 
 	/**
 	 * 数据源描述
 	 */
-	@Column(name = "DATA_SOURCE_DESCRIPTION")
+	
 	private String dataSourceDescription;
 	
 	/**
 	 * 连接URL
 	 */
-	@Column(name = "CONNECT_URL")
+	
 	private String connectUrl;
 	
 	/**
 	 * 数据源驱动
 	 */
-	@Column(name = "JDBC_DRIVER")
+	
 	private String jdbcDriver;
 	
 	/**
 	 * 用户名
 	 */
-	@Column(name = "USERNAME")
+	
 	private String username;
 	
 	/**
 	 * 密码
 	 */
-	@Column(name = "PASSWORD")
+	
 	private String password;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "DATA_SOURCE_TYPE")
 	public DataSourceType getDataSourceType() {
 		return dataSourceType;
 	}
@@ -77,6 +77,7 @@ public class DataSource extends GeneralQueryEntity {
 		this.dataSourceType = dataSourceType;
 	}
 
+	@Column(name = "DATA_SOURCE_ID")
 	public String getDataSourceId() {
 		return dataSourceId;
 	}
@@ -85,6 +86,7 @@ public class DataSource extends GeneralQueryEntity {
 		this.dataSourceId = dataSourceId;
 	}
 
+	@Column(name = "DATA_SOURCE_DESCRIPTION")
 	public String getDataSourceDescription() {
 		return dataSourceDescription;
 	}
@@ -93,6 +95,7 @@ public class DataSource extends GeneralQueryEntity {
 		this.dataSourceDescription = dataSourceDescription;
 	}
 
+	@Column(name = "CONNECT_URL")
 	public String getConnectUrl() {
 		return connectUrl;
 	}
@@ -101,6 +104,7 @@ public class DataSource extends GeneralQueryEntity {
 		this.connectUrl = connectUrl.trim();
 	}
 
+	@Column(name = "JDBC_DRIVER")
 	public String getJdbcDriver() {
 		return jdbcDriver;
 	}
@@ -109,6 +113,7 @@ public class DataSource extends GeneralQueryEntity {
 		this.jdbcDriver = jdbcDriver;
 	}
 
+	@Column(name = "USERNAME")
 	public String getUsername() {
 		return username;
 	}
@@ -117,6 +122,7 @@ public class DataSource extends GeneralQueryEntity {
 		this.username = username;
 	}
 
+	@Column(name = "PASSWORD")
 	public String getPassword() {
 		return password;
 	}

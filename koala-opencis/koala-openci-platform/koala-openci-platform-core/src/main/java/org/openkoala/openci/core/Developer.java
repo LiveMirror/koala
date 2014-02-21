@@ -15,12 +15,12 @@ public class Developer extends TimeIntervalEntity {
 
 	private static final long serialVersionUID = -3733063134487603001L;
 
-	@Column(name = "developer_id", nullable = false, unique = true)
+	
 	private String developerId;
 
 	private String name;
 
-	@Column(nullable = false, unique = true)
+	
 	private String email;
 
 	private String password;
@@ -36,6 +36,7 @@ public class Developer extends TimeIntervalEntity {
 	Developer() {
 	}
 
+	@Column(name = "developer_id", nullable = false, unique = true)
 	public String getDeveloperId() {
 		return developerId;
 	}
@@ -52,6 +53,7 @@ public class Developer extends TimeIntervalEntity {
 		this.name = name;
 	}
 
+	@Column(nullable = false, unique = true)
 	public String getEmail() {
 		return email;
 	}
@@ -68,7 +70,6 @@ public class Developer extends TimeIntervalEntity {
 		this.password = password;
 	}
 
-	@Override
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
@@ -81,14 +82,18 @@ public class Developer extends TimeIntervalEntity {
 				.isEquals();
 	}
 
-	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(getName()).append(getDeveloperId()).hashCode();
 	}
 
-	@Override
 	public String toString() {
 		return getDeveloperId();
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.openkoala.opencis</groupId>
 		<artifactId>koala-opencis</artifactId>
-		<version>2.1.0-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>koala-opencis-git</artifactId>
 	<name>koala-opencis-git</name>
@@ -25,13 +25,6 @@
 			<artifactId>koala-opencis-api</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-
-        <dependency>
-            <groupId>org.openkoala.opencis</groupId>
-            <artifactId>koala-opencis-github</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>

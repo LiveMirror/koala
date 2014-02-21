@@ -1,8 +1,7 @@
 package businesslog;
 
-import com.dayatang.domain.InstanceFactory;
-
-import com.dayatang.spring.factory.SpringInstanceProvider;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.ioc.spring.factory.SpringInstanceProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.application.DataSourceApplication;
 import org.openkoala.gqc.application.GqcApplication;
 import org.openkoala.gqc.core.domain.DynamicQueryCondition;
@@ -21,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
 
 /**
  * 
@@ -65,7 +64,7 @@ public class GeneralQueryController {
         }
         
         List<GeneralQueryVo> generalQueryVos = new ArrayList<GeneralQueryController.GeneralQueryVo>();
-        for (GeneralQuery generalQuery : all.getResult()) {
+        for (GeneralQuery generalQuery : all.getData()) {
         	generalQueryVos.add(new GeneralQueryVo(generalQuery.getId(), generalQuery.getDataSource().getDataSourceId(), 
         			generalQuery.getDataSource().getId(), generalQuery.getQueryName(), 
         			generalQuery.getTableName(), generalQuery.getDescription(), generalQuery.getCreateDate()));
@@ -74,7 +73,7 @@ public class GeneralQueryController {
         dataMap.put("Rows", generalQueryVos);
         dataMap.put("start", page * pagesize - pagesize);
         dataMap.put("limit", pagesize);
-        dataMap.put("Total", all.getTotalCount());
+        dataMap.put("Total", all.getResultCount());
 		return dataMap;
 	}
     

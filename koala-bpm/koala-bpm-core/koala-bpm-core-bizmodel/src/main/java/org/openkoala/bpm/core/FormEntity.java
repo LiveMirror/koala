@@ -1,9 +1,10 @@
 package org.openkoala.bpm.core;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 @Entity
 @Table
@@ -15,6 +16,7 @@ public class FormEntity extends AbstractEntity {
 	
 	private String remark;
 
+	@Column
 	public String getName() {
 		return name;
 	}
@@ -22,7 +24,8 @@ public class FormEntity extends AbstractEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	@Column
 	public String getRemark() {
 		return remark;
 	}
@@ -65,6 +68,12 @@ public class FormEntity extends AbstractEntity {
 		} else if (!remark.equals(other.remark))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

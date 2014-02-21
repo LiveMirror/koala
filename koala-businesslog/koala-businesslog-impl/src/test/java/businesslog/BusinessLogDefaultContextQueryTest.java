@@ -1,9 +1,11 @@
 package businesslog;
 
+import business.ContractApplication;
 import business.ContractApplicationImpl;
 import business.Project;
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.domain.InstanceProvider;
+
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.domain.InstanceProvider;
 import org.junit.Test;
 import org.openkoala.businesslog.impl.BusinessLogDefaultContextQuery;
 
@@ -29,8 +31,7 @@ public class BusinessLogDefaultContextQueryTest {
 
         InstanceFactory.setInstanceProvider(provider);
 
-        when(provider.getInstance(Class.forName("business.ContractApplication")))
-                .thenReturn(new ContractApplicationImpl());
+        when(provider.getInstance(ContractApplication.class)).thenReturn(new ContractApplicationImpl());
 
         String queryContextKey = "project";
         BusinessLogDefaultContextQuery query = new BusinessLogDefaultContextQuery();

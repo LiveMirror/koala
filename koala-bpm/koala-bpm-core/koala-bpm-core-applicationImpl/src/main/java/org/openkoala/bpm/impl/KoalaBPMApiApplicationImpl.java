@@ -10,6 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.inject.Named;
 
+import org.dayatang.domain.InstanceFactory;
 import org.drools.runtime.process.ProcessInstance;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.ProcessInstanceLog;
@@ -22,8 +23,6 @@ import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.ContentData;
 import org.openkoala.bpm.application.KoalaBPMApiApplication;
 import org.openkoala.bpm.impl.util.KoalaBPMSession;
-
-import com.dayatang.domain.InstanceFactory;
 
 @Named(value = "KoalaBPMApiApplication")
 public class KoalaBPMApiApplicationImpl implements KoalaBPMApiApplication {

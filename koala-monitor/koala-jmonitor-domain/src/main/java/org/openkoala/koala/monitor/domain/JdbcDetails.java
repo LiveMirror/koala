@@ -38,29 +38,29 @@ public class JdbcDetails extends BaseMonitorDetails {
 
 	private static final long serialVersionUID = 3667605232310643782L;
 	
-	@Column(name = "CONN_OPEN_COUNT")
+	
     private int connOpenCount = 1;
 	
-	@Column(name = "STMT_CREATE_COUNT")
+	
 	private int stmtCreateCount;
 	
-	@Column(name = "PSTMT_CREATE_COUNT")
+	
 	private int pstmtCreateCount;
 	
-	@Column(name = "CONN_CLOSE_COUNT")
+	
     private int connCloseCount;
 	
-	@Column(name = "STMT_CLOSE_COUNT")
+	
 	private int stmtCloseCount;
 	
-	@Column(name = "PSTMT_CLOSE_COUNT")
+	
 	private int pstmtCloseCount;
 	
-	@Lob
-	@Column(name = "SQLS")
+	
 	private String sqlDetails;
 	
 
+	@Column(name = "CONN_OPEN_COUNT")
 	public int getConnOpenCount() {
 		return connOpenCount;
 	}
@@ -69,6 +69,7 @@ public class JdbcDetails extends BaseMonitorDetails {
 		this.connOpenCount = connOpenCount;
 	}
 
+	@Column(name = "CONN_CLOSE_COUNT")
 	public int getConnCloseCount() {
 		return connCloseCount;
 	}
@@ -77,6 +78,7 @@ public class JdbcDetails extends BaseMonitorDetails {
 		this.connCloseCount = connCloseCount;
 	}
 	
+	@Column(name = "STMT_CREATE_COUNT")
 	public int getStmtCreateCount() {
 		return stmtCreateCount;
 	}
@@ -85,6 +87,7 @@ public class JdbcDetails extends BaseMonitorDetails {
 		this.stmtCreateCount = stmtCreateCount;
 	}
 
+	@Column(name = "PSTMT_CREATE_COUNT")
 	public int getPstmtCreateCount() {
 		return pstmtCreateCount;
 	}
@@ -93,6 +96,7 @@ public class JdbcDetails extends BaseMonitorDetails {
 		this.pstmtCreateCount = pstmtCreateCount;
 	}
 
+	@Column(name = "STMT_CLOSE_COUNT")
 	public int getStmtCloseCount() {
 		return stmtCloseCount;
 	}
@@ -101,6 +105,7 @@ public class JdbcDetails extends BaseMonitorDetails {
 		this.stmtCloseCount = stmtCloseCount;
 	}
 
+	@Column(name = "PSTMT_CLOSE_COUNT")
 	public int getPstmtCloseCount() {
 		return pstmtCloseCount;
 	}
@@ -109,6 +114,8 @@ public class JdbcDetails extends BaseMonitorDetails {
 		this.pstmtCloseCount = pstmtCloseCount;
 	}
 
+	@Lob
+	@Column(name = "SQLS")
 	public String getSqlDetails() {
 		return sqlDetails;
 	}

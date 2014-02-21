@@ -12,12 +12,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.dayatang.domain.EntityRepository;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.utils.DateUtils;
 import org.openkoala.organisation.SnIsExistException;
-
-import com.dayatang.domain.EntityRepository;
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.domain.QuerySettings;
-import com.dayatang.utils.DateUtils;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -27,21 +25,19 @@ public abstract class Party extends OrganizationAbstractEntity {
 	private static final long serialVersionUID = -6083088250263550905L;
 
 	// 编码
-	@Column(name = "sn", length = 50)
+	
 	private String sn;
 
 	// 名称
-	@Column(name = "name", length = 30, nullable = false)
+	
 	private String name;
 	
 	// 创建日期
-	@Temporal(TemporalType.DATE)
-	@Column(name = "create_date")
+	
 	private Date createDate = new Date();
 
 	// 终结日期
-	@Temporal(TemporalType.DATE)
-	@Column(name = "terminate_date")
+	
 	private Date terminateDate = DateUtils.MAX_DATE;
 
 	Party() {
@@ -56,6 +52,7 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.sn = sn.trim();
 	}
 
+	@Column(name = "sn", length = 50)
 	public String getSn() {
 		return sn;
 	}
@@ -64,6 +61,7 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.sn = sn.trim();
 	}
 
+	@Column(name = "name", length = 30, nullable = false)
 	public String getName() {
 		return name;
 	}
@@ -72,6 +70,8 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.name = name.trim();
 	}
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "create_date")
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -80,6 +80,8 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.createDate = createDate;
 	}
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "terminate_date")
 	public Date getTerminateDate() {
 		return terminateDate;
 	}
@@ -89,9 +91,9 @@ public abstract class Party extends OrganizationAbstractEntity {
 	}
 
 	public static <T extends Party> List<T> findAll(Class<T> clazz, Date date) {
-		return getRepository().find(QuerySettings.create(clazz)
+		return getRepository().createCriteriaQuery(clazz)
 				.le("createDate", date)
-				.gt("terminateDate", date));
+				.gt("terminateDate", date).list();
 	}
 	
 	@Override
@@ -114,10 +116,10 @@ public abstract class Party extends OrganizationAbstractEntity {
 	}
 	
 	public static <P extends Party> boolean isExistSn(Class<P> clazz, String sn, Date date) {
-		List<P> parties = getRepository().find(QuerySettings.create(clazz)
+		List<P> parties = getRepository().createCriteriaQuery(clazz)
 				.eq("sn", sn)
 				.le("createDate", date)
-				.gt("terminateDate", date));
+				.gt("terminateDate", date).list();
 		return parties.isEmpty() ? false : true;
 	}
 	

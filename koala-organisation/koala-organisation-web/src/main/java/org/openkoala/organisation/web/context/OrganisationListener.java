@@ -3,10 +3,9 @@ package org.openkoala.organisation.web.context;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.organisation.application.OrganizationApplication;
 import org.openkoala.organisation.domain.Company;
-
-import com.dayatang.domain.InstanceFactory;
 
 public class OrganisationListener implements ServletContextListener {
 

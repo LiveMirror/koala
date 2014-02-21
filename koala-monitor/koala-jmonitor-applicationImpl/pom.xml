@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openkoala.monitor</groupId>
 		<artifactId>koala-jmonitor</artifactId>
-		<version>2.1.0-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>koala-jmonitor-applicationImpl</artifactId>
 	<name>koala-jmonitor-applicationImpl</name>
@@ -39,22 +39,18 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-db</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-spring</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-db</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-hibernate</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-persistence-jpa</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-querychannel</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-query-channel</artifactId>
 		</dependency>
 
 		<dependency>
@@ -79,6 +75,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-support</artifactId>
 			<version>${project.parent.version}</version>
@@ -95,8 +96,8 @@
 			<artifactId>c3p0</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-spring-test</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -115,13 +116,13 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-test-support</artifactId>
 			<version>${project.parent.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
 </project>

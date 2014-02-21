@@ -4,7 +4,8 @@ package org.openkoala.businesslog.web;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dayatang.domain.InstanceFactory;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
 import org.openkoala.businesslog.application.BusinessLogApplication;
 import org.openkoala.businesslog.dto.DefaultBusinessLogDTO;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.dayatang.querychannel.support.Page;
 
 @Controller
 @RequestMapping("/log")
@@ -28,10 +28,10 @@ public class DefaultBusinessLogController {
                                         @RequestParam int page, @RequestParam int pagesize) {
         Map<String, Object> result = new HashMap<String, Object>();
         Page<DefaultBusinessLogDTO> all = getBusinessLogApplication().pageQueryDefaultBusinessLog(defaultBusinessLogDTO, page, pagesize);
-        result.put("Rows", all.getResult());
+        result.put("Rows", all.getData());
         result.put("start", page * pagesize - pagesize);
         result.put("limit", pagesize);
-        result.put("Total", all.getTotalCount());
+        result.put("Total", all.getResultCount());
         return result;
     }
 

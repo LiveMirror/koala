@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.organisation.HasPrincipalPostYetException;
 import org.openkoala.organisation.IdNumberIsExistException;
 import org.openkoala.organisation.SnIsExistException;
@@ -25,9 +26,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
-
 /**
  * 员工管理controller
  * @author xmfang
@@ -53,10 +51,10 @@ public class EmployeeController extends BaseController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<EmployeeDTO> employees = employeeApplication.pagingQueryEmployees(example, page, pagesize);
 		
-		dataMap.put("Rows", employees.getResult());
+		dataMap.put("Rows", employees.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", employees.getTotalCount());
+		dataMap.put("Total", employees.getResultCount());
 		return dataMap;
 	}
 	
@@ -85,10 +83,10 @@ public class EmployeeController extends BaseController {
 			}
 		}
 		
-		dataMap.put("Rows", employees.getResult());
+		dataMap.put("Rows", employees.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", employees.getTotalCount());
+		dataMap.put("Total", employees.getResultCount());
 		return dataMap;
 	}
 

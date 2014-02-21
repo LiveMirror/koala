@@ -3,13 +3,15 @@ package org.openkoala.bpm.core;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 
-import com.dayatang.domain.AbstractEntity;
-import com.dayatang.domain.QuerySettings;
+import org.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.CriteriaQuery;
 /**
  *
  * @author lingen
@@ -53,15 +55,13 @@ public class KoalaProcessInfo extends AbstractEntity{
 	/**
 	 * 流程定义XML 的二进制存储
 	 */
-	@Lob
-	@Column(length=2147483647)
+	
 	private byte[] data;
 	
 	/**
 	 * 图片的二进制存储
 	 */
-	@Lob
-	@Column(length=2147483647)
+	
 	private byte[] png;
 	
 	public KoalaProcessInfo() {
@@ -78,10 +78,6 @@ public class KoalaProcessInfo extends AbstractEntity{
 	
 	public String getProcessName() {
 		return processName;
-	}
-	
-	public static KoalaProcessInfo findKoalaProcessInfo(QuerySettings<KoalaProcessInfo> qSetting){
-		return getRepository().getSingleResult(qSetting);
 	}
 
 	public void setProcessName(String processName) {
@@ -104,6 +100,8 @@ public class KoalaProcessInfo extends AbstractEntity{
 		this.versionNum = versionNum;
 	}
 
+	@Lob
+	@Column(length=2147483647)
 	public byte[] getData() {
 		return data;
 	}
@@ -177,6 +175,8 @@ public class KoalaProcessInfo extends AbstractEntity{
 				+ Arrays.toString(data) + "]";
 	}
 
+	@Lob
+	@Column(length=2147483647)
 	public byte[] getPng() {
 		return png;
 	}
@@ -206,8 +206,8 @@ public class KoalaProcessInfo extends AbstractEntity{
 	 * @return
 	 */
 	public static List<KoalaProcessInfo> getActiveProcess(){
-		String hql = "from KoalaProcessInfo k where k.isActive is true";
-		List<KoalaProcessInfo> processes = getRepository().find(hql, new Object[]{}, KoalaProcessInfo.class);
+		String hql = "from KoalaProcessInfo k where k.active is true";
+		List<KoalaProcessInfo> processes = getRepository().createJpqlQuery(hql).list();
 		return processes;
 	}
 	
@@ -217,7 +217,7 @@ public class KoalaProcessInfo extends AbstractEntity{
 	 */
 	public static List<String> getPackages(){
 		String hql = "select distinct k.packageName from KoalaProcessInfo k";
-		List<String> packages = getRepository().find(hql, new Object[]{}, String.class);
+		List<String> packages = getRepository().createJpqlQuery(hql).list();
 		return packages;
 	}
 	
@@ -227,14 +227,14 @@ public class KoalaProcessInfo extends AbstractEntity{
 	 * @return
 	 */
 	public static List<String> getProcessByPackage(String packageName){
-		String hql = "select distinct k.processName from KoalaProcessInfo k where k.packageName = ?";
-		List<String> packages = getRepository().find(hql, new Object[]{packageName}, String.class);
+		String hql = "select distinct k.processName from KoalaProcessInfo k where k.packageName = :packageName";
+		List<String> packages = getRepository().createJpqlQuery(hql).addParameter("packageName", packageName).list();
 		return packages;
 	}
 	
 	public static List<String> getProcess(){
 		String hql = "select distinct k.processName from KoalaProcessInfo k";
-		List<String> packages = getRepository().find(hql, new Object[]{}, String.class);
+		List<String> packages = getRepository().createJpqlQuery(hql).list();
 		return packages;
 	}
 	
@@ -244,8 +244,8 @@ public class KoalaProcessInfo extends AbstractEntity{
 	 * @return
 	 */
 	public static List<KoalaProcessInfo> getProcessByProcessName(String processName){
-		String hql = "from KoalaProcessInfo k where k.processName = ? order by versionNum";
-		List<KoalaProcessInfo> processes = getRepository().find(hql, new Object[]{processName}, KoalaProcessInfo.class);
+		String hql = "from KoalaProcessInfo k where k.processName = :processName order by versionNum";
+		List<KoalaProcessInfo> processes = getRepository().createJpqlQuery(hql).addParameter("processName", processName).list();
 		return processes;
 	}
 	
@@ -255,16 +255,13 @@ public class KoalaProcessInfo extends AbstractEntity{
 	 * @return
 	 */
 	public static List<KoalaProcessInfo> getProcessVersionByProcessId(String processId){
-		return getRepository().find("from KoalaProcessInfo k where k.processName = ? ", new Object[]{processId}, KoalaProcessInfo.class);
+		return getRepository().createJpqlQuery("from KoalaProcessInfo k where k.processName =:processName").addParameter("processName", processId).list();
 	}
 	
 	public static KoalaProcessInfo getProcessInfoByProcessNameAndVersion(String processName,int versionNum){
-		String jpql = "from KoalaProcessInfo k where k.processName = ? and k.versionNum = ? and k.isActive is true";
-		List<KoalaProcessInfo> infos =  getRepository().find(jpql, new Object[]{processName,versionNum}, KoalaProcessInfo.class);
-		if(infos!=null && infos.isEmpty()==false){
-			return infos.get(0);
-		}
-		return null;
+		String jpql = "from KoalaProcessInfo k where k.processName = :processName and k.versionNum = :versionNum and k.active is true";
+		KoalaProcessInfo info =  getRepository().createJpqlQuery(jpql).addParameter("processName", processName).addParameter("versionNum", versionNum).singleResult();
+		return info;
 	}
 	
 	public void publishProcess(){
@@ -272,6 +269,22 @@ public class KoalaProcessInfo extends AbstractEntity{
 		//getRepository().executeUpdate("update KoalaProcessInfo k set k.isActive = false where k.processName = ?",  new Object[]{processName});
 		setActive(true);
 		setCreateDate(new Date());
+	}
+
+	@Override
+	public String[] businessKeys() {
+		return new String[]{};
+	}
+
+	public static KoalaProcessInfo findKoalaProcessInfo(
+			Map<String, Object> params) {
+		
+		CriteriaQuery query =  getRepository().createCriteriaQuery(KoalaProcessInfo.class);
+		Set<String> keys = params.keySet();
+		for(String key:keys){
+			query.eq(key, params.get(key));
+		}
+		return query.singleResult();
 	}
 	
 }

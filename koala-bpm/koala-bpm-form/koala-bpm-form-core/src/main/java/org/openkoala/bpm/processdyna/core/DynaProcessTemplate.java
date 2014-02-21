@@ -9,7 +9,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 /**
  * 动态表单模板实体类
@@ -32,20 +32,19 @@ public class DynaProcessTemplate extends AbstractEntity {
 	/**
 	 * 模板名称
 	 */
-	@Column(name = "TEMPLATE_NAME")
+
 	private String templateName;
 
 	/**
 	 * 模板的描述
 	 */
-	@Column(name = "TEMPLATE_DESCRIPTION")
+	
 	private String templateDescription;
 
 	/**
 	 * 模板的内容
 	 */
-	@Lob
-	@Column(name = "TEMPLATE_DATA")
+	
 	private String templateData;
 
 	public DynaProcessTemplate(String templateName, String templateData) {
@@ -66,6 +65,7 @@ public class DynaProcessTemplate extends AbstractEntity {
 		super();
 	}
 
+	@Column(name = "TEMPLATE_NAME")
 	public String getTemplateName() {
 		return templateName;
 	}
@@ -74,6 +74,7 @@ public class DynaProcessTemplate extends AbstractEntity {
 		this.templateName = templateName;
 	}
 
+	@Column(name = "TEMPLATE_DESCRIPTION")
 	public String getTemplateDescription() {
 		return templateDescription;
 	}
@@ -82,6 +83,8 @@ public class DynaProcessTemplate extends AbstractEntity {
 		this.templateDescription = templateDescription;
 	}
 
+	@Lob
+	@Column(name = "TEMPLATE_DATA")
 	public String getTemplateData() {
 		return templateData;
 	}
@@ -146,9 +149,8 @@ public class DynaProcessTemplate extends AbstractEntity {
 	 */
 	public void save() {
 		List<DynaProcessTemplate> templates = DynaProcessTemplate
-				.getRepository().findByNamedQuery("getTemplateData",
-						new Object[] { this.templateName },
-						DynaProcessTemplate.class);
+				.getRepository().createNamedQuery("getTemplateData").setParameters(templateName).list();
+
 		if (templates.size() > 0) {
 			this.setId(templates.get(0).getId());
 		}
@@ -156,7 +158,7 @@ public class DynaProcessTemplate extends AbstractEntity {
 	}
 	
 	public static boolean checkIsExistedByName(String templateName){
-		return !getRepository().findByNamedQuery("isExisted", new Object[] { templateName }, DynaProcessTemplate.class).isEmpty();
+		return !getRepository().createNamedQuery("isExisted").setParameters(templateName).list().isEmpty();
 	}
 
 	/**
@@ -167,13 +169,17 @@ public class DynaProcessTemplate extends AbstractEntity {
 	 */
 	public static String getTemplateData(String templateName) {
 		List<DynaProcessTemplate> templates = DynaProcessTemplate
-				.getRepository().findByNamedQuery("getTemplateData",
-						new Object[] { templateName },
-						DynaProcessTemplate.class);
+				.getRepository().createNamedQuery("getTemplateData").setParameters(templateName).list();
 		if (templates.size() == 0) {
 			return null;
 		} else {
 			return templates.get(0).getTemplateData();
 		}
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return new String[]{};
 	}
 }

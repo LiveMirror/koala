@@ -4,25 +4,22 @@
 	<parent>
 		<groupId>org.openkoala.organisation</groupId>
 		<artifactId>koala-organisation</artifactId>
-		<version>2.1.0-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>koala-organisation-core</artifactId>
 
 	<dependencies>
 
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-utils</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-utils</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-domain</artifactId>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-domain</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-querychannel</artifactId>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>

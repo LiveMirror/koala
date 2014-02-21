@@ -32,6 +32,8 @@
  */
 package org.openkoala.koala.util;
 
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.ioc.spring.factory.SpringInstanceProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -43,9 +45,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.spring.factory.SpringInstanceProvider;
 
 /**
  *

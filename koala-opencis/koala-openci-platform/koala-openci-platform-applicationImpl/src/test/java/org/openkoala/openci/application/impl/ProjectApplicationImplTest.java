@@ -61,11 +61,11 @@ public class ProjectApplicationImplTest extends AbstractIntegrationTest {
 		
 		ProjectQueryDto projectQueryDto = new ProjectQueryDto();
 		projectQueryDto.setName("demo");
-		List<Project> projects = projectApplication.pagingQueryProject(projectQueryDto, 1, 10).getResult();
+		List<Project> projects = projectApplication.pagingQueryProject(projectQueryDto, 1, 10).getData();
 		assertEquals(0, projects.size());
 		
 		projectQueryDto.setName("es");
-		projects = projectApplication.pagingQueryProject(projectQueryDto, 1, 10).getResult();
+		projects = projectApplication.pagingQueryProject(projectQueryDto, 1, 10).getData();
 		assertEquals(1, projects.size());
 		
 		projectDto.getProjectForCis().remove();
@@ -81,11 +81,11 @@ public class ProjectApplicationImplTest extends AbstractIntegrationTest {
 		ProjectQueryDto projectQueryDto = new ProjectQueryDto();
 		projectQueryDto.setName("test");
 		projectQueryDto.setStartDate(dateFormat.parse("8888-1-1"));
-		List<Project> projects = projectApplication.pagingQueryProject(projectQueryDto, 1, 10).getResult();
+		List<Project> projects = projectApplication.pagingQueryProject(projectQueryDto, 1, 10).getData();
 		assertEquals(0, projects.size());
 		
 		projectQueryDto.setStartDate(dateFormat.parse("2013-1-1"));
-		projects = projectApplication.pagingQueryProject(projectQueryDto, 1, 10).getResult();
+		projects = projectApplication.pagingQueryProject(projectQueryDto, 1, 10).getData();
 		assertEquals(1, projects.size());
 		
 		projectDto.getProjectForCis().remove();

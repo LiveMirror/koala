@@ -2,12 +2,11 @@ package org.openkoala.bpm.application;
 
 import java.util.List;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.application.dto.DynaProcessFormDTO;
 import org.openkoala.bpm.application.dto.DynaProcessTemplateDTO;
 import org.openkoala.bpm.application.dto.ProcessDTO;
 import org.openkoala.bpm.application.dto.SelectOptions;
-
-import com.dayatang.querychannel.support.Page;
 
 public interface ProcessFormOperApplication {
 

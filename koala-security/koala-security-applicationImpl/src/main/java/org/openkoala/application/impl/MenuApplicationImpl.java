@@ -1,6 +1,8 @@
 package org.openkoala.application.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +11,8 @@ import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
+import org.dayatang.querychannel.Page;
+import org.dayatang.utils.DateUtils;
 import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.auth.application.MenuApplication;
 import org.openkoala.auth.application.vo.ResourceVO;
@@ -19,20 +23,17 @@ import org.openkoala.koala.auth.core.domain.ResourceTypeAssignment;
 import org.openkoala.util.DateFormatUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dayatang.querychannel.support.Page;
-import com.dayatang.utils.DateUtils;
-
 @Named
 @Remote
 @Stateless(name = "MenuApplication")
 @Transactional(value="transactionManager_security")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 
 	public static Page<ResourceVO> basePageQuery(String query, Object[] params, int currentPage, int pageSize) {
 		List<ResourceVO> result = new ArrayList<ResourceVO>();
-		Page<Resource> pages = queryChannel().queryPagedResultByPageNo(query, params, currentPage, pageSize);
-		for (Resource resource : pages.getResult()) {
+		Page<Resource> pages = queryChannel().createJpqlQuery(query).setParameters(Arrays.asList(params)).setPage(currentPage, pageSize).pagedList();
+		for (Resource resource : pages.getData()) {
 			ResourceVO resourceVO = new ResourceVO();
 			resourceVO.domain2Vo(resource);
 			ResourceTypeAssignment assignment = ResourceTypeAssignment.findByResource(resource.getId());
@@ -41,7 +42,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 			}
 			result.add(resourceVO);
 		}
-		return new Page<ResourceVO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), result);
+		return new Page<ResourceVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 
 	public ResourceVO getMenu(Long menuId) {
@@ -138,7 +139,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 	}
 
 	public Page<ResourceVO> pageQueryMenu(int currentPage, int pageSize) {
-		return basePageQuery("select m from Resource m order by m.id", new Object[0], currentPage, pageSize);
+		return basePageQuery("select m from Resource m order by m.id", new Object[0], currentPage-1, pageSize);
 	}
 
 	public void assign(ResourceVO parentVO, ResourceVO childVO) {

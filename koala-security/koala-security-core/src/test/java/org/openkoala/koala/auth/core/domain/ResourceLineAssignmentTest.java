@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
 @TransactionConfiguration(transactionManager = "transactionManager_security", defaultRollback = true)

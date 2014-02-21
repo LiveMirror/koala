@@ -1,20 +1,20 @@
 package org.openkoala.bpm.core;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 @Entity
 public class KoalaAssignDetail extends AbstractEntity {
 
 	private static final long serialVersionUID = 9037655291650063741L;
 	
-	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.PERSIST)
-	@JoinColumn(name="assign_info_id") 
+	
 	private KoalaAssignInfo assignInfo;
 	
 	public KoalaAssignDetail() {
@@ -38,6 +38,8 @@ public class KoalaAssignDetail extends AbstractEntity {
 
 	private String processId;
 	
+	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.PERSIST)
+	@JoinColumn(name="assign_info_id") 
 	public KoalaAssignInfo getAssignInfo() {
 		return assignInfo;
 	}
@@ -46,6 +48,7 @@ public class KoalaAssignDetail extends AbstractEntity {
 		this.assignInfo = assignInfo;
 	}
 
+	@Column
 	public String getProcessId() {
 	
 		return processId;
@@ -93,6 +96,12 @@ public class KoalaAssignDetail extends AbstractEntity {
 		} else if (!processId.equals(other.processId))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

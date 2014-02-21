@@ -9,6 +9,8 @@ import java.util.Set;
 
 import javax.inject.Named;
 
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
 import org.openkoala.bpm.KoalaBPM.infra.common.ConstantUtil;
 import org.openkoala.bpm.application.BusinessSupportApplication;
 import org.openkoala.bpm.application.JBPMApplication;
@@ -32,9 +34,6 @@ import org.openkoala.bpm.processdyna.core.DynaProcessKey;
 import org.openkoala.bpm.processdyna.core.DynaProcessTemplate;
 import org.openkoala.bpm.processdyna.core.DynaProcessValue;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.support.Page;
 
 @Named("businessSupportApplication")
 @Transactional(value="transactionManager")

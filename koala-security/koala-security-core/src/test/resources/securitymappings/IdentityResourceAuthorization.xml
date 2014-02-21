@@ -7,14 +7,14 @@
 	<named-query name="findAllRelaitionByResource">
 		<query>
 			select distinct m from IdentityResourceAuthorization m where
-			m.resource.id=?
+			m.resource.id=:resourceId
 		</query>
 	</named-query>
 	
 	<named-query name="findAuthorizationByRole">
 		<query>
 			select auth from IdentityResourceAuthorization auth join auth.identity role 
-			where role.id=? and auth.abolishDate>?
+			where role.id=:roleId and auth.abolishDate>:abolishDate
 		</query>
 	</named-query>
 	

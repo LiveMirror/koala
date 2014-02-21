@@ -3,7 +3,7 @@ package org.openkoala.gqc.core.domain;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-import com.dayatang.domain.ValueObject;
+import org.dayatang.domain.ValueObject;
 
 /**
  * 字段明细，用于记录查询界面要显示的字段。
@@ -18,13 +18,13 @@ public class FieldDetail implements ValueObject, Comparable<FieldDetail> {
 	/**
 	 * 字段名称
 	 */
-	@Column(name = "FIELD_NAME")
+	
 	private String fieldName;
 	
 	/**
 	 * 显示名称
 	 */
-	@Column(name = "LABEL")
+	
 	private String label;
 
 	public FieldDetail() {
@@ -35,6 +35,7 @@ public class FieldDetail implements ValueObject, Comparable<FieldDetail> {
 		this.fieldName = fieldName;
 	}
 	
+	@Column(name = "FIELD_NAME")
 	public String getFieldName() {
 		return fieldName;
 	}
@@ -43,6 +44,7 @@ public class FieldDetail implements ValueObject, Comparable<FieldDetail> {
 		this.fieldName = fieldName;
 	}
 
+	@Column(name = "LABEL")
 	public String getLabel() {
 		return label;
 	}

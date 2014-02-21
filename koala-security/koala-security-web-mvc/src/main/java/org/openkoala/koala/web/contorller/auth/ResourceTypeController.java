@@ -6,15 +6,13 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.ResourceTypeApplication;
 import org.openkoala.auth.application.vo.ResourceTypeVO;
 import org.openkoala.exception.extend.ApplicationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.dayatang.querychannel.support.Page;
-
 @Controller
 @RequestMapping("/auth/ResourceType")
 public class ResourceTypeController {
@@ -59,10 +57,10 @@ public class ResourceTypeController {
 		Map<String, Object> dataMap = new HashMap<String,Object>();
 		Page<ResourceTypeVO> result = resourceTypeApplication.pageQuery(page,
 				pagesize);
-		dataMap.put("Rows", result.getResult());
+		dataMap.put("Rows", result.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getTotalCount());
+		dataMap.put("Total", result.getResultCount());
 		return dataMap;
 	}
 

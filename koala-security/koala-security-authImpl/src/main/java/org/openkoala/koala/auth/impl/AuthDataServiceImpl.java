@@ -26,7 +26,7 @@ import org.openkoala.koala.auth.vo.DefaultUserDetailsImpl;
  */
 @Remote
 @Stateless
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class AuthDataServiceImpl implements AuthDataService {
 	
 	@Override

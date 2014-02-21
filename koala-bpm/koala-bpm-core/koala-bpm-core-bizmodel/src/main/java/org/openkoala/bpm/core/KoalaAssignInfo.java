@@ -5,11 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 @Entity
 public class KoalaAssignInfo  extends AbstractEntity{
@@ -28,9 +29,10 @@ public class KoalaAssignInfo  extends AbstractEntity{
 	
 	private String creater;
 	
-	@OneToMany(mappedBy = "assignInfo",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	
 	private List<KoalaAssignDetail> jbpmNames;
 
+	@Column
 	public String getName() {
 		return name;
 	}
@@ -38,7 +40,7 @@ public class KoalaAssignInfo  extends AbstractEntity{
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	@Column
 	public String getAssigner() {
 		return assigner;
 	}
@@ -46,7 +48,7 @@ public class KoalaAssignInfo  extends AbstractEntity{
 	public void setAssigner(String assigner) {
 		this.assigner = assigner;
 	}
-
+	@Column
 	public String getAssignerTo() {
 		return assignerTo;
 	}
@@ -54,7 +56,7 @@ public class KoalaAssignInfo  extends AbstractEntity{
 	public void setAssignerTo(String assignerTo) {
 		this.assignerTo = assignerTo;
 	}
-
+	@Column
 	public Date getBeginTime() {
 		return beginTime;
 	}
@@ -62,7 +64,7 @@ public class KoalaAssignInfo  extends AbstractEntity{
 	public void setBeginTime(Date beginTime) {
 		this.beginTime = beginTime;
 	}
-
+	@Column
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -70,7 +72,7 @@ public class KoalaAssignInfo  extends AbstractEntity{
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-
+	@Column
 	public String getCreater() {
 		return creater;
 	}
@@ -95,6 +97,7 @@ public class KoalaAssignInfo  extends AbstractEntity{
 		return result;
 	}
 
+	@OneToMany(mappedBy = "assignInfo",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	public List<KoalaAssignDetail> getJbpmNames() {
 		if(jbpmNames==null)jbpmNames = new ArrayList<KoalaAssignDetail>();
 		return jbpmNames;
@@ -146,7 +149,7 @@ public class KoalaAssignInfo  extends AbstractEntity{
 		return true;
 	}
 	
-	public String getRelativeProcess(){
+	public String findRelativeProcess(){
 		if(this.jbpmNames==null)return null;
 		else{
 			String value = "";
@@ -163,6 +166,12 @@ public class KoalaAssignInfo  extends AbstractEntity{
 		return "KoalaAssignInfo [name=" + name + ", assigner=" + assigner
 				+ ", assignerTo=" + assignerTo + ", beginTime=" + beginTime
 				+ ", endTime=" + endTime + ", creater=" + creater + "]";
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

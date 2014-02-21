@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -53,6 +54,7 @@ public abstract class Organization extends Party {
 	 * 获取机构的全名
 	 * @return
 	 */
+	@Transient
 	public String getFullName() {
 		String separator = "/";
 		Organization parent = getParent(new Date());

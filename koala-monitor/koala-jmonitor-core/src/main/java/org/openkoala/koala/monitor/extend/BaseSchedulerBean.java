@@ -15,6 +15,7 @@
  */
 package org.openkoala.koala.monitor.extend;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
@@ -22,6 +23,8 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.apache.commons.lang.StringUtils;
+import org.dayatang.domain.EntityRepository;
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.koala.config.domain.SchedulerConfg;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -34,9 +37,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import com.dayatang.domain.EntityRepository;
-import com.dayatang.domain.InstanceFactory;
 
 /**
  * 类    名：BaseSchedulerBean.java<br />
@@ -185,7 +185,7 @@ public abstract class BaseSchedulerBean {
 		            hql = "update SchedulerConfg set running = ? where triggerName = ?";
 		            params = new Object[] {false, triggerName };
 		        }
-		        repository.executeUpdate(hql, params);
+		        repository.createJpqlQuery(hql).setParameters(Arrays.asList(params)).executeUpdate();
 				return null;
 			}
 		});

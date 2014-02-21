@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.openkoala.openci</groupId>
 		<artifactId>koala-openci-platform</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>koala-openci-platform-infra</artifactId>
 	<name>koala-openci-platform-infra</name>
@@ -26,7 +26,7 @@
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-test-support</artifactId>
-			<version>${koala.framework.version}</version>
+			<version>${koala.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

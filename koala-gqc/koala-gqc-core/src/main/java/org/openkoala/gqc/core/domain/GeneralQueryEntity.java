@@ -11,12 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import com.dayatang.domain.Entity;
-import com.dayatang.domain.EntityRepository;
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.domain.QuerySettings;
+import org.dayatang.domain.Entity;
+import org.dayatang.domain.EntityRepository;
+import org.dayatang.domain.InstanceFactory;
 
 
 /**
@@ -30,13 +30,10 @@ public abstract class GeneralQueryEntity implements Entity {
 
 	private static final long serialVersionUID = 8882145540383345037L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID")
+	
 	private Long id;
 
-	@Version
-	@Column(name = "VERSION")
+	
 	private int version;
 
 
@@ -45,6 +42,9 @@ public abstract class GeneralQueryEntity implements Entity {
 	 * 
 	 * @return 实体的标识
 	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
 	public Long getId() {
 		return id;
 	}
@@ -64,6 +64,8 @@ public abstract class GeneralQueryEntity implements Entity {
 	 * 
 	 * @return 实体的版本号
 	 */
+	@Version
+	@Column(name = "VERSION")
 	public int getVersion() {
 		return version;
 	}
@@ -78,6 +80,7 @@ public abstract class GeneralQueryEntity implements Entity {
 		this.version = version;
 	}
 
+	@Transient
 	public boolean isNew() {
 		return id == null || id.intValue() == 0;
 	}
@@ -94,7 +97,7 @@ public abstract class GeneralQueryEntity implements Entity {
 	}
 	
 	public boolean existed(String propertyName, Object propertyValue) {
-		List<?> entities = getRepository().find(QuerySettings.create(getClass()).eq(propertyName, propertyValue)); 
+		List<?> entities = getRepository().createCriteriaQuery(getClass()).eq(propertyName, propertyValue).list();
 		return !(entities.isEmpty());
 	}
 
@@ -143,7 +146,7 @@ public abstract class GeneralQueryEntity implements Entity {
 	}
 
 	public static <T extends Entity> List<T> findAll(Class<T> clazz) {
-		return getRepository().find(QuerySettings.create(clazz));
+		return getRepository().findAll(clazz);
 	}
 
 

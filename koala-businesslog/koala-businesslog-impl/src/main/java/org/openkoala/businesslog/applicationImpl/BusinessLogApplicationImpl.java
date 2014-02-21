@@ -1,10 +1,9 @@
 package org.openkoala.businesslog.applicationImpl;
 
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
-
 import org.apache.commons.beanutils.BeanUtils;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.businesslog.BusinessLog;
 import org.openkoala.businesslog.dto.DefaultBusinessLogDTO;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
@@ -167,8 +166,8 @@ public class BusinessLogApplicationImpl implements BusinessLogApplication {
             jpql.append(" and _defaultBusinessLog.log like ?");
             conditionVals.add(MessageFormat.format("%{0}%", queryVo.getLog()));
         }
-        Page<DefaultBusinessLog> pages = getQueryChannelService().queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pageSize);
-        for (DefaultBusinessLog defaultBusinessLog : pages.getResult()) {
+        Page<DefaultBusinessLog> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
+         for (DefaultBusinessLog defaultBusinessLog : pages.getData()) {
             DefaultBusinessLogDTO defaultBusinessLogDTO = new DefaultBusinessLogDTO();
 
             // 将domain转成VO
@@ -184,7 +183,7 @@ public class BusinessLogApplicationImpl implements BusinessLogApplication {
 
             result.add(defaultBusinessLogDTO);
         }
-        return new Page<DefaultBusinessLogDTO>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), result);
+        return new Page<DefaultBusinessLogDTO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
     }
 
 }

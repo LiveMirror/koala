@@ -3,211 +3,56 @@ package org.openkoala.koala.mybatis;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-
-import com.dayatang.domain.Entity;
-import com.dayatang.domain.QuerySettings;
-import com.dayatang.querychannel.service.QueryChannelService;
-import com.dayatang.querychannel.support.Page;
+import org.dayatang.querychannel.ChannelQuery;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 
 public class QueryChannelServiceMybatis implements QueryChannelService {
 
-	private static final long serialVersionUID = -7717195132438268067L;
-	
-	private SqlSessionFactory sqlSessionFactory;
-
-	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-		this.sqlSessionFactory = sqlSessionFactory;
+	@Override
+	public ChannelQuery createJpqlQuery(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public long queryResultSize(String queryStr, Object[] params) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		long size = 0;
-		try {
-			size = session.selectList(className+"."+queryStr, params).size();
-		} finally {
-		    session.close();
-		}
-		return size;
+	@Override
+	public ChannelQuery createNamedQuery(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public <T> List<T> queryResult(String queryStr, Object[] params,
-			long firstRow, int pageSize) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		Map<String,Object> paramsMap = new HashMap<String,Object>();
-		paramsMap.put("params", params);
-		paramsMap.put("firstRow", firstRow);
-		paramsMap.put("pageSize", pageSize);
-		try { 
-			List<T> result = session.selectList(className+"."+queryStr, paramsMap);
-			return result;
-		} finally {
-		  session.close();
-		}
+	@Override
+	public ChannelQuery createSqlQuery(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public <T> T querySingleResult(String queryStr, Object[] params) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		try {
-			T t = (T)session.selectOne(className+"."+queryStr, params);
-			return t;
-		} finally {
-		  session.close();
-		}
+	@Override
+	public long getResultCount(ChannelQuery arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
-	public <T> List<T> queryResult(String queryStr, Object[] params) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		Map<String,Object> paramsMap = new HashMap<String,Object>();
-		paramsMap.put("params", params);
-		try { 
-			List<T> result = session.selectList(className+"."+queryStr, paramsMap);
-			return result;
-		} finally {
-		  session.close();
-		}
+	@Override
+	public <T> T getSingleResult(ChannelQuery arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public List<Map<String, Object>> queryMapResult(String queryStr,
-			Object[] params) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		Map<String,Object> paramsMap = new HashMap<String,Object>();
-		paramsMap.put("params", params);
-		try { 
-			List<Map<String, Object>> result = session.selectList(className+"."+queryStr, paramsMap);
-			return result;
-		} finally {
-		  session.close();
-		}
+	@Override
+	public <T> List<T> list(ChannelQuery arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public <T> Page<T> queryPagedResult(String queryStr, Object[] params,
-			long firstRow, int pageSize) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		Map<String,Object> paramsMap = new HashMap<String,Object>();
-		paramsMap.put("params", params);
-		paramsMap.put("firstRow", firstRow);
-		paramsMap.put("pageSize", pageSize);
-		try { 
-			List<T> result = (List<T>)session.selectList(className+"."+queryStr, paramsMap);
-			int count = (Integer)session.selectOne(className+"."+queryStr+"Count",paramsMap);
-			Page<T> page = new Page<T>(firstRow, count,pageSize,result);
-			return page;
-		} finally {
-		  session.close();
-		}
+	@Override
+	public <T> Page<T> pagedList(ChannelQuery arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public <T> Page<T> queryPagedResultByPageNo(String queryStr,
-			Object[] params, int currentPage, int pageSize) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		Map<String,Object> paramsMap = new HashMap<String,Object>();
-		int firstRow = (currentPage-1)*pageSize;
-		paramsMap.put("params", params);
-		paramsMap.put("firstRow", firstRow);
-		paramsMap.put("pageSize", pageSize);
-		try { 
-			List<T> result = (List<T>)session.selectList(className+"."+queryStr, paramsMap);
-			int count = (Integer)session.selectOne(className+"."+queryStr+"Count",paramsMap);
-			Page<T> page = new Page<T>(firstRow, count,pageSize,result);
-			return page;
-		} finally {
-		  session.close();
-		}
-	}
-
-	public <T> Page<T> queryPagedResultByNamedQuery(String queryName,
-			Object[] params, long firstRow, int pageSize) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		Map<String,Object> paramsMap = new HashMap<String,Object>();
-		paramsMap.put("params", params);
-		paramsMap.put("firstRow", firstRow);
-		paramsMap.put("pageSize", pageSize);
-		try { 
-			List<T> result = (List<T>)session.selectList(className+"."+queryName, paramsMap);
-			int count = (Integer)session.selectOne(className+"."+queryName+"Count",paramsMap);
-			Page<T> page = new Page<T>(firstRow, count,pageSize,result);
-			return page;
-		} finally {
-		  session.close();
-		}
-	}
-
-	public <T> Page<T> queryPagedResultByPageNoAndNamedQuery(String queryName,
-			Object[] params, int currentPage, int pageSize) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		int firstRow = (currentPage-1)*pageSize;
-		Map<String,Object> paramsMap = new HashMap<String,Object>();
-		paramsMap.put("params", params);
-		paramsMap.put("firstRow", firstRow);
-		paramsMap.put("pageSize", pageSize);
-		try { 
-			List<T> result = (List<T>)session.selectList(className+"."+queryName, paramsMap);
-			int count = (Integer)session.selectOne(className+"."+queryName+"Count",paramsMap);
-			Page<T> page = new Page<T>(firstRow, count,pageSize,result);
-			return page;
-		} finally {
-		  session.close();
-		}
-	}
-
-	public Page<Map<String, Object>> queryPagedMapResult(String queryStr,
-			Object[] params, int currentPage, int pageSize) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		int firstRow = (currentPage-1)*pageSize;
-		Map<String,Object> paramsMap = new HashMap<String,Object>();
-		paramsMap.put("params", params);
-		paramsMap.put("firstRow", firstRow);
-		paramsMap.put("pageSize", pageSize);
-		try { 
-			
-			Object o= (session.selectList(className+"."+queryStr, paramsMap));
-			List<Map<String, Object>> result = (List<Map<String, Object>>)o;
-			int count = (Integer)session.selectOne(className+"."+queryStr+"Count",paramsMap);
-			Page<Map<String, Object>> page = new Page<Map<String, Object>>(firstRow, count,pageSize,result);
-			return page;
-		} finally {
-		  session.close();
-		}
-		
-		
-	}
-
-	public Page<Map<String, Object>> queryPagedMapResultByNamedQuery(
-			String queryName, Object[] params, int currentPage, int pageSize) {
-		String className = new Exception().getStackTrace()[1].getClassName();
-		SqlSession session = sqlSessionFactory.openSession();
-		int firstRow = (currentPage-1)*pageSize;
-		Map<String,Object> paramsMap = new HashMap<String,Object>();
-		paramsMap.put("params", params);
-		paramsMap.put("firstRow", firstRow);
-		paramsMap.put("pageSize", pageSize);
-		try { 
-			
-			Object o= (session.selectList(className+"."+queryName, paramsMap));
-			List<Map<String, Object>> result = (List<Map<String, Object>>)o;
-			int count = (Integer)session.selectOne(className+"."+queryName+"Count",paramsMap);
-			Page<Map<String, Object>> page = new Page<Map<String, Object>>(firstRow, count,pageSize,result);
-			return page;
-		} finally {
-		  session.close();
-		}
-	}
-
-	public <T extends Entity> Page<T> queryPagedByQuerySettings(
-			QuerySettings<T> settings, int currentPage, int pageSize) {
-		 throw new UnsupportedOperationException();
-	}
 
 }

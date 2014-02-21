@@ -17,17 +17,20 @@ package org.openkoala.koala.auth.core.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
-import com.dayatang.domain.Entity;
-import com.dayatang.domain.EntityRepository;
-import com.dayatang.domain.InstanceFactory;
-import com.dayatang.domain.QuerySettings;
+import org.dayatang.domain.BaseEntity;
+import org.dayatang.domain.Entity;
+import org.dayatang.domain.EntityRepository;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.domain.MapParameters;
 
 /**
  * 类    名：KoalaEntity.java
@@ -46,169 +49,178 @@ import com.dayatang.domain.QuerySettings;
  * 修 改 者    修改日期     文件版本   修改说明	
  */
 @MappedSuperclass
-public abstract class KoalaSecurityEntity implements Entity {
+public abstract class KoalaSecurityEntity extends BaseEntity {
     
     private static final long serialVersionUID = 1342711951865077906L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Version
     private int version;
-
 
     /**
      * 获得实体的标识
-     * 
+     *
      * @return 实体的标识
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
+    @Override
     public Long getId() {
         return id;
     }
 
     /**
      * 设置实体的标识
-     * 
-     * @param id
-     *            要设置的实体标识
+     *
+     * @param id 要设置的实体标识
      */
     public void setId(Long id) {
         this.id = id;
     }
+    
+    private static EntityRepository repository;
+    
+    public static EntityRepository getRepository(){
+    	if(repository==null){
+    		repository = InstanceFactory.getInstance(EntityRepository.class,"repository_ss");
+    	}
+    	return repository;
+    }
 
     /**
      * 获得实体的版本号。持久化框架以此实现乐观锁。
-     * 
+     *
      * @return 实体的版本号
      */
+    @Version
+    @Column(name = "VERSION")
     public int getVersion() {
         return version;
     }
 
     /**
      * 设置实体的版本号。持久化框架以此实现乐观锁。
-     * 
-     * @param version
-     *            要设置的版本号
+     *
+     * @param version 要设置的版本号
      */
     public void setVersion(int version) {
         this.version = version;
     }
 
-    public boolean isNew() {
-        return id == null || id.intValue() == 0;
-    }
-
-    private static EntityRepository repository;
-
     /**
-     * 获取仓储
-     * @return
-     */
-    public static EntityRepository getRepository() {
-        if (repository == null) {
-            repository = InstanceFactory.getInstance(EntityRepository.class,"repository_ss");
-        }
-        return repository;
-    }
-
-    /**
-     * 设置仓储
-     * @param repository
-     */
-    public static void setRepository(EntityRepository repository) {
-        KoalaSecurityEntity.repository = repository;
-    }
-
-    /**
-     * 保存实体
+     * 将实体本身持久化到数据库
      */
     public void save() {
         getRepository().save(this);
     }
 
     /**
-     * 删除实体
+     * 将实体本身从数据库中删除
      */
     public void remove() {
         getRepository().remove(this);
     }
 
     /**
-     * 判断一个实体是否已经存在
-     * @param clazz
-     * @param id
-     * @return
-     */
-    public static <T extends Entity> boolean exists(Class<T> clazz, Serializable id) {
-        return getRepository().exists(clazz, id);
-    }
-
-    /**
-     * 获取一个实体
-     * @param clazz
-     * @param id
-     * @return
+     * 根据实体类型和ID从仓储中获取实体
+     * @param <T> 实体类型
+     * @param clazz 实体的类
+     * @param id 实体的ID
+     * @return 类型为T或T的子类型，ID为id的实体。
      */
     public static <T extends Entity> T get(Class<T> clazz, Serializable id) {
         return getRepository().get(clazz, id);
     }
 
     /**
-     * 获取未修改的实体
-     * @param clazz
-     * @param entity
-     * @return
+     * 查找实体在数据库中的未修改版本
+     * @param <T> 实体类型
+     * @param clazz 实体的类
+     * @param entity  实体
+     * @return 实体的未修改版本。
      */
     public static <T extends Entity> T getUnmodified(Class<T> clazz, T entity) {
         return getRepository().getUnmodified(clazz, entity);
     }
 
     /**
-     * 加载一个实体
-     * @param clazz
-     * @param id
-     * @return
+     * 根据实体类型和ID从仓储中加载实体(与get()方法的区别在于除id外所有的属性值都未填充)
+     * @param <T> 实体类型
+     * @param clazz 实体的类
+     * @param id 实体的ID
+     * @return 类型为T或T的子类型，ID为id的实体。
      */
     public static <T extends Entity> T load(Class<T> clazz, Serializable id) {
         return getRepository().load(clazz, id);
     }
 
     /**
-     * 获取所有的实体
-     * @param clazz
-     * @return
+     * 查找指定类型的所有实体
+     * @param <T> 实体所属的类型
+     * @param clazz 实体所属的类
+     * @return 符合条件的实体列表
      */
     public static <T extends Entity> List<T> findAll(Class<T> clazz) {
-        return getRepository().find(QuerySettings.create(clazz));
+        return getRepository().createCriteriaQuery(clazz).list();
     }
 
+    /**
+     * 根据单个属性值以“属性=属性值”的方式查找实体
+     * @param <T> 实体所属的类型
+     * @param clazz 实体所属的类
+     * @param propName 属性名
+     * @param value 匹配的属性值
+     * @return 符合条件的实体列表
+     */
+    public static <T extends Entity> List<T> findByProperty(Class<T> clazz, String propName, Object value) {
+        return getRepository().findByProperty(clazz, propName, value);
+    }
 
-    @Override
-	public boolean existed() {
-		// TODO Auto-generated method stub
-		return false;
+    /**
+     * 根据多个属性值以“属性=属性值”的方式查找实体，例如查找name="张三", age=35的员工。
+     * @param <T> 实体所属的类型
+     * @param clazz 实体所属的类
+     * @param propValues 属性值匹配条件
+     * @return 符合条件的实体列表
+     */
+    public static <T extends Entity> List<T> findByProperties(Class<T> clazz, Map<String, Object> propValues) {
+        return getRepository().findByProperties(clazz, MapParameters.create(propValues));
+    }
+
+	@Override
+	public String toString() {
+		return "KoalaSecurityEntity [id=" + id + ", version=" + version + "]";
 	}
 
 	@Override
-	public boolean notExisted() {
-		// TODO Auto-generated method stub
-		return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 0;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + version;
+		return result;
 	}
 
 	@Override
-	public boolean existed(String propertyName, Object propertyValue) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (!(obj instanceof KoalaSecurityEntity))
+			return false;
+		KoalaSecurityEntity other = (KoalaSecurityEntity) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (version != other.version)
+			return false;
+		return true;
 	}
-
-	@Override
-    public abstract int hashCode();
-
-    @Override
-    public abstract boolean equals(Object other);
-
-    @Override
-    public abstract String toString();
+    
+    
+    
 }

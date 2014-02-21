@@ -3,7 +3,7 @@ package org.openkoala.bpm.core;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.dayatang.domain.AbstractEntity;
+import org.dayatang.domain.AbstractEntity;
 
 @Entity
 @Table
@@ -58,6 +58,12 @@ public class MessageLog extends AbstractEntity {
 
 	public void setUser(String user) {
 		this.user = user;
+	}
+
+	@Override
+	public String[] businessKeys() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

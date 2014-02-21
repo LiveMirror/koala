@@ -13,7 +13,6 @@ import javax.persistence.NamedQuery;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import com.dayatang.domain.QuerySettings;
 
 /**
  * 机构间直线责任关系
@@ -44,10 +43,8 @@ public class OrganizationLineManagement extends Accountability<Organization, Org
 	 * @return
 	 */
 	public static Organization getParentOfOrganization(Organization organization, Date date) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("organization", organization);
-		params.put("date", date);
-		List<Organization> companies = getRepository().findByNamedQuery("getParentOfOrganization", params, Organization.class);
+		List<Organization> companies = getRepository().createNamedQuery("getParentOfOrganization")
+				.addParameter("organization", organization).addParameter("date", date).list();
 		return companies.isEmpty() ? null : companies.get(0);
 	}
 
@@ -58,10 +55,7 @@ public class OrganizationLineManagement extends Accountability<Organization, Org
 	 * @return
 	 */
 	public static List<Organization> findChildrenOfOrganization(Organization organization, Date date) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("organization", organization);
-		params.put("date", date);
-		return getRepository().findByNamedQuery("findChildrenOfOrganization", params, Organization.class);
+		return getRepository().createNamedQuery("findChildrenOfOrganization").addParameter("organization", organization).addParameter("date", date).list();
 	}
 
 	/**
@@ -82,8 +76,8 @@ public class OrganizationLineManagement extends Accountability<Organization, Org
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("organization", responsible);
 		params.put("date", date);
-		List<OrganizationLineManagement> lineMgmts = getRepository().findByNamedQuery(
-				"findByResponsible", params, OrganizationLineManagement.class);
+		List<OrganizationLineManagement> lineMgmts = getRepository().createNamedQuery("findByResponsible")
+				.addParameter("organization", responsible).addParameter("date", date).list();
 		return lineMgmts.isEmpty() ? null : lineMgmts.get(0);
 	}
 
@@ -93,10 +87,10 @@ public class OrganizationLineManagement extends Accountability<Organization, Org
 	 * @return
 	 */
 	public static Organization getTopOrganization(Date queryDate) {
-		OrganizationLineManagement organizationLineManagement = getRepository().getSingleResult(QuerySettings.create(OrganizationLineManagement.class)
+		OrganizationLineManagement organizationLineManagement = getRepository().createCriteriaQuery(OrganizationLineManagement.class)
 				.isNull("commissioner")
 				.gt("toDate", queryDate)
-				.le("fromDate", queryDate));
+				.le("fromDate", queryDate).singleResult();
 		
 		if (organizationLineManagement == null) {
 			return null;
