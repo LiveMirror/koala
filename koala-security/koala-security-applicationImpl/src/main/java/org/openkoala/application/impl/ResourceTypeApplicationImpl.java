@@ -22,16 +22,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Remote
 @Stateless(name = "ResourceTypeApplication")
 @Transactional(value = "transactionManager_security")
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+// @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTypeApplication {
 
 	public boolean isExist(ResourceTypeVO resourceTypeVO) {
 		String queryJpql = "from ResourceType o where o.name=:name and o.abolishDate>:abolishDate";
-		
-		ResourceType resourceType = (ResourceType) queryChannel().createJpqlQuery(queryJpql).addParameter("name",  resourceTypeVO.getName())
+
+		ResourceType resourceType = (ResourceType) queryChannel().createJpqlQuery(queryJpql).addParameter("name", resourceTypeVO.getName())
 				.addParameter("abolishDate", new Date()).singleResult();
-				
-	
+
 		if (resourceType != null) {
 			return true;
 		}
@@ -42,7 +41,7 @@ public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTyp
 		if (isExist(resourceTypeVO)) {
 			throw new ApplicationException("resourceType.exist");
 		}
-		
+
 		ResourceType resourceType = new ResourceType();
 		resourceType.setName(resourceTypeVO.getName());
 		resourceType.setCreateDate(new Date());
@@ -60,8 +59,8 @@ public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTyp
 	public void delete(ResourceTypeVO[] resourceTypeVOs) {
 		for (ResourceTypeVO resourceTypeVO : resourceTypeVOs) {
 			ResourceType resourceType = ResourceType.load(ResourceType.class, Long.valueOf(resourceTypeVO.getId()));
-			//如果ResourceType已经被引用,则抛出异常
-			if(resourceType.getResources().size()>0){
+			// 如果ResourceType已经被引用,则抛出异常
+			if (resourceType.getResources().size() > 0) {
 				throw new ApplicationException("resourceType.hasResource");
 			}
 			resourceType.setAbolishDate(new Date());
@@ -71,6 +70,7 @@ public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTyp
 
 	/**
 	 * 删除与资源的关系
+	 * 
 	 * @param resourceType
 	 */
 	private void removeResourceTypeAssignment(ResourceType resourceType) {
@@ -81,24 +81,23 @@ public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTyp
 
 	public void update(ResourceTypeVO resourceTypeVO) {
 		ResourceType resourceType = ResourceType.load(ResourceType.class, Long.valueOf(resourceTypeVO.getId()));
-		
+
 		if (resourceType.getName().equals(resourceTypeVO.getName())) {
 			return;
 		}
-		
+
 		if (isExist(resourceTypeVO)) {
 			throw new ApplicationException("resourceType.exist");
 		}
-		
+
 		resourceType.setName(resourceTypeVO.getName());
 	}
 
 	public Page<ResourceTypeVO> pageQuery(int currentPage, int pageSize) {
 		String queryJpql = "from ResourceType o where o.name<>:name1 and o.name<>:name2 and o.abolishDate>:abolishDate";
-		
-	
-		Page<ResourceType> page = queryChannel().createJpqlQuery(queryJpql).addParameter("name1",  "KOALA_MENU").addParameter("name2",  "KOALA_DIRETORY")
-		.addParameter("abolishDate", new Date()).setPage(currentPage-1, pageSize).pagedList();
+
+		Page<ResourceType> page = queryChannel().createJpqlQuery(queryJpql).addParameter("name1", "KOALA_MENU").addParameter("name2", "KOALA_DIRETORY")
+				.addParameter("abolishDate", new Date()).setPage(currentPage - 1, pageSize).pagedList();
 
 		List<ResourceTypeVO> list = new ArrayList<ResourceTypeVO>();
 		for (ResourceType resourceType : page.getData()) {
@@ -109,7 +108,6 @@ public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTyp
 		}
 		return new Page<ResourceTypeVO>(page.getPageIndex(), page.getResultCount(), page.getPageSize(), list);
 	}
-
 
 	public List<ResourceTypeVO> findResourceType() {
 		List<ResourceType> resourceTypes = ResourceType.findAllResourceType();
