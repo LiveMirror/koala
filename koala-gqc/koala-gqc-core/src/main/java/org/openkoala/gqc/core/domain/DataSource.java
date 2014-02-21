@@ -101,6 +101,9 @@ public class DataSource extends GeneralQueryEntity {
 	}
 
 	public void setConnectUrl(String connectUrl) {
+		if (connectUrl == null) {
+			return;
+		}
 		this.connectUrl = connectUrl.trim();
 	}
 
