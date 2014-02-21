@@ -90,6 +90,7 @@ body {
 }
 
 .login_con_R  form {
+	position: relative;
 	padding-top: 10%;
 	padding-left: 7%;
 	padding-right: 7%;
@@ -98,11 +99,12 @@ body {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 25px!important;
 }
 .checkCode {
 	position: absolute;
-	left/*\**/:160px;
-	top/*\**/:-10px;
+	top: 54%;
+	left: 56%;
 	height: 50px;
 }
 .btn-login {
@@ -188,10 +190,11 @@ body {
                 </div>
 				<div class="form-group input-group">
 				    <span class="input-group-addon"><span class="glyphicon glyphicon-magnet"></span></span>
-					<input type="text" id="jcaptcha" style="width:120px;" name="jcaptcha" value="" class="form-control" placeholder="验证码"  autocomplete="off"/>
-					<img src="jcaptcha.jpg" id="checkCode" onclick="refreshCode();" class="checkCode"/>
+					<input type="text" id="jcaptcha"  style="width:50%;" name="jcaptcha" value="" class="form-control" placeholder="验证码"  autocomplete="off"/>
+					<div style="width:120px;"></div>
 				</div>
-				<div class="form-group input-group" style="margin-top: 10%;">
+				<img src="jcaptcha.jpg" id="checkCode" onclick="refreshCode();" class="checkCode"/>
+				<div class="form-group input-group" style="margin-top: 45px;">
 					<button type="button"  class="btn btn-primary btn-login">登录</button>
 				</div>
 			</FORM>

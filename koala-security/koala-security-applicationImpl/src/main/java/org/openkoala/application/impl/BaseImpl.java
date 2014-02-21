@@ -18,10 +18,10 @@ public class BaseImpl {
 	}
 
 	protected String genQueryCondition(QueryConditionVO search) {
-		StringBuilder result = new StringBuilder(MessageFormat.format("select m from {0} m where 1=1", //
+		StringBuilder result = new StringBuilder(MessageFormat.format("select m from {0} m where 1=1",
 				search.getObjectName()));
 		for (QueryItemVO qi : search.getItems()) {
-			result.append(MessageFormat.format(" and m.{0} {1} {2}", qi.getPropName(), //
+			result.append(MessageFormat.format(" and m.{0} {1} {2}", qi.getPropName(),
 					QueryConditionVO.genOperatorStirng(qi.getOperaType()), qi.getPropValue()));
 		}
 		result.append(" and m.abolishDate>:abolishDate");

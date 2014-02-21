@@ -2,21 +2,19 @@ package org.openkoala.application.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.dayatang.querychannel.Page;
 import org.dayatang.utils.DateUtils;
-import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.auth.application.MenuApplication;
 import org.openkoala.auth.application.vo.ResourceVO;
 import org.openkoala.auth.application.vo.RoleVO;
+import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.koala.auth.core.domain.Resource;
 import org.openkoala.koala.auth.core.domain.ResourceType;
 import org.openkoala.koala.auth.core.domain.ResourceTypeAssignment;
@@ -114,8 +112,8 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 		loadedResource.setMenuIcon(resourceVO.getIcon());
 		loadedResource.setDesc(resourceVO.getDesc());
 		
-		ResourceTypeAssignment.findByResource(resourceVO.getId()) //
-				.setResourceType(ResourceType.load(ResourceType.class, //
+		ResourceTypeAssignment.findByResource(resourceVO.getId()) 
+				.setResourceType(ResourceType.load(ResourceType.class, 
 				Long.valueOf(resourceVO.getMenuType())));
 	}
 

@@ -152,7 +152,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 			int pageSize) {
 		StringBuilder jpql = new StringBuilder(
 				"select new org.openkoala.auth.application.vo.UserVO"
-						+ "(user.id,user.name,user.sortOrder,user.userAccount,user.userDesc,user.isValid,"
+						+ "(user.id,user.name,user.sortOrder,user.userAccount,user.userDesc,user.valid,"
 						+ "user.email,user.lastLoginTime) from RoleUserAuthorization rua join rua.user "
 						+ "user join rua.role role where role.id=? and rua.abolishDate>? ");
 

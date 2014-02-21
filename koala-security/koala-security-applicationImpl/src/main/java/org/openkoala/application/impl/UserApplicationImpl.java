@@ -105,7 +105,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
     
     public Page<UserVO> pageQueryUser(UserVO userVO, int currentPage, int pageSize) {
     	List<UserVO> results = new ArrayList<UserVO>();
-    	StringBuilder jpql = new StringBuilder("select m from User m where m.isSuper is false and m.abolishDate>? ");
+    	StringBuilder jpql = new StringBuilder("select m from User m where m.super is false and m.abolishDate>? ");
     	List<Object> conditions = new ArrayList<Object>();
 		conditions.add(new Date());
     	
@@ -172,7 +172,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
         Page<Role> pages = queryChannel().createJpqlQuery(
 	        "select role from Role role where role.id not in" + //
 	        "(select role from RoleUserAuthorization rau join " + //
-	        "rau.role role join rau.user user where user.id=userId " + //
+	        "rau.role role join rau.user user where user.id=:userId " + //
 	        "and rau.abolishDate>:rauAbolishDate) and role.abolishDate>:roleAbolishDate").addParameter("userId", userVO.getId()) 
 	        .addParameter("rauAbolishDate", new Date()).addParameter("roleAbolishDate", new Date()).setPage(currentPage, pageSize).pagedList();//
         
