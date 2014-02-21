@@ -36,7 +36,7 @@
 		<query>
 			select distinct child from ResourceLineAssignment m join m.parent parent 
 			join m.child child where parent.id=:parentId and m.abolishDate>:abolishDate
-			order by child.sortOrder asc,resource.createDate
+			order by child.sortOrder asc
 		</query>
 	</named-query>
 	
