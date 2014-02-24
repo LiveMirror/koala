@@ -182,7 +182,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
             results.add(roleVO);
         }
         
-        return new Page<RoleVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
+        return new Page<RoleVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), results);
     }
 
     public Page<UserVO> pageQueryUserCustom(int currentPage, int pageSize, QueryConditionVO query) {

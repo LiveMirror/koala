@@ -106,7 +106,7 @@ public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTyp
 			resourceTypeVO.setName(resourceType.getName());
 			list.add(resourceTypeVO);
 		}
-		return new Page<ResourceTypeVO>(page.getPageIndex(), page.getResultCount(), page.getPageSize(), list);
+		return new Page<ResourceTypeVO>(page.getStart(), page.getResultCount(), page.getPageSize(), list);
 	}
 
 	public List<ResourceTypeVO> findResourceType() {

@@ -42,7 +42,7 @@ public class ResourceController {
 		int limit = Integer.parseInt(pagesize);
 		Page<ResourceVO> all = resourceApplication.pageQueryNotAssignByRole(start, limit, roleVO);
 		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", limit);
 		dataMap.put("Total", all.getResultCount());
 		return dataMap;
