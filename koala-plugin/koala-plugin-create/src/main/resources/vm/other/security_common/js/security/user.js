@@ -188,10 +188,10 @@ var userManager = function() {
 		if (!item && !Validation.notNull(dialog, userPassword, userPassword.val(), '请输入用户密码')) {
 			return false;
 		}
-		if (!Validation.checkByRegExp(dialog, userPassword, '^[0-9a-zA-Z]*$', userPassword.val(), '只能输入字母及数字')) {
+		if (!item && !Validation.checkByRegExp(dialog, userPassword, '^[0-9a-zA-Z]*$', userPassword.val(), '只能输入字母及数字')) {
 			return false;
 		}
-		if(userPassword.val().length < 6 || userPassword.val().length > 10){
+		if(!item && (userPassword.val().length < 6 || userPassword.val().length > 10)){
 			showErrorMessage(dialog, userPassword, '请输入6-10位数字或者字母');
 			return false;
 		}

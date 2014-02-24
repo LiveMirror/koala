@@ -22,7 +22,7 @@ public interface BaseApplication {
 	
 	/**
 	 * 修改一个参与者
-	 * @param entity
+	 * @param party
 	 * @return
 	 */
 	void updateParty(Party party);

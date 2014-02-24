@@ -261,7 +261,14 @@
 				params.sortorder = self.sortOrder;
 			}
             if(self.options.isUserLocalData){
-                self.items = self.options.localData;
+                var start = self.pageSize * (self.pageNo-1);
+            	var end =  self.pageSize * self.pageNo-1;
+            	self.totalRecord = self.options.localData.length;
+            	self.startRecord.text(start + 1);
+				self.endRecord.text(end+1);
+				self.totalRecordHtml.text(self.totalRecord);
+				self.items = self.getItemsFromLocalData(start, end);
+				self._initPageNo(self.totalRecord)
                 if(!self.options.localData || self.options.localData.length == 0){
                     self.gridTableBodyTable.empty();
                     self.gridTableBody.find('[data-role="noData"]').remove();
@@ -303,6 +310,19 @@
 				}).fail(function(result){
 
 				});
+		},
+		/**
+		 * 根据开始结束记录数从本地数据获取数据
+		 */
+		getItemsFromLocalData: function(start, end){
+			var items = [];
+			if(end > (this.totalRecord - 1)){
+				end = this.totalRecord - 1;
+			}
+			for(var i=start; i<=end; i++){
+				items.push(this.options.localData[i]);
+			}
+			return items;
 		},
 		/*
 		 * 初始化分页

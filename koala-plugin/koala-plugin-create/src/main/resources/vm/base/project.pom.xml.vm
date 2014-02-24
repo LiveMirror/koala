@@ -316,6 +316,12 @@
                 <artifactId>spring-context</artifactId>
                 <version>${spring.version}</version>
             </dependency>
+            
+             <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -371,7 +377,7 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
+                <artifactId>spring-context-support</artifactId>
                 <version>${spring.version}</version>
             </dependency>
 
@@ -905,6 +911,26 @@
         <repository>
             <id>koala-snapshots</id>
             <url>http://nexus.openkoala.org/content/repositories/public-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+                <repository>
+            <id>dayatang-releases</id>
+            <url>http://nexus.dayatang.org:8083/content/repositories/releases</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>dayatang-snapshots</id>
+            <url>http://nexus.dayatang.org:8083/content/repositories/snapshots</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
