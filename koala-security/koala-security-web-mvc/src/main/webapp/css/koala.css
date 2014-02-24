@@ -1,9 +1,11 @@
 /*
  * 表格组件样式
  */
-.grid .dropdown-menu>li>a:hover, 
-.grid .dropdown-menu>li>a:focus {
-	background-color: #428bca!important;
+.dropdown-menu>li>a:hover, 
+.dropdown-menu>li>a:focus {
+	color: #fff;
+	text-decoration: none;
+	background-color: #428bca;
 }
 
 .grid {
