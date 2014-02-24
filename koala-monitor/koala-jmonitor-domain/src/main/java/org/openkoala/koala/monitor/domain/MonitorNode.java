@@ -219,6 +219,8 @@ public class MonitorNode extends KmBaseLegacyEntity {
 	 * 刷新节点最后活动时间
 	 * @return
 	 */
+
+	@Transient
 	public static Map<String,MonitorNode> getAllNodesCache(){
 		return nodeCache;
 	}

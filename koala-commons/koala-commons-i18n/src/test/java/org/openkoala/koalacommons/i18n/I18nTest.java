@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.openkoala.framework.i18n.I18NManager;
 
 /**
@@ -13,6 +14,7 @@ import org.openkoala.framework.i18n.I18NManager;
  */
 public class I18nTest {
 
+    @Ignore
 	@Test
 	public void shouldUsingDefaultLocale(){
 		System.out.println(new Locale("ZH_CN").getDisplayLanguage());
