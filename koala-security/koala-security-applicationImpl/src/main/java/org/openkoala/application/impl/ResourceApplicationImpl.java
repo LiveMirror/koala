@@ -259,7 +259,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		for (Resource ne : pages.getData()) {
 			result.add(domainObject2Vo(ne));
 		}
-		Page<ResourceVO> returnPage = new Page<ResourceVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+		Page<ResourceVO> returnPage = new Page<ResourceVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 		return returnPage;
 	}
 

@@ -104,11 +104,12 @@ var openTab = function(target, title, mark, id, param){
             return;
         }
         $this.find('a:first').tab('show')
-//      var $li = $('.g-sidec').find('li[data-mark="'+mark+'"]');
-//      $li.click();
-//      if($li.parent().hasClass('collapse')){
-//          $li.parent().prev('a').click();
-//      }
+   		clearMenuEffect();
+   		var $li = $('.g-sidec').find('li[data-mark="'+mark+'"]').addClass('active');
+        if($li.parent().hasClass('collapse')){
+        	var a = $li.parent().prev('a');
+            a.hasClass('collapsed') &&　a.click();
+        }
     }).find('a:first')
         .tab('show')
         .find('.close');
