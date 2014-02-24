@@ -124,26 +124,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>dayatang-releases</id>
-            <url>http://nexus.dayatang.org:8083/content/repositories/releases</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>dayatang-snapshots</id>
-            <url>http://nexus.dayatang.org:8083/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
     </repositories>
 
 
@@ -161,7 +141,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dddlib.version>4.0.4-SNAPSHOT</dddlib.version>
+        <dddlib.version>4.1.0</dddlib.version>
         <struts2.version>2.3.16</struts2.version>
         <spring.version>3.2.6.RELEASE</spring.version>
         <spring.security.version>3.2.0.RELEASE</spring.security.version>
