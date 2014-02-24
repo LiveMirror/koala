@@ -151,7 +151,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -194,7 +194,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -268,7 +268,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 
 	}
@@ -303,7 +303,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 
 	}
@@ -337,7 +337,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -367,7 +367,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -682,7 +682,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		} finally {
 
 		}
@@ -714,7 +714,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -820,7 +820,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 		return true;
 	}
@@ -886,7 +886,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -1000,7 +1000,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -1036,7 +1036,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			this.rollbackUserTransaction(owner);
 			e.printStackTrace();
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -1066,7 +1066,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			this.rollbackUserTransaction(owner);
 			e.printStackTrace();
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -1084,7 +1084,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -1266,7 +1266,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -1343,7 +1343,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 
 	}
@@ -1371,7 +1371,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 
 	}
@@ -1394,7 +1394,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -1424,7 +1424,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -1447,7 +1447,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.rollbackUserTransaction(owner);
-			throw new RuntimeException(e.getCause());
+			throw new RuntimeException(e);
 		}
 
 	}

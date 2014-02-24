@@ -129,7 +129,6 @@ public class JBPMApplicationTest {
 		getJBPMApplication().startProcess("defaultPackage.Trade", "aaa", XmlParseUtil.paramsToXml(values));
 		List<TaskVO> tasks = getJBPMApplication().queryTodoList("fhjl");
 		Assert.assertTrue(tasks.size() > 0);
-		//getJBPMApplication().removeProcessInstance(i);
 	}
 	
 	@Test

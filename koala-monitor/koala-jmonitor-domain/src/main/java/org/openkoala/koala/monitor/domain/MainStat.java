@@ -18,6 +18,7 @@ package org.openkoala.koala.monitor.domain;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -102,7 +103,7 @@ public class MainStat extends KmBaseLegacyEntity {
 		return getThreadKey();
 	}
 	
-	@ManyToOne(targetEntity = MonitorNode.class)
+	@ManyToOne(targetEntity = MonitorNode.class,cascade=CascadeType.PERSIST)
 	@JoinColumn(name="FK_NODE_ID")
 	public MonitorNode getBelongNode() {
 		return belongNode;
