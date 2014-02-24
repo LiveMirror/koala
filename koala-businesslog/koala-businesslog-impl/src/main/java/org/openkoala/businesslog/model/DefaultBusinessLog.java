@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
-import static org.openkoala.businesslog.common.ContextKeyConstant.*;
+import static org.openkoala.businesslog.ContextKeyConstant.*;
 
 /**
  * User: zjzhai
