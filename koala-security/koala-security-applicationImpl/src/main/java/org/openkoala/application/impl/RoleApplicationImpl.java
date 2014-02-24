@@ -210,7 +210,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 			roleVO.domain2Vo(each);
 			results.add(roleVO);
 		}
-		return new Page<RoleVO>(pages.getPageIndex(),
+		return new Page<RoleVO>(pages.getStart(),
 				pages.getResultCount(), pages.getPageSize(), results);
 	}
 
@@ -226,7 +226,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 			roleVO.domain2Vo(each);
 			results.add(roleVO);
 		}
-		return new Page<RoleVO>(pages.getPageIndex(),
+		return new Page<RoleVO>(pages.getStart(),
 				pages.getResultCount(), pages.getPageSize(), results);
 	}
 
@@ -240,7 +240,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 			roleVO.domain2Vo(role);
 			result.add(roleVO);
 		}
-		return new Page<RoleVO>(pages.getPageIndex(),
+		return new Page<RoleVO>(pages.getStart(),
 				pages.getResultCount(), pages.getPageSize(), result);
 	}
 
@@ -267,9 +267,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 		Page<RoleVO> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions)
 				.setPage(currentPage-1, pageSize).pagedList();
 
-		return new Page<RoleVO>(pages.getPageIndex(),
-				pages.getPageCount(), //
-				pages.getPageSize(), pages.getData());
+		return pages;
 	}
 
 	public void assignUser(RoleVO roleVO, UserVO userVO) {
@@ -367,7 +365,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 				"select user from User user where user not in("
 						+ "select user from RoleUserAuthorization auth" //
 						+ " join auth.user user join auth.role role where role.id=? and auth.abolishDate>?)" //
-						+ " and user.abolishDate>? and user.isSuper = false ");
+						+ " and user.abolishDate>? and user.super = false ");
 
 		if (userVO != null && !StringUtils.isEmpty(userVO.getName())) {
 			jpql.append(" and user.name like ? ");
@@ -387,7 +385,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 			result.add(vo);
 		}
 
-		return new Page<UserVO>(pages.getPageIndex(),
+		return new Page<UserVO>(pages.getStart(),
 				pages.getResultCount(), pages.getPageSize(), result);
 	}
 }
