@@ -481,6 +481,12 @@
                 <artifactId>koala-commons-i18n</artifactId>
                 <version>${koala.version}</version>
             </dependency>
+            
+          <dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-dddlib-mybatis</artifactId>
+			<version>${koala.version}</version>
+		  </dependency>
 
             <dependency>
                 <groupId>commons-collections</groupId>

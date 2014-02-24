@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+ <!DOCTYPE mapper 
+ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- 务必配置正确namespace 就是所映射的实体类 -->
+<mapper namespace="me.lingen.Employee">
+
+	<!-- 默认，支持仓储的save方法所必须的 -->
+	<insert id="insert" parameterType="Employee" keyProperty="id"
+		useGeneratedKeys="true">
+		insert into Employee(name,age,birthDate,gender)
+		values
+		(#{name},#{age},#{birthDate},#{gender});
+	</insert>
+
+	<!-- 默认，支持仓储的save方法所必须的 -->
+	<update id="update" parameterType="Employee">
+		update Employee set name =
+		#{name},age=#{age},gender=#{gender},birthDate=#{birthDate} where id =
+		#{id}
+	</update>
+
+	<!-- 默认，支持仓储的remove方法所必须的 -->
+	<delete id="remove" parameterType="Employee">
+		delete from Employee where ID
+		= #{id}
+	</delete>
+
+	<!-- 默认，支持仓储的get,load方法所必须的 -->
+	<select id="get" resultType="Employee" parameterType="long">
+		select *
+		from Employee where id = #{id}
+	</select>
+
+	<!-- 默认，支持仓储的getAll方法所必须的 -->
+	<select id="getAll" resultType="Employee">
+		select * from Employee
+	</select>
+
+
+	<select id="findByName" parameterType="map" resultType="Employee">
+		select *
+		from Employee where name = #{params[0]}
+	</select>
+
+	<select id="findByName2" parameterType="map" resultType="Employee">
+		select *
+		from Employee where name = #{name}
+	</select>
+
+	<select id="findEmployeeByName" resultType="Employee"
+		parameterType="map">
+		select * from Employee where name = #{name} limit #{pageSize} offset
+		#{firstRow}
+	</select>
+
+	<select id="findEmployeeByNameCount" resultType="long"
+		parameterType="map">
+		select count(*) from Employee where name = #{name}
+	</select>
+
+</mapper>
