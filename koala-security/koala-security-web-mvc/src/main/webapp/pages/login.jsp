@@ -195,7 +195,7 @@ body {
 				</div>
 				<img src="jcaptcha.jpg" id="checkCode" onclick="refreshCode();" class="checkCode"/>
 				<div class="form-group input-group" style="margin-top: 45px;">
-					<button type="button"  class="btn btn-primary btn-login">登录</button>
+					<button type="button"  class="btn btn-primary b" id="loginBtn">登录</button>
 				</div>
 			</FORM>
 		</div>
@@ -203,7 +203,7 @@ body {
 	<div class="login_footer">Koala 版权信息 2013</div>
 	<script>
     $(function(){
-     	var btnLogin = $('.btn-login');
+     	var btnLogin = $('#loginBtn');
     	var form = $('#loginFormId');
     	$('#j_username').focus();
         $('body').keydown(function(e) {
