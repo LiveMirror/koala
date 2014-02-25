@@ -32,9 +32,6 @@ a, button{
    position: relative;
    top: 15px;
 }
-.g-head:after, .g-body:after {
-    clear: both;
-}
 
 .g-sidec {
     position: relative;
@@ -162,9 +159,6 @@ a, button{
     padding-right: 25px;
     margin-left: auto;
     margin-right: auto;
-}
-.g-mainc:after {
-    clear: both;
 }
 
 .g-mainc > ul > li > a {
