@@ -120,7 +120,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
 				conditions.add("%" + userVO.getName() + "%");
 			}
 		}
-    	Page<User> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions).setPage(currentPage-1, pageSize).pagedList();
+    	Page<User> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions).setPage(currentPage, pageSize).pagedList();
     	for (User each : pages.getData()) {
     		UserVO user = new UserVO();
     		user.domain2Vo(each);
@@ -194,7 +194,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
             userVO.domain2Vo(each);
             results.add(userVO);
         }
-        return new Page<UserVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
+        return new Page<UserVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), results);
     }
 
 	@Override
