@@ -84,7 +84,7 @@ public class MenuApplicationImplTest extends KoalaBaseSpringTestCase {
 
 	@Test
 	public void testPageQueryMenu() {
-		Page<ResourceVO> page = menuApplication.pageQueryMenu(1, 10);
+		Page<ResourceVO> page = menuApplication.pageQueryMenu(0, 10);
 		assertNotNull(page);
 		assertTrue(page.getData().size() > 0);
 	}
