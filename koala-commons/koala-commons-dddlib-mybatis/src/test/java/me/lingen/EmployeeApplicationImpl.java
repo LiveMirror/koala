@@ -17,7 +17,7 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
  
    public Page<Employee> findEmployeeByName(String name,int currentPage,int pageSize) { 
        Page<Employee> employees = 
-           queryChannel.createNamedQuery(Employee.class, "findEmployeeByName").addParameter("name", name).setPage(currentPage-1, pageSize).pagedList();
+           queryChannel.createNamedQuery(Employee.class, "findEmployeeByName").addParameter("name", name).setPage(currentPage, pageSize).pagedList();
        return employees; 
    } 
 }

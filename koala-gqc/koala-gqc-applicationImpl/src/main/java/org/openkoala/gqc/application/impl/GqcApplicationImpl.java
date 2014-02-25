@@ -83,7 +83,7 @@ public class GqcApplicationImpl implements GqcApplication {
 		try {
 			jpql = new StringBuilder("select _generalQuery from GeneralQuery _generalQuery");
 			conditionVals = new ArrayList<Object>();
-			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
+			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
 		} catch (Exception e) {
 			throw new RuntimeException("查询失败！", e);
 		}
@@ -119,7 +119,7 @@ public class GqcApplicationImpl implements GqcApplication {
 				jpql = jpql.append(" where _generalQuery.queryName like ?");
 				conditionVals.add("%" + queryName + "%");
 			}
-			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
+			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
 		} catch (Exception e) {
 			throw new RuntimeException("查询失败！", e);
 		}

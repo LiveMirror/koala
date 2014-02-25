@@ -103,7 +103,7 @@ public class ProjectApplicationImpl implements ProjectApplication {
 				conditionVals.add(projectQueryDto.getEndDate());
 			}
 		}
-		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
+		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
 	}
 
 	public Project getDetail(long projectId) {
