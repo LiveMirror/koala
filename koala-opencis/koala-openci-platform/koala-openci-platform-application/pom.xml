@@ -30,6 +30,11 @@
 			<artifactId>koala-opencis-gitlab</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>org.openkoala.opencis</groupId>
+            <artifactId>koala-opencis-gitlab</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.openkoala.opencis</groupId>
 			<artifactId>koala-opencis-svn</artifactId>
