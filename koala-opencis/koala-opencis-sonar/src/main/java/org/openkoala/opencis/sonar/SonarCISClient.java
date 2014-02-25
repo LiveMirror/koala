@@ -37,9 +37,6 @@ public class SonarCISClient implements CISClient {
 
     private HttpClientContext localContext;
 
-    private SonarCISClient() {
-    }
-
     public SonarCISClient(SonarConnectConfig connectConfig) {
         this.connectConfig = connectConfig;
     }
@@ -76,7 +73,6 @@ public class SonarCISClient implements CISClient {
             }
             throw new CISClientBaseRuntimeException("sonar.createProjectFailure");
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("sonar.createProjectFailure", e);
         }
     }
@@ -100,14 +96,11 @@ public class SonarCISClient implements CISClient {
             throw new CISClientBaseRuntimeException("sonar.removeAnyOnePermissionFailure : " + response1.getStatusLine());
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("sonar.removeAnyOnePermission.UnsupportedEncodingException", e);
 
         } catch (ClientProtocolException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("sonar.removeAnyOnePermission.ClientProtocolException", e);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("sonar.removeAnyOnePermission.IOException", e);
 
         }
@@ -125,10 +118,8 @@ public class SonarCISClient implements CISClient {
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 return;
             }
-            // TODO
             throw new CISClientBaseRuntimeException("sonar.deleteProjectFailure");
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("sonar.deleteProjectFailure", e);
         }
 
@@ -167,7 +158,6 @@ public class SonarCISClient implements CISClient {
             // TODO
             throw new CISClientBaseRuntimeException("sonar.createUserIfNecessaryFailure");
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("sonar.createUserIfNecessaryFailure", e);
         }
     }
@@ -186,7 +176,6 @@ public class SonarCISClient implements CISClient {
             }
             return false;
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("sonar.existsUserRequestFailure", e);
         }
 
@@ -210,7 +199,6 @@ public class SonarCISClient implements CISClient {
             }
             return false;
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("sonar.existsUserRequestFailure", e);
         }
     }
@@ -235,7 +223,6 @@ public class SonarCISClient implements CISClient {
             }
             throw new CISClientBaseRuntimeException("sonar.removeUserFailure");
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("sonar.removeUserFailure", e);
         }
     }
@@ -271,7 +258,6 @@ public class SonarCISClient implements CISClient {
                 // TODO
                 throw new CISClientBaseRuntimeException("sonar.assignUsersToRoleFailure");
             } catch (IOException e) {
-                e.printStackTrace();
                 throw new CISClientBaseRuntimeException("sonar.assignUsersToRoleFailure", e);
             }
         }
@@ -299,8 +285,7 @@ public class SonarCISClient implements CISClient {
             return response.getStatusLine().getStatusCode() == HttpStatus.SC_OK
                     && str.contains(":true");
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new CISClientBaseRuntimeException("sonar.authenticateFailure");
+            throw new CISClientBaseRuntimeException("sonar.authenticateFailure", e);
         }
     }
 

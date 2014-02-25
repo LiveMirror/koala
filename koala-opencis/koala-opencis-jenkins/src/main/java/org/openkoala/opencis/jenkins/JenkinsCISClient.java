@@ -133,8 +133,7 @@ public class JenkinsCISClient implements CISClient {
         try {
             return new URL(url);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-            throw new CISClientBaseRuntimeException("jenkins.URL.MalformedURLException");
+            throw new CISClientBaseRuntimeException("jenkins.URL.MalformedURLException", e);
         }
 
     }

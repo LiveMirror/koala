@@ -73,7 +73,6 @@ public class ProjectApplicationImpl implements ProjectApplication {
 			koalaProjectCreate.createProject(projectForCreate);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 	}

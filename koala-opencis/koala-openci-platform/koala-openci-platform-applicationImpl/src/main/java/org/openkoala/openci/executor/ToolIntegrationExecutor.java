@@ -94,7 +94,7 @@ public class ToolIntegrationExecutor {
 			try {
 				cisClient.createProject(project);
 			} catch (Exception e) {
-				e.printStackTrace();
+
 				toolInterfaceImplement.setSuccess(false);
 				toolInterfaceImplement.setRecord(e.toString());
 			} finally {
@@ -108,7 +108,7 @@ public class ToolIntegrationExecutor {
 				try {
 					cisClient.createUserIfNecessary(project, each);
 				} catch (Exception e) {
-					e.printStackTrace();
+
 					toolInterfaceImplement.setSuccess(false);
 					toolInterfaceImplement.setRecord(e.toString());
 				} finally {
@@ -122,7 +122,7 @@ public class ToolIntegrationExecutor {
 			try {
 				cisClient.createRoleIfNecessary(project, project.getArtifactId());
 			} catch (Exception e) {
-				e.printStackTrace();
+
 				toolInterfaceImplement.setSuccess(false);
 				toolInterfaceImplement.setRecord(e.toString());
 			} finally {
@@ -136,7 +136,7 @@ public class ToolIntegrationExecutor {
 				try {
 					cisClient.assignUsersToRole(project, project.getArtifactId(), each);
 				} catch (Exception e) {
-					e.printStackTrace();
+
 					toolInterfaceImplement.setSuccess(false);
 					toolInterfaceImplement.setRecord(e.toString());
 				} finally {
