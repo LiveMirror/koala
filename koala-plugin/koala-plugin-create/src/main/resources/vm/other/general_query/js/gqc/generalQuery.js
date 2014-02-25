@@ -175,9 +175,9 @@ var generalQuery = function(){
 		$.get(baseUrl + 'getById.koala?id='+id)
 			.done(function(data){
 				generalQueryObject = data.generalQuery;
-				dataSourceSelect.setValue(generalQueryObject.dataSource.id).find('button').addClass('disabled');
+				dataSourceSelect.setValue(generalQueryObject.dataSource.id).find('button').off().addClass('disabled');
 				dialog.on('dataSourceSelectComplete.koala',  function(){
-					tableSelect.setValue(generalQueryObject.tableName).find('button').addClass('disabled');
+					tableSelect.setValue(generalQueryObject.tableName).find('button').off().addClass('disabled');
 					var queryConditionColumns = data.queryConditionColumns;
 					var showColumns = data.showColumns;
 				})
