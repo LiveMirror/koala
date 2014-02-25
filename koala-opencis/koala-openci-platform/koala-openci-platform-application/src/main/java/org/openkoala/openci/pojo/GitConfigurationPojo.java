@@ -11,7 +11,7 @@ public class GitConfigurationPojo extends ToolConfigurationPojo {
 	@Override
 	public void createCISClient(ToolConfiguration toolConfiguration) {
 		if (toolConfiguration instanceof GitConfiguration) {
-			GitlabClient gitlabCISClient = new GitlabClient(createGitlabConfiguration((GitConfiguration)toolConfiguration));
+			GitlabClient gitlabCISClient = new GitlabClient(createGitlabConfiguration((GitConfiguration) toolConfiguration));
 			cisClient = gitlabCISClient;
 			isInstance = true;
 		}
@@ -26,5 +26,6 @@ public class GitConfigurationPojo extends ToolConfigurationPojo {
 		gitlabConfiguration.setEmail(gitConfiguration.getEmail());
 		return gitlabConfiguration;
 	}
+
 	
 }
