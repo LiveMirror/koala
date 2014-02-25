@@ -55,7 +55,8 @@ public class JenkinsCISClient implements CISClient {
             return;
         }
 
-        client.createJob(project.getProjectName(), koalaScmConfig.getScmConfig(), new ArrayList<User>());
+        client.createJob(project.getProjectName(),
+                koalaScmConfig.getScmConfig(), new ArrayList<User>());
     }
 
     private boolean existProject(Project project) {

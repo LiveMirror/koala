@@ -191,7 +191,6 @@ public class GitlabClient implements CISClient {
                     developer.getId()).with("name", URLEncoder.encode(developer.getName(), "UTF-8")).with("password", developer.getPassword())
                     .to(GitlabUser.URL, GitlabUser.class);
         } catch (IOException e) {
-
             throw new CISClientBaseRuntimeException("gitlab.createUser.IOException", e);
         }
     }
@@ -254,8 +253,7 @@ public class GitlabClient implements CISClient {
 
     private GitlabHTTPRequestor createGitlabHTTPRequestor() {
         GitlabAPI gitlabAPI = GitlabAPI.connect(config.getGitlabHostURL(), config.getToken());
-        GitlabHTTPRequestor gitlabHTTPRequestor = new GitlabHTTPRequestor(gitlabAPI);
-        return gitlabHTTPRequestor;
+        return new GitlabHTTPRequestor(gitlabAPI);
     }
 
 

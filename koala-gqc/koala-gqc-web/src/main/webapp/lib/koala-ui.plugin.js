@@ -47,7 +47,7 @@
 		identity: 'id', //主键
 		lockWidth: false,
 		pageSize: 10,
-		pageNo: 1,
+		pageNo: 0,
 		showPage: 4
 	};
 	Grid.prototype = {
@@ -241,7 +241,7 @@
 				}
 				var value =  self.searchContainer.find('input[data-role="searchValue"]').val().replace(/(^\s*)|(\s*$)/g, "");
 				self.searchCondition[condition] =  value;
-				self.pageNo = 1;
+				self.pageNo = Grid.DEFAULTS.pageNo;
 				self._loadData();
 			});
 		},
@@ -261,8 +261,8 @@
 				params.sortorder = self.sortOrder;
 			}
             if(self.options.isUserLocalData){
-                var start = self.pageSize * (self.pageNo-1);
-            	var end =  self.pageSize * self.pageNo-1;
+                var start = self.pageSize * self.pageNo;
+            	var end =  self.pageSize * self.pageNo;
             	self.totalRecord = self.options.localData.length;
             	self.startRecord.text(start + 1);
 				self.endRecord.text(end+1);
@@ -342,17 +342,17 @@
 			var pageHtml = new Array();
 			pageHtml.push('<li data-role="firstPage"><a href="#">&laquo;</a></li>');
 			pageHtml.push('<li data-role="prev"><a href="#">&lsaquo;</a></li>');
-			if((self.pageNo-1) % self.showPage == 0){
-				self.pageNo != 1 && pageHtml.push('<li><a href="#">...</a></li>');
-				for(var i=self.pageNo; i<=self.totalPage && i<(self.pageNo+self.showPage); i++){
-					pageHtml.push('<li data-value="'+i+'" data-role="pageNo"><a href="#">'+i+'</a></li>');
+			if(self.pageNo % self.showPage == 0){
+				self.pageNo != Grid.DEFAULTS.pageNo && pageHtml.push('<li><a href="#">...</a></li>');
+				for(var i=self.pageNo; i<self.totalPage && i<(self.pageNo+self.showPage); i++){
+					pageHtml.push('<li data-value="'+i+'" data-role="pageNo"><a href="#">'+(i+1)+'</a></li>');
 				}
 				(self.pageNo + self.showPage) < self.totalPage && pageHtml.push('<li><a href="#">...</a></li>');
 			}else{
-				var start = Math.floor((self.pageNo-1)/self.showPage)*self.showPage+1;
-				start != 1 && pageHtml.push('<li><a href="#">...</a></li>');
-				for(var i=start; i<=self.totalPage && i<(start+self.showPage); i++){
-					pageHtml.push('<li data-value="'+i+'" data-role="pageNo"><a href="#">'+i+'</a></li>');
+				var start = Math.floor(self.pageNo/self.showPage)*self.showPage;
+				start != Grid.DEFAULTS.pageNo && pageHtml.push('<li><a href="#">...</a></li>');
+				for(var i=start; i<self.totalPage && i<(start+self.showPage); i++){
+					pageHtml.push('<li data-value="'+i+'" data-role="pageNo"><a href="#">'+(i+1)+'</a></li>');
 				}
 				(start + self.showPage) < self.totalPage && pageHtml.push('<li><a href="#">...</a></li>');
 			}
@@ -382,7 +382,7 @@
 				if($(this).hasClass('disabled')){
 					return;
 				}
-				self.pageNo = 1;
+				self.pageNo = Grid.DEFAULTS.pageNo;
 				self._loadData();
 			});
 			var lastPageBtn =  pagination.find('li[data-role="lastPage"]').on('click', function(){
@@ -392,8 +392,8 @@
 				self.pageNo = self.totalPage;
 				self._loadData();
 			});
-			self.pageNo == 1 && prevBtn.addClass('disabled') && firstPageBtn.addClass('disabled');
-			self.pageNo == self.totalPage && nextBtn.addClass('disabled') && lastPageBtn.addClass('disabled');
+			self.pageNo == Grid.DEFAULTS.pageNo && prevBtn.addClass('disabled') && firstPageBtn.addClass('disabled');
+			self.pageNo == (self.totalPage-1) && nextBtn.addClass('disabled') && lastPageBtn.addClass('disabled');
 		},
 		/*
 		 * 渲染数据
@@ -653,7 +653,7 @@
 			for(var prop in conditions){
 				this.searchCondition[prop] = conditions[prop];
 			}
-			this.pageNo = 1;
+			this.pageNo = Grid.DEFAULTS.pageNo;
 			this._loadData();
 		},
 		/**
