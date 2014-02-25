@@ -112,22 +112,10 @@ public abstract class ToolConfiguration extends AbstractEntity {
 		this.createDate = createDate;
 	}
 
-	@Override
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (!(other instanceof ToolConfiguration)) {
-			return false;
-		}
-		ToolConfiguration that = (ToolConfiguration) other;
-		return new EqualsBuilder().append(getName(), that.getName()).append(getServiceUrl(), that.getServiceUrl()).isEquals();
-	}
-
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(getName()).append(getServiceUrl()).hashCode();
-	}
+    @Override
+    public String[] businessKeys() {
+        return new String[] {"name", "serviceUrl"};
+    }
 
 	@Override
 	public String toString() {
