@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
  * 职务管理Controller
+ * 
  * @author xmfang
- *
+ * 
  */
 @Controller
 @RequestMapping("/job")
@@ -30,22 +32,23 @@ public class JobController extends BaseController {
 
 	@Inject
 	private JobApplication jobApplication;
-	
+
 	/**
 	 * 分页查询职务
+	 * 
 	 * @param page
 	 * @param pagesize
 	 * @param job
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/pagingquery")
+	@RequestMapping("/pagingquery")
 	public Map<String, Object> pagingQuery(int page, int pagesize, Job job) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<Job> jobs = jobApplication.pagingQueryJobs(job, page, pagesize);
-		
+
 		dataMap.put("Rows", jobs.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", jobs.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", jobs.getResultCount());
 		return dataMap;
@@ -53,10 +56,11 @@ public class JobController extends BaseController {
 
 	/**
 	 * 查询所有职务
+	 * 
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/query-all")
+	@RequestMapping("/query-all")
 	public Map<String, Object> queryAllJobs() {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("data", getBaseApplication().findAll(Job.class));
@@ -65,11 +69,12 @@ public class JobController extends BaseController {
 
 	/**
 	 * 创建一个职务
+	 * 
 	 * @param job
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/create")
+	@RequestMapping("/create")
 	public Map<String, Object> createJob(Job job) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -87,11 +92,12 @@ public class JobController extends BaseController {
 
 	/**
 	 * 更新职务信息
+	 * 
 	 * @param job
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/update")
+	@RequestMapping("/update")
 	public Map<String, Object> updateJob(Job job) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -106,27 +112,29 @@ public class JobController extends BaseController {
 		}
 		return dataMap;
 	}
-	
+
 	/**
 	 * 根据ID获得职务
+	 * 
 	 * @param id
 	 * @return
 	 */
-    @ResponseBody
-    @RequestMapping("/get/{id}")
-	public Map<String,Object> get(@PathVariable("id") Long id) {
+	@ResponseBody
+	@RequestMapping("/get/{id}")
+	public Map<String, Object> get(@PathVariable("id") Long id) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("data", getBaseApplication().getEntity(Job.class, id));
 		return dataMap;
 	}
-	
-    /**
-     * 撤销某个职务
-     * @param job
-     * @return
-     */
+
+	/**
+	 * 撤销某个职务
+	 * 
+	 * @param job
+	 * @return
+	 */
 	@ResponseBody
-    @RequestMapping("/terminate")
+	@RequestMapping("/terminate")
 	public Map<String, Object> terminateJob(Job job) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -137,14 +145,15 @@ public class JobController extends BaseController {
 		}
 		return dataMap;
 	}
-	
+
 	/**
 	 * 同时撤销多个职务
+	 * 
 	 * @param jobs
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping(value = "/terminateJobs", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/terminateJobs", method = RequestMethod.POST, consumes = "application/json")
 	public Map<String, Object> terminateJobs(@RequestBody Job[] jobs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -153,8 +162,8 @@ public class JobController extends BaseController {
 		} catch (TheJobHasPostAccountabilityException exception) {
 			dataMap.put("result", "该职务已经被相关关联岗位，不能被撤销！");
 		}
-		
+
 		return dataMap;
 	}
-	
+
 }

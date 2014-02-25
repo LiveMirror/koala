@@ -17,23 +17,23 @@ import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.organisation.application.JobApplication;
 import org.openkoala.organisation.domain.Job;
 import org.springframework.transaction.annotation.Transactional;
+
 @Named
-@Transactional(value="transactionManager_org")
+@Transactional(value = "transactionManager_org")
 @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 @Stateless(name = "JobApplication")
 @Remote
 public class JobApplicationImpl implements JobApplication {
 
-	
 	private QueryChannelService queryChannel;
-	
-	private QueryChannelService getQueryChannelService(){
-		if(queryChannel ==null){
-			queryChannel = InstanceFactory.getInstance(QueryChannelService.class,"queryChannel_org");
+
+	private QueryChannelService getQueryChannelService() {
+		if (queryChannel == null) {
+			queryChannel = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel_org");
 		}
 		return queryChannel;
 	}
-	
+
 	@Override
 	public Page<Job> pagingQueryJobs(Job jobSearchExample, int currentPage, int pageSize) {
 		List<Object> conditionVals = new ArrayList<Object>();
@@ -56,7 +56,7 @@ public class JobApplicationImpl implements JobApplication {
 			conditionVals.add(MessageFormat.format("%{0}%", jobSearchExample.getSn()));
 		}
 
-		return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pageSize).pagedList();
+		return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
 	}
 
 }

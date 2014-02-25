@@ -23,23 +23,21 @@ import org.openkoala.organisation.domain.Post;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named
-@Transactional(value="transactionManager_org")
+@Transactional(value = "transactionManager_org")
 @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 @Stateless(name = "PostApplication")
 @Remote
 public class PostApplicationImpl implements PostApplication {
 
-	
 	private QueryChannelService queryChannel;
-	
-	
-	private QueryChannelService getQueryChannelService(){
-		if(queryChannel ==null){
-			queryChannel = InstanceFactory.getInstance(QueryChannelService.class,"queryChannel_org");
+
+	private QueryChannelService getQueryChannelService() {
+		if (queryChannel == null) {
+			queryChannel = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel_org");
 		}
 		return queryChannel;
 	}
-	
+
 	@Override
 	public Page<PostDTO> pagingQueryPosts(PostDTO example, int currentPage, int pagesize) {
 		List<Object> conditionVals = new ArrayList<Object>();
@@ -66,15 +64,13 @@ public class PostApplicationImpl implements PostApplication {
 		return queryResult(example, jpql, "_post", conditionVals, currentPage, pagesize);
 	}
 
-	private Page<PostDTO> queryResult(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals,
-			int currentPage, int pagesize) {
+	private Page<PostDTO> queryResult(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals, int currentPage, int pagesize) {
 		assembleJpqlAndConditionValues(example, jpql, conditionPrefix, conditionVals);
-		Page<Post> postPage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
-	
-		return new Page<PostDTO>(postPage.getPageIndex(), 
-				postPage.getResultCount(), pagesize, transformToDtos(postPage.getData()));
+		Page<Post> postPage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
+
+		return new Page<PostDTO>(postPage.getPageIndex(), postPage.getResultCount(), pagesize, transformToDtos(postPage.getData()));
 	}
-	
+
 	private void assembleJpqlAndConditionValues(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals) {
 		String andCondition = " and " + conditionPrefix;
 		if (!StringUtils.isBlank(example.getName())) {
@@ -93,7 +89,7 @@ public class PostApplicationImpl implements PostApplication {
 			conditionVals.add(MessageFormat.format("%{0}%", example.getDescription()));
 		}
 	}
-	
+
 	private List<PostDTO> transformToDtos(List<Post> posts) {
 		List<PostDTO> results = new ArrayList<PostDTO>();
 		for (Post post : posts) {
@@ -117,5 +113,5 @@ public class PostApplicationImpl implements PostApplication {
 		}
 		return results;
 	}
-	
+
 }
