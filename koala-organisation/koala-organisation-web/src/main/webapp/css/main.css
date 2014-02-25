@@ -41,6 +41,7 @@ a, button{
     margin: 0;
     padding: 0 0 0 1px;
     min-height: 540px;
+    min-width: 180px;
     border-right: 1px solid #DDDDDD;
     background-color: #ffffff;
     transition: width 0.4 ease-in-out;
