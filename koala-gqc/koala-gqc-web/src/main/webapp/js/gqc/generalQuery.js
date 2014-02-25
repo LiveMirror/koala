@@ -542,7 +542,8 @@ var generalQuery = function(){
 					content: "数据源不可用！"
 				});
 			} else if (data.result == "该数据源可用") {
-				window.open(contextPath + '/pages/gqc/previewTemplate.jsp?id='+id,'预览');
+				var previewWindow = window.open(contextPath + '/pages/gqc/previewTemplate.jsp?id='+id, '预览');
+				previewWindow.resizeTo(previewWindow.screen.width, previewWindow.screen.height);
 			} else {
 				$('#generalQueryGrid').message({
 					type: 'error',
