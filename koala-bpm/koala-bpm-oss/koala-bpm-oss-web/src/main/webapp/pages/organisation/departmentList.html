@@ -112,7 +112,7 @@
             var id = $('.right-content').find('[data-role="id"]').val();
             department().updateCompany(id, $('#departmentTree').find('#'+id))
         })
-       $('#delete').on('click', function(){
+       $('#delete').on('click', function(event, data){
             $(this).confirm({
                 content: '确定要撤销该机构吗?',
                 callBack: function(){
