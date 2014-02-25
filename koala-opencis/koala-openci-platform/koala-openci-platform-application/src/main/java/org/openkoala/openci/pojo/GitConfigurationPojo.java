@@ -9,9 +9,9 @@ import org.openkoala.opencis.git.impl.GitlabConfiguration;
 public class GitConfigurationPojo extends ToolConfigurationPojo {
 
 	@Override
-	public void createCISClient(ToolConfiguration toolConfiguration) {
+	public void createCISClient(GitConfiguration toolConfiguration) {
 		if (toolConfiguration instanceof GitConfiguration) {
-			GitlabCISClient gitlabCISClient = new GitlabCISClient(createGitlabConfiguration((GitConfiguration) toolConfiguration));
+			GitlabCISClient gitlabCISClient = new GitlabCISClient(createGitlabConfiguration(toolConfiguration));
 			cisClient = gitlabCISClient;
 			isInstance = true;
 		}
