@@ -1,9 +1,7 @@
 package org.openkoala.businesslog.utils;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * User: zjzhai
@@ -11,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 2:18 PM
  */
 public class ThreadLocalBusinessLogContext {
-    //private static Map<String, Object> contextMap = new HashMap<String, Object>();
 
     private static ThreadLocal<Map<String, Object>> context = new ThreadLocal<Map<String, Object>>() {
         protected synchronized Map<String, Object> initialValue() {
