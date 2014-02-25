@@ -50,7 +50,7 @@
     <dependency>
 			<groupId>org.openkoala.monitor</groupId>
 			<artifactId>koala-jmonitor-core</artifactId>
-			<version>${koala.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 	</root>
          ]]>
