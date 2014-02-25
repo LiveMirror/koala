@@ -96,7 +96,7 @@ public class MonitorController {
 		}
 
 		dataMap.put("Rows", result.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", result.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", result.getResultCount());
 		dataMap.put("timeStart", mainStatVo.getBeginTimeStr());
