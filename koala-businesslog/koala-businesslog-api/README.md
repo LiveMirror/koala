@@ -32,7 +32,13 @@
 最终返回一个`Map<Object, String>`。事实上，渲染器`BusinessLogRender`就是使用这个Map与模板合并，形成日志的最
 终效果。如张三转了300元到李四的帐户。
 
-以下是业务日志引擎核心的伪码：
+
+
+
+业务日志引擎核心的伪码
+-----
+业务日志引擎的原理可以浓缩成以下伪码
+
 
         // 从配置适配器拿到业务日志配置项
         BusinessLogConfig config = businessLogConfigAdapter.findConfigBy(businessOperation);
@@ -57,11 +63,3 @@
 
         //导出
         exporter.export(businessLog);
-
-
-
-
-
-
-
-
