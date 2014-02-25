@@ -55,7 +55,6 @@ public class ToolIntegrationExecutorTest extends AbstractIntegrationTest {
 		Project project = createProjectIntegration().toCISProject();
 		tracCISClient.createProject(project);
 		tracCISClient.createUserIfNecessary(project, createDeveloper());
-		tracCISClient.createRoleIfNecessary(project, project.getArtifactId());
 		tracCISClient.assignUsersToRole(project, project.getArtifactId(), createDeveloper());
 
 		
