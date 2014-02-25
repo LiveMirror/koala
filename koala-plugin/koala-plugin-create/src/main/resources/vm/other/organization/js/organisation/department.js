@@ -121,7 +121,7 @@ var department = function(){
                         elementData.description = description.val();
                         $element.data(elementData);
                         if(type == 'updateCompany'){
-                        	$element.find('.tree-folder-name').html(elementData.name).click();
+                        	$element.find('.tree-folder-name:first').html(elementData.name).click();
                         }else{
                         	$element.find('.tree-item-name').html(elementData.name).click();
                         }

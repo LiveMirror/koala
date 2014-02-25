@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 业务日志上下文查询执行器
  * User: zjzhai
  * Date: 12/4/13
  * Time: 2:33 PM

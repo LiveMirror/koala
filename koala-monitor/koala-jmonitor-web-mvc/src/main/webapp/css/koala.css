@@ -1,6 +1,13 @@
 /*
  * 表格组件样式
  */
+.dropdown-menu>li>a:hover, 
+.dropdown-menu>li>a:focus {
+	color: #fff;
+	text-decoration: none;
+	background-color: #428bca;
+}
+
 .grid {
 	border-collapse: separate;
 }

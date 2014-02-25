@@ -57,12 +57,11 @@
     width: 95%;
 }
 .general-query-dialog {
-    padding-top: 65px;
     width: 80%!important;
 }
 .general-query-dialog .modal-body {
     overflow-y: auto;
-    max-height: 450px;
+    max-height: 420px;
 }
 .general-query-dialog .grid-table-head table tr th:last-child,
 .general-query-dialog .grid-table-body table tr td:last-child{
@@ -135,9 +134,6 @@
     width: 40%;
 }
 
-.dataSource {
-    padding-top: 60px;
-}
 .dataSource  input {
     width: 300px;
 }

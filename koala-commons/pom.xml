@@ -19,5 +19,7 @@
 		<module>koala-commons-exception</module>
 		<module>koala-commons-support</module>
 		<module>koala-commons-test-support</module>
+		<module>koala-commons-dddlib-mybatis</module>
+		
 	</modules>
 </project>

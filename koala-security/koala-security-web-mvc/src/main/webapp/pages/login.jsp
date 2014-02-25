@@ -160,7 +160,7 @@ body {
 				</div>
 				<img src="jcaptcha.jpg" id="checkCode" onclick="refreshCode();" class="checkCode"/>
 				<div class="form-group input-group" style="margin-top: 45px;">
-					<button type="button"  class="btn btn-primary b" id="loginBtn">登录</button>
+					<button type="button"  class="btn btn-primary btn-block" id="loginBtn">登录</button>
 				</div>
 			</FORM>
 		</div>

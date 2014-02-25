@@ -28,7 +28,7 @@
 	<tx:annotation-driven />
 
 	<bean id="sqlSessionFactory"
-		class="org.openkoala.koala.mybatis.KoalaSqlSessionFactoryBean">
+		class="org.openkoala.koalacommons.mybatis.spring.KoalaSqlSessionFactoryBean">
 		<property name="configLocation" value="classpath:META-INF/spring/mybatis-config.xml" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="basePackage" value="${Project.groupId}"/>
@@ -39,13 +39,12 @@
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 
-	<bean id="repository" class="org.openkoala.koala.mybatis.EntityRepositoryMybatis">
-	   <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    <bean id="repository" class="org.openkoala.koalacommons.mybatis.repository.impl.KoalaMybatisEntityRepositoryImpl" >
+	  <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
-
-	<bean id="queryChannel"
-		class="org.openkoala.koala.mybatis.QueryChannelServiceMybatis">
-		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	
+	<bean id="querychannel" class="org.openkoala.koalacommons.mybatis.querychannel.impl.KoalaMybatisQueryChannelServiceImpl" >
+	  <property name="repository" ref="repository"/>
 	</bean>
 
 	<bean id="transactionManager"

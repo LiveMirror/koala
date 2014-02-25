@@ -163,7 +163,6 @@ public class GithubClient {
         try {
             return github.getRepository(getRepositoryFullName(repository)).gitHttpTransportUrl();
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("github.getRepositoryFullName", e);
         }
     }
@@ -180,7 +179,6 @@ public class GithubClient {
         } catch (FileNotFoundException e) {
             return false;
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("find github account failure", e);
         }
     }

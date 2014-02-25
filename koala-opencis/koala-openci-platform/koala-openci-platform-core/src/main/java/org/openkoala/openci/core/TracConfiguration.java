@@ -30,10 +30,4 @@ public class TracConfiguration extends ToolConfiguration {
 		this.savePath = savePath;
 	}
 
-	@Override
-	public String[] businessKeys() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

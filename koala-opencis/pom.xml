@@ -23,6 +23,8 @@
         <module>koala-opencis-support</module>
         <module>koala-opencis-github</module>
         <module>koala-opencis-gitlab</module>
+        <module>koala-openci-platform</module>
+        <module>koala-cas-management</module>
     </modules>
 
 

@@ -70,7 +70,7 @@ public class ToolConfigurationApplicationImpl implements ToolConfigurationApplic
 				return true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+
 		}
 		return false;
 	}
