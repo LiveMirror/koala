@@ -48,7 +48,7 @@ public class RoleApplicationImpl implements RoleApplication {
 		Date now = new Date();
 		conditionVals.add(now);
 		conditionVals.add(now);
-		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
+		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
 	}
 
 	public void abolishRole(Role[] roles) {

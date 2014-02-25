@@ -137,7 +137,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 	}
 
 	public Page<ResourceVO> pageQueryMenu(int currentPage, int pageSize) {
-		return basePageQuery("select m from Resource m order by m.id", new Object[0], currentPage-1, pageSize);
+		return basePageQuery("select m from Resource m order by m.id", new Object[0], currentPage, pageSize);
 	}
 
 	public void assign(ResourceVO parentVO, ResourceVO childVO) {

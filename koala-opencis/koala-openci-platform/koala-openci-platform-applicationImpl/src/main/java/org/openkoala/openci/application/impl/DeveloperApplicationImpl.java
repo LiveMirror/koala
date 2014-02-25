@@ -44,7 +44,7 @@ public class DeveloperApplicationImpl implements DeveloperApplication {
 			conditionVals.add(MessageFormat.format("%{0}%", example.getEmail()));
 		}
 
-		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
+		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
 	}
 
 	public void createDeveloper(Developer developer) {

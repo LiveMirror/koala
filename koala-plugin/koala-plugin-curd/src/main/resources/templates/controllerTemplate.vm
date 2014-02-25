@@ -49,7 +49,7 @@ public class ${controllerClass.name} {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Page<${voType}> all = ${applicationName}.pageQuery${domainClass}(${voName}, page, pagesize);
 		result.put("Rows", all.getResult());
-		result.put("start", page * pagesize - pagesize);
+		result.put("start", all.getStart());
 		result.put("limit", pagesize);
 		result.put("Total", all.getTotalCount());
 		return result;
@@ -109,7 +109,7 @@ public class ${controllerClass.name} {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Page<${entityName}DTO> all = ${applicationName}.find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name}, page, pagesize);
 		result.put("Rows", all.getResult());
-		result.put("start", page * pagesize - pagesize);
+		result.put("start", all.getStart());
 		result.put("limit", pagesize);
 		result.put("Total", all.getTotalCount());
 		return result;
