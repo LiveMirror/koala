@@ -108,7 +108,7 @@
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-applicationImpl</artifactId>
-			<version>${koala.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 
 	</dependencies>

@@ -15,6 +15,7 @@
         <link href="<c:url value='/css/gqc.css' />?time=<%=time%>"   rel="stylesheet">
         <link href="<c:url value='/css/koala.css' />?time=<%=time%>" rel="stylesheet">
         <link href="<c:url value='/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' />"   rel="stylesheet">
+        <link href="<c:url value='/css/main.css' />?time=<%=time%>" rel="stylesheet">
          <script>
              var contextPath = '${pageContext.request.contextPath}';
         </script>

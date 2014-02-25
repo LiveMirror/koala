@@ -34,12 +34,12 @@
     	<dependency>
 			<groupId>org.openkoala.businesslog</groupId>
 			<artifactId>koala-businesslog-api</artifactId>
-			<version>${koala.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.businesslog</groupId>
 			<artifactId>koala-businesslog-impl</artifactId>
-			<version>${koala.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 	</root>
          ]]>

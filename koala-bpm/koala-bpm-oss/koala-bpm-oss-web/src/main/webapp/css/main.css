@@ -8,6 +8,7 @@ a, button{
 }
 
 .g-head {
+	min-height: 65px;
     background-color: #428BCA;
 }
 .g-head .navbar {
@@ -31,9 +32,6 @@ a, button{
 .g-head .btn-group {
    position: relative;
    top: 15px;
-}
-.g-head:after, .g-body:after {
-    clear: both;
 }
 
 .g-sidec {
@@ -162,9 +160,6 @@ a, button{
     padding-right: 25px;
     margin-left: auto;
     margin-right: auto;
-}
-.g-mainc:after {
-    clear: both;
 }
 
 .g-mainc > ul > li > a {

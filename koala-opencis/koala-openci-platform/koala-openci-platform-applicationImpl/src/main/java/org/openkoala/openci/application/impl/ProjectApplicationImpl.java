@@ -52,7 +52,7 @@ public class ProjectApplicationImpl implements ProjectApplication {
 	}
 
 	private String getProjectSavePath() {
-		return System.getenv("TMP");
+		return System.getProperty("java.io.tmpdir");
 	}
 
 	private ProjectDetail createProjectDetail(ProjectDto projectDto) {
