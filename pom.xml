@@ -103,6 +103,33 @@
 	<!-- <issueManagement> <system>JIRA</system> <url>http://jira.openkoala.org/browse/KOALA</url> 
 		</issueManagement> -->
 
+    <ciManagement>
+        <system>jenkins</system>
+        <url>http://jenkins.foreveross.com/job/koala/</url>
+        <notifiers>
+            <notifier>
+                <type>mail</type>
+                <configuration>
+                    <committers>true</committers>
+                </configuration>
+                <sendOnError>true</sendOnError>
+                <sendOnFailure>true</sendOnFailure>
+                <sendOnWarning>false</sendOnWarning>
+                <sendOnSuccess>false</sendOnSuccess>
+            </notifier>
+            <notifier>
+                <type>mail</type>
+                <configuration>
+                    <address>lingen.liu@gmail.com</address>
+                </configuration>
+                <sendOnError>true</sendOnError>
+                <sendOnFailure>true</sendOnFailure>
+                <sendOnWarning>true</sendOnWarning>
+                <sendOnSuccess>true</sendOnSuccess>
+            </notifier>
+        </notifiers>
+    </ciManagement>
+
 	<repositories>
 		<repository>
 			<id>koala-releases</id>
@@ -125,6 +152,28 @@
 			</snapshots>
 		</repository>
 	</repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>koala-releases</id>
+            <url>http://nexus.openkoala.org/content/repositories/public-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>koala-snapshots</id>
+            <url>http://nexus.openkoala.org/content/repositories/public-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
 
 	<modules>
@@ -922,6 +971,7 @@
 		</dependencies>
 
 	</dependencyManagement>
+
 	<build>
 		<resources>
 			<resource>
