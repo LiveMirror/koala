@@ -28,17 +28,17 @@
     	<dependency>
 			<groupId>org.openkoala.organisation</groupId>
 			<artifactId>koala-organisation-core</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.organisation</groupId>
 			<artifactId>koala-organisation-application</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.organisation</groupId>
 			<artifactId>koala-organisation-applicationImpl</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.version}</version>
 		</dependency>
 	</root>
          ]]>

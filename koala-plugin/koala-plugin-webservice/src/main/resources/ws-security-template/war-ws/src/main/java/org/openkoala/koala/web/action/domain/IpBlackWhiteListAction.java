@@ -43,7 +43,7 @@ public class IpBlackWhiteListAction extends ActionSupport {
 	public String pageJson() {
 		Page<IpBlackWhiteListVO> all = ipBlackWhiteListApplication.pageQueryIpBlackWhiteList(ipBlackWhiteListVO, page, pagesize);
 		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", all.getTotalCount());
 		return "JSON";

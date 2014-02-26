@@ -140,7 +140,7 @@ public class KoalaJbpmVariableApplicationImpl implements KoalaJbpmVariableApplic
             																											
             result.add(koalaJbpmVariableVO);
         }
-        return new Page<KoalaJbpmVariableVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+        return new Page<KoalaJbpmVariableVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 	
 	

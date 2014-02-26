@@ -100,7 +100,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
             userVO.domain2Vo(each);
             results.add(userVO);
         }
-        return new Page<UserVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
+        return new Page<UserVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), results);
     }
     
     public Page<UserVO> pageQueryUser(UserVO userVO, int currentPage, int pageSize) {
@@ -126,7 +126,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
     		user.domain2Vo(each);
     		results.add(user);
     	}
-    	return new Page<UserVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
+    	return new Page<UserVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), results);
     }
 
     public UserVO findByUserAccount(String userAccount) {

@@ -117,7 +117,7 @@ public class ProjectController extends BaseController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<org.openkoala.openci.core.Project> projectPage = projectApplication.pagingQueryProject(projectQueryDto, page, pagesize);
 		dataMap.put("Rows", projectPage.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", projectPage.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", projectPage.getResultCount());
 		return dataMap;

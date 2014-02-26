@@ -137,7 +137,7 @@ public class JoinAssignApplicationImpl implements JoinAssignApplication {
             																																							
             result.add(joinAssignVO);
         }
-        return new Page<JoinAssignVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+        return new Page<JoinAssignVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 	
 	public JoinAssignVO getJoinAssignByName(String name){

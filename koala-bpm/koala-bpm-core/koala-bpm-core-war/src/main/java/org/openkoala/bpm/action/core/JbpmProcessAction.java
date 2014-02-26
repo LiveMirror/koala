@@ -63,7 +63,7 @@ public class JbpmProcessAction extends BaseAction{
 	public String queryRunningProcess(){
 		Page<ProcessInstanceVO> all = this.jbpmApplication.queryRunningProcessInstances(processId,versionNum,page, pagesize);
 		dataMap.put("Rows", all.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", all.getResultCount());
 		return "JSON";
@@ -76,7 +76,7 @@ public class JbpmProcessAction extends BaseAction{
 	public String queryCompleteProcess(){ 
 		Page<ProcessInstanceVO> all = this.jbpmApplication.queryCompleteProcessInstances(processId,versionNum,page, pagesize);
 		dataMap.put("Rows", all.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", all.getResultCount());
 		return "JSON";
@@ -109,7 +109,7 @@ public class JbpmProcessAction extends BaseAction{
 	public String queryProcessByProcessId(){
 		Page<ProcessInstanceVO> all = null;//this.jbpmApplication.queryAllProcess(processId)
 		dataMap.put("Rows", all.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", all.getResultCount());
 		return "JSON";

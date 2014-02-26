@@ -71,7 +71,7 @@ public class GeneralQueryController {
         }
         
         dataMap.put("Rows", generalQueryVos);
-        dataMap.put("start", page * pagesize - pagesize);
+        dataMap.put("start", all.getStart());
         dataMap.put("limit", pagesize);
         dataMap.put("Total", all.getResultCount());
 		return dataMap;

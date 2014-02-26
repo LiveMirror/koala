@@ -33,7 +33,7 @@ public class KoalaJbpmVariableAction extends BaseAction {
 	public String pageJson() {
 		Page<KoalaJbpmVariableVO> all = koalaJbpmVariableApplication.pageQueryKoalaJbpmVariable(koalaJbpmVariableVO, page, pagesize);
 		dataMap.put("Rows", all.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", all.getResultCount());
 		return "JSON";

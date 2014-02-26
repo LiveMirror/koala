@@ -180,7 +180,7 @@ public class BusinessLogApplicationImpl implements BusinessLogApplication {
 
             result.add(defaultBusinessLogDTO);
         }
-        return new Page<DefaultBusinessLogDTO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+        return new Page<DefaultBusinessLogDTO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
     }
 
 }
