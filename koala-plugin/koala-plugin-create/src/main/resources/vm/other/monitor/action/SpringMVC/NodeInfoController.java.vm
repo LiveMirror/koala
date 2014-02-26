@@ -38,7 +38,7 @@ public class NodeInfoController {
 	 */
 	@ResponseBody
 	@RequestMapping("/queryAllNodes")
-    public Map<String, Object> queryAllNodes(){
+    public Map<String, Object> queryAllNodes(String onlyActive){
     	Map<String, Object> dataMap = new HashMap<String,Object>();
     	List<MonitorNodeVo> nodes = monitorNodeManageApplication.getAllNodes();
     	//过滤未激活节点
