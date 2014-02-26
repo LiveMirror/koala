@@ -7,7 +7,7 @@
 		<version>3.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>koala-organisation-web</artifactId>
-	<name>koala organisation web module</name>
+	<name>koala-organisation-web</name>
 	<packaging>war</packaging>
 	<description>koala组织子系统web模块</description>
 
