@@ -59,7 +59,7 @@ public class RoleController extends BaseController {
 		Page<Role> rolePage = roleApplication.pagingQeuryRoles(page, pagesize);
 
 		dataMap.put("Rows", rolePage.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", rolePage.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", rolePage.getResultCount());
 		return dataMap;

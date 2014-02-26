@@ -101,7 +101,7 @@ public class PublishURLApplicationImpl implements PublishURLApplication {
             																					
             result.add(publishURLVO);
         }
-        return new Page<PublishURLVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+        return new Page<PublishURLVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 	
 	

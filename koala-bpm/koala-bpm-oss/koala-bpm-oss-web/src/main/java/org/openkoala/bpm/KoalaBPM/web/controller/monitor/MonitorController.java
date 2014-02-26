@@ -97,7 +97,7 @@ public class MonitorController {
 		}
 
 		dataMap.put("Rows", result.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", result.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", result.getResultCount());
 		dataMap.put("timeStart", mainStatVo.getBeginTimeStr());
@@ -118,7 +118,7 @@ public class MonitorController {
 				.pageGetHttpMonitorDetails(page,pagesize,
 						this.packagingHttpDetailsVo(request));
 		dataMap.put("Rows", result.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", result.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", result.getResultCount());
 		return dataMap;
@@ -137,7 +137,7 @@ public class MonitorController {
 				.pageGetMethodMonitorDetails(page,pagesize,
 						this.packagingMethodDetailsVo(request));
 		dataMap.put("Rows", result.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", result.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", result.getResultCount());
 		return dataMap;
@@ -171,7 +171,7 @@ public class MonitorController {
 				.getSqlsMonitorDetails(page, pagesize,
 						this.packagingJdbcStatementDetailsVo(request));
 		dataMap.put("Rows", result.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", result.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", result.getResultCount());
 		return dataMap;

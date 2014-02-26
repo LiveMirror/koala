@@ -168,7 +168,7 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 
 		Page<UserVO> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions.toArray()).setPage(currentPage, pageSize).pagedList();
 
-		return new Page<UserVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), pages.getData());
+		return new Page<UserVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), pages.getData());
 	}
 
 	public List<ResourceVO> findMenuByRole(RoleVO roleVO) {

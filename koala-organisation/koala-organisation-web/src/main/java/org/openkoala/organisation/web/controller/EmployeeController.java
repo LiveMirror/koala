@@ -88,7 +88,7 @@ public class EmployeeController extends BaseController {
 		}
 
 		dataMap.put("Rows", employees.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", employees.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", employees.getResultCount());
 		return dataMap;

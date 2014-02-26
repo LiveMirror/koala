@@ -68,7 +68,7 @@ public class PostApplicationImpl implements PostApplication {
 		assembleJpqlAndConditionValues(example, jpql, conditionPrefix, conditionVals);
 		Page<Post> postPage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
 
-		return new Page<PostDTO>(postPage.getPageIndex(), postPage.getResultCount(), pagesize, transformToDtos(postPage.getData()));
+		return new Page<PostDTO>(postPage.getStart(), postPage.getResultCount(), pagesize, transformToDtos(postPage.getData()));
 	}
 
 	private void assembleJpqlAndConditionValues(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals) {

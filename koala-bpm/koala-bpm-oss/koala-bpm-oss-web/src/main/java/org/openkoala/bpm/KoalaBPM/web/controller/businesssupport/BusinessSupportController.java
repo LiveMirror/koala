@@ -91,7 +91,7 @@ public class BusinessSupportController {
 		Page<TaskDTO> pageTaskVO = businessSupportApplication.getDoneTasks(processId, 
 				AuthUserUtil.getLoginUserName(), page, pagesize);
 		dataMap.put("Rows", pageTaskVO.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", pageTaskVO.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", pageTaskVO.getResultCount());
 		return dataMap;

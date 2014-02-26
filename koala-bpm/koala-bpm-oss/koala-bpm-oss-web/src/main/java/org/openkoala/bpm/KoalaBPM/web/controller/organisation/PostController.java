@@ -50,7 +50,7 @@ public class PostController extends BaseController {
 		Page<PostDTO> posts = postApplication.pagingQueryPosts(post, page, pagesize);
 		
 		dataMap.put("Rows", posts.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", posts.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", posts.getResultCount());
 		return dataMap;
@@ -122,7 +122,7 @@ public class PostController extends BaseController {
 		Page<PostDTO> posts = postApplication.pagingQueryPostsOfOrganizatoin(organization, example, page, pagesize);
 		
 		dataMap.put("Rows", posts.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", posts.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", posts.getResultCount());
 		return dataMap;

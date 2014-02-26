@@ -136,7 +136,7 @@ public class ${applicationImplClass.name} implements ${applicationClass.name} {
 	   	}	
 #end	
 #end
-        Page<${domainClass}> pages = queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pageSize).pagedList();
+        Page<${domainClass}> pages = queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
         for (${domainClass} ${variableName} : pages.getData()) {
             ${currntVO} ${currntVOVariable} = new ${currntVO}();
             
@@ -188,7 +188,7 @@ public class ${applicationImplClass.name} implements ${applicationClass.name} {
 	public Page<${entityName}DTO> find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}, int currentPage, int pageSize) {
 		List<${entityName}DTO> result = new ArrayList<${entityName}DTO>();
 		String jpql = "select e from ${domainClass} o right join o.${relation.name} e where o.${dtoClass.entityModel.singleIDFieldModel.name}=?";
-		Page<${entityName}> pages = queryChannel.createJpqlQuery(jpql).setParameters(new Object[] { ${dtoClass.entityModel.singleIDFieldModel.name} }).setPage(currentPage-1, pageSize).pagedList();
+		Page<${entityName}> pages = queryChannel.createJpqlQuery(jpql).setParameters(new Object[] { ${dtoClass.entityModel.singleIDFieldModel.name} }).setPage(currentPage, pageSize).pagedList();
         for (${entityName} entity : pages.getResult()) {
             ${entityName}DTO dto = new ${entityName}DTO();
             try {

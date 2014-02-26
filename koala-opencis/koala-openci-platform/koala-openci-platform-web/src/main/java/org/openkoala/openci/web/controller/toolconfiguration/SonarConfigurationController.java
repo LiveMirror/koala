@@ -34,7 +34,7 @@ public class SonarConfigurationController extends ToolConfigurationBaseControlle
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<SonarConfiguration> toolConfigurationPage = toolConfigurationApplication.pagingQeurySonarConfigurations(page, pagesize);
 		dataMap.put("Rows", toolConfigurationPage.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", toolConfigurationPage.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", toolConfigurationPage.getResultCount());
 		return dataMap;

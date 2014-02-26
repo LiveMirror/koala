@@ -34,7 +34,7 @@ public class JenkinsConfigurationController extends ToolConfigurationBaseControl
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<JenkinsConfiguration> toolConfigurationPage = toolConfigurationApplication.pagingQeuryJenkinsConfigurations(page, pagesize);
 		dataMap.put("Rows", toolConfigurationPage.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", toolConfigurationPage.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", toolConfigurationPage.getResultCount());
 		return dataMap;
