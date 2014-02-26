@@ -319,7 +319,22 @@
 					target : $("#treeDiv"),
 					title : "为【" + selectedRow.name + "】分配菜单资源",
 					content : $("#menuTree").ligerTree({
-						data : menus.data
+						data : menus.data,
+						onCheck: function(e, checked){
+							var level = parseInt(e.data.level);
+							var $node = $(e.target);
+							while(level != 1){
+								var $node = $node.parent().parent();
+								if(checked){
+									$node.find('>.l-body .l-checkbox').removeClass('l-checkbox-unchecked').addClass('l-checkbox-checked');
+								}else{
+									if($node.find('.l-children .l-checkbox-checked').length == 0){
+										 $node.find('>.l-body .l-checkbox').addClass('l-checkbox-unchecked').removeClass('l-checkbox-checked');	
+									}
+								}
+								level = $node.attr('outlinelevel');
+							}
+						}
 					}),
 					buttons : [{
 						text : "确定",
