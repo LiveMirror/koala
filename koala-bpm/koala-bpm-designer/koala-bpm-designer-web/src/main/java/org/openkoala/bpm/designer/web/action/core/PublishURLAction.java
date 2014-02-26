@@ -60,7 +60,7 @@ public class PublishURLAction extends ActionSupport {
 		try {
 			Page<PublishURLVO> all = publishURLApplication.pageQueryPublishURL(publishURLVO, page, pagesize);
 			dataMap.put("Rows", all.getData());
-			dataMap.put("start", page * pagesize - pagesize);
+			dataMap.put("start", all.getStart());
 			dataMap.put("limit", pagesize);
 			dataMap.put("Total", all.getResultCount());
 		} catch (Exception e) {

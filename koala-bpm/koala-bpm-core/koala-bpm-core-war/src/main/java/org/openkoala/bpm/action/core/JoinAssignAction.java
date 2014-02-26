@@ -37,7 +37,7 @@ public class JoinAssignAction extends BaseAction {
 	public String pageJson() {
 		Page<JoinAssignVO> all = joinAssignApplication.pageQueryJoinAssign(joinAssignVO, page, pagesize);
 		dataMap.put("Rows", all.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", all.getResultCount());
 		return "JSON";

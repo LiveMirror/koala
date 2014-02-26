@@ -54,7 +54,7 @@ public class FormMgrController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<DynaProcessFormDTO> pageObj = processFormOperApplication.queryDynaProcessFormsByPage(null, page, pagesize);
 		dataMap.put("Rows", pageObj.getResult());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", pageObj.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", pageObj.getTotalCount());
 		return dataMap;

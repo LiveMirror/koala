@@ -40,7 +40,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 			}
 			result.add(resourceVO);
 		}
-		return new Page<ResourceVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+		return new Page<ResourceVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 
 	public ResourceVO getMenu(Long menuId) {

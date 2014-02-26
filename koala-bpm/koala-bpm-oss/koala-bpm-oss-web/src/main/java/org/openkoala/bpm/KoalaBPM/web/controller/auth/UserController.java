@@ -108,7 +108,7 @@ public class UserController {
 		
 
 		dataMap.put("Rows", all.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", all.getResultCount());
 		return dataMap;
@@ -126,7 +126,7 @@ public class UserController {
 				pagesize, null, roleVoForFind);
 
 		dataMap.put("Rows", all.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", all.getResultCount());
 		return dataMap;
@@ -148,7 +148,7 @@ public class UserController {
 		Page<UserVO> all = roleApplication.pageQueryNotAssignUserByRole(page, pagesize, userVO, roleVO);
 
 		dataMap.put("Rows", all.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", all.getResultCount());
 

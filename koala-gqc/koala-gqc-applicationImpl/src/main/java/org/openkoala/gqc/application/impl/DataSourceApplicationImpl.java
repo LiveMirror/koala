@@ -287,7 +287,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 				result.add(dataSourceVO);
 			}
 			
-			return new Page<DataSourceVO>(pages.getPageIndex(), pages.getResultCount(),
+			return new Page<DataSourceVO>(pages.getStart(), pages.getResultCount(),
 					pages.getPageSize(), result);
 		} catch (Exception e) {
 			throw new RuntimeException("查询数据源列表失败！", e);

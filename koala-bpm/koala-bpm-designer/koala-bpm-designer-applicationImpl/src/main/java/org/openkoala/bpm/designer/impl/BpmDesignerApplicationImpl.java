@@ -104,7 +104,7 @@ public class BpmDesignerApplicationImpl implements BpmDesignerApplication {
             																					
             result.add(publishURLVO);
         }
-        return new Page<PublishURLVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+        return new Page<PublishURLVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 	
 	

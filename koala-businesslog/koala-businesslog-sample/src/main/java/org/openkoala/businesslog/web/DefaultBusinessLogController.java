@@ -29,7 +29,7 @@ public class DefaultBusinessLogController {
         Map<String, Object> result = new HashMap<String, Object>();
         Page<DefaultBusinessLogDTO> all = getBusinessLogApplication().pageQueryDefaultBusinessLog(defaultBusinessLogDTO, page, pagesize);
         result.put("Rows", all.getData());
-        result.put("start", page * pagesize - pagesize);
+        result.put("start", all.getStart());
         result.put("limit", pagesize);
         result.put("Total", all.getResultCount());
         return result;

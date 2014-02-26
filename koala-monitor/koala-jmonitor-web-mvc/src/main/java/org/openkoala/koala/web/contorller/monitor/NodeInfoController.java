@@ -130,7 +130,7 @@ public class NodeInfoController {
     	Page<MonitorWarnInfoVo> pageInfo = monitorNodeManageApplication.queryMonitorWarnInfos(search, page, pagesize);
     	//Page<AccountVO> all = accountApplication.pageQueryAccount(accountVO, page, pagesize);
 		dataMap.put("Rows", pageInfo.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", result.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", pageInfo.getResultCount());
     	return dataMap;

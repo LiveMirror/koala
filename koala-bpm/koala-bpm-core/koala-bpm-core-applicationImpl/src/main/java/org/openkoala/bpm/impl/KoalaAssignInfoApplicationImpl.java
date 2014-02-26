@@ -152,7 +152,7 @@ public class KoalaAssignInfoApplicationImpl implements KoalaAssignInfoApplicatio
             																																							
             result.add(koalaAssignInfoVO);
         }
-        return new Page<KoalaAssignInfoVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+        return new Page<KoalaAssignInfoVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 	}
 	
 	public Page<KoalaAssignDetailVO> findJbpmNamesByKoalaAssignInfo(Long id, int currentPage, int pageSize) {
@@ -171,7 +171,7 @@ public class KoalaAssignInfoApplicationImpl implements KoalaAssignInfoApplicatio
             }
             result.add(vo);
         }
-        return new Page<KoalaAssignDetailVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+        return new Page<KoalaAssignDetailVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 	}		
 	
 }
