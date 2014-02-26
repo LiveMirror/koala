@@ -28,7 +28,7 @@ public class TestEmployeeApplication extends KoalaBaseSpringTestCase {
     		employee.setAge(i);
     		employee.save();
     	}
-    	Page<Employee> pages = employeeApplication.findEmployeeByName("lingen", 2, 10); 
+    	Page<Employee> pages = employeeApplication.findEmployeeByName("lingen", 1, 10); 
     	Assert.isTrue(pages.getPageCount()==2);
     	Assert.isTrue(pages.getStart()==10);
     	Assert.isTrue(pages.getData().size()==1);

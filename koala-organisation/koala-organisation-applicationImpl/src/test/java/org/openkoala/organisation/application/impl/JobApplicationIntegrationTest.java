@@ -38,10 +38,10 @@ public class JobApplicationIntegrationTest extends AbstractIntegrationTest {
 
 	@Test
 	public void testPagingQueryJobs() {
-		List<Job> jobs1 = jobApplication.pagingQueryJobs(new Job(), 1, 1).getData();
+		List<Job> jobs1 = jobApplication.pagingQueryJobs(new Job(), 0, 1).getData();
 		assertEquals(1, jobs1.size());
 		
-		List<Job> jobs2 = jobApplication.pagingQueryJobs(new Job(), 1, 10).getData();
+		List<Job> jobs2 = jobApplication.pagingQueryJobs(new Job(), 0, 10).getData();
 		assertTrue(jobs2.contains(job1));
 		assertTrue(jobs2.contains(job2));
 	}
