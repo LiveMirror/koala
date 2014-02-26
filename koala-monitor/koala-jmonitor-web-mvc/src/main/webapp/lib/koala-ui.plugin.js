@@ -261,9 +261,13 @@
 				params.sortorder = self.sortOrder;
 			}
             if(self.options.isUserLocalData){
+            	self.totalRecord = self.options.localData.length;
                 var start = self.pageSize * self.pageNo;
             	var end =  self.pageSize * self.pageNo;
-            	self.totalRecord = self.options.localData.length;
+            	if(!this.options.isShowPages){
+					start = 0;
+					end = self.totalRecord;
+				}
             	self.startRecord.text(start + 1);
 				self.endRecord.text(end+1);
 				self.totalRecordHtml.text(self.totalRecord);
@@ -299,10 +303,12 @@
 					self.items = result.Rows;
 					self.totalRecord = result.Total;
 					if(result.Rows.length == 0){
+						self.pages.hide();
 						self.gridTableBodyTable.empty();
 						self.gridTableBody.find('[data-role="noData"]').remove();
 						self.gridTableBody.append($('<div data-role="noData" style="font-size:16px ; padding: 20px; width:'+self.gridTableBodyTable.width()+'px;">'+self.options.noDataText+'</div>'));
 					}else{
+						self.pages.show();
 						self.gridTableBody.find('[data-role="noData"]').remove();
 						self.renderDatas();
 					}
@@ -808,7 +814,7 @@
 		this.content = this.$element.find('[data-toggle="content"]').html(this.options.content);
 		switch(this.options.type){
 			case 'success':
-				this.content.before($('<span class="glyphicon glyphicon-info-sign" style="margin-right: 10px; font-size:16px;"/>'));
+				this.content.before($('<span class="glyphicon glyphicon-ok" style="margin-right: 10px; font-size:16px;"/>'));
 				this.$element.addClass('alert-success');
 				break;
 			case 'info':
