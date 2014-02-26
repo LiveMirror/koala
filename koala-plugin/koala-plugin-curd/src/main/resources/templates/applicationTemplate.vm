@@ -6,7 +6,7 @@ package ${applicationClass.packageName}${package.substring(${package.lastIndexOf
 #set($currntVO = ${domainClass.concat("DTO")})
 
 import java.util.List;
-import com.dayatang.querychannel.support.Page;
+import org.dayatang.querychannel.Page;
 import ${dtoClass.packageName}.*;
 
 public interface ${applicationClass.name} {

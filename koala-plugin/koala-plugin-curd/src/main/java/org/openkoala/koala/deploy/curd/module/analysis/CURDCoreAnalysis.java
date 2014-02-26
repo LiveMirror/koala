@@ -1,5 +1,6 @@
 package org.openkoala.koala.deploy.curd.module.analysis;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -150,39 +151,59 @@ public class CURDCoreAnalysis {
      * @param classEntity
      */
     private void analysisField(Class classEntity,EntityModel entity){
-        Field[] fields = classEntity.getDeclaredFields();
-        Method[] methods = classEntity.getDeclaredMethods();
-        Map<String,Method> methodMap = new HashMap<String,Method>();
-        for(Method method:methods){
-            methodMap.put(method.getName().toLowerCase(), method);
-        }
-        for(Field field:fields){
-            boolean isStatic = Modifier.isStatic(field.getModifiers());
-            if(isStatic)continue;
-            String fieldName =field.getName();
-            if("serialVersionUID".equals(fieldName))continue;
-            if("version".equals(fieldName.toLowerCase()))continue;
-            FieldType fieldType = null;
-            if(Modifier.isTransient(field.getModifiers())){
-                fieldType = FieldType.Other;
-            }else{
-                fieldType = queryFieldType(field.getDeclaredAnnotations());
+    	List<Class> classesForAnalysis = new ArrayList<Class>();
+    	classesForAnalysis.add(classEntity);
+        Class supperClass = classEntity.getSuperclass();
+    	while (supperClass != null) {
+    		classesForAnalysis.add(supperClass);
+    		supperClass = supperClass.getSuperclass();
+		}
+
+    	for (int i = classesForAnalysis.size() -1; i >=0; i--) {
+    		Class classForAnalysis = classesForAnalysis.get(i);
+    		
+    		Field[] fields = classForAnalysis.getDeclaredFields();
+            Method[] methods = classForAnalysis.getDeclaredMethods();
+            Map<String,Method> methodMap = new HashMap<String,Method>();
+            for(Method method:methods){
+            	//忽略Entity基类的getId方法，会跟AbstractEntity的getId方法冲突。
+            	if (method.getName().equals("getId") && method.getReturnType().equals(Serializable.class)) {
+            		continue;
+            	}
+                methodMap.put(method.getName().toLowerCase(), method);
             }
-            
-            //如果从属性上查询不出任何数据库特性，尝试从属性的GET方法中去查询
-            if(fieldType.equals(FieldType.Other)){
-                String methodName = ("get"+fieldName).toLowerCase();
-                if(methodMap.containsKey(methodName)){
-                    Method method = methodMap.get(methodName);
-                    fieldType = queryFieldType(method.getDeclaredAnnotations());
+            for(Field field:fields){
+                boolean isStatic = Modifier.isStatic(field.getModifiers());
+                if(isStatic)continue;
+                String fieldName =field.getName();
+                if("serialVersionUID".equals(fieldName))continue;
+                if("version".equals(fieldName.toLowerCase()))continue;
+                FieldType fieldType = null;
+                if(Modifier.isTransient(field.getModifiers())){
+                    fieldType = FieldType.Other;
+                }else{
+                    fieldType = queryFieldType(field.getDeclaredAnnotations());
                 }
+                
+                //如果从属性上查询不出任何数据库特性，尝试从属性的GET方法中去查询
+                if(fieldType == null){
+                    String methodName = ("get"+fieldName).toLowerCase();
+                    if(methodMap.containsKey(methodName)){
+                        Method method = methodMap.get(methodName);
+                        fieldType = queryFieldType(method.getDeclaredAnnotations());
+                    }
+                }
+                
+                if (fieldType == null) {
+                	fieldType = FieldType.Column;
+                }
+                
+                logger.info("分析到属性:"+field.getName()+";类型是:【"+fieldType.toString()+"】");
+                //分析FIELD
+                createModel(field,fieldType,entity);
             }
-            logger.info("分析到属性:"+field.getName()+";类型是:【"+fieldType.toString()+"】");
-            //分析FIELD
-            createModel(field,fieldType,entity);
-        }
-        Class parent = classEntity.getSuperclass();
-        if(parent!=null)analysisField(parent,entity);
+    	}
+        
     }
 
     private void createModel(Field field,FieldType fieldType,EntityModel entity){
@@ -336,7 +357,7 @@ public class CURDCoreAnalysis {
                 return FieldType.Other;
             }
         }
-        return FieldType.Column;
+        return null;
     }
     
     /**

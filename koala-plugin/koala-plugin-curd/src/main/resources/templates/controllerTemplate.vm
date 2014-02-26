@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.dayatang.querychannel.support.Page;
+import org.dayatang.querychannel.Page;
 import ${applicationClass.packageName}${package.substring(${package.lastIndexOf(".")})}.${applicationClass.name};
 import ${dtoClass.packageName}.*;
 
@@ -48,10 +48,10 @@ public class ${controllerClass.name} {
 	public Map<String, Object> pageJson(${voType} ${voName}, @RequestParam int page, @RequestParam int pagesize) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Page<${voType}> all = ${applicationName}.pageQuery${domainClass}(${voName}, page, pagesize);
-		result.put("Rows", all.getResult());
+		result.put("Rows", all.getData());
 		result.put("start", page * pagesize - pagesize);
 		result.put("limit", pagesize);
-		result.put("Total", all.getTotalCount());
+		result.put("Total", all.getResultCount());
 		return result;
 	}
 	
@@ -108,10 +108,10 @@ public class ${controllerClass.name} {
 	public Map<String, Object> find${relationName}By${domainClass}(@PathVariable ${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}, @RequestParam int page, @RequestParam int pagesize) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Page<${entityName}DTO> all = ${applicationName}.find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name}, page, pagesize);
-		result.put("Rows", all.getResult());
+		result.put("Rows", all.getData());
 		result.put("start", page * pagesize - pagesize);
 		result.put("limit", pagesize);
-		result.put("Total", all.getTotalCount());
+		result.put("Total", all.getResultCount());
 		return result;
 	}		
 #end
