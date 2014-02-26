@@ -63,6 +63,8 @@ public class Trace implements Serializable, Comparable<Trace>,Cloneable{
 	protected boolean timeout;//标记为超时
 	
 	protected boolean unrecovered = false;//标记为未回收
+	
+	protected boolean destroy;//标记为已销毁
 
 	/**
 	 * 子轨迹
@@ -163,6 +165,7 @@ public class Trace implements Serializable, Comparable<Trace>,Cloneable{
 	 * 销毁轨迹
 	 */
 	public void destroy() {
+		destroy = true;
 		if (parent != null) {
 			parent.removeChildTrace(this);
 			parent = null;
@@ -257,6 +260,10 @@ public class Trace implements Serializable, Comparable<Trace>,Cloneable{
 
 	public void setUnrecovered(boolean unrecovered) {
 		this.unrecovered = unrecovered;
+	}
+	
+	public boolean isDestroy() {
+		return destroy;
 	}
 
 	@Override

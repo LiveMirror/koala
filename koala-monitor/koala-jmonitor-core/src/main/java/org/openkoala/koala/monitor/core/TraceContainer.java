@@ -80,6 +80,8 @@ public class TraceContainer implements TraceLiftcycleManager{
 			}		
 		};
 		process.doProcess(traceType,trace);	
+		
+		if(trace.isDestroy())return;//已经销毁轨迹不处理
 
 		//放入交换数据缓存区
 		if(E_TraceType.METHOD.name().equals(trace.getTraceType())){

@@ -100,6 +100,7 @@ public class MonitorNodeManageApplicationImpl implements
 				MonitorNodeVo vo = new MonitorNodeVo();
 				BeanUtils.copyProperties(vo, monitorNode);
 				vo.setActive(true);
+				vo.setLatestSessionTime(monitorNode.getLatestSessionTime());
 				result.add(vo);
 			}
 			

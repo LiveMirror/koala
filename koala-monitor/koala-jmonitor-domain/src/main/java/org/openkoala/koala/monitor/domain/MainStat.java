@@ -103,7 +103,7 @@ public class MainStat extends KmBaseLegacyEntity {
 		return getThreadKey();
 	}
 	
-	@ManyToOne(targetEntity = MonitorNode.class,cascade=CascadeType.PERSIST)
+	@ManyToOne(targetEntity = MonitorNode.class)
 	@JoinColumn(name="FK_NODE_ID")
 	public MonitorNode getBelongNode() {
 		return belongNode;
