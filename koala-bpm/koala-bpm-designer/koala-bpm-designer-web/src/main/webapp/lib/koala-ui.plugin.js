@@ -47,7 +47,7 @@
 		identity: 'id', //主键
 		lockWidth: false,
 		pageSize: 10,
-		pageNo: 1,
+		pageNo: 0,
 		showPage: 4
 	};
 	Grid.prototype = {
@@ -63,7 +63,7 @@
 			this.pages = this.$element.find('.pages');
 			this.grid = this.$element.find('.grid');
 			this.gridBody = this.$element.find('.grid-body').css('width', this.$element.width());
-			this.gridTableHead = this.$element.find('.grid-table-head');
+			this.gridTableHead = this.$element.find('.grid-table-head').css('min-width', this.$element.width());
 			this.gridTableHeadTable = this.gridTableHead.find('table');
 			this.gridTableBody = this.$element.find('.grid-table-body').css('width', this.$element.width());
 			this.gridTableBodyTable = this.gridTableBody.find('table');
@@ -92,7 +92,7 @@
 			var self = this;
 			var columns = this.options.columns;
 			if(!columns || columns.length == 0){
-				$('body').message({
+				self.$element.message({
 					type: 'warning',
 					content: '没有列数据'
 				});
@@ -133,7 +133,7 @@
 				this.gridTableBodyTable.css('width', totalColumnWidth);
 			}else{
 				this.gridTableHead.css('width', this.$element.width());
-				this.gridTableHeadTable.find('th:last').css('width', 'auto');
+				this.gridTableHeadTable.find('th:last').attr('width', 'auto');
 				this.options.columns[this.options.columns.length-1].width = 'auto';
 			}
 			this.gridTableHeadTable.find('[data-role="selectAll"]').on('click',function(e) {
@@ -233,7 +233,7 @@
 				}
 				var condition = self.condition.getValue();
 				if(!condition){
-					$('body').message({
+					self.$element.message({
 						type: 'warning',
 						content: '请选择查询条件'
 					});
@@ -241,7 +241,7 @@
 				}
 				var value =  self.searchContainer.find('input[data-role="searchValue"]').val().replace(/(^\s*)|(\s*$)/g, "");
 				self.searchCondition[condition] =  value;
-				self.pageNo = 1;
+				self.pageNo = Grid.DEFAULTS.pageNo;
 				self._loadData();
 			});
 		},
@@ -261,7 +261,14 @@
 				params.sortorder = self.sortOrder;
 			}
             if(self.options.isUserLocalData){
-                self.items = self.options.localData;
+                var start = self.pageSize * self.pageNo;
+            	var end =  self.pageSize * self.pageNo;
+            	self.totalRecord = self.options.localData.length;
+            	self.startRecord.text(start + 1);
+				self.endRecord.text(end+1);
+				self.totalRecordHtml.text(self.totalRecord);
+				self.items = self.getItemsFromLocalData(start, end);
+				self._initPageNo(self.totalRecord)
                 if(!self.options.localData || self.options.localData.length == 0){
                     self.gridTableBodyTable.empty();
                     self.gridTableBody.find('[data-role="noData"]').remove();
@@ -279,7 +286,7 @@
 				dataType: 'json'
 			}).done(function(result){
 					if(!result.Rows){
-						$('body').message({
+						self.$element.message({
 							type: 'error',
 							content: '查询失败'
 						});
@@ -304,6 +311,19 @@
 
 				});
 		},
+		/**
+		 * 根据开始结束记录数从本地数据获取数据
+		 */
+		getItemsFromLocalData: function(start, end){
+			var items = [];
+			if(end > (this.totalRecord - 1)){
+				end = this.totalRecord - 1;
+			}
+			for(var i=start; i<=end; i++){
+				items.push(this.options.localData[i]);
+			}
+			return items;
+		},
 		/*
 		 * 初始化分页
 		 */
@@ -322,17 +342,17 @@
 			var pageHtml = new Array();
 			pageHtml.push('<li data-role="firstPage"><a href="#">&laquo;</a></li>');
 			pageHtml.push('<li data-role="prev"><a href="#">&lsaquo;</a></li>');
-			if((self.pageNo-1) % self.showPage == 0){
-				self.pageNo != 1 && pageHtml.push('<li><a href="#">...</a></li>');
-				for(var i=self.pageNo; i<=self.totalPage && i<(self.pageNo+self.showPage); i++){
-					pageHtml.push('<li data-value="'+i+'" data-role="pageNo"><a href="#">'+i+'</a></li>');
+			if(self.pageNo % self.showPage == 0){
+				self.pageNo != Grid.DEFAULTS.pageNo && pageHtml.push('<li><a href="#">...</a></li>');
+				for(var i=self.pageNo; i<self.totalPage && i<(self.pageNo+self.showPage); i++){
+					pageHtml.push('<li data-value="'+i+'" data-role="pageNo"><a href="#">'+(i+1)+'</a></li>');
 				}
 				(self.pageNo + self.showPage) < self.totalPage && pageHtml.push('<li><a href="#">...</a></li>');
 			}else{
-				var start = Math.floor((self.pageNo-1)/self.showPage)*self.showPage+1;
-				start != 1 && pageHtml.push('<li><a href="#">...</a></li>');
-				for(var i=start; i<=self.totalPage && i<(start+self.showPage); i++){
-					pageHtml.push('<li data-value="'+i+'" data-role="pageNo"><a href="#">'+i+'</a></li>');
+				var start = Math.floor(self.pageNo/self.showPage)*self.showPage;
+				start != Grid.DEFAULTS.pageNo && pageHtml.push('<li><a href="#">...</a></li>');
+				for(var i=start; i<self.totalPage && i<(start+self.showPage); i++){
+					pageHtml.push('<li data-value="'+i+'" data-role="pageNo"><a href="#">'+(i+1)+'</a></li>');
 				}
 				(start + self.showPage) < self.totalPage && pageHtml.push('<li><a href="#">...</a></li>');
 			}
@@ -362,18 +382,18 @@
 				if($(this).hasClass('disabled')){
 					return;
 				}
-				self.pageNo = 1;
+				self.pageNo = Grid.DEFAULTS.pageNo;
 				self._loadData();
 			});
 			var lastPageBtn =  pagination.find('li[data-role="lastPage"]').on('click', function(){
 				if($(this).hasClass('disabled')){
 					return;
 				}
-				self.pageNo = self.totalPage;
+				self.pageNo = self.totalPage - 1;
 				self._loadData();
 			});
-			self.pageNo == 1 && prevBtn.addClass('disabled') && firstPageBtn.addClass('disabled');
-			self.pageNo == self.totalPage && nextBtn.addClass('disabled') && lastPageBtn.addClass('disabled');
+			self.pageNo == Grid.DEFAULTS.pageNo && prevBtn.addClass('disabled') && firstPageBtn.addClass('disabled');
+			self.pageNo == (self.totalPage-1) && nextBtn.addClass('disabled') && lastPageBtn.addClass('disabled');
 		},
 		/*
 		 * 渲染数据
@@ -429,9 +449,11 @@
 				self.items = self.initTreeItems(new Array(), self.items);
 			}
 			var items = self.items;
+			items = JSON.parse(JSON.stringify(items).replace('<script>', '<script*>'));
 			var trHtmls = new Array();
 			for(var i= 0,j=items.length; i<j; i++){
 				var item = items[i];
+				
                 self.itemsMap[item.id] = item;
 				var trHtml = new Array();
 				if(self.options.tree && self.options.tree.column){
@@ -631,6 +653,7 @@
 			for(var prop in conditions){
 				this.searchCondition[prop] = conditions[prop];
 			}
+			this.pageNo = Grid.DEFAULTS.pageNo;
 			this._loadData();
 		},
 		/**
@@ -818,7 +841,7 @@
 	};
 	Message.DEFAULTS.TEMPLATE = '<div class="alert message" style="min-width: 120px;max-width: 300px; padding: 8px;text-align: left;z-index: 20000;">' +
 		'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
-		'<span data-toggle="content" style="font-size:14px;"></span>&nbsp;&nbsp;</div>';
+		'<span data-toggle="content" style="font-size:14px; word-wrap:break-word;"></span>&nbsp;&nbsp;</div>';
 	var old = $.fn.message;
 	$.fn.message = function(option){
 		return this.each(function(){
@@ -899,16 +922,37 @@
 	ModifyPassword.prototype.save = function(){
 		var self = this;
 		if(!Validation.notNull(self.$element, this.oldPwd, this.oldPwd.val(), '原始密码不能为空')){
-			return;
+			return false;
+		}
+		if (!Validation.checkByRegExp(self.$element, this.oldPwd, '^[0-9a-zA-Z]*$', this.oldPwd.val(), '只能输入字母及数字')) {
+			return false;
+		}
+		if(this.oldPwd.val().length < 6 || this.oldPwd.val().length > 10){
+			showErrorMessage(self.$element, this.oldPwd, '请输入6-10位数字或者字母');
+			return false;
 		}
 		if(!Validation.notNull(self.$element, this.newPwd, this.newPwd.val(), '新密码不能为空')){
-			return;
+			return false;
+		}
+		if (!Validation.checkByRegExp(self.$element, this.newPwd, '^[0-9a-zA-Z]*$', this.newPwd.val(), '只能输入字母及数字')) {
+			return false;
+		}
+		if(this.newPwd.val().length < 6 || this.newPwd.val().length > 10){
+			showErrorMessage(self.$element, this.newPwd, '请输入6-10位数字或者字母');
+			return false;
 		}
 		if(!Validation.notNull(self.$element, this.confirmPwd, this.confirmPwd.val(), '确认密码不能为空')){
-			return;
+			return false;
+		}
+		if (!Validation.checkByRegExp(self.$element, this.confirmPwd, '^[0-9a-zA-Z]*$', this.confirmPwd.val(), '只能输入字母及数字')) {
+			return false;
+		}
+		if(this.confirmPwd.val().length < 6 || this.confirmPwd.val().length > 10){
+			showErrorMessage(self.$element, this.confirmPwd, '请输入6-10位数字或者字母');
+			return false;
 		}
 		if(this.newPwd.val() != this.confirmPwd.val()){
-			$('body').message({
+			self.$element.find('.modal-content').message({
 				type: 'error',
 				content: '新密码与确认密码不一致'
 			});
@@ -927,13 +971,13 @@
 					});
 					self.$element.modal('hide');
 				}else{
-					$('body').message({
+					self.$element.find('.modal-content').message({
 						type: 'error',
 						content: msg.result
 					});
 				}
 			}).fail(function(msg){
-				$('body').message({
+				self.$element.find('.modal-content').message({
 						type: 'error',
 						content: '修改失败'
 				});
@@ -989,7 +1033,7 @@
 		'</div>' +
 		'<div class="modal-footer"> ' +
 		'<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>' +
-		'<button type="button" class="btn btn-primary" data-toggle="save">保存</button>' +
+		'<button type="button" class="btn btn-success" data-toggle="save">保存</button>' +
 		'</div>' +
 		'</div>  ' +
 		'</div>  ' +

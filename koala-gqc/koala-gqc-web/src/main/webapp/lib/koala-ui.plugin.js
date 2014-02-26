@@ -389,7 +389,7 @@
 				if($(this).hasClass('disabled')){
 					return;
 				}
-				self.pageNo = self.totalPage;
+				self.pageNo = self.totalPage - 1;
 				self._loadData();
 			});
 			self.pageNo == Grid.DEFAULTS.pageNo && prevBtn.addClass('disabled') && firstPageBtn.addClass('disabled');
