@@ -2,6 +2,7 @@ package org.openkoala.businesslog.utils;
 
 import static org.openkoala.businesslog.ContextKeyConstant.*;
 
+import org.apache.commons.io.FileUtils;
 import org.aspectj.lang.JoinPoint;
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.businesslog.*;
@@ -10,6 +11,8 @@ import org.openkoala.businesslog.common.LogEngineThread;
 import org.openkoala.businesslog.config.BusinessLogConfigAdapter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;

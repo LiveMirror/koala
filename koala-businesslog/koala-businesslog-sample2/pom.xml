@@ -7,11 +7,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>koala-businesslog-sample2</artifactId>
-    <packaging>jar</packaging>
-    <name>Business Log Module Sample2</name>
+    <packaging>war</packaging>
+    <name>koala-businesslog-sample2</name>
     <description>业务日志子系统验收测试2-与组织系统结合的测试</description>
 
     <dependencies>
+        <dependency>
+            <groupId>org.openkoala.businesslog</groupId>
+            <artifactId>koala-businesslog-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.openkoala.organisation</groupId>
             <artifactId>koala-organisation-conf</artifactId>
@@ -70,6 +75,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>fluent-hc</artifactId>
+            <version>4.3.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.dayatang.dddlib</groupId>
             <artifactId>dddlib-ioc-spring</artifactId>
         </dependency>
@@ -86,13 +103,12 @@
                     </webApp>
                 </configuration>
             </plugin>
-            <!--从组织系统拷贝一份源文件到此项目-->
+            <!--从组织系统拷贝一份源文件到此项目
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <!-- here the phase you need -->
                         <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -108,9 +124,9 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>        -->
 
-            <!--实现验收测试-->
+            <!--实现验收测试
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
@@ -166,7 +182,7 @@
                         </deployable>
                     </deployables>
                 </configuration>
-            </plugin>
+            </plugin>       -->
         </plugins>
     </build>
 </project>
