@@ -65,6 +65,8 @@ public class HttpRequestTrace extends Trace   {
 			Map.Entry e = (Entry) iterator.next();
 
 			String key = e.getKey().toString();
+			//重复的
+			if(sb.indexOf(key+"=")>=0)continue;
 			//一些无意义的字段不记录
 			if ("timestamp".equals(key))continue;
 			sb.append(key).append("=");

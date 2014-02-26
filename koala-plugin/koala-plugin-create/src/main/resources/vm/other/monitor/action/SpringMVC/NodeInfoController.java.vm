@@ -41,6 +41,15 @@ public class NodeInfoController {
     public Map<String, Object> queryAllNodes(){
     	Map<String, Object> dataMap = new HashMap<String,Object>();
     	List<MonitorNodeVo> nodes = monitorNodeManageApplication.getAllNodes();
+    	//过滤未激活节点
+    	if("y".equalsIgnoreCase(onlyActive) && nodes.size()>0){
+    		for (int i = 0; i < nodes.size(); i++) {
+				if(nodes.get(i).isActive()== false){
+					nodes.remove(i);
+					i--;
+				}
+			}
+    	}
         dataMap.put("Rows", nodes);
     	return dataMap;
     }
