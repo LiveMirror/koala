@@ -15,6 +15,7 @@ public class BusinessLog {
     private String log;
 
     private Map<String, Object> context = new HashMap<String, Object>();
+
     private String category;
 
     public String getLog() {

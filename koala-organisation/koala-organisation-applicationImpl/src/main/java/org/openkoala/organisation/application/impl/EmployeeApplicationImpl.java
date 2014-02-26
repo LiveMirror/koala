@@ -29,21 +29,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 员工应用实现层类
- *
+ * 
  */
 @Named
-@Transactional(value="transactionManager_org")
+@Transactional(value = "transactionManager_org")
 @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 @Stateless(name = "EmployeeApplication")
 @Remote
 public class EmployeeApplicationImpl implements EmployeeApplication {
 
-
 	private QueryChannelService queryChannel;
-	
-	private QueryChannelService getQueryChannelService(){
-		if(queryChannel ==null){
-			queryChannel = InstanceFactory.getInstance(QueryChannelService.class,"queryChannel_org");
+
+	private QueryChannelService getQueryChannelService() {
+		if (queryChannel == null) {
+			queryChannel = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel_org");
 		}
 		return queryChannel;
 	}
@@ -74,8 +73,7 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 	public Page<EmployeeDTO> pagingQueryEmployeesByOrganization(EmployeeDTO example, Organization organization, int currentPage, int pagesize) {
 		List<Object> conditionVals = new ArrayList<Object>();
 
-		StringBuilder jpql = new StringBuilder("select distinct _holding.responsible from EmployeePostHolding _holding "
-				+ "where _holding.commissioner in"
+		StringBuilder jpql = new StringBuilder("select distinct _holding.responsible from EmployeePostHolding _holding " + "where _holding.commissioner in"
 				+ " (select p from Post p where p.organization = ?1 and p.createDate <= ?2 and p.terminateDate > ?3)"
 				+ " and _holding.fromDate <= ?4 and _holding.toDate > ?5");
 		Date now = new Date();
@@ -92,15 +90,14 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 	public Page<EmployeeDTO> pagingQueryEmployeesByOrganizationAndChildren(EmployeeDTO example, Organization organization, int currentPage, int pagesize) {
 		List<Object> conditionVals = new ArrayList<Object>();
 
-		StringBuilder jpql = new StringBuilder("select distinct _holding.responsible from EmployeePostHolding _holding "
-				+ "where _holding.commissioner in"
+		StringBuilder jpql = new StringBuilder("select distinct _holding.responsible from EmployeePostHolding _holding " + "where _holding.commissioner in"
 				+ " (select p from Post p where p.organization in ?1 and p.createDate <= ?2 and p.terminateDate > ?3)"
 				+ " and _holding.fromDate <= ?4 and _holding.toDate > ?5");
 		Date now = new Date();
 		List<Organization> organizations = new ArrayList<Organization>();
 		organizations.add(organization);
 		organizations.addAll(organization.getAllChildren(now));
-		
+
 		conditionVals.add(organizations);
 		conditionVals.add(now);
 		conditionVals.add(now);
@@ -124,18 +121,18 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 				+ " (select _holding.responsible from EmployeePostHolding _holding where _holding.fromDate <= ?3 and _holding.toDate > ?4)");
 		conditionVals.add(now);
 		conditionVals.add(now);
-		
+
 		return queryResult(example, jpql, "_employee", conditionVals, currentPage, pagesize);
 	}
 
-	private Page<EmployeeDTO> queryResult(EmployeeDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals,
-			int currentPage, int pagesize) {
+	private Page<EmployeeDTO> queryResult(EmployeeDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals, int currentPage,
+			int pagesize) {
 		assembleJpqlAndConditionValues(example, jpql, conditionPrefix, conditionVals);
-		Page<Employee> employeePage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
-		return new Page<EmployeeDTO>(employeePage.getPageIndex(), 
-				employeePage.getResultCount(), pagesize, transformToDtos(employeePage.getData()));
+		Page<Employee> employeePage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize)
+				.pagedList();
+		return new Page<EmployeeDTO>(employeePage.getStart(), employeePage.getResultCount(), pagesize, transformToDtos(employeePage.getData()));
 	}
-	
+
 	private void assembleJpqlAndConditionValues(EmployeeDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals) {
 		String andCondition = " and " + conditionPrefix;
 		int initialConditionIndex = conditionVals.size();
@@ -170,7 +167,7 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 			conditionVals.add(MessageFormat.format("%{0}%", example.getFamilyPhone()));
 		}
 	}
-	
+
 	private List<EmployeeDTO> transformToDtos(List<Employee> employees) {
 		List<EmployeeDTO> results = new ArrayList<EmployeeDTO>();
 		for (Employee employee : employees) {
@@ -181,17 +178,17 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 		}
 		return results;
 	}
-	
+
 	@Override
 	public void transformPost(Employee employee, Set<ResponsiblePostDTO> dots) {
 		if (dots.isEmpty()) {
 			throw new EmployeeMustHaveAtLeastOnePostException();
 		}
-		
+
 		List<EmployeePostHolding> existHoldings = EmployeePostHolding.getByEmployee(employee, new Date());
 		Set<Post> postsForOutgoing = employee.getPosts(new Date());
 		Map<Post, Boolean> postsForAssign = new HashMap<Post, Boolean>();
-		
+
 		boolean existAccountsability = false;
 		for (ResponsiblePostDTO dto : dots) {
 			Post post = Post.get(Post.class, dto.getPostId());
@@ -210,9 +207,9 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 			}
 			postsForAssign.put(post, dto.isPrincipal());
 		}
-		
+
 		employee.outgoingPosts(postsForOutgoing);
-		
+
 		for (Post post : postsForAssign.keySet()) {
 			employee.assignPost(post, postsForAssign.get(post));
 		}

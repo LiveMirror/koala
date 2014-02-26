@@ -259,7 +259,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		for (Resource ne : pages.getData()) {
 			result.add(domainObject2Vo(ne));
 		}
-		Page<ResourceVO> returnPage = new Page<ResourceVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+		Page<ResourceVO> returnPage = new Page<ResourceVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 		return returnPage;
 	}
 
@@ -267,7 +267,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		return basePageQuery("select k from org.openkoala.koala.auth.core.domain.UrlResource k where k.id "
 				+ "not in(select r.id from org.openkoala.koala.auth.core.domain.Role m," + "org.openkoala.koala.auth.core.domain.UrlResource r,"
 				+ " org.openkoala.koala.auth.core.domain.IdentityResourceAuthorization t where m.id=t.identity.id and r.id=t.resource.id " + " and m.id=?1)",
-				new Object[] { roleVO.getId() }, currentPage - 1, pageSize);
+				new Object[] { roleVO.getId() }, currentPage, pageSize);
 	}
 
 	public boolean isNameExist(ResourceVO resourceVO) {

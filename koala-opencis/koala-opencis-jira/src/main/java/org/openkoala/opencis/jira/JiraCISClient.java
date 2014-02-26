@@ -107,22 +107,6 @@ public class JiraCISClient implements CISClient {
     }
 
     @Override
-    public void createRoleIfNecessary(Project project, String roleName) {
-        assert roleName != null && !"".equals(roleName.trim());
-        //角色存在，则不创建
-        if (jiraService.isRoleExist(roleName)) {
-            return;
-        }
-        try {
-            jiraService.createRole(roleName);
-        } catch (java.rmi.RemoteException e) {
-            e.printStackTrace();
-            throw new CISClientBaseRuntimeException("createRoleIfNecessary failure", e);
-        }
-    }
-
-
-    @Override
     public boolean authenticate() {
         JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
         jiraSoapServiceLocator.setJirasoapserviceV2EndpointAddress(jiraServerAddress

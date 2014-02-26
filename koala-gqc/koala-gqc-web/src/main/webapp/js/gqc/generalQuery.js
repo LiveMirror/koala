@@ -175,9 +175,9 @@ var generalQuery = function(){
 		$.get(baseUrl + 'getById.koala?id='+id)
 			.done(function(data){
 				generalQueryObject = data.generalQuery;
-				dataSourceSelect.setValue(generalQueryObject.dataSource.id).find('button').addClass('disabled');
+				dataSourceSelect.setValue(generalQueryObject.dataSource.id).find('button').off().addClass('disabled');
 				dialog.on('dataSourceSelectComplete.koala',  function(){
-					tableSelect.setValue(generalQueryObject.tableName).find('button').addClass('disabled');
+					tableSelect.setValue(generalQueryObject.tableName).find('button').off().addClass('disabled');
 					var queryConditionColumns = data.queryConditionColumns;
 					var showColumns = data.showColumns;
 				})
@@ -542,7 +542,8 @@ var generalQuery = function(){
 					content: "数据源不可用！"
 				});
 			} else if (data.result == "该数据源可用") {
-				window.open(contextPath + '/pages/gqc/previewTemplate.jsp?id='+id,'预览');
+				var previewWindow = window.open(contextPath + '/pages/gqc/previewTemplate.jsp?id='+id, '预览');
+				previewWindow.resizeTo(previewWindow.screen.width, previewWindow.screen.height);
 			} else {
 				$('#generalQueryGrid').message({
 					type: 'error',

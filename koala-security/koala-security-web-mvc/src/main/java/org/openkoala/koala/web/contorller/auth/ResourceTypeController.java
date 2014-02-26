@@ -10,6 +10,7 @@ import org.openkoala.auth.application.vo.ResourceTypeVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 @Controller
 @RequestMapping("/auth/ResourceType")
 public class ResourceTypeController {
@@ -21,7 +22,7 @@ public class ResourceTypeController {
 	@RequestMapping("/save")
 	public Map<String, Object> save(ParamsPojo params) {
 		ResourceTypeVO resourceTypeVO = params.getResourceTypeVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		resourceTypeApplication.save(resourceTypeVO);
 		dataMap.put("result", "success");
 		return dataMap;
@@ -31,9 +32,8 @@ public class ResourceTypeController {
 	@RequestMapping("/delete")
 	public Map<String, Object> delete(ParamsPojo params) {
 		List<ResourceTypeVO> resourceTypeVOs = params.getResourceTypeVOs();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		resourceTypeApplication.delete(resourceTypeVOs
-				.toArray(new ResourceTypeVO[resourceTypeVOs.size()]));
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		resourceTypeApplication.delete(resourceTypeVOs.toArray(new ResourceTypeVO[resourceTypeVOs.size()]));
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -42,7 +42,7 @@ public class ResourceTypeController {
 	@RequestMapping("/update")
 	public Map<String, Object> update(ParamsPojo params) {
 		ResourceTypeVO resourceTypeVO = params.getResourceTypeVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		resourceTypeApplication.update(resourceTypeVO);
 		dataMap.put("result", "success");
 		return dataMap;
@@ -50,12 +50,11 @@ public class ResourceTypeController {
 
 	@ResponseBody
 	@RequestMapping("/pageJson")
-	public Map<String, Object> pageJson(int page,int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		Page<ResourceTypeVO> result = resourceTypeApplication.pageQuery(page,
-				pagesize);
+	public Map<String, Object> pageJson(int page, int pagesize) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Page<ResourceTypeVO> result = resourceTypeApplication.pageQuery(page, pagesize);
 		dataMap.put("Rows", result.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", result.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", result.getResultCount());
 		return dataMap;

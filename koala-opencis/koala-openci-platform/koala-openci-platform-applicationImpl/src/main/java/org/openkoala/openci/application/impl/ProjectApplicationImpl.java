@@ -52,7 +52,7 @@ public class ProjectApplicationImpl implements ProjectApplication {
 	}
 
 	private String getProjectSavePath() {
-		return System.getenv("TMP");
+		return System.getProperty("java.io.tmpdir");
 	}
 
 	private ProjectDetail createProjectDetail(ProjectDto projectDto) {
@@ -73,7 +73,6 @@ public class ProjectApplicationImpl implements ProjectApplication {
 			koalaProjectCreate.createProject(projectForCreate);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 	}
@@ -104,7 +103,7 @@ public class ProjectApplicationImpl implements ProjectApplication {
 				conditionVals.add(projectQueryDto.getEndDate());
 			}
 		}
-		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pagesize).pagedList();
+		return queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
 	}
 
 	public Project getDetail(long projectId) {

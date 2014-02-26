@@ -24,8 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 岗位管理Controller
+ * 
  * @author xmfang
- *
+ * 
  */
 @Controller
 @RequestMapping("/post")
@@ -33,22 +34,23 @@ public class PostController extends BaseController {
 
 	@Inject
 	private PostApplication postApplication;
-	
+
 	/**
 	 * 分页查询职务
+	 * 
 	 * @param page
 	 * @param pagesize
 	 * @param post
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/pagingquery")
+	@RequestMapping("/pagingquery")
 	public Map<String, Object> pagingQuery(int page, int pagesize, PostDTO post) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Page<PostDTO> posts = postApplication.pagingQueryPosts(post, page, pagesize);
-		
+
 		dataMap.put("Rows", posts.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", posts.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", posts.getResultCount());
 		return dataMap;
@@ -56,11 +58,12 @@ public class PostController extends BaseController {
 
 	/**
 	 * 创建一个岗位
+	 * 
 	 * @param post
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/create")
+	@RequestMapping("/create")
 	public Map<String, Object> createPost(Post post, Long organizationId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -84,11 +87,12 @@ public class PostController extends BaseController {
 
 	/**
 	 * 更新岗位信息
+	 * 
 	 * @param post
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/update")
+	@RequestMapping("/update")
 	public Map<String, Object> updatePost(Post post, Long organizationId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -105,7 +109,7 @@ public class PostController extends BaseController {
 	}
 
 	@ResponseBody
-    @RequestMapping("/query-post-by-org")
+	@RequestMapping("/query-post-by-org")
 	public Map<String, Object> queryPostsOfOrganization(Long organizationId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("result", postApplication.findPostsByOrganizationId(organizationId));
@@ -113,26 +117,27 @@ public class PostController extends BaseController {
 	}
 
 	@ResponseBody
-    @RequestMapping("/paging-query-post-by-org")
+	@RequestMapping("/paging-query-post-by-org")
 	public Map<String, Object> pagingQueryPostsOfOrganization(Long organizationId, PostDTO example, int page, int pagesize) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Organization organization = getBaseApplication().getEntity(Organization.class, organizationId);
 		Page<PostDTO> posts = postApplication.pagingQueryPostsOfOrganizatoin(organization, example, page, pagesize);
-		
+
 		dataMap.put("Rows", posts.getData());
 		dataMap.put("start", page * pagesize - pagesize);
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", posts.getResultCount());
 		return dataMap;
 	}
-	
+
 	/**
 	 * 根据ID获得职务
+	 * 
 	 * @param id
 	 * @return
 	 */
-    @ResponseBody
-    @RequestMapping("/get/{id}")
+	@ResponseBody
+	@RequestMapping("/get/{id}")
 	public Map<String, Object> get(@PathVariable("id") Long id) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -143,14 +148,15 @@ public class PostController extends BaseController {
 		}
 		return dataMap;
 	}
-	
-    /**
-     * 撤销某个职务
-     * @param postDto
-     * @return
-     */
+
+	/**
+	 * 撤销某个职务
+	 * 
+	 * @param postDto
+	 * @return
+	 */
 	@ResponseBody
-    @RequestMapping("/terminate")
+	@RequestMapping("/terminate")
 	public Map<String, Object> terminatePost(PostDTO postDto) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -164,14 +170,15 @@ public class PostController extends BaseController {
 		}
 		return dataMap;
 	}
-	
+
 	/**
 	 * 同时撤销多个职务
+	 * 
 	 * @param postDTOs
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping(value = "/terminate-posts", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/terminate-posts", method = RequestMethod.POST, consumes = "application/json")
 	public Map<String, Object> terminatePosts(@RequestBody PostDTO[] postDTOs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -179,7 +186,7 @@ public class PostController extends BaseController {
 			for (PostDTO postDTO : postDTOs) {
 				posts.add(postDTO.transFormToPost());
 			}
-			
+
 			getBaseApplication().terminateParties(posts);
 			dataMap.put("result", "success");
 		} catch (TerminateHasEmployeePostException exception) {
@@ -188,8 +195,8 @@ public class PostController extends BaseController {
 			dataMap.put("result", "撤销员工岗位失败！");
 			e.printStackTrace();
 		}
-		
+
 		return dataMap;
 	}
-	
+
 }
