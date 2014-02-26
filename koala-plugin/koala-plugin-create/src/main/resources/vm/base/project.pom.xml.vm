@@ -228,13 +228,13 @@
             
             <dependency>
                 <groupId>org.dayatang.dddlib</groupId>
-                <artifactId>dddlib-spring</artifactId>
+                <artifactId>dddlib-ioc-spring</artifactId>
                 <version>${dddlib.version}</version>
             </dependency>
             
             <dependency>
                 <groupId>org.dayatang.dddlib</groupId>
-                <artifactId>dddlib-hibernate</artifactId>
+                <artifactId>dddlib-persistence-hibernate</artifactId>
                 <version>${dddlib.version}</version>
             </dependency>
             
@@ -265,7 +265,7 @@
             
             <dependency>
                 <groupId>org.dayatang.dddlib</groupId>
-                <artifactId>dddlib-dsrouter</artifactId>
+                <artifactId>dddlib-datasource-router</artifactId>
                 <version>${dddlib.version}</version>
             </dependency>
             
@@ -283,7 +283,7 @@
             
             <dependency>
                 <groupId>org.dayatang.dddlib</groupId>
-                <artifactId>dddlib-rule</artifactId>
+                <artifactId>dddlib-rule-engine</artifactId>
                 <version>${dddlib.version}</version>
             </dependency>
             

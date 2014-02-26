@@ -43,8 +43,7 @@ public abstract class MybatisChannelQuery<E extends MybatisChannelQuery> {
 	/**
 	 * 设置定位命名参数（数组方式）
 	 * 
-	 * @param parameters
-	 *            要设置的参数
+	 * @param parameters 要设置的参数
 	 * @return 该对象本身
 	 */
 	public E setParameters(Object... parameters) {
@@ -55,8 +54,7 @@ public abstract class MybatisChannelQuery<E extends MybatisChannelQuery> {
 	/**
 	 * 设置定位参数（列表方式）
 	 * 
-	 * @param parameters
-	 *            要设置的参数
+	 * @param parameters 要设置的参数
 	 * @return 该对象本身
 	 */
 	public E setParameters(List<Object> parameters) {
@@ -67,8 +65,7 @@ public abstract class MybatisChannelQuery<E extends MybatisChannelQuery> {
 	/**
 	 * 设置命名参数（Map形式，Key是参数名称，Value是参数值）
 	 * 
-	 * @param parameters
-	 *            要设置的参数
+	 * @param parameters 要设置的参数
 	 * @return 该对象本身
 	 */
 	public E setParameters(Map<String, Object> parameters) {
@@ -107,7 +104,7 @@ public abstract class MybatisChannelQuery<E extends MybatisChannelQuery> {
 	 * @return 该对象本身
 	 */
 	public E setFirstResult(int firstResult) {
-		Assert.isTrue(firstResult >= 0, "First result must be greater than 0!");
+		Assert.isTrue(firstResult >= 0, "First result must not be  than 0!");
 		query.setFirstResult(firstResult);
 		return (E) this;
 	}
