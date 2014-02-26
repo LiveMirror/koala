@@ -261,9 +261,13 @@
 				params.sortorder = self.sortOrder;
 			}
             if(self.options.isUserLocalData){
+            	self.totalRecord = self.options.localData.length;
                 var start = self.pageSize * self.pageNo;
             	var end =  self.pageSize * self.pageNo;
-            	self.totalRecord = self.options.localData.length;
+            	if(!this.options.isShowPages){
+					start = 0;
+					end = self.totalRecord;
+				}
             	self.startRecord.text(start + 1);
 				self.endRecord.text(end+1);
 				self.totalRecordHtml.text(self.totalRecord);
