@@ -299,10 +299,12 @@
 					self.items = result.Rows;
 					self.totalRecord = result.Total;
 					if(result.Rows.length == 0){
+						self.pages.hide();
 						self.gridTableBodyTable.empty();
 						self.gridTableBody.find('[data-role="noData"]').remove();
 						self.gridTableBody.append($('<div data-role="noData" style="font-size:16px ; padding: 20px; width:'+self.gridTableBodyTable.width()+'px;">'+self.options.noDataText+'</div>'));
 					}else{
+						self.pages.show();
 						self.gridTableBody.find('[data-role="noData"]').remove();
 						self.renderDatas();
 					}
