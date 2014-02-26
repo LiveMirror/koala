@@ -24,7 +24,7 @@ public class MainIntegrationTest {
         HttpGet adminGet = new HttpGet(getBaseUrl() + "admin");
         HttpResponse response = httpclient.execute(adminGet);
         String content = EntityUtils.toString(response.getEntity(), "UTF-8");
-        content.contains("size:3");
+        content.contains("<h3 id=\"size\">3</h3>");
         httpGet.abort();
 
         httpclient.getConnectionManager().shutdown();
