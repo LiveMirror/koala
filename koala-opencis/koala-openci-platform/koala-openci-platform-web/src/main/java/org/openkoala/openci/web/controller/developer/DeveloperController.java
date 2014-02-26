@@ -31,7 +31,7 @@ public class DeveloperController extends BaseController {
 		Page<Developer> developerPage = developerApplication.pagingQeuryDevelopers(example, page, pagesize);
 		
 		dataMap.put("Rows", developerPage.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", developerPage.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", developerPage.getResultCount());
 		return dataMap;

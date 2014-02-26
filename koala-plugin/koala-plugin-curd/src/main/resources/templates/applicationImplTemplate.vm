@@ -15,8 +15,8 @@ import javax.inject.Named;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
-import com.dayatang.querychannel.support.Page;
-import com.dayatang.querychannel.service.QueryChannelService;
+import org.dayatang.querychannel.Page;
+import org.dayatang.querychannel.QueryChannelService;
 import ${dtoClass.packageName}.*;
 import ${applicationClass.packageName}${package.substring(${package.lastIndexOf(".")})}.${applicationClass.name};
 import ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})}.*;
@@ -136,8 +136,8 @@ public class ${applicationImplClass.name} implements ${applicationClass.name} {
 	   	}	
 #end	
 #end
-        Page<${domainClass}> pages = queryChannel.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), currentPage, pageSize);
-        for (${domainClass} ${variableName} : pages.getResult()) {
+        Page<${domainClass}> pages = queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
+        for (${domainClass} ${variableName} : pages.getData()) {
             ${currntVO} ${currntVOVariable} = new ${currntVO}();
             
              // 将domain转成VO
@@ -158,7 +158,7 @@ public class ${applicationImplClass.name} implements ${applicationClass.name} {
        #end
             result.add(${currntVOVariable});
         }
-        return new Page<${currntVO}>(pages.getCurrentPageNo(), pages.getTotalCount(), pages.getPageSize(), result);
+        return new Page<${currntVO}>(pages.getPageIndex(), pages.getResultCount(), pageSize, result);
 	}
 	
 #foreach(${relation} in ${applicationClass.relations})
@@ -170,7 +170,7 @@ public class ${applicationImplClass.name} implements ${applicationClass.name} {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ${entityName}DTO find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
 		String jpql = "select e from ${domainClass} o right join o.${relation.name} e where o.${dtoClass.entityModel.singleIDFieldModel.name}=?";
-		${entityName} result = (${entityName}) queryChannel.querySingleResult(jpql, new Object[] { ${dtoClass.entityModel.singleIDFieldModel.name} });
+		${entityName} result = (${entityName}) queryChannel.createJpqlQuery(jpql).setParameters(new Object[] { ${dtoClass.entityModel.singleIDFieldModel.name} }).singleResult();
 		${entityName}DTO  dto = new ${entityName}DTO();
 		if (result != null) {
 			try {
@@ -188,7 +188,7 @@ public class ${applicationImplClass.name} implements ${applicationClass.name} {
 	public Page<${entityName}DTO> find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}, int currentPage, int pageSize) {
 		List<${entityName}DTO> result = new ArrayList<${entityName}DTO>();
 		String jpql = "select e from ${domainClass} o right join o.${relation.name} e where o.${dtoClass.entityModel.singleIDFieldModel.name}=?";
-		Page<${entityName}> pages = queryChannel.queryPagedResultByPageNo(jpql, new Object[] { ${dtoClass.entityModel.singleIDFieldModel.name} }, currentPage, pageSize);
+		Page<${entityName}> pages = queryChannel.createJpqlQuery(jpql).setParameters(new Object[] { ${dtoClass.entityModel.singleIDFieldModel.name} }).setPage(currentPage, pageSize).pagedList();
         for (${entityName} entity : pages.getResult()) {
             ${entityName}DTO dto = new ${entityName}DTO();
             try {
@@ -198,7 +198,7 @@ public class ${applicationImplClass.name} implements ${applicationClass.name} {
 			}
             result.add(dto);
         }
-        return new Page<${entityName}DTO>(Page.getStartOfPage(currentPage, pageSize), pages.getTotalCount(), pages.getPageSize(), result);
+        return new Page<${entityName}DTO>(Page.getStartOfPage(currentPage, pageSize), pages.getResultCount(), pageSize, result);
 	}		
 #end
 #end

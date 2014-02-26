@@ -94,13 +94,13 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
     public Page<UserVO> pageQueryUser(int currentPage, int pageSize) {
         List<UserVO> results = new ArrayList<UserVO>();
         Page<User> pages = queryChannel().createJpqlQuery( //
-        		"select m from User m where m.super is false and m.abolishDate>:abolishDate").addParameter("abolishDate", new Date()).setPage(currentPage-1, pageSize).pagedList();
+        		"select m from User m where m.super is false and m.abolishDate>:abolishDate").addParameter("abolishDate", new Date()).setPage(currentPage, pageSize).pagedList();
         for (User each : pages.getData()) {
             UserVO userVO = new UserVO();
             userVO.domain2Vo(each);
             results.add(userVO);
         }
-        return new Page<UserVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
+        return new Page<UserVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), results);
     }
     
     public Page<UserVO> pageQueryUser(UserVO userVO, int currentPage, int pageSize) {
@@ -120,13 +120,13 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
 				conditions.add("%" + userVO.getName() + "%");
 			}
 		}
-    	Page<User> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions).setPage(currentPage-1, pageSize).pagedList();
+    	Page<User> pages = queryChannel().createJpqlQuery(jpql.toString()).setParameters(conditions).setPage(currentPage, pageSize).pagedList();
     	for (User each : pages.getData()) {
     		UserVO user = new UserVO();
     		user.domain2Vo(each);
     		results.add(user);
     	}
-    	return new Page<UserVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
+    	return new Page<UserVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), results);
     }
 
     public UserVO findByUserAccount(String userAccount) {
@@ -182,7 +182,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
             results.add(roleVO);
         }
         
-        return new Page<RoleVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
+        return new Page<RoleVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), results);
     }
 
     public Page<UserVO> pageQueryUserCustom(int currentPage, int pageSize, QueryConditionVO query) {
@@ -194,7 +194,7 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
             userVO.domain2Vo(each);
             results.add(userVO);
         }
-        return new Page<UserVO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), results);
+        return new Page<UserVO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), results);
     }
 
 	@Override

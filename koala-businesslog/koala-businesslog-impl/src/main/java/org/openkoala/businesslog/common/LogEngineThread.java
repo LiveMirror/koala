@@ -1,14 +1,9 @@
 package org.openkoala.businesslog.common;
 
-import static org.openkoala.businesslog.common.ContextKeyConstant.*;
+import static org.openkoala.businesslog.ContextKeyConstant.*;
 
 import org.openkoala.businesslog.*;
-import org.openkoala.businesslog.config.BusinessLogConfig;
 import org.openkoala.businesslog.config.BusinessLogConfigAdapter;
-import org.openkoala.businesslog.impl.BusinessLogDefaultContextQueryExecutor;
-import org.openkoala.businesslog.impl.BusinessLogFreemarkerDefaultRender;
-import org.openkoala.businesslog.impl.BusinessLogJpaDefaultExporter;
-import org.openkoala.businesslog.impl.BusinessLogXmlConfigDefaultAdapter;
 import org.openkoala.businesslog.utils.ThreadLocalBusinessLogContext;
 
 import java.util.Collections;

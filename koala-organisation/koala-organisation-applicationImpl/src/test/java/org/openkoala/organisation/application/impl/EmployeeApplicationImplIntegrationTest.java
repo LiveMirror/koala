@@ -70,10 +70,10 @@ public class EmployeeApplicationImplIntegrationTest extends AbstractIntegrationT
 	
 	@Test
 	public void testPagingQueryEmployees() {
-		List<EmployeeDTO> employeeDTOs = employeeApplication.pagingQueryEmployees(new EmployeeDTO(), 1, 1).getData();
+		List<EmployeeDTO> employeeDTOs = employeeApplication.pagingQueryEmployees(new EmployeeDTO(), 0, 1).getData();
 		assertEquals(1, employeeDTOs.size());
 		
-		List<EmployeeDTO> employeeDTOs2 = employeeApplication.pagingQueryEmployees(new EmployeeDTO(), 1, 10).getData();
+		List<EmployeeDTO> employeeDTOs2 = employeeApplication.pagingQueryEmployees(new EmployeeDTO(), 0, 10).getData();
 		assertTrue(employeeDTOs2.size() <= 10);
 	}
 	
@@ -90,10 +90,10 @@ public class EmployeeApplicationImplIntegrationTest extends AbstractIntegrationT
 	
 	@Test
 	public void testPagingQueryEmployeesByOrganization() {
-		List<EmployeeDTO> employeeDTOs = employeeApplication.pagingQueryEmployeesByOrganization(new EmployeeDTO(), department, 1, 1).getData();
+		List<EmployeeDTO> employeeDTOs = employeeApplication.pagingQueryEmployeesByOrganization(new EmployeeDTO(), department, 0, 1).getData();
 		assertEquals(1, employeeDTOs.size());
 		
-		List<EmployeeDTO> employeeDTOs2 = employeeApplication.pagingQueryEmployeesByOrganization(new EmployeeDTO(), department, 1, 10).getData();
+		List<EmployeeDTO> employeeDTOs2 = employeeApplication.pagingQueryEmployeesByOrganization(new EmployeeDTO(), department, 0, 10).getData();
 		assertEquals(2, employeeDTOs2.size());
 		assertTrue(employeeDTOs2.contains(EmployeeDTO.generateDtoBy(employee1)));
 		assertTrue(employeeDTOs2.contains(EmployeeDTO.generateDtoBy(employee2)));
@@ -101,10 +101,10 @@ public class EmployeeApplicationImplIntegrationTest extends AbstractIntegrationT
 	
 	@Test
 	public void testPagingQueryEmployeesByOrganizationAndChildren() {
-		List<EmployeeDTO> employeeDTOs = employeeApplication.pagingQueryEmployeesByOrganizationAndChildren(new EmployeeDTO(), company1, 1, 1).getData();
+		List<EmployeeDTO> employeeDTOs = employeeApplication.pagingQueryEmployeesByOrganizationAndChildren(new EmployeeDTO(), company1, 0, 1).getData();
 		assertEquals(1, employeeDTOs.size());
 		
-		List<EmployeeDTO> employeeDTOs2 = employeeApplication.pagingQueryEmployeesByOrganizationAndChildren(new EmployeeDTO(), company1, 1, 10).getData();
+		List<EmployeeDTO> employeeDTOs2 = employeeApplication.pagingQueryEmployeesByOrganizationAndChildren(new EmployeeDTO(), company1, 0, 10).getData();
 		assertEquals(2, employeeDTOs2.size());
 		assertTrue(employeeDTOs2.contains(EmployeeDTO.generateDtoBy(employee1)));
 		assertTrue(employeeDTOs2.contains(EmployeeDTO.generateDtoBy(employee2)));
@@ -115,7 +115,7 @@ public class EmployeeApplicationImplIntegrationTest extends AbstractIntegrationT
 		Employee employee3 = organisationUtils.createEmployee("王五", "XXXXXX3", "EMP-XXX3", date);
 		Employee employee4 = organisationUtils.createEmployee("朱八", "XXXXXX4", "EMP-XXX4", date);
 		
-		List<EmployeeDTO> employeeDTOs = employeeApplication.pagingQueryEmployeesWhoNoPost(new EmployeeDTO(), 1, 10).getData();
+		List<EmployeeDTO> employeeDTOs = employeeApplication.pagingQueryEmployeesWhoNoPost(new EmployeeDTO(), 0, 10).getData();
 		assertTrue(employeeDTOs.contains(EmployeeDTO.generateDtoBy(employee3)));
 		assertTrue(employeeDTOs.contains(EmployeeDTO.generateDtoBy(employee4)));
 	}

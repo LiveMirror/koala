@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.opensymphony.xwork2.ActionSupport;
 import javax.inject.Inject;
-import com.dayatang.querychannel.support.Page;
+import org.dayatang.querychannel.Page;
 import ${applicationClass.packageName}${package.substring(${package.lastIndexOf(".")})}.${applicationClass.name};
 import ${dtoClass.packageName}.*;
 import ${actionClass.packageName}.BaseAction;
@@ -38,10 +38,10 @@ public class ${actionClass.name} extends BaseAction {
 	
 	public String pageJson() {
 		Page<${voType}> all = ${applicationName}.pageQuery${domainClass}(${voName}, page, pagesize);
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("Rows", all.getData());
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 	
@@ -88,10 +88,10 @@ public class ${actionClass.name} extends BaseAction {
 #if(${relationType} == "OneToMany" || ${relationType} == "ManyToMany")
 	public String find${relationName}By${domainClass}() {
 		Page<${entityName}DTO> all = ${applicationName}.find${relationName}By${domainClass}(${voName}.getId(), page, pagesize);
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("Rows", all.getData());
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}		
 #end

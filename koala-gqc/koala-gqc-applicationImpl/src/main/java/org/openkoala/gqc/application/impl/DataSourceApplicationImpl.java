@@ -273,7 +273,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 				conditionVals.add(MessageFormat.format("%{0}%", queryVo.getPassword()));
 			}
 
-			Page<DataSource> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage-1, pageSize).pagedList();
+			Page<DataSource> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
 			for (DataSource dataSource : pages.getData()) {
 				DataSourceVO dataSourceVO = new DataSourceVO();
 				// 将domain转成VO
@@ -287,7 +287,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 				result.add(dataSourceVO);
 			}
 			
-			return new Page<DataSourceVO>(pages.getPageIndex(), pages.getResultCount(),
+			return new Page<DataSourceVO>(pages.getStart(), pages.getResultCount(),
 					pages.getPageSize(), result);
 		} catch (Exception e) {
 			throw new RuntimeException("查询数据源列表失败！", e);

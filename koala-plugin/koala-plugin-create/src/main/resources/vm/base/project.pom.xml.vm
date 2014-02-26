@@ -20,7 +20,7 @@
 
     <properties>
         <!-- version config -->
-        <dddlib.version>4.0.4-SNAPSHOT</dddlib.version>
+        <dddlib.version>4.1.0</dddlib.version>
         <struts2.version>2.3.15.1</struts2.version>
         <spring.version>3.2.6.RELEASE</spring.version>
         <spring.security.version>3.2.0.RELEASE</spring.security.version>
@@ -228,13 +228,13 @@
             
             <dependency>
                 <groupId>org.dayatang.dddlib</groupId>
-                <artifactId>dddlib-spring</artifactId>
+                <artifactId>dddlib-ioc-spring</artifactId>
                 <version>${dddlib.version}</version>
             </dependency>
             
             <dependency>
                 <groupId>org.dayatang.dddlib</groupId>
-                <artifactId>dddlib-hibernate</artifactId>
+                <artifactId>dddlib-persistence-hibernate</artifactId>
                 <version>${dddlib.version}</version>
             </dependency>
             
@@ -265,7 +265,7 @@
             
             <dependency>
                 <groupId>org.dayatang.dddlib</groupId>
-                <artifactId>dddlib-dsrouter</artifactId>
+                <artifactId>dddlib-datasource-router</artifactId>
                 <version>${dddlib.version}</version>
             </dependency>
             
@@ -283,7 +283,7 @@
             
             <dependency>
                 <groupId>org.dayatang.dddlib</groupId>
-                <artifactId>dddlib-rule</artifactId>
+                <artifactId>dddlib-rule-engine</artifactId>
                 <version>${dddlib.version}</version>
             </dependency>
             
@@ -377,7 +377,7 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
+                <artifactId>spring-context-support</artifactId>
                 <version>${spring.version}</version>
             </dependency>
 
@@ -481,6 +481,12 @@
                 <artifactId>koala-commons-i18n</artifactId>
                 <version>${koala.version}</version>
             </dependency>
+            
+          <dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-dddlib-mybatis</artifactId>
+			<version>${koala.version}</version>
+		  </dependency>
 
             <dependency>
                 <groupId>commons-collections</groupId>

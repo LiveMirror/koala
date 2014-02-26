@@ -4,7 +4,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
-import org.openkoala.businesslog.BusinessLog;
 import org.openkoala.businesslog.dto.DefaultBusinessLogDTO;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
 import org.slf4j.Logger;
@@ -12,11 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.openkoala.businesslog.application.BusinessLogApplication;
-import org.openkoala.businesslog.model.AbstractBusinessLog;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
@@ -183,7 +180,7 @@ public class BusinessLogApplicationImpl implements BusinessLogApplication {
 
             result.add(defaultBusinessLogDTO);
         }
-        return new Page<DefaultBusinessLogDTO>(pages.getPageIndex(), pages.getResultCount(), pages.getPageSize(), result);
+        return new Page<DefaultBusinessLogDTO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
     }
 
 }

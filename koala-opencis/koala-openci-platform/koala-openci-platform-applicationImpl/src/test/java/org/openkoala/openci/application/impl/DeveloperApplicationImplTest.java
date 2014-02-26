@@ -49,7 +49,7 @@ public class DeveloperApplicationImplTest extends AbstractIntegrationTest {
 		developersInRepository.add(developer1);
 		developersInRepository.add(developer2);
 		
-		List<Developer> developersFromPagingQuery = developerApplication.pagingQeuryDevelopers(developer1, 1, 10).getData();
+		List<Developer> developersFromPagingQuery = developerApplication.pagingQeuryDevelopers(developer1, 0, 10).getData();
 		assertEquals(1, developersFromPagingQuery.size());
 //		assertEquals(developersInRepository, developersFromPagingQuery);
 	}

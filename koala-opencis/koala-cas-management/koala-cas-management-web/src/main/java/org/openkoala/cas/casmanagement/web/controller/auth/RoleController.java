@@ -138,7 +138,7 @@ public class RoleController {
 				userAccount, roleVO);
 
 		dataMap.put("Rows", all.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", all.getResultCount());
 

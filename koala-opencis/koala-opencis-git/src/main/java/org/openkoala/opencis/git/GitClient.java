@@ -64,10 +64,8 @@ public class GitClient {
             pushCommand.setCredentialsProvider(credentialsProvider).call();
 
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("git.pushRepositoryToRemote.IOException", e);
         } catch (GitAPIException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("git.pushRepositoryToRemote.GitAPIException", e);
         }
     }
@@ -166,13 +164,10 @@ public class GitClient {
             config.save();
 
         } catch (URISyntaxException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("git.pushRepositoryToRemote.URISyntaxException", e);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("git.pushRepositoryToRemote.IOException", e);
         } catch (GitAPIException e) {
-            e.printStackTrace();
             throw new CISClientBaseRuntimeException("git.pushRepositoryToRemote.GitAPIException", e);
         }
     }

@@ -67,6 +67,8 @@
     <scope>test</scope>
   </dependency>
        #end
+       
+   
  
   #if ($Module.moduleType == "applicationInterface")
   	     <dependency>
@@ -91,6 +93,9 @@
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-support</artifactId>
 		</dependency>
+		
+		
+		
   #end
        
  #if ($Module.moduleType == "applicationImpl")
@@ -103,17 +108,11 @@
     <scope>test</scope>
   </dependency>
 		
-		<dependency>
-         <groupId>org.openkoala.koalacommons</groupId>
-         <artifactId>koala-commons-ui-support</artifactId>
-       </dependency>
-		
 		<!-- 加入对查询通道的依赖 -->
 		<dependency>
 			<groupId>org.dayatang.dddlib</groupId>
 			<artifactId>dddlib-query-channel</artifactId>
 		</dependency>
-		
 		
 
 		<!-- 加入对dayatang的DB的支持 -->
@@ -155,6 +154,11 @@
 			<artifactId>commons-dbcp</artifactId>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-dddlib-mybatis</artifactId>
+		</dependency>
+		
 #end
 
 #if ($Module.moduleType == "war")
@@ -173,10 +177,10 @@
 			<artifactId>dddlib-ioc-spring</artifactId>
 		</dependency>
 		
-	   <dependency>
-         <groupId>org.openkoala.koalacommons</groupId>
-         <artifactId>koala-commons-ui-support</artifactId>
-       </dependency>
+		 <dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-dddlib-mybatis</artifactId>
+		  </dependency>
        
          <dependency>
 			<groupId>javax.servlet</groupId>

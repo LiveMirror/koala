@@ -43,7 +43,6 @@
             <artifactId>spring-tx</artifactId>
         </dependency>
 
-
         <!-- Test -->
         <dependency>
             <groupId>${db.groupId}</groupId>

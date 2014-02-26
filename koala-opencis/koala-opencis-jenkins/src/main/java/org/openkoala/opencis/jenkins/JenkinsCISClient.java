@@ -25,9 +25,6 @@ import java.util.List;
  */
 public class JenkinsCISClient implements CISClient {
 
-    private String jenkinsUrl;
-
-
     /**
      * 源码版本控制 svn or git
      */
@@ -36,7 +33,6 @@ public class JenkinsCISClient implements CISClient {
     private JenkinsClient client;
 
     public JenkinsCISClient(String jenkinsUrl, String username, String passwordOrAPIToken) {
-        this.jenkinsUrl = jenkinsUrl;
         JenkinsClientFactory factory = new JenkinsClientFactory(convert(jenkinsUrl), username, passwordOrAPIToken);
         client = factory.getJenkinsClient();
     }
@@ -59,7 +55,8 @@ public class JenkinsCISClient implements CISClient {
             return;
         }
 
-        client.createJob(project.getProjectName(), koalaScmConfig.getScmConfig(), new ArrayList<User>());
+        client.createJob(project.getProjectName(),
+                koalaScmConfig.getScmConfig(), new ArrayList<User>());
     }
 
     private boolean existProject(Project project) {
@@ -113,11 +110,6 @@ public class JenkinsCISClient implements CISClient {
     }
 
     @Override
-    public void createRoleIfNecessary(Project project, String roleName) {
-
-    }
-
-    @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {
         Job job;
         try {
@@ -142,8 +134,7 @@ public class JenkinsCISClient implements CISClient {
         try {
             return new URL(url);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-            throw new CISClientBaseRuntimeException("jenkins.URL.MalformedURLException");
+            throw new CISClientBaseRuntimeException("jenkins.URL.MalformedURLException", e);
         }
 
     }

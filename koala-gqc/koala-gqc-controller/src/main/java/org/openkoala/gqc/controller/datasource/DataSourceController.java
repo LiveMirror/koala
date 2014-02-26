@@ -95,7 +95,7 @@ public class DataSourceController{
 			Page<DataSourceVO> all = dataSourceApplication.pageQueryDataSource(new DataSourceVO(), page, pagesize);
 			
 	        dataMap.put("Rows", all.getData());
-	        dataMap.put("start", page * pagesize - pagesize);
+	        dataMap.put("start", all.getStart());
 	        dataMap.put("limit", pagesize);
 	        dataMap.put("Total", all.getResultCount());
 		} catch (Exception e) {

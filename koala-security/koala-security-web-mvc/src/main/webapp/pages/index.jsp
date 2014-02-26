@@ -63,7 +63,7 @@
 	<script type="text/javascript" src="<c:url value='/lib/jquery-1.8.3.min.js' />"></script>
 	<script type="text/javascript" src="<c:url value='/lib/respond.min.js' />"></script>
 	<script type="text/javascript" src="<c:url value='/lib/bootstrap/js/bootstrap.min.js' />"></script>
-	<script type="text/javascript" src="<c:url value='/lib/koala-ui.plugin.js' />?time=<%=time%>" ></script>	
+	<script type="text/javascript" src="<c:url value='/lib/koala-ui.plugin.js' />?time=<%=time%>" ></script>
 	<script type="text/javascript" src="<c:url value='/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' />"></script>
 	<script type="text/javascript" src="<c:url value='/lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js' />"></script>
 	<script type="text/javascript" src="<c:url value='/lib/koala-tree.js'/>"></script>
@@ -78,7 +78,7 @@
                     var dialog = $('<div class="modal fade"><div class="modal-dialog" style="padding-top:10%;width:400px;"><div class="modal-content">' +
                     ' <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">' +
                     '&times;</button><h4 class="modal-title">菜单初始化</h4></div><div class="modal-body">' +
-                    '<p>是否进行菜单初始化？</p></div><div class="modal-footer"><button type="button" class="btn btn-default"' +
+                    '<h5>是否进行菜单初始化？</h5></div><div class="modal-footer"><button type="button" class="btn btn-default"' +
                     ' data-dismiss="modal">取消</button><button id="confirm" type="button" class="btn btn-primary">确定</button></div>' +
                     '</div></div></div>');
                     dialog.modal({

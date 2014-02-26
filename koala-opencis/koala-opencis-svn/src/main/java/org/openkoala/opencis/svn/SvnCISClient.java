@@ -175,9 +175,6 @@ public class SvnCISClient implements CISClient {
     }
 
 
-    public void createRoleIfNecessary(Project project, String roleName) {
-        //svn创建角色和角色授权是一起执行的，即在角色授权时同时创建角色，因此这里不单独实现创建角色
-    }
 
     public boolean assignUserToRole(Project project, String userName, String role) {
         //使用assignUsersToRole方法来实现

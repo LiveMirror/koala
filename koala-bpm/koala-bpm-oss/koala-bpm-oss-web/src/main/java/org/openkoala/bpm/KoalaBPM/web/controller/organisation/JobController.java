@@ -46,7 +46,7 @@ public class JobController extends BaseController {
 		Page<Job> jobs = jobApplication.pagingQueryJobs(job, page, pagesize);
 		
 		dataMap.put("Rows", jobs.getData());
-		dataMap.put("start", page * pagesize - pagesize);
+		dataMap.put("start", jobs.getStart());
 		dataMap.put("limit", pagesize);
 		dataMap.put("Total", jobs.getResultCount());
 		return dataMap;

@@ -70,7 +70,6 @@ public class AdapterClient {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw e;
 		} finally {
 			if(session!=null){

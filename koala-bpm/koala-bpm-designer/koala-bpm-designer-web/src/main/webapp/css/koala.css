@@ -1,6 +1,13 @@
 /*
  * 表格组件样式
  */
+.dropdown-menu>li>a:hover, 
+.dropdown-menu>li>a:focus {
+	color: #fff;
+	text-decoration: none;
+	background-color: #428bca;
+}
+
 .grid {
 	border-collapse: separate;
 }
@@ -70,14 +77,12 @@
 }
 .grid-table-head table th {
 	position: relative;
-	background-color: #efefef;
 	background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(#fdfdfd), to(#eaeaea));
 	background-image: -webkit-linear-gradient(top, #fdfdfd 0%, #eaeaea 100%);
 	background-image: -moz-linear-gradient(top, #fdfdfd 0%, #eaeaea 100%);
 	background-image: -ms-linear-gradient(top, #fdfdfd 0%, #eaeaea 100%);
 	background-image: -o-linear-gradient(top, #fdfdfd 0%, #eaeaea 100%);
 	background-image: linear-gradient(top, #fdfdfd 0%, #eaeaea 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdfd', endColorstr='#eaeaea',GradientType=0 );
 }
 .grid-table-head table th .colResize {
 	float: right;
@@ -108,7 +113,7 @@
 .grid-table-head  .sort span {
 	float: right;
 	position: relative;
-	top: 4px;
+	top: 1px;
 }
 .grid-table-head  th[class*="sorting-"] {
 	color: #269abc;

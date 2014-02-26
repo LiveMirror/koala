@@ -42,10 +42,4 @@ public class SvnConfiguration extends ToolConfiguration {
 		this.requestRootAddress = requestRootAddress;
 	}
 
-	@Override
-	public String[] businessKeys() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

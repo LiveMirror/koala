@@ -1,5 +1,6 @@
 package org.openkoala.openci.core;
 
+import java.lang.String;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -98,31 +99,13 @@ public class ToolInterfaceImplement extends AbstractEntity {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (!(other instanceof ToolInterfaceImplement)) {
-			return false;
-		}
-		ToolInterfaceImplement that = (ToolInterfaceImplement) other;
-		return new EqualsBuilder().append(getToolInterface(), that.getToolInterface()).append(getExecuteDate(), that.getExecuteDate()).isEquals();
-	}
-
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(getToolInterface()).append(getExecuteDate()).hashCode();
-	}
-
-	@Override
 	public String toString() {
 		return getToolInterface().toString();
 	}
 
 	@Override
 	public String[] businessKeys() {
-		// TODO Auto-generated method stub
-		return null;
+		return new String[] {"toolInterface", "executeDate"};
 	}
 
 }

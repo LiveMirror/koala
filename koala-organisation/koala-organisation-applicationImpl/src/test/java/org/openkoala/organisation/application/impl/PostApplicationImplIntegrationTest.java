@@ -51,10 +51,10 @@ public class PostApplicationImplIntegrationTest extends AbstractIntegrationTest 
 
 	@Test
 	public void testPagingQueryPosts() {
-		List<PostDTO> postDTOs = postApplication.pagingQueryPosts(new PostDTO(), 1, 1).getData();
+		List<PostDTO> postDTOs = postApplication.pagingQueryPosts(new PostDTO(), 0, 1).getData();
 		assertEquals(1, postDTOs.size());
 		
-		List<PostDTO> postDTOs2 = postApplication.pagingQueryPosts(new PostDTO(), 1, 10).getData();
+		List<PostDTO> postDTOs2 = postApplication.pagingQueryPosts(new PostDTO(), 0, 10).getData();
 		assertTrue(postDTOs2.contains(PostDTO.generateDtoBy(post1)));
 		assertTrue(postDTOs2.contains(PostDTO.generateDtoBy(post2)));
 	}
@@ -64,10 +64,10 @@ public class PostApplicationImplIntegrationTest extends AbstractIntegrationTest 
 		Job job3 = organisationUtils.createJob("出纳", "JOB-XXX3", date);
 		Post post3 = organisationUtils.createPost("出纳", "POST-XXX3", job3, department, date);
 		
-		List<PostDTO> postDTOs = postApplication.pagingQueryPostsOfOrganizatoin(department, new PostDTO(), 1, 1).getData();
+		List<PostDTO> postDTOs = postApplication.pagingQueryPostsOfOrganizatoin(department, new PostDTO(), 0, 1).getData();
 		assertEquals(1, postDTOs.size());
 		
-		List<PostDTO> postDTOs2 = postApplication.pagingQueryPostsOfOrganizatoin(department, new PostDTO(), 1, 10).getData();
+		List<PostDTO> postDTOs2 = postApplication.pagingQueryPostsOfOrganizatoin(department, new PostDTO(), 0, 10).getData();
 		assertEquals(2, postDTOs2.size());
 		assertTrue(postDTOs2.contains(PostDTO.generateDtoBy(post1)));
 		assertTrue(postDTOs2.contains(PostDTO.generateDtoBy(post3)));

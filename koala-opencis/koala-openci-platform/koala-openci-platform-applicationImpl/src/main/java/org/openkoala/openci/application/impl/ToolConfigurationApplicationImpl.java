@@ -70,7 +70,7 @@ public class ToolConfigurationApplicationImpl implements ToolConfigurationApplic
 				return true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+
 		}
 		return false;
 	}
@@ -92,32 +92,32 @@ public class ToolConfigurationApplicationImpl implements ToolConfigurationApplic
 
 	public Page<JenkinsConfiguration> pagingQeuryJenkinsConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from JenkinsConfiguration _toolconfiguration");
-		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage, pagesize).pagedList();
 	}
 
 	public Page<SvnConfiguration> pagingQeurySvnConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from SvnConfiguration _toolconfiguration");
-		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage, pagesize).pagedList();
 	}
 
 	public Page<GitConfiguration> pagingQeuryGitConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from GitConfiguration _toolconfiguration");
-		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage, pagesize).pagedList();
 		}
 
 	public Page<SonarConfiguration> pagingQeurySonarConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from SonarConfiguration _toolconfiguration");
-		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage, pagesize).pagedList();
 	}
 
 	public Page<JiraConfiguration> pagingQeuryJiraConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from JiraConfiguration _toolconfiguration");
-		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage, pagesize).pagedList();
 	}
 
 	public Page<TracConfiguration> pagingQeuryTracConfigurations(int currentPage, int pagesize) {
 		StringBuilder jpql = new StringBuilder("select _toolconfiguration from TracConfiguration _toolconfiguration");
-		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage-1, pagesize).pagedList();
+		return queryChannel.createJpqlQuery(jpql.toString()).setPage(currentPage, pagesize).pagedList();
 	}
 
 	public CasUserConfiguration getUniqueInstance() {
