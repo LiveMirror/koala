@@ -50,7 +50,7 @@ $(function() {
 			$('.query-body').css('width', '83%');
 			previewQuery.find('.column-name, .query-condition').css('width', '10%').end().find('.query-value').css('width', '80%');
 		}
-		$('.buttons').css('top', previewQuery.height() - 36);
+		$('.buttons').css('top', previewQuery.height() - 32);
 		previewQuery.find('[data-role="time"],[data-role="startTime"],[data-role="endTime"]').datetimepicker({
 			language : 'zh-CN',
 			format : "yyyy-mm-dd",
@@ -62,6 +62,10 @@ $(function() {
 		if(visiblePreQueryConditions.length == 0 && dynamicQueryConditions.length == 0){
 			$('.query').hide();
 			$('#previewGrid').css('margin-top', '10px');
+		}else if(dynamicQueryConditions.length == 0){
+			$('.query').find('.buttons').hide();
+		}else{
+			$('.query').find('.buttons').show();
 		}
 
 		var fieldDetails = data.fieldDetails;
