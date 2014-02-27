@@ -2,9 +2,8 @@ package org.openkoala.bpm.designer.core;
 
 import javax.persistence.Entity;
 
-import org.dayatang.domain.AbstractEntity;
 @Entity
-public class PublishURL extends AbstractEntity{
+public class PublishURL extends DesignerBaseEntity{
 	
 	private static final long serialVersionUID = 6483009062981646867L;
 
@@ -64,9 +63,5 @@ public class PublishURL extends AbstractEntity{
 		return "PublishURL [name=" + name + ", url=" + url + "]";
 	}
 
-	@Override
-	public String[] businessKeys() {
-		return new String[]{};
-	}
 	
 }

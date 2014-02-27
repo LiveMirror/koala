@@ -24,7 +24,7 @@ public class BpmDesignerApplicationImpl implements BpmDesignerApplication {
 	
 	public static QueryChannelService queryChannel() {
 		if (queryChannel == null) {
-			queryChannel = InstanceFactory.getInstance(QueryChannelService.class);
+			queryChannel = InstanceFactory.getInstance(QueryChannelService.class,"queryChannel");
 		}
 		return queryChannel;
 	}
