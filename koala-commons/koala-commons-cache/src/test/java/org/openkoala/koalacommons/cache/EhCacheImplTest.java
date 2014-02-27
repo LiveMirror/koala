@@ -80,8 +80,8 @@ public class EhCacheImplTest {
 	public void testIsKeyInCache(){
 		Cache cache = new EhCacheImpl("sampleCache");
 		cache.put("KEY1", "ABC");
-		Assert.isTrue(cache.containsKey("KEY1"));
+		Assert.isTrue(cache.isKeyInCache("KEY1"));
 		cache.remove("KEY1");
-		Assert.isTrue(!cache.containsKey("KEY1"));
+		Assert.isTrue(!cache.isKeyInCache("KEY1"));
 	}
 }
