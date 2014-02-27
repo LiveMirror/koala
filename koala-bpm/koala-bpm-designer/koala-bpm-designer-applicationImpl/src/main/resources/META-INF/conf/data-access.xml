@@ -12,7 +12,8 @@
 
 	<!-- Instructs Spring to perfrom declarative transaction managemenet on 
 		annotated classes -->
-	<tx:annotation-driven />
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<!-- Drives transactions using local JPA APIs -->
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -43,8 +44,12 @@
 	</bean>
 
 
-	<bean id="repository" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
-		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory" />
+	<bean id="repository" class="org.openkoala.bpm.designer.impl.KoalaEntityRepositoryJpa">
+		<property name="entityManager">
+			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+				<property name="persistenceUnitName" value="default" />
+			</bean>
+		</property>
 	</bean>
 
 	<bean id="queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">

@@ -38,6 +38,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
+import bitronix.tm.TransactionManagerServices;
+
 public class KoalaBPMSession {
 
 	private static final Logger logger = LoggerFactory
@@ -101,6 +103,7 @@ public class KoalaBPMSession {
 
 		Environment env = KnowledgeBaseFactory.newEnvironment();
 		env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, entityManagerFactory);
+		env.set(EnvironmentName.TRANSACTION_MANAGER,TransactionManagerServices.getTransactionManager());
 		Properties properties = new Properties();
 		KnowledgeSessionConfiguration config = KnowledgeBaseFactory
 				.newKnowledgeSessionConfiguration(properties);

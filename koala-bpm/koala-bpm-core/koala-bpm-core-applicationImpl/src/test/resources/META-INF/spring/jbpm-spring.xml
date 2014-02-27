@@ -40,7 +40,7 @@
 	<bean id="koalaBPMSession" class="org.openkoala.bpm.impl.util.KoalaBPMSession"
 		init-method="initialize" />
 		
-	<bean id="repository" class="org.openkoala.bpm.impl.util.KoalaEntityRepositoryJpa">
+	<bean id="repository" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
 		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
 	</bean>
 
