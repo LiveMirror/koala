@@ -3,8 +3,10 @@ package org.openkoala.koalacommons.mybatis.repository;
 import java.util.List;
 import java.util.Map;
 
-import org.dayatang.domain.ArrayParameters;
-import org.dayatang.domain.MapParameters;
+import org.dayatang.domain.PositionalParameters;
+import org.dayatang.domain.NamedParameters;
+import org.dayatang.domain.NamedParameters;
+import org.dayatang.domain.PositionalParameters;
 import org.dayatang.domain.QueryParameters;
 import org.dayatang.utils.Assert;
 import org.openkoala.koalacommons.mybatis.MybatisEntityRepository;
@@ -13,8 +15,8 @@ public abstract class MybatisBaseQuery<E extends MybatisBaseQuery> {
 
 	private final MybatisEntityRepository repository;
 	private final Class<? extends Object> entityClass;
-	private QueryParameters parameters = ArrayParameters.create();
-	private final MapParameters mapParameters = MapParameters.create();
+	private QueryParameters parameters = PositionalParameters.create();
+	private final NamedParameters mapParameters = NamedParameters.create();
 	private int firstResult;
 	private int maxResults;
 
@@ -48,7 +50,7 @@ public abstract class MybatisBaseQuery<E extends MybatisBaseQuery> {
 	 * @return 该对象本身
 	 */
 	public E setParameters(Object... parameters) {
-		this.parameters = ArrayParameters.create(parameters);
+		this.parameters = PositionalParameters.create(parameters);
 		return (E) this;
 	}
 
@@ -60,7 +62,7 @@ public abstract class MybatisBaseQuery<E extends MybatisBaseQuery> {
 	 * @return 该对象本身
 	 */
 	public E setParameters(List<Object> parameters) {
-		this.parameters = ArrayParameters.create(parameters);
+		this.parameters = PositionalParameters.create(parameters);
 		return (E) this;
 	}
 
@@ -72,7 +74,7 @@ public abstract class MybatisBaseQuery<E extends MybatisBaseQuery> {
 	 * @return 该对象本身
 	 */
 	public E setParameters(Map<String, Object> parameters) {
-		this.parameters = MapParameters.create(parameters);
+		this.parameters = NamedParameters.create(parameters);
 		return (E) this;
 	}
 
