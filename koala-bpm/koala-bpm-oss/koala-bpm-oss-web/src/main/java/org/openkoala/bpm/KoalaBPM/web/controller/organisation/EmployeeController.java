@@ -29,38 +29,36 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 员工管理controller
+ * 
  * @author xmfang
- *
+ * 
  */
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController extends BaseController {
-	
+
 	@Inject
 	private EmployeeApplication employeeApplication;
-	
+
 	/**
 	 * 分页查询员工
+	 * 
 	 * @param page
 	 * @param pagesize
 	 * @param example
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/pagingquery")
-	public Map<String, Object> pagingQuery(int page, int pagesize, EmployeeDTO example) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	@RequestMapping("/pagingquery")
+	public Page pagingQuery(int page, int pagesize, EmployeeDTO example) {
 		Page<EmployeeDTO> employees = employeeApplication.pagingQueryEmployees(example, page, pagesize);
-		
-		dataMap.put("Rows", employees.getData());
-		dataMap.put("start", employees.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", employees.getResultCount());
-		return dataMap;
+
+		return employees;
 	}
-	
+
 	/**
 	 * 分页查询某个机构下的员工
+	 * 
 	 * @param page
 	 * @param pagesize
 	 * @param example
@@ -68,10 +66,10 @@ public class EmployeeController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/pagingquery-by-org")
-	public Map<String, Object> pagingQueryByOrganization(int page, int pagesize, EmployeeDTO example, Long organizationId, boolean queryAllChildren) {
+	@RequestMapping("/pagingquery-by-org")
+	public Page pagingQueryByOrganization(int page, int pagesize, EmployeeDTO example, Long organizationId, boolean queryAllChildren) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		
+
 		Page<EmployeeDTO> employees = null;
 		if (organizationId == 0) {
 			employees = employeeApplication.pagingQueryEmployeesWhoNoPost(example, page, pagesize);
@@ -83,23 +81,20 @@ public class EmployeeController extends BaseController {
 				employees = employeeApplication.pagingQueryEmployeesByOrganization(example, organization, page, pagesize);
 			}
 		}
-		
-		dataMap.put("Rows", employees.getData());
-		dataMap.put("start", employees.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", employees.getResultCount());
-		return dataMap;
+
+		return employees;
 	}
 
 	/**
 	 * 创建一个员工
+	 * 
 	 * @param employee
 	 * @param jobId
 	 * @param organizationId
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/create")
+	@RequestMapping("/create")
 	public Map<String, Object> createEmployee(Employee employee, Long postId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -107,7 +102,7 @@ public class EmployeeController extends BaseController {
 			if (postId != null) {
 				post = getBaseApplication().getEntity(Post.class, postId);
 			}
-			
+
 			employeeApplication.createEmployeeWithPost(employee, post);
 			dataMap.put("result", "success");
 		} catch (SnIsExistException exception) {
@@ -123,11 +118,12 @@ public class EmployeeController extends BaseController {
 
 	/**
 	 * 更新某个员工的信息
+	 * 
 	 * @param employee
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping("/update")
+	@RequestMapping("/update")
 	public Map<String, Object> updateEmployee(Employee employee) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -146,12 +142,13 @@ public class EmployeeController extends BaseController {
 
 	/**
 	 * 调整某个员工的任职信息
+	 * 
 	 * @param employeeId
 	 * @param responsibleJobHoldings
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping(value = "/transform-post", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/transform-post", method = RequestMethod.POST, consumes = "application/json")
 	public Map<String, Object> transformPost(Long employeeId, @RequestBody ResponsiblePostDTO[] responsibleJobHoldings) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
@@ -173,82 +170,87 @@ public class EmployeeController extends BaseController {
 
 	/**
 	 * 根据ID号获得员工
+	 * 
 	 * @param id
 	 * @return
 	 */
-    @ResponseBody
-    @RequestMapping("/get/{id}")
-	public Map<String,Object> get(@PathVariable("id") Long id) {
+	@ResponseBody
+	@RequestMapping("/get/{id}")
+	public Map<String, Object> get(@PathVariable("id") Long id) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
 			dataMap.put("data", employeeApplication.getEmployeeById(id));
 		} catch (Exception e) {
-            dataMap.put("error", "查询指定职务失败！");
-        	e.printStackTrace();
+			dataMap.put("error", "查询指定职务失败！");
+			e.printStackTrace();
 		}
 		return dataMap;
 	}
 
-    /**
-     * 获取性别列表
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/genders")
-	public Map<String,Object> getGendens() {
+	/**
+	 * 获取性别列表
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/genders")
+	public Map<String, Object> getGendens() {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Map<String, String> genders = new HashMap<String, String>();
-		
+
 		for (Gender gender : Gender.values()) {
 			genders.put(gender.name(), gender.getLabel());
 		}
-		
+
 		dataMap.put("data", genders);
 		return dataMap;
 	}
 
-    /**
-     * 获得某个员工的任职信息
-     * @param employeeId
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/get-posts-by-employee")
-	public Map<String,Object> getPostsByEmployee(Long employeeId) {
+	/**
+	 * 获得某个员工的任职信息
+	 * 
+	 * @param employeeId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/get-posts-by-employee")
+	public Map<String, Object> getPostsByEmployee(Long employeeId) {
 		Employee employee = getBaseApplication().getEntity(Employee.class, employeeId);
-		
+
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("data", employeeApplication.getPostsByEmployee(employee));
 		return dataMap;
 	}
-    
-    /**
-     * 解雇某名员工
-     * @param employeeDTO
-     * @return
-     */
+
+	/**
+	 * 解雇某名员工
+	 * 
+	 * @param employeeDTO
+	 * @return
+	 */
 	@ResponseBody
-    @RequestMapping("/terminate")
+	@RequestMapping("/terminate")
 	public Map<String, Object> terminateEmployee(EmployeeDTO employeeDTO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		getBaseApplication().terminateParty(employeeDTO.transFormToEmployee());
 		dataMap.put("result", "success");
 		return dataMap;
 	}
-	
+
 	/**
 	 * 同时解雇多名员工
+	 * 
 	 * @param employeeDtos
 	 * @return
 	 */
 	@ResponseBody
-    @RequestMapping(value = "/terminate-employees", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/terminate-employees", method = RequestMethod.POST, consumes = "application/json")
 	public Map<String, Object> terminateEmployees(@RequestBody EmployeeDTO[] employeeDtos) {
 		Set<Employee> employees = new HashSet<Employee>();
 		for (EmployeeDTO employeeDTO : employeeDtos) {
 			employees.add(employeeDTO.transFormToEmployee());
 		}
-		
+
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		getBaseApplication().terminateParties(employees);
 		dataMap.put("result", "success");
