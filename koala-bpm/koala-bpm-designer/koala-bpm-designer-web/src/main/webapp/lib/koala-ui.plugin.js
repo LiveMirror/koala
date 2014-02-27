@@ -304,10 +304,10 @@
 					}
 					self.startRecord.text(result.start + 1);
 					self.endRecord.text(result.start + result.pageSize);
-					self.totalRecordHtml.text(result.pageCount);
+					self.totalRecordHtml.text(result.resultCount);
 					//self._initPageNo(result.Total)
 					self.items = result.data;
-					self.totalRecord = result.pageCount;
+					self.totalRecord = result.resultCount;
 					if(result.data.length == 0){
 						self.pages.hide();
 						self.gridTableBodyTable.empty();
@@ -419,8 +419,8 @@
 			self.renderRows();
 			self.initSelectRowEvent();
 			self.options.isShowPages && self._initPageNo();
-			self.$element.trigger('complate');
 			self.$element.find('[data-role="selectAll"]').removeClass('checked');
+			self.$element.trigger('complate');
 		},
         initSelectRowEvent: function(){
             var self = this;
