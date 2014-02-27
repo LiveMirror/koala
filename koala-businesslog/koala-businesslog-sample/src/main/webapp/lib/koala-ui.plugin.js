@@ -141,11 +141,17 @@
 				var $this = $(this);
 				if($this.hasClass('checked')){
 					self.gridTableBodyTable.find('[data-role="indexCheckbox"]').each(function(){
-						$(this).removeClass('checked').closest('tr').removeClass('success');
+						if($(this).hasClass('checked')){
+							$(this).removeClass('checked').closest('tr').removeClass('success')                
+							self.$element.trigger('selectedRow', {checked: false, item:self.items[$(this).attr('indexValue')]});;
+						}
 					});
 				}else{
 					self.gridTableBodyTable.find('[data-role="indexCheckbox"]').each(function(){
-						$(this).addClass('checked').closest('tr').addClass('success');						
+						if(!$(this).hasClass('checked')){
+							$(this).addClass('checked').closest('tr').addClass('success');	
+							self.$element.trigger('selectedRow', {checked: true, item:self.items[$(this).attr('indexValue')]});;
+						}
 					});
 				}
 				$this.toggleClass('checked');
