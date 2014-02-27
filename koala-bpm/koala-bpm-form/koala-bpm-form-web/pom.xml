@@ -44,10 +44,6 @@
 		</dependency>
 		<!-- 加入对dayatang的spring的实现 -->
 		<dependency>
-			<groupId>com.dayatang.commons</groupId>
-			<artifactId>dayatang-commons-spring</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-ui-surpport</artifactId>
 			<version>${project.parent.version}</version>
