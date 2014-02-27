@@ -71,12 +71,12 @@ public class KoalaMybatisEntityRepositoryImpl implements MybatisEntityRepository
 		return get(clazz, id);
 	}
 
-	public <T extends Entity> T getByBusinessKeys(Class<T> clazz,
-			MapParameters keyValues) {
-		return null;
-	}
+    @Override
+    public <T extends Entity> T getByBusinessKeys(Class<T> clazz, MapParameters keyValues) {
+        return null;
+    }
 
-	public <T extends Entity> List<T> findAll(Class<T> clazz) {
+    public <T extends Entity> List<T> findAll(Class<T> clazz) {
 		SqlSession session = sqlSessionFactory.openSession();
 		List<T> lists = null;
 		try {

@@ -141,11 +141,17 @@
 				var $this = $(this);
 				if($this.hasClass('checked')){
 					self.gridTableBodyTable.find('[data-role="indexCheckbox"]').each(function(){
-						$(this).removeClass('checked').closest('tr').removeClass('success');
+						if($(this).hasClass('checked')){
+							$(this).removeClass('checked').closest('tr').removeClass('success')                
+							self.$element.trigger('selectedRow', {checked: false, item:self.items[$(this).attr('indexValue')]});;
+						}
 					});
 				}else{
 					self.gridTableBodyTable.find('[data-role="indexCheckbox"]').each(function(){
-						$(this).addClass('checked').closest('tr').addClass('success');						
+						if(!$(this).hasClass('checked')){
+							$(this).addClass('checked').closest('tr').addClass('success');	
+							self.$element.trigger('selectedRow', {checked: true, item:self.items[$(this).attr('indexValue')]});;
+						}
 					});
 				}
 				$this.toggleClass('checked');
@@ -289,7 +295,7 @@
 				data: params,
 				dataType: 'json'
 			}).done(function(result){
-					if(!result.Rows){
+					if(!result.data){
 						self.$element.message({
 							type: 'error',
 							content: '查询失败'
@@ -297,12 +303,12 @@
 						return;
 					}
 					self.startRecord.text(result.start + 1);
-					self.endRecord.text(result.start + result.limit);
-					self.totalRecordHtml.text(result.Total);
+					self.endRecord.text(result.start + result.pageSize);
+					self.totalRecordHtml.text(result.resultCount);
 					//self._initPageNo(result.Total)
-					self.items = result.Rows;
-					self.totalRecord = result.Total;
-					if(result.Rows.length == 0){
+					self.items = result.data;
+					self.totalRecord = result.resultCount;
+					if(result.data.length == 0){
 						self.pages.hide();
 						self.gridTableBodyTable.empty();
 						self.gridTableBody.find('[data-role="noData"]').remove();
@@ -314,7 +320,11 @@
 					}
 					self.$element.trigger('complateRenderData', result);
 				}).fail(function(result){
-
+						self.$element.message({
+							type: 'error',
+							content: '查询失败'
+						});
+						return;
 				});
 		},
 		/**
@@ -409,8 +419,8 @@
 			self.renderRows();
 			self.initSelectRowEvent();
 			self.options.isShowPages && self._initPageNo();
-			self.$element.trigger('complate');
 			self.$element.find('[data-role="selectAll"]').removeClass('checked');
+			self.$element.trigger('complate');
 		},
         initSelectRowEvent: function(){
             var self = this;
@@ -460,7 +470,7 @@
 			for(var i= 0,j=items.length; i<j; i++){
 				var item = items[i];
 				
-                self.itemsMap[item.id] = item;
+                self.itemsMap[item[self.options.identity]] = item;
 				var trHtml = new Array();
 				if(self.options.tree && self.options.tree.column){
 					trHtml.push('<tr data-level='+item.level+' data-children='+self.getChildrenCount(0, item.children)+'>');
@@ -611,12 +621,14 @@
 			return this.$element;
 		 },
          removeRows: function(indexs){
-             var self = this
+           var self = this
              $.each(indexs, function(){
-                  var index = self.getIndexByIdentityValue(this);
-                  self.items.splice(index, 1);
                   delete self.itemsMap[this];
              });
+             self.items = [];
+             for(var prop in self.itemsMap){
+             	self.items.push(self.itemsMap[prop]);
+             }
              self.gridTableBodyTable.empty();
              self.renderDatas();
          },

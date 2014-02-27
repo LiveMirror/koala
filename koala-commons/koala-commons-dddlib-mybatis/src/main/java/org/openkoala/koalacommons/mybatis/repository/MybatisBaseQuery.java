@@ -48,7 +48,7 @@ public abstract class MybatisBaseQuery<E extends MybatisBaseQuery> {
 	 * @return 该对象本身
 	 */
 	public E setParameters(Object... parameters) {
-		this.parameters = ArrayParameters.create(parameters);
+		this.parameters =ArrayParameters.create(parameters);
 		return (E) this;
 	}
 

@@ -51,6 +51,16 @@ public class RoleAction extends ActionSupport {
 
 	private String roleNameForSearch;
 
+	private Page pageResult;
+
+	public Page getPageResult() {
+		return pageResult;
+	}
+
+	public void setPageResult(Page pageResult) {
+		this.pageResult = pageResult;
+	}
+
 	public RoleApplication getRoleApplication() {
 		return roleApplication;
 	}
@@ -161,7 +171,6 @@ public class RoleAction extends ActionSupport {
 	}
 
 	public String queryUrlResourceByRole() {
-
 		dataMap.clear();
 		List<ResourceVO> all = roleApplication.findResourceByRole(roleVO);
 		dataMap.put("data", all);
@@ -193,18 +202,13 @@ public class RoleAction extends ActionSupport {
 	public String pageJson() {
 		int start = Integer.parseInt(page);
 		int limit = Integer.parseInt(pagesize);
-		Page<RoleVO> all = null;
 		if (userAccount == null || userAccount.isEmpty()) {
-			all = roleApplication.pageQueryRole(start, limit);
+			pageResult = roleApplication.pageQueryRole(start, limit);
 		} else {
-			all = new Page<RoleVO>(start, limit, limit, roleApplication.findRoleByUserAccount(userAccount));
+			pageResult = new Page<RoleVO>(start, limit, limit, roleApplication.findRoleByUserAccount(userAccount));
 		}
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
 
-		return "JSON";
+		return "PageJSON";
 	}
 
 	public String query() {
@@ -212,12 +216,8 @@ public class RoleAction extends ActionSupport {
 		int limit = Integer.parseInt(pagesize);
 		initSearchCondition();
 
-		Page<RoleVO> all = roleApplication.pageQueryByRoleCustom(start, limit, search);
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
-		return "JSON";
+		pageResult = roleApplication.pageQueryByRoleCustom(start, limit, search);
+		return "PageJSON";
 	}
 
 	public String queryRolesForAssign() {
@@ -226,26 +226,22 @@ public class RoleAction extends ActionSupport {
 
 		initSearchCondition();
 
-		Page<RoleVO> all = roleApplication.pageQueryByRoleCustom(start, limit, search);
+		pageResult = roleApplication.pageQueryByRoleCustom(start, limit, search);
 
 		if (userId != null) {
-			List<RoleVO> roles = all.getData();
+			List<RoleVO> roles = pageResult.getData();
 			for (RoleVO role : roleApplication.findRoleByUserAccount(userAccount)) {
 				roles.remove(role);
 			}
 		}
 
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
 		this.page = "";
 		this.pagesize = "";
 
 		this.page = "";
 		this.pagesize = "";
 
-		return "JSON";
+		return "PageJSON";
 	}
 
 	private void initSearchCondition() {
@@ -271,14 +267,9 @@ public class RoleAction extends ActionSupport {
 
 		UserVO userVoForFind = new UserVO();
 		userVoForFind.setId(userId);
-		Page<RoleVO> all = userApplication.pageQueryNotAssignRoleByUser(start, limit, userVoForFind);
+		pageResult = userApplication.pageQueryNotAssignRoleByUser(start, limit, userVoForFind);
 
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
-
-		return "JSON";
+		return "PageJSON";
 	}
 
 	public String add() {

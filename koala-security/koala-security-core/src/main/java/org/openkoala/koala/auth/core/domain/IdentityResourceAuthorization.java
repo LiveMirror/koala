@@ -74,6 +74,16 @@ public class IdentityResourceAuthorization extends Accountability {
 		return  getRepository().createNamedQuery("findAuthorizationByRole").addParameter("roleId", roleId).addParameter("abolishDate",new Date()).list();
 		
 	}
+	
+	/**
+	 * 根据角色ID获取角色的授权信息
+	 * @param roleId
+	 * @return
+	 */
+	public static List<String> findAuthorizationByResourceIdentifier(String identifier) {
+		return  getRepository().createNamedQuery("findAuthorizationByResourceIdentifier").addParameter("identifier", identifier).addParameter("abolishDate",new Date()).list();
+		
+	}
 
 	@Override
 	public String[] businessKeys() {

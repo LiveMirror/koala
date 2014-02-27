@@ -30,7 +30,7 @@ public class MenuAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	@Inject
 	private MenuApplication menuApplication;
-	
+
 	@Inject
 	private ResourceTypeApplication resourceTypeApplication;
 
@@ -42,6 +42,16 @@ public class MenuAction extends ActionSupport {
 	private ResourceVO resVO;
 	private RoleVO roleVO;
 	private ResourceVO parent;
+
+	private Page pageResult;
+
+	public Page getPageResult() {
+		return pageResult;
+	}
+
+	public void setPageResult(Page pageResult) {
+		this.pageResult = pageResult;
+	}
 
 	public RoleVO getRoleVO() {
 		return roleVO;
@@ -217,8 +227,7 @@ public class MenuAction extends ActionSupport {
 	 */
 	public String findChildSubMenuByParent() {
 		List<ResourceVO> all = null;
-		CustomUserDetails current = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
+		CustomUserDetails current = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (current.isSuper()) {
 			all = this.menuApplication.findChildByParentAndUser(this.resVO, "");
 		} else {
@@ -250,15 +259,11 @@ public class MenuAction extends ActionSupport {
 	public String pageJson() {
 		int start = Integer.parseInt(this.page);
 		int limit = Integer.parseInt(this.pagesize);
-		Page<ResourceVO> all = this.menuApplication.pageQueryMenu(start, limit);
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
-		return "JSON";
+		pageResult = this.menuApplication.pageQueryMenu(start, limit);
+		return "PageJSON";
 
 	}
-	
+
 	public String findMenuType() {
 		dataMap.put("data", resourceTypeApplication.findMenuType());
 		return "JSON";

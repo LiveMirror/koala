@@ -1,4 +1,3 @@
-
 package org.openkoala.bpm.action.core;
 
 import java.util.HashMap;
@@ -14,61 +13,67 @@ import org.openkoala.bpm.application.JoinAssignApplication;
 import org.openkoala.bpm.application.vo.JoinAssignVO;
 
 public class JoinAssignAction extends BaseAction {
-		
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private JoinAssignVO joinAssignVO = new JoinAssignVO();
-		
+
+	private Page pageResult;
+
 	@Inject
 	private JoinAssignApplication joinAssignApplication;
-	
+
 	public String add() {
 		joinAssignApplication.saveJoinAssign(joinAssignVO);
 		dataMap.put("result", "success");
 		return "JSON";
 	}
-	
+
 	public String update() {
 		joinAssignApplication.updateJoinAssign(joinAssignVO);
 		dataMap.put("result", "success");
 		return "JSON";
 	}
-	
+
 	public String pageJson() {
-		Page<JoinAssignVO> all = joinAssignApplication.pageQueryJoinAssign(joinAssignVO, page, pagesize);
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", all.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getResultCount());
-		return "JSON";
+		pageResult = joinAssignApplication.pageQueryJoinAssign(joinAssignVO, page, pagesize);
+		return "PageJSON";
 	}
-	
+
 	public String delete() {
-	    String idsString = getRequest().getParameter("ids");
-        if(idsString != null){
-            String[] idArrs = idsString.split(",");
-            Long[] ids = new Long[idArrs.length];
-            for (int i = 0; i < idArrs.length; i ++) {
-            	ids[i] = Long.parseLong(idArrs[i]);
-            }
-            joinAssignApplication.removeJoinAssigns(ids);
-        }
-        
+		String idsString = getRequest().getParameter("ids");
+		if (idsString != null) {
+			String[] idArrs = idsString.split(",");
+			Long[] ids = new Long[idArrs.length];
+			for (int i = 0; i < idArrs.length; i++) {
+				ids[i] = Long.parseLong(idArrs[i]);
+			}
+			joinAssignApplication.removeJoinAssigns(ids);
+		}
+
 		dataMap.put("result", "success");
 		return "JSON";
 	}
-	
+
 	public String get() {
 		dataMap.put("data", joinAssignApplication.getJoinAssign(joinAssignVO.getId()));
 		return "JSON";
 	}
-	
-	
+
 	public void setJoinAssignVO(JoinAssignVO joinAssignVO) {
 		this.joinAssignVO = joinAssignVO;
 	}
-	
+
 	public JoinAssignVO getJoinAssignVO() {
 		return this.joinAssignVO;
 	}
+
+	public Page getPageResult() {
+		return pageResult;
+	}
+
+	public void setPageResult(Page pageResult) {
+		this.pageResult = pageResult;
+	}
+
 }

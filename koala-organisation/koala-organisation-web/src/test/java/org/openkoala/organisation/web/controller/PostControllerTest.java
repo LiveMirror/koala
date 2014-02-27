@@ -61,7 +61,7 @@ public class PostControllerTest {
 		Page<PostDTO> postPage = new Page<PostDTO>(1, 2, 10, dtos);
 		
 		when(postApplication.pagingQueryPosts(new PostDTO(), 1, 10)).thenReturn(postPage);
-		assertEquals(dtos, postController.pagingQuery(1, 10, new PostDTO()).get("Rows"));
+		assertEquals(dtos, postController.pagingQuery(1, 10, new PostDTO()).getData());
 	}
 
 	private List<PostDTO> generatePostDtos() {
@@ -152,7 +152,7 @@ public class PostControllerTest {
 		
 		when(baseApplication.getEntity(Organization.class, organizationId)).thenReturn(organization);
 		when(postApplication.pagingQueryPostsOfOrganizatoin(organization, example, 1, 10)).thenReturn(postPage);
-		assertEquals(dtos, postController.pagingQueryPostsOfOrganization(organizationId, example, 1, 10).get("Rows"));
+		assertEquals(dtos, postController.pagingQueryPostsOfOrganization(organizationId, example, 1, 10).getData());
 	}
 	
 	@Test

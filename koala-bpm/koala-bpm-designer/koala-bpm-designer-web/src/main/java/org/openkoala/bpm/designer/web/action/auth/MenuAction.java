@@ -39,6 +39,8 @@ public class MenuAction extends ActionSupport {
 	private RoleVO roleVO;
 	private ResourceVO parent;
 
+	private Page pageResult;
+
 	public RoleVO getRoleVO() {
 		return roleVO;
 	}
@@ -99,6 +101,14 @@ public class MenuAction extends ActionSupport {
 
 	public void setPage(String page) {
 		this.page = page;
+	}
+
+	public Page getPageResult() {
+		return pageResult;
+	}
+
+	public void setPageResult(Page pageResult) {
+		this.pageResult = pageResult;
 	}
 
 	public String getPagesize() {
@@ -215,8 +225,7 @@ public class MenuAction extends ActionSupport {
 	public String findChildSubMenuByParent() {
 		dataMap.clear();
 		List<ResourceVO> all = null;
-		CustomUserDetails current = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
+		CustomUserDetails current = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (current.isSuper()) {
 			all = this.menuApplication.findChildByParentAndUser(this.resVO, "");
 		} else {
@@ -252,12 +261,8 @@ public class MenuAction extends ActionSupport {
 		dataMap.clear();
 		int start = Integer.parseInt(this.page);
 		int limit = Integer.parseInt(this.pagesize);
-		Page<ResourceVO> all = this.menuApplication.pageQueryMenu(start, limit);
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
-		return "JSON";
+		pageResult = this.menuApplication.pageQueryMenu(start, limit);
+		return "PageJSON";
 
 	}
 

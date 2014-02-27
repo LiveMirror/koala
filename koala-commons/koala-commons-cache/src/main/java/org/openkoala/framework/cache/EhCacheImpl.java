@@ -50,7 +50,7 @@ public class EhCacheImpl implements org.dayatang.cache.Cache  {
 	/**
 	 * 判定一个KEY值是否在缓存中存在
 	 */
-	public boolean isKeyInCache(String key) {
+	public boolean containsKey(String key) {
 		return cache.isKeyInCache(key);
 	}
 
@@ -105,5 +105,10 @@ public class EhCacheImpl implements org.dayatang.cache.Cache  {
 					timeToLiveSeconds, timeToIdleSeconds);
 			CacheManager.getInstance().addCache(cache);
 		}
+	}
+
+	@Override
+	public boolean isKeyInCache(String key) {
+		return cache.isKeyInCache(key);
 	}
 }
