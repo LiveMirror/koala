@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>koala-businesslog-sample</artifactId>
     <packaging>war</packaging>
-    <name>Business Log Module Sample</name>
+    <name>koala-businesslog-sample</name>
     <description>业务日志子系统样例</description>
 
     <dependencies>
