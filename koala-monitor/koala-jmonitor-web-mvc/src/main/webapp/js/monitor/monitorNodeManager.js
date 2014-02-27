@@ -1,3 +1,13 @@
+var percentTickFormatter = function (format, val) {
+            if (typeof val == 'number') {
+                if (val < 0)val = 0;
+				return  val + "%";
+                return "";
+            }
+            else {
+                return String(val);
+            }
+        };
 var monitorNodeManager = {
 
 	/**
@@ -11,7 +21,7 @@ var monitorNodeManager = {
 			scheduleActive.on('click', function() {
 				scheduleActive.each(function() {
 					$(this).parent().removeClass('checked');
-				})
+				});
 				$(this).parent().addClass('checked');
 			});
 			$.get(contextPath + '/monitor/NodeInfo/getScheduleConf.koala').done(function(result) {
@@ -91,13 +101,13 @@ var monitorNodeManager = {
 			status.on('click', function() {
 				status.each(function() {
 					$(this).parent().removeClass('checked');
-				})
+				});
 				$(this).parent().addClass('checked');
 			});
 			stacks.on('click', function() {
 				stacks.each(function() {
 					$(this).parent().removeClass('checked');
-				})
+				});
 				$(this).parent().addClass('checked');
 			});
 			if (!childItem.active) {
@@ -162,9 +172,9 @@ var monitorNodeManager = {
 						type : 'error',
 						content : '保存失败'
 					});
-				})
-			})
-		})
+				});
+			});
+		});
 	},
 
 	/**
@@ -198,7 +208,7 @@ var monitorNodeManager = {
 		var self = this;
 		$.get(contextPath + '/monitor/NodeInfo/serverSummryInfo.koala?nodeId=' + nodeId).done(function(data) {
 			dialog.find('#activeCount').text(data.activeCount);
-			dialog.find('#pageAvgResponseTime').html(data.pageAvgResponseTime);
+			dialog.find('#pageAvgResponseTime').html(data.pageAvgResponseTime +" 秒");
 			dialog.find('#maxAvgTimePage').html(data.maxAvgTimePage);
 			dialog.find('#mostCallMethod').html(data.mostCallMethod);
 			dialog.find('#maxAvgTimeMethod').html(data.maxAvgTimeMethod);
@@ -236,19 +246,32 @@ var monitorNodeManager = {
 	 */
 	drawMemStatusChart : function(datas) {
 		$.jqplot('memchart', datas, {
-			axes : {
-				xaxis : {
-					renderer : $.jqplot.DateAxisRenderer,
-					tickOptions : {
-						formatString : '%m-%d %H'
-					}
-					//tickInterval:'2 hour'
-				},
-				yaxis : {
-					min : 0,
-					max : 100
-				}
-			},
+			 axesDefaults: {
+		            pad: 0
+		        },
+		      axes:{
+		        xaxis:{
+		          label:'24 Hours',
+				  labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+				  renderer:$.jqplot.DateAxisRenderer,
+				  tickOptions : {
+					//formatString : '%m-%d %H'
+				 },
+		          labelOptions: {
+		            fontFamily: 'Georgia, Serif',
+		            fontSize: '12pt'
+		          }
+		        },
+		        yaxis:{
+		          label:'Used',
+				  tickOptions: { formatter: percentTickFormatter },
+		          labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+		          labelOptions: {
+		            fontFamily: 'Georgia, Serif',
+		            fontSize: '12pt'
+		          }
+		        }
+		      },
 			//悬浮展现控制
 			highlighter : {
 				show : true,
@@ -271,43 +294,55 @@ var monitorNodeManager = {
 		for (var index in datas) {
 			var title = index;
 			var dataArray = [[]];
-			var data = datas[index]
+			var data = datas[index];
 			for (var index2 in data) {
 				dataArray[0].push([index2, data[index2]]);
 			}
 			var cpuchartId = "cpuchart" + i;
 			$("<div id='" + cpuchartId + "'></div>").appendTo($("#cpuchart"));
-			$.jqplot(cpuchartId, dataArray, {
-				title : title,
-				axes : {
-					xaxis : {
-						renderer : $.jqplot.DateAxisRenderer,
-						tickOptions : {
-							formatString : '%m-%d %H'
-						}
-						//tickInterval:'1 hour'
+			$.jqplot(cpuchartId, dataArray, { 
+				 title : title,
+			      //series:[{showMarker:false}],
+				  axesDefaults: {
+			            pad: 0
+			        },
+			      axes:{
+			        xaxis:{
+			          label:'24 Hours',
+					  labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+					  renderer:$.jqplot.DateAxisRenderer,
+					  tickOptions : {
+						//formatString : '%m-%d %H'
+					 },
+			          labelOptions: {
+			            fontFamily: 'Georgia, Serif',
+			            fontSize: '12pt'
+			          }
+			        },
+			        yaxis:{
+			          label:'Used',
+					  tickOptions: { formatter: percentTickFormatter },
+			          labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+			          labelOptions: {
+			            fontFamily: 'Georgia, Serif',
+			            fontSize: '12pt'
+			          }
+			        }
+			      },
+			    //悬浮展现控制
+					highlighter : {
+						show : true,
+						yvalues : 1,
+						tooltipAxes : "xy",
+						formatString : '<table class="jqplot-highlighter"><tr><td>时段:%s</td></tr><tr><td>CPU使用率:%s%</td></tr></table>'
 					},
-					yaxis : {
-						min : 0,
-						max : 100
+					cursor : {
+						show : true
 					}
-				},
-				//悬浮展现控制
-				highlighter : {
-					show : true,
-					yvalues : 1,
-					tooltipAxes : "xy",
-					formatString : '<table class="jqplot-highlighter"><tr><td>时段:%s</td></tr><tr><td>CPU使用率:%s%</td></tr></table>'
-				},
-				cursor : {
-					show : true
-				}
-
-			});
+			  });
 			i++;
 		}
 	},
-
 	/**
 	 * 渲染硬盘监控图形
 	 * @param datas
@@ -344,4 +379,4 @@ var monitorNodeManager = {
 			});
 		}
 	}
-}
+};

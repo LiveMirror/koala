@@ -82,7 +82,7 @@ public class RemoteDataPolicyServerHandler extends BaseSchedulerBean implements 
 	private int getPort(){
 		try {
 			Properties prop = new Properties();
-			InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("props/mina-server.properties");
+			InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/props/mina-server.properties");
 			prop.load(inputStream);
 			return Integer.parseInt(prop.get("server.port") + "");
 		} catch (Exception e) {

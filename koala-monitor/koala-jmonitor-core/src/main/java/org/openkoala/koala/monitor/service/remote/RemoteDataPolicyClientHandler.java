@@ -82,6 +82,7 @@ public class RemoteDataPolicyClientHandler {
 		Integer port = Integer.parseInt(props.get("port"));
 		Integer heartbeat = Integer.parseInt(props.get("heartbeat"));
 		Integer timeout = Integer.parseInt(props.get("timeout"));
+		
 		minaClient = new DatasyncClient(host, port, timeout * 1000,
 				new ServerCommondListener() {
 					@Override
@@ -100,8 +101,12 @@ public class RemoteDataPolicyClientHandler {
 		}
 
 		// 注册
-		if (!startFail)
+		if (!startFail){
 			registerCurrentNode(clientId);
+			if (LOG.isDebugEnabled()){
+				LOG.debug("心跳时间："+heartbeat+"秒,超时时间:"+timeout+"秒");
+			}
+		}
 
 		// 心跳检测
 		syscService_heartbeat_timer = new Timer();
@@ -136,8 +141,8 @@ public class RemoteDataPolicyClientHandler {
 		commond.addHeader(CommondConst.CLIENT_ID, clientId);
 		commond.addData(CommondConst.DEFAULT_DATA, context.getNodeDef());
 		boolean result = sendDataToServer(commond);
-		if (result && LOG.isDebugEnabled())
-			LOG.debug("监控数据同步服务启动并远程注册成功");
+		if (result)
+			LOG.info("监控数据同步服务启动并远程注册成功");
 	}
 
 	/**
