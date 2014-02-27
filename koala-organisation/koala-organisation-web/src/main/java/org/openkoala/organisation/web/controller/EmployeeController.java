@@ -50,15 +50,9 @@ public class EmployeeController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Map<String, Object> pagingQuery(int page, int pagesize, EmployeeDTO example) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public Page pagingQuery(int page, int pagesize, EmployeeDTO example) {
 		Page<EmployeeDTO> employees = employeeApplication.pagingQueryEmployees(example, page, pagesize);
-
-		dataMap.put("Rows", employees.getData());
-		dataMap.put("start", employees.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", employees.getResultCount());
-		return dataMap;
+		return employees;
 	}
 
 	/**
@@ -72,9 +66,7 @@ public class EmployeeController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingquery-by-org")
-	public Map<String, Object> pagingQueryByOrganization(int page, int pagesize, EmployeeDTO example, Long organizationId, boolean queryAllChildren) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-
+	public Page pagingQueryByOrganization(int page, int pagesize, EmployeeDTO example, Long organizationId, boolean queryAllChildren) {
 		Page<EmployeeDTO> employees = null;
 		if (organizationId == 0) {
 			employees = employeeApplication.pagingQueryEmployeesWhoNoPost(example, page, pagesize);
@@ -87,11 +79,7 @@ public class EmployeeController extends BaseController {
 			}
 		}
 
-		dataMap.put("Rows", employees.getData());
-		dataMap.put("start", employees.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", employees.getResultCount());
-		return dataMap;
+		return employees;
 	}
 
 	/**
