@@ -289,7 +289,7 @@
 				data: params,
 				dataType: 'json'
 			}).done(function(result){
-					if(!result.Rows){
+					if(!result.data){
 						self.$element.message({
 							type: 'error',
 							content: '查询失败'
@@ -297,12 +297,12 @@
 						return;
 					}
 					self.startRecord.text(result.start + 1);
-					self.endRecord.text(result.start + result.limit);
-					self.totalRecordHtml.text(result.Total);
+					self.endRecord.text(result.start + result.pageSize);
+					self.totalRecordHtml.text(result.pageCount);
 					//self._initPageNo(result.Total)
-					self.items = result.Rows;
-					self.totalRecord = result.Total;
-					if(result.Rows.length == 0){
+					self.items = result.data;
+					self.totalRecord = result.pageCount;
+					if(result.data.length == 0){
 						self.pages.hide();
 						self.gridTableBodyTable.empty();
 						self.gridTableBody.find('[data-role="noData"]').remove();
@@ -314,7 +314,11 @@
 					}
 					self.$element.trigger('complateRenderData', result);
 				}).fail(function(result){
-
+						self.$element.message({
+							type: 'error',
+							content: '查询失败'
+						});
+						return;
 				});
 		},
 		/**
@@ -460,7 +464,7 @@
 			for(var i= 0,j=items.length; i<j; i++){
 				var item = items[i];
 				
-                self.itemsMap[item.id] = item;
+                self.itemsMap[item[self.options.identity]] = item;
 				var trHtml = new Array();
 				if(self.options.tree && self.options.tree.column){
 					trHtml.push('<tr data-level='+item.level+' data-children='+self.getChildrenCount(0, item.children)+'>');
@@ -611,12 +615,14 @@
 			return this.$element;
 		 },
          removeRows: function(indexs){
-             var self = this
+           var self = this
              $.each(indexs, function(){
-                  var index = self.getIndexByIdentityValue(this);
-                  self.items.splice(index, 1);
                   delete self.itemsMap[this];
              });
+             self.items = [];
+             for(var prop in self.itemsMap){
+             	self.items.push(self.itemsMap[prop]);
+             }
              self.gridTableBodyTable.empty();
              self.renderDatas();
          },
