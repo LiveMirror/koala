@@ -75,7 +75,9 @@
               ${name},
             </#list>
             ]]></template>
+            <!--设置一批的上下文查询，查询的结果将用于替换模板中的占位符 -->
             <queries>
+                <!--查询结果为一个map  names:查询结果 -->
                 <query key="names">
                     <target class="business.Project"></target>
                     <method>getProjectsName(business.Project[])</method>
