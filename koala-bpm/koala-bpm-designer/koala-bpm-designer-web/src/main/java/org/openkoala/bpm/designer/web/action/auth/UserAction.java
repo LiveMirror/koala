@@ -194,23 +194,18 @@ public class UserAction extends ActionSupport {
 		int start = Integer.parseInt(this.page);
 		int limit = Integer.parseInt(this.pagesize);
 
-		Page<UserVO> all = null;
 		if (roleId == null) {
-			all = userApplication.pageQueryUser(start, limit);
+			pageResult = userApplication.pageQueryUser(start, limit);
 		} else {
 			RoleVO roleVoForFind = new RoleVO();
 			roleVoForFind.setId(roleId);
 			try {
-				all = new Page<UserVO>(start, limit, limit, roleApplication.findUserByRole(roleVoForFind));
+				pageResult = new Page<UserVO>(start, limit, limit, roleApplication.findUserByRole(roleVoForFind));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
 		return "PageJSON";
 	}
 
