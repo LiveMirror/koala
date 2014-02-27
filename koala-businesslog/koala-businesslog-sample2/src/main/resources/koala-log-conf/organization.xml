@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<businessLogConfigs>
+    <businessLogConfig>
+        <category>机构管理</category>
+        <method>Company
+            org.openkoala.organisation.application.impl.OrganizationApplicationImpl.createCompany(Company,Company)
+        </method>
+        <template>
+            <![CDATA[用户${_user} 创建机构]]></template>
+    </businessLogConfig>
+
+
+    <businessLogConfig>
+        <category>机构管理</category>
+        <method>OrganizationDTO org.openkoala.organisation.application.impl.OrganizationApplicationImpl.getOrganizationTree()</method>
+        <template>
+            <![CDATA[查询机构 ${_methodReturn.toString()} +++  ${_user}]]></template>
+    </businessLogConfig>
+
+
+    <businessLogConfig>
+        <category>机构管理</category>
+        <method>
+            <![CDATA[Map<String, Object> org.openkoala.organisation.application.impl.EmployeeApplicationImpl.transformPost(Employee)]]></method>
+        <template>
+            <![CDATA[用户{} 更新人员{}的信息，最终信息为{}]]></template>
+    </businessLogConfig>
+
+
+</businessLogConfigs>

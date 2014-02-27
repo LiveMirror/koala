@@ -1,18 +1,22 @@
 package businesslog;
 
 import business.*;
+import org.apache.commons.lang3.StringUtils;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.persistence.jpa.EntityRepositoryJpa;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openkoala.businesslog.common.BLMapping;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
 import org.openkoala.businesslog.utils.ThreadLocalBusinessLogContext;
 
 import javax.inject.Inject;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
-@Ignore
 public class BusinessLogInterceptorTest extends AbstractIntegrationTest {
 
     @Inject
@@ -44,9 +48,6 @@ public class BusinessLogInterceptorTest extends AbstractIntegrationTest {
         names.add("4");
 
         projectApplication.findSomeProjects(names);
-
-
-        assert DefaultBusinessLog.findAll(DefaultBusinessLog.class).size() == 3;
 
 
     }

@@ -3,9 +3,11 @@ package org.openkoala.businesslog.utils;
 import static org.openkoala.businesslog.ContextKeyConstant.*;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.businesslog.*;
+import org.openkoala.businesslog.common.BLMapping;
 import org.openkoala.businesslog.common.BusinessLogPropertiesConfig;
 import org.openkoala.businesslog.common.LogEngineThread;
 import org.openkoala.businesslog.config.BusinessLogConfigAdapter;
@@ -13,6 +15,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -44,14 +48,17 @@ public class BusinessLogInterceptor {
 
     public void log(JoinPoint joinPoint, Object result, Throwable error) {
 
+        String BLMappingValue = getBLMapping(joinPoint);
+
         if (!BusinessLogPropertiesConfig.getInstance().getLogEnableConfig()
                 || ThreadLocalBusinessLogContext.get().get(BUSINESS_METHOD) != null) {
             return;
         }
 
+
         LogEngineThread logEngineThread = new LogEngineThread(
                 Collections.unmodifiableMap(createDefaultContext(joinPoint, result, error)),
-                joinPoint.getSignature().toString(),
+                BLMappingValue,
                 getBusinessLogConfigAdapter(),
                 getBusinessLogRender(),
                 getBusinessLogExporter(),
@@ -63,10 +70,7 @@ public class BusinessLogInterceptor {
             logEngineThread.run();
         } else {
             getThreadPoolTaskExecutor().execute(logEngineThread);
-
         }
-
-
     }
 
     private Map<String, Object> createDefaultContext(JoinPoint joinPoint,
@@ -90,6 +94,16 @@ public class BusinessLogInterceptor {
 
     }
 
+    private String getBLMapping(JoinPoint joinPoint) {
+        for (Method method : joinPoint.getTarget().getClass().getDeclaredMethods()) {
+            if (method.isAnnotationPresent(BLMapping.class)) {
+                return method.getAnnotation(BLMapping.class).value();
+            }
+        }
+
+        return joinPoint.getSignature().toString();
+    }
+
     public BusinessLogConfigAdapter getBusinessLogConfigAdapter() {
         if (null == businessLogConfigAdapter) {
             businessLogConfigAdapter = InstanceFactory.getInstance(BusinessLogConfigAdapter.class, "businessLogConfigAdapter");
@@ -111,6 +125,7 @@ public class BusinessLogInterceptor {
             businessLogExporter = InstanceFactory.getInstance(BusinessLogExporter.class, "businessLogExporter");
 
         }
+
         return businessLogExporter;
     }
 
