@@ -304,7 +304,7 @@
 					}
 					self.startRecord.text(result.start + 1);
 					self.endRecord.text(result.start + result.pageSize);
-					self.totalRecordHtml.text(result.pageCount);
+					self.totalRecordHtml.text(result.resultCount);
 					//self._initPageNo(result.Total)
 					self.items = result.data;
 					self.totalRecord = result.pageCount;
