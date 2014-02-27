@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="2.5">
 	<display-name>koalaSecurity-web</display-name>
 	<listener>
-		<listener-class>com.dayatang.spring.webapp.DayatangContextLoaderListener</listener-class>
+		<listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
 	</listener>
 
 	<!-- 连接池的监控环境开始，项目部署时要删除 <servlet> <servlet-name>proxooladmin</servlet-name> 

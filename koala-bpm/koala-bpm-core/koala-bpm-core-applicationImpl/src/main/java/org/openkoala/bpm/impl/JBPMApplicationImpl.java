@@ -642,10 +642,10 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 			RuleFlowProcess process = (RuleFlowProcess) koalaBPMApiApplication
 					.getProcess(activeProcessName);
-			VariableScope vs = process.getVariableScope();
 			if (process == null) {
 				throw new RuntimeException("不存在的流程，请检查");
 			}
+			VariableScope vs = process.getVariableScope();
 			Map<String, Object> packageVariaMap = getKoalaBPMSession()
 					.getPackageVariable(process.getPackageName());
 			// 读取PACKAGE级的变量

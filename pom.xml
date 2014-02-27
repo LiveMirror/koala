@@ -191,7 +191,7 @@
 	<properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<dddlib.version>4.1.1</dddlib.version>
+		<dddlib.version>4.1.0</dddlib.version>
 		<struts2.version>2.3.16</struts2.version>
 		<spring.version>3.2.6.RELEASE</spring.version>
 		<spring.security.version>3.2.0.RELEASE</spring.security.version>

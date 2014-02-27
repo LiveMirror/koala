@@ -1,8 +1,16 @@
 package org.openkoala.koalacommons.mybatis;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.dayatang.domain.InstanceFactory;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.util.Assert;
@@ -19,6 +27,21 @@ import me.lingen.Employee;
  */
 public class EmployeeTest extends KoalaBaseSpringTestCase {
 
+	
+	@Before
+	public void before() throws SQLException{
+		Statement stmt  = null;
+		try{
+		String create = " CREATE TABLE `Employee` ( `id` int(11) DEFAULT NULL, `name` varchar(255) DEFAULT NULL, `age` varchar(255) DEFAULT NULL, `birthDate` date DEFAULT NULL, `gender` varchar(255) DEFAULT NULL )";
+		DataSource dataSource = InstanceFactory.getInstance(DataSource.class);
+		stmt = dataSource.getConnection().createStatement();
+		stmt.execute(create);
+		}catch(Exception e){
+		}finally{
+			stmt.close();
+		}
+	}
+	
 	@Test
 	public void add() {
 		Employee employee = new Employee();

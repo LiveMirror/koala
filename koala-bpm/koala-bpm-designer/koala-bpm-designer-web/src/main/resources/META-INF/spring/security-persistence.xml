@@ -16,7 +16,15 @@
 		http://www.springframework.org/schema/aop 
 		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-<tx:annotation-driven transaction-manager="transactionManager_security" />
+	<context:annotation-config />
+	<context:component-scan base-package="org.openkoala">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<context:property-placeholder location="classpath*:META-INF/props/*.properties"
+		ignore-unresolvable="true" />
+
+	<tx:annotation-driven transaction-manager="transactionManager_security" />
 
 	<!-- Drives transactions using local JPA APIs -->
 	<bean id="transactionManager_security" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -31,20 +39,24 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="generateDdl" value="${db.generateDdl}"></property>
+				<property name="generateDdl" value="true"></property>
 				<property name="showSql" value="false"></property>
 				<property name="databasePlatform" value="${db.jdbc.dialect}"></property>
 			</bean>
 		</property>
 	</bean>
 	
-	<bean id="repository_ss" class="org.openkoala.bpm.impl.util.KoalaEntityRepositoryJpa">
-		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory_security" />
+	<bean id="repository_ss" class="org.openkoala.bpm.designer.impl.KoalaEntityRepositoryJpa">
+		<property name="entityManager">
+			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+				<property name="persistenceUnitName" value="security" />
+			</bean>
+		</property>
 	</bean>
 
 	<bean id="queryChannel_ss" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
 		<constructor-arg name="repository" ref="repository_ss" />
 	</bean>
-	
+
 	<!-- security datasource 的配置 结束 -->
 </beans>
