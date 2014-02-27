@@ -58,6 +58,14 @@
 				<param name="ignoreHierarchy">false</param>
 				<param name="root">dataMap</param>
 			</result>
+			
+			<result name="PageJSON" type="json">
+				<param name="excludeProperties">.*Application$,.*Temp$</param>
+				<param name="includeProperties"></param>
+				<param name="excludeNullProperties">false</param>
+				<param name="ignoreHierarchy">false</param>
+				<param name="root">pageResult</param>
+			</result>
 		</action>
 	</package>
 </struts>

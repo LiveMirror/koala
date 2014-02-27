@@ -32,7 +32,7 @@ public class ResourceController {
 
 	@ResponseBody
 	@RequestMapping("/pageQueryNotAssignUrlByUser")
-	public Map<String,Object> pageQueryNotAssignUrlByUser(ParamsPojo params) {
+	public Page pageQueryNotAssignUrlByUser(ParamsPojo params) {
 		String page = params.getPage();
 		String pagesize = params.getPagesize();
 		RoleVO roleVO = params.getRoleVO();
@@ -40,11 +40,7 @@ public class ResourceController {
 		int start = Integer.parseInt(page);
 		int limit = Integer.parseInt(pagesize);
 		Page<ResourceVO> all = resourceApplication.pageQueryNotAssignByRole(start, limit, roleVO);
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
-		return dataMap;
+		return all;
 	}
 
 	@ResponseBody

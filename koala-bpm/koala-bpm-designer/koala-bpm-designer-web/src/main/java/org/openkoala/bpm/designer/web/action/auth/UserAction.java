@@ -33,11 +33,10 @@ public class UserAction extends ActionSupport {
 	private UserApplication userApplication;
 	@Inject
 	private RoleApplication roleApplication;
-	
+
 	@Inject
 	private PasswordEncoder passwordEncoder;
-	
-	
+
 	private Map<String, Object> dataMap = new HashMap<String, Object>();
 	private List<UserVO> users = new ArrayList<UserVO>();
 	private String page;
@@ -51,6 +50,8 @@ public class UserAction extends ActionSupport {
 	private String userAccountForSearch;
 	private String oldPassword;
 
+	private Page pageResult;
+
 	public UserAction() {
 		dataMap = new HashMap<String, Object>();
 		search = new QueryConditionVO();
@@ -62,6 +63,14 @@ public class UserAction extends ActionSupport {
 
 	public void setUserApplication(UserApplication userApplication) {
 		this.userApplication = userApplication;
+	}
+
+	public Page getPageResult() {
+		return pageResult;
+	}
+
+	public void setPageResult(Page pageResult) {
+		this.pageResult = pageResult;
 	}
 
 	public Map<String, Object> getDataMap() {
@@ -177,14 +186,8 @@ public class UserAction extends ActionSupport {
 		int start = Integer.parseInt(this.page);
 		int limit = Integer.parseInt(this.pagesize);
 		initSearchCondition();
-		Page<UserVO> all = userApplication.pageQueryUserCustom(start, limit, search);
-		if(all!=null){
-			dataMap.put("Rows", all.getData());
-			dataMap.put("start", start * limit - limit);
-			dataMap.put("limit", limit);
-			dataMap.put("Total", all.getResultCount());
-		}
-		return "JSON";
+		pageResult = userApplication.pageQueryUserCustom(start, limit, search);
+		return "PageJSON";
 	}
 
 	public String pageJson() {
@@ -208,7 +211,7 @@ public class UserAction extends ActionSupport {
 		dataMap.put("start", start * limit - limit);
 		dataMap.put("limit", limit);
 		dataMap.put("Total", all.getResultCount());
-		return "JSON";
+		return "PageJSON";
 	}
 
 	public String queryNotAssignUserByRole() {
@@ -217,12 +220,8 @@ public class UserAction extends ActionSupport {
 
 		RoleVO roleVoForFind = new RoleVO();
 		roleVoForFind.setId(roleId);
-		Page<UserVO> all = roleApplication.pageQueryNotAssignUserByRole(start, limit, null,roleVoForFind);
+		pageResult = roleApplication.pageQueryNotAssignUserByRole(start, limit, null, roleVoForFind);
 
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 
@@ -232,12 +231,12 @@ public class UserAction extends ActionSupport {
 
 		initSearchCondition();
 
-		Page<UserVO> all = userApplication.pageQueryUserCustom(start, limit, search);
+		pageResult = userApplication.pageQueryUserCustom(start, limit, search);
 
 		if (roleId != null) {
 			RoleVO role = new RoleVO();
 			role.setId(roleId);
-			List<UserVO> users = all.getData();
+			List<UserVO> users = pageResult.getData();
 			try {
 				for (UserVO user : roleApplication.findUserByRole(role)) {
 					users.remove(user);
@@ -247,12 +246,7 @@ public class UserAction extends ActionSupport {
 			}
 		}
 
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
-
-		return "JSON";
+		return "PageJSON";
 	}
 
 	private void initSearchCondition() {
@@ -343,8 +337,7 @@ public class UserAction extends ActionSupport {
 	 * @return
 	 */
 	public String updatePassword() {
-		CustomUserDetails current = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
+		CustomUserDetails current = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = current.getUsername();
 		if (current.isSuper()) {
 			dataMap.put("result", "超级管理员密码不支持页面修改");

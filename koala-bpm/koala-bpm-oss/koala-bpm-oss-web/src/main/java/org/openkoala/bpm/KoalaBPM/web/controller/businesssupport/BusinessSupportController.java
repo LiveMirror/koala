@@ -25,17 +25,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 @Controller
 @RequestMapping("/businessSupport")
 public class BusinessSupportController {
 
 	@Autowired
 	BusinessSupportApplication businessSupportApplication;
-	
+
 	@ResponseBody
 	@RequestMapping("/getProcesses")
-	public final Map<String, Object> getProcesses(){
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public final Map<String, Object> getProcesses() {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
 			List<ProcessVO> processList = businessSupportApplication.getProcesses();
 			dataMap.put("Rows", processList);
@@ -46,11 +47,10 @@ public class BusinessSupportController {
 	}
 
 	@RequestMapping("/toStartProcessPage")
-	public String toStartProcessPage(Model model, String processId){
+	public String toStartProcessPage(Model model, String processId) {
 		try {
-			FormShowDTO formShowDTO = businessSupportApplication
-					.findTemplateHtmlCodeByProcessId(processId);
-//			model.addAttribute("dynaProcessKeysForShow", formShowDTO.getDynaProcessKeysForShow());
+			FormShowDTO formShowDTO = businessSupportApplication.findTemplateHtmlCodeByProcessId(processId);
+			// model.addAttribute("dynaProcessKeysForShow", formShowDTO.getDynaProcessKeysForShow());
 			model.addAttribute("processId", processId);
 			model.addAttribute("templatehtmlCode", formShowDTO.getTemplateHtmlCode());
 			return "businesssupport/processstart";
@@ -59,13 +59,13 @@ public class BusinessSupportController {
 			return "errors/errormessages";
 		}
 	}
-	
+
 	@RequestMapping("/startProcess")
-	public String startProcess(Model model, HttpServletRequest request){
+	public String startProcess(Model model, HttpServletRequest request) {
 		try {
-//			businessSupportApplication.startProcess(this.packagingProcessStartInfo(request));
-			businessSupportApplication.startProcess(AuthUserUtil.getLoginUserName(),
-					request.getParameter("processId"), this.setValueForDynaProcessKey(request));
+			// businessSupportApplication.startProcess(this.packagingProcessStartInfo(request));
+			businessSupportApplication
+					.startProcess(AuthUserUtil.getLoginUserName(), request.getParameter("processId"), this.setValueForDynaProcessKey(request));
 			model.addAttribute("success", "提交成功！");
 			return "businesssupport/processstart";
 		} catch (Exception e) {
@@ -73,86 +73,77 @@ public class BusinessSupportController {
 			return "errors/errormessages";
 		}
 	}
-	
-	private Set<DynaProcessKey> setValueForDynaProcessKey(HttpServletRequest request){
-		Set<DynaProcessKey> keys = businessSupportApplication.
-				getDynaProcessKeysByProcessId(request.getParameter("processId"));
-		for(DynaProcessKey key : keys){
+
+	private Set<DynaProcessKey> setValueForDynaProcessKey(HttpServletRequest request) {
+		Set<DynaProcessKey> keys = businessSupportApplication.getDynaProcessKeysByProcessId(request.getParameter("processId"));
+		for (DynaProcessKey key : keys) {
 			String keyValue = request.getParameter(key.getKeyId());
 			key.setKeyValueForShow(keyValue);
 		}
 		return keys;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/pageQueryDoneTask")
-	public Map<String, Object> pageQueryDoneTask(String processId, int page, int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		Page<TaskDTO> pageTaskVO = businessSupportApplication.getDoneTasks(processId, 
-				AuthUserUtil.getLoginUserName(), page, pagesize);
-		dataMap.put("Rows", pageTaskVO.getData());
-		dataMap.put("start", pageTaskVO.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", pageTaskVO.getResultCount());
-		return dataMap;
+	public Page pageQueryDoneTask(String processId, int page, int pagesize) {
+		Page<TaskDTO> pageTaskVO = businessSupportApplication.getDoneTasks(processId, AuthUserUtil.getLoginUserName(), page, pagesize);
+		return pageTaskVO;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/getTodoTaskList")
 	public Map<String, Object> getTodoTaskList(String processId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("Rows", businessSupportApplication.
-				getTodoList(processId, AuthUserUtil.getLoginUserName()));
+		dataMap.put("Rows", businessSupportApplication.getTodoList(processId, AuthUserUtil.getLoginUserName()));
 		return dataMap;
 	}
-	
+
 	/**
 	 * 到审核页面
+	 * 
 	 * @param model
 	 * @param processId
 	 * @param processInstanceId
 	 * @return
 	 */
 	@RequestMapping("/toVerifyPage")
-	public String toVerifyPage(Model model, String processId, long processInstanceId, long taskId){
+	public String toVerifyPage(Model model, String processId, long processInstanceId, long taskId) {
 		try {
-			FormShowDTO taskInstance = businessSupportApplication.
-					getDynaProcessTaskContentForVerify(processId, processInstanceId, taskId);
-			model.addAttribute("taskInstance", taskInstance); 
+			FormShowDTO taskInstance = businessSupportApplication.getDynaProcessTaskContentForVerify(processId, processInstanceId, taskId);
+			model.addAttribute("taskInstance", taskInstance);
 			return "businesssupport/verifyTask";
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 			return "errors/errormessages";
 		}
 	}
-	
+
 	/**
 	 * 到审核页面
+	 * 
 	 * @param model
 	 * @param processId
 	 * @param processInstanceId
 	 * @return
 	 */
 	@RequestMapping("/toHistoryPage")
-	public String toHistoryPage(Model model, String processId, long processInstanceId, long taskId){
+	public String toHistoryPage(Model model, String processId, long processInstanceId, long taskId) {
 		try {
-			FormShowDTO taskInstance = businessSupportApplication.
-					getDynaProcessTaskContentForHistory(processId, processInstanceId, taskId);
-			model.addAttribute("taskInstance", taskInstance); 
-			
+			FormShowDTO taskInstance = businessSupportApplication.getDynaProcessTaskContentForHistory(processId, processInstanceId, taskId);
+			model.addAttribute("taskInstance", taskInstance);
+
 			return "businesssupport/historyTask";
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 			return "errors/errormessages";
 		}
 	}
-	
+
 	@RequestMapping("/viewProcessImage")
-	public void viewProcessImage(HttpServletRequest request, 
-			HttpServletResponse response, long processInstanceId){
+	public void viewProcessImage(HttpServletRequest request, HttpServletResponse response, long processInstanceId) {
 		try {
-			response.setContentType("image/jpeg"); 
-			OutputStream outs = response.getOutputStream(); 
+			response.setContentType("image/jpeg");
+			OutputStream outs = response.getOutputStream();
 			byte[] image = businessSupportApplication.getPorcessInstanceImageStream(processInstanceId);
 			outs.write(image);
 			outs.flush();
@@ -161,27 +152,27 @@ public class BusinessSupportController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/verifyTask")
-	public Map<String, Object> verifyTask(TaskVerifyDTO taskVerifyDTO){
+	public Map<String, Object> verifyTask(TaskVerifyDTO taskVerifyDTO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
-			//获取表单内容
-//			Set<DynaProcessKey> keys = setValueForDynaProcessKey(request);
+			// 获取表单内容
+			// Set<DynaProcessKey> keys = setValueForDynaProcessKey(request);
 			taskVerifyDTO.setUser(AuthUserUtil.getLoginUserName());
-			//获取策略信息(是否同意、理由)
+			// 获取策略信息(是否同意、理由)
 			taskVerifyDTO = this.getTaskChoice(taskVerifyDTO);
 			businessSupportApplication.verifyTask(taskVerifyDTO);
-			
+
 			dataMap.put("success", "操作成功！");
 		} catch (Exception e) {
 			dataMap.put("error", e.getMessage());
 		}
 		return dataMap;
 	}
-	
-	private TaskVerifyDTO getTaskChoice(TaskVerifyDTO taskVerifyDTO){
+
+	private TaskVerifyDTO getTaskChoice(TaskVerifyDTO taskVerifyDTO) {
 		String[] choiceArr = taskVerifyDTO.getChoice().split(ConstantUtil.TASK_CHOICE_SEPERATOR);
 		TaskChoice taskChoice = new TaskChoice();
 		taskChoice.setKey(choiceArr[0]);

@@ -1,4 +1,4 @@
-package org.openkoala.bpm.action.auth; 
+package org.openkoala.bpm.action.auth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,51 +16,49 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ResourceTypeAction extends ActionSupport {
 
 	private static final long serialVersionUID = -6615121906320422295L;
-	
+
 	private Map<String, Object> dataMap = new HashMap<String, Object>();
-	
+
 	private ResourceTypeVO resourceTypeVO;
-	
+
 	private List<ResourceTypeVO> resourceTypeVOs = new ArrayList<ResourceTypeVO>();
-	
+
 	@Inject
 	private ResourceTypeApplication resourceTypeApplication;
-	
+
 	private int page;
-	
+
 	private int pagesize;
-	
+
+	private Page pageResult;
+
 	public String save() {
 		resourceTypeApplication.save(resourceTypeVO);
 		dataMap.put("result", "success");
 		return "JSON";
 	}
-	
+
 	public String delete() {
 		resourceTypeApplication.delete(resourceTypeVOs.toArray(new ResourceTypeVO[resourceTypeVOs.size()]));
 		dataMap.put("result", "success");
 		return "JSON";
 	}
-	
+
 	public String update() {
 		resourceTypeApplication.update(resourceTypeVO);
 		dataMap.put("result", "success");
 		return "JSON";
 	}
-	
+
 	public String pageJson() {
-		Page<ResourceTypeVO> result = resourceTypeApplication.pageQuery(page, pagesize);
-		dataMap.put("Rows", result.getData());
-		dataMap.put("start", result.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getResultCount());
-		return "JSON";
+		pageResult = resourceTypeApplication.pageQuery(page, pagesize);
+		return "PageJSON";
 	}
 
 	public String list() {
 		return "METHOD";
 	}
-	
+
 	public Map<String, Object> getDataMap() {
 		return dataMap;
 	}
@@ -99,6 +97,14 @@ public class ResourceTypeAction extends ActionSupport {
 
 	public void setPagesize(int pagesize) {
 		this.pagesize = pagesize;
+	}
+
+	public Page getPageResult() {
+		return pageResult;
+	}
+
+	public void setPageResult(Page pageResult) {
+		this.pageResult = pageResult;
 	}
 
 }

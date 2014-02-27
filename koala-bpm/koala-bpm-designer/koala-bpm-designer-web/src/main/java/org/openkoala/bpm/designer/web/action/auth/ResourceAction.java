@@ -33,6 +33,15 @@ public class ResourceAction extends ActionSupport {
 	private ResourceVO parentVO;
 	private ResourceVO childVO;
 	private RoleVO roleVO;
+	private Page pageResult;
+
+	public Page getPageResult() {
+		return pageResult;
+	}
+
+	public void setPageResult(Page pageResult) {
+		this.pageResult = pageResult;
+	}
 
 	public Map<String, Object> getDataMap() {
 		return dataMap;
@@ -105,12 +114,8 @@ public class ResourceAction extends ActionSupport {
 	public String pageQueryNotAssignUrlByUser() {
 		int start = Integer.parseInt(page);
 		int limit = Integer.parseInt(pagesize);
-		Page<ResourceVO> all = resourceApplication.pageQueryNotAssignByRole(start, limit, roleVO);
-		dataMap.put("Rows", all.getResultCount());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
-		return "JSON";
+		pageResult = resourceApplication.pageQueryNotAssignByRole(start, limit, roleVO);
+		return "PageJSON";
 	}
 
 	public String add() {
