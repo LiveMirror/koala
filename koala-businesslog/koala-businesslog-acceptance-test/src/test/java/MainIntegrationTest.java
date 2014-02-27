@@ -14,19 +14,18 @@ import java.io.IOException;
  */
 public class MainIntegrationTest {
 
-
     @Test
     public void test() throws InterruptedException, IOException {
         HttpClient httpclient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(getBaseUrl());
         httpclient.execute(httpGet);
         Thread.sleep(5000);
-        HttpGet adminGet = new HttpGet(getBaseUrl() + "admin");
+        HttpGet adminGet = new HttpGet(getBaseUrl());
         HttpResponse response = httpclient.execute(adminGet);
         String content = EntityUtils.toString(response.getEntity(), "UTF-8");
+        // TODO
         content.contains("<h3 id=\"size\">3</h3>");
         httpGet.abort();
-
         httpclient.getConnectionManager().shutdown();
     }
 

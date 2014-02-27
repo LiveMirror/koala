@@ -24,13 +24,15 @@ public class BusinessLogConfigPathProcessor {
 
         List<File> result = new ArrayList<File>();
 
-        File configFilePath = new File(BusinessLogConfigPathProcessor.class.getClassLoader().getResource(configPath).getFile());
+        File configFilePath = new File(BusinessLogConfigPathProcessor.class.
+                getClassLoader().getResource(configPath).getFile());
 
         if (!configFilePath.exists()) {
             return result;
         }
 
-        Iterator<File> iterator = FileUtils.iterateFiles(configFilePath, new String[]{"xml"}, true);
+        Iterator<File> iterator = FileUtils.iterateFiles(configFilePath,
+                new String[]{"xml"}, true);
 
         while (iterator.hasNext()) {
             result.add(iterator.next());

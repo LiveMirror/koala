@@ -15,9 +15,9 @@ import java.io.File;
 public class BusinessLogXmlConfigDefaultAdapter implements BusinessLogConfigAdapter {
 
 
-
-    public   BusinessLogConfig findConfigBy(String businessOperation) {
+    public BusinessLogConfig findConfigBy(String businessOperation) {
         BusinessLogConfigXmlParser xmlParser = null;
+
         for (File xmlFile : BusinessLogConfigPathProcessor.getAllConfigFiles()) {
             BusinessLogConfigXmlParser parser = BusinessLogConfigXmlParser.parsing(xmlFile);
             if (parser.exists(businessOperation)) {
@@ -25,15 +25,18 @@ public class BusinessLogXmlConfigDefaultAdapter implements BusinessLogConfigAdap
                 break;
             }
         }
-        if (null == xmlParser) {
-            return null;
-        }
-        BusinessLogConfig config = new BusinessLogConfig();
 
+        if (null == xmlParser) return null;
+
+        return createBusinessLogConfigBy(xmlParser, businessOperation);
+    }
+
+    private BusinessLogConfig createBusinessLogConfigBy(BusinessLogConfigXmlParser xmlParser, String businessOperation) {
+        BusinessLogConfig config = new BusinessLogConfig();
         config.setCategory(xmlParser.getCategory(businessOperation));
         config.setQueries(xmlParser.getQueriesFrom(businessOperation));
         config.setTemplate(xmlParser.getTemplateFrom(businessOperation));
-
         return config;
     }
+
 }
