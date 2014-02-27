@@ -74,6 +74,7 @@ public class CommonAnalyser implements Analyser{
 	public void inactiveProcess(Trace trace) {
 		long activeTime = System.currentTimeMillis() - trace.getCreatedTime();
 		long tracefilterActivetime = getTracefilterActivetime();
+		//如果存活时间小于监控的最小阀值
 		if (tracefilterActivetime >= activeTime){
 			//发生异常的方法也需要继续处理
 			if(E_TraceType.METHOD.name().equals(trace.getTraceType()) && ((MethodTrace)trace).isSuccessed()==false){

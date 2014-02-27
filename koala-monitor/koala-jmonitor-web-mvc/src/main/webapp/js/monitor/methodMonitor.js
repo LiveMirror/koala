@@ -37,7 +37,7 @@ $(function(){
          loadData($(this).getValue());
     });
     $('#methodSearch').on('click', function(){
-        loadData($(this).getValue());
+        loadData(methodCountType.getValue());
     });
     var monitorNode = $('#methodMonitorNode');
     $.get(contextPath + '/monitor/Monitor/queryAllNodes.koala').done(function(data){

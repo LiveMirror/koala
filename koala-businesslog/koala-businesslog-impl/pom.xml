@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>koala-businesslog-impl</artifactId>
     <packaging>jar</packaging>
-    <name>Business Log Implements</name>
+    <name>koala-businesslog-impl</name>
     <description>业务日志子系统实现</description>
     <dependencies>
         <dependency>

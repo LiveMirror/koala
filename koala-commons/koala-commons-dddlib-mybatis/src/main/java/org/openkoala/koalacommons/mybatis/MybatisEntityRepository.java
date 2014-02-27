@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.dayatang.domain.Entity;
-import org.dayatang.domain.MapParameters;
+import org.dayatang.domain.NamedParameters;
 import org.openkoala.koalacommons.mybatis.repository.MybatisNamedQuery;
 
 public interface MybatisEntityRepository {
@@ -62,7 +62,7 @@ public interface MybatisEntityRepository {
      * @param keyValues 代表业务主键值的命名参数。key为主键属性名，value为主键属性值
      * @return 一个实体实例。
      */
-    <T extends Entity> T getByBusinessKeys(Class<T> clazz, MapParameters keyValues);
+    <T extends Entity> T getByBusinessKeys(Class<T> clazz, NamedParameters keyValues);
 
     /**
      * 查找指定类型的所有实体

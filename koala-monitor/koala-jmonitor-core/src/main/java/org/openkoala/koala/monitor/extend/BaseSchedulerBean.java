@@ -21,6 +21,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.commons.lang.StringUtils;
 import org.dayatang.domain.EntityRepository;
@@ -32,7 +33,6 @@ import org.quartz.TriggerKey;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
@@ -66,14 +66,18 @@ public abstract class BaseSchedulerBean {
     protected Scheduler scheduler;
 
     @Inject
-    @Qualifier(value="km_transactionTemplate")
+    @Named("km_transactionTemplate")
     protected TransactionTemplate transactionTemplate;
     
     @Inject
-    @Qualifier(value="km_repository")
+    @Named("km_repository")
     protected EntityRepository repository;
 
-    protected Scheduler getScheduler() {
+    public void setRepository(EntityRepository repository) {
+		this.repository = repository;
+	}
+
+	protected Scheduler getScheduler() {
         if (scheduler == null)
             scheduler = InstanceFactory.getInstance(Scheduler.class);
         return scheduler;

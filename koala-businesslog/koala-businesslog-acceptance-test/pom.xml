@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>koala-businesslog-acceptance-test</artifactId>
     <packaging>war</packaging>
-    <name>Business Log Acceptance Test</name>
+    <name>koala-businesslog-acceptance-test</name>
     <description>业务日志子系统验收测试</description>
 
     <dependencies>
@@ -185,7 +185,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.16</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>

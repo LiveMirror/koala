@@ -59,6 +59,7 @@ public class ServiceMonitorApplicationIpml implements ServiceMonitorApplication 
 			for (SchedulerConfg schedulerConfg : schedulers) {
 				vo = new ScheduleConfVo();
 				BeanUtils.copyProperties(vo, schedulerConfg);
+				vo.setLastBeginRunTime(schedulerConfg.getLastBeginRunTime());
 				result.add(vo);
 			}
 		} catch (Exception e) {

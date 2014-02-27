@@ -162,7 +162,7 @@
 
 .query {
     width: 65%;
-    padding: 15px 15px 0;
+    margin: 15px 15px 0;
 }
 .query .query-body {
     float: left;
@@ -172,6 +172,7 @@
     margin-bottom: 5px;
 }
 .query .buttons {
+	display: none;
     float: left;
     left: 15px;
     position: relative;
