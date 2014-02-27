@@ -52,10 +52,8 @@ public class GeneralQueryController {
 	 */
 	@ResponseBody
     @RequestMapping("/pageJson")
-	public Map<String,Object> pageJson(int page, int pagesize, String queryName) {
+	public Page pageJson(int page, int pagesize, String queryName) {
 		//Json对象
-	    Map<String, Object> dataMap = new HashMap<String, Object>();
-        
         Page<GeneralQuery> all = null;
         if (queryName != null && !queryName.isEmpty()) {
         	all = gqcApplication.pagingQueryGeneralQueriesByQueryName(queryName, page, pagesize);
@@ -69,12 +67,7 @@ public class GeneralQueryController {
         			generalQuery.getDataSource().getId(), generalQuery.getQueryName(), 
         			generalQuery.getTableName(), generalQuery.getDescription(), generalQuery.getCreateDate()));
         }
-        
-        dataMap.put("Rows", generalQueryVos);
-        dataMap.put("start", all.getStart());
-        dataMap.put("limit", pagesize);
-        dataMap.put("Total", all.getResultCount());
-		return dataMap;
+		return all;
 	}
     
 	/**

@@ -133,16 +133,10 @@ public class NodeInfoController {
      */
 	@ResponseBody
 	@RequestMapping("/queryWarnInfos")
-    public Map<String, Object> queryWarnInfos(int page,int pagesize){
-    	Map<String, Object> dataMap = new HashMap<String,Object>();
+    public Page queryWarnInfos(int page,int pagesize){
     	MonitorWarnInfoVo search = new MonitorWarnInfoVo();
     	Page<MonitorWarnInfoVo> pageInfo = monitorNodeManageApplication.queryMonitorWarnInfos(search, page, pagesize);
-    	//Page<AccountVO> all = accountApplication.pageQueryAccount(accountVO, page, pagesize);
-		dataMap.put("Rows", pageInfo.getData());
-		dataMap.put("start", pageInfo.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", pageInfo.getResultCount());
-    	return dataMap;
+    	return pageInfo;
     }
 
 	@ResponseBody

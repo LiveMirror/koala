@@ -72,8 +72,7 @@ public class EmployeeControllerTest {
 				.thenReturn(employeePage);
 		assertEquals(
 				employeePage.getData(),
-				employeeController.pagingQuery(1, 10, new EmployeeDTO()).get(
-						"Rows"));
+				employeeController.pagingQuery(1, 10, new EmployeeDTO()).getData());
 	}
 
 	@Test
@@ -90,7 +89,7 @@ public class EmployeeControllerTest {
 				employeePage);
 		assertEquals(employeePage.getData(), employeeController
 				.pagingQueryByOrganization(1, 10, new EmployeeDTO(), 1L, false)
-				.get("Rows"));
+				.getData());
 	}
 
 	@Test
@@ -108,7 +107,7 @@ public class EmployeeControllerTest {
 				.thenReturn(employeePage);
 		assertEquals(employeePage.getData(), employeeController
 				.pagingQueryByOrganization(1, 10, new EmployeeDTO(), 1L, true)
-				.get("Rows"));
+				.getData());
 	}
 
 	private void initEmployeePage() {

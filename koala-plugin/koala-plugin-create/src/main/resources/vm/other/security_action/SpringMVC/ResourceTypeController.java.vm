@@ -50,15 +50,10 @@ public class ResourceTypeController {
 
 	@ResponseBody
 	@RequestMapping("/pageJson")
-	public Map<String, Object> pageJson(int page,int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public Page pageJson(int page,int pagesize) {
 		Page<ResourceTypeVO> result = resourceTypeApplication.pageQuery(page,
 				pagesize);
-		dataMap.put("Rows", result.getData());
-		dataMap.put("start", result.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getResultCount());
-		return dataMap;
+		return result;
 	}
 
 	@RequestMapping("/list")

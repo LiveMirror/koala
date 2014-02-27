@@ -23,6 +23,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 @Controller
 @RequestMapping("/auth/User")
 public class UserController {
@@ -34,16 +35,15 @@ public class UserController {
 
 	@Inject
 	private RoleApplication roleApplication;
-	
+
 	@Inject
 	private PasswordEncoder passwordEncoder;
-	
+
 	@ResponseBody
 	@RequestMapping("/updatePassword")
-	public Map<String, Object> updatePassword(@RequestParam String oldPassword,@RequestParam String userPassword) {
-		Map<String, Object> dataMap  = new HashMap<String, Object>();
-		CustomUserDetails current = (CustomUserDetails) SecurityContextHolder
-				.getContext().getAuthentication().getPrincipal();
+	public Map<String, Object> updatePassword(@RequestParam String oldPassword, @RequestParam String userPassword) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		CustomUserDetails current = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = current.getUsername();
 		UserVO userVO = new UserVO();
 		userVO.setUserAccount(username);
@@ -70,92 +70,58 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping("/query")
-	public Map<String, Object> query(String page, String pagesize,String userNameForSearch,String userAccountForSearch) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		int start = Integer.parseInt(page);
-		int limit = Integer.parseInt(pagesize);
-
+	public Page query(int page, int pagesize, String userNameForSearch, String userAccountForSearch) {
 		QueryConditionVO search = new QueryConditionVO();
-		initSearchCondition(search,userNameForSearch,userAccountForSearch);
-		Page<UserVO> all = userApplication.pageQueryUserCustom(start, limit,
-				search);
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
-		return dataMap;
+		initSearchCondition(search, userNameForSearch, userAccountForSearch);
+		Page<UserVO> all = userApplication.pageQueryUserCustom(page, pagesize, search);
+		return all;
 	}
 
 	@ResponseBody
 	@RequestMapping("/pageJson")
-	public Map<String, Object> pageJson(int page, int pagesize, Long roleId, 
-			String userNameForSearch, String userAccountForSearch) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		
+	public Page pageJson(int page, int pagesize, Long roleId, String userNameForSearch, String userAccountForSearch) {
 		RoleVO roleVoForFind = new RoleVO();
 		roleVoForFind.setId(roleId);
 		roleVoForFind.setName(userNameForSearch);
 		roleVoForFind.setUseraccount(userAccountForSearch);
-		
+
 		Page<UserVO> all = null;
-		
+
 		if (roleId == null) {
 			all = userApplication.pageQueryUser(page, pagesize);
 		} else {
 			all = roleApplication.pageQueryUserByRole(roleVoForFind, page, pagesize);
 		}
-		
-
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", all.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getResultCount());
-		return dataMap;
+		return all;
 	}
 
 	@ResponseBody
 	@RequestMapping("/queryNotAssignUserByRole")
-	public Map<String, Object> queryNotAssignUserByRole(int page, int pagesize, Long roleId) {
-		
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public Page queryNotAssignUserByRole(int page, int pagesize, Long roleId) {
 
 		RoleVO roleVoForFind = new RoleVO();
 		roleVoForFind.setId(roleId);
-		Page<UserVO> all = roleApplication.pageQueryNotAssignUserByRole(page,
-				pagesize, null, roleVoForFind);
+		Page<UserVO> all = roleApplication.pageQueryNotAssignUserByRole(page, pagesize, null, roleVoForFind);
 
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", all.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getResultCount());
-		return dataMap;
+		return all;
 	}
 
 	@ResponseBody
 	@RequestMapping("/queryUsersForAssign")
-	public Map<String, Object> queryUsersForAssign(int page, int pagesize, Long roleId,
-			String userNameForSearch, String userAccountForSearch) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-
+	public Page queryUsersForAssign(int page, int pagesize, Long roleId, String userNameForSearch, String userAccountForSearch) {
 		RoleVO roleVO = new RoleVO();
 		roleVO.setId(roleId);
-		
+
 		UserVO userVO = new UserVO();
 		userVO.setName(userNameForSearch);
 		userVO.setUserAccount(userAccountForSearch);
-		
+
 		Page<UserVO> all = roleApplication.pageQueryNotAssignUserByRole(page, pagesize, userVO, roleVO);
 
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", all.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getResultCount());
-
-		return dataMap;
+		return all;
 	}
 
-	
-	private void initSearchCondition(QueryConditionVO search,String userNameForSearch,String userAccountForSearch) {
+	private void initSearchCondition(QueryConditionVO search, String userNameForSearch, String userAccountForSearch) {
 		search.setObjectName("User");
 		List<QueryItemVO> searchConditions = new ArrayList<QueryItemVO>();
 
@@ -181,13 +147,12 @@ public class UserController {
 
 		search.setItems(searchConditions);
 	}
-	
-	
+
 	@ResponseBody
 	@RequestMapping("/add")
 	public Map<String, Object> add(ParamsPojo userPojo) {
 		UserVO userVO = userPojo.getUserVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		userVO.setSerialNumber("0");
 		userVO.setUserPassword(passwordEncoder.encode(userVO.getUserPassword()));
 		userApplication.saveUser(userVO);
@@ -200,7 +165,7 @@ public class UserController {
 	@RequestMapping("/del")
 	public Map<String, Object> del(ParamsPojo userPojo) {
 		List<UserVO> users = userPojo.getUsers();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		for (UserVO user : users) {
 			this.userApplication.removeUser(Long.valueOf(user.getId()));
 			CacheUtil.removeUserFromCache(user.getUserAccount());
@@ -213,7 +178,7 @@ public class UserController {
 	@RequestMapping("/update")
 	public Map<String, Object> update(ParamsPojo userPojo) {
 		UserVO userVO = userPojo.getUserVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		this.userApplication.updateUser(userVO);
 		dataMap.put("result", "success");
 		return dataMap;
@@ -222,9 +187,8 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/getUserRoles")
 	public Map<String, Object> getUserRoles(String userAccount) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		dataMap.put("userRoles",
-				this.roleApplication.findRoleByUserAccount(userAccount));
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("userRoles", this.roleApplication.findRoleByUserAccount(userAccount));
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -234,10 +198,9 @@ public class UserController {
 	public Map<String, Object> assignRoles(ParamsPojo userPojo) {
 		UserVO userVO = userPojo.getUserVO();
 		List<RoleVO> roles = userPojo.getRoles();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		this.userApplication.assignRole(userVO, roles);
-		CacheUtil.refreshUserAttributes(((UserVO) userApplication
-				.getUser(userVO.getId())).getUserAccount());
+		CacheUtil.refreshUserAttributes(((UserVO) userApplication.getUser(userVO.getId())).getUserAccount());
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -252,22 +215,21 @@ public class UserController {
 	public Map<String, Object> removeUserForRole(ParamsPojo params) {
 		Long roleId = params.getRoleId();
 		List<UserVO> users = params.getUsers();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		RoleVO roleVO = new RoleVO();
 		roleVO.setId(roleId);
 		roleApplication.abolishUser(roleVO, users);
 		for (UserVO userVO : users) {
-			CacheUtil.refreshUserAttributes(((UserVO) userApplication
-					.getUser(userVO.getId())).getUserAccount());
+			CacheUtil.refreshUserAttributes(((UserVO) userApplication.getUser(userVO.getId())).getUserAccount());
 		}
 		dataMap.put("result", "success");
 		return dataMap;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/resetPassword")
 	public Map<String, Object> resetPassword(Long userId) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		UserVO userVO = new UserVO();
 		userVO.setId(userId);
 		userVO.setUserPassword(passwordEncoder.encode(INIT_PASSWORD));
