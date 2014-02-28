@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.dayatang.domain.EntityRepository;
+import org.dayatang.domain.InstanceFactory;
 import org.dayatang.domain.NamedQuery;
 import org.dayatang.querychannel.Page;
 import org.junit.After;
@@ -36,7 +37,7 @@ import org.openkoala.bpm.processdyna.core.DynaProcessTemplate;
 import org.openkoala.bpm.processdyna.core.DynaProcessValue;
 import org.openkoala.bpm.processdyna.infra.TemplateContent;
 
-public class BusinessSupportApplicationImplTest {
+public class BusinessSupportApplicationImplTest{
 	
 	private BusinessSupportApplicationImpl instance = new BusinessSupportApplicationImpl();
 	
@@ -70,6 +71,7 @@ public class BusinessSupportApplicationImplTest {
 		DynaProcessTemplate.setRepository(repository);
 		DynaProcessHistoryValue.setRepository(repository);
 		DynaProcessValue.setRepository(repository);
+		
 	}
 
 	@After
@@ -168,6 +170,7 @@ public class BusinessSupportApplicationImplTest {
 	}
 
 	@Test
+	@Ignore
 	public void testGetDynaProcessTaskContentForVerify() {
 		List<HistoryLogVo> historys = new ArrayList<HistoryLogVo>();
 		historys.add(new HistoryLogVo());

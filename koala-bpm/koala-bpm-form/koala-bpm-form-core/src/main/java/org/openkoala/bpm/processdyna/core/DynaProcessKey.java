@@ -19,7 +19,7 @@ import org.dayatang.domain.AbstractEntity;
  */
 @Entity
 @Table(name = "DYNA_PROCESS_KEY")
-public class DynaProcessKey extends AbstractEntity implements Comparable<DynaProcessKey>{
+public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProcessKey>{
 
 	/**
 	 * 
@@ -283,7 +283,6 @@ public class DynaProcessKey extends AbstractEntity implements Comparable<DynaPro
 		}
 	}
 
-	@Override
 	public String[] businessKeys() {
 		// TODO Auto-generated method stub
 		return null;

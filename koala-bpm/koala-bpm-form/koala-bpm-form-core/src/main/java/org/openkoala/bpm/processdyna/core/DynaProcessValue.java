@@ -21,7 +21,7 @@ import org.dayatang.domain.AbstractEntity;
  */
 @Entity
 @Table(name = "DYNA_PROCESS_VALUE")
-public class DynaProcessValue extends AbstractEntity {
+public class DynaProcessValue extends BpmFormEntity {
 	
 	
 	private static final long serialVersionUID = 5053473713859436953L;
@@ -128,7 +128,6 @@ public class DynaProcessValue extends AbstractEntity {
 		}
 	}
 
-	@Override
 	public String[] businessKeys() {
 		// TODO Auto-generated method stub
 		return null;

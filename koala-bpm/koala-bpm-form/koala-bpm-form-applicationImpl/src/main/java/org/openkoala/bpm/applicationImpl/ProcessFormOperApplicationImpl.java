@@ -29,9 +29,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-
-@Transactional
 @Named
+@Transactional(value="transactionManager")
 public class ProcessFormOperApplicationImpl implements
 		ProcessFormOperApplication {
 	
@@ -43,7 +42,7 @@ public class ProcessFormOperApplicationImpl implements
 	
 	private QueryChannelService getQueryChannelService(){
 		if(queryChannel==null){
-			queryChannel = InstanceFactory.getInstance(QueryChannelService.class);
+			queryChannel = InstanceFactory.getInstance(QueryChannelService.class,"queryChannel");
 		}
 		return queryChannel;
 	}
@@ -115,8 +114,7 @@ public class ProcessFormOperApplicationImpl implements
 			datas.add(EntityTurnToDTOUtil.DynaProcessForm2DTO(processForm));
 			
 		}
-		long start = (page.getPageCount() - 1)*pageSize;
-		return new Page<DynaProcessFormDTO>(start, page.getResultCount(), pageSize, datas);
+		return new Page<DynaProcessFormDTO>(page.getStart(), page.getResultCount(), pageSize, datas);
 	}
 
 	public List<SelectOptions> getDataTypeList() {

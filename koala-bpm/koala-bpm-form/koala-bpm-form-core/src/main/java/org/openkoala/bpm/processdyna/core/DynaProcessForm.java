@@ -32,7 +32,7 @@ import org.openkoala.bpm.processdyna.infra.TemplateContent;
  */
 @Entity
 @Table(name = "DYNA_PROCESS_FORM")
-public class DynaProcessForm extends AbstractEntity {
+public class DynaProcessForm extends BpmFormEntity {
 	
 	private static final long serialVersionUID = -2210960935894672709L;
 
@@ -323,7 +323,6 @@ public class DynaProcessForm extends AbstractEntity {
 		return dynaProcessFormInstance;
 	}
 
-	@Override
 	public String[] businessKeys() {
 		return new String[]{};
 	}
