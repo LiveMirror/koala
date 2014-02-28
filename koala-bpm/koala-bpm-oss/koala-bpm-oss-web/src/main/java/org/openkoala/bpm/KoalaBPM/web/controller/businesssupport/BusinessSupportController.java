@@ -35,15 +35,10 @@ public class BusinessSupportController {
 
 	@ResponseBody
 	@RequestMapping("/getProcesses")
-	public final Map<String, Object> getProcesses() {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		try {
-			List<ProcessVO> processList = businessSupportApplication.getProcesses();
-			dataMap.put("Rows", processList);
-		} catch (Exception e) {
-			dataMap.put("error", e.getMessage());
-		}
-		return dataMap;
+	public final Page getProcesses() {
+		List<ProcessVO> processList = businessSupportApplication.getProcesses();
+		return new Page(0,processList.size(),processList);
+
 	}
 
 	@RequestMapping("/toStartProcessPage")
@@ -92,10 +87,9 @@ public class BusinessSupportController {
 
 	@ResponseBody
 	@RequestMapping("/getTodoTaskList")
-	public Map<String, Object> getTodoTaskList(String processId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("Rows", businessSupportApplication.getTodoList(processId, AuthUserUtil.getLoginUserName()));
-		return dataMap;
+	public Page getTodoTaskList(String processId) {
+		List<TaskDTO> todos = businessSupportApplication.getTodoList(processId, AuthUserUtil.getLoginUserName());
+		return new Page(0,todos.size(),todos);
 	}
 
 	/**
