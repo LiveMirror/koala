@@ -45,7 +45,7 @@
 			$.ajax({
 				method: "post",
 				async: false,
-				url: "${pageContext.request.contextPath}/businessSupport/pageQueryDoneTask.koala?page=1&pagesize=1&processId=" + processId,
+				url: "${pageContext.request.contextPath}/businessSupport/pageQueryDoneTask.koala?page=0&pagesize=1&processId=" + processId,
 				success: function(result) {
 					if(!result.data || result.data.length == 0){
 						return;
