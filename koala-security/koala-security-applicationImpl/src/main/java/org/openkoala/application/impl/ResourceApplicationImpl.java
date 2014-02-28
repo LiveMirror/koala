@@ -121,7 +121,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
 		List<Resource> topResources = Resource.findChildByParent(null);
 		for (Resource res : topResources) {
-			if (!Resource.isMenu(res)) {
+			if (Resource.isMenu(res)) {
 				ResourceVO treeVO = domainObject2Vo(res);
 				treeVOs.add(treeVO);
 				innerFindResourceByParent(treeVO, null);
@@ -148,7 +148,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		List<ResourceVO> childs = new ArrayList<ResourceVO>();
 		List<Resource> resources = Resource.findChildByParent(parent.getId());
 		for (Resource res : resources) {
-			if (!Resource.isMenu(res)) {
+			if (Resource.isMenu(res)) {
 				ResourceVO treeVO = domainObject2Vo(res);
 				if (roleVO != null) {
 					treeVO.setIschecked(Resource.hasPrivilegeByRole(res.getId(), roleVO.getId()));
@@ -316,18 +316,13 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		typeResource.save();
 
 		ResourceLineAssignment.newResourceLineAssignment(resourceManager, resource).save();
-		;
 		ResourceLineAssignment.newResourceLineAssignment(resourceManager, menuResource).save();
-		;
 		ResourceLineAssignment.newResourceLineAssignment(resourceManager, typeResource).save();
 
 		ResourceTypeAssignment.newResourceTypeAssignment(resourceManager, koalaDirectory).save();
 		ResourceTypeAssignment.newResourceTypeAssignment(resource, koalaMenu).save();
-		;
 		ResourceTypeAssignment.newResourceTypeAssignment(menuResource, koalaMenu).save();
-		;
 		ResourceTypeAssignment.newResourceTypeAssignment(typeResource, koalaMenu).save();
-		;
 
 	}
 
@@ -350,17 +345,11 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		roleManager.save();
 
 		ResourceLineAssignment.newResourceLineAssignment(userRoleResource, userManager).save();
-		;
 		ResourceLineAssignment.newResourceLineAssignment(userRoleResource, roleManager).save();
-		;
 
 		ResourceTypeAssignment.newResourceTypeAssignment(userRoleResource, koalaDirectory).save();
-		;
 		ResourceTypeAssignment.newResourceTypeAssignment(userManager, koalaMenu).save();
-		;
 		ResourceTypeAssignment.newResourceTypeAssignment(roleManager, koalaMenu).save();
-		;
-
 	}
 
 	/**

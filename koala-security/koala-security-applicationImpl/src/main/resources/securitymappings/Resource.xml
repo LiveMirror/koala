@@ -24,6 +24,12 @@
 		</query>
 	</named-query>
 	
+	<named-query name="listPrivilegeByRole">
+		<query>
+			select m.resource.id from IdentityResourceAuthorization m where m.identity.id=:roleId and m.abolishDate>:abolishDate
+		</query>
+	</named-query>
+	
 	<named-query name="queryPrivilegeByUser">
 		<query>
 			select m from IdentityResourceAuthorization m,RoleUserAuthorization b  
