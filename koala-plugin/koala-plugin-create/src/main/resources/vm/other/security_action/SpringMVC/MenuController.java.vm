@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.MenuApplication;
 import org.openkoala.auth.application.ResourceTypeApplication;
 import org.openkoala.auth.application.vo.ResourceVO;
