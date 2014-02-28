@@ -82,11 +82,9 @@ public class MenuController {
 	
 	@ResponseBody
 	@RequestMapping("/findAllMenuTreeRows")
-	public Map<String,Object> findAllMenuTreeRows() {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public Page findAllMenuTreeRows() {
 		List<ResourceVO> all = menuApplication.findMenuTree();
-		dataMap.put("Rows", all);
-		return dataMap;
+		return new Page(0, all.size(), all);
 	}
 	
 	@ResponseBody

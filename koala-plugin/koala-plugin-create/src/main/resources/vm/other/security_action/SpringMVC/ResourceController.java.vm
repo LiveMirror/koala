@@ -98,10 +98,9 @@ public class ResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/findAllReourceTree")
-	public Map<String,Object> findAllReourceTree() {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		dataMap.put("Rows", resourceApplication.findResourceTree());
-		return dataMap;
+	public Page findAllReourceTree() {
+		List<ResourceVO> list = resourceApplication.findResourceTree();
+		return new Page(0, list.size(), list);
 	}
 
 	@ResponseBody
