@@ -3,7 +3,7 @@
     <businessLogConfig>
         <!--向项目中的合同，添加一张发票-->
         <category>合同操作</category>
-        <method>Invoice business.InvoiceApplicationImpl.addInvoice(String,long)</method>
+        <method>Invoice business.InvoiceApplicationImpl   .addInvoice(String,long)</method>
         <template>
             <![CDATA[项目： ${project.name}中的合同：${contract.name} 添加了发票，发票编号为： ${(_methodReturn.sn)!""}]]></template>
         <queries>

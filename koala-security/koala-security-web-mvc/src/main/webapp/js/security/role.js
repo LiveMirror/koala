@@ -272,6 +272,7 @@ var roleManager = function(){
 				data['roleVO.id'] = roleId;
 				for(var i=0,j=nodes.length; i<j; i++){
 					data['menus['+i+'].id'] = nodes[i].id;
+					data['menus['+i+'].identifier'] = nodes[i].identifier;
 				}
 				$.post(baseUrl + 'assignMenuResources.koala', data).done(function(data){
 					if(data.result == 'success'){
@@ -324,6 +325,7 @@ var roleManager = function(){
 				var zNode = {};
                 var menu = {};
                 menu.id = item.id;
+                menu.identifier = item.identifier;
                 menu.title = item.name;
                 menu.open = true;
                 menu.checked = item.ischecked;
@@ -356,6 +358,7 @@ var roleManager = function(){
             var zNode = {};
             var menu = {};
             menu.id = item.id;
+            menu.identifier = item.identifier;
             menu.title = item.name;
             menu.open = true;
             menu.checked = item.ischecked;

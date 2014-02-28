@@ -29,8 +29,8 @@ public class FormMgrController {
 
 	@Inject
 	private ProcessFormOperApplication processFormOperApplication;
-	
-	@Inject 
+
+	@Inject
 	private BusinessSupportApplication businessSupportApplication;
 
 	@RequestMapping("/list")
@@ -42,35 +42,28 @@ public class FormMgrController {
 		modelMap.put("dataTypes", dataTypeList);
 		List<SelectOptions> validateRules = processFormOperApplication.getValidateRules();
 		modelMap.put("validateRules", validateRules);
-		
+
 		List<SelectOptions> valOutputTypes = processFormOperApplication.getFieldValTypeList();
 		modelMap.put("valOutputTypes", valOutputTypes);
 
 		return "processform/list";
 	}
-	
-	
+
 	@ResponseBody
 	@RequestMapping("/getDataList")
-	public Map<String, Object> getFormList(HttpServletRequest request,Integer page,int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public Page getFormList(HttpServletRequest request, Integer page, int pagesize) {
 		Page<DynaProcessFormDTO> pageObj = processFormOperApplication.queryDynaProcessFormsByPage(null, page, pagesize);
-		dataMap.put("Rows", pageObj.getData());
-		dataMap.put("start", pageObj.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", pageObj.getResultCount());
-		return dataMap;
+		return pageObj;
 	}
-
 
 	@ResponseBody
 	@RequestMapping(value = "/create", method = { RequestMethod.POST })
-	public Map<String, Object> createForm(HttpServletRequest request,String jsondata) {
+	public Map<String, Object> createForm(HttpServletRequest request, String jsondata) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		DynaProcessFormDTO form = JSON.parseObject(jsondata, DynaProcessFormDTO.class);
-		
+
 		List<DynaProcessKeyDTO> processKeys = form.getProcessKeys();
-		if(processKeys == null || processKeys.isEmpty()){
+		if (processKeys == null || processKeys.isEmpty()) {
 			dataMap.put("result", "字段不能为空");
 			return dataMap;
 		}
@@ -83,20 +76,18 @@ public class FormMgrController {
 		return dataMap;
 	}
 
-
-	
 	@ResponseBody
 	@RequestMapping(value = "/get", method = { RequestMethod.GET })
-	public Map<String, Object> getForm(HttpServletRequest request,long id) {
+	public Map<String, Object> getForm(HttpServletRequest request, long id) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		DynaProcessFormDTO form = processFormOperApplication.getDynaProcessFormById(id);
 		dataMap.put("result", form);
 		return dataMap;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "/delete", method = { RequestMethod.POST })
-	public Map<String, Object> deleteForm(HttpServletRequest request,String id) {
+	public Map<String, Object> deleteForm(HttpServletRequest request, String id) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		String[] idStrings = id.split(",");
 		Long[] ids = new Long[idStrings.length];
@@ -107,23 +98,23 @@ public class FormMgrController {
 		dataMap.put("result", "OK");
 		return dataMap;
 	}
-	
+
 	@RequestMapping("/templatePreview")
-	public String templatePreview(Long formId,ModelMap modelMap) {
+	public String templatePreview(Long formId, ModelMap modelMap) {
 		modelMap.put("htmlContent", businessSupportApplication.packagingHtml(formId));
 		return "/processform/preview";
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "/getActiveProcesses", method = { RequestMethod.GET })
-	public Map<String, Object> getActiveProcesses(HttpServletRequest request,String usedId) {
+	public Map<String, Object> getActiveProcesses(HttpServletRequest request, String usedId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		List<ProcessDTO> processes = processFormOperApplication.getActiveProcesses(new String[]{usedId});
-		//TODO
-//		if(processes == null)processes = new ArrayList<ProcessDTO>();
-//		processes.add(new ProcessDTO("qingjia", "请假"));
-//		processes.add(new ProcessDTO("jiaban", "加班"));
-//		processes.add(new ProcessDTO("yuzhi", "预支"));
+		List<ProcessDTO> processes = processFormOperApplication.getActiveProcesses(new String[] { usedId });
+		// TODO
+		// if(processes == null)processes = new ArrayList<ProcessDTO>();
+		// processes.add(new ProcessDTO("qingjia", "请假"));
+		// processes.add(new ProcessDTO("jiaban", "加班"));
+		// processes.add(new ProcessDTO("yuzhi", "预支"));
 		dataMap.put("processes", processes);
 		return dataMap;
 	}

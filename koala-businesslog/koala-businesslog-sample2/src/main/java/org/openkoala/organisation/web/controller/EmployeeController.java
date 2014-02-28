@@ -60,12 +60,6 @@ public class EmployeeController extends BaseController {
         return dataMap;
     }
 
-    @ResponseBody
-    @RequestMapping("/test")
-    public void test() {
-        System.out.println("ppppppp");
-    }
-
     /**
      * 分页查询某个机构下的员工
      *

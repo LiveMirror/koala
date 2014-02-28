@@ -24,7 +24,7 @@ public class AdminController {
     public String printWelcome(ModelMap model) {
         BusinessLogApplication businessLogApplication = InstanceFactory.getInstance(BusinessLogApplication.class, "businessLogApplication");
         model.put("logs",
-                businessLogApplication.findAllDefaultBusinessLog());
+                3);
 
         return "admin";
 
