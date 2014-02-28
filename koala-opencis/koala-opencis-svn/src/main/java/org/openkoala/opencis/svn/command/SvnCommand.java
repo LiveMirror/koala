@@ -15,6 +15,8 @@ import org.openkoala.opencis.support.SSHConnectConfig;
  */
 public abstract class SvnCommand extends SSHCommand {
 
+	protected String svnAddress;					//svn服务器地址,http://ip/xxxx/xxx
+	
     public SvnCommand() {
         super();
     }

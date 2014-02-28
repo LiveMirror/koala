@@ -29,6 +29,7 @@ public class SvnCreateProjectCommand extends SvnCommand {
 	@Override
 	public String getCommand() {
 		String createProjectCommand = "svnadmin create " + storePath + project.getProjectName();
+		System.out.println("SVN 远程创建项目命令：" + createProjectCommand);
 		return createProjectCommand;
 	}
 	
