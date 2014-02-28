@@ -14,7 +14,6 @@
 	<name>koala-bpm-designer</name>
 	<description>Koala BPM流程设计器项目，提供WEB方式的流程设计功能</description>
 	<modules>
-		<module>koala-bpm-designer-infra</module>
 		<module>koala-bpm-designer-bizmodel</module>
 		<module>koala-bpm-designer-application</module>
 		<module>koala-bpm-designer-applicationImpl</module>

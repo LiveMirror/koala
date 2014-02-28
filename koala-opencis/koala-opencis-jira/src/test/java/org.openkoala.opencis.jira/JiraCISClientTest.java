@@ -18,9 +18,14 @@ import java.lang.reflect.Field;
 @Ignore
 public class JiraCISClientTest {
 
-    private String username = "foreverosstest";
+    /*    private String username = "foreverosstest";
 
-    private JiraCISClient client = new JiraCISClient("http://localhost:8080/", username, "f12345678");
+        private JiraCISClient client = new JiraCISClient("http://localhost:8080/", username, "f12345678");*/
+    private String username = "admin";
+
+    private String url = "http://10.108.1.92:8082/";
+
+    private JiraCISClient client = new JiraCISClient(url, username, "admin");
 
     @Before
     public void setUp() throws Exception {
@@ -38,7 +43,7 @@ public class JiraCISClientTest {
         client.removeUser(null, getDeveloper());
         assert !client.isDeveloperExist(getDeveloper());
 
-        JiraCISClient developClient = new JiraCISClient("http://localhost:8080/", getDeveloper().getId(), getDeveloper().getPassword());
+        JiraCISClient developClient = new JiraCISClient(url, getDeveloper().getId(), getDeveloper().getPassword());
         assert !developClient.authenticate();
 
 
@@ -56,6 +61,11 @@ public class JiraCISClientTest {
         client.createProject(getProject());
 
         assert client.isProjectExist(getProject());
+
+        client.assignUsersToRole(getProject(), "", getDeveloper());
+
+        assert client.authenticate();
+        assert client.isUserAtProjectDevelopRole(getProject(), getDeveloper());
 
     }
 

@@ -129,13 +129,22 @@ public class JiraCISClient implements CISClient {
         return token != null;
     }
 
+    public boolean isUserAtProjectDevelopRole(Project project, Developer developer) {
+        try {
+            return jiraService.isUserAtProjectDevelopRole(KoalaJiraService.getProjectKey(project), developer.getId());
+        } catch (java.rmi.RemoteException e) {
+            throw new CISClientBaseRuntimeException("isUserAtProjectDevelopRole", e);
+        }
+
+    }
+
 
     @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {
         for (Developer each : developers) {
-            checkProjectRoleUserAllExist(project, each.getId(), role);
+            checkProjectRoleUserAllExist(project, each.getId(), KoalaJiraService.DEFAULT_PROJECT_ROLE_DEVELOP);
             try {
-                jiraService.addActorsToProjectRole(KoalaJiraService.getProjectKey(project), each.getId(), role);
+                jiraService.addActorsToProjectRole(KoalaJiraService.getProjectKey(project), each.getId(), KoalaJiraService.DEFAULT_PROJECT_ROLE_DEVELOP);
             } catch (java.rmi.RemoteException e) {
                 throw new CISClientBaseRuntimeException("jira.assignUsersToRoleRemoteException", e);
             }

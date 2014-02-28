@@ -7,6 +7,8 @@ import java.text.MessageFormat;
 
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.openkoala.bpm.designer.application.BpmDesignerApplication;
 import org.openkoala.bpm.designer.application.dto.PublishURLVO;
@@ -17,14 +19,16 @@ import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
 
 @Named
-@Transactional
+@Transactional(value="transactionManager")
 public class BpmDesignerApplicationImpl implements BpmDesignerApplication {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(BpmDesignerApplication.class);
+	
 	private static QueryChannelService queryChannel;
 	
 	public static QueryChannelService queryChannel() {
 		if (queryChannel == null) {
-			queryChannel = InstanceFactory.getInstance(QueryChannelService.class);
+			queryChannel = InstanceFactory.getInstance(QueryChannelService.class,"queryChannel");
 		}
 		return queryChannel;
 	}
@@ -43,7 +47,11 @@ public class BpmDesignerApplicationImpl implements BpmDesignerApplication {
 	public PublishURLVO savePublishURL(PublishURLVO publishURLVO) throws Exception {
 		PublishURL publishURL = new PublishURL();
         BeanUtils.copyProperties(publishURL, publishURLVO);
+        LOGGER.info("DTO'S ID:"+publishURLVO.getId());
+        LOGGER.info("publishURL' ID:"+publishURL.getId());
+        publishURL.setId(null);
 		publishURL.save();
+		
 		return publishURLVO;
 	}
 	
