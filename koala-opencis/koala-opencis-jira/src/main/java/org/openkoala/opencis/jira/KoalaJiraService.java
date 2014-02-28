@@ -23,6 +23,11 @@ public class KoalaJiraService {
 
     public final static int MAX_JIRA_KEY_NAME_LENGTH = 10;
 
+    /**
+     * jira中默认的项目角色名
+     */
+    public final static String DEFAULT_PROJECT_ROLE_DEVELOP = "Developers";
+
 
     private KoalaJiraService() {
     }
@@ -193,6 +198,25 @@ public class KoalaJiraService {
         String actorType = "atlassian-user-role-actor";
 
         jiraService.addActorsToProjectRole(token, userNames, remoteProjectRole, remoteProject, actorType);
+
+    }
+
+    public boolean isUserAtProjectDevelopRole(String projectKey, String username) throws RemoteException {
+        RemoteProject remoteProject = getRemoteProjectByProjectKey(projectKey);
+        if (null == remoteProject) {
+            return false;
+        }
+
+        RemoteProjectRole remoteProjectRole = getRemoteProjectRole(DEFAULT_PROJECT_ROLE_DEVELOP);
+        RemoteProjectRoleActors actors = jiraService.getProjectRoleActors(token, remoteProjectRole, remoteProject);
+        for (RemoteUser user : actors.getUsers()) {
+            if (user.getName().equals(username)) {
+                return true;
+            }
+        }
+
+        return false;
+
 
     }
 
