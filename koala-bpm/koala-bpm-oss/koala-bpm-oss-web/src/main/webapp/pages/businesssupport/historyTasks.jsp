@@ -14,9 +14,9 @@
 				url: "${pageContext.request.contextPath}/businessSupport/getProcesses.koala",
 				success: function(result) {
 					var items = new Array();
-					if(result.Rows){
-						for (var i = 0, j=result.Rows.length; i < j; i++) {
-							items.push({title: result.Rows[i].name + "_" + result.Rows[i].id, value:result.Rows[i].id});
+					if(result.data){
+						for (var i = 0, j=result.data.length; i < j; i++) {
+							items.push({title: result.data[i].name + "_" + result.data[i].id, value:result.data[i].id});
 						}
 					}
 					$('#processesHistory').select({
@@ -25,8 +25,8 @@
 					}).on('change', function() {
 						initGrid($(this).getValue());
 					});
-					if(result.Rows && result.Rows.length>0){
-						$('#processesHistory').setValue(result.Rows[0].id);
+					if(result.data && result.data.length>0){
+						$('#processesHistory').setValue(result.data[0].id);
 					}
 				}
 			});
@@ -45,12 +45,12 @@
 			$.ajax({
 				method: "post",
 				async: false,
-				url: "${pageContext.request.contextPath}/businessSupport/pageQueryDoneTask.koala?page=1&pagesize=1&processId=" + processId,
+				url: "${pageContext.request.contextPath}/businessSupport/pageQueryDoneTask.koala?page=0&pagesize=1&processId=" + processId,
 				success: function(result) {
-					if(!result.Rows || result.Rows.length == 0){
+					if(!result.data || result.data.length == 0){
 						return;
 					}
-					var dynamicColumns = result.Rows[0].dynamicColumns;
+					var dynamicColumns = result.data[0].dynamicColumns;
 					
 					for (var i = 0; i < dynamicColumns.length; i++) {
 						columns.push({
