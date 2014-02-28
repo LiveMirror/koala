@@ -43,15 +43,10 @@ public class JobController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Map<String, Object> pagingQuery(int page, int pagesize, Job job) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public Page pagingQuery(int page, int pagesize, Job job) {
 		Page<Job> jobs = jobApplication.pagingQueryJobs(job, page, pagesize);
 
-		dataMap.put("Rows", jobs.getData());
-		dataMap.put("start", jobs.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", jobs.getResultCount());
-		return dataMap;
+		return jobs;
 	}
 
 	/**

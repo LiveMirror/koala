@@ -88,8 +88,7 @@ public class RoleController {
 
 	@ResponseBody
 	@RequestMapping("/pageJson")
-	public Map<String, Object> pageJson(String page, String pagesize, String userAccount, String roleNameForSearch) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public Page pageJson(String page, String pagesize, String userAccount, String roleNameForSearch) {
 		int start = Integer.parseInt(page);
 		int limit = Integer.parseInt(pagesize);
 		QueryConditionVO search = new QueryConditionVO();
@@ -100,47 +99,31 @@ public class RoleController {
 		} else {
 			all = roleApplication.pageQueryRoleByUseraccount(start, limit, userAccount);
 		}
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", all.getStart());
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
 
-		return dataMap;
+		return all;
 	}
-
+	
 	@ResponseBody
 	@RequestMapping("/query")
-	public Map<String, Object> query(String page, String pagesize, String roleNameForSearch) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public Page query(String page, String pagesize, String roleNameForSearch) {
 		int start = Integer.parseInt(page);
 		int limit = Integer.parseInt(pagesize);
 		QueryConditionVO search = new QueryConditionVO();
 		initSearchCondition(search, roleNameForSearch);
 
 		Page<RoleVO> all = roleApplication.pageQueryByRoleCustom(start, limit, search);
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", all.getStart());
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
-		return dataMap;
+		return all;
 	}
 
 	@ResponseBody
 	@RequestMapping("/queryRolesForAssign")
-	public Map<String, Object> queryRolesForAssign(int page, int pagesize, String userAccount, String roleNameForSearch) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-
+	public Page queryRolesForAssign(int page, int pagesize, String userAccount, String roleNameForSearch) {
 		RoleVO roleVO = new RoleVO();
 		roleVO.setName(roleNameForSearch);
 
 		Page<RoleVO> all = roleApplication.pageQueryNotAssignRoleByUseraccount(page, pagesize, userAccount, roleVO);
 
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", all.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getResultCount());
-
-		return dataMap;
+		return all;
 	}
 
 	private void initSearchCondition(QueryConditionVO search, String roleNameForSearch) {
@@ -162,8 +145,7 @@ public class RoleController {
 
 	@ResponseBody
 	@RequestMapping("/queryNotAssignRoleByUser")
-	public Map<String, Object> queryNotAssignRoleByUser(String page, String pagesize, long userId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public Page queryNotAssignRoleByUser(String page, String pagesize, long userId) {
 		int start = Integer.parseInt(page);
 		int limit = Integer.parseInt(pagesize);
 
@@ -171,12 +153,7 @@ public class RoleController {
 		userVoForFind.setId(userId);
 		Page<RoleVO> all = userApplication.pageQueryNotAssignRoleByUser(start, limit, userVoForFind);
 
-		dataMap.put("Rows", all.getData());
-		dataMap.put("start", all.getStart());
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getResultCount());
-
-		return dataMap;
+		return all;
 	}
 
 	@ResponseBody

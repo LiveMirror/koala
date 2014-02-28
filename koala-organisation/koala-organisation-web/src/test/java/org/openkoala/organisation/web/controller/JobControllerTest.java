@@ -46,7 +46,7 @@ public class JobControllerTest {
 		Page<Job> jobPage = new Page<Job>(1, 2, 10, generateJobs());
 		
 		when(jobApplication.pagingQueryJobs(new Job(), 1, 10)).thenReturn(jobPage);
-		assertEquals(jobPage.getData(), jobController.pagingQuery(1, 10, new Job()).get("Rows"));
+		assertEquals(jobPage.getData(), jobController.pagingQuery(1, 10, new Job()).getData());
 	}
 
 	@Test

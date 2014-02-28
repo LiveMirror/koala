@@ -1,5 +1,6 @@
 package org.openkoala.businesslog.common;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openkoala.businesslog.BusinessLogXmlConfigIOException;
 import org.openkoala.businesslog.BusinessLogXmlConfigNotFoundException;
 import org.openkoala.businesslog.BusinessLogXmlConfigParseException;
@@ -221,7 +222,8 @@ public class BusinessLogConfigXmlParser {
                 Node node = nodeList.item(i);
                 if (BUSINESS_OPERATOR_NODE_NAME.equals(node.getNodeName())
                         && (Node.ELEMENT_NODE == node.getNodeType())
-                        && businessOperator.equals(node.getTextContent())) {
+                        && StringUtils.deleteWhitespace(businessOperator).equals(StringUtils.deleteWhitespace(node.getTextContent()))
+                        ) {
 
                     return eachNode;
                 }

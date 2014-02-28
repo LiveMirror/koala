@@ -65,7 +65,9 @@
 			this.gridBody = this.$element.find('.grid-body').css('width', this.$element.width());
 			this.gridTableHead = this.$element.find('.grid-table-head').css('min-width', this.$element.width());
 			this.gridTableHeadTable = this.gridTableHead.find('table');
-			this.gridTableBody = this.$element.find('.grid-table-body').css('width', this.$element.width());
+			var width = this.$element.width();
+			this.gridBody.css('width', width);
+			this.gridTableBody = this.$element.find('.grid-table-body').css('width', width);
 			this.gridTableBodyTable = this.gridTableBody.find('table');
 			this.pageSizeSelect = this.$element.find('[data-role="pageSizeSelect"]');
 			!this.options.isShowButtons && this.buttons.hide();

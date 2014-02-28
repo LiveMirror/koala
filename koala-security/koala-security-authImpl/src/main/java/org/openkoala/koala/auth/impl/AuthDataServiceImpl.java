@@ -20,20 +20,21 @@ import org.openkoala.koala.auth.vo.DefaultUserDetailsImpl;
 
 /**
  * 鉴权实现
+ * 
  * @author zhuyuanbiao
  * @date Dec 24, 2013 2:22:18 PM
- *
+ * 
  */
 @Remote
 @Stateless
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+// @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class AuthDataServiceImpl implements AuthDataService {
-	
+
 	@Override
 	public List<String> getAttributes(String res) {
-		return retrieveResourceAndRoles().get(res);
+		return IdentityResourceAuthorization.findAuthorizationByResourceIdentifier(res);
 	}
-	
+
 	private Map<String, List<String>> retrieveResourceAndRoles() {
 		Map<String, List<String>> result = new HashMap<String, List<String>>();
 		for (IdentityResourceAuthorization each : IdentityResourceAuthorization.findAllReourcesAndRoles()) {
@@ -50,21 +51,21 @@ public class AuthDataServiceImpl implements AuthDataService {
 
 	@Override
 	public UserDetails loadUserByUseraccount(String useraccount) {
-		
+
 		User user = User.findByUserAccount(useraccount);
-		
+
 		if (user == null) {
 			user = User.findByEmail(useraccount);
 		}
-		
+
 		if (user == null) {
-			throw new UseraccountNotExistException(String.format("%s is not existed.", useraccount)); 
+			throw new UseraccountNotExistException(String.format("%s is not existed.", useraccount));
 		}
-		
-		return getUserDetails(user.getUserAccount(), user.getUserPassword(), user.getUserDesc(),
-				user.getEmail(), user.getName(), user.getName(), user.isValid(), user.isSuper());
+
+		return getUserDetails(user.getUserAccount(), user.getUserPassword(), user.getUserDesc(), user.getEmail(), user.getName(), user.getName(),
+				user.isValid(), user.isSuper());
 	}
-	
+
 	@Override
 	public List<String> getUserRoles(String accountName) {
 		if (isSuperUser(accountName)) {
@@ -78,7 +79,7 @@ public class AuthDataServiceImpl implements AuthDataService {
 	}
 
 	private List<String> findRoleByUseraccount(String accountName) {
-		List<String> results = new ArrayList<String>(); 
+		List<String> results = new ArrayList<String>();
 		for (Role each : Role.findRoleByUserAccount(accountName)) {
 			results.add(String.valueOf(each.getId()));
 		}
@@ -97,9 +98,9 @@ public class AuthDataServiceImpl implements AuthDataService {
 	public Map<String, List<String>> getAllReourceAndRoles() {
 		return retrieveResourceAndRoles();
 	}
-	
-	private DefaultUserDetailsImpl getUserDetails(String useraccount, String password, String desc, 
-			String email, String name, String realName, boolean isValid, boolean isSuper) {
+
+	private DefaultUserDetailsImpl getUserDetails(String useraccount, String password, String desc, String email, String name, String realName,
+			boolean isValid, boolean isSuper) {
 		DefaultUserDetailsImpl userDetails = new DefaultUserDetailsImpl();
 		userDetails.setUseraccount(useraccount);
 		userDetails.setPassword(password);

@@ -18,4 +18,11 @@
 		</query>
 	</named-query>
 	
+	<named-query name="findAuthorizationByResourceIdentifier">
+		<query>
+			select auth.identity.id from IdentityResourceAuthorization auth 
+			where auth.resource.identifier=:identifier and auth.abolishDate>:abolishDate
+		</query>
+	</named-query>
+	
 </entity-mappings>

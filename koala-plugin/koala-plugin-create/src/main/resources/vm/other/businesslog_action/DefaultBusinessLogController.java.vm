@@ -23,14 +23,9 @@ public class DefaultBusinessLogController {
 
     @ResponseBody
     @RequestMapping("/list")
-    public Map<String, Object> pageJson(DefaultBusinessLogDTO defaultBusinessLogDTO,
+    public Page pageJson(DefaultBusinessLogDTO defaultBusinessLogDTO,
                                         @RequestParam int page, @RequestParam int pagesize) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        Page<DefaultBusinessLogDTO> all = getBusinessLogApplication().pageQueryDefaultBusinessLog(defaultBusinessLogDTO, page, pagesize);
-        result.put("Rows", all.getData());
-        result.put("start", all.getStart());
-        result.put("limit", pagesize);
-        result.put("Total", all.getResultCount());
+        Page<DefaultBusinessLogDTO> result = getBusinessLogApplication().pageQueryDefaultBusinessLog(defaultBusinessLogDTO, page, pagesize);
         return result;
     }
 

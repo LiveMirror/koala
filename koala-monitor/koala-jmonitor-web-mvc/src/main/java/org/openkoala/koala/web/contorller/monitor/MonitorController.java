@@ -27,6 +27,7 @@ import org.openkoala.koala.monitor.model.MonitorNodeVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 @Controller
 @RequestMapping("/monitor/Monitor")
 public class MonitorController {
@@ -40,7 +41,7 @@ public class MonitorController {
 	@ResponseBody
 	@RequestMapping("/queryAllNodes")
 	public final Map<String, Object> queryAllNodes() {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		List<MonitorNodeVo> nodes = monitorNodeManageApplication.getAllNodes();
 		dataMap.put("Rows", nodes);
 		return dataMap;
@@ -54,12 +55,11 @@ public class MonitorController {
 	@ResponseBody
 	@RequestMapping("/httpMonitorCount")
 	public final Map<String, Object> httpMonitorCount(HttpServletRequest request) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		// 把页面参数封装成MainStatVo
 		MainStatVo mainStatVo = this.packagingMainStatVoForHttpCount(request);
 
-		List<CountVo> countVoList = monitorDataManageApplication
-				.getHttpMonitorCount(mainStatVo);
+		List<CountVo> countVoList = monitorDataManageApplication.getHttpMonitorCount(mainStatVo);
 		dataMap.put("Rows", countVoList);
 		dataMap.put("queryTime", mainStatVo.getBeginTimeStr());
 		return dataMap;
@@ -72,36 +72,21 @@ public class MonitorController {
 	 */
 	@ResponseBody
 	@RequestMapping("/methodMonitorCount")
-	public final Map<String, Object> methodMonitorCount(HttpServletRequest request,Integer page,Integer pagesize) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public final Page methodMonitorCount(HttpServletRequest request, Integer page, Integer pagesize) {
 		Page<CountVo> result = null;
 		MainStatVo mainStatVo = this.packagingMainStatVoForMethodCount(request);
 
 		// 方法统计类型
 		String methodCountType = request.getParameter("methodCountType");
 		// 默认统计方法调用次数
-		if (StringUtils.isEmpty(methodCountType)
-				|| Constant.COUNT_METHOD_COUNT.equals(methodCountType)) {
-			result = monitorDataManageApplication.pageGetMethodMonitorCount(
-					page, pagesize, mainStatVo);
-		} else if (Constant.COUNT_METHOD_AVG_TIME_CONSUME
-				.equals(methodCountType)) {
-			result = monitorDataManageApplication
-					.pageGetMethodMonitorAvgTimeConsume(page,
-							pagesize, mainStatVo);
+		if (StringUtils.isEmpty(methodCountType) || Constant.COUNT_METHOD_COUNT.equals(methodCountType)) {
+			result = monitorDataManageApplication.pageGetMethodMonitorCount(page, pagesize, mainStatVo);
+		} else if (Constant.COUNT_METHOD_AVG_TIME_CONSUME.equals(methodCountType)) {
+			result = monitorDataManageApplication.pageGetMethodMonitorAvgTimeConsume(page, pagesize, mainStatVo);
 		} else if (Constant.COUNT_METHOD_EXCEPTIONS.equals(methodCountType)) {
-			result = monitorDataManageApplication
-					.pageGetMethodMonitorExceptionCount(page,
-							pagesize, mainStatVo);
+			result = monitorDataManageApplication.pageGetMethodMonitorExceptionCount(page, pagesize, mainStatVo);
 		}
-
-		dataMap.put("Rows", result.getData());
-		dataMap.put("start", result.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getResultCount());
-		dataMap.put("timeStart", mainStatVo.getBeginTimeStr());
-		dataMap.put("timeEnd", mainStatVo.getEndTimeStr());
-		return dataMap;
+		return result;
 	}
 
 	/**
@@ -111,16 +96,10 @@ public class MonitorController {
 	 */
 	@ResponseBody
 	@RequestMapping("/httpMonitorDetail")
-	public final Map<String, Object> httpMonitorDetail(HttpServletRequest request,int page,int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		Page<HttpDetailsVo> result = monitorDataManageApplication
-				.pageGetHttpMonitorDetails(page,pagesize,
-						this.packagingHttpDetailsVo(request));
-		dataMap.put("Rows", result.getData());
-		dataMap.put("start", result.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getResultCount());
-		return dataMap;
+	public final Page httpMonitorDetail(HttpServletRequest request, int page, int pagesize) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Page<HttpDetailsVo> result = monitorDataManageApplication.pageGetHttpMonitorDetails(page, pagesize, this.packagingHttpDetailsVo(request));
+		return result;
 	}
 
 	/**
@@ -130,16 +109,9 @@ public class MonitorController {
 	 */
 	@ResponseBody
 	@RequestMapping("/methodMonitorDetail")
-	public final Map<String, Object> methodMonitorDetail(HttpServletRequest request,int page,int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		Page<MethodDetailsVo> result = monitorDataManageApplication
-				.pageGetMethodMonitorDetails(page,pagesize,
-						this.packagingMethodDetailsVo(request));
-		dataMap.put("Rows", result.getData());
-		dataMap.put("start", result.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getResultCount());
-		return dataMap;
+	public final Page methodMonitorDetail(HttpServletRequest request, int page, int pagesize) {
+		Page<MethodDetailsVo> result = monitorDataManageApplication.pageGetMethodMonitorDetails(page, pagesize, this.packagingMethodDetailsVo(request));
+		return result;
 	}
 
 	/**
@@ -150,9 +122,8 @@ public class MonitorController {
 	@ResponseBody
 	@RequestMapping("/poolMonitorDetail")
 	public final Map<String, Object> poolMonitorDetail(HttpServletRequest request) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		Map<String, JdbcPoolStatusVo> map = monitorNodeManageApplication
-				.getJdbcPoolStatus(request.getParameter("nodeId"));
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, JdbcPoolStatusVo> map = monitorNodeManageApplication.getJdbcPoolStatus(request.getParameter("nodeId"));
 		dataMap.put("pools", map);
 		return dataMap;
 	}
@@ -164,16 +135,9 @@ public class MonitorController {
 	 */
 	@ResponseBody
 	@RequestMapping("/sqlsMonitorDetail")
-	public final Map<String, Object> sqlsMonitorDetail(HttpServletRequest request,int page,int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		Page<JdbcStatementDetailsVo> result = monitorDataManageApplication
-				.getSqlsMonitorDetails(page, pagesize,
-						this.packagingJdbcStatementDetailsVo(request));
-		dataMap.put("Rows", result.getData());
-		dataMap.put("start", result.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getResultCount());
-		return dataMap;
+	public final Page sqlsMonitorDetail(HttpServletRequest request, int page, int pagesize) {
+		Page<JdbcStatementDetailsVo> result = monitorDataManageApplication.getSqlsMonitorDetails(page, pagesize, this.packagingJdbcStatementDetailsVo(request));
+		return result;
 	}
 
 	/**
@@ -183,9 +147,7 @@ public class MonitorController {
 	 */
 	@RequestMapping("/stackTracesDetail")
 	public final String stackTracesDetail(HttpServletRequest request) {
-		List<String> stackTraces = monitorDataManageApplication
-				.getStackTracesDetails(request.getParameter("monitorType"),
-						request.getParameter("detailsId"));
+		List<String> stackTraces = monitorDataManageApplication.getStackTracesDetails(request.getParameter("monitorType"), request.getParameter("detailsId"));
 		request.setAttribute("stackTraces", stackTraces);
 		return "monitor/Monitor_stackTracesDetail";
 	}
@@ -197,10 +159,9 @@ public class MonitorController {
 	 */
 	@ResponseBody
 	@RequestMapping("/jdbcTimeStat")
-	public Map<String, Object> jdbcTimeStat(HttpServletRequest request,String nodeId) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		Map<Integer, Integer> stat = monitorDataManageApplication
-				.getJdbcConnTimeStat(nodeId, Long.parseLong(request.getParameter("limit")));
+	public Map<String, Object> jdbcTimeStat(HttpServletRequest request, String nodeId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<Integer, Integer> stat = monitorDataManageApplication.getJdbcConnTimeStat(nodeId, Long.parseLong(request.getParameter("limit")));
 		Set<Integer> keySet = stat.keySet();
 
 		StringBuffer x = new StringBuffer();
@@ -221,8 +182,7 @@ public class MonitorController {
 	 * @param request
 	 * @return
 	 */
-	private final MainStatVo packagingMainStatVoForHttpCount(
-			HttpServletRequest request) {
+	private final MainStatVo packagingMainStatVoForHttpCount(HttpServletRequest request) {
 
 		MainStatVo mainStatVo = new MainStatVo();
 
@@ -246,8 +206,7 @@ public class MonitorController {
 	 * @param request
 	 * @return
 	 */
-	private MainStatVo packagingMainStatVoForMethodCount(
-			HttpServletRequest request) {
+	private MainStatVo packagingMainStatVoForMethodCount(HttpServletRequest request) {
 
 		String timeStart = request.getParameter("timeStart");
 		String timeEnd = request.getParameter("timeEnd");
@@ -308,10 +267,10 @@ public class MonitorController {
 
 		String timeStart = request.getParameter("timeStart");
 		String timeEnd = request.getParameter("timeEnd");
-		if(StringUtils.isNotBlank(timeStart)){
+		if (StringUtils.isNotBlank(timeStart)) {
 			methodDetailsVo.setBeginTime(KoalaDateUtils.parseDate(timeStart));
 		}
-		if(StringUtils.isNotBlank(timeEnd)){
+		if (StringUtils.isNotBlank(timeEnd)) {
 			methodDetailsVo.setEndTime(KoalaDateUtils.parseDate(timeEnd));
 		}
 		methodDetailsVo.setSortname(request.getParameter("sortname"));
@@ -328,12 +287,10 @@ public class MonitorController {
 	 * @param request
 	 * @return
 	 */
-	
-	private JdbcStatementDetailsVo packagingJdbcStatementDetailsVo(
-			HttpServletRequest request) {
+
+	private JdbcStatementDetailsVo packagingJdbcStatementDetailsVo(HttpServletRequest request) {
 		JdbcStatementDetailsVo sqlDetailsVo = new JdbcStatementDetailsVo();
-		sqlDetailsVo.setMethodId(Long.parseLong(request
-				.getParameter("methodId")));
+		sqlDetailsVo.setMethodId(Long.parseLong(request.getParameter("methodId")));
 		sqlDetailsVo.setSortname(request.getParameter("sortname"));
 		sqlDetailsVo.setSortorder(request.getParameter("sortorder"));
 		return sqlDetailsVo;

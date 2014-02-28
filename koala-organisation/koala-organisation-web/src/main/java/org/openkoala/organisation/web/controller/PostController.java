@@ -45,15 +45,10 @@ public class PostController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Map<String, Object> pagingQuery(int page, int pagesize, PostDTO post) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public Page pagingQuery(int page, int pagesize, PostDTO post) {
 		Page<PostDTO> posts = postApplication.pagingQueryPosts(post, page, pagesize);
 
-		dataMap.put("Rows", posts.getData());
-		dataMap.put("start", posts.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", posts.getResultCount());
-		return dataMap;
+		return posts;
 	}
 
 	/**
@@ -118,16 +113,10 @@ public class PostController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping("/paging-query-post-by-org")
-	public Map<String, Object> pagingQueryPostsOfOrganization(Long organizationId, PostDTO example, int page, int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public Page pagingQueryPostsOfOrganization(Long organizationId, PostDTO example, int page, int pagesize) {
 		Organization organization = getBaseApplication().getEntity(Organization.class, organizationId);
 		Page<PostDTO> posts = postApplication.pagingQueryPostsOfOrganizatoin(organization, example, page, pagesize);
-
-		dataMap.put("Rows", posts.getData());
-		dataMap.put("start", posts.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", posts.getResultCount());
-		return dataMap;
+		return posts;
 	}
 
 	/**

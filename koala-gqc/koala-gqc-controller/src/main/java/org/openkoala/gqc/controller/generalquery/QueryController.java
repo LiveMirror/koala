@@ -76,10 +76,9 @@ public class QueryController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping("/search/{id}")
-	public Map<String, Object> search(@PathVariable Long id, @RequestParam int page,
+	public Page search(@PathVariable Long id, @RequestParam int page,
 			@RequestParam int pagesize, HttpServletRequest request) {
 		GeneralQuery generalQuery = gqcApplication.getById(id);
-		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, Object[]> params = request.getParameterMap();
 		String startValueTag = "Start@";
 		String endValueTag = "End@";
@@ -116,11 +115,7 @@ public class QueryController {
 		
 		Page<Map<String, Object>> data = gqcApplication.pagingQuery(generalQuery, page, pagesize);
 
-		result.put("Rows", data.getData());
-		result.put("start", data.getStart());
-		result.put("limit", pagesize);
-		result.put("Total", data.getResultCount());
-		return result;
+		return data;
 	}
 
 }

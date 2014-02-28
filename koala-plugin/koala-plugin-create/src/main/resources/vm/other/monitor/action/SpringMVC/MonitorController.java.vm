@@ -72,8 +72,7 @@ public class MonitorController {
 	 */
 	@ResponseBody
 	@RequestMapping("/methodMonitorCount")
-	public final Map<String, Object> methodMonitorCount(HttpServletRequest request,Integer page,Integer pagesize) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public final Page methodMonitorCount(HttpServletRequest request,Integer page,Integer pagesize) {
 		Page<CountVo> result = null;
 		MainStatVo mainStatVo = this.packagingMainStatVoForMethodCount(request);
 
@@ -95,13 +94,7 @@ public class MonitorController {
 							pagesize, mainStatVo);
 		}
 
-		dataMap.put("Rows", result.getData());
-		dataMap.put("start", result.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getResultCount());
-		dataMap.put("timeStart", mainStatVo.getBeginTimeStr());
-		dataMap.put("timeEnd", mainStatVo.getEndTimeStr());
-		return dataMap;
+		return result;
 	}
 
 	/**
@@ -111,16 +104,11 @@ public class MonitorController {
 	 */
 	@ResponseBody
 	@RequestMapping("/httpMonitorDetail")
-	public final Map<String, Object> httpMonitorDetail(HttpServletRequest request,int page,int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public final Page httpMonitorDetail(HttpServletRequest request,int page,int pagesize) {
 		Page<HttpDetailsVo> result = monitorDataManageApplication
 				.pageGetHttpMonitorDetails(page,pagesize,
 						this.packagingHttpDetailsVo(request));
-		dataMap.put("Rows", result.getData());
-		dataMap.put("start", result.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getResultCount());
-		return dataMap;
+		return result;
 	}
 
 	/**
@@ -130,16 +118,11 @@ public class MonitorController {
 	 */
 	@ResponseBody
 	@RequestMapping("/methodMonitorDetail")
-	public final Map<String, Object> methodMonitorDetail(HttpServletRequest request,int page,int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public final Page methodMonitorDetail(HttpServletRequest request,int page,int pagesize) {
 		Page<MethodDetailsVo> result = monitorDataManageApplication
 				.pageGetMethodMonitorDetails(page,pagesize,
 						this.packagingMethodDetailsVo(request));
-		dataMap.put("Rows", result.getData());
-		dataMap.put("start", result.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getResultCount());
-		return dataMap;
+		return result;
 	}
 
 	/**
@@ -164,16 +147,11 @@ public class MonitorController {
 	 */
 	@ResponseBody
 	@RequestMapping("/sqlsMonitorDetail")
-	public final Map<String, Object> sqlsMonitorDetail(HttpServletRequest request,int page,int pagesize) {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public final Page sqlsMonitorDetail(HttpServletRequest request,int page,int pagesize) {
 		Page<JdbcStatementDetailsVo> result = monitorDataManageApplication
 				.getSqlsMonitorDetails(page, pagesize,
 						this.packagingJdbcStatementDetailsVo(request));
-		dataMap.put("Rows", result.getData());
-		dataMap.put("start", result.getStart());
-		dataMap.put("limit", pagesize);
-		dataMap.put("Total", result.getResultCount());
-		return dataMap;
+		return result;
 	}
 
 	/**
