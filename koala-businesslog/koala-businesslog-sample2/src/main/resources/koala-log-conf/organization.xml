@@ -2,19 +2,23 @@
 <businessLogConfigs>
     <businessLogConfig>
         <category>机构管理</category>
-        <method>Company
-            org.openkoala.organisation.application.impl.OrganizationApplicationImpl.createCompany(Company,Company)
-        </method>
+        <method>OrganizationApplicationImpl.createAsTopOrganization</method>
         <template>
-            <![CDATA[用户${_user} 创建机构]]></template>
+            <![CDATA[创建机构]]></template>
+    </businessLogConfig>
+    <businessLogConfig>
+        <category>机构管理</category>
+        <method>OrganizationApplicationImpl.createCompany</method>
+        <template>
+            <![CDATA[创建公司:${_param1.name}]]></template>
     </businessLogConfig>
 
 
     <businessLogConfig>
         <category>机构管理</category>
-        <method>OrganizationDTO org.openkoala.organisation.application.impl.OrganizationApplicationImpl.getOrganizationTree()</method>
+        <method>OrganizationApplicationImpl.assignChildOrganization</method>
         <template>
-            <![CDATA[查询机构 ${_methodReturn.toString()} +++  ${_user}]]></template>
+            <![CDATA[分配子机构{}到{}]]></template>
     </businessLogConfig>
 
 
