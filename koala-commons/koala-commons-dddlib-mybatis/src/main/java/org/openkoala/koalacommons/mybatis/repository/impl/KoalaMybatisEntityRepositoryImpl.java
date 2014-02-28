@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.dayatang.domain.ArrayParameters;
+import org.dayatang.domain.PositionalParameters;
 import org.dayatang.domain.Entity;
-import org.dayatang.domain.MapParameters;
+import org.dayatang.domain.NamedParameters;
 import org.dayatang.domain.QueryParameters;
 import org.openkoala.koalacommons.mybatis.MybatisEntityRepository;
 import org.openkoala.koalacommons.mybatis.repository.MybatisNamedQuery;
@@ -72,7 +72,7 @@ public class KoalaMybatisEntityRepositoryImpl implements MybatisEntityRepository
 	}
 
     @Override
-    public <T extends Entity> T getByBusinessKeys(Class<T> clazz, MapParameters keyValues) {
+    public <T extends Entity> T getByBusinessKeys(Class<T> clazz, NamedParameters keyValues) {
         return null;
     }
 
@@ -136,12 +136,12 @@ public class KoalaMybatisEntityRepositoryImpl implements MybatisEntityRepository
 		QueryParameters params = namedQuery.getParameters();
 		Map<String, Object> paramMap = null;
 		paramMap = new HashMap<String,Object>();
-        if (params instanceof ArrayParameters) {
-            Object[] paramArray = ((ArrayParameters) params).getParams();
+        if (params instanceof PositionalParameters) {
+            Object[] paramArray = ((PositionalParameters) params).getParams();
             
             paramMap.put("params", paramArray);
-        } else if (params instanceof MapParameters) {
-            paramMap.putAll(((MapParameters) params).getParams());
+        } else if (params instanceof NamedParameters) {
+            paramMap.putAll(((NamedParameters) params).getParams());
         } else {
             throw new UnsupportedOperationException("不支持的参数形式");
         }

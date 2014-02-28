@@ -106,9 +106,4 @@ public class EhCacheImpl implements org.dayatang.cache.Cache  {
 			CacheManager.getInstance().addCache(cache);
 		}
 	}
-
-	@Override
-	public boolean isKeyInCache(String key) {
-		return cache.isKeyInCache(key);
-	}
 }
