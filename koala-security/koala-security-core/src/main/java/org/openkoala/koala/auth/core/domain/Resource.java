@@ -30,31 +30,30 @@ public class Resource extends Party {
 	private static final long serialVersionUID = 7184025731035256920L;
 
 	/** 是否有效 **/
-	
+
 	private boolean isValid;
 
 	/** 资源标识 **/
-	
+
 	private String identifier;
 
 	/** 资源级别 **/
-	
+
 	private String level;
 
 	/** 资源图标 **/
-	
+
 	private String menuIcon;
 
 	/** 资源描述 **/
-	
+
 	private String desc;
 
 	/** 角色资源授权关系 **/
 	private Set<IdentityResourceAuthorization> authorizations = new HashSet<IdentityResourceAuthorization>();
-	
-	
+
 	private Resource parent;
-	
+
 	@Transient
 	public Resource getParent() {
 		return parent;
@@ -73,7 +72,6 @@ public class Resource extends Party {
 		this.children.add(child);
 	}
 
-	
 	private List<Resource> children = new ArrayList<Resource>();
 
 	@Column(name = "IDENTIFIER", nullable = false)
@@ -85,7 +83,6 @@ public class Resource extends Party {
 		this.identifier = identifier;
 	}
 
-	
 	@Column(name = "[LEVEL]")
 	public String getLevel() {
 		return level;
@@ -149,6 +146,7 @@ public class Resource extends Party {
 
 	/**
 	 * 为资源分配角色
+	 * 
 	 * @param role
 	 */
 	public void assignRole(Role role) {
@@ -163,6 +161,7 @@ public class Resource extends Party {
 
 	/**
 	 * 根据角色ID查找资源
+	 * 
 	 * @param roleId
 	 * @return
 	 */
@@ -172,18 +171,20 @@ public class Resource extends Party {
 
 	/**
 	 * 根据父资源ID查找子资源
+	 * 
 	 * @param parentId
 	 * @return
 	 */
 	public static List<Resource> findChildByParent(Long parentId) {
 		if (parentId == null) {
 			return getRepository().createNamedQuery("findTopLevelResource").addParameter("abolishDate", new Date()).list();
-		} 
+		}
 		return getRepository().createNamedQuery("findChildByParent").addParameter("parentId", parentId).addParameter("abolishDate", new Date()).list();
 	}
 
 	/**
 	 * 根据父资源ID和用户账号查找子资源
+	 * 
 	 * @param parentId
 	 * @param userAccount
 	 * @return
@@ -191,14 +192,16 @@ public class Resource extends Party {
 	public static List<Resource> findChildByParentAndUser(Long parentId, String userAccount) {
 		if (parentId == null) {
 			if ("".equals(userAccount)) {
-				return getRepository().createNamedQuery("findTopLevelResource").addParameter("abolishDate",  new Date() ).list();
+				return getRepository().createNamedQuery("findTopLevelResource").addParameter("abolishDate", new Date()).list();
 			}
-			return getRepository().createNamedQuery("findTopLevelResourceByUser").addParameter("userAccount", userAccount).addParameter("roleUserAuthorizationAbolishDate", new Date()).addParameter("identityResourceAuthorizationAbolishDate", new Date()).list();
+			return getRepository().createNamedQuery("findTopLevelResourceByUser").addParameter("userAccount", userAccount)
+					.addParameter("roleUserAuthorizationAbolishDate", new Date()).addParameter("identityResourceAuthorizationAbolishDate", new Date()).list();
 		} else {
 			if ("".equals(userAccount)) {
 				return getRepository().createNamedQuery("findChildByParent").addParameter("parentId", parentId).addParameter("abolishDate", new Date()).list();
-			} 
-			return getRepository().createNamedQuery("findChildByParentAndUser").addParameter("parentId", parentId).addParameter("userAccount", userAccount).addParameter("identityResourceAuthorizationAbolishDate", new Date()).addParameter("roleUserAuthorizationAbolishDate", new Date()).list();
+			}
+			return getRepository().createNamedQuery("findChildByParentAndUser").addParameter("parentId", parentId).addParameter("userAccount", userAccount)
+					.addParameter("identityResourceAuthorizationAbolishDate", new Date()).addParameter("roleUserAuthorizationAbolishDate", new Date()).list();
 		}
 	}
 
@@ -213,7 +216,7 @@ public class Resource extends Party {
 	}
 
 	/**
-	 * 删除与资源类型的关系 
+	 * 删除与资源类型的关系
 	 */
 	private void removeResourceTypeAssignment() {
 		ResourceTypeAssignment.findByResource(this.getId()).setAbolishDate(new Date());
@@ -244,6 +247,7 @@ public class Resource extends Party {
 
 	/**
 	 * 为资源分配父资源
+	 * 
 	 * @param parent
 	 */
 	public void assignParent(Resource parent) {
@@ -258,6 +262,7 @@ public class Resource extends Party {
 
 	/**
 	 * 为资源分配子资源
+	 * 
 	 * @param child
 	 */
 	public void assignChild(Resource child) {
@@ -272,6 +277,7 @@ public class Resource extends Party {
 
 	/**
 	 * 根据资源标识符查找角色
+	 * 
 	 * @param identifier
 	 * @return
 	 */
@@ -281,6 +287,7 @@ public class Resource extends Party {
 
 	/**
 	 * 判断一个角色是否有权限访问某一个资源
+	 * 
 	 * @param resId
 	 * @param roleId
 	 * @return
@@ -288,18 +295,30 @@ public class Resource extends Party {
 	public static boolean hasPrivilegeByRole(Long resId, Long roleId) {
 		List<IdentityResourceAuthorization> ls = getRepository().createNamedQuery("queryPrivilegeByRole").addParameter("resId", resId)
 				.addParameter("roleId", roleId).addParameter("abolishDate", new Date()).list();
-				
+
 		return !ls.isEmpty();
 	}
 
 	/**
+	 * 获得角色所有有权限访问资源标识
+	 * 
+	 * @param roleId
+	 * @return
+	 */
+	public static List<Long> listPrivilegeByRole(Long roleId) {
+		List<Long> list = getRepository().createNamedQuery("listPrivilegeByRole").addParameter("roleId", roleId).addParameter("abolishDate", new Date()).list();
+		return list;
+	}
+
+	/**
 	 * 判断用户是否有权限
+	 * 
 	 * @param identifier
 	 * @param userAccount
 	 * @return
 	 */
 	public static boolean hasPrivilegeByUser(String identifier, String userAccount) {
-		
+
 		List<IdentityResourceAuthorization> ls = getRepository().createNamedQuery("queryPrivilegeByUser").addParameter("identifier", identifier)
 				.addParameter("userAccount", userAccount).list();
 		return !ls.isEmpty();
@@ -307,6 +326,7 @@ public class Resource extends Party {
 
 	/**
 	 * 判断一个资源是否有子资源
+	 * 
 	 * @param parentId
 	 * @return
 	 */
@@ -321,7 +341,7 @@ public class Resource extends Party {
 	 * @return
 	 */
 	public static boolean isMenu(Resource resource) {
-		
+
 		List<Resource> resources = getRepository().createNamedQuery("findResourceById").addParameter("name1", "KOALA_MENU")
 				.addParameter("name2", "KOALA_DIRETORY").addParameter("id", resource.getId()).list();
 		if (resources != null && !resources.isEmpty()) {
@@ -329,38 +349,42 @@ public class Resource extends Party {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 创建资源
-	 * @param name			资源名称
-	 * @param identifier	资源标识
-	 * @param level			级别
-	 * @param menuIcon		菜单图标
+	 * 
+	 * @param name
+	 *            资源名称
+	 * @param identifier
+	 *            资源标识
+	 * @param level
+	 *            级别
+	 * @param menuIcon
+	 *            菜单图标
 	 * @return
 	 */
 	public static Resource newResource(String name, String identifier, String level, String menuIcon) {
-	    Resource resource  = null;
-	    String jpql = "select r from Resource r where r.name =:name " + //
-	    		"and r.identifier = :identifier";
-	    
-	    List<Resource> resources = getRepository().createJpqlQuery(jpql).addParameter("name", name)
-	    		.addParameter("identifier", identifier).list();
-	    if (resources!=null && resources.size()>0){
-	        resource = resources.get(0);
-	    }
-	    
-	    if (resource == null) {
-	        resource = new Resource();
-		    resource.setName(name);
-		    resource.setDesc(name);
-		    resource.setCreateDate(new Date());
-		    resource.setIdentifier(identifier);
-		    resource.setLevel(level);
-		    resource.setMenuIcon(menuIcon);
-		    resource.setValid(true);
-		    resource.setAbolishDate(DateUtils.MAX_DATE);
-	    }
-	    return resource;
+		Resource resource = null;
+		String jpql = "select r from Resource r where r.name =:name " + //
+				"and r.identifier = :identifier";
+
+		List<Resource> resources = getRepository().createJpqlQuery(jpql).addParameter("name", name).addParameter("identifier", identifier).list();
+		if (resources != null && resources.size() > 0) {
+			resource = resources.get(0);
+		}
+
+		if (resource == null) {
+			resource = new Resource();
+			resource.setName(name);
+			resource.setDesc(name);
+			resource.setCreateDate(new Date());
+			resource.setIdentifier(identifier);
+			resource.setLevel(level);
+			resource.setMenuIcon(menuIcon);
+			resource.setValid(true);
+			resource.setAbolishDate(DateUtils.MAX_DATE);
+		}
+		return resource;
 	}
 
 	/**
@@ -370,14 +394,13 @@ public class Resource extends Party {
 	 */
 	@Transient
 	public boolean isNameExist() {
-		return !getRepository().createNamedQuery("isResouceNameExist").addParameter("name", getName())
-				.addParameter("abolishDate", new Date()).list().isEmpty();
+		return !getRepository().createNamedQuery("isResouceNameExist").addParameter("name", getName()).addParameter("abolishDate", new Date()).list().isEmpty();
 	}
-	
+
 	/**
 	 * 删除所有资源
 	 */
-	public static void removeAll(){
+	public static void removeAll() {
 		String sql = "DELETE FROM KS_RESOURCE";
 		getRepository().createSqlQuery(sql).executeUpdate();
 	}
@@ -389,15 +412,16 @@ public class Resource extends Party {
 	 */
 	@Transient
 	public boolean isIdentifierExist() {
-		return !getRepository().createNamedQuery("isResourceIdentifierExist").addParameter("abolishDate", new Date()).addParameter("identifier", getIdentifier() ).list().isEmpty();
+		return !getRepository().createNamedQuery("isResourceIdentifierExist").addParameter("abolishDate", new Date())
+				.addParameter("identifier", getIdentifier()).list().isEmpty();
 	}
-	
+
 	public static List<Resource> getRootResources() {
 		List<Resource> results = new ArrayList<Resource>();
 		List<Resource> all = Resource.findAll(Resource.class);
 		List<Resource> hasParent = hasParent();
 		all.removeAll(hasParent);
-		
+
 		Map<Long, Resource> map = new HashMap<Long, Resource>();
 		for (ResourceLineAssignment each : ResourceLineAssignment.findAllResourceLine()) {
 			Resource parent = map.get(each.getParent().getId());
@@ -405,12 +429,12 @@ public class Resource extends Party {
 				parent = each.getParent();
 				map.put(parent.getId(), parent);
 			}
-			Resource child = map.get( each.getChild().getId());
+			Resource child = map.get(each.getChild().getId());
 			if (child == null) {
 				child = each.getChild();
 				map.put(child.getId(), child);
 			}
-			
+
 			parent.addChild(child);
 			if (all.contains(parent)) {
 				results.add(parent);
@@ -419,13 +443,10 @@ public class Resource extends Party {
 		return results;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Resource [isValid=" + isValid + ", identifier=" + identifier
-				+ ", level=" + level + ", menuIcon=" + menuIcon + ", desc="
-				+ desc + ", authorizations=" + authorizations + ", parent="
-				+ parent + ", children=" + children + "]";
+		return "Resource [isValid=" + isValid + ", identifier=" + identifier + ", level=" + level + ", menuIcon=" + menuIcon + ", desc=" + desc
+				+ ", authorizations=" + authorizations + ", parent=" + parent + ", children=" + children + "]";
 	}
 
 	public static List<Resource> hasParent() {
@@ -434,15 +455,14 @@ public class Resource extends Party {
 
 	@Override
 	public String[] businessKeys() {
-		return new String[]{identifier};
+		return new String[] { identifier };
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((getName() == null) ? 0 : getName().hashCode());
+		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
 		result = prime * result + ((getAbolishDate() == null) ? 0 : getAbolishDate().hashCode());
 		return result;
 	}
@@ -468,6 +488,5 @@ public class Resource extends Party {
 			return false;
 		return true;
 	}
-	
 
 }

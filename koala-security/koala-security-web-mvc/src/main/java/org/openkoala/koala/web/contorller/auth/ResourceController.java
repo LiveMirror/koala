@@ -1,7 +1,7 @@
 package org.openkoala.koala.web.contorller.auth;
 
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -25,7 +25,7 @@ public class ResourceController {
 
 	@Inject
 	private ResourceTypeApplication resourceTypeApplication;
-	
+
 	@RequestMapping("/list")
 	public String list() {
 		return "auth/Resource-list";
@@ -45,9 +45,9 @@ public class ResourceController {
 
 	@ResponseBody
 	@RequestMapping("/add")
-	public Map<String,Object> add(ParamsPojo params) {
+	public Map<String, Object> add(ParamsPojo params) {
 		ResourceVO resourceVO = params.getResourceVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		resourceApplication.saveResource(resourceVO);
 		CacheUtil.refreshUrlAttributes(resourceVO.getIdentifier());
 		dataMap.put("result", "success");
@@ -56,10 +56,10 @@ public class ResourceController {
 
 	@ResponseBody
 	@RequestMapping("/addAndAssignParent")
-	public Map<String,Object> addAndAssignParent(ParamsPojo params) {
+	public Map<String, Object> addAndAssignParent(ParamsPojo params) {
 		ResourceVO childVO = params.getChildVO();
 		ResourceVO parentVO = params.getParentVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		resourceApplication.saveAndAssignParent(childVO, parentVO);
 		CacheUtil.refreshUrlAttributes(childVO.getIdentifier());
 		dataMap.put("result", "success");
@@ -68,9 +68,9 @@ public class ResourceController {
 
 	@ResponseBody
 	@RequestMapping("/del")
-	public Map<String,Object> del(ParamsPojo params) {
-		ResourceVO resourceVO =params.getResourceVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public Map<String, Object> del(ParamsPojo params) {
+		ResourceVO resourceVO = params.getResourceVO();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		resourceApplication.removeResource(resourceVO.getId());
 		CacheUtil.refreshUrlAttributes(resourceVO.getIdentifier());
 		dataMap.put("result", "success");
@@ -84,9 +84,9 @@ public class ResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public Map<String,Object> update(ParamsPojo params) {
+	public Map<String, Object> update(ParamsPojo params) {
 		ResourceVO resourceVO = params.getResourceVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		resourceApplication.updateResource(resourceVO);
 		CacheUtil.refreshUrlAttributes(resourceVO.getIdentifier());
 		dataMap.put("result", "success");
@@ -100,24 +100,23 @@ public class ResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/findAllReourceTree")
-	public Map<String,Object> findAllReourceTree() {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		dataMap.put("Rows", resourceApplication.findResourceTree());
-		return dataMap;
+	public Page findAllReourceTree() {
+		List<ResourceVO> list = resourceApplication.findResourceTree();
+		return new Page(0, list.size(), list);
 	}
 
 	@ResponseBody
 	@RequestMapping("/findAllResourceType")
-	public Map<String,Object> findAllResourceType() {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public Map<String, Object> findAllResourceType() {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("data", resourceTypeApplication.findResourceType());
 		return dataMap;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/isResourceEmpty")
-	public Map<String,Object> isResourceEmpty() {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public Map<String, Object> isResourceEmpty() {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("result", resourceApplication.isResourceEmpty());
 		return dataMap;
 	}

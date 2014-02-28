@@ -237,8 +237,8 @@ public class SvnCISClient implements CISClient {
      */
     private boolean commitToServer(Project project){
     	LocalCommand cmdCheckout = new SvnLocalCheckoutCommand(configuration, project,koalaDeveloper);
-    	LocalCommand cmdAdd = new SvnLocalAddCommand(configuration, project);
-    	LocalCommand cmdSubmit = new SvnLocalCommitCommand(configuration, project);
+    	LocalCommand cmdAdd = new SvnLocalAddCommand(configuration, project,koalaDeveloper);
+    	LocalCommand cmdSubmit = new SvnLocalCommitCommand(configuration, project,koalaDeveloper);
     	try {
 			executor.addCommand(cmdCheckout);
 			executor.addCommand(cmdAdd);
