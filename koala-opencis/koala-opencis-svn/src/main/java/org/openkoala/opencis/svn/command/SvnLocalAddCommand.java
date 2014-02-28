@@ -1,5 +1,6 @@
 package org.openkoala.opencis.svn.command;
 
+import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
 import org.openkoala.opencis.support.CommonUtil;
 import org.openkoala.opencis.support.LocalCommand;
@@ -16,15 +17,17 @@ public class SvnLocalAddCommand extends LocalCommand {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SvnLocalAddCommand(SvnConfig config, Project project) {
+	public SvnLocalAddCommand(SvnConfig config, Project project,Developer developer) {
 		super(config, project);
-		// TODO Auto-generated constructor stub
+		this.userName = developer.getId();
+		this.password = developer.getPassword();
 	}
 
 	@Override
 	public String getCommand() {
 		// TODO Auto-generated method stub
-		String strCmd = "svn add " + project.getPhysicalPath() + "/*";
+		String strCmd = "svn add " + project.getPhysicalPath() + "/*"
+				+ " --username " + userName + " --password " + password;
 		return strCmd;
 	}
 

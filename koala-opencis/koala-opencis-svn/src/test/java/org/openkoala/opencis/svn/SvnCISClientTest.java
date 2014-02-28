@@ -23,7 +23,7 @@ import org.openkoala.opencis.exception.UserListBlankException;
 import org.openkoala.opencis.exception.UserOrPasswordErrorException;
 import org.openkoala.opencis.support.SvnConfig;
 
-@Ignore
+//@Ignore
 public class SvnCISClientTest {
 
     private SvnConfig configuration;
@@ -36,8 +36,10 @@ public class SvnCISClientTest {
 
     @Before
     public void setUp() throws Exception {
-        configuration = new SvnConfig("10.108.1.136", "zjh", "password","/opencis/server/svn/"
-        		,"http://10.108.1.136/svn/test","Koala","Koala");
+        configuration = new SvnConfig("10.108.1.75", "zjh", "password","/opencis/server/svn/"
+        		,"http://10.108.1.75/svn/test","Koala","Koala");
+//        configuration = new SvnConfig("10.108.1.92", "apache", "opencis147","/home/svn/"
+//        		,"http://10.108.1.92/svn/myproject","Koala","Koala");
         this.initProjectInfo();
         this.initDeveloperInfo();
     }
