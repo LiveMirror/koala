@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.dayatang.domain.Entity;
-import org.dayatang.domain.MapParameters;
+import org.dayatang.domain.NamedParameters;
 
 /**
  * 一种抽象实体类，提供ID和版本属性，以及基本的持久化方法
@@ -143,6 +143,6 @@ public abstract class KoalaAbstractEntity extends KoalaBaseEntity {
      * @return 符合条件的实体列表
      */
     public static <T extends Entity> List<T> findByProperties(Class<T> clazz, Map<String, Object> propValues) {
-        return getRepository().findByProperties(clazz, MapParameters.create(propValues));
+        return getRepository().findByProperties(clazz, NamedParameters.create(propValues));
     }
 }

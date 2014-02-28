@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.dayatang.domain.Entity;
-import org.dayatang.domain.MapParameters;
+import org.dayatang.domain.NamedParameters;
 
 /**
  * 抽象遗留实体类。适用于那些数据库先于程序存在的对象。它的ID的类型是未知的，而且可能没有version属性。
@@ -97,6 +97,6 @@ public abstract class KoalaLegacyEntity extends KoalaBaseEntity {
      * @return 符合条件的实体列表
      */
     public static <T extends Entity> List<T> findByProperties(Class<T> clazz, Map<String, Object> propValues) {
-        return getRepository().findByProperties(clazz, MapParameters.create(propValues));
+        return getRepository().findByProperties(clazz, NamedParameters.create(propValues));
     }
 }
