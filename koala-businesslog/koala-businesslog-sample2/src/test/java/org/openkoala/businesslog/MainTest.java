@@ -17,13 +17,23 @@ import java.io.File;
  */
 @Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class MainTest extends AbstractIntegrationTest {
+public class MainTest  {
 
     @Test
     public void test1_() throws Exception {
-        Request.Post("http://localhost:8080/organization/employee/test")
-                .bodyForm(Form.form().add("s11n", "vip11").add("name", "secret").build())
-                .execute();
+        for (int i = 0; i < 1000; i++) {
+            Request.Post("http://localhost:8080/organization/create-company.koala?parentId=1")
+                    .bodyForm(Form.form().add("sn", "vip11" + i).add("name", "secret" + i).build())
+                    .execute();
+            Thread.sleep(1000);
+        }
+
+        for (int i = 0; i < 1000; i++) {
+            Request.Post("http://localhost:8080/organization/create-company.koala?parentId=1")
+                    .bodyForm(Form.form().add("sn", "vip11" + i).add("name", "secret" + i).build())
+                    .execute();
+            Thread.sleep(1000);
+        }
 
     }
 }

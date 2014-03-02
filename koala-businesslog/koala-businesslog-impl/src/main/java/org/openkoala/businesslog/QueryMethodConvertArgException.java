@@ -5,7 +5,7 @@ package org.openkoala.businesslog;
  * Date: 12/13/13
  * Time: 9:38 AM
  */
-public class QueryMethodConvertArgException extends RuntimeException {
+public class QueryMethodConvertArgException extends BusinessLogBaseException {
     public QueryMethodConvertArgException() {
     }
 

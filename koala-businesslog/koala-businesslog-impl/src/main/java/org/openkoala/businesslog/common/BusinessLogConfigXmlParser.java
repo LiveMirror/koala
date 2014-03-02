@@ -7,8 +7,6 @@ import org.openkoala.businesslog.BusinessLogXmlConfigParseException;
 import org.openkoala.businesslog.BusinessLogXmlConfigSAXException;
 import org.openkoala.businesslog.config.BusinessLogContextQuery;
 import org.openkoala.businesslog.impl.BusinessLogDefaultContextQuery;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -16,7 +14,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,8 +25,6 @@ import java.util.List;
  * Time: 2:20 PM
  */
 public class BusinessLogConfigXmlParser {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(BusinessLogConfigXmlParser.class);
 
 
     /**
@@ -113,16 +108,12 @@ public class BusinessLogConfigXmlParser {
             DocumentBuilder builder = factory.newDocumentBuilder();
             return builder.parse(xmlConfigPath);
         } catch (ParserConfigurationException e) {
-            LOGGER.error("loadXmlDocment ParserConfigurationException", e);
             throw new BusinessLogXmlConfigParseException(e);
         } catch (FileNotFoundException e) {
-            LOGGER.error("xmlConfigPath FileNotFoundException", e);
             throw new BusinessLogXmlConfigNotFoundException(e);
         } catch (SAXException e) {
-            LOGGER.error("SAXException", e);
             throw new BusinessLogXmlConfigSAXException(e);
         } catch (IOException e) {
-            LOGGER.error("IOException", e);
             throw new BusinessLogXmlConfigIOException(e);
         }
     }

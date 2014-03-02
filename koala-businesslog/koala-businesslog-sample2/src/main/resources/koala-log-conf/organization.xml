@@ -4,13 +4,12 @@
         <category>机构管理</category>
         <method>OrganizationApplicationImpl.createAsTopOrganization</method>
         <template>
-            <![CDATA[创建机构]]></template>
+            <![CDATA[创建顶机构${_param0.name}]]></template>
     </businessLogConfig>
     <businessLogConfig>
         <category>机构管理</category>
         <method>OrganizationApplicationImpl.createCompany</method>
-        <template>
-            <![CDATA[创建公司:${_param1.name}]]></template>
+        <template><![CDATA[创建公司${_param1.name}]]></template>
     </businessLogConfig>
 
 
@@ -18,7 +17,7 @@
         <category>机构管理</category>
         <method>OrganizationApplicationImpl.assignChildOrganization</method>
         <template>
-            <![CDATA[分配子机构{}到{}]]></template>
+            <![CDATA[分配子机构]]></template>
     </businessLogConfig>
 
 

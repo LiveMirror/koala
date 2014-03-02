@@ -12,10 +12,11 @@
 <%
 
     BusinessLogApplication businessLogApplication = InstanceFactory.getInstance(BusinessLogApplication.class, "businessLogApplication");
-    System.out.println(businessLogApplication.findAllDefaultBusinessLog());
         for (DefaultBusinessLogDTO log : businessLogApplication.findAllDefaultBusinessLog()) {
-            out.println(log.getLog());
+            out.println(log.getLog() + "<br/>");
         }
+
+    out.println("<br/>done!");
 %>
 
 </body>
