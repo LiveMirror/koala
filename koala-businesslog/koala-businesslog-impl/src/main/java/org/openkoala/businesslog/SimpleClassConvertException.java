@@ -5,7 +5,7 @@ package org.openkoala.businesslog;
  * Date: 12/13/13
  * Time: 2:33 PM
  */
-public class SimpleClassConvertException extends RuntimeException {
+public class SimpleClassConvertException extends BusinessLogBaseException {
     public SimpleClassConvertException() {
     }
 

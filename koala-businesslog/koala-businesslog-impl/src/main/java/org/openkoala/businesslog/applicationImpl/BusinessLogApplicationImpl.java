@@ -4,6 +4,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
+import org.openkoala.businesslog.BusinessLogBaseException;
 import org.openkoala.businesslog.dto.DefaultBusinessLogDTO;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
 import org.slf4j.Logger;
@@ -34,8 +35,6 @@ import java.util.List;
 @Remote
 public class BusinessLogApplicationImpl implements BusinessLogApplication {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(BusinessLogApplicationImpl.class);
-
 
     private QueryChannelService queryChannel;
 
@@ -54,11 +53,9 @@ public class BusinessLogApplicationImpl implements BusinessLogApplication {
         try {
             BeanUtils.copyProperties(defaultBusinessLogDTO, defaultBusinessLog);
         } catch (InvocationTargetException e) {
-            LOGGER.error("InvocationTargetException error", e);
-            throw new RuntimeException(e);
+            throw new BusinessLogBaseException(e);
         } catch (IllegalAccessException e) {
-            LOGGER.error("IllegalAccessException error", e);
-            throw new RuntimeException(e);
+            throw new BusinessLogBaseException(e);
         }
         defaultBusinessLogDTO.setId(defaultBusinessLog.getId());
         return defaultBusinessLogDTO;
@@ -69,11 +66,9 @@ public class BusinessLogApplicationImpl implements BusinessLogApplication {
         try {
             BeanUtils.copyProperties(defaultBusinessLog, defaultBusinessLogDTO);
         } catch (InvocationTargetException e) {
-            LOGGER.error("InvocationTargetException error", e);
-            throw new RuntimeException(e);
+            throw new BusinessLogBaseException(e);
         } catch (IllegalAccessException e) {
-            LOGGER.error("IllegalAccessException error", e);
-            throw new RuntimeException(e);
+            throw new BusinessLogBaseException(e);
         }
         defaultBusinessLog.save();
         defaultBusinessLogDTO.setId((java.lang.Long) defaultBusinessLog.getId());
@@ -86,11 +81,9 @@ public class BusinessLogApplicationImpl implements BusinessLogApplication {
         try {
             BeanUtils.copyProperties(defaultBusinessLog, defaultBusinessLogDTO);
         } catch (InvocationTargetException e) {
-            LOGGER.error("InvocationTargetException error", e);
-            throw new RuntimeException(e);
+            throw new BusinessLogBaseException(e);
         } catch (IllegalAccessException e) {
-            LOGGER.error("IllegalAccessException error", e);
-            throw new RuntimeException(e);
+            throw new BusinessLogBaseException(e);
         }
     }
 
@@ -120,11 +113,9 @@ public class BusinessLogApplicationImpl implements BusinessLogApplication {
             try {
                 BeanUtils.copyProperties(defaultBusinessLogDTO, defaultBusinessLog);
             } catch (InvocationTargetException e) {
-                LOGGER.error("InvocationTargetException error", e);
-                throw new RuntimeException(e);
+                throw new BusinessLogBaseException(e);
             } catch (IllegalAccessException e) {
-                LOGGER.error("IllegalAccessException error", e);
-                throw new RuntimeException(e);
+                throw new BusinessLogBaseException(e);
             }
             list.add(defaultBusinessLogDTO);
         }
@@ -171,11 +162,9 @@ public class BusinessLogApplicationImpl implements BusinessLogApplication {
             try {
                 BeanUtils.copyProperties(defaultBusinessLogDTO, defaultBusinessLog);
             } catch (InvocationTargetException e) {
-                LOGGER.error("InvocationTargetException error", e);
-                throw new RuntimeException(e);
+                throw new BusinessLogBaseException(e);
             } catch (IllegalAccessException e) {
-                LOGGER.error("IllegalAccessException error", e);
-                throw new RuntimeException(e);
+                throw new BusinessLogBaseException(e);
             }
 
             result.add(defaultBusinessLogDTO);

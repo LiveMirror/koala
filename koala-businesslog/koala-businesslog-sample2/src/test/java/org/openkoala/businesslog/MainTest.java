@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * User: zjzhai
@@ -17,13 +18,25 @@ import java.io.File;
  */
 @Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class MainTest extends AbstractIntegrationTest {
+public class MainTest {
 
     @Test
-    public void test1_() throws Exception {
-        Request.Post("http://localhost:8080/organization/employee/test")
-                .bodyForm(Form.form().add("s11n", "vip11").add("name", "secret").build())
+    public void test1_create_company() throws Exception {
+        Request.Post("http://localhost:8080/organization/create-company.koala?parentId=1")
+                .bodyForm(Form.form().add("sn", "company1").add("name", "广州分公司").build()).elementCharset("UTF-8")
                 .execute();
+        Thread.sleep(1000);
 
     }
+
+
+    @Test
+    public void test22_() throws IOException {
+
+        Request.Post("http://localhost:8080/job/create.koala")
+                .bodyForm(Form.form().add("sn", "jingli").add("name", "经理").build())
+                .elementCharset("UTF-8")
+                .execute();
+    }
+
 }

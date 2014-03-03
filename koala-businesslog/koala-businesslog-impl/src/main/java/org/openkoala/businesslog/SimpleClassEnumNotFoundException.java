@@ -5,7 +5,7 @@ package org.openkoala.businesslog;
  * Date: 12/13/13
  * Time: 2:35 PM
  */
-public class SimpleClassEnumNotFoundException extends RuntimeException {
+public class SimpleClassEnumNotFoundException extends BusinessLogBaseException {
     public SimpleClassEnumNotFoundException() {
     }
 

@@ -90,6 +90,7 @@ public class OrganizationApplicationImpl implements OrganizationApplication {
 		return department;
 	}
 
+    @BLMapping("OrganizationApplicationImpl.terminateEmployeeOrganizationRelation")
 	@Override
 	public void terminateEmployeeOrganizationRelation(Organization organization, Set<Employee> employees) {
 		EmployeePostHolding.terminateEmployeeOrganizationRelation(organization, employees);

@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * 只
+ * 业务日志配置文件路径处理器：用于找到所有的配置文件
  * User: zjzhai
  * Date: 12/19/13
  * Time: 10:55 AM
