@@ -1046,19 +1046,19 @@
 		'<div class="form-group">' +
 		'<label for="oldPassword" class="col-lg-3 control-label">原始密码:</label>' +
 		'<div class="col-lg-9">' +
-		'<input type="password" class="form-control" id="oldPassword" >' +
+		'<input type="password" class="form-control" style="width:80%;" id="oldPassword" >' +
 		'</div> ' +
 		'</div>  ' +
 		'<div class="form-group">' +
 		'<label for="newPassword" class="col-lg-3 control-label">新密码:</label>' +
 		'<div class="col-lg-9">' +
-		'<input type="password" class="form-control" id="newPassword">' +
+		'<input type="password" class="form-control" style="width:80%;" id="newPassword">' +
 		'</div> ' +
 		'</div> ' +
 		'<div class="form-group"> ' +
 		'<label for="confirmPassword" class="col-lg-3 control-label">确认密码:</label>' +
 		'<div class="col-lg-9">' +
-		'<input type="password" class="form-control" id="confirmPassword"> ' +
+		'<input type="password" class="form-control" style="width:80%;" id="confirmPassword"> ' +
 		'</div>' +
 		'</div>' +
 		'</form>' +
