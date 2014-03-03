@@ -45,14 +45,9 @@ public class ${controllerClass.name} {
 	
 	@ResponseBody
 	@RequestMapping("/pageJson")
-	public Map<String, Object> pageJson(${voType} ${voName}, @RequestParam int page, @RequestParam int pagesize) {
-		Map<String, Object> result = new HashMap<String, Object>();
+	public Page pageJson(${voType} ${voName}, @RequestParam int page, @RequestParam int pagesize) {
 		Page<${voType}> all = ${applicationName}.pageQuery${domainClass}(${voName}, page, pagesize);
-		result.put("Rows", all.getData());
-		result.put("start", all.getStart());
-		result.put("limit", pagesize);
-		result.put("Total", all.getResultCount());
-		return result;
+		return all;
 	}
 	
 	@ResponseBody
@@ -105,14 +100,9 @@ public class ${controllerClass.name} {
 #if(${relationType} == "OneToMany" || ${relationType} == "ManyToMany")
 	@ResponseBody
 	@RequestMapping("/find${relationName}By${domainClass}/{${dtoClass.entityModel.singleIDFieldModel.name}}")
-	public Map<String, Object> find${relationName}By${domainClass}(@PathVariable ${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}, @RequestParam int page, @RequestParam int pagesize) {
-		Map<String, Object> result = new HashMap<String, Object>();
+	public Page find${relationName}By${domainClass}(@PathVariable ${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}, @RequestParam int page, @RequestParam int pagesize) {
 		Page<${entityName}DTO> all = ${applicationName}.find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name}, page, pagesize);
-		result.put("Rows", all.getData());
-		result.put("start", all.getStart());
-		result.put("limit", pagesize);
-		result.put("Total", all.getResultCount());
-		return result;
+		return all;
 	}		
 #end
 #end

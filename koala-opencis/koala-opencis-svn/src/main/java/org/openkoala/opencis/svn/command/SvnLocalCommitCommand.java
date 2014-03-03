@@ -1,5 +1,6 @@
 package org.openkoala.opencis.svn.command;
 
+import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
 import org.openkoala.opencis.support.CommonUtil;
 import org.openkoala.opencis.support.LocalCommand;
@@ -16,16 +17,18 @@ public class SvnLocalCommitCommand extends LocalCommand {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SvnLocalCommitCommand(SvnConfig config, Project project) {
+	public SvnLocalCommitCommand(SvnConfig config, Project project,Developer developer) {
 		super(config, project);
-		// TODO Auto-generated constructor stub
+		this.userName = developer.getId();
+		this.password = developer.getPassword();
 	}
 
 	@Override
 	public String getCommand() {
 		// TODO Auto-generated method stub
-		String strCmd = "svn commit " + project.getPhysicalPath() + 
-				" -m \"" + "import project " + project.getProjectName() + "\"";
+		String strCmd = "svn commit " + project.getPhysicalPath() + "/*" 
+				+ " --username " + userName + " --password " + password
+				+ " -m \"" + "import project " + project.getProjectName() + "\"";
 		return strCmd;
 	}
 

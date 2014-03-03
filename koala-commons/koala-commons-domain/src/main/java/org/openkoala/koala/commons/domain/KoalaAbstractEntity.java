@@ -1,57 +1,24 @@
-/*
- * Copyright (c) openkoala 2011 All Rights Reserved
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
-package org.openkoala.koala.auth.core.domain;
+package org.openkoala.koala.commons.domain;
+
+import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
-
-import org.dayatang.domain.BaseEntity;
 import org.dayatang.domain.Entity;
-import org.dayatang.domain.EntityRepository;
-import org.dayatang.domain.InstanceFactory;
 import org.dayatang.domain.NamedParameters;
 
 /**
- * 类    名：KoalaEntity.java
- *   
- * 功能描述：具体功能做描述。	
- *  
- * 创建日期：2013-3-22上午11:51:40     
- * 
- * 版本信息：
- * 
- * 版权信息：Copyright (c) 2013 Koala All Rights Reserved
- * 
- * 作    者：lingen(lingen.liu@gmail.com)
- * 
- * 修改记录： 
- * 修 改 者    修改日期     文件版本   修改说明	
+ * 一种抽象实体类，提供ID和版本属性，以及基本的持久化方法
+ *
+ * @author yang
+ *
  */
 @MappedSuperclass
-public abstract class KoalaSecurityEntity extends BaseEntity {
-    
-    private static final long serialVersionUID = 1342711951865077906L;
+public abstract class KoalaAbstractEntity extends KoalaBaseEntity {
+
+    private static final long serialVersionUID = 8882145540383345037L;
 
     private Long id;
 
@@ -77,15 +44,6 @@ public abstract class KoalaSecurityEntity extends BaseEntity {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    private static EntityRepository repository;
-    
-    public static EntityRepository getRepository(){
-    	if(repository==null){
-    		repository = InstanceFactory.getInstance(EntityRepository.class,"repository_ss");
-    	}
-    	return repository;
     }
 
     /**
@@ -187,40 +145,4 @@ public abstract class KoalaSecurityEntity extends BaseEntity {
     public static <T extends Entity> List<T> findByProperties(Class<T> clazz, Map<String, Object> propValues) {
         return getRepository().findByProperties(clazz, NamedParameters.create(propValues));
     }
-
-	@Override
-	public String toString() {
-		return "KoalaSecurityEntity [id=" + id + ", version=" + version + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 0;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + version;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (!(obj instanceof KoalaSecurityEntity))
-			return false;
-		KoalaSecurityEntity other = (KoalaSecurityEntity) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (version != other.version)
-			return false;
-		return true;
-	}
-    
-    
-    
 }

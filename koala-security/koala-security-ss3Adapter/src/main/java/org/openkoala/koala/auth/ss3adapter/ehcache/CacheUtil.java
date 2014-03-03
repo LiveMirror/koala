@@ -4,7 +4,7 @@ import org.dayatang.cache.Cache;
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.koala.auth.AuthDataService;
 import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * 缓存工具类
@@ -65,13 +65,13 @@ public final class CacheUtil {
 	 * @param user
 	 */
 	public static void refreshUserAttributes(String user) {
-		if (!getUserCache().isKeyInCache(user)) {
+		if (!getUserCache().containsKey(user)) {
 			return;
 		}
 		CustomUserDetails cd = (CustomUserDetails) getUserCache().get(user);
 		cd.getAuthorities().clear();
 		for (String role : getAuthDataService().loadUserByUseraccount(user).getAuthorities()) {
-			GrantedAuthorityImpl gai = new GrantedAuthorityImpl(role);
+            SimpleGrantedAuthority gai = new SimpleGrantedAuthority(role);
 			cd.getAuthorities().add(gai);
 		}
 	}

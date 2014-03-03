@@ -103,32 +103,32 @@
 	<!-- <issueManagement> <system>JIRA</system> <url>http://jira.openkoala.org/browse/KOALA</url> 
 		</issueManagement> -->
 
-    <ciManagement>
-        <system>jenkins</system>
-        <url>http://jenkins.foreveross.com/job/koala/</url>
-        <notifiers>
-            <notifier>
-                <type>mail</type>
-                <configuration>
-                    <committers>true</committers>
-                </configuration>
-                <sendOnError>true</sendOnError>
-                <sendOnFailure>true</sendOnFailure>
-                <sendOnWarning>false</sendOnWarning>
-                <sendOnSuccess>false</sendOnSuccess>
-            </notifier>
-            <notifier>
-                <type>mail</type>
-                <configuration>
-                    <address>lingen.liu@gmail.com</address>
-                </configuration>
-                <sendOnError>true</sendOnError>
-                <sendOnFailure>true</sendOnFailure>
-                <sendOnWarning>true</sendOnWarning>
-                <sendOnSuccess>true</sendOnSuccess>
-            </notifier>
-        </notifiers>
-    </ciManagement>
+	<ciManagement>
+		<system>jenkins</system>
+		<url>http://jenkins.foreveross.com/job/koala/</url>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<committers>true</committers>
+				</configuration>
+				<sendOnError>true</sendOnError>
+				<sendOnFailure>true</sendOnFailure>
+				<sendOnWarning>false</sendOnWarning>
+				<sendOnSuccess>false</sendOnSuccess>
+			</notifier>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>lingen.liu@gmail.com</address>
+				</configuration>
+				<sendOnError>true</sendOnError>
+				<sendOnFailure>true</sendOnFailure>
+				<sendOnWarning>true</sendOnWarning>
+				<sendOnSuccess>true</sendOnSuccess>
+			</notifier>
+		</notifiers>
+	</ciManagement>
 
 	<repositories>
 		<repository>
@@ -152,28 +152,28 @@
 			</snapshots>
 		</repository>
 	</repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>koala-releases</id>
-            <url>http://nexus.openkoala.org/content/repositories/public-releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>koala-snapshots</id>
-            <url>http://nexus.openkoala.org/content/repositories/public-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>koala-releases</id>
+			<url>http://nexus.openkoala.org/content/repositories/public-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>koala-snapshots</id>
+			<url>http://nexus.openkoala.org/content/repositories/public-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 
 
 	<modules>
@@ -189,9 +189,9 @@
 	</modules>
 
 	<properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<dddlib.version>4.1.0</dddlib.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<dddlib.version>4.1.2-SNAPSHOT</dddlib.version>
 		<struts2.version>2.3.16</struts2.version>
 		<spring.version>3.2.6.RELEASE</spring.version>
 		<spring.security.version>3.2.0.RELEASE</spring.security.version>
@@ -203,7 +203,7 @@
 		<mina.version>2.0.7</mina.version>
 		<tomcat.version>6.0.35</tomcat.version>
 		<aether.connector.version>1.13.1</aether.connector.version>
-
+		<hibernate.version>4.2.8.Final</hibernate.version>
 	</properties>
 
 	<profiles>
@@ -216,7 +216,7 @@
 
 				<db.groupId>com.h2database</db.groupId>
 				<db.artifactId>h2</db.artifactId>
-				<db.version>1.3.174</db.version>
+				<db.version>1.3.175</db.version>
 
 				<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
 				<hibernate.show_sql>true</hibernate.show_sql>
@@ -352,6 +352,12 @@
 				<artifactId>commons-io</artifactId>
 				<version>2.4</version>
 			</dependency>
+			
+			<dependency>
+			  <groupId>org.javassist</groupId>
+			  <artifactId>javassist</artifactId>
+			  <version>3.18.1-GA</version>
+			</dependency>
 
 			<!-- DDDLIB -->
 			<dependency>
@@ -397,7 +403,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.dayatang.dddlib</groupId>
-				<artifactId>dddlib-cache-memcached</artifactId>
+				<artifactId>dddlib-cache-api</artifactId>
 				<version>${dddlib.version}</version>
 			</dependency>
 			<dependency>
@@ -531,7 +537,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
-				<version>4.1.7.Final</version>
+				<version>${hibernate.version}</version>
 			</dependency>
 
 			<dependency>
@@ -550,7 +556,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
-				<version>4.3.0.Final</version>
+				<version>5.0.3.Final</version>
 			</dependency>
 
 
@@ -596,12 +602,12 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
-				<version>4.1.7.Final</version>
+				<version>${hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-annotations</artifactId>
-				<version>3.5.6-Final</version>
+				<version>${hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>hsqldb</groupId>
@@ -750,7 +756,7 @@
 			<dependency>
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
-				<version>1.3.174</version>
+				<version>1.3.175</version>
 			</dependency>
 
 			<dependency>
@@ -1004,7 +1010,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-                    <version>2.6</version>
+					<version>2.6</version>
 					<configuration>
 						<nonFilteredFileExtensions>
 							<nonFilteredFileExtension>dll</nonFilteredFileExtension>
@@ -1153,9 +1159,9 @@
 				<version>2.16</version>
 			</plugin>
 			<plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-clover2-plugin</artifactId>
-                <version>3.2.0</version>
+				<groupId>com.atlassian.maven.plugins</groupId>
+				<artifactId>maven-clover2-plugin</artifactId>
+				<version>3.2.0</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
