@@ -388,8 +388,8 @@
 			menuHtml.push('</ul>');
 			$(menuHtml.join('')).appendTo($('body')).show().css({
 				position : 'fixed',
-				left : ev.pageX,
-				top : ev.pageY
+				left : ev.pageX - $('body').scrollLeft(),
+				top : ev.pageY - $('body').scrollTop()
 			}).on('mouseleave', function() {
 				$(this).remove();
 			}).find('li').on('click', function() {
