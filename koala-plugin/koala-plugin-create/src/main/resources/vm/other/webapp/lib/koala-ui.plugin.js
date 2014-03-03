@@ -348,12 +348,12 @@
 		_initPageNo: function(){
 			var self = this;
 			var pageSize = self.pageSizeSelect.getValue();
-			this.totalPage = Math.floor(this.totalRecord / pageSize);
-			if(this.totalRecord % pageSize != 0){
-				this.totalPage ++;
+			self.totalPage = Math.floor(self.totalRecord / pageSize);
+			if(self.totalRecord % pageSize != 0){
+				self.totalPage ++;
 			}
-			if(this.totalPage == 0){
-				this.pages.hide();
+			if(self.totalPage == 0){
+				self.pages.hide();
 				return;
 			}
 			var pagination = self.pages.find('ul.pagination');
@@ -380,38 +380,42 @@
 				self.pageNo = $(this).data('value');
 				self._loadData();
 			}).end().find('li[data-value="'+self.pageNo+'"]').addClass('active');
-			var prevBtn =  pagination.find('li[data-role="prev"]').on('click', function(){
+			self.prevBtn =  pagination.find('li[data-role="prev"]').on('click', function(){
 				if($(this).hasClass('disabled')){
 					return;
 				}
+				$(this).addClass('disabled');
 				self.pageNo-- ;
 				self.pageOperateStatus = 'prev';
 				self._loadData();
 			});
-			var nextBtn =  pagination.find('li[data-role="next"]').on('click', function(){
+			self.nextBtn =  pagination.find('li[data-role="next"]').on('click', function(){
 				if($(this).hasClass('disabled')){
 					return;
 				}
+				$(this).addClass('disabled');
 				self.pageNo++ ;
 				self.pageOperateStatus = 'next';
 				self._loadData();
 			});
-			var firstPageBtn =  pagination.find('li[data-role="firstPage"]').on('click', function(){
+			self.firstPageBtn =  pagination.find('li[data-role="firstPage"]').on('click', function(){
 				if($(this).hasClass('disabled')){
 					return;
 				}
+				$(this).addClass('disabled');
 				self.pageNo = Grid.DEFAULTS.pageNo;
 				self._loadData();
 			});
-			var lastPageBtn =  pagination.find('li[data-role="lastPage"]').on('click', function(){
+			self.lastPageBtn =  pagination.find('li[data-role="lastPage"]').on('click', function(){
 				if($(this).hasClass('disabled')){
 					return;
 				}
+				$(this).addClass('disabled');
 				self.pageNo = self.totalPage - 1;
 				self._loadData();
 			});
-			self.pageNo == Grid.DEFAULTS.pageNo && prevBtn.addClass('disabled') && firstPageBtn.addClass('disabled');
-			self.pageNo == (self.totalPage-1) && nextBtn.addClass('disabled') && lastPageBtn.addClass('disabled');
+			self.pageNo == Grid.DEFAULTS.pageNo && self.prevBtn.addClass('disabled') && self.firstPageBtn.addClass('disabled');
+			self.pageNo == (self.totalPage-1) && self.nextBtn.addClass('disabled') && self.lastPageBtn.addClass('disabled');
 		},
 		/*
 		 * 渲染数据
@@ -422,6 +426,14 @@
 			self.initSelectRowEvent();
 			self.options.isShowPages && self._initPageNo();
 			self.$element.find('[data-role="selectAll"]').removeClass('checked');
+			if(self.pageNo != self.totalPage - 1){
+				self.nextBtn.removeClass('disabled');
+				self.lastPageBtn.removeClass('disabled')
+			}
+			if(self.pageNo != 0){
+				self.prevBtn.removeClass('disabled');
+				self.firstPageBtn.removeClass('disabled')
+			}
 			self.$element.trigger('complate');
 		},
         initSelectRowEvent: function(){
