@@ -548,8 +548,8 @@ public class JBPMApplicationImpl implements JBPMApplication {
 		 */
 		String jpql = "select log from HistoryLog log where log.user = :user and log.processId = :process";
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Page<HistoryLog> pageResults = this.queryChannel.createJpqlQuery(jpql).addParameter(user, user)
-				.addParameter("process", process).setPage(currentPage, currentPage).pagedList();
+		Page<HistoryLog> pageResults = this.queryChannel.createJpqlQuery(jpql).addParameter("user", user)
+				.addParameter("process", process).setPage(currentPage, pageSize).pagedList();
 		List<HistoryLog> logs = pageResults.getData();
 
 		List<Long> ids = new ArrayList<Long>();
