@@ -164,7 +164,7 @@ public class SecurityMetadataSource implements FilterInvocationSecurityMetadataS
 			url = url.substring(0, position);
 		}
 
-		if (getResourceCache().isKeyInCache(url.substring(url.indexOf('/') + 1))) {
+		if (getResourceCache().containsKey(url.substring(url.indexOf('/') + 1))) {
 			List<String> roles = (List<String>)getResourceCache().get(url.substring(url.indexOf('/') + 1));
 			Collection<ConfigAttribute> attris = new ArrayList<ConfigAttribute>();
 			for (final String role : roles){

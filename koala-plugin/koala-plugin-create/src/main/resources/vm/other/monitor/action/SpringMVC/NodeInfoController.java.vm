@@ -137,7 +137,7 @@ public class NodeInfoController {
     	MonitorWarnInfoVo search = new MonitorWarnInfoVo();
     	Page<MonitorWarnInfoVo> pageInfo = monitorNodeManageApplication.queryMonitorWarnInfos(search, page, pagesize);
     	//Page<AccountVO> all = accountApplication.pageQueryAccount(accountVO, page, pagesize);
-    	return all;
+    	return pageInfo;
     }
 
 	@ResponseBody

@@ -14,7 +14,7 @@ import javax.persistence.Version;
 import org.dayatang.domain.Entity;
 import org.dayatang.domain.EntityRepository;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.domain.MapParameters;
+import org.dayatang.domain.NamedParameters;
 
 @MappedSuperclass
 public abstract class DesignerBaseEntity implements Entity {
@@ -176,7 +176,7 @@ public abstract class DesignerBaseEntity implements Entity {
 	public static <T extends Entity> List<T> findByProperties(Class<T> clazz,
 			Map<String, Object> propValues) {
 		return getRepository().findByProperties(clazz,
-				MapParameters.create(propValues));
+				NamedParameters.create(propValues));
 	}
 
 	private static EntityRepository repository;

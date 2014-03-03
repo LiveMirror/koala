@@ -18,7 +18,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.dayatang.dddlib</groupId>
-			<artifactId>dddlib-cache-memcached</artifactId>
+			<artifactId>dddlib-cache-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.dayatang.dddlib</groupId>

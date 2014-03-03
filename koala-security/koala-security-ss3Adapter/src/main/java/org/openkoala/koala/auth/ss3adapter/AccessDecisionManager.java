@@ -36,7 +36,7 @@ public class AccessDecisionManager implements org.springframework.security.acces
 			return;
 		}
 		
-		if (userCache.isKeyInCache(authentication.getName())) {
+		if (userCache.containsKey(authentication.getName())) {
 			for (ConfigAttribute configAttribute : configAttributes) {
 				for (GrantedAuthority gAuthority : currentUser.getAuthorities()) {
 					if (configAttribute.getAttribute().trim().equals(gAuthority.getAuthority().trim())) {

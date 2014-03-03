@@ -57,7 +57,11 @@
 			<artifactId>dddlib-domain</artifactId>
 		</dependency>
 		
-		  
+        <dependency> 
+            <groupId>org.openkoala.koalacommons</groupId>  
+            <artifactId>koala-commons-domain</artifactId>  
+        </dependency>  
+				  
   <!-- 加入CONF依赖 -->
   <dependency>
   	<groupId>$Project.groupId</groupId>

@@ -482,6 +482,12 @@
                 <version>${koala.version}</version>
             </dependency>
             
+	        <dependency> 
+	            <groupId>org.openkoala.koalacommons</groupId>  
+	            <artifactId>koala-commons-domain</artifactId>  
+                <version>${koala.version}</version>
+	        </dependency>  
+            
           <dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-dddlib-mybatis</artifactId>

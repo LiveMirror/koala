@@ -77,11 +77,11 @@ public class EhCacheImplTest {
 	 * 测试某个KEY值在缓存中是否存在
 	 */
 	@Test
-	public void testIsKeyInCache(){
+	public void testContainsKey(){
 		Cache cache = new EhCacheImpl("sampleCache");
 		cache.put("KEY1", "ABC");
-		Assert.isTrue(cache.isKeyInCache("KEY1"));
+		Assert.isTrue(cache.containsKey("KEY1"));
 		cache.remove("KEY1");
-		Assert.isTrue(!cache.isKeyInCache("KEY1"));
+		Assert.isTrue(!cache.containsKey("KEY1"));
 	}
 }
