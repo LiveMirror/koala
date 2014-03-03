@@ -2,7 +2,7 @@
 <businessLogConfigs>
     <businessLogConfig>
         <category>project</category>
-        <method>Project[] business.ProjectApplicationImpl.findSomeProjects(List)</method>
+        <method>business.ProjectApplicationImpl.findSomeProjects(org.activi.User)</method>
         <template><![CDATA[
         find
         <#list names as name1>

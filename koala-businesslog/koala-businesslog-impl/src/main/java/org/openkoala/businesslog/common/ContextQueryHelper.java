@@ -47,7 +47,6 @@ public class ContextQueryHelper {
 
     public static Method getMethodInstanceOf(String beanClassName, String methodName, Class[] paramsClasses) {
         Method result = null;
-
         try {
             if (null == paramsClasses) {
                 result = Class.forName(beanClassName).getMethod(methodName);
@@ -87,9 +86,8 @@ public class ContextQueryHelper {
                 if (methodParamType.contains("[") && methodParamType.contains("]")) {
                     methodParamType = methodParamType.substring(0, methodParamType.indexOf("["));
                     return Array.newInstance(Class.forName(methodParamType), 0).getClass();
-                } else {
-                    return Class.forName(methodParamType);
                 }
+                return Class.forName(methodParamType);
             } catch (ClassNotFoundException e) {
                 LOGGER.error("ClassNotFoundException when getClass", e);
                 throw new BusinessLogClassNotFoundException(e);

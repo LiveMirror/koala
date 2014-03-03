@@ -6,7 +6,7 @@ package org.openkoala.businesslog;
  * Date: 12/13/13
  * Time: 9:14 AM
  */
-public class BusinessLogClassNotFoundException extends RuntimeException {
+public class BusinessLogClassNotFoundException extends BusinessLogBaseException {
 
     public BusinessLogClassNotFoundException() {
     }

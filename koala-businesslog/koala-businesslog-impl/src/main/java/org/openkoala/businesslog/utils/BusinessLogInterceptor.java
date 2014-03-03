@@ -2,8 +2,6 @@ package org.openkoala.businesslog.utils;
 
 import static org.openkoala.businesslog.ContextKeyConstant.*;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.businesslog.*;
@@ -11,11 +9,11 @@ import org.openkoala.businesslog.common.BLMapping;
 import org.openkoala.businesslog.common.BusinessLogPropertiesConfig;
 import org.openkoala.businesslog.common.LogEngineThread;
 import org.openkoala.businesslog.config.BusinessLogConfigAdapter;
+import org.springframework.aop.ProxyMethodInvocation;
+import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Date;
@@ -46,7 +44,7 @@ public class BusinessLogInterceptor {
 
     }
 
-    public void log(JoinPoint joinPoint, Object result, Throwable error) {
+    public synchronized void log(JoinPoint joinPoint, Object result, Throwable error) {
 
         String BLMappingValue = getBLMapping(joinPoint);
 
@@ -88,34 +86,43 @@ public class BusinessLogInterceptor {
             context.put(BUSINESS_METHOD_EXECUTE_ERROR, error.getCause());
         }
 
-        context.put(BUSINESS_METHOD, joinPoint.getSignature().toString());
+        context.put(BUSINESS_METHOD, getBLMapping(joinPoint));
         context.put(BUSINESS_OPERATION_TIME, new Date());
         return context;
 
     }
 
     private String getBLMapping(JoinPoint joinPoint) {
-        for (Method method : joinPoint.getTarget().getClass().getDeclaredMethods()) {
-            if (method.isAnnotationPresent(BLMapping.class)) {
-                return method.getAnnotation(BLMapping.class).value();
-            }
+        Method method = invocationMethod(joinPoint);
+        if (method.isAnnotationPresent(BLMapping.class)) {
+            return method.getAnnotation(BLMapping.class).value();
         }
-
         return joinPoint.getSignature().toString();
+    }
+
+    private Method invocationMethod(JoinPoint joinPoint) {
+        try {
+            Field methodInvocationField = MethodInvocationProceedingJoinPoint.class.getDeclaredField("methodInvocation");
+            methodInvocationField.setAccessible(true);
+            ProxyMethodInvocation methodInvocation = (ProxyMethodInvocation) methodInvocationField.get(joinPoint);
+            return methodInvocation.getMethod();
+        } catch (NoSuchFieldException e) {
+            throw new BusinessLogBaseException("There is not such methodInvocation in MethodInvocationProceedingJoinPoint class", e);
+        } catch (IllegalAccessException e) {
+            throw new BusinessLogBaseException("Cannot access the method", e);
+        }
     }
 
     public BusinessLogConfigAdapter getBusinessLogConfigAdapter() {
         if (null == businessLogConfigAdapter) {
             businessLogConfigAdapter = InstanceFactory.getInstance(BusinessLogConfigAdapter.class, "businessLogConfigAdapter");
         }
-
         return businessLogConfigAdapter;
     }
 
     public BusinessLogRender getBusinessLogRender() {
         if (null == businessLogRender) {
             businessLogRender = InstanceFactory.getInstance(BusinessLogRender.class, "businessLogRender");
-
         }
         return businessLogRender;
     }
@@ -123,7 +130,6 @@ public class BusinessLogInterceptor {
     public BusinessLogExporter getBusinessLogExporter() {
         if (null == businessLogExporter) {
             businessLogExporter = InstanceFactory.getInstance(BusinessLogExporter.class, "businessLogExporter");
-
         }
 
         return businessLogExporter;

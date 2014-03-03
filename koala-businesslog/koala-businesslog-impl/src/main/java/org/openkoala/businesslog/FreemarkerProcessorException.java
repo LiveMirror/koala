@@ -5,7 +5,7 @@ package org.openkoala.businesslog;
  * Date: 12/13/13
  * Time: 9:35 AM
  */
-public class FreemarkerProcessorException extends RuntimeException {
+public class FreemarkerProcessorException extends BusinessLogBaseException {
     public FreemarkerProcessorException() {
     }
 

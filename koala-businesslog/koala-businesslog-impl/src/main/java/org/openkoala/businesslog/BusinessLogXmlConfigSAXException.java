@@ -6,7 +6,7 @@ package org.openkoala.businesslog;
  * Date: 12/13/13
  * Time: 9:14 AM
  */
-public class BusinessLogXmlConfigSAXException extends RuntimeException {
+public class BusinessLogXmlConfigSAXException extends BusinessLogBaseException {
 
     public BusinessLogXmlConfigSAXException() {
     }

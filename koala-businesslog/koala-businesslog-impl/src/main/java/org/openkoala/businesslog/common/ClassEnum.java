@@ -1,6 +1,7 @@
 package org.openkoala.businesslog.common;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.openkoala.businesslog.BusinessLogBaseException;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -42,12 +43,14 @@ public enum ClassEnum {
         public Object convert(String value) {
             return Float.valueOf(value);
         }
-    }, _Float(Float.class, "Float", "java.lang.Float") {
+    },
+    _Float(Float.class, "Float", "java.lang.Float") {
         @Override
         public Object convert(String value) {
             return _float.convert(value);
         }
-    }, _double(double.class, "double") {
+    },
+    _double(double.class, "double") {
         @Override
         public Object convert(String value) {
             return Double.valueOf(value);
@@ -102,7 +105,7 @@ public enum ClassEnum {
             try {
                 return DateUtils.parseDate(value, parsePatterns);
             } catch (ParseException e) {
-                new RuntimeException(e);
+                new BusinessLogBaseException("parseDate failure", e);
             }
             return null;
         }
@@ -161,7 +164,6 @@ public enum ClassEnum {
             names.addAll(Arrays.asList(stringName));
         }
         this.classz = clasz;
-
     }
 
     public Class getClassz() {
@@ -191,18 +193,14 @@ public enum ClassEnum {
 
     public static boolean isSimpleClass(String className) {
         for (ClassEnum each : ClassEnum.values()) {
-            if (each.names.contains(className)) {
-                return true;
-            }
+            if (each.names.contains(className))   return true;
         }
         return false;
     }
 
     public static boolean isSimpleClass(Class clazz) {
         for (ClassEnum each : ClassEnum.values()) {
-            if (each.classz.equals(clazz)) {
-                return true;
-            }
+            if (each.classz.equals(clazz))  return true;
         }
         return false;
     }
