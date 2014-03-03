@@ -3,9 +3,10 @@ package org.openkoala.bpm.core;
 import javax.persistence.Entity;
 
 import org.dayatang.domain.AbstractEntity;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
 @Entity
-public class PublishURL extends AbstractEntity{
+public class PublishURL extends KoalaAbstractEntity{
 	
 	private static final long serialVersionUID = 6483009062981646867L;
 

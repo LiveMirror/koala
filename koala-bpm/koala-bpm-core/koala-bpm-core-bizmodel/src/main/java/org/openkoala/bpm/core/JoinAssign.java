@@ -6,10 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.dayatang.domain.AbstractEntity;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
 @Entity
 @Table
-public class JoinAssign extends AbstractEntity {
+public class JoinAssign extends KoalaAbstractEntity {
 
 	private static final long serialVersionUID = 2974044399273194451L;
 

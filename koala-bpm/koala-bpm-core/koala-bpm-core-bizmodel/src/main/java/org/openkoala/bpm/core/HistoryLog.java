@@ -9,10 +9,11 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.dayatang.domain.AbstractEntity;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
 @Entity
 @Table
-public class HistoryLog extends AbstractEntity {
+public class HistoryLog extends KoalaAbstractEntity {
 
 
 	private static final long serialVersionUID = -2409238992583642261L;

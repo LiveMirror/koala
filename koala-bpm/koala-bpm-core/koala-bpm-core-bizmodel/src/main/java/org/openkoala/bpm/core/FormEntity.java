@@ -5,10 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.dayatang.domain.AbstractEntity;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
 @Entity
 @Table
-public class FormEntity extends AbstractEntity {
+public class FormEntity extends KoalaAbstractEntity {
 	
 	private static final long serialVersionUID = -8234793881235433137L;
 

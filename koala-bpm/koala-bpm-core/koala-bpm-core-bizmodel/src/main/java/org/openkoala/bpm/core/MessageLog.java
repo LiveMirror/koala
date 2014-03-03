@@ -4,10 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.dayatang.domain.AbstractEntity;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
 @Entity
 @Table
-public class MessageLog extends AbstractEntity {
+public class MessageLog extends KoalaAbstractEntity {
 
 	private static final long serialVersionUID = 8881519315514598555L;
 	private String text;
