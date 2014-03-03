@@ -30,16 +30,16 @@ public class SvnCISClientTest {
     private SvnCISClient instance;
     private Project project;
     private Developer developer;
-    private String projectName = "test";
+    private String projectName = "myproject";
     private List<String> userNames;
     private String roleName;
 
     @Before
     public void setUp() throws Exception {
-        configuration = new SvnConfig("10.108.1.75", "zjh", "password","/opencis/server/svn/"
-        		,"http://10.108.1.75/svn/test","Koala","Koala");
-//        configuration = new SvnConfig("10.108.1.92", "apache", "opencis147","/home/svn/"
-//        		,"http://10.108.1.92/svn/myproject","Koala","Koala");
+//        configuration = new SvnConfig("10.108.1.75", "zjh", "password","/opencis/server/svn/"
+//        		,"http://10.108.1.75/svn/test","Koala","Koala");
+        configuration = new SvnConfig("10.108.1.92", "apache", "opencis147","/home/svn/"
+        		,"http://10.108.1.92/svn/myproject","Koala","Koala");
         this.initProjectInfo();
         this.initDeveloperInfo();
     }
@@ -221,7 +221,7 @@ public class SvnCISClientTest {
     private void initProjectInfo() {
         project = new Project();
         project.setProjectName(projectName);
-        project.setPhysicalPath("/opencis/client/svn");
+        project.setPhysicalPath("/home/svn/opencis/client/svn");
     }
 
     private void initDeveloperInfo() {

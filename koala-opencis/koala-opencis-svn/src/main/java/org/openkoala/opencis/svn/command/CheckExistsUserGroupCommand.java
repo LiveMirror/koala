@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.openkoala.opencis.api.Project;
 import org.openkoala.opencis.support.CommonUtil;
-import org.openkoala.opencis.support.SSHConnectConfig;
+import org.openkoala.opencis.support.SvnConfig;
 
 import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.Session;
@@ -25,7 +25,7 @@ public class CheckExistsUserGroupCommand extends SvnCommand {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CheckExistsUserGroupCommand(List<String> userNames, String role,SSHConnectConfig config, Project project) {
+	public CheckExistsUserGroupCommand(List<String> userNames, String role,SvnConfig config, Project project) {
 		super(config, project);
 		this.userNames = userNames;
 		this.role = role;

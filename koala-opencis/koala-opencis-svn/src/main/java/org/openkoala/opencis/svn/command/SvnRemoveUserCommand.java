@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
 import org.openkoala.opencis.exception.RemoveUserException;
-import org.openkoala.opencis.support.SSHConnectConfig;
+import org.openkoala.opencis.support.SvnConfig;
 
 import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.Session;
@@ -23,7 +23,7 @@ public class SvnRemoveUserCommand extends SvnCommand {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public SvnRemoveUserCommand(Developer developer, SSHConnectConfig configuration, Project project) {
+	public SvnRemoveUserCommand(Developer developer, SvnConfig configuration, Project project) {
         super(configuration, project);
         this.developer = developer;
     }

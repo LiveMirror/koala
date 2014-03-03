@@ -16,15 +16,12 @@ import org.openkoala.opencis.exception.HostCannotConnectException;
 import org.openkoala.opencis.exception.PasswordBlankException;
 import org.openkoala.opencis.exception.ProjectBlankException;
 import org.openkoala.opencis.exception.ProjectExistenceException;
-import org.openkoala.opencis.exception.RemoveProjectException;
 import org.openkoala.opencis.exception.RoleBlankException;
 import org.openkoala.opencis.exception.UserBlankException;
 import org.openkoala.opencis.exception.UserExistenceException;
 import org.openkoala.opencis.exception.UserListBlankException;
 import org.openkoala.opencis.exception.UserOrPasswordErrorException;
 import org.openkoala.opencis.support.CommandExecutor;
-import org.openkoala.opencis.support.LocalCommand;
-import org.openkoala.opencis.support.SSHConnectConfig;
 import org.openkoala.opencis.support.SvnConfig;
 import org.openkoala.opencis.svn.command.CheckExistsAuthCommand;
 import org.openkoala.opencis.svn.command.CheckExistsUserGroupCommand;
@@ -106,7 +103,7 @@ public class SvnCISClient implements CISClient {
     @Override
     public void createProject(Project project) {
         createProjectInSvn(project);
-        commitToServer(project);
+        commitToServer(project,koalaDeveloper);
     }
     
     /**
@@ -235,10 +232,10 @@ public class SvnCISClient implements CISClient {
      * @param project
      * @return
      */
-    private boolean commitToServer(Project project){
-    	LocalCommand cmdCheckout = new SvnLocalCheckoutCommand(configuration, project,koalaDeveloper);
-    	LocalCommand cmdAdd = new SvnLocalAddCommand(configuration, project,koalaDeveloper);
-    	LocalCommand cmdSubmit = new SvnLocalCommitCommand(configuration, project,koalaDeveloper);
+    public boolean commitToServer(Project project,Developer developer){
+    	SvnCommand cmdCheckout = new SvnLocalCheckoutCommand(configuration, project,developer);
+    	SvnCommand cmdAdd = new SvnLocalAddCommand(configuration, project,developer);
+    	SvnCommand cmdSubmit = new SvnLocalCommitCommand(configuration, project,developer);
     	try {
 			executor.addCommand(cmdCheckout);
 			executor.addCommand(cmdAdd);
@@ -260,7 +257,7 @@ public class SvnCISClient implements CISClient {
      * @param config
      * @return
      */
-    private boolean checkExistsUserGroup(String role, List<String> userNames, Project project, SSHConnectConfig config){
+    private boolean checkExistsUserGroup(String role, List<String> userNames, Project project, SvnConfig config){
     	SvnCommand command = new CheckExistsUserGroupCommand(userNames, role, config, project);
     	try {
 			success = executor.executeSync(command);
@@ -281,7 +278,7 @@ public class SvnCISClient implements CISClient {
      * @return
      */
     
-    private boolean checkExistsAuth(String role, List<String> userNames, Project project, SSHConnectConfig config){
+    private boolean checkExistsAuth(String role, List<String> userNames, Project project, SvnConfig config){
     	SvnCommand command = new CheckExistsAuthCommand(userNames, role, config, project);
     	try {
 			success = executor.executeSync(command);
