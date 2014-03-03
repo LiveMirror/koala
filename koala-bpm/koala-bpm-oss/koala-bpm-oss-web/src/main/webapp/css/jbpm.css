@@ -73,7 +73,8 @@
 .u-tree  {
     position: relative;
     float: left;
-    min-height: 540px;
+    height: 540px;
+    overflow-y: auto;
     width: 25%;
     margin-left: 4px;
     margin-top: 4px;
