@@ -427,12 +427,12 @@
 			self.options.isShowPages && self._initPageNo();
 			self.$element.find('[data-role="selectAll"]').removeClass('checked');
 			if(self.pageNo != self.totalPage - 1){
-				self.nextBtn.removeClass('disabled');
-				self.lastPageBtn.removeClass('disabled')
+				self.nextBtn && self.nextBtn.removeClass('disabled');
+				self.lastPageBtn && self.lastPageBtn.removeClass('disabled')
 			}
 			if(self.pageNo != 0){
-				self.prevBtn.removeClass('disabled');
-				self.firstPageBtn.removeClass('disabled')
+				self.prevBtn && self.prevBtn.removeClass('disabled');
+				self.firstPageBtn && self.firstPageBtn.removeClass('disabled')
 			}
 			self.$element.trigger('complate');
 		},
