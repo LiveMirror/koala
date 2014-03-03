@@ -11,7 +11,7 @@ import org.openkoala.opencis.support.SvnConfig;
  * @author zjh
  *
  */
-public class SvnLocalCheckoutCommand extends SvnCommand {
+public class SvnLocalCheckoutCommand extends LocalCommand {
 
 	public SvnLocalCheckoutCommand() {
 		// TODO Auto-generated constructor stub
@@ -24,8 +24,10 @@ public class SvnLocalCheckoutCommand extends SvnCommand {
 	
 	public SvnLocalCheckoutCommand(SvnConfig config, Project project,Developer developer) {
 		this(config, project);
-		this.svnUser = developer.getId();
-		this.svnPassword = developer.getPassword();
+//		this.svnUser = developer.getId();
+//		this.svnPassword = developer.getPassword();
+		this.userName = developer.getId();
+		this.password = developer.getPassword();
 	}
 
 
@@ -36,7 +38,7 @@ public class SvnLocalCheckoutCommand extends SvnCommand {
 		String strCmd = "svn checkout " + svnAddress 
 //				+ "/" + project.getProjectName()
 				+ " " + project.getPhysicalPath() 
-				+ " --username " + svnUser + " --password " + svnPassword + " --non-interactive";
+				+ " --username " + userName + " --password " + password + " --non-interactive";
 		return strCmd;
 	}
 
