@@ -31,7 +31,7 @@ public class AuthDataServiceImpl implements AuthDataService {
 	
 	@Override
 	public List<String> getAttributes(String res) {
-		return retrieveResourceAndRoles().get(res);
+		return IdentityResourceAuthorization.findAuthorizationByResourceIdentifier(res);
 	}
 	
 	private Map<String, List<String>> retrieveResourceAndRoles() {

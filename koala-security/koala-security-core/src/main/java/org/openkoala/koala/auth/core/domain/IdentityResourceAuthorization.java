@@ -74,5 +74,14 @@ public class IdentityResourceAuthorization extends Accountability {
 		return findByNamedQuery("findAuthorizationByRole", new Object[] { roleId, new Date() }, //
 				IdentityResourceAuthorization.class);
 	}
+	
+	/**
+	 * 根据角色ID获取角色的授权信息
+	 * @param roleId
+	 * @return
+	 */
+	public static List<String> findAuthorizationByResourceIdentifier(String identifier) {
+		return  getRepository().findByNamedQuery("findAuthorizationByResourceIdentifier",new Object[] {identifier,new Date()},String.class);
+	}
 
 }

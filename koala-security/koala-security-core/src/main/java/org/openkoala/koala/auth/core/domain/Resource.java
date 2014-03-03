@@ -386,6 +386,18 @@ public class Resource extends Party {
 				Resource.class).isEmpty();
 	}
 	
+
+	/**
+	 * 获得角色所有有权限访问资源标识
+	 * 
+	 * @param roleId
+	 * @return
+	 */
+	public static List<Long> listPrivilegeByRole(Long roleId) {
+		List<Long> list = getRepository().findByNamedQuery("listPrivilegeByRole",new Object[] { roleId, new Date()},Long.class);
+		return list;
+	}
+	
 	public static List<Resource> getRootResources() {
 		List<Resource> results = new ArrayList<Resource>();
 		List<Resource> all = Resource.findAll(Resource.class);

@@ -152,6 +152,25 @@ public class ResourceVO extends PartyVO implements Serializable {
 	public void setMenuType(String menuType) {
 		this.menuType = menuType;
 	}
+	
+	public ResourceVO(Long id, String desc, int version, String icon, String level, String identifier, Boolean isvalid, String name, String text,
+			Integer sortOrder, String serialNumber, Date abolishDate, Date createDate, Long menuType) {
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		this.setId(id);
+		this.setDesc(desc);
+		this.setVersion(version);
+		this.setIcon(icon);
+		this.setLevel(level == null ? "1" : level);
+		this.setIdentifier(identifier);
+		this.setIsvalid(isvalid);
+		this.setName(name);
+		this.setText(text);
+		this.setSortOrder(sortOrder);
+		this.setSerialNumber(serialNumber);
+		this.setAbolishDate(formatter.format(abolishDate));
+		this.setCreateDate(formatter.format(createDate));
+		this.setMenuType(String.valueOf(menuType));
+	}
 
 	public void domain2Vo(Resource resource) {
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -102,4 +102,9 @@
 		</query>
 	</named-query>
 	
+	<named-query name="listPrivilegeByRole">
+		<query>
+			select m.resource.id from IdentityResourceAuthorization m where m.identity.id=? and m.abolishDate>?
+		</query>
+	</named-query>
 </entity-mappings>

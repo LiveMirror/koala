@@ -209,20 +209,21 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 	}
 
 	public List<ResourceVO> findAllTreeSelectItemByRole(RoleVO roleVO) {
-		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
-		List<Resource> topMenus = Resource.findChildByParent(null);
-		for (Resource res : topMenus) {
-			ResourceVO treeVO = new ResourceVO();
-			treeVO.domain2Vo(res);
-			ResourceTypeAssignment assignment = ResourceTypeAssignment.findByResource(res.getId());
-			if (assignment != null) {
-				treeVO.setMenuType(String.valueOf(assignment.getResourceType().getId()));
-			}
-			treeVO.setIschecked(Resource.hasPrivilegeByRole(res.getId(), roleVO.getId()));
-			treeVOs.add(treeVO);
-			innerFindMenuByParent(treeVO, roleVO);
-		}
-		return treeVOs;
+		return findMenuTreeSelectItemByRole(roleVO);
+//		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
+//		List<Resource> topMenus = Resource.findChildByParent(null);
+//		for (Resource res : topMenus) {
+//			ResourceVO treeVO = new ResourceVO();
+//			treeVO.domain2Vo(res);
+//			ResourceTypeAssignment assignment = ResourceTypeAssignment.findByResource(res.getId());
+//			if (assignment != null) {
+//				treeVO.setMenuType(String.valueOf(assignment.getResourceType().getId()));
+//			}
+//			treeVO.setIschecked(Resource.hasPrivilegeByRole(res.getId(), roleVO.getId()));
+//			treeVOs.add(treeVO);
+//			innerFindMenuByParent(treeVO, roleVO);
+//		}
+//		return treeVOs;
 	}
 
 	public List<ResourceVO> findMenuTree() {
@@ -329,5 +330,43 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 			Resource menu = Resource.load(Resource.class, resourceVO.getId());
 			menu.setSortOrder(resourceVO.getSortOrder());
 		}
+	}
+	
+	private final static String SELECT_RESOURCEVO = "SELECT DISTINCT NEW org.openkoala.auth.application.vo.ResourceVO("
+			+ "resource.id, resource.desc, resource.version, resource.menuIcon, resource.level, "
+			+ "resource.identifier, resource.isValid, resource.name, resource.name, "
+			+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id) ";
+
+	private List<ResourceVO> findMenuTreeSelectItemByRole(RoleVO roleVO) {
+		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
+		List<Long> allPrivilege = Resource.listPrivilegeByRole(roleVO.getId());
+
+		String jqpl = SELECT_RESOURCEVO
+				+ "FROM ResourceTypeAssignment assignment LEFT JOIN assignment.resource resource LEFT JOIN assignment.resourceType resourceType "
+				+ "WHERE resource.level=1 AND resource.abolishDate>? ORDER BY resource.sortOrder ,resource.createDate";
+		treeVOs = queryChannel().queryResult(jqpl, new Object[]{new Date()});
+
+		for (ResourceVO res : treeVOs) {
+			res.setIschecked(allPrivilege.contains(res.getId()));
+			findMenuTreeSelectItemByRole(res, roleVO, allPrivilege);
+		}
+
+		return treeVOs;
+	}
+
+	private List<ResourceVO> findMenuTreeSelectItemByRole(ResourceVO parent, RoleVO roleVO, List<Long> allPrivilege) {
+		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
+		String jqpl = SELECT_RESOURCEVO + "FROM ResourceLineAssignment resourceLineAssignment LEFT JOIN resourceLineAssignment.child resource, "
+				+ "ResourceTypeAssignment assignment LEFT JOIN assignment.resource _resource LEFT JOIN assignment.resourceType resourceType "
+				+ "WHERE resourceLineAssignment.parent.id = ? AND resource.abolishDate>? AND resource.id = _resource.id "
+				+ "ORDER BY resource.sortOrder ,resource.createDate";
+
+		treeVOs = queryChannel().queryResult(jqpl, new Object[]{ parent.getId(),new Date()});
+		for (ResourceVO res : treeVOs) {
+			res.setIschecked(allPrivilege.contains(res.getId()));
+			findMenuTreeSelectItemByRole(res, roleVO, allPrivilege);
+		}
+		parent.setChildren(treeVOs);
+		return treeVOs;
 	}
 }
