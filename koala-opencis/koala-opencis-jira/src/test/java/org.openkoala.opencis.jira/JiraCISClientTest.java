@@ -15,17 +15,17 @@ import java.lang.reflect.Field;
  * Date: 2/11/14
  * Time: 11:19 AM
  */
-//@Ignore
+@Ignore
 public class JiraCISClientTest {
 
     /*    private String username = "foreverosstest";
 
         private JiraCISClient client = new JiraCISClient("http://localhost:8080/", username, "f12345678");*/
-    private String username = "123123123";
+    private String username = "admin";
 
-    private String url = "http://127.0.0.1:8080";
+    private String url = "http://10.108.1.92:8082/";
 
-    private JiraCISClient client = new JiraCISClient(url, username, "123123123");
+    private JiraCISClient client = new JiraCISClient(url, username, "admin");
 
     @Before
     public void setUp() throws Exception {
@@ -36,7 +36,7 @@ public class JiraCISClientTest {
 
     }
 
-    //@After
+    @After
     public void tearDown() throws Exception {
 
 
@@ -60,10 +60,11 @@ public class JiraCISClientTest {
         // 注意project key的问题
         client.createProject(getProject());
 
-        assert client.authenticate();
+        assert client.isProjectExist(getProject());
 
         client.assignUsersToRole(getProject(), "", getDeveloper());
 
+        assert client.authenticate();
         assert client.isUserAtProjectDevelopRole(getProject(), getDeveloper());
 
     }
@@ -81,7 +82,7 @@ public class JiraCISClientTest {
 
     private Developer getDeveloper() {
         Developer developer = new Developer();
-        developer.setName("name111");
+        developer.setName("name");
         developer.setPassword("12345678");
         developer.setEmail("kkkkkkk@1dfdf.com");
         developer.setId("username");

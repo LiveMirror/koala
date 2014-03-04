@@ -121,9 +121,9 @@ public class JiraCISClient implements CISClient {
             // Invalid username or password
             return false;
         } catch (RemoteException e) {
-            throw new CISClientBaseRuntimeException("jira.authenticationRemoteException", e);
+            return false;
         } catch (java.rmi.RemoteException e) {
-            throw new CISClientBaseRuntimeException("jira.authenticationRemoteException", e);
+            return false;
         }
         return token != null;
     }
