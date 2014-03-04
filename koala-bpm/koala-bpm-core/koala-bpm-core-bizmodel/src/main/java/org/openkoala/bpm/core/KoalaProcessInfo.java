@@ -12,13 +12,14 @@ import javax.persistence.Lob;
 
 import org.dayatang.domain.AbstractEntity;
 import org.dayatang.domain.CriteriaQuery;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 /**
  *
  * @author lingen
  *
  */
 @Entity
-public class KoalaProcessInfo extends AbstractEntity{
+public class KoalaProcessInfo extends KoalaAbstractEntity{
 
 	/**
 	 * 

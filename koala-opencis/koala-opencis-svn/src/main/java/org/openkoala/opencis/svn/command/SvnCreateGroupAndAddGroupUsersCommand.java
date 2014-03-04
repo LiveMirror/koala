@@ -1,12 +1,10 @@
 package org.openkoala.opencis.svn.command;
 
-import java.io.File;
 import java.util.List;
 
 import org.openkoala.opencis.api.Project;
 import org.openkoala.opencis.support.CommonUtil;
-import org.openkoala.opencis.support.OpencisConstant;
-import org.openkoala.opencis.support.SSHConnectConfig;
+import org.openkoala.opencis.support.SvnConfig;
 
 import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.Session;
@@ -24,7 +22,7 @@ public class SvnCreateGroupAndAddGroupUsersCommand extends SvnCommand {
 
     }
 
-    public SvnCreateGroupAndAddGroupUsersCommand(List<String> userNames, String role, SSHConnectConfig config, Project project) {
+    public SvnCreateGroupAndAddGroupUsersCommand(List<String> userNames, String role, SvnConfig config, Project project) {
         super(config, project);
         this.userNames = userNames;
         this.role = role;

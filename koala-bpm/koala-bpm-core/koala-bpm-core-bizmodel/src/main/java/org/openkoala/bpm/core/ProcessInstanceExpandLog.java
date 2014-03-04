@@ -8,10 +8,11 @@ import javax.persistence.Table;
 
 import org.dayatang.domain.AbstractEntity;
 import org.dayatang.domain.CriteriaQuery;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
 @Entity
 @Table
-public class ProcessInstanceExpandLog extends AbstractEntity{
+public class ProcessInstanceExpandLog extends KoalaAbstractEntity{
 	
 	private static final long serialVersionUID = -4360238319408676454L;
 	

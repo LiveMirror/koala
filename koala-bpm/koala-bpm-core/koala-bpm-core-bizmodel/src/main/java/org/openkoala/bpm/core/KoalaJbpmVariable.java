@@ -6,10 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.dayatang.domain.AbstractEntity;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
 
 @Entity
-public class KoalaJbpmVariable extends AbstractEntity {
+public class KoalaJbpmVariable extends KoalaAbstractEntity {
 
 	
 	private static final long serialVersionUID = -3979483109001226826L;

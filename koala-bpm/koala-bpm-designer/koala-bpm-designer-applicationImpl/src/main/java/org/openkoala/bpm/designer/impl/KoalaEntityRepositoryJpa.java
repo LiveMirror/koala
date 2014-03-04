@@ -160,7 +160,12 @@ public class KoalaEntityRepositoryJpa implements
 
 	@Override
 	public <T> T getSingleResult(JpqlQuery jpqlQuery) {
-		return (T) getQuery(jpqlQuery).getSingleResult();
+		List<T> results = getQuery(jpqlQuery).getResultList();
+		if(results.isEmpty()){
+			return null;
+		}else{
+			return results.get(0);
+		}
 	}
 
 	@Override

@@ -22,7 +22,7 @@ import org.dayatang.domain.AbstractEntity;
 @NamedQueries({
 	@NamedQuery(name = "isExisted", query = "select o from DynaProcessTemplate o where o.templateName=?")
 })
-public class DynaProcessTemplate extends AbstractEntity {
+public class DynaProcessTemplate extends BpmFormEntity {
 
 	/**
 	 * 
@@ -177,7 +177,6 @@ public class DynaProcessTemplate extends AbstractEntity {
 		}
 	}
 
-	@Override
 	public String[] businessKeys() {
 		// TODO Auto-generated method stub
 		return new String[]{};

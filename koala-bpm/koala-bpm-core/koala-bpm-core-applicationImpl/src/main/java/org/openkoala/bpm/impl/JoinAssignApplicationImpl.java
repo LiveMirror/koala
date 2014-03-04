@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.bpm.application.JoinAssignApplication;
@@ -19,13 +20,20 @@ import org.openkoala.bpm.core.*;
 @Named
 public class JoinAssignApplicationImpl implements JoinAssignApplication {
 
-	@Inject
-	private QueryChannelService queryChannel;
+	
+	private static QueryChannelService queryChannel;
+	
+	public static QueryChannelService getQueryChannelService(){
+		if(queryChannel==null){
+			queryChannel = InstanceFactory.getInstance(QueryChannelService.class,"queryChannel");
+		}
+		return queryChannel;
+	}
 	
 	public JoinAssignVO getJoinAssign(Long id) {
 			
 	   	String jpql = "select _joinAssign from JoinAssign _joinAssign  where _joinAssign.id=:id";
-	   	JoinAssign joinAssign = (JoinAssign) queryChannel.createJpqlQuery(jpql).addParameter("id", id).singleResult();
+	   	JoinAssign joinAssign = (JoinAssign) getQueryChannelService().createJpqlQuery(jpql).addParameter("id", id).singleResult();
 	   	
 	   	if (joinAssign == null) {
 	   		throw new RuntimeException("This entity is not exist, id:" + id);
@@ -126,7 +134,7 @@ public class JoinAssignApplicationImpl implements JoinAssignApplication {
 	   		conditionVals.add(MessageFormat.format("%{0}%", queryVo.getMonitorVal()));
 	   	}		
 	   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   		   	
-        Page<JoinAssign> pages = queryChannel.createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
+        Page<JoinAssign> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
         for (JoinAssign joinAssign : pages.getData()) {
             JoinAssignVO joinAssignVO = new JoinAssignVO();
             try {

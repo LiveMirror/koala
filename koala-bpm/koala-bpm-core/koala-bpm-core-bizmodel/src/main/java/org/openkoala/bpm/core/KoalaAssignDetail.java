@@ -8,9 +8,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.dayatang.domain.AbstractEntity;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
 @Entity
-public class KoalaAssignDetail extends AbstractEntity {
+public class KoalaAssignDetail extends KoalaAbstractEntity {
 
 	private static final long serialVersionUID = 9037655291650063741L;
 	

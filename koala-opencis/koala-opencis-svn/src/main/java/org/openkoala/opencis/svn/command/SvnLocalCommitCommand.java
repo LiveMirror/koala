@@ -19,6 +19,8 @@ public class SvnLocalCommitCommand extends LocalCommand {
 
 	public SvnLocalCommitCommand(SvnConfig config, Project project,Developer developer) {
 		super(config, project);
+//		this.svnUser = developer.getId();
+//		this.svnPassword = developer.getPassword();
 		this.userName = developer.getId();
 		this.password = developer.getPassword();
 	}
@@ -28,7 +30,7 @@ public class SvnLocalCommitCommand extends LocalCommand {
 		// TODO Auto-generated method stub
 		String strCmd = "svn commit " + project.getPhysicalPath() + "/*" 
 				+ " --username " + userName + " --password " + password
-				+ " -m \"" + "import project " + project.getProjectName() + "\"";
+				+ " -m \"" + "import project " + project.getProjectName() + "\" --non-interactive";
 		return strCmd;
 	}
 

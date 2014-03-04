@@ -1,7 +1,7 @@
 package org.openkoala.opencis.svn.command;
 
 import org.openkoala.opencis.api.Project;
-import org.openkoala.opencis.support.SSHConnectConfig;
+import org.openkoala.opencis.support.SvnConfig;
 
 /**
  * 远程启动Svnserve命令
@@ -14,7 +14,7 @@ public class SvnStartServerCommand extends SvnCommand {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SvnStartServerCommand(SSHConnectConfig config, Project project) {
+	public SvnStartServerCommand(SvnConfig config, Project project) {
 		super(config, project);
 		// TODO Auto-generated constructor stub
 	}

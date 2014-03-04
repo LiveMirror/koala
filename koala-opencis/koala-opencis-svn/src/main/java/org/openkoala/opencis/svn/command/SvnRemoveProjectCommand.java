@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.openkoala.opencis.api.Project;
 import org.openkoala.opencis.exception.RemoveProjectException;
-import org.openkoala.opencis.support.SSHConnectConfig;
+import org.openkoala.opencis.support.SvnConfig;
 
 import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.Session;
@@ -18,7 +18,7 @@ public class SvnRemoveProjectCommand extends SvnCommand {
 
     }
 
-    public SvnRemoveProjectCommand(SSHConnectConfig configuration, Project project) {
+    public SvnRemoveProjectCommand(SvnConfig configuration, Project project) {
         super(configuration, project);
     }
 

@@ -11,9 +11,10 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import org.dayatang.domain.AbstractEntity;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
 @Entity
-public class KoalaAssignInfo  extends AbstractEntity{
+public class KoalaAssignInfo  extends KoalaAbstractEntity{
 
 	private static final long serialVersionUID = -7692102858676116384L;
 

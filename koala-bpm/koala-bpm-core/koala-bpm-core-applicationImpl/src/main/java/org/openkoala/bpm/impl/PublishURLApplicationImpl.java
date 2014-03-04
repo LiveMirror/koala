@@ -22,7 +22,7 @@ public class PublishURLApplicationImpl implements PublishURLApplication {
 	
 	public static QueryChannelService queryChannel() {
 		if (queryChannel == null) {
-			queryChannel = InstanceFactory.getInstance(QueryChannelService.class);
+			queryChannel = InstanceFactory.getInstance(QueryChannelService.class,"queryChannel");
 		}
 		return queryChannel;
 	}

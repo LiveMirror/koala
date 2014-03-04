@@ -1,12 +1,10 @@
 package org.openkoala.opencis.svn.command;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.openkoala.opencis.api.Project;
 import org.openkoala.opencis.exception.UserExistenceException;
-import org.openkoala.opencis.support.OpencisConstant;
-import org.openkoala.opencis.support.SSHConnectConfig;
+import org.openkoala.opencis.support.SvnConfig;
 
 import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.Session;
@@ -22,7 +20,7 @@ public class SvnIsUserExistenceCommand extends SvnCommand {
 		
 	}
 	
-	public SvnIsUserExistenceCommand(String userName, SSHConnectConfig configuration, Project project){
+	public SvnIsUserExistenceCommand(String userName, SvnConfig configuration, Project project){
 		super(configuration, project);
 		this.userName = userName;
 	}

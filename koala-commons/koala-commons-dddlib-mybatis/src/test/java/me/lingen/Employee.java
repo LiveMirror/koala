@@ -154,12 +154,17 @@ public class Employee extends MyBatisEntity {
 	}
 	
 	public static List<Employee> findByName2(String name) {
+		
 		List<Employee> results = Employee.getRepository().createNamedQuery(Employee.class,"findByName2").addParameter("name", name).list();
 		return results;
 	}
 	
 	public static Employee findByNameSingle(String name) {
 		return (Employee) Employee.getRepository().createNamedQuery(Employee.class,"findByName").setParameters(name).singleResult();
+	}
+	
+	public void save(){
+		getRepository().save(this);
 	}
 
 }

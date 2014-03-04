@@ -24,6 +24,8 @@ public class SvnLocalCheckoutCommand extends LocalCommand {
 	
 	public SvnLocalCheckoutCommand(SvnConfig config, Project project,Developer developer) {
 		this(config, project);
+//		this.svnUser = developer.getId();
+//		this.svnPassword = developer.getPassword();
 		this.userName = developer.getId();
 		this.password = developer.getPassword();
 	}
@@ -34,9 +36,9 @@ public class SvnLocalCheckoutCommand extends LocalCommand {
 		// TODO Auto-generated method stub
 		// http://10.108.1.138/svn/ddd    test/test
 		String strCmd = "svn checkout " + svnAddress 
-//				+ "/" + project.getProjectName()
+				+ "/" + project.getProjectName()
 				+ " " + project.getPhysicalPath() 
-				+ " --username " + userName + " --password " + password;
+				+ " --username " + userName + " --password " + password + " --non-interactive";
 		return strCmd;
 	}
 

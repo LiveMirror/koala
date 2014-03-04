@@ -43,6 +43,12 @@ a, button{
     background-color: #ffffff;
     transition: width 0.4 ease-in-out;
 }
+
+.g-sidec > ul {
+	overflow-y: auto;
+	max-height: 520px;
+}
+
 .first-level-menu {
     list-style: none;
 }

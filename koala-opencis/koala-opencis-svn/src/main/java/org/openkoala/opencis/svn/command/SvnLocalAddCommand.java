@@ -19,6 +19,8 @@ public class SvnLocalAddCommand extends LocalCommand {
 
 	public SvnLocalAddCommand(SvnConfig config, Project project,Developer developer) {
 		super(config, project);
+//		this.svnUser = developer.getId();
+//		this.svnPassword = developer.getPassword();
 		this.userName = developer.getId();
 		this.password = developer.getPassword();
 	}
