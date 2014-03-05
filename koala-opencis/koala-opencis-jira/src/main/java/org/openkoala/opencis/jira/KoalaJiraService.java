@@ -47,6 +47,14 @@ public class KoalaJiraService {
     }
 
     public void createProject(Project project, String jiraServerAddress) throws RemoteException {
+        for (RemotePermissionScheme permission : jiraService.getPermissionSchemes(token)) {
+            System.out.println("name : " + permission.getName());
+            for (RemotePermissionMapping mapping : permission.getPermissionMappings()) {
+                System.out.println("mapping " + mapping.getPermission().getName());
+            }
+        }
+
+
         jiraService.createProject(token, KoalaJiraService.getProjectKey(project), project.getProjectName(),
                 project.getDescription(), jiraServerAddress, project.getProjectLead(),
                 jiraService.getPermissionSchemes(token)[0], null, null);
@@ -190,14 +198,14 @@ public class KoalaJiraService {
         jiraService.deleteUser(token, userName);
     }
 
-    public void addActorsToProjectRole(String projectKey, String userName, String projectRoleName) throws RemoteException {
-        String[] userNames = new String[]{userName};
+    public void addActorsToProjectRole(String projectKey, String userName, String projectRoleName)
+            throws RemoteException {
         RemoteProjectRole remoteProjectRole = getRemoteProjectRole(projectRoleName);
         RemoteProject remoteProject = getRemoteProjectByProjectKey(projectKey);
         //只有两种类型：atlassian-user-role-actor  atlassian-group-role-actor
         String actorType = "atlassian-user-role-actor";
 
-        jiraService.addActorsToProjectRole(token, userNames, remoteProjectRole, remoteProject, actorType);
+        jiraService.addActorsToProjectRole(token, new String[]{userName}, remoteProjectRole, remoteProject, actorType);
 
     }
 

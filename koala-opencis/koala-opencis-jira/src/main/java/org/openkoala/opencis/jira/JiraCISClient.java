@@ -53,16 +53,15 @@ public class JiraCISClient implements CISClient {
         try {
             jiraService.createProject(project, jiraServerAddress);
         } catch (RemotePermissionException e) {
-            throw new CISClientBaseRuntimeException("jira createProject permission denied", e);
+            throw new CISClientBaseRuntimeException(e.getMessage(), e);
         } catch (RemoteValidationException e) {
-
-            throw new CISClientBaseRuntimeException("jira RemoteValidationException", e);
+            throw new CISClientBaseRuntimeException(e.getMessage(), e);
         } catch (RemoteAuthenticationException e) {
-            throw new CISClientBaseRuntimeException("jira RemoteAuthenticationException", e);
+            throw new CISClientBaseRuntimeException(e.getMessage(), e);
         } catch (RemoteException e) {
-            throw new CISClientBaseRuntimeException("jira RemoteException", e);
+            throw new CISClientBaseRuntimeException(e.getMessage(), e);
         } catch (java.rmi.RemoteException e) {
-            throw new CISClientBaseRuntimeException("jira RemoteException", e);
+            throw new CISClientBaseRuntimeException(e.getMessage(), e);
         }
     }
 
@@ -81,13 +80,13 @@ public class JiraCISClient implements CISClient {
         try {
             jiraService.createUser(developer);
         } catch (RemotePermissionException e) {
-            throw new CISClientBaseRuntimeException("jira.remotePermissionException");
+            throw new CISClientBaseRuntimeException("jira.remotePermissionException", e);
         } catch (RemoteValidationException e) {
-            throw new CISClientBaseRuntimeException("jira.remoteValidationException");
+            throw new CISClientBaseRuntimeException("jira.remoteValidationException", e);
         } catch (RemoteAuthenticationException e) {
-            throw new CISClientBaseRuntimeException("jira.remoteAuthenticationException");
+            throw new CISClientBaseRuntimeException("jira.remoteAuthenticationException", e);
         } catch (java.rmi.RemoteException e) {
-            throw new CISClientBaseRuntimeException("jira.remoteException");
+            throw new CISClientBaseRuntimeException("jira.remoteException", e);
         }
     }
 
@@ -100,9 +99,9 @@ public class JiraCISClient implements CISClient {
         try {
             jiraService.deleteUser(developer.getId());
         } catch (RemotePermissionException e) {
-            throw new CISClientBaseRuntimeException("jira.remotePermissionException");
+            throw new CISClientBaseRuntimeException("jira.remotePermissionException", e);
         } catch (Exception e) {
-            throw new CISClientBaseRuntimeException("jira.remoteException");
+            throw new CISClientBaseRuntimeException("jira.remoteException", e);
         }
     }
 
@@ -142,9 +141,11 @@ public class JiraCISClient implements CISClient {
     @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {
         for (Developer each : developers) {
-            checkProjectRoleUserAllExist(project, each.getId(), KoalaJiraService.DEFAULT_PROJECT_ROLE_DEVELOP);
+          checkProjectRoleUserAllExist(project, each.getId());
             try {
-                jiraService.addActorsToProjectRole(KoalaJiraService.getProjectKey(project), each.getId(), KoalaJiraService.DEFAULT_PROJECT_ROLE_DEVELOP);
+                jiraService.addActorsToProjectRole(KoalaJiraService.getProjectKey(project),
+                        each.getId(),
+                        KoalaJiraService.DEFAULT_PROJECT_ROLE_DEVELOP);
             } catch (java.rmi.RemoteException e) {
                 throw new CISClientBaseRuntimeException("jira.assignUsersToRoleRemoteException", e);
             }
@@ -157,7 +158,7 @@ public class JiraCISClient implements CISClient {
      *
      * @return
      */
-    private void checkProjectRoleUserAllExist(Project project, String userName, String roleName) {
+    private void checkProjectRoleUserAllExist(Project project, String userName) {
         if (!jiraService.isProjectExist(project)) {
             throw new CISClientBaseRuntimeException("jira.projectNotExists");
         }
