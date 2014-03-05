@@ -1,0 +1,88 @@
+package org.openkoala.koala.tags;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public class TokenHelper {
+
+	private static Log LOG = LogFactory.getLog(TokenHelper.class);
+
+	protected static String TOKEN_KEY = "koala.token";
+
+	protected static String TOKEN_SESSION_KEY = "koala.token.key";
+
+	/**
+	 * 验证证token
+	 * @param request
+	 * @return
+	 */
+	public static boolean validToken(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		synchronized (session) {
+			String token = getTokenValue(request);
+			if (token == null) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("no token found. -> Invalid token ");
+				}
+				return true;
+			}
+			List<String> tokens = getTokens(session);
+			if (tokens.contains(token)) {
+				removeToken(session, token);
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+	protected static void addToken(HttpSession session, String token) {
+		@SuppressWarnings("unchecked")
+		List<String> tokens = (List<String>) session.getAttribute(TOKEN_SESSION_KEY);
+		if (tokens == null) {
+			tokens = new ArrayList<String>();
+		}
+		tokens.add(token);
+		session.setAttribute(TOKEN_SESSION_KEY, tokens);
+	}
+
+	protected static String generateToken() {
+		return UUID.randomUUID().toString().replace("-", "");
+	}
+
+	private static String getTokenValue(HttpServletRequest request) {
+		return request.getParameter(TOKEN_KEY);
+	}
+
+	/**
+	 * 移除Token
+	 * 
+	 * @param token
+	 */
+	private static void removeToken(HttpSession session, String token) {
+		@SuppressWarnings("unchecked")
+		List<String> tokens = (List<String>) session.getAttribute(TOKEN_SESSION_KEY);
+		if (tokens != null && !tokens.isEmpty()) {
+			System.out.println(tokens.remove(token)+"+++++++++++++++++++++++++++++++++++++++++++++++++++");
+			session.setAttribute(TOKEN_SESSION_KEY, tokens);
+		}
+	}
+
+	private static List<String> getTokens(HttpSession session) {
+		@SuppressWarnings("unchecked")
+		List<String> tokens = (List<String>) session.getAttribute(TOKEN_SESSION_KEY);
+		if (tokens == null) {
+			tokens = new ArrayList<String>();
+			session.setAttribute(TOKEN_SESSION_KEY, tokens);
+		}
+		return tokens;
+	}
+
+}

@@ -21,11 +21,11 @@ public class JiraCISClientTest {
     /*    private String username = "foreverosstest";
 
         private JiraCISClient client = new JiraCISClient("http://localhost:8080/", username, "f12345678");*/
-    private String username = "123123";
+    private String username = "admin";
 
-    private String url = "http://127.0.0.1:8080/";
+    private String url = "http://10.108.1.92:8082/";
 
-    private JiraCISClient client = new JiraCISClient(url, username, "123123123");
+    private JiraCISClient client = new JiraCISClient(url, username, "admin");
 
     @Before
     public void setUp() throws Exception {
@@ -36,7 +36,7 @@ public class JiraCISClientTest {
 
     }
 
-    //@After
+    @After
     public void tearDown() throws Exception {
 
 
@@ -55,6 +55,7 @@ public class JiraCISClientTest {
 
     @Test
     public void testName() throws Exception {
+
 
         // 注意project key的问题
         client.createProject(getProject());

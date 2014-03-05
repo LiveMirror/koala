@@ -1,8 +1,6 @@
 package com.springapp.mvc;
 
 import org.dayatang.domain.InstanceFactory;
-import org.openkoala.businesslog.application.BusinessLogApplication;
-import org.openkoala.businesslog.dto.DefaultBusinessLogDTO;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,9 +21,6 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
-        BusinessLogApplication businessLogApplication = InstanceFactory.getInstance(BusinessLogApplication.class, "businessLogApplication");
-        model.put("logs",
-                businessLogApplication.findAllDefaultBusinessLog());
         return "admin";
 
     }
