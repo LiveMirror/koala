@@ -132,6 +132,7 @@ var roleManager = function(){
 		if(item){
 			data['roleVO.id'] = item.id;	
 		}
+		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 		return data;
 	};
 	/**

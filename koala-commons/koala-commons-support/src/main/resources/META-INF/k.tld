@@ -13,7 +13,7 @@
 
   <tag>
     <name>token</name>
-    <tag-class> org.openkoala.koala.tags.KoalaTokenTag</tag-class>
+    <tag-class>org.openkoala.koala.token.tags.KoalaTokenTag</tag-class>
     <body-content>empty</body-content>
   </tag>
 </taglib>

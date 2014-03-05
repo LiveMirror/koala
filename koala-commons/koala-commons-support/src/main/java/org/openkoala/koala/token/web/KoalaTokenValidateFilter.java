@@ -1,4 +1,4 @@
-package org.openkoala.koala.web;
+package org.openkoala.koala.token.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.openkoala.koala.tags.TokenHelper;
+import org.openkoala.koala.token.TokenHelper;
 
 public class KoalaTokenValidateFilter implements Filter {
 

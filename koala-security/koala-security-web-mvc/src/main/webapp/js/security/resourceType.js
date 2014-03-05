@@ -125,6 +125,7 @@ var resourceTypeManager = function(){
 	var getAllData = function(item){
 		var data = {};
 		data['resourceTypeVO.name'] = resourceTypeName.val();
+		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 		if(item){
 			data['resourceTypeVO.id'] = item.id;	
 		}

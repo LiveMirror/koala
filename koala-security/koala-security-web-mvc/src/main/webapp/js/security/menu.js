@@ -214,6 +214,7 @@ var menuManager = function(){
 			data['parent.id'] = parentId;
 			data['parent.level'] = parentLevel;
 		}
+		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 		return data;
 	};
 

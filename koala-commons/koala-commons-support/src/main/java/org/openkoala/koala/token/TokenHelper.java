@@ -1,4 +1,4 @@
-package org.openkoala.koala.tags;
+package org.openkoala.koala.token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,13 @@ public class TokenHelper {
 
 	private static Log LOG = LogFactory.getLog(TokenHelper.class);
 
-	protected static String TOKEN_KEY = "koala.token";
+	public static String TOKEN_KEY = "koala.token";
 
-	protected static String TOKEN_SESSION_KEY = "koala.token.key";
+	public static String TOKEN_SESSION_KEY = "koala.token.key";
 
 	/**
 	 * 验证证token
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -43,7 +44,13 @@ public class TokenHelper {
 		}
 	}
 
-	protected static void addToken(HttpSession session, String token) {
+	/**
+	 * 把token添加到 session中
+	 * 
+	 * @param session
+	 * @param token
+	 */
+	public static void addToken(HttpSession session, String token) {
 		@SuppressWarnings("unchecked")
 		List<String> tokens = (List<String>) session.getAttribute(TOKEN_SESSION_KEY);
 		if (tokens == null) {
@@ -53,7 +60,24 @@ public class TokenHelper {
 		session.setAttribute(TOKEN_SESSION_KEY, tokens);
 	}
 
-	protected static String generateToken() {
+	/**
+	 * 生成token并添加到 session中
+	 * 
+	 * @param session
+	 * @return
+	 */
+	public static String generateAndAddToken(HttpSession session) {
+		String token = generateToken();
+		addToken(session, token);
+		return token;
+	}
+
+	/**
+	 * 生成token
+	 * 
+	 * @return
+	 */
+	public static String generateToken() {
 		return UUID.randomUUID().toString().replace("-", "");
 	}
 
@@ -70,7 +94,7 @@ public class TokenHelper {
 		@SuppressWarnings("unchecked")
 		List<String> tokens = (List<String>) session.getAttribute(TOKEN_SESSION_KEY);
 		if (tokens != null && !tokens.isEmpty()) {
-			System.out.println(tokens.remove(token)+"+++++++++++++++++++++++++++++++++++++++++++++++++++");
+			System.out.println(tokens.remove(token) + "+++++++++++++++++++++++++++++++++++++++++++++++++++");
 			session.setAttribute(TOKEN_SESSION_KEY, tokens);
 		}
 	}
