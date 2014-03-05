@@ -1,5 +1,7 @@
 package business;
 
+import org.openkoala.businesslog.utils.MethodAlias;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class ProjectApplicationImpl implements ProjectApplication {
         return new Project("ProjectApplicationImpl\'s project");
     }
 
+    @MethodAlias("ProjectApplicationImpl_findSomeProjects")
     @Override
     public Project[] findSomeProjects(List<String> projectNames) {
         List<Project> result = new ArrayList<Project>();

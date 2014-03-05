@@ -11,14 +11,18 @@
 	   		http://www.springframework.org/schema/aop
 	   		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
-    <import resource="classpath*:koala-businesslog-aop.xml"/>
-    <import resource="classpath*:koala-businesslog-standalone-persistence.xml"/>
+    <import resource="classpath:koala-businesslog-aop.xml"/>
+    <import resource="classpath:koala-businesslog-standalone-persistence.xml"/>
+
 
 
     <bean id="testApplication" class="business.TestApplicationImpl"/>
     <bean id="contractApplication" class="business.ContractApplicationImpl"/>
     <bean id="projectApplication" class="business.ProjectApplicationImpl"/>
     <bean id="invoiceApplication" class="business.InvoiceApplicationImpl"/>
+
+
+
 
 
 </beans>

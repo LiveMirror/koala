@@ -1,5 +1,7 @@
 package business;
 
+import org.openkoala.businesslog.utils.MethodAlias;
+
 import java.math.BigDecimal;
 
 /**
@@ -20,6 +22,7 @@ public class ContractApplicationImpl implements ContractApplication {
         return "合同名";
     }
 
+    @MethodAlias("ContractApplicationImpl.findContractById")
     @Override
     public Contract findContractById(long contractId) {
         Contract contract = new Contract();
