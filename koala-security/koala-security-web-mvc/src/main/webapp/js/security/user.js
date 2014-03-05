@@ -212,6 +212,7 @@ var userManager = function() {
 		}
 		data['userVO.userDesc'] = userDescript.val();
 		data['userVO.valid'] = dialog.find(':radio:checked').val();
+		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 		return data;
 	};
 	/**

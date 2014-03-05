@@ -10,11 +10,11 @@ import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.querychannel.Page;
-import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.auth.application.UserApplication;
 import org.openkoala.auth.application.vo.QueryConditionVO;
 import org.openkoala.auth.application.vo.RoleVO;
 import org.openkoala.auth.application.vo.UserVO;
+import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.koala.auth.core.domain.Role;
 import org.openkoala.koala.auth.core.domain.RoleUserAuthorization;
 import org.openkoala.koala.auth.core.domain.User;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserApplicationImpl extends BaseImpl implements UserApplication {
 
     public UserVO getUser(Long userId) {
-    	User user = (User) queryChannel().createJpqlQuery("select user from User user where user.abolishDate>:abolishDate").addParameter("abolishDate", new Date()).singleResult();
+    	User user = User.get(User.class, userId);
     	
     	if (user != null) {
 	        UserVO userVO = new UserVO();
