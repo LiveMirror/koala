@@ -278,6 +278,7 @@ var roleManager = function(){
 				for(var i=0,j=nodes.length; i<j; i++){
 					data['menus['+i+'].id'] = nodes[i].id;
 				}
+				data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 				$.post(baseUrl + 'assignMenuResources.koala', data).done(function(data){
 					if(data.result == 'success'){
 						grid.message({
