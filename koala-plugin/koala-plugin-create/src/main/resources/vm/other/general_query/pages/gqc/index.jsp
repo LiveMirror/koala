@@ -43,8 +43,8 @@
 			            <li>
 			                <a data-toggle="collapse" href="#generalQueryConfig"><i class="glyphicon glyphicon-home"></i>&nbsp;菜单栏&nbsp;<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a>
 			            	<ul id="generalQueryConfig" class="second-level-menu in">
-			            		 <li class="submenu" data-role="openTab" data-target="/pages/gqc/generalQueryList.html" data-title="通用查询配置" data-mark="generalQueryList"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;通用查询配置</a></li>
-			            		 <li class="submenu" data-role="openTab" data-target="/pages/gqc/dataSourceList.html" data-title="数据源配置" data-mark="dataSourceList"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;数据源配置</a></li>
+			            		 <li class="submenu" data-role="openTab" data-target="/pages/gqc/generalQueryList.jsp" data-title="通用查询配置" data-mark="generalQueryList"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;通用查询配置</a></li>
+			            		 <li class="submenu" data-role="openTab" data-target="/pages/gqc/dataSourceList.jsp" data-title="数据源配置" data-mark="dataSourceList"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;数据源配置</a></li>
                             </ul>
 			            </li>
 			        </ul>

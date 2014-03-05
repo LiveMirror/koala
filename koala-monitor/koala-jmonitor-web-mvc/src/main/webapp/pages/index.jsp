@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="ss3" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="java.util.Date"%>
 <%Long time = new Date().getTime();%>
 <!DOCTYPE html>
@@ -27,18 +26,6 @@
 	    <nav class="navbar navbar-default">
 	        <a class="navbar-brand" href="#"><img src="<c:url value='/images/global.logo.png'/>"/>Koala监控系统</a>
 	        <div class="collapse navbar-collapse navbar-ex1-collapse">
-	            <div class="btn-group navbar-right">
-	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-	                    <i class="glyphicon glyphicon-user"></i>
-	                    <span>&nbsp;<ss3:authentication property="principal.username" /></span>
-	                    <span class="caret"></span>
-	                </button>
-	                <ul class="dropdown-menu" id="userManager">
-	                    <li data-target="modifyPwd"><a href="#">修改密码</a></li>
-	                    <li data-target="switchUser"><a href="#">切换用户</a></li>
-	                    <li data-target="loginOut"><a href="#">注销</a></li>
-	                </ul>
-	            </div>
 	        </div>
 	    </nav>
 	</div>
@@ -48,21 +35,21 @@
 	            <li>
                 	<a data-toggle="collapse" href="#businessSupport"><i class="glyphicon glyphicon-list"></i>&nbsp;监控数据&nbsp;<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a>
 	                <ul id="businessSupport" class="second-level-menu in">
-	                    <li class="submenu" data-role="openTab" data-target="/pages/monitor/http-monitor.html" data-title="HTTP监控" data-mark="httpMonitor"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;HTTP监控</a></li>
-                        <li class="submenu" data-role="openTab" data-target="/pages/monitor/method-monitor.html" data-title="方法监控" data-mark="methodMonitor"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;方法监控</a></li>
-                        <li class="submenu" data-role="openTab" data-target="/pages/monitor/jdbc-monitor.html" data-title="数据库监控" data-mark="databaseMonitor"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;数据库监控</a></li>
+	                    <li class="submenu" data-role="openTab" data-target="/pages/monitor/http-monitor.jsp" data-title="HTTP监控" data-mark="httpMonitor"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;HTTP监控</a></li>
+                        <li class="submenu" data-role="openTab" data-target="/pages/monitor/method-monitor.jsp" data-title="方法监控" data-mark="methodMonitor"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;方法监控</a></li>
+                        <li class="submenu" data-role="openTab" data-target="/pages/monitor/jdbc-monitor.jsp" data-title="数据库监控" data-mark="databaseMonitor"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;数据库监控</a></li>
 	                </ul>
 	            </li>
 	            <li>
                 <a data-toggle="collapse" href="#userRight"><i class="glyphicon glyphicon-list"></i>&nbsp;监控节点&nbsp;<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a>
 	                <ul id="userRight" class="second-level-menu in">
-                         <li class="submenu" data-role="openTab" data-target="/pages/monitor/monitor-node-list.html" data-title="监控节点列表" data-mark="monitorNodeList"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;监控节点列表</a></li>
+                         <li class="submenu" data-role="openTab" data-target="/pages/monitor/monitor-node-list.jsp" data-title="监控节点列表" data-mark="monitorNodeList"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;监控节点列表</a></li>
 	                </ul>
 	            </li>
 	             <li>
                     <a data-toggle="collapse" href="#organisation"><i class="glyphicon glyphicon-list"></i>&nbsp;监控服务&nbsp;<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a>
 	                <ul id="organisation" class="second-level-menu in">
-	                    <li class="submenu" data-role="openTab" data-target="/pages/monitor/schedule-list.html" data-title="定时任务" data-mark="scheduleList" ><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;定时任务</a></li>
+	                    <li class="submenu" data-role="openTab" data-target="/pages/monitor/schedule-list.jsp" data-title="定时任务" data-mark="scheduleList" ><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;定时任务</a></li>
 	                </ul>
 	            </li>
 	        </ul>

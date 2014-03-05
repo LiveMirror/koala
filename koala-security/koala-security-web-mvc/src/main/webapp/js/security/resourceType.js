@@ -8,7 +8,7 @@ var resourceTypeManager = function(){
 	 */
 	var add = function(grid){
 		dataGrid = grid;
-		$.get(contextPath + '/pages/auth/resource-type-template.html').done(function(data){
+		$.get(contextPath + '/pages/auth/resource-type-template.jsp').done(function(data){
 			init(data);
 		});
 	};
@@ -17,7 +17,7 @@ var resourceTypeManager = function(){
 	 */
 	var modify = function(item, grid){
 		dataGrid = grid;
-		$.get(contextPath + '/pages/auth/resource-type-template.html').done(function(data){
+		$.get(contextPath + '/pages/auth/resource-type-template.jsp').done(function(data){
 			init(data,item);
 			setData(item);
 		});

@@ -307,9 +307,9 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		koalaDirectory.save();
 
 		Resource resourceManager = Resource.newResource("资源", "resource", "1", MENUICON);
-		Resource resource = Resource.newResource("资源管理", "/pages/auth/resource-list.html", "2", MENUICON);
-		Resource menuResource = Resource.newResource("菜单管理", "/pages/auth/menu-list.html", "2", MENUICON);
-		Resource typeResource = Resource.newResource("资源类型管理", "/pages/auth/resource-type-list.html", "2", MENUICON);
+		Resource resource = Resource.newResource("资源管理", "/pages/auth/resource-list.jsp", "2", MENUICON);
+		Resource menuResource = Resource.newResource("菜单管理", "/pages/auth/menu-list.jsp", "2", MENUICON);
+		Resource typeResource = Resource.newResource("资源类型管理", "/pages/auth/resource-type-list.jsp", "2", MENUICON);
 		resourceManager.save();
 		resource.save();
 		menuResource.save();
@@ -337,8 +337,8 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		koalaDirectory.save();
 
 		Resource userRoleResource = Resource.newResource("用户角色管理", "userole", "1", MENUICON);
-		Resource userManager = Resource.newResource("用户管理", "/pages/auth/user-list.html", "2", MENUICON);
-		Resource roleManager = Resource.newResource("角色管理", "/pages/auth/role-list.html", "2", MENUICON);
+		Resource userManager = Resource.newResource("用户管理", "/pages/auth/user-list.jsp", "2", MENUICON);
+		Resource roleManager = Resource.newResource("角色管理", "/pages/auth/role-list.jsp", "2", MENUICON);
 
 		userRoleResource.save();
 		userManager.save();
@@ -362,10 +362,10 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		koalaDirectory.save();
 
 		Resource organization = Resource.newResource("组织机构", "organization", "1", MENUICON);
-		Resource department = Resource.newResource("机构管理", "/pages/organisation/departmentList.html", "2", MENUICON);
-		Resource job = Resource.newResource("职务管理", "/pages/organisation/jobList.html", "2", MENUICON);
-		Resource position = Resource.newResource("岗位管理", "/pages/organisation/positionList.html", "2", MENUICON);
-		Resource employee = Resource.newResource("人员管理", "/pages/organisation/employeeList.html", "2", MENUICON);
+		Resource department = Resource.newResource("机构管理", "/pages/organisation/departmentList.jsp", "2", MENUICON);
+		Resource job = Resource.newResource("职务管理", "/pages/organisation/jobList.jsp", "2", MENUICON);
+		Resource position = Resource.newResource("岗位管理", "/pages/organisation/positionList.jsp", "2", MENUICON);
+		Resource employee = Resource.newResource("人员管理", "/pages/organisation/employeeList.jsp", "2", MENUICON);
 		organization.save();
 		department.save();
 		job.save();

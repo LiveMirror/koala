@@ -9,7 +9,7 @@ var department = function(){
 	 *新增部门
 	 */
 	var addDepartment = function(id, organizationType, $element){
-		$.get(contextPath + '/pages/organisation/departmentTemplate.html').done(function(data){
+		$.get(contextPath + '/pages/organisation/departmentTemplate.jsp').done(function(data){
 			init(data,  id , 'addDepartment', organizationType, $element);
 		});
 	};
@@ -17,7 +17,7 @@ var department = function(){
 	 *新增子公司
 	 */
 	var addCompany = function(id, $element){
-		$.get( contextPath + '/pages/organisation/departmentTemplate.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/departmentTemplate.jsp').done(function(data){
 			init(data, id , 'addCompany', null, $element);
 		});
 	};
@@ -25,7 +25,7 @@ var department = function(){
 	 * 修改公司信息
 	 */
 	var updateCompany = function(id, $element){
-		$.get( contextPath + '/pages/organisation/departmentTemplate.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/departmentTemplate.jsp').done(function(data){
 			init(data,  id , 'updateCompany', null, $element);
 			setData(id);
 		});
@@ -34,7 +34,7 @@ var department = function(){
 	 * 修改部门信息
 	 */
 	var updateDepartment = function(id, $element){
-		$.get( contextPath + '/pages/organisation/departmentTemplate.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/departmentTemplate.jsp').done(function(data){
 			init(data,  id , 'updateDepartment', null, $element);
 			setData(id);
 		});
@@ -412,7 +412,7 @@ var department = function(){
 			});
 	};
 	var showEmployeeList = function(id){
-		$.get( contextPath + '/pages/organisation/departmentEmployeeList.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/departmentEmployeeList.jsp').done(function(data){
 			var employeeListDialog = $(data);
 
 			employeeListDialog.find('#deleteRelation').on('click',function(){

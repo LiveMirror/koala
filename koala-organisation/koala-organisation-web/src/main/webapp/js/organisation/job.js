@@ -12,7 +12,7 @@ var job = function(){
 	 */
 	var add = function(grid){
 		dataGrid = grid;
-		$.get( contextPath + '/pages/organisation/job-editor.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/job-editor.jsp').done(function(data){
 			init(data);
 		});
 	};
@@ -21,7 +21,7 @@ var job = function(){
 	 */
 	var modify = function(id, grid){
 		dataGrid = grid;
-		$.get( contextPath + '/pages/organisation/job-editor.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/job-editor.jsp').done(function(data){
 			init(data, id);
 			setData(id);
 		});

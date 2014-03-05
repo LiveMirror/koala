@@ -136,7 +136,7 @@ $(function() {
 })
 function httpMonitorDetail(requestDate) {
 	//monitor/Monitor/httpMonitorDetail.koala?unit=hour&requestDate=2013-11-25%2021&system=test
-	$.get(contextPath + '/pages/monitor/http-monitor-detail.html').done(function(data) {
+	$.get(contextPath + '/pages/monitor/http-monitor-detail.jsp').done(function(data) {
 		var dialog = $(data);
 		dialog.modal({
 			keyboard : true

@@ -18,7 +18,7 @@ var position = function(){
 	 */
 	var add = function(grid){
 		dataGrid = grid;
-		$.get( contextPath + '/pages/organisation/positionTemplate.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/positionTemplate.jsp').done(function(data){
 			init(data);
 		});
 	};
@@ -27,7 +27,7 @@ var position = function(){
 	 */
 	var modify = function(id, grid){
 		dataGrid = grid;
-		$.get( contextPath + '/pages/organisation/positionTemplate.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/positionTemplate.jsp').done(function(data){
 			init(data, id);
 		});
 	};
@@ -114,7 +114,7 @@ var position = function(){
 	 * 部门选择
 	 */
 	var selectDepartments = function(){
-		$.get( contextPath + '/pages/organisation/selectDepartmentTemplate.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/selectDepartmentTemplate.jsp').done(function(data){
 			var departmentTreeDialog = $(data);
             departmentTreeDialog.find('.modal-dialog').css({width:'620px'});
             departmentTreeDialog.find('.modal-body').css({height:'325px'});

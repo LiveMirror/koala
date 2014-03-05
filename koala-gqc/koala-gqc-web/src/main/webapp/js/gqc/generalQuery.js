@@ -16,7 +16,7 @@ var generalQuery = function(){
 	 */
 	var add = function(grid){
 		dataGrid = grid;
-		$.get(contextPath + '/pages/gqc/generalQueryTemplate.html').done(function(data){
+		$.get(contextPath + '/pages/gqc/generalQueryTemplate.jsp').done(function(data){
 			init(data);
 		})
 	};
@@ -25,7 +25,7 @@ var generalQuery = function(){
 	 */
 	var modify = function(id, grid){
 		dataGrid = grid;
-		$.get(contextPath + '/pages/gqc/generalQueryTemplate.html').done(function(data){
+		$.get(contextPath + '/pages/gqc/generalQueryTemplate.jsp').done(function(data){
 			init(data, id);
 			setData(id);
 		})

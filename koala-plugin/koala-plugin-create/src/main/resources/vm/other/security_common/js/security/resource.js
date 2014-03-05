@@ -16,7 +16,7 @@ var resourceManager = function(){
 	var add = function(grid, item){
 		dataGrid = grid;
 		opreate = 'add';
-		$.get(contextPath + '/pages/auth/resource-template.html').done(function(data){
+		$.get(contextPath + '/pages/auth/resource-template.jsp').done(function(data){
 			init(data);
 			if(item){
 				parentId = item.id;
@@ -31,7 +31,7 @@ var resourceManager = function(){
 	var modify = function(item, grid){
 		dataGrid = grid;
 		opreate = 'modify';
-		$.get(contextPath + '/pages/auth/resource-template.html').done(function(data){
+		$.get(contextPath + '/pages/auth/resource-template.jsp').done(function(data){
 			init(data,item);
 		});
 	};

@@ -29,7 +29,7 @@ var employee = function(){
 	var add = function(grid){
 		dataGrid = grid;
 		operateType = 'add';
-		$.get( contextPath + '/pages/organisation/employeeTemplate.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/employeeTemplate.jsp').done(function(data){
 			init(data);
 		});
 	};
@@ -39,7 +39,7 @@ var employee = function(){
 	var modify = function(id, grid){
 		dataGrid = grid;
 		operateType = 'update';
-		$.get( contextPath + '/pages/organisation/employee-updater.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/employee-updater.jsp').done(function(data){
 			init(data, id);
 			setData(id);
 		});
@@ -147,7 +147,7 @@ var employee = function(){
 	 * 部门选择
 	 */
     var selectDepartments = function(){
-		$.get( contextPath + '/pages/organisation/selectDepartmentTemplate.html').done(function(data){
+		$.get( contextPath + '/pages/organisation/selectDepartmentTemplate.jsp').done(function(data){
 			var departmentTreeDialog = $(data);
 			departmentTreeDialog.find('.modal-dialog').css({width:'800px'});
 			departmentTree = departmentTreeDialog.find('.tree');
@@ -430,7 +430,7 @@ var employee = function(){
 	 * 显示详细信息
 	 */
 	var showDetail = function(id, employeeName){
-		openTab('/pages/organisation/employeeDetail.html', employeeName, 'employeeDetail', id);
+		openTab('/pages/organisation/employeeDetail.jsp', employeeName, 'employeeDetail', id);
 	};
 	return {
 		add: add,

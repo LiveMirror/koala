@@ -181,7 +181,7 @@ $(function(){
     }
 });
 var showMethodMonitorDetail = function(method){
-    $.get(contextPath + '/pages/monitor/method-monitor-detail.html').done(function(data){
+    $.get(contextPath + '/pages/monitor/method-monitor-detail.jsp').done(function(data){
     	var dialog = $(data);
     	dialog.modal({
             keyboard: true
@@ -265,7 +265,7 @@ var showStackTracesDetail = function(obj){
     });
 }
 var showSqlsMonitorDetail = function(methodId){
-    $.get('/pages/monitor/sql-monitor-detail.html').done(function(data){
+    $.get('/pages/monitor/sql-monitor-detail.jsp').done(function(data){
     	var dialog = $(data);
     	dialog.modal({
         	keyboard: true,

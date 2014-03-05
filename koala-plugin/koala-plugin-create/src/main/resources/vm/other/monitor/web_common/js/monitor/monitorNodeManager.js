@@ -1,20 +1,20 @@
-var percentTickFormatter = function (format, val) {
-            if (typeof val == 'number') {
-                if (val < 0)val = 0;
-				return  val + "%";
-                return "";
-            }
-            else {
-                return String(val);
-            }
-        };
+var percentTickFormatter = function(format, val) {
+	if ( typeof val == 'number') {
+		if (val < 0)
+			val = 0;
+		return val + "%";
+		return "";
+	} else {
+		return String(val);
+	}
+};
 var monitorNodeManager = {
 
 	/**
 	 * 同步监控数据配置
 	 */
 	openSyncDataConfDig : function(grid) {
-		$.get(contextPath + '/pages/monitor/syncDataConfigTemplate.html').done(function(result) {
+		$.get(contextPath +  '/pages/monitor/syncDataConfigTemplate.jsp').done(function(result) {
 			var dialog = $(result);
 			var scheduleActive = dialog.find('[name="schedule_active"]');
 			var syncInterval = dialog.find('#syncInterval');
@@ -76,7 +76,7 @@ var monitorNodeManager = {
 		var grid = $('#monitorNodeGrid').getGrid();
 		var item = grid.getItemByIndex(index);
 		var childItem = item.conponents[childIndex];
-		$.get(contextPath + '/pages/monitor/monitorParamTemplate.html').done(function(result) {
+		$.get(contextPath + '/pages/monitor/monitorParamTemplate.jsp').done(function(result) {
 			var dialog = $(result);
 			dialog.find('#monitorType').html(childItem.name);
 			var status = dialog.find('[name="status"]');
@@ -183,7 +183,7 @@ var monitorNodeManager = {
 	 */
 	pageServerSummryInfo : function(nodeId) {
 		var self = this;
-		$.get(contextPath + '/pages/monitor/pageServerSummryInfo.html').done(function(data) {
+		$.get(contextPath + '/pages/monitor/pageServerSummryInfo.jsp').done(function(data) {
 			var dialog = $(data);
 			dialog.modal({
 				keyboard : true
@@ -208,7 +208,7 @@ var monitorNodeManager = {
 		var self = this;
 		$.get(contextPath + '/monitor/NodeInfo/serverSummryInfo.koala?nodeId=' + nodeId).done(function(data) {
 			dialog.find('#activeCount').text(data.activeCount);
-			dialog.find('#pageAvgResponseTime').html(data.pageAvgResponseTime +" 秒");
+			dialog.find('#pageAvgResponseTime').html(data.pageAvgResponseTime + " 秒");
 			dialog.find('#maxAvgTimePage').html(data.maxAvgTimePage);
 			dialog.find('#mostCallMethod').html(data.mostCallMethod);
 			dialog.find('#maxAvgTimeMethod').html(data.maxAvgTimeMethod);
@@ -246,32 +246,34 @@ var monitorNodeManager = {
 	 */
 	drawMemStatusChart : function(datas) {
 		$.jqplot('memchart', datas, {
-			 axesDefaults: {
-		            pad: 0
-		        },
-		      axes:{
-		        xaxis:{
-		          label:'24 Hours',
-				  labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-				  renderer:$.jqplot.DateAxisRenderer,
-				  tickOptions : {
-					//formatString : '%m-%d %H'
-				 },
-		          labelOptions: {
-		            fontFamily: 'Georgia, Serif',
-		            fontSize: '12pt'
-		          }
-		        },
-		        yaxis:{
-		          label:'Used',
-				  tickOptions: { formatter: percentTickFormatter },
-		          labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-		          labelOptions: {
-		            fontFamily: 'Georgia, Serif',
-		            fontSize: '12pt'
-		          }
-		        }
-		      },
+			axesDefaults : {
+				pad : 0
+			},
+			axes : {
+				xaxis : {
+					label : '24 Hours',
+					labelRenderer : $.jqplot.CanvasAxisLabelRenderer,
+					renderer : $.jqplot.DateAxisRenderer,
+					tickOptions : {
+						//formatString : '%m-%d %H'
+					},
+					labelOptions : {
+						fontFamily : 'Georgia, Serif',
+						fontSize : '12pt'
+					}
+				},
+				yaxis : {
+					label : 'Used',
+					tickOptions : {
+						formatter : percentTickFormatter
+					},
+					labelRenderer : $.jqplot.CanvasAxisLabelRenderer,
+					labelOptions : {
+						fontFamily : 'Georgia, Serif',
+						fontSize : '12pt'
+					}
+				}
+			},
 			//悬浮展现控制
 			highlighter : {
 				show : true,
@@ -300,46 +302,48 @@ var monitorNodeManager = {
 			}
 			var cpuchartId = "cpuchart" + i;
 			$("<div id='" + cpuchartId + "'></div>").appendTo($("#cpuchart"));
-			$.jqplot(cpuchartId, dataArray, { 
-				 title : title,
-			      //series:[{showMarker:false}],
-				  axesDefaults: {
-			            pad: 0
-			        },
-			      axes:{
-			        xaxis:{
-			          label:'24 Hours',
-					  labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-					  renderer:$.jqplot.DateAxisRenderer,
-					  tickOptions : {
-						//formatString : '%m-%d %H'
-					 },
-			          labelOptions: {
-			            fontFamily: 'Georgia, Serif',
-			            fontSize: '12pt'
-			          }
-			        },
-			        yaxis:{
-			          label:'Used',
-					  tickOptions: { formatter: percentTickFormatter },
-			          labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-			          labelOptions: {
-			            fontFamily: 'Georgia, Serif',
-			            fontSize: '12pt'
-			          }
-			        }
-			      },
-			    //悬浮展现控制
-					highlighter : {
-						show : true,
-						yvalues : 1,
-						tooltipAxes : "xy",
-						formatString : '<table class="jqplot-highlighter"><tr><td>时段:%s</td></tr><tr><td>CPU使用率:%s%</td></tr></table>'
+			$.jqplot(cpuchartId, dataArray, {
+				title : title,
+				//series:[{showMarker:false}],
+				axesDefaults : {
+					pad : 0
+				},
+				axes : {
+					xaxis : {
+						label : '24 Hours',
+						labelRenderer : $.jqplot.CanvasAxisLabelRenderer,
+						renderer : $.jqplot.DateAxisRenderer,
+						tickOptions : {
+							//formatString : '%m-%d %H'
+						},
+						labelOptions : {
+							fontFamily : 'Georgia, Serif',
+							fontSize : '12pt'
+						}
 					},
-					cursor : {
-						show : true
+					yaxis : {
+						label : 'Used',
+						tickOptions : {
+							formatter : percentTickFormatter
+						},
+						labelRenderer : $.jqplot.CanvasAxisLabelRenderer,
+						labelOptions : {
+							fontFamily : 'Georgia, Serif',
+							fontSize : '12pt'
+						}
 					}
-			  });
+				},
+				//悬浮展现控制
+				highlighter : {
+					show : true,
+					yvalues : 1,
+					tooltipAxes : "xy",
+					formatString : '<table class="jqplot-highlighter"><tr><td>时段:%s</td></tr><tr><td>CPU使用率:%s%</td></tr></table>'
+				},
+				cursor : {
+					show : true
+				}
+			});
 			i++;
 		}
 	},
@@ -379,4 +383,4 @@ var monitorNodeManager = {
 			});
 		}
 	}
-};
+}; 

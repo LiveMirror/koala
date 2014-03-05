@@ -78,7 +78,7 @@ $(function(){
             var navTabs = poolMonitor.find('.nav-tabs').empty();
             var tabContent = poolMonitor.find('.tab-content').empty();
             var pools = data.pools;
-            $.get(contextPath + '/pages/monitor/jdbc-monitor-detail.html').done(function(template){
+            $.get(contextPath + '/pages/monitor/jdbc-monitor-detail.jsp').done(function(template){
                 var index = 0;
                 var template = $(template)
                 for(var prop in pools){

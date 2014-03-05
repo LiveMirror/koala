@@ -14,7 +14,7 @@ var dataSource = function(){
 	 */
 	var add = function(grid){
 		dataGrid = grid;
-		$.get(contextPath + '/pages/gqc/dataSourceTemplate.html').done(function(data){
+		$.get(contextPath + '/pages/gqc/dataSourceTemplate.jsp').done(function(data){
 			init(data);
 		});
 	};
@@ -23,7 +23,7 @@ var dataSource = function(){
 	 */
 	var modify = function(id, grid){
 		dataGrid = grid;
-		$.get(contextPath + '/pages/gqc/dataSourceTemplate.html').done(function(data){
+		$.get(contextPath + '/pages/gqc/dataSourceTemplate.jsp').done(function(data){
 			init(data,id);
 			setData(id);
 		});
