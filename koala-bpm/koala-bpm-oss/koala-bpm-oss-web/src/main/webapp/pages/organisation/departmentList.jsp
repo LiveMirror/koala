@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <style>
     .department-detail .row > .form-group{
         margin-left: 0;
@@ -78,22 +81,12 @@
     </div>
     <div style="clear:both;"></div>
 </div>
+<script type="text/javascript" src="<c:url value='/js/organisation/department.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/organisation/selectEmployee.js' />"></script>
+
 <script>
     $(function(){
-        var script = document.createElement('script');
-        script.src = contextPath + '/js/organisation/department.js';
-        script.onreadystatechange= function () {
-            if (this.readyState == 'complete' || this.readyState == 'loaded'){
-                department().getTree();
-            }
-        }
-        script.onload= function(){
-            department().getTree();
-        }
-        document.getElementById('departmentDetail').parentNode.appendChild(script);
-        script = document.createElement('script');
-        script.src = contextPath + '/js/organisation/selectEmployee.js';
-        document.getElementById('departmentDetail').parentNode.appendChild(script);
+    	department().getTree();
         $('#employeeListBtn').on('click', function(){
             department().showEmployeeList($('.right-content').find('[data-role="id"]').val(), $('#department-employee-list'));
         })

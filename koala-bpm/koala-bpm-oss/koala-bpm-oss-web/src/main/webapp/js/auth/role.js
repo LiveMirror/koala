@@ -9,7 +9,7 @@ var roleManager = function(){
 	 */
 	var add = function(grid){
 		dataGrid = grid;
-		$.get(contextPath + '/pages/auth/role-template.html').done(function(data){
+		$.get(contextPath + '/pages/auth/role-template.jsp').done(function(data){
 			init(data);
 		});
 	};
@@ -18,7 +18,7 @@ var roleManager = function(){
 	 */
 	var modify = function(item, grid){
 		dataGrid = grid;
-		$.get(contextPath + '/pages/auth/role-template.html').done(function(data){
+		$.get(contextPath + '/pages/auth/role-template.jsp').done(function(data){
 			init(data,item);
 			setData(item);
 		});
@@ -139,7 +139,7 @@ var roleManager = function(){
 	 */
 	var assignRole = function(userId, userAccount, grid){
 		dataGrid = grid;
-		$.get(contextPath + '/pages/auth/select-role.html').done(function(data){
+		$.get(contextPath + '/pages/auth/select-role.jsp').done(function(data){
 			var dialog = $(data);
 			dialog.find('#save').on('click',function(){
 				var indexs = dialog.find('#selectRoleGrid').data('koala.grid').selectedRowsIndex();
@@ -255,14 +255,14 @@ var roleManager = function(){
 			});
 	};
 	var assignUser = function(roleId, name){
-		openTab('/pages/auth/user-list.html',
+		openTab('/pages/auth/user-list.jsp',
 			name+'的用户管理', 'userManager_'+roleId, roleId, {roleId: roleId});
 	};
 	/**
 	 * 资源授权
 	 */
 	var assignResource = function(grid, roleId){
-		$.get(contextPath + '/pages/auth/assign-resource.html').done(function(data){
+		$.get(contextPath + '/pages/auth/assign-resource.jsp').done(function(data){
 			var dialog = $(data);
             initResourceTree(dialog, roleId);
             dialog.find('#save').on('click',function(){

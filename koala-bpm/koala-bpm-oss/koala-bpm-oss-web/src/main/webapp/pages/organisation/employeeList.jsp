@@ -1,9 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <div id="employeegrid"></div>
+<script type="text/javascript" src="<c:url value='/js/organisation/employee.js' />"></script>
+
 <script>
 $(function(){
-    var script = document.createElement('script');
-    script.src = contextPath + '/js/organisation/employee.js';
-    document.getElementById('employeegrid').parentNode.appendChild(script);
     var cols = [
          { title:'姓名', name:'name' , width: '100px'},
          { title:'员工编号', name:'sn', width: '100px'},

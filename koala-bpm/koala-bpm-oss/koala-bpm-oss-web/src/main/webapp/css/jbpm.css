@@ -168,3 +168,7 @@
  	position: relative;
     top: 3px;
 }
+.form-group .form-control {
+	display: inline;
+	width: 95%;
+}
