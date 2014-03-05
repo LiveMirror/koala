@@ -179,8 +179,8 @@ $.ajaxSetup({
 }); 
 
 
-var refreshToken = function(element){
+var refreshToken = function($element){
 	$.get('koala.token').done(function(data){
-		$(element).val(data);
+		$element.val(data);
 	});
 };
