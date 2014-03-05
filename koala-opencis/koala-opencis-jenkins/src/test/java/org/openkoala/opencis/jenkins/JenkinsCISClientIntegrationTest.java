@@ -9,21 +9,20 @@ import java.net.MalformedURLException;
 import java.util.UUID;
 
 
-
 @Ignore
 public class JenkinsCISClientIntegrationTest {
 
 
-    public static String jenkinsURL = "http://10.108.1.128:8080/jenkins";
+    public static String jenkinsURL = "http://127.0.0.1:8080";
     public static String username = "admin";
-    public static String apiToken = "953d04f6c3e5067f79e7e8391c51a093";
+    public static String apiToken = "fcc8afbe01a72aa1ff71945887bcaf8c";
 
     public static String svnUrl = "http://10.108.1.138/svn/projec";
 
     @Test
     public void test() throws MalformedURLException {
 
-        Project project = getProject("hhhhh00");
+        Project project = getProject("中文名zzzzzxx");
 
         JenkinsCISClient client = new JenkinsCISClient(jenkinsURL, username, apiToken);
 
@@ -33,11 +32,13 @@ public class JenkinsCISClientIntegrationTest {
 
         client.createProject(project);
 
-        client.createUserIfNecessary(project, getDeveloper("hhh00"));
-        client.createUserIfNecessary(project, getDeveloper("hhh100"));
-        client.createUserIfNecessary(project, getDeveloper("hhh200"));
+        String name = "xxxx8";
+        String name1 = "xxxx1";
 
-        client.assignUsersToRole(project, "", getDeveloper("hhh100"),getDeveloper("hhh200"));
+
+        client.createUserIfNecessary(project, getDeveloper(name));
+
+        client.assignUsersToRole(project, "", getDeveloper(name));
         //client.removeProject(project);
         client.close();
 
@@ -46,9 +47,9 @@ public class JenkinsCISClientIntegrationTest {
 
     public Developer getDeveloper(String name) {
         Developer developer = new Developer();
-        developer.setName(name);
+        developer.setName("中文名");
         developer.setId(name);
-        developer.setPassword("admin");
+        developer.setPassword("20140305");
         developer.setEmail(UUID.randomUUID().toString() + "@gmail.com");
         return developer;
     }
@@ -59,7 +60,7 @@ public class JenkinsCISClientIntegrationTest {
         project.setProjectName(name);
         project.setGroupId("com.c");
         project.setPhysicalPath("plpl");
-        project.setDescription("descript");
+        project.setDescription("中文描述");
         project.setArtifactId(name);
         return project;
     }

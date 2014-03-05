@@ -84,14 +84,8 @@ public class JenkinsCISClient implements CISClient {
 
     @Override
     public void createUserIfNecessary(Project project, Developer developer) {
-        developer.validate();
-        try {
-            client.createUser(developer.getId(), developer.getPassword(),
-                    developer.getEmail(), URLEncoder.encode(developer.getName(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new CISClientBaseRuntimeException("jenkins.createUserIfNecessary", e);
-        }
+        client.createUser(developer.getId(), developer.getPassword(),
+                developer.getEmail(), developer.getName());
 
     }
 
