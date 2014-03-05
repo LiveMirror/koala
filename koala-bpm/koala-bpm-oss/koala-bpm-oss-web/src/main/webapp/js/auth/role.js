@@ -142,6 +142,7 @@ var roleManager = function(){
 		$.get(contextPath + '/pages/auth/select-role.jsp').done(function(data){
 			var dialog = $(data);
 			dialog.find('#save').on('click',function(){
+				var $saveBtn = $(this);
 				var indexs = dialog.find('#selectRoleGrid').data('koala.grid').selectedRowsIndex();
 				if(indexs.length == 0){
 					dialog.find('.modal-content').message({
@@ -150,6 +151,7 @@ var roleManager = function(){
 					});
 					return;
 				}
+				$saveBtn.attr('disabled', 'disabled');	
 				var data = {};
 				data['userVO.id'] = userId;
 				for(var i=0,j=indexs.length; i<j; i++){
@@ -164,12 +166,14 @@ var roleManager = function(){
 						dialog.modal('hide');
 						dataGrid.grid('refresh');
 					}else{
+						$saveBtn.attr('disabled', 'disabled');	
 						dataGrid.message({
 							type: 'error',
 							content: data.actionError
 						});
 					}
 				}).fail(function(data){
+					$saveBtn.attr('disabled', 'disabled');	
 					dataGrid.message({
 						type: 'error',
 						content: '保存失败'

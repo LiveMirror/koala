@@ -65,12 +65,13 @@
 			var width = this.$element.width();
 			this.gridBody.css('width', width);
 			this.gridTableBody = this.$element.find('.grid-table-body').css('width', width);
+			this.gridTableBody.height(this.gridTableBody.height()*$(window).height()/620);
 			this.gridTableBodyTable = this.gridTableBody.find('table');
 			this.pageSizeSelect = this.$element.find('[data-role="pageSizeSelect"]');
 			!this.options.isShowButtons && this.buttons.hide();
 			!this.options.isShowPages && this.grid.find('tfoot').hide();
 			this.colResizePointer = this.table.find('.colResizePointer');
-			
+			this.scale = $(window).width()/1280;
 		},
 		_initButtons : function() {
 			var self = this;
@@ -118,9 +119,9 @@
 				if (width.match(widthRgExp)) {
 					width = width.replace('px', '');
 					totalColumnWidth += parseInt(width);
-					titleHtml.push(width + 'px"');
+					titleHtml.push(self.scale*width + 'px"');
 				} else {
-					titleHtml.push(column.width + '"');
+					titleHtml.push(self.scale*column.width + '"');
 				}
 				if (column.sortable && column.sortName) {
 					titleHtml.push(' class="sort" sortName="' + column.sortName + '" title="点击排序"');
@@ -540,7 +541,7 @@
 				}
 				for (var k = 0, h = this.options.columns.length; k < h; k++) {
 					var column = this.options.columns[k];
-					trHtml.push('<td index="' + k + '" width="' + column.width + '"');
+					trHtml.push('<td index="' + k + '" width="' + self.scale*column.width + '"');
 					if (column.align) {
 						trHtml.push(' align="' + column.align + '"');
 					}

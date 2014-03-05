@@ -230,6 +230,7 @@ var userManager = function() {
 		$.get(contextPath + '/pages/auth/select-user.jsp').done(function(data) {
 			var dialog = $(data);
 			dialog.find('#save').on('click', function() {
+				var $saveBtn = $(this);
 				var indexs = dialog.find('#selectUserGrid').data('koala.grid').selectedRowsIndex();
 				if (indexs.length == 0) {
 					dialog.find('.modal-content').message({
@@ -238,6 +239,7 @@ var userManager = function() {
 					});
 					return;
 				}
+				$saveBtn.attr('disabled', 'disabled');	
 				var data = {};
 				data['roleVO.id'] = roleId;
 				for (var i = 0, j = indexs.length; i < j; i++) {
@@ -252,12 +254,14 @@ var userManager = function() {
 						dialog.modal('hide');
 						grid.grid('refresh');
 					} else {
+						$saveBtn.removeAttr('disabled');
 						dialog.find('.modal-content').message({
 							type : 'error',
 							content : data.actionError
 						});
 					}
 				}).fail(function(data) {
+					$saveBtn.removeAttr('disabled');
 					dialog.message({
 						type : 'error',
 						content : '保存失败'
