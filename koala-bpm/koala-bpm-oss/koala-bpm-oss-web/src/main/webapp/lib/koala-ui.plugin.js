@@ -877,9 +877,9 @@
 		var self = this;
 		$('.message').remove();
 		this.content = this.$element.find('[data-toggle="content"]').html(this.options.content);
-		switch(this.options.type) {
+		switch(this.options.type){
 			case 'success':
-				this.content.before($('<span class="glyphicon glyphicon-ok" style="margin-right: 10px; font-size:16px;"/>'));
+				this.content.before($('<span class="glyphicon glyphicon-ok-sign" style="margin-right: 10px; font-size:16px;"/>'));
 				this.$element.addClass('alert-success');
 				break;
 			case 'info':
@@ -891,7 +891,7 @@
 				this.$element.addClass('alert-warning');
 				break;
 			case 'error':
-				this.content.before($('<span class="glyphicon glyphicon-exclamation-sign" style="margin-right: 10px;font-size:16px; "/>'));
+				this.content.before($('<span class="glyphicon glyphicon-remove-sign" style="margin-right: 10px;font-size:16px; "/>'));
 				this.$element.addClass('alert-danger');
 				break;
 		}
@@ -1264,17 +1264,18 @@
 	};
 
 	Loader.DEFAULTS = {
-		title : '正在加载...'
+		title : '正在加载...',
+		opacity: 0.1
 	};
 
 	Loader.prototype.init = function() {
 		var self = this;
 		self.$element.css('position', 'relative');
-		self.backdrop = $('<div class="modal-backdrop fade in" style="opacity:.1;filter:alpha(opacity=10);"></div>');
+		self.backdrop = $('<div class="modal-backdrop fade in" style="opacity:'+self.options.opacity+';filter:alpha(opacity='+self.options.opacity*100+');"></div>');
 		self.backdrop.css({
 			position : 'absolute',
-			width : self.$element.width(),
-			height : self.$element.height()
+			width : self.$element.outerWidth(),
+			height : self.$element.outerHeight()
 		});
 		self.progress = $('<div style="width: 200px; z-index: 20000; position: absolute; text-align:center;"><div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%;"></div></div><h5>' + self.options.title + '</h5></div>');
 		//兼容IE8 IE9
@@ -1282,8 +1283,8 @@
 			self.progress = $('<div style="width: 145px; z-index: 20000; position: absolute; text-align:center;"><img alt="正在加载" src="../images/loading.gif" style="border-radius: 5px;width: 145px;height: 18px;"></img><h5>' + self.options.title + '</h5></div>');
 		}
 		self.progress.css({
-			left : (self.$element.width() - self.progress.width()) / 2,
-			top : (self.$element.height() - self.progress.height()) / 2
+			left : (self.$element.outerWidth() - self.progress.width()) / 2,
+			top : (self.$element.outerHeight() - self.progress.height()) / 2
 		});
 		self.show();
 	}
