@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="k" uri="http://www.openkoala.com/token"%>
 <%@ taglib prefix="ss3" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="java.util.Date"%>
 <%Long time = new Date().getTime();%>
