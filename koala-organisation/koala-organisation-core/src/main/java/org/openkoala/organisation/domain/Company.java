@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *
  */
 @Entity
-@DiscriminatorValue("Comapny")
+@DiscriminatorValue("Company")
 public class Company extends Organization {
 
 	private static final long serialVersionUID = -7339118476080239701L;
