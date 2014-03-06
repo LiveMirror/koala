@@ -64,6 +64,8 @@ public class JiraCISClientTest {
 
         client.assignUsersToRole(getProject(), "", getDeveloper());
 
+        client.assignUsersToRole(getProject(), "", getDeveloper());
+
         assert client.authenticate();
         assert client.isUserAtProjectDevelopRole(getProject(), getDeveloper());
 
