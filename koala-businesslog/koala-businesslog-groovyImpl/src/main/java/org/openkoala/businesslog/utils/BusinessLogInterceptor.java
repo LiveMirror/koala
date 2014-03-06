@@ -2,6 +2,7 @@ package org.openkoala.businesslog.utils;
 
 import org.aspectj.lang.JoinPoint;
 import org.dayatang.domain.InstanceFactory;
+import org.openkoala.businesslog.BusinessLogExporter;
 import org.openkoala.businesslog.KoalaBusinessLogConfigException;
 import org.springframework.aop.ProxyMethodInvocation;
 import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
@@ -16,7 +17,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.openkoala.businesslog.ContextKeyConstant.*;
+import static org.openkoala.businesslog.utils.ContextKeyConstant.*;
 
 /**
  * User: zjzhai Date: 11/28/13 Time: 11:38 AM
@@ -28,6 +29,8 @@ public class BusinessLogInterceptor {
     private static final String LOG_ENABLE = "kaola.businesslog.enable";
 
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+    private BusinessLogExporter businessLogExporter;
 
     public void logAfter(JoinPoint joinPoint, Object result) {
         log(joinPoint, result, null);
@@ -44,17 +47,17 @@ public class BusinessLogInterceptor {
         /**
          * 日志开关及防止重复查询
          */
-        if (!isLogEnabled() || ThreadLocalBusinessLogContext.get().get(BUSINESS_METHOD) != null) {
-            return;
-        }
+        if (!isLogEnabled() || ThreadLocalBusinessLogContext.getBusinessMethod() != null) return;
+
 
         BusinessLogThread businessLogThread = new BusinessLogThread(
                 Collections.unmodifiableMap(createDefaultContext(joinPoint, result, error)),
-                BLMappingValue);
+                BLMappingValue,
+                getBusinessLogExporter());
 
         if (null == getThreadPoolTaskExecutor()) {
             System.err.println("ThreadPoolTaskExecutor is not set or null");
-            businessLogThread.run();
+            new Thread(businessLogThread).start();
         } else {
             getThreadPoolTaskExecutor().execute(businessLogThread);
         }
@@ -92,6 +95,14 @@ public class BusinessLogInterceptor {
         context.put(BUSINESS_OPERATION_TIME, new Date());
         return context;
 
+    }
+
+
+    public BusinessLogExporter getBusinessLogExporter() {
+        if (null == businessLogExporter) {
+            businessLogExporter = InstanceFactory.getInstance(BusinessLogExporter.class, "businessLogExporter");
+        }
+        return businessLogExporter;
     }
 
     private String getBLMapping(JoinPoint joinPoint) {
