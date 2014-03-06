@@ -1224,7 +1224,7 @@
 			backdrop : self.options.backdrop,
 			keyboard : false
 		}).find('.modal-dialog').css({
-			'padding-top' : window.screen.height / 5
+			'padding-top' : '120px'
 		}).find('[data-role="confirm-content"]').html(this.options.content);
 		this.$element.find('[data-role="confirmBtn"]').on('click', function() {
 			if ( typeof self.options.callBack == 'function') {
