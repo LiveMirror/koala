@@ -522,7 +522,7 @@
 				self.items = self.initTreeItems(new Array(), self.items);
 			}
 			var items = self.items;
-			items = JSON.parse(JSON.stringify(items).replace('<script>', '<script*>'));
+			items = JSON.parse(JSON.stringify(items).replace(/</g, '&lt;').replace(/>/g, '&gt;'));
 			var trHtmls = new Array();
 			for (var i = 0, j = items.length; i < j; i++) {
 				var item = items[i];
@@ -884,19 +884,19 @@
 		this.content = this.$element.find('[data-toggle="content"]').html(this.options.content);
 		switch(this.options.type){
 			case 'success':
-				this.content.before($('<span class="glyphicon glyphicon-ok-sign" style="margin-right: 5px; font-size:18px;"/>'));
+				this.content.before($('<div style="float:left;"><span class="glyphicon glyphicon-ok-sign" style="margin-right: 5px; font-size:18px;"/></div>'));
 				this.$element.addClass('alert-success');
 				break;
 			case 'info':
-				this.content.before($('<span class="glyphicon glyphicon-info-sign" style="margin-right: 5px;font-size:18px;"/>'));
+				this.content.before($('<div style="float:left;"><span class="glyphicon glyphicon-info-sign" style="margin-right: 5px;font-size:18px;"/></div>'));
 				this.$element.addClass('alert-info');
 				break;
 			case 'warning':
-				this.content.before($('<span class="glyphicon glyphicon-warning-sign" style="margin-right: 5px;font-size:18px;"/>'));
+				this.content.before($('<div style="float:left;"><span class="glyphicon glyphicon-warning-sign" style="margin-right: 5px;font-size:18px;"/></div>'));
 				this.$element.addClass('alert-warning');
 				break;
 			case 'error':
-				this.content.before($('<span class="glyphicon glyphicon-remove-sign" style="margin-right: 5px;font-size:18px; "/>'));
+				this.content.before($('<div style="float:left;"><span class="glyphicon glyphicon-remove-sign" style="margin-right: 5px;font-size:18px; "/></div>'));
 				this.$element.addClass('alert-danger');
 				break;
 		}
@@ -918,7 +918,7 @@
   			});
 		}, this.options.delay);
 	};
-	Message.DEFAULTS.TEMPLATE = '<div class="alert message" style="min-width: 120px;max-width: 300px; padding: 8px;text-align: left;z-index: 20000;">' + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + '<span data-toggle="content" style="font-size:14px; word-wrap:break-word; position:relative; top: -2px;"></span>&nbsp;&nbsp;</div>';
+	Message.DEFAULTS.TEMPLATE = '<div class="alert message" style="min-width: 120px;max-width: 300px; padding: 8px;text-align: left;z-index: 20000;">' + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + '<span data-toggle="content" style="font-size:14px; word-wrap:break-word;"></span>&nbsp;&nbsp;</div>';
 	var old = $.fn.message;
 	$.fn.message = function(option) {
 		return this.each(function() {
