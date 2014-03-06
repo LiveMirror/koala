@@ -522,7 +522,7 @@
 				self.items = self.initTreeItems(new Array(), self.items);
 			}
 			var items = self.items;
-			items = JSON.parse(JSON.stringify(items).replace('<script>', '<script*>'));
+			items = JSON.parse(JSON.stringify(items).replace(/</g, '&lt;').replace(/>/g, '&gt;'));
 			var trHtmls = new Array();
 			for (var i = 0, j = items.length; i < j; i++) {
 				var item = items[i];
