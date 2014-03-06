@@ -4,6 +4,8 @@ import business.ContractApplication;
 import business.InvoiceApplication;
 import business.ProjectApplication;
 import org.junit.Test;
+import org.junit.rules.Timeout;
+import org.openkoala.businesslog.application.BusinessLogApplication;
 import org.openkoala.businesslog.utils.ThreadLocalBusinessLogContext;
 
 import javax.inject.Inject;
@@ -26,7 +28,10 @@ public class MainTest extends AbstractIntegrationTest {
     @Inject
     private ProjectApplication projectApplication;
 
-    @Test
+    @Inject
+    private BusinessLogApplication businessLogApplication;
+
+    @Test(timeout = 4000)
     public void testName() throws Exception {
         ThreadLocalBusinessLogContext.put("user", "张三");
         ThreadLocalBusinessLogContext.put("time", new Date());
@@ -46,6 +51,9 @@ public class MainTest extends AbstractIntegrationTest {
         projectApplication.findSomeProjects(names);
 
         Thread.sleep(3000);
+
+        assert businessLogApplication.findAllDefaultBusinessLog().size() == 3;
+
 
     }
 }

@@ -1,6 +1,5 @@
 package org.openkoala.businesslog.utils;
 
-import org.openkoala.businesslog.ContextKeyConstant;
 
 import javax.servlet.*;
 import java.io.IOException;

@@ -3,6 +3,8 @@ package org.openkoala.businesslog.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.openkoala.businesslog.utils.ContextKeyConstant.BUSINESS_METHOD;
+
 /**
  * 线程变量
  * User: zjzhai
@@ -30,9 +32,17 @@ public class ThreadLocalBusinessLogContext {
         context.get().put(key, value);
     }
 
+    public static Object getBusinessMethod(){
+        return get().get(BUSINESS_METHOD);
+    }
+
 
     public static void clear() {
         //contextMap.clear();
         context.set(new HashMap<String, Object>());
+    }
+
+    public static void putBusinessLogMethod(String blMappingValue) {
+        put(BUSINESS_METHOD, blMappingValue);
     }
 }

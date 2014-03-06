@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.openkoala.businesslog.ContextKeyConstant.*;
+import static org.openkoala.businesslog.utils.ContextKeyConstant.*;
 
 /**
  * User: zjzhai Date: 11/28/13 Time: 11:38 AM
@@ -47,9 +47,8 @@ public class BusinessLogInterceptor {
         /**
          * 日志开关及防止重复查询
          */
-        if (!isLogEnabled() || ThreadLocalBusinessLogContext.get().get(BUSINESS_METHOD) != null) {
-            return;
-        }
+        if (!isLogEnabled() || ThreadLocalBusinessLogContext.getBusinessMethod() != null) return;
+
 
         BusinessLogThread businessLogThread = new BusinessLogThread(
                 Collections.unmodifiableMap(createDefaultContext(joinPoint, result, error)),
@@ -58,7 +57,7 @@ public class BusinessLogInterceptor {
 
         if (null == getThreadPoolTaskExecutor()) {
             System.err.println("ThreadPoolTaskExecutor is not set or null");
-            businessLogThread.run();
+            new Thread(businessLogThread).start();
         } else {
             getThreadPoolTaskExecutor().execute(businessLogThread);
         }
