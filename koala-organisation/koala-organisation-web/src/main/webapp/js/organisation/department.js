@@ -258,7 +258,11 @@ var department = function(){
 	 * 生成部门树
 	 */
 	var getTree = function(id){
+		$('#departmentTree').loader({
+			opacity: 0
+		});
         $.get(baseUrl + 'orgTree.koala').done(function(data){
+        	$('#departmentTree').loader('hide');
             var zNodes = new Array();
             $.each(data, function(){
                 var zNode = {};
@@ -389,10 +393,10 @@ var department = function(){
 			var org = data.org;
 			var departmentDetail = $('.right-content');
 			departmentDetail.find('[data-role="id"]').val(org.id);
-			departmentDetail.find('[data-role="number"]').text(org.sn);
-			departmentDetail.find('[data-role="name"]').text(org.name);
-			departmentDetail.find('[data-role="description"]').text(org.description);
-			departmentDetail.find('[data-role="principalName"]').text(org.principalName);
+			departmentDetail.find('[data-role="number"]').html(org.sn);
+			departmentDetail.find('[data-role="name"]').html(org.name);
+			departmentDetail.find('[data-role="description"]').html(org.description);
+			departmentDetail.find('[data-role="principalName"]').html(org.principalName);
 			departmentDetail.find('[data-role="organizationType"]').val(org.organizationType);
 			//loadEmployeeList(org.id);
 			if(org.organizationType == 'company'){
