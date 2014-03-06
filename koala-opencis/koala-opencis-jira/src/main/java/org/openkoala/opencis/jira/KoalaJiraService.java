@@ -209,6 +209,11 @@ public class KoalaJiraService {
 
     }
 
+
+    public boolean isUserAtProjectDevelopRole(Project project, Developer developer) throws RemoteException {
+        return isUserAtProjectDevelopRole(getProjectKey(project), developer.getId());
+    }
+
     public boolean isUserAtProjectDevelopRole(String projectKey, String username) throws RemoteException {
         RemoteProject remoteProject = getRemoteProjectByProjectKey(projectKey);
         if (null == remoteProject) {
