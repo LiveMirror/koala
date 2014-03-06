@@ -104,7 +104,7 @@
 				});
 			}
 			var totalColumnWidth = 0;
-			var widthRgExp = /^[1-9]\d*\.?\d*(px){0,1}$/;
+			self.widthRgExp = /^[1-9]\d*\.?\d*(px){0,1}$/;
 			var titleHtml = new Array();
 			titleHtml.push('<tr>');
 			if (this.options.isShowIndexCol) {
@@ -116,12 +116,12 @@
 				var column = columns[i];
 				var width = column.width + '';
 				titleHtml.push('<th index="' + i + '" width="');
-				if (width.match(widthRgExp)) {
+				if (width.match(self.widthRgExp)) {
 					width = width.replace('px', '');
 					totalColumnWidth += parseInt(width);
-					titleHtml.push(self.scale*width + 'px"');
+					titleHtml.push(self.scale*parseInt(width) + 'px"');
 				} else {
-					titleHtml.push(self.scale*column.width + '"');
+					titleHtml.push(column.width + '"');
 				}
 				if (column.sortable && column.sortName) {
 					titleHtml.push(' class="sort" sortName="' + column.sortName + '" title="点击排序"');
@@ -541,7 +541,12 @@
 				}
 				for (var k = 0, h = this.options.columns.length; k < h; k++) {
 					var column = this.options.columns[k];
-					trHtml.push('<td index="' + k + '" width="' + self.scale*column.width + '"');
+					var width = column.width.toString();
+					if (width.match(self.widthRgExp)) {
+						width = width.replace('px', '');
+						width = self.scale*parseInt(width) + 'px';
+					}
+					trHtml.push('<td index="' + k + '" width="' + width + '"');
 					if (column.align) {
 						trHtml.push(' align="' + column.align + '"');
 					}
@@ -1224,7 +1229,7 @@
 			backdrop : self.options.backdrop,
 			keyboard : false
 		}).find('.modal-dialog').css({
-			'padding-top' : window.screen.height / 5
+			'padding-top' : '120px'
 		}).find('[data-role="confirm-content"]').html(this.options.content);
 		this.$element.find('[data-role="confirmBtn"]').on('click', function() {
 			if ( typeof self.options.callBack == 'function') {
