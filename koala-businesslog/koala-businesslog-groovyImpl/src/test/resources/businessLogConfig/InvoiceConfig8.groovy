@@ -8,11 +8,11 @@ import org.dayatang.domain.InstanceFactory
  * Date: 3/6/14
  * Time: 2:32 PM
  */
-class InvoiceConfig {
+class InvoiceConfig8 {
 
     def context
 
-    def InvoiceApplicationImpl_addInvoice() {
+    def InvoiceApplicationImpl_addInvoice12() {
         ContractApplication contractApplication =
             InstanceFactory.getInstance(ContractApplication.class, "contractApplication")
 

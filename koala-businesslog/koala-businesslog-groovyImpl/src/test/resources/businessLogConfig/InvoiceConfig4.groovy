@@ -12,7 +12,7 @@ class InvoiceConfig4 {
 
     def context
 
-    def InvoiceApplicationImpl_addInvoice() {
+    def InvoiceApplicationImpl_addInvoice5() {
         ContractApplication contractApplication =
             InstanceFactory.getInstance(ContractApplication.class, "contractApplication")
 
