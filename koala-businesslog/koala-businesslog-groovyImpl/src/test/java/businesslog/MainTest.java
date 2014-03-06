@@ -45,6 +45,7 @@ public class MainTest extends AbstractIntegrationTest {
 
         projectApplication.findSomeProjects(names);
 
+        Thread.sleep(3000);
 
     }
 }

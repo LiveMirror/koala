@@ -26,9 +26,15 @@ public class BusinessLogThread implements Runnable {
 
     private String BLMappingValue;
 
-    public BusinessLogThread(Map<String, Object> context, String BLMappingValue) {
+    /**
+     * 日志导出器
+     */
+    private BusinessLogExporter businessLogExporter;
+
+    public BusinessLogThread(Map<String, Object> context, String BLMappingValue, BusinessLogExporter businessLogExporter) {
         this.context = context;
         this.BLMappingValue = BLMappingValue;
+        this.businessLogExporter = businessLogExporter;
     }
 
     @Override
@@ -44,7 +50,14 @@ public class BusinessLogThread implements Runnable {
 
             if (groovyClass.getMethod(BLMappingValue) != null) {
                 groovyObject.setProperty("context", context);
-                System.out.println(groovyObject.invokeMethod(BLMappingValue, null));
+
+              /*  BusinessLog businessLog = new BusinessLog();
+                businessLog.setCategory("");
+                businessLog.setLog();
+
+                businessLogExporter.export();*/
+
+                System.out.println(groovyObject.invokeMethod(BLMappingValue, null).getClass().getName());
             }
         } catch (IOException e) {
             throw new KoalaBusinessLogConfigException("There's a failure when read BusinesslogConfig.groovy", e);

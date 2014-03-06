@@ -12,7 +12,8 @@ class BusinesslogConfig {
 
         String xx = contractApplication.addContract(22)
 
-        "add invoice " + xx
+        [category: "发票",
+        log : "add invoice " + xx]
     }
 
     def ProjectApplicationImpl_findSomeProjects() {

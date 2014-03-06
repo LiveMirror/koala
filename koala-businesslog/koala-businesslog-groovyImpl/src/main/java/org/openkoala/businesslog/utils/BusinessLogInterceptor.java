@@ -2,6 +2,7 @@ package org.openkoala.businesslog.utils;
 
 import org.aspectj.lang.JoinPoint;
 import org.dayatang.domain.InstanceFactory;
+import org.openkoala.businesslog.BusinessLogExporter;
 import org.openkoala.businesslog.KoalaBusinessLogConfigException;
 import org.springframework.aop.ProxyMethodInvocation;
 import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
@@ -29,6 +30,8 @@ public class BusinessLogInterceptor {
 
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
+    private BusinessLogExporter businessLogExporter;
+
     public void logAfter(JoinPoint joinPoint, Object result) {
         log(joinPoint, result, null);
     }
@@ -50,7 +53,8 @@ public class BusinessLogInterceptor {
 
         BusinessLogThread businessLogThread = new BusinessLogThread(
                 Collections.unmodifiableMap(createDefaultContext(joinPoint, result, error)),
-                BLMappingValue);
+                BLMappingValue,
+                getBusinessLogExporter());
 
         if (null == getThreadPoolTaskExecutor()) {
             System.err.println("ThreadPoolTaskExecutor is not set or null");
@@ -92,6 +96,14 @@ public class BusinessLogInterceptor {
         context.put(BUSINESS_OPERATION_TIME, new Date());
         return context;
 
+    }
+
+
+    public BusinessLogExporter getBusinessLogExporter() {
+        if (null == businessLogExporter) {
+            businessLogExporter = InstanceFactory.getInstance(BusinessLogExporter.class, "businessLogExporter");
+        }
+        return businessLogExporter;
     }
 
     private String getBLMapping(JoinPoint joinPoint) {
