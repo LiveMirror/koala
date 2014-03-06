@@ -8,11 +8,11 @@ class BusinesslogConfig {
 
 
     def InvoiceApplicationImpl_addInvoice() {
-        return "add "
+        "add "
     }
 
     def ProjectApplicationImpl_findSomeProjects() {
-        return "ProjectApplicationImpl_findSomeProjects "
+        "ProjectApplicationImpl_findSomeProjects "
     }
 
 }
