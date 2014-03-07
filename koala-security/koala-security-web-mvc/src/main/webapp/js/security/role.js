@@ -298,6 +298,7 @@ var roleManager = function(){
 							type: 'error',
 							content: '保存失败'
 						});
+						refreshToken(dialog.find('input[name="koala.token"]'));
 					});
 			}).end().modal({
 				keyboard: false
