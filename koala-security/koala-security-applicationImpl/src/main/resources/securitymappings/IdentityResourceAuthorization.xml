@@ -25,4 +25,11 @@
 		</query>
 	</named-query>
 	
+	<named-query name="findAllResourceIdentifierAndRoleId">
+		<query>
+			select auth.identity.id ,auth.resource.identifier from IdentityResourceAuthorization auth 
+			where auth.abolishDate>:abolishDate
+		</query>
+	</named-query>
+	
 </entity-mappings>
