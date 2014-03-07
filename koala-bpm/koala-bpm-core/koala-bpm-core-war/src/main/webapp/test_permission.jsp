@@ -10,7 +10,7 @@
 <body>
 	<security:hasPermission identify="TEST001">
 		Test001
-	</security:hasPermission>	
+	</security:hasPermission>
 	<security:hasPermission identify="TEST002">
 		Test002
 	</security:hasPermission>	

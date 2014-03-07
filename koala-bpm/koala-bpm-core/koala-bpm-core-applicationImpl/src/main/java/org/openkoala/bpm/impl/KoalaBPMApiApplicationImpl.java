@@ -44,16 +44,13 @@ public class KoalaBPMApiApplicationImpl implements KoalaBPMApiApplication {
 	@Override
 	public ProcessInstance startProcess(String processName,
 			Map<String, Object> params) {
-		wLock.lock();
+
 		ProcessInstance instance = null;
-		try {
 			instance = getKoalaBPMSession().getKsession().startProcess(
 					processName, params);
 			getKoalaBPMSession().getKsession().insert(instance);
 			getKoalaBPMSession().getKsession().fireAllRules();
-		} finally {
-			wLock.unlock();
-		}
+
 		return instance;
 	}
 
