@@ -258,7 +258,11 @@ var department = function(){
 	 * 生成部门树
 	 */
 	var getTree = function(id){
+		$('#departmentTree').loader({
+			opacity: 0
+		});
         $.get(baseUrl + 'orgTree.koala').done(function(data){
+        	$('#departmentTree').loader('hide');
             var zNodes = new Array();
             $.each(data, function(){
                 var zNode = {};

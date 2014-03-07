@@ -104,7 +104,7 @@
 				});
 			}
 			var totalColumnWidth = 0;
-			var widthRgExp = /^[1-9]\d*\.?\d*(px){0,1}$/;
+			self.widthRgExp = /^[1-9]\d*\.?\d*(px){0,1}$/;
 			var titleHtml = new Array();
 			titleHtml.push('<tr>');
 			if (this.options.isShowIndexCol) {
@@ -116,12 +116,12 @@
 				var column = columns[i];
 				var width = column.width + '';
 				titleHtml.push('<th index="' + i + '" width="');
-				if (width.match(widthRgExp)) {
+				if (width.match(self.widthRgExp)) {
 					width = width.replace('px', '');
 					totalColumnWidth += parseInt(width);
-					titleHtml.push(self.scale*width + 'px"');
+					titleHtml.push(self.scale*parseInt(width) + 'px"');
 				} else {
-					titleHtml.push(self.scale*column.width + '"');
+					titleHtml.push(column.width + '"');
 				}
 				if (column.sortable && column.sortName) {
 					titleHtml.push(' class="sort" sortName="' + column.sortName + '" title="点击排序"');
@@ -522,7 +522,7 @@
 				self.items = self.initTreeItems(new Array(), self.items);
 			}
 			var items = self.items;
-			items = JSON.parse(JSON.stringify(items).replace('<script>', '<script*>'));
+			items = JSON.parse(JSON.stringify(items).replace(/</g, '&lt;').replace(/>/g, '&gt;'));
 			var trHtmls = new Array();
 			for (var i = 0, j = items.length; i < j; i++) {
 				var item = items[i];
@@ -541,7 +541,12 @@
 				}
 				for (var k = 0, h = this.options.columns.length; k < h; k++) {
 					var column = this.options.columns[k];
-					trHtml.push('<td index="' + k + '" width="' + self.scale*column.width + '"');
+					var width = column.width.toString();
+					if (width.match(self.widthRgExp)) {
+						width = width.replace('px', '');
+						width = self.scale*parseInt(width) + 'px';
+					}
+					trHtml.push('<td index="' + k + '" width="' + width + '"');
 					if (column.align) {
 						trHtml.push(' align="' + column.align + '"');
 					}
@@ -879,19 +884,19 @@
 		this.content = this.$element.find('[data-toggle="content"]').html(this.options.content);
 		switch(this.options.type){
 			case 'success':
-				this.content.before($('<span class="glyphicon glyphicon-ok-sign" style="margin-right: 10px; font-size:16px;"/>'));
+				this.content.before($('<span class="glyphicon glyphicon-ok-sign" style="margin-right: 5px; font-size:18px;"/>'));
 				this.$element.addClass('alert-success');
 				break;
 			case 'info':
-				this.content.before($('<span class="glyphicon glyphicon-info-sign" style="margin-right: 10px;font-size:16px;"/>'));
+				this.content.before($('<span class="glyphicon glyphicon-info-sign" style="margin-right: 5px;font-size:18px;"/>'));
 				this.$element.addClass('alert-info');
 				break;
 			case 'warning':
-				this.content.before($('<span class="glyphicon glyphicon-warning-sign" style="margin-right: 10px;font-size:16px;"/>'));
+				this.content.before($('<span class="glyphicon glyphicon-warning-sign" style="margin-right: 5px;font-size:18px;"/>'));
 				this.$element.addClass('alert-warning');
 				break;
 			case 'error':
-				this.content.before($('<span class="glyphicon glyphicon-remove-sign" style="margin-right: 10px;font-size:16px; "/>'));
+				this.content.before($('<span class="glyphicon glyphicon-remove-sign" style="margin-right: 5px;font-size:18px; "/>'));
 				this.$element.addClass('alert-danger');
 				break;
 		}
@@ -908,12 +913,12 @@
 			})
 		});
 		setTimeout(function() {
-			self.$element.fadeOut(1000, function() {
-				$(this).remove();
-			});
+  			self.$element.fadeOut(1000, function() {
+  				$(this).remove();
+  			});
 		}, this.options.delay);
 	};
-	Message.DEFAULTS.TEMPLATE = '<div class="alert message" style="min-width: 120px;max-width: 300px; padding: 8px;text-align: left;z-index: 20000;">' + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + '<span data-toggle="content" style="font-size:14px; word-wrap:break-word;"></span>&nbsp;&nbsp;</div>';
+	Message.DEFAULTS.TEMPLATE = '<div class="alert message" style="min-width: 120px;max-width: 300px; padding: 8px;text-align: left;z-index: 20000;">' + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + '<span data-toggle="content" style="font-size:14px; word-wrap:break-word; position:relative; top: -2px;"></span>&nbsp;&nbsp;</div>';
 	var old = $.fn.message;
 	$.fn.message = function(option) {
 		return this.each(function() {
@@ -1224,7 +1229,7 @@
 			backdrop : self.options.backdrop,
 			keyboard : false
 		}).find('.modal-dialog').css({
-			'padding-top' : window.screen.height / 5
+			'padding-top' : '120px'
 		}).find('[data-role="confirm-content"]').html(this.options.content);
 		this.$element.find('[data-role="confirmBtn"]').on('click', function() {
 			if ( typeof self.options.callBack == 'function') {

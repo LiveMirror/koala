@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>org.openkoala.businesslog</groupId>
-            <artifactId>koala-businesslog-groovyImpl</artifactId>
+            <artifactId>koala-businesslog-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
 
