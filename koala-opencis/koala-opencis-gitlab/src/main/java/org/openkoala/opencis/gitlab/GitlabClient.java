@@ -176,7 +176,8 @@ public class GitlabClient implements CISClient {
 
     private String getHttpTransportUrl(String projectName, GitlabConfiguration gitlabConfiguration) {
         assert StringUtils.isNotEmpty(projectName);
-        return gitlabConfiguration.getGitlabUserUrl() + projectName.toLowerCase() + ".git";
+        return gitlabConfiguration.getGitlabUserUrl()
+                + "/" + projectName.toLowerCase() + ".git";
     }
 
     @Override

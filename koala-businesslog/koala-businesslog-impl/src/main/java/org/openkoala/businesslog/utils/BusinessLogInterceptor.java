@@ -1,35 +1,39 @@
 package org.openkoala.businesslog.utils;
 
+import static org.openkoala.businesslog.ContextKeyConstant.*;
 
 import org.aspectj.lang.JoinPoint;
 import org.dayatang.domain.InstanceFactory;
-import org.openkoala.businesslog.BusinessLogExporter;
-import org.openkoala.businesslog.KoalaBusinessLogConfigException;
+import org.openkoala.businesslog.*;
+import org.openkoala.businesslog.common.BLMapping;
+import org.openkoala.businesslog.common.BusinessLogPropertiesConfig;
+import org.openkoala.businesslog.common.LogEngineThread;
+import org.openkoala.businesslog.config.BusinessLogConfigAdapter;
 import org.springframework.aop.ProxyMethodInvocation;
 import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * User: zjzhai Date: 11/28/13 Time: 11:38 AM
  */
 public class BusinessLogInterceptor {
 
-    private static final String BUSINESS_LOG_CONFIG_PROPERTIES_NAME = "koala-businesslog.properties";
 
-    private static final String LOG_ENABLE = "kaola.businesslog.enable";
+    private BusinessLogConfigAdapter businessLogConfigAdapter;
 
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private BusinessLogRender businessLogRender;
 
     private BusinessLogExporter businessLogExporter;
+
+    private BusinessLogContextQueryExecutor queryExecutor;
+
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     public void logAfter(JoinPoint joinPoint, Object result) {
         log(joinPoint, result, null);
@@ -37,42 +41,34 @@ public class BusinessLogInterceptor {
 
     public void afterThrowing(JoinPoint joinPoint, Throwable error) {
         log(joinPoint, null, error);
+
     }
 
     public synchronized void log(JoinPoint joinPoint, Object result, Throwable error) {
 
         String BLMappingValue = getBLMapping(joinPoint);
 
-        /**
-         * 日志开关及防止重复查询
-         */
-        if (!isLogEnabled() || ThreadLocalBusinessLogContext.getBusinessMethod() != null) return;
+        if (!BusinessLogPropertiesConfig.getInstance().getLogEnableConfig()
+                || ThreadLocalBusinessLogContext.get().get(BUSINESS_METHOD) != null) {
+            return;
+        }
 
 
-        BusinessLogThread businessLogThread = new BusinessLogThread(
+        LogEngineThread logEngineThread = new LogEngineThread(
                 Collections.unmodifiableMap(createDefaultContext(joinPoint, result, error)),
                 BLMappingValue,
-                getBusinessLogExporter());
+                getBusinessLogConfigAdapter(),
+                getBusinessLogRender(),
+                getBusinessLogExporter(),
+                getQueryExecutor());
+
 
         if (null == getThreadPoolTaskExecutor()) {
             System.err.println("ThreadPoolTaskExecutor is not set or null");
-            new Thread(businessLogThread).start();
+            logEngineThread.run();
         } else {
-            getThreadPoolTaskExecutor().execute(businessLogThread);
+            getThreadPoolTaskExecutor().execute(logEngineThread);
         }
-
-
-    }
-
-    private boolean isLogEnabled() {
-        Properties properties = new Properties();
-        try {
-            properties.load(new FileInputStream(getClass().getResource("/" + BUSINESS_LOG_CONFIG_PROPERTIES_NAME).getFile()));
-            return Boolean.valueOf(properties.getProperty(LOG_ENABLE, "true"));
-        } catch (IOException e) {
-            throw new KoalaBusinessLogConfigException("failure when read " + BUSINESS_LOG_CONFIG_PROPERTIES_NAME, e);
-        }
-
     }
 
     private Map<String, Object> createDefaultContext(JoinPoint joinPoint,
@@ -81,33 +77,25 @@ public class BusinessLogInterceptor {
 
         Object[] args = joinPoint.getArgs();
         for (int i = 0; i < args.length; i++) {
-            context.put(ContextKeyConstant.PRE_OPERATOR_OF_METHOD_KEY + i, args[i]);
+            context.put(PRE_OPERATOR_OF_METHOD_KEY + i, args[i]);
         }
 
-        context.put(ContextKeyConstant.BUSINESS_METHOD_RETURN_VALUE_KEY, result);
+        context.put(BUSINESS_METHOD_RETURN_VALUE_KEY, result);
 
         if (null != error) {
-            context.put(ContextKeyConstant.BUSINESS_METHOD_EXECUTE_ERROR, error.getCause());
+            context.put(BUSINESS_METHOD_EXECUTE_ERROR, error.getCause());
         }
 
-        context.put(ContextKeyConstant.BUSINESS_METHOD, getBLMapping(joinPoint));
-        context.put(ContextKeyConstant.BUSINESS_OPERATION_TIME, new Date());
+        context.put(BUSINESS_METHOD, getBLMapping(joinPoint));
+        context.put(BUSINESS_OPERATION_TIME, new Date());
         return context;
 
     }
 
-
-    public BusinessLogExporter getBusinessLogExporter() {
-        if (null == businessLogExporter) {
-            businessLogExporter = InstanceFactory.getInstance(BusinessLogExporter.class, "businessLogExporter");
-        }
-        return businessLogExporter;
-    }
-
     private String getBLMapping(JoinPoint joinPoint) {
         Method method = invocationMethod(joinPoint);
-        if (method.isAnnotationPresent(MethodAlias.class)) {
-            return method.getAnnotation(MethodAlias.class).value();
+        if (method.isAnnotationPresent(BLMapping.class)) {
+            return method.getAnnotation(BLMapping.class).value();
         }
         return joinPoint.getSignature().toString();
     }
@@ -119,19 +107,48 @@ public class BusinessLogInterceptor {
             ProxyMethodInvocation methodInvocation = (ProxyMethodInvocation) methodInvocationField.get(joinPoint);
             return methodInvocation.getMethod();
         } catch (NoSuchFieldException e) {
-            return null;
+            throw new BusinessLogBaseException("There is not such methodInvocation in MethodInvocationProceedingJoinPoint class", e);
         } catch (IllegalAccessException e) {
-            return null;
+            throw new BusinessLogBaseException("Cannot access the method", e);
         }
     }
 
+    public BusinessLogConfigAdapter getBusinessLogConfigAdapter() {
+        if (null == businessLogConfigAdapter) {
+            businessLogConfigAdapter = InstanceFactory.getInstance(BusinessLogConfigAdapter.class, "businessLogConfigAdapter");
+        }
+        return businessLogConfigAdapter;
+    }
+
+    public BusinessLogRender getBusinessLogRender() {
+        if (null == businessLogRender) {
+            businessLogRender = InstanceFactory.getInstance(BusinessLogRender.class, "businessLogRender");
+        }
+        return businessLogRender;
+    }
+
+    public BusinessLogExporter getBusinessLogExporter() {
+        if (null == businessLogExporter) {
+            businessLogExporter = InstanceFactory.getInstance(BusinessLogExporter.class, "businessLogExporter");
+        }
+
+        return businessLogExporter;
+    }
+
+    public BusinessLogContextQueryExecutor getQueryExecutor() {
+        if (null == queryExecutor) {
+            queryExecutor = InstanceFactory.getInstance(BusinessLogContextQueryExecutor.class, "queryExecutor");
+
+        }
+        return queryExecutor;
+    }
 
     public ThreadPoolTaskExecutor getThreadPoolTaskExecutor() {
         if (null == threadPoolTaskExecutor) {
             threadPoolTaskExecutor = InstanceFactory.getInstance(ThreadPoolTaskExecutor.class, "threadPoolTaskExecutor");
+
         }
 
         return threadPoolTaskExecutor;
     }
-
 }

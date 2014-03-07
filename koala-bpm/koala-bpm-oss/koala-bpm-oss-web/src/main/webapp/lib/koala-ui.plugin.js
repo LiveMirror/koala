@@ -104,7 +104,7 @@
 				});
 			}
 			var totalColumnWidth = 0;
-			self.widthRgExp = /^[1-9]\d*\.?\d*(px){0,1}$/;
+			var widthRgExp = /^[1-9]\d*\.?\d*(px){0,1}$/;
 			var titleHtml = new Array();
 			titleHtml.push('<tr>');
 			if (this.options.isShowIndexCol) {
@@ -116,12 +116,12 @@
 				var column = columns[i];
 				var width = column.width + '';
 				titleHtml.push('<th index="' + i + '" width="');
-				if (width.match(self.widthRgExp)) {
+				if (width.match(widthRgExp)) {
 					width = width.replace('px', '');
 					totalColumnWidth += parseInt(width);
-					titleHtml.push(self.scale*parseInt(width) + 'px"');
+					titleHtml.push(self.scale*width + 'px"');
 				} else {
-					titleHtml.push(column.width + '"');
+					titleHtml.push(self.scale*column.width + '"');
 				}
 				if (column.sortable && column.sortName) {
 					titleHtml.push(' class="sort" sortName="' + column.sortName + '" title="点击排序"');
@@ -522,7 +522,7 @@
 				self.items = self.initTreeItems(new Array(), self.items);
 			}
 			var items = self.items;
-			items = JSON.parse(JSON.stringify(items).replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+			items = JSON.parse(JSON.stringify(items).replace('<script>', '<script*>'));
 			var trHtmls = new Array();
 			for (var i = 0, j = items.length; i < j; i++) {
 				var item = items[i];
@@ -541,12 +541,7 @@
 				}
 				for (var k = 0, h = this.options.columns.length; k < h; k++) {
 					var column = this.options.columns[k];
-					var width = column.width.toString();
-					if (width.match(self.widthRgExp)) {
-						width = width.replace('px', '');
-						width = self.scale*parseInt(width) + 'px';
-					}
-					trHtml.push('<td index="' + k + '" width="' + width + '"');
+					trHtml.push('<td index="' + k + '" width="' + self.scale*column.width + '"');
 					if (column.align) {
 						trHtml.push(' align="' + column.align + '"');
 					}
@@ -884,19 +879,19 @@
 		this.content = this.$element.find('[data-toggle="content"]').html(this.options.content);
 		switch(this.options.type){
 			case 'success':
-				this.content.before($('<div style="float:left;"><span class="glyphicon glyphicon-ok-sign" style="margin-right: 5px; font-size:18px;"/></div>'));
+				this.content.before($('<span class="glyphicon glyphicon-ok-sign" style="margin-right: 10px; font-size:16px;"/>'));
 				this.$element.addClass('alert-success');
 				break;
 			case 'info':
-				this.content.before($('<div style="float:left;"><span class="glyphicon glyphicon-info-sign" style="margin-right: 5px;font-size:18px;"/></div>'));
+				this.content.before($('<span class="glyphicon glyphicon-info-sign" style="margin-right: 10px;font-size:16px;"/>'));
 				this.$element.addClass('alert-info');
 				break;
 			case 'warning':
-				this.content.before($('<div style="float:left;"><span class="glyphicon glyphicon-warning-sign" style="margin-right: 5px;font-size:18px;"/></div>'));
+				this.content.before($('<span class="glyphicon glyphicon-warning-sign" style="margin-right: 10px;font-size:16px;"/>'));
 				this.$element.addClass('alert-warning');
 				break;
 			case 'error':
-				this.content.before($('<div style="float:left;"><span class="glyphicon glyphicon-remove-sign" style="margin-right: 5px;font-size:18px; "/></div>'));
+				this.content.before($('<span class="glyphicon glyphicon-remove-sign" style="margin-right: 10px;font-size:16px; "/>'));
 				this.$element.addClass('alert-danger');
 				break;
 		}
@@ -913,9 +908,9 @@
 			})
 		});
 		setTimeout(function() {
-  			self.$element.fadeOut(1000, function() {
-  				$(this).remove();
-  			});
+			self.$element.fadeOut(1000, function() {
+				$(this).remove();
+			});
 		}, this.options.delay);
 	};
 	Message.DEFAULTS.TEMPLATE = '<div class="alert message" style="min-width: 120px;max-width: 300px; padding: 8px;text-align: left;z-index: 20000;">' + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + '<span data-toggle="content" style="font-size:14px; word-wrap:break-word;"></span>&nbsp;&nbsp;</div>';
@@ -1229,7 +1224,7 @@
 			backdrop : self.options.backdrop,
 			keyboard : false
 		}).find('.modal-dialog').css({
-			'padding-top' : '120px'
+			'padding-top' : window.screen.height / 5
 		}).find('[data-role="confirm-content"]').html(this.options.content);
 		this.$element.find('[data-role="confirmBtn"]').on('click', function() {
 			if ( typeof self.options.callBack == 'function') {

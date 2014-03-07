@@ -1,7 +1,9 @@
 package org.openkoala.businesslog.application;
 
 import org.dayatang.querychannel.Page;
-import org.openkoala.businesslog.model.DefaultBusinessLogDTO;
+import org.openkoala.businesslog.BusinessLog;
+import org.openkoala.businesslog.dto.DefaultBusinessLogDTO;
+import org.openkoala.businesslog.model.AbstractBusinessLog;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
 
 import java.util.List;

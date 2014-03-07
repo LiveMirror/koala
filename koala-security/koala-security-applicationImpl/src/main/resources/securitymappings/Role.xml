@@ -30,4 +30,18 @@
 		</query>
 	</named-query>
 	
+	<named-query name="findAllRoleIds">
+		<query>
+			select role.id from Role role where role.abolishDate>:abolishDate
+		</query>
+	</named-query>
+	
+	<named-query name="findRoleIdsByUserAccount">
+		<query>
+			select rau.role.id from RoleUserAuthorization rau
+			where rau.user.userAccount=:userAccount
+			and rau.abolishDate>:abolishDate
+		</query>
+	</named-query>
+	
 </entity-mappings>

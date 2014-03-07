@@ -1,35 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>koala-businesslog</artifactId>
         <groupId>org.openkoala.businesslog</groupId>
+        <artifactId>koala-businesslog</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>koala-businesslog-api</artifactId>
     <packaging>jar</packaging>
     <name>koala-businesslog-api</name>
-
+    <description>业务日志子系统API</description>
     <dependencies>
-
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>proxool</groupId>
-            <artifactId>proxool-cglib</artifactId>
-        </dependency>
-
+        <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -37,5 +24,7 @@
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
+
 </project>

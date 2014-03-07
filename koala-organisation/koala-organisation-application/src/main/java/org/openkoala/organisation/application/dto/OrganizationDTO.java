@@ -11,9 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.openkoala.organisation.domain.Company;
 import org.openkoala.organisation.domain.Department;
 import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.Job;
 import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.Post;
 
 /**
  * 组织机构DTO
@@ -27,27 +25,29 @@ public class OrganizationDTO implements Serializable {
 
 	public static final String COMPANY = "company";
 	public static final String DEPARTMENT = "department";
-	
+
 	private Long id;
 
 	private String name;
-	
+
 	private String description;
-	
+
 	private Date createDate;
-	
+
 	private Date terminateDate;
-	
+
 	private Set<OrganizationDTO> children = new HashSet<OrganizationDTO>();
 
 	private String organizationType;
-	
+
 	private String sn;
-	
+
 	private String principalName;
-	
+
 	private int version;
-	
+
+	private Long pid;
+
 	public OrganizationDTO(Long id, String name) {
 		this.id = id;
 		this.name = name;
@@ -100,7 +100,7 @@ public class OrganizationDTO implements Serializable {
 	public void setChildren(Set<OrganizationDTO> children) {
 		this.children = children;
 	}
-	
+
 	public String getOrganizationType() {
 		return organizationType;
 	}
@@ -139,13 +139,13 @@ public class OrganizationDTO implements Serializable {
 		dto.setCreateDate(organization.getCreateDate());
 		dto.setDescription(organization.getDescription());
 		dto.setVersion(organization.getVersion());
-		
+
 		if (organization instanceof Company) {
 			dto.setOrganizationType(COMPANY);
 		} else {
 			dto.setOrganizationType(DEPARTMENT);
 		}
-		
+
 		List<Employee> principals = organization.getPrincipal(new Date());
 		if (!principals.isEmpty()) {
 			String separator = "/";
@@ -156,10 +156,20 @@ public class OrganizationDTO implements Serializable {
 			}
 			dto.setPrincipalName(principal.substring(0, principal.length() - separator.length()));
 		}
-		
+
 		return dto;
 	}
-	
+
+	public OrganizationDTO(Long id, Long pid, String name, String sn, Date createDate, String description, String organizationType) {
+		this.setId(id);
+		this.setPid(pid);
+		this.setName(name);
+		this.setSn(sn);
+		this.setCreateDate(createDate);
+		this.setDescription(description);
+		this.setOrganizationType(organizationType);
+	}
+
 	public Organization transFormToOrganization() {
 		Organization result = null;
 		if (organizationType.equals(COMPANY)) {
@@ -167,25 +177,24 @@ public class OrganizationDTO implements Serializable {
 		} else {
 			result = new Department(name, sn);
 		}
-		
+
 		result.setId(id);
 		result.setCreateDate(createDate);
 		result.setSn(sn);
 		result.setDescription(description);
 		result.setTerminateDate(terminateDate);
 		result.setVersion(version);
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof OrganizationDTO)) {
 			return false;
 		}
 		OrganizationDTO that = (OrganizationDTO) other;
-		return new EqualsBuilder().append(this.getSn(), that.getSn())
-				.isEquals();
+		return new EqualsBuilder().append(this.getId(), that.getId()).append(this.getSn(), that.getSn()).isEquals();
 	}
 
 	@Override
@@ -196,6 +205,14 @@ public class OrganizationDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "OrganizationDTO [id=" + id + ", name=" + name + ", children=" + children + "]";
+	}
+
+	public Long getPid() {
+		return pid;
+	}
+
+	public void setPid(Long pid) {
+		this.pid = pid;
 	}
 
 }

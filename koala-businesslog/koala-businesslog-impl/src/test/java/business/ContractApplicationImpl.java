@@ -1,6 +1,9 @@
 package business;
 
-import org.openkoala.businesslog.utils.MethodAlias;
+import business.Contract;
+import business.ContractApplication;
+import business.Project;
+import org.openkoala.businesslog.common.BLMapping;
 
 import java.math.BigDecimal;
 
@@ -22,7 +25,7 @@ public class ContractApplicationImpl implements ContractApplication {
         return "合同名";
     }
 
-    @MethodAlias("ContractApplicationImpl.findContractById")
+    @BLMapping("ContractApplicationImpl.findContractById")
     @Override
     public Contract findContractById(long contractId) {
         Contract contract = new Contract();

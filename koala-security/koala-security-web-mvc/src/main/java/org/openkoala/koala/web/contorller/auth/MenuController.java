@@ -38,6 +38,21 @@ public class MenuController {
 	}
 
 	@ResponseBody
+	@RequestMapping("/findMenuByUser")
+	public Map<String, Object> findMenuByUser() {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		List<ResourceVO> all = null;
+		CustomUserDetails current = AuthUserUtil.getLoginUser();
+		if (current.isSuper()) {
+			all = this.menuApplication.findMenuByUser("");
+		} else {
+			all = this.menuApplication.findMenuByUser(AuthUserUtil.getLoginUserName());
+		}
+		dataMap.put("data", all);
+		return dataMap;
+	}
+	
+	@ResponseBody
 	@RequestMapping("/findTopMenuByUser")
 	public Map<String, Object> findTopMenuByUser() {
 		Map<String, Object> dataMap = new HashMap<String, Object>();

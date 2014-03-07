@@ -307,6 +307,7 @@ var roleManager = function() {
 				data['roleVO.id'] = roleId;
 				for (var i = 0, j = nodes.length; i < j; i++) {
 					data['menus[' + i + '].id'] = nodes[i].id;
+					data['menus[' + i + '].identifier'] = nodes[i].identifier;
 				}
 				data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 				dialog.find('.modal-body').loader({
@@ -326,14 +327,14 @@ var roleManager = function() {
 							content : data.result
 						});
 					}
-					dialog.find('.modal-body').loader('hide');
-				}).fail(function(data) {
-					dialog.find('.modal-body').loader('hide');
+				}).fail(function(data){
 					dialog.find('.modal-content').message({
-						type : 'error',
-						content : '保存失败'
+						type: 'error',
+						content: '保存失败'
 					});
-				});
+					refreshToken(dialog.find('input[name="koala.token"]'));
+					dialog.find('.modal-body').loader('hide');
+				})
 			}).end().modal({
 				keyboard : false
 			}).on({
@@ -366,6 +367,7 @@ var roleManager = function() {
 				var zNode = {};
 				var menu = {};
 				menu.id = item.id;
+				menu.identifier = item.identifier;
 				menu.title = item.name;
 				menu.open = true;
 				menu.checked = item.ischecked;
@@ -398,6 +400,7 @@ var roleManager = function() {
 			var zNode = {};
 			var menu = {};
 			menu.id = item.id;
+			menu.identifier = item.identifier;
 			menu.title = item.name;
 			menu.open = true;
 			menu.checked = item.ischecked;

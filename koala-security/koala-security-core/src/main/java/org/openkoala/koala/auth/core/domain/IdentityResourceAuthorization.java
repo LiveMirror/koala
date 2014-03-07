@@ -66,6 +66,14 @@ public class IdentityResourceAuthorization extends Accountability {
 	}
 	
 	/**
+	 * 查找所有资源和角色标
+	 * @returnfindAllAuthorization
+	 */
+	public static List<Object[]> findAllResourceIdentifierAndRoleId(){
+		return getRepository().createNamedQuery("findAllResourceIdentifierAndRoleId").addParameter("abolishDate",new Date()).list();
+	}
+	
+	/**
 	 * 根据角色ID获取角色的授权信息
 	 * @param roleId
 	 * @return

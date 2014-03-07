@@ -28,9 +28,10 @@ public class TokenHelper {
 		HttpSession session = request.getSession();
 		synchronized (session) {
 			String token = getTokenValue(request);
+			// 如果请求中没有koala.token,则不验证
 			if (token == null) {
 				if (LOG.isDebugEnabled()) {
-					LOG.debug("no token found. -> Invalid token ");
+					LOG.debug("no token found in " + request.getRequestURI());
 				}
 				return true;
 			}
@@ -55,6 +56,8 @@ public class TokenHelper {
 		List<String> tokens = (List<String>) session.getAttribute(TOKEN_SESSION_KEY);
 		if (tokens == null) {
 			tokens = new ArrayList<String>();
+		} else if (tokens.size() > 100) {
+			tokens = tokens.subList(0, 100);
 		}
 		tokens.add(token);
 		session.setAttribute(TOKEN_SESSION_KEY, tokens);
@@ -81,6 +84,12 @@ public class TokenHelper {
 		return UUID.randomUUID().toString().replace("-", "");
 	}
 
+	/**
+	 * 获得请求中的token
+	 * 
+	 * @param request
+	 * @return
+	 */
 	private static String getTokenValue(HttpServletRequest request) {
 		return request.getParameter(TOKEN_KEY);
 	}
@@ -94,7 +103,6 @@ public class TokenHelper {
 		@SuppressWarnings("unchecked")
 		List<String> tokens = (List<String>) session.getAttribute(TOKEN_SESSION_KEY);
 		if (tokens != null && !tokens.isEmpty()) {
-			System.out.println(tokens.remove(token) + "+++++++++++++++++++++++++++++++++++++++++++++++++++");
 			session.setAttribute(TOKEN_SESSION_KEY, tokens);
 		}
 	}
@@ -108,5 +116,4 @@ public class TokenHelper {
 		}
 		return tokens;
 	}
-
 }

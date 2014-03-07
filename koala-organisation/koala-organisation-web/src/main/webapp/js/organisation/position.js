@@ -263,6 +263,7 @@ var position = function(){
 				});
 			}
 			dialog.find('#save').removeAttr('disabled');
+			refreshToken(dialog.find('input[name="koala.token"]'));
 		});
 	};
 	/*
@@ -284,6 +285,7 @@ var position = function(){
 					positionDto.organizationPrincipal = $(this).val();
 				}
 			});
+			positionDto['koala.token'] = dialog.find('input[name="koala.token"]').val();
 			return positionDto;
 		}else{
 			var data = {};
@@ -296,6 +298,7 @@ var position = function(){
 					data.organizationPrincipal = $(this).val();
 				}
 			});
+			data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 			return data;
 		}
 	};

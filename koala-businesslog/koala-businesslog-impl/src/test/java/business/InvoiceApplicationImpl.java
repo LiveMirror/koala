@@ -1,6 +1,8 @@
 package business;
 
-import org.openkoala.businesslog.utils.MethodAlias;
+import business.Invoice;
+import business.InvoiceApplication;
+import org.openkoala.businesslog.common.BLMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class InvoiceApplicationImpl implements InvoiceApplication {
         return new Invoice(invoiceSn);
     }
 
-    @MethodAlias("InvoiceApplicationImpl_addInvoice")
+    @BLMapping("InvoiceApplicationImpl.addInvoice")
     public Invoice addInvoice(String invoiceSn, long contractId) {
         return new Invoice(invoiceSn);
     }
