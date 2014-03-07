@@ -21,7 +21,7 @@ public class ResourceVO extends PartyVO implements Serializable {
 	private String typeName;
 	private String name;
 	private String text;
-	private String parentId;
+	private Long parentId;
 	private boolean ischecked;
 	private boolean isleaf;
 	private boolean isvalid;
@@ -112,11 +112,11 @@ public class ResourceVO extends PartyVO implements Serializable {
 		this.text = text;
 	}
 
-	public String getParentId() {
+	public Long getParentId() {
 		return parentId;
 	}
 
-	public void setParentId(String parentId) {
+	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
 
@@ -169,6 +169,12 @@ public class ResourceVO extends PartyVO implements Serializable {
 		this.setAbolishDate(formatter.format(abolishDate));
 		this.setCreateDate(formatter.format(createDate));
 		this.setMenuType(String.valueOf(menuType));
+	}
+
+	public ResourceVO(Long parentId, Long id, String desc, int version, String icon, String level, String identifier, Boolean isvalid, String name,
+			String text, Integer sortOrder, String serialNumber, Date abolishDate, Date createDate, Long menuType) {
+		this(id, desc, version, icon, level, identifier, isvalid, name, text, sortOrder, serialNumber, abolishDate, createDate, menuType);
+		this.setParentId(parentId);
 	}
 
 	public void domain2Vo(Resource resource) {
