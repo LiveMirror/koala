@@ -11,7 +11,7 @@ import org.openkoala.opencis.support.SvnConfig;
  * @author zjh
  *
  */
-public class SvnLocalCheckoutCommand extends LocalCommand {
+public class SvnLocalCheckoutCommand extends SvnCommand {
 
 	public SvnLocalCheckoutCommand() {
 		// TODO Auto-generated constructor stub

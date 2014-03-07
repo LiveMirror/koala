@@ -2,8 +2,6 @@ package org.openkoala.opencis.svn.command;
 
 import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
-import org.openkoala.opencis.support.CommonUtil;
-import org.openkoala.opencis.support.LocalCommand;
 import org.openkoala.opencis.support.SvnConfig;
 
 /**
@@ -11,7 +9,7 @@ import org.openkoala.opencis.support.SvnConfig;
  * @author zjh
  *
  */
-public class SvnLocalAddCommand extends LocalCommand {
+public class SvnLocalAddCommand extends SvnCommand {
 
 	public SvnLocalAddCommand() {
 		// TODO Auto-generated constructor stub
