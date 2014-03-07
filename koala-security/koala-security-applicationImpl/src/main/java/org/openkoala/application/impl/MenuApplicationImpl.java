@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 
 import org.dayatang.querychannel.Page;
 import org.dayatang.utils.DateUtils;
@@ -25,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Remote
 @Stateless(name = "MenuApplication")
 @Transactional(value = "transactionManager_security")
-// @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 
 	public static Page<ResourceVO> basePageQuery(String query, Object[] params, int currentPage, int pageSize) {
