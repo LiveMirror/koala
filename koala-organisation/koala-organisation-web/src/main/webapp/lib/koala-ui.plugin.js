@@ -148,7 +148,7 @@
 				if ($this.hasClass('checked')) {
 					self.gridTableBodyTable.find('[data-role="indexCheckbox"]').each(function() {
 						if ($(this).hasClass('checked')) {
-							$(this).removeClass('checked').closest('tr').removeClass('success')
+							$(this).removeClass('checked').closest('tr').removeClass('success');
 							self.$element.trigger('selectedRow', {
 								checked : false,
 								item : self.items[$(this).attr('indexValue')]
@@ -313,7 +313,7 @@
 				self.endRecord.text(end + 1);
 				self.totalRecordHtml.text(self.totalRecord);
 				self.items = self.getItemsFromLocalData(start, end);
-				self._initPageNo(self.totalRecord)
+				self._initPageNo(self.totalRecord);
 				if (!self.options.localData || self.options.localData.length == 0) {
 					self.gridTableBodyTable.empty();
 					self.gridTableBody.find('[data-role="noData"]').remove();
@@ -464,11 +464,11 @@
 			self.$element.find('[data-role="selectAll"]').removeClass('checked');
 			if (self.pageNo != self.totalPage - 1) {
 				self.nextBtn && self.nextBtn.removeClass('disabled');
-				self.lastPageBtn && self.lastPageBtn.removeClass('disabled')
+				self.lastPageBtn && self.lastPageBtn.removeClass('disabled');
 			}
 			if (self.pageNo != 0) {
 				self.prevBtn && self.prevBtn.removeClass('disabled');
-				self.firstPageBtn && self.firstPageBtn.removeClass('disabled')
+				self.firstPageBtn && self.firstPageBtn.removeClass('disabled');
 			}
 			self.$element.trigger('complate');
 			self.gridTableBody.loader('hide');
@@ -682,7 +682,7 @@
 			return this.$element;
 		},
 		removeRows : function(indexs) {
-			var self = this
+			var self = this;
 			$.each(indexs, function() {
 				delete self.itemsMap[this];
 			});
