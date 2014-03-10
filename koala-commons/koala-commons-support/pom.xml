@@ -107,5 +107,10 @@
 			<artifactId>jstl-api</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 </project>
