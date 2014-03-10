@@ -234,9 +234,9 @@ public class SvnCISClient implements CISClient {
      * @return
      */
     public boolean commitToServer(Project project,Developer developer){
-    	SvnCommand cmdCheckout = new SvnLocalCheckoutCommand(configuration, project,developer);
-    	SvnCommand cmdAdd = new SvnLocalAddCommand(configuration, project,developer);
-    	SvnCommand cmdSubmit = new SvnLocalCommitCommand(configuration, project,developer);
+    	LocalCommand cmdCheckout = new SvnLocalCheckoutCommand(configuration, project,developer);
+    	LocalCommand cmdAdd = new SvnLocalAddCommand(configuration, project,developer);
+    	LocalCommand cmdSubmit = new SvnLocalCommitCommand(configuration, project,developer);
     	try {
 			executor.addCommand(cmdCheckout);
 			executor.addCommand(cmdAdd);

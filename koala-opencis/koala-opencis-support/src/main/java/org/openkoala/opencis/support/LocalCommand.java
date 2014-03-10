@@ -30,9 +30,15 @@ public abstract class LocalCommand extends AbstractCommand{
 	public void execute() throws Exception {
 		// TODO Auto-generated method stub
 		Runtime runtime = Runtime.getRuntime();
+		Process process = null;
 		String strCmd = getCommand();
 		System.out.println("执行本地命令：" + strCmd);
-		Process process = runtime.exec(strCmd);
+		if(CommonUtil.isLinux()){
+			process = runtime.exec(new String[] {"/bin/sh","-c",strCmd});
+		}else{
+			process = runtime.exec(strCmd);
+		}
+		process.wait();
 		String result = readOutput(process.getInputStream());
 		System.out.println(result);
 	}

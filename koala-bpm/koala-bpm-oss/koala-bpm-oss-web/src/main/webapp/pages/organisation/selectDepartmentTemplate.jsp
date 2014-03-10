@@ -22,7 +22,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">选择机构</h4>
             </div>
-            <div class="modal-body" style="margin-top: 10px;">
+            <div class="modal-body" style="margin-top: 10px; width: 620px;margin-left: auto; margin-right: auto;">
                   <div class="tree"></div>
             </div>
             <div class="modal-footer">
