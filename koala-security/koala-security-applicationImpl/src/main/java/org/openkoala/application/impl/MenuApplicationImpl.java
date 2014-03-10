@@ -3,10 +3,8 @@ package org.openkoala.application.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -303,21 +301,21 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 
 	public List<ResourceVO> findMenuTree() {
 		return this.findMenuByUser("");
-//		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
-//		List<Resource> topMenus = Resource.findChildByParent(null);
-//		for (Resource res : topMenus) {
-//			if (Resource.isMenu(res)) {
-//				ResourceVO treeVO = new ResourceVO();
-//				treeVO.domain2Vo(res);
-//				ResourceTypeAssignment assignment = ResourceTypeAssignment.findByResource(res.getId());
-//				if (assignment != null) {
-//					treeVO.setMenuType(String.valueOf(assignment.getResourceType().getId()));
-//				}
-//				treeVOs.add(treeVO);
-//				innerFindMenuByParent(treeVO, null);
-//			}
-//		}
-//		return treeVOs;
+		// List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
+		// List<Resource> topMenus = Resource.findChildByParent(null);
+		// for (Resource res : topMenus) {
+		// if (Resource.isMenu(res)) {
+		// ResourceVO treeVO = new ResourceVO();
+		// treeVO.domain2Vo(res);
+		// ResourceTypeAssignment assignment = ResourceTypeAssignment.findByResource(res.getId());
+		// if (assignment != null) {
+		// treeVO.setMenuType(String.valueOf(assignment.getResourceType().getId()));
+		// }
+		// treeVOs.add(treeVO);
+		// innerFindMenuByParent(treeVO, null);
+		// }
+		// }
+		// return treeVOs;
 	}
 
 	public List<ResourceVO> findAllChildByParentAndUser(ResourceVO menuVO, String userAccount) {
@@ -406,17 +404,15 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 		}
 	}
 
-	private final static String SELECT_RESOURCEVO = "SELECT DISTINCT NEW org.openkoala.auth.application.vo.ResourceVO("
-			+ "resource.id, resource.desc, resource.version, resource.menuIcon, resource.level, "
-			+ "resource.identifier, resource.valid, resource.name, resource.name, "
-			+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id) ";
-
 	@SuppressWarnings("unchecked")
 	private List<ResourceVO> findMenuTreeSelectItemByRole(RoleVO roleVO) {
 		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
 		List<Long> allPrivilege = Resource.listPrivilegeByRole(roleVO.getId());
 
-		String selectTopResource = SELECT_RESOURCEVO
+		String selectTopResource = "SELECT DISTINCT NEW org.openkoala.auth.application.vo.ResourceVO("
+				+ "resource.id, resource.desc, resource.version, resource.menuIcon, resource.level, "
+				+ "resource.identifier, resource.valid, resource.name, resource.name, "
+				+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id) "
 				+ "FROM ResourceTypeAssignment assignment LEFT JOIN assignment.resource resource LEFT JOIN assignment.resourceType resourceType "
 				+ "WHERE resource.level=1 AND resource.abolishDate>:abolishDate ORDER BY resource.sortOrder ,resource.createDate";
 		treeVOs = queryChannel().createJpqlQuery(selectTopResource).addParameter("abolishDate", new Date()).list();
