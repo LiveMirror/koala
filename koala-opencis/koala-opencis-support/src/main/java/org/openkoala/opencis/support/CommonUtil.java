@@ -47,4 +47,13 @@ public class CommonUtil {
         }
         return groupUsersStr.toString();
 	}
+	
+	/**
+	 * 判断是否Linux系统
+	 * @return
+	 */
+	public static Boolean isLinux(){
+		String osName = System.getProperty("os.name");
+		return osName.equalsIgnoreCase("Linux");
+	}
 }
