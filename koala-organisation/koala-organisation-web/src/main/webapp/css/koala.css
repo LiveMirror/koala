@@ -477,8 +477,7 @@ div.uploader input {
 .tree {
 	position: relative;
 	padding: 10px 15px;
-	overflow-x: hidden;
-	overflow-y: auto;
+	overflow: auto;
 	border: 1px solid #BBBBBB;
 	border-radius: 4px 4px 4px 4px;
 }
@@ -521,7 +520,7 @@ div.uploader input {
 
 .tree .tree-item {
 	position: relative;
-	max-width: 200px;
+	width: 250px;
 	height: 20px;
 	margin-top: 1px;
 	cursor: pointer;
