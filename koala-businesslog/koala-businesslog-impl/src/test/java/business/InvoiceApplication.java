@@ -1,7 +1,5 @@
 package business;
 
-import org.openkoala.businesslog.common.BLMapping;
-
 import java.util.List;
 
 /**

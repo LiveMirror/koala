@@ -29,7 +29,6 @@ public class DefaultBusinessLog extends AbstractBusinessLog {
 
     private String ip;
 
-   
     private Date time;
 
     

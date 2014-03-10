@@ -338,6 +338,7 @@ var department = function(){
             		if($element.hasClass('tree-folder')){
             			$element.find('.tree-folder-header:first').click();
             		}
+   					$('#departmentTree').find('.glyphicon-folder-close').removeClass('glyphicon-folder-close').addClass('glyphicon-folder-open');
             		$('#departmentTree').find('.tree-folder-content').show();
             	}else{
             		$('#departmentTree').find('.tree-folder-header:first').click();
