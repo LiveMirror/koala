@@ -6,9 +6,9 @@
         <version>3.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>koala-businesslog-groovyImpl</artifactId>
+    <artifactId>koala-businesslog-impl</artifactId>
     <packaging>jar</packaging>
-    <name>koala-businesslog-groovyImpl</name>
+    <name>koala-businesslog-impl</name>
 
     <dependencies>
         <dependency>
