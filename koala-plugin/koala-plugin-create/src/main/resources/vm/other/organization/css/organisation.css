@@ -132,12 +132,12 @@
 }
 .changePost .postGrid {
    height: 310px;
-   max-width: 650px;
-   max-width: 620px\9;
+   max-width: 750px;
+   max-width: 720px\9;
 }
 .changePost .grid-table-body {
 	height:230px;
-	height: 210px\9;
+	height: 200px\9;
 }
 .changePost .grid-table-head th,  .changePost .grid-table-body td {
 	text-align: center;

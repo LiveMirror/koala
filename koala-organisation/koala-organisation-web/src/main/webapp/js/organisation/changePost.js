@@ -124,7 +124,11 @@ var changePost = function(){
 	 * 加载部门树
 	 */
 	var loadDepartmentTree = function(employeeId){
+		departmentTree.loader({
+			opacity: 0
+		});
         $.get(contextPath  + '/organization/orgTree.koala').done(function(data){
+        	departmentTree.loader('hide');
             var zNodes = new Array();
             $.each(data, function(){
                 var zNode = {};
@@ -199,12 +203,12 @@ var changePost = function(){
 		
 		var cols = [
 			{ title:'岗位编号', name:'sn' , width: '150px'},
-			{ title:'岗位名称', name:'name', width: '250px'},
-			{ title:'是否主岗位', width: '150px', render: function(){
+			{ title:'岗位名称', name:'name', width: '180px'},
+			{ title:'是否主岗位', width: '120px', render: function(){
 					return '<div class="radio"><span><input type="radio" name="principal" style="opacity: 0;" onclick="changePost().initRadio(this);"></span></div>';
 				}
 			},
-			{ title:'操作', width: 'auto',
+			{ title:'操作', width: '120px',
 				render: function(item){
 					return '<a data-id="addIcon" onclick="changePost().addPost('+item.id+', \''+item.name+'\', this)"><i class="glyphicon glyphicon-plus"></i></a>';
 				}
@@ -222,59 +226,64 @@ var changePost = function(){
 			columns: cols,
 			querys: [{title: '岗位名称', value: 'name'}],
 			url:  contextPath + '/post/paging-query-post-by-org.koala?organizationId='+id
-		}).on('addPost', function(evnet, data){
-			var post = selectedPost.find('[data-value="'+data.postId+'"]');
-			var principal = $(data.obj).closest('tr').find('[name="principal"]').is(":checked");
-			if(post.length == 0){
-				if(principal){
-					if(selectedPost.find('.principal').length > 0){
-						$('body').message({
-							type: 'error',
-							content: '主岗位已经设置'
-						});
-						return;
-					}
-					selectedItem[data.postId] = {postId:data.postId, principal: true};
-				}else{
-					selectedItem[data.postId] = {postId:data.postId, principal: false};
-				}
-				$('<div title="点击设置主岗位" class="selected-post '+ (principal?'principal':'')+'" data-value="'+data.postId+'">'+data.postName+'<a class="glyphicon glyphicon-remove"></a></div>')
-					.appendTo(selectedPost)
-					.on('click', {postId: data.postId}, function(event){
-						var $this = $(this);
-						if($this.hasClass('principal')){
-							return;
-						}
-						var principalPost = selectedPost.find('.principal');
-						if(principalPost.length > 0){
-							selectedItem[principalPost.data('value')].principal = false;
-							principalPost.removeClass('principal');
-						}
-						selectedItem[event.data.postId].principal = true;
-						$this.addClass('principal');
-					})
-					.find('a').on('click', function(){
-						delete selectedItem[data.postId];
-						$(this).parent().remove();
-						postGrid.find('[data-role="indexCheckbox"][value="'+data.postId+'"]').closest('tr').removeClass('success');
-					});
-			}else{
-				if(principal){
-					if(selectedPost.find('.principal').length == 0){
-						post.addClass('principal');
-						delete selectedItem[data.postId];
-						selectedItem[data.postId] = {postId:data.postId, principal: true};                             
-					}else{
-						if(!post.hasClass('principal')){
-							postGrid.message({
+		}).on({
+			'addPost':function(evnet, data){
+				var post = selectedPost.find('[data-value="'+data.postId+'"]');
+				var principal = $(data.obj).closest('tr').find('[name="principal"]').is(":checked");
+				if(post.length == 0){
+					if(principal){
+						if(selectedPost.find('.principal').length > 0){
+							$('body').message({
 								type: 'error',
 								content: '主岗位已经设置'
 							});
+							return;
 						}
-					}	
+						selectedItem[data.postId] = {postId:data.postId, principal: true};
+					}else{
+						selectedItem[data.postId] = {postId:data.postId, principal: false};
+					}
+					$('<div title="点击设置主岗位" class="selected-post '+ (principal?'principal':'')+'" data-value="'+data.postId+'">'+data.postName+'<a class="glyphicon glyphicon-remove"></a></div>')
+						.appendTo(selectedPost)
+						.on('click', {postId: data.postId}, function(event){
+							var $this = $(this);
+							if($this.hasClass('principal')){
+								return;
+							}
+							var principalPost = selectedPost.find('.principal');
+							if(principalPost.length > 0){
+								selectedItem[principalPost.data('value')].principal = false;
+								principalPost.removeClass('principal');
+							}
+							selectedItem[event.data.postId].principal = true;
+							$this.addClass('principal');
+						})
+						.find('a').on('click', function(){
+							delete selectedItem[data.postId];
+							$(this).parent().remove();
+							postGrid.find('[data-role="indexCheckbox"][value="'+data.postId+'"]').closest('tr').removeClass('success');
+						});
+				}else{
+					if(principal){
+						if(selectedPost.find('.principal').length == 0){
+							post.addClass('principal');
+							delete selectedItem[data.postId];
+							selectedItem[data.postId] = {postId:data.postId, principal: true};                             
+						}else{
+							if(!post.hasClass('principal')){
+								postGrid.message({
+									type: 'error',
+									content: '主岗位已经设置'
+								});
+							}
+						}	
+					}
 				}
 			}
 		});
+		if (!!window.ActiveXObject || "ActiveXObject" in window) {
+			postGrid.find('.grid-table-body').css({height: '208px'});
+		}
 	};
 	
 	return {
