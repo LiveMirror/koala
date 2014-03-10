@@ -14,7 +14,7 @@ $(function() {
 		employeeDetail.find('[data-id="familyPhone"]').text(data.familyPhone);
 		employeeDetail.find('[data-id="email"]').text(data.email);
 		employeeDetail.find('[data-id="entryDate"]').text(data.entryDate);
-		employeeDetail.find('[data-id="additionalPostNames"]').text(data.additionalPostNames);
+		employeeDetail.find('[data-id="additionalPostNames"]').text(data.additionalPostNames==null?"":data.additionalPostNames);
 		employeeDetail.find('[data-id="changeDepartment"],[data-id="changeJob"]').off('click');
 		employeeDetail.find('[data-id="returnBtn"]').on('click', function() {
 			$('.g-mainc').find('[href="#employeeDetail"]').find('button').click();
