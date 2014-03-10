@@ -16,7 +16,7 @@
     <modules>
         <module>koala-businesslog-api</module>
         <module>koala-businesslog-acceptance-test</module>
-        <module>koala-businesslog-groovyImpl</module>
+        <module>koala-businesslog-impl</module>
     </modules>
 
 
