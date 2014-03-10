@@ -40,6 +40,16 @@ public abstract class BusinessLogServletFilter implements Filter {
         return req.getRemoteAddr();
     }
 
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void destroy() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 
 
 }

@@ -10,8 +10,16 @@
     <packaging>war</packaging>
     <name>koala-businesslog-acceptance-test</name>
     <description>业务日志子系统验收测试</description>
+    <properties>
+
+    </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.openkoala.organisation</groupId>
+            <artifactId>koala-organisation-conf</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.openkoala.businesslog</groupId>
             <artifactId>koala-businesslog-impl</artifactId>

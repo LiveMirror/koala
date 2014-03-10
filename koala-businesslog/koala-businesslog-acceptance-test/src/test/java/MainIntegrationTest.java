@@ -45,4 +45,11 @@ public class MainIntegrationTest {
     }
 
 
+    @Test
+    public void testName() throws Exception {
+        for (int i = 0; i < 3000; i++) {
+            System.out.println("gz" + i + "," + "广州分公司" + i);
+        }
+
+    }
 }

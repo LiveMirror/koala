@@ -25,7 +25,7 @@ public class BusinessLogThread implements Runnable {
 
     private static final String CATEGORY_KEY = "category";
 
-    private static final String STANDALONE_GROOVY_CONFIG_NAME = "/BusinesslogConfig.groovy";
+    private static final String STANDALONE_GROOVY_CONFIG_NAME = "/BusinessLogConfig.groovy";
 
     private static final String GROOVY_CONFIG_DIR = "/businessLogConfig";
 
@@ -46,7 +46,6 @@ public class BusinessLogThread implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(BLMappingValue);
         ThreadLocalBusinessLogContext.putBusinessLogMethod(BLMappingValue);
         try {
             GroovyObject groovyObject = getGroovyConfig(BLMappingValue);
