@@ -118,7 +118,7 @@
 				titleHtml.push('<th index="' + i + '" width="');
 				if (width.match(self.widthRgExp)) {
 					width = width.replace('px', '');
-					totalColumnWidth += parseInt(width);
+					totalColumnWidth += parseInt(self.scale*parseInt(width));
 					titleHtml.push(self.scale*parseInt(width) + 'px"');
 				} else {
 					titleHtml.push(column.width + '"');
@@ -139,6 +139,7 @@
 				this.gridTableBodyTable.css('width', totalColumnWidth);
 			} else {
 				this.gridTableHead.css('width', this.$element.width());
+				this.gridTableBodyTable.css('width', this.$element.width());
 				this.gridTableHeadTable.find('th:last').attr('width', 'auto');
 				this.options.columns[this.options.columns.length - 1].width = 'auto';
 			}
