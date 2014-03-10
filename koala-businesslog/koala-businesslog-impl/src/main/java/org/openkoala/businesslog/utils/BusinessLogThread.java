@@ -46,7 +46,6 @@ public class BusinessLogThread implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(BLMappingValue);
         ThreadLocalBusinessLogContext.putBusinessLogMethod(BLMappingValue);
         try {
             GroovyObject groovyObject = getGroovyConfig(BLMappingValue);
@@ -80,9 +79,7 @@ public class BusinessLogThread implements Runnable {
 
     private GroovyObject getGroovyConfig(String businessMethod) throws IOException {
 
-        if (isStandaloneConfig()) {
-            return getGroovyObject(getGroovyClass(getStandaloneConfigFile()));
-        }
+        if (isStandaloneConfig()) return getGroovyObject(getGroovyClass(getStandaloneConfigFile()));
 
         if (getClass().getResource(GROOVY_CONFIG_DIR) == null)
             throw new KoalaBusinessLogConfigException("Not found any businesslog config, you need a " + STANDALONE_GROOVY_CONFIG_NAME + " or businessLogConfig director");

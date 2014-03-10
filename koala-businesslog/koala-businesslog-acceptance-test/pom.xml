@@ -10,19 +10,37 @@
     <packaging>war</packaging>
     <name>koala-businesslog-acceptance-test</name>
     <description>业务日志子系统验收测试</description>
-    <properties>
+    <profiles>
+        <profile>
+            <id>mysql</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
 
-    </properties>
+            <properties>
+                <db.groupId>mysql</db.groupId>
+                <db.artifactId>mysql-connector-java</db.artifactId>
+                <db.version>5.1.20</db.version>
+                <db.host>127.0.0.1</db.host>
+                <db.port>3306</db.port>
+                <db.name>businesstest</db.name>
+                <hibernate.hbm2ddl.auto>create-drop</hibernate.hbm2ddl.auto>
+                <hibernate.show_sql>true</hibernate.show_sql>
+                <hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</hibernate.dialect>
+                <db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
+                <db.connectionURL><![CDATA[jdbc:mysql://${db.host}:${db.port}/${db.name}?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8]]></db.connectionURL>
+                <db.username>root</db.username>
+                <db.password />
+                <db.Type>MYSQL</db.Type>
+                <generateDdl>true</generateDdl>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
-            <groupId>org.openkoala.organisation</groupId>
-            <artifactId>koala-organisation-conf</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.openkoala.businesslog</groupId>
-            <artifactId>koala-businesslog-groovyImpl</artifactId>
+            <artifactId>koala-businesslog-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
 
