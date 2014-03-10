@@ -24,6 +24,7 @@ public class KoalaBusinessLogConfigException extends RuntimeException {
     }
 
     protected KoalaBusinessLogConfigException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+        //FIXME 编译出错
+        //super(message, cause, enableSuppression, writableStackTrace);
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -168,7 +169,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 						+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id) ")
 				.append("FROM ResourceTypeAssignment assignment LEFT JOIN assignment.resource resource LEFT JOIN assignment.resourceType resourceType ")
 				.append("WHERE resource.level=1 AND resource.abolishDate>:abolishDate ").append("AND (resourceType.name=:name1 or resourceType.name=:name2) ")
-				.append("ORDER BY resource.sortOrder ,resource.createDate,resource.name");
+				.append("ORDER BY resource.level,resource.sortOrder ,resource.createDate,resource.name");
 
 		List<ResourceVO> result = queryChannel().createJpqlQuery(selectTopValidResource.toString()).addParameter("name1", "KOALA_MENU")
 				.addParameter("name2", "KOALA_DIRETORY").addParameter("abolishDate", new Date()).list();
@@ -203,7 +204,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 		}
 		all.addAll(result);
 		if (!all.isEmpty()) {
-			Map<Long, ResourceVO> map = new HashMap<Long, ResourceVO>();
+			LinkedHashMap<Long, ResourceVO> map = new LinkedHashMap<Long, ResourceVO>();
 			for (ResourceVO resourceVO : all) {
 				if (!StringUtils.isBlank(userAccount) && !userResourceIds.contains(resourceVO.getId())) {
 					continue;
@@ -301,21 +302,22 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 	}
 
 	public List<ResourceVO> findMenuTree() {
-		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
-		List<Resource> topMenus = Resource.findChildByParent(null);
-		for (Resource res : topMenus) {
-			if (Resource.isMenu(res)) {
-				ResourceVO treeVO = new ResourceVO();
-				treeVO.domain2Vo(res);
-				ResourceTypeAssignment assignment = ResourceTypeAssignment.findByResource(res.getId());
-				if (assignment != null) {
-					treeVO.setMenuType(String.valueOf(assignment.getResourceType().getId()));
-				}
-				treeVOs.add(treeVO);
-				innerFindMenuByParent(treeVO, null);
-			}
-		}
-		return treeVOs;
+		return this.findMenuByUser("");
+//		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
+//		List<Resource> topMenus = Resource.findChildByParent(null);
+//		for (Resource res : topMenus) {
+//			if (Resource.isMenu(res)) {
+//				ResourceVO treeVO = new ResourceVO();
+//				treeVO.domain2Vo(res);
+//				ResourceTypeAssignment assignment = ResourceTypeAssignment.findByResource(res.getId());
+//				if (assignment != null) {
+//					treeVO.setMenuType(String.valueOf(assignment.getResourceType().getId()));
+//				}
+//				treeVOs.add(treeVO);
+//				innerFindMenuByParent(treeVO, null);
+//			}
+//		}
+//		return treeVOs;
 	}
 
 	public List<ResourceVO> findAllChildByParentAndUser(ResourceVO menuVO, String userAccount) {
@@ -432,7 +434,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 
 		all.addAll(treeVOs);
 		if (!all.isEmpty()) {
-			Map<Long, ResourceVO> map = new HashMap<Long, ResourceVO>();
+			LinkedHashMap<Long, ResourceVO> map = new LinkedHashMap<Long, ResourceVO>();
 			for (ResourceVO resourceVO : all) {
 				resourceVO.setIschecked(allPrivilege.contains(resourceVO.getId()));
 				map.put(resourceVO.getId(), resourceVO);

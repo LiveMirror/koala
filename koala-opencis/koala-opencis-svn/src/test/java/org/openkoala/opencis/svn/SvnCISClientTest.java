@@ -23,7 +23,7 @@ import org.openkoala.opencis.exception.UserListBlankException;
 import org.openkoala.opencis.exception.UserOrPasswordErrorException;
 import org.openkoala.opencis.support.SvnConfig;
 
-//@Ignore(value="依赖一个SVN服务环境才能运行此测试类")
+@Ignore(value="依赖一个SVN服务环境才能运行此测试类")
 public class SvnCISClientTest {
 
     private SvnConfig configuration;
