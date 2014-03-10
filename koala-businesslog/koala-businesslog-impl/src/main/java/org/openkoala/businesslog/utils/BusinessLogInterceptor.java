@@ -2,11 +2,13 @@ package org.openkoala.businesslog.utils;
 
 import org.aspectj.lang.JoinPoint;
 import org.dayatang.domain.InstanceFactory;
+import org.openkoala.businesslog.BusinessLogExporter;
 import org.openkoala.businesslog.KoalaBusinessLogConfigException;
 import org.springframework.aop.ProxyMethodInvocation;
 import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -27,7 +29,11 @@ public class BusinessLogInterceptor {
 
     private static final String LOG_ENABLE = "kaola.businesslog.enable";
 
+    @Inject
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+    @Inject
+    private BusinessLogExporter businessLogExporter;
 
     public void logAfter(JoinPoint joinPoint, Object result) {
         log(joinPoint, result, null);
@@ -50,7 +56,8 @@ public class BusinessLogInterceptor {
 
         BusinessLogThread businessLogThread = new BusinessLogThread(
                 Collections.unmodifiableMap(createDefaultContext(joinPoint, result, error)),
-                BLMappingValue);
+                BLMappingValue,
+                getBusinessLogExporter());
 
         if (null == getThreadPoolTaskExecutor()) {
             System.err.println("ThreadPoolTaskExecutor is not set or null");
@@ -123,5 +130,13 @@ public class BusinessLogInterceptor {
 
         return threadPoolTaskExecutor;
     }
+
+    public BusinessLogExporter getBusinessLogExporter() {
+        if (null == businessLogExporter) {
+            businessLogExporter = InstanceFactory.getInstance(BusinessLogExporter.class, "businessLogExporter");
+        }
+        return businessLogExporter;
+    }
+
 
 }
