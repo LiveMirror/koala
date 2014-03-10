@@ -41,6 +41,7 @@ var resourceManager = function(){
 	var deleteItem = function(resource, grid){
 		var data = {};
 		data['resourceVO.id'] = resource.id;
+		data['resourceVO.identifier'] = resource.identifier;
 		dataGrid = grid;
 		$.post(baseUrl + 'del.koala', data).done(function(data){
 			if(data.result == 'success'){

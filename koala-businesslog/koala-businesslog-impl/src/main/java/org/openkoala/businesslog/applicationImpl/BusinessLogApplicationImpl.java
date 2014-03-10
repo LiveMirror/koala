@@ -5,19 +5,16 @@ import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.businesslog.BusinessLogBaseException;
-import org.openkoala.businesslog.dto.DefaultBusinessLogDTO;
+import org.openkoala.businesslog.application.BusinessLogApplication;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.openkoala.businesslog.model.DefaultBusinessLogDTO;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.openkoala.businesslog.application.BusinessLogApplication;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.interceptor.Interceptors;
-
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -71,7 +68,7 @@ public class BusinessLogApplicationImpl implements BusinessLogApplication {
             throw new BusinessLogBaseException(e);
         }
         defaultBusinessLog.save();
-        defaultBusinessLogDTO.setId((java.lang.Long) defaultBusinessLog.getId());
+        defaultBusinessLogDTO.setId((Long) defaultBusinessLog.getId());
         return defaultBusinessLogDTO;
     }
 
