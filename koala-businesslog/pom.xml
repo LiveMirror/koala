@@ -17,8 +17,6 @@
         <module>koala-businesslog-api</module>
         <module>koala-businesslog-impl</module>
         <module>koala-businesslog-acceptance-test</module>
-        <module>koala-businesslog-sample</module>
-        <module>koala-businesslog-sample2</module>
         <module>koala-businesslog-groovyImpl</module>
     </modules>
 
