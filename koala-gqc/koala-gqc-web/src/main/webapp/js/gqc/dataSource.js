@@ -148,10 +148,7 @@ var dataSource = function(){
 			if(data.result == 'success'){
 				dialog.trigger('complete');
 			}else {
-				dialog.find('.modal-content').message({
-					type: 'error',
-					content: data.result
-				});
+				showErrorMessage(dataSourceId, data.result);
 			}
 			dialog.find('#dataSourceSave').removeAttr('disabled');
 		});

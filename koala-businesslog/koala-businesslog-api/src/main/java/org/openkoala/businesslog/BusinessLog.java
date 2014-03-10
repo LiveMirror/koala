@@ -30,9 +30,11 @@ public class BusinessLog {
         return Collections.unmodifiableMap(context);
     }
 
+
     public void addContext(Map<String, Object> aContext) {
         context.putAll(aContext);
     }
+
 
     public void setCategory(String category) {
         this.category = category;

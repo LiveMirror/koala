@@ -13,6 +13,6 @@
 		ignore-unresolvable="true" />
 
 	<context:annotation-config />
-	<context:component-scan base-package="org.openkoala.jbpm,org.openkoala" />
+	<context:component-scan base-package="org.openkoala.bpm,org.openkoala" />
 
 </beans>

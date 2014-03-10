@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.querychannel.Page;
@@ -24,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Named("userApplication")
 @Stateless(name = "UserApplication")
 @Transactional(value="transactionManager_security")
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class UserApplicationImpl extends BaseImpl implements UserApplication {
 
     public UserVO getUser(Long userId) {

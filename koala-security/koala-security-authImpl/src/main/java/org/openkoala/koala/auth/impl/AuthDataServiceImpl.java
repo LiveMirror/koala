@@ -27,7 +27,7 @@ import org.openkoala.koala.auth.vo.DefaultUserDetailsImpl;
  */
 @Remote
 @Stateless
-// @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class AuthDataServiceImpl implements AuthDataService {
 
 	@Override
@@ -37,15 +37,26 @@ public class AuthDataServiceImpl implements AuthDataService {
 
 	private Map<String, List<String>> retrieveResourceAndRoles() {
 		Map<String, List<String>> result = new HashMap<String, List<String>>();
-		for (IdentityResourceAuthorization each : IdentityResourceAuthorization.findAllReourcesAndRoles()) {
-			Set<String> roles = new HashSet<String>();
-			roles.add(String.valueOf(each.getIdentity().getId()));
-			if (result.containsKey(each.getResource().getIdentifier())) {
-				result.get(each.getResource().getIdentifier()).addAll(roles);
-			} else {
-				result.put(each.getResource().getIdentifier(), new ArrayList<String>(roles));
+		List<Object[]> list = IdentityResourceAuthorization.findAllResourceIdentifierAndRoleId();
+		if (!list.isEmpty()) {
+			for (Object[] objArr : list) {
+				Long roleId = (Long) objArr[0];
+				String identifier = (String) objArr[1];
+				if (!result.containsKey(identifier)) {
+					result.put(identifier, new ArrayList<String>());
+				}
+				result.get(identifier).add(String.valueOf(roleId));
 			}
 		}
+//		for (IdentityResourceAuthorization each : IdentityResourceAuthorization.findAllReourcesAndRoles()) {
+//			Set<String> roles = new HashSet<String>();
+//			roles.add(String.valueOf(each.getIdentity().getId()));
+//			if (result.containsKey(each.getResource().getIdentifier())) {
+//				result.get(each.getResource().getIdentifier()).addAll(roles);
+//			} else {
+//				result.put(each.getResource().getIdentifier(), new ArrayList<String>(roles));
+//			}
+//		}
 		return result;
 	}
 
@@ -80,16 +91,24 @@ public class AuthDataServiceImpl implements AuthDataService {
 
 	private List<String> findRoleByUseraccount(String accountName) {
 		List<String> results = new ArrayList<String>();
-		for (Role each : Role.findRoleByUserAccount(accountName)) {
-			results.add(String.valueOf(each.getId()));
+		// for (Role each : Role.findRoleByUserAccount(accountName)) {
+		// results.add(String.valueOf(each.getId()));
+		// }
+		List<Long> roleIds = Role.findRoleIdsByUserAccount(accountName);
+		for (Long id : roleIds) {
+			results.add(String.valueOf(id));
 		}
 		return results;
 	}
 
 	private List<String> findAllRoles() {
 		List<String> roles = new ArrayList<String>();
-		for (Role each : Role.findAllRoles()) {
-			roles.add(String.valueOf(each.getId()));
+		// for (Role each : Role.findAllRoles()) {
+		// roles.add(String.valueOf(each.getId()));
+		// }
+		List<Long> roleIds = Role.findAllRoleIds();
+		for (Long id : roleIds) {
+			roles.add(String.valueOf(id));
 		}
 		return roles;
 	}

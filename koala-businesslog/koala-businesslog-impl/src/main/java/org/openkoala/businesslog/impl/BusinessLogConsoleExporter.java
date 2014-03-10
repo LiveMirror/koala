@@ -1,17 +1,19 @@
 package org.openkoala.businesslog.impl;
 
-import org.openkoala.businesslog.BusinessLog;
 import org.openkoala.businesslog.BusinessLogExporter;
+import org.openkoala.businesslog.BusinessLog;
+
 
 /**
- * just for test
  * User: zjzhai
- * Date: 3/6/14
- * Time: 11:10 AM
+ * Date: 12/8/13
+ * Time: 11:49 PM
  */
 public class BusinessLogConsoleExporter implements BusinessLogExporter {
+
+
     @Override
     public void export(BusinessLog businessLog) {
-        System.out.println( businessLog.getCategory() + ":" +businessLog.getLog());
+        System.out.println(businessLog);
     }
 }

@@ -25,20 +25,23 @@ public abstract class Party extends OrganizationAbstractEntity {
 	private static final long serialVersionUID = -6083088250263550905L;
 
 	// 编码
-	
+
 	private String sn;
 
 	// 名称
-	
+
 	private String name;
-	
+
 	// 创建日期
-	
+
 	private Date createDate = new Date();
 
 	// 终结日期
-	
+
 	private Date terminateDate = DateUtils.MAX_DATE;
+
+	// 类别
+	private String category;
 
 	Party() {
 	}
@@ -90,12 +93,19 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.terminateDate = terminateDate;
 	}
 
-	public static <T extends Party> List<T> findAll(Class<T> clazz, Date date) {
-		return getRepository().createCriteriaQuery(clazz)
-				.le("createDate", date)
-				.gt("terminateDate", date).list();
+	@Column(name = "CATEGORY", insertable = false, updatable = false)
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
+	public static <T extends Party> List<T> findAll(Class<T> clazz, Date date) {
+		return getRepository().createCriteriaQuery(clazz).le("createDate", date).gt("terminateDate", date).list();
+	}
+
 	@Override
 	public void save() {
 		if (getId() == null) {
@@ -108,30 +118,27 @@ public abstract class Party extends OrganizationAbstractEntity {
 		}
 		super.save();
 	}
-	
+
 	private void checkSnExist() {
 		if (isExistSn(getClass(), sn, new Date())) {
 			throw new SnIsExistException();
 		}
 	}
-	
+
 	public static <P extends Party> boolean isExistSn(Class<P> clazz, String sn, Date date) {
-		List<P> parties = getRepository().createCriteriaQuery(clazz)
-				.eq("sn", sn)
-				.le("createDate", date)
-				.gt("terminateDate", date).list();
+		List<P> parties = getRepository().createCriteriaQuery(clazz).eq("sn", sn).le("createDate", date).gt("terminateDate", date).list();
 		return parties.isEmpty() ? false : true;
 	}
-	
+
 	private static EntityRepository repository;
-	
+
 	public static EntityRepository getRepository() {
 		if (repository == null) {
-			repository = InstanceFactory.getInstance(EntityRepository.class,"repository_org");
+			repository = InstanceFactory.getInstance(EntityRepository.class, "repository_org");
 		}
 		return repository;
 	}
-	
+
 	/**
 	 * 判断在指定的日期是否“存活”，即参数date处于其生命周期内。
 	 * 
@@ -139,9 +146,7 @@ public abstract class Party extends OrganizationAbstractEntity {
 	 * @return
 	 */
 	public boolean isActive(Date date) {
-		return DateUtils.isSameDay(date, getCreateDate())
-				|| date.after(getCreateDate())
-				&& date.before(getTerminateDate());
+		return DateUtils.isSameDay(date, getCreateDate()) || date.after(getCreateDate()) && date.before(getTerminateDate());
 	}
 
 	/**
@@ -151,8 +156,7 @@ public abstract class Party extends OrganizationAbstractEntity {
 	 */
 	@SuppressWarnings("rawtypes")
 	public void terminate(Date date) {
-		for (Accountability each : Accountability.findAccountabilitiesByParty(
-				this, date)) {
+		for (Accountability each : Accountability.findAccountabilitiesByParty(this, date)) {
 			each.terminate(date);
 		}
 		terminateDate = date;

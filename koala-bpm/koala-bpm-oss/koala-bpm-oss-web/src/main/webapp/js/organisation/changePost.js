@@ -9,7 +9,7 @@ var changePost = function(){
 	var selectedPost = null;//已选岗位
 	var selectedItem = {};//已选员工数据
 	var init = function(employeeId){
-		$.get( contextPath + '/pages/organisation/changePost.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/changePost).done(function(data){
 			dialog = $(data);
 			departmentTree = dialog.find('#departmentTree');
 			postGrid = dialog.find('#postGrid');

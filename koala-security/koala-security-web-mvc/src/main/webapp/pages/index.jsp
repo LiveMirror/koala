@@ -103,12 +103,12 @@
                     });
                     return;
                 }
-                $.get(contextPath + '/auth/Menu/findTopMenuByUser.koala').done(function(data){
+                $.get(contextPath + '/auth/Menu/findMenuByUser.koala').done(function(data){
                     $.each(data.data, function(){
                         var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.icon+'"></span>&nbsp;'+this.name+'&nbsp;'+
                             '<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu in"></ul></li>');
                         $('.first-level-menu').append($li);
-                        renderSubMenu(this.id, $li);
+                        renderSubMenu(this.children, $li);
                     });
                     /*
                     * 菜单收缩样式变化
@@ -127,15 +127,13 @@
                     });
                 });
             })
-			var renderSubMenu = function(id, $menu){
-				$.get(contextPath + '/auth/Menu/findAllSubMenuByParent.koala?resVO.id='+id).done(function(data){
-						var subMenus = new Array();
-						$.each(data.data, function(){
+			var renderSubMenu = function(data, $menu){
+						$.each(data, function(){
 							if(this.menuType == "2"){
 		                        var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.icon+'"></span>&nbsp;'+this.name+'&nbsp;'+
 		                            '<i class="glyphicon glyphicon-chevron-right pull-right" style="position: relative; right: 12px;font-size: 12px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu collapse"></ul></li>');
 		                        $li.appendTo($menu.find('.second-level-menu:first')).find('a').css('padding-left', parseInt(this.level)*18+'px');
-		                        renderSubMenu(this.id, $li);
+		                        renderSubMenu(this.children, $li);
 		                    }else{
 		                        var $li = $(' <li class="submenu" data-role="openTab" data-target="'+this.identifier+'" data-title="'+this.name+'" ' +
 		                            'data-mark="menuMark'+this.id+'"><a ><span class="'+this.icon+'"></span>&nbsp;'+this.name+'</a></li>');
@@ -171,7 +169,6 @@
 									openTab(target, title, mark);
 								}
 							});
-				});
 			};
 		});
 	</script>

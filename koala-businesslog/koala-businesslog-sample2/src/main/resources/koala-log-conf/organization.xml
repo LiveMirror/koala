@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<businessLogConfigs>
+    <businessLogConfig>
+        <category>机构管理</category>
+        <method>OrganizationApplicationImpl.createAsTopOrganization</method>
+        <template>
+            <![CDATA[创建顶机构${_param0.name}]]></template>
+    </businessLogConfig>
+    <businessLogConfig>
+        <category>机构管理</category>
+        <method>OrganizationApplicationImpl.createCompany</method>
+        <template><![CDATA[在公司${_param0.name}下创建子公司${_param1.name}]]></template>
+    </businessLogConfig>
+
+
+    <businessLogConfig>
+        <category>机构管理</category>
+        <method>OrganizationApplicationImpl.assignChildOrganization</method>
+        <template>
+            <![CDATA[将机构${_param1.name}分配到机构${_param0.name}下,期限为${_param2}]]></template>
+    </businessLogConfig>
+
+
+    <businessLogConfig>
+        <category>机构管理</category>
+        <method>
+            <![CDATA[OrganizationApplicationImpl.createDepartment]]></method>
+        <template>
+            <![CDATA[在${_param0.name}下创建部门${_param1.name}]]></template>
+    </businessLogConfig>
+    <businessLogConfig>
+        <category>机构管理</category>
+        <method>
+            <![CDATA[OrganizationApplicationImpl.terminateEmployeeOrganizationRelation]]></method>
+        <template>
+            <![CDATA[撤销${_param0.name}与
+            <#list _param1 as employee>
+          ${employee.name},
+        </#list>
+            的关系]]></template>
+    </businessLogConfig>
+
+
+</businessLogConfigs>

@@ -70,6 +70,13 @@ public interface MenuApplication {
     List<ResourceVO> findMenuTree();
 
     /**
+     * 获取用户的目录
+     * @param userAccount
+     * @return
+     */
+    public List<ResourceVO> findMenuByUser(String userAccount);
+
+    /**
      * 获取用户的一级目录
      * @param userAccount
      * @return

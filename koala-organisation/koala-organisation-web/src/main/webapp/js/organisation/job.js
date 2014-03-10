@@ -129,7 +129,8 @@ var job = function(){
 					content: data.result
 				});
 			}
-			dialog.find('#save').removeAttr('disabled');			
+			dialog.find('#save').removeAttr('disabled');	
+			refreshToken(dialog.find('input[name="koala.token"]'));
 		});
 	};
 	/*
@@ -143,6 +144,7 @@ var job = function(){
 			if (version != null) {
 				job.version = version;
 			}
+			job['koala.token'] = dialog.find('input[name="koala.token"]').val();
 			return job;
 		}else{
 			var data = {};
@@ -152,6 +154,7 @@ var job = function(){
 			if (version != null) {
 				data.version = version;
 			}
+			data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 			return data;
 		}
 	};

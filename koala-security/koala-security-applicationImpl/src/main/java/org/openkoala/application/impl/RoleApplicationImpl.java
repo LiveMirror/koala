@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Named("roleApplication")
 @Stateless(name = "RoleApplication")
 @Transactional(value = "transactionManager_security")
-// @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 
 	public RoleVO getRole(Long roleId) {

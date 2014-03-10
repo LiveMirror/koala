@@ -3,18 +3,18 @@ $(function() {
 	$.get(contextPath + '/employee/get/' + employeeId + '.koala').done(function(result) {
 		var data = result.data;
 		var employeeDetail = $('.employee-detail');
-		$('#navTabs').find('[href="#employeeDetail"] span').text(data.name);
-		employeeDetail.find('[data-id="sn"]').text(data.sn);
-		employeeDetail.find('[data-id="name"]').text(data.name);
-		employeeDetail.find('[data-id="gender"]').text(data.gender == 'MALE' ? '男' : '女');
-		employeeDetail.find('[data-id="idNumber"]').text(data.idNumber);
-		employeeDetail.find('[data-id="organizationName"]').text(data.organizationName);
-		employeeDetail.find('[data-id="postName"]').text(data.postName);
-		employeeDetail.find('[data-id="mobilePhone"]').text(data.mobilePhone);
-		employeeDetail.find('[data-id="familyPhone"]').text(data.familyPhone);
-		employeeDetail.find('[data-id="email"]').text(data.email);
-		employeeDetail.find('[data-id="entryDate"]').text(data.entryDate);
-		employeeDetail.find('[data-id="additionalPostNames"]').text(data.additionalPostNames);
+		$('#navTabs').find('[href="#employeeDetail"] span').html(data.name);
+		employeeDetail.find('[data-id="sn"]').html(data.sn);
+		employeeDetail.find('[data-id="name"]').html(data.name);
+		employeeDetail.find('[data-id="gender"]').html(data.gender == 'MALE' ? '男' : '女');
+		employeeDetail.find('[data-id="idNumber"]').html(data.idNumber);
+		employeeDetail.find('[data-id="organizationName"]').html(data.organizationName);
+		employeeDetail.find('[data-id="postName"]').html(data.postName);
+		employeeDetail.find('[data-id="mobilePhone"]').html(data.mobilePhone);
+		employeeDetail.find('[data-id="familyPhone"]').html(data.familyPhone);
+		employeeDetail.find('[data-id="email"]').html(data.email);
+		employeeDetail.find('[data-id="entryDate"]').html(data.entryDate);
+		employeeDetail.find('[data-id="additionalPostNames"]').html(data.additionalPostNames);
 		employeeDetail.find('[data-id="changeDepartment"],[data-id="changeJob"]').off('click');
 		employeeDetail.find('[data-id="returnBtn"]').on('click', function() {
 			$('.g-mainc').find('[href="#employeeDetail"]').find('button').click();

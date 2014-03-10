@@ -5,8 +5,8 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
     version="2.0">
     
-  <description>JSTL 1.1 core library</description>
-  <display-name>JSTL core</display-name>
+  <description>Koala Token</description>
+  <display-name>Koala Token</display-name>
   <tlib-version>1.1</tlib-version>
   <short-name>k</short-name>
   <uri>http://www.openkoala.com/token</uri>

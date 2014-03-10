@@ -1,14 +1,6 @@
 package org.openkoala.bpm.impl.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManagerFactory;
-
+import bitronix.tm.TransactionManagerServices;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.SystemEventListenerFactory;
@@ -23,10 +15,6 @@ import org.drools.runtime.Environment;
 import org.drools.runtime.EnvironmentName;
 import org.drools.runtime.KnowledgeSessionConfiguration;
 import org.drools.runtime.StatefulKnowledgeSession;
-import org.openkoala.bpm.application.vo.KoalaProcessInfoVO;
-import org.openkoala.bpm.core.KoalaJbpmVariable;
-import org.openkoala.bpm.core.KoalaProcessInfo;
-import org.openkoala.bpm.core.service.JBPMTaskService;
 import org.jbpm.bpmn2.handler.ServiceTaskHandler;
 import org.jbpm.bpmn2.xml.BPMNSemanticModule;
 import org.jbpm.process.audit.JPAProcessInstanceDbLog;
@@ -34,19 +22,28 @@ import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.TaskService;
 import org.jbpm.task.service.local.LocalTaskService;
+import org.openkoala.bpm.application.vo.KoalaProcessInfoVO;
+import org.openkoala.bpm.core.KoalaJbpmVariable;
+import org.openkoala.bpm.core.KoalaProcessInfo;
+import org.openkoala.bpm.core.service.JBPMTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
-import bitronix.tm.TransactionManagerServices;
+import javax.inject.Inject;
+import javax.persistence.EntityManagerFactory;
+import java.util.*;
 
 public class KoalaBPMSession {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(KoalaBPMSession.class);
 
+
+    @Inject
 	private KnowledgeBase kbase;
 
+    @Inject
 	private StatefulKnowledgeSession ksession;
 
 	private TaskService localTaskService;
@@ -62,6 +59,7 @@ public class KoalaBPMSession {
 
 	@Inject
 	private EntityManagerFactory entityManagerFactory;
+
 
 	public void initialize() throws Exception {
 
@@ -96,20 +94,24 @@ public class KoalaBPMSession {
 
 	private StatefulKnowledgeSession createSession() throws Exception {
 
-		kbase = KnowledgeBuilderFactory.newKnowledgeBuilder()
-				.newKnowledgeBase();
+//		kbase = KnowledgeBuilderFactory.newKnowledgeBuilder()
+//				.newKnowledgeBase();
+//      kbuilderAllResurce();// 加载所有流程
+//
+//
+//		Environment env = KnowledgeBaseFactory.newEnvironment();
+//		env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, entityManagerFactory);
+//		env.set(EnvironmentName.TRANSACTION_MANAGER,TransactionManagerServices.getTransactionManager());
+//        Properties properties = new Properties();
+//		KnowledgeSessionConfiguration config = KnowledgeBaseFactory
+//				.newKnowledgeSessionConfiguration(properties);
+//
+//		return JPAKnowledgeService.newStatefulKnowledgeSession(kbase, config,
+//				env);
 
-		kbuilderAllResurce();// 加载所有流程
+        kbuilderAllResurce();// 加载所有流程
+        return this.ksession;
 
-		Environment env = KnowledgeBaseFactory.newEnvironment();
-		env.set(EnvironmentName.ENTITY_MANAGER_FACTORY, entityManagerFactory);
-		env.set(EnvironmentName.TRANSACTION_MANAGER,TransactionManagerServices.getTransactionManager());
-		Properties properties = new Properties();
-		KnowledgeSessionConfiguration config = KnowledgeBaseFactory
-				.newKnowledgeSessionConfiguration(properties);
-
-		return JPAKnowledgeService.newStatefulKnowledgeSession(kbase, config,
-				env);
 
 	}
 

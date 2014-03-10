@@ -59,11 +59,13 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
 		
 		createUserIfNeed(authentication);
 		
-		checker.check(getUserDetails(authentication));
+		UserDetails userDetails = getUserDetails(authentication);
+		
+		checker.check(userDetails);
 		
 		modifyLastLoginTime(getUseraccount(authentication));
 		
-		return createSuccessAuthentication(authentication);
+		return createSuccessAuthentication(authentication,userDetails);
 	}
 
 	private void createUserIfNeed(Authentication authentication) {
@@ -110,11 +112,11 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
 		return authentication.getCredentials().toString();
 	}
 
-	private Authentication createSuccessAuthentication(Authentication authentication) {
+	private Authentication createSuccessAuthentication(Authentication authentication,UserDetails userDetails) {
 		UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
-				getUserDetails(authentication),
+				userDetails,
 				authentication.getCredentials(), 
-				getUserDetails(authentication).getAuthorities());
+				userDetails.getAuthorities());
 		
 		result.setDetails(authentication.getDetails());
 		return result;

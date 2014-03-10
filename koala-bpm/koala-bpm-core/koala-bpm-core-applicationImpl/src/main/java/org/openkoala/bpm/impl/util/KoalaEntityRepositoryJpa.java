@@ -1,37 +1,35 @@
 package org.openkoala.bpm.impl.util;
 
-import org.dayatang.persistence.jpa.NamedQueryParser;
 import org.dayatang.domain.*;
+import org.dayatang.persistence.jpa.NamedQueryParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 public class KoalaEntityRepositoryJpa implements
-		org.dayatang.domain.EntityRepository {
+		EntityRepository {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(KoalaEntityRepositoryJpa.class);
 
-	private EntityManagerFactory entityManagerFactory;
+	private EntityManager entityManager;
+
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 
 	private NamedQueryParser namedQueryParser;
 
 	public KoalaEntityRepositoryJpa() {
-	}
-
-	public KoalaEntityRepositoryJpa(EntityManagerFactory entityManagerFactory) {
-		this.entityManagerFactory = entityManagerFactory;
-	}
-
-	private EntityManager getEntityManager() {
-		return entityManagerFactory.createEntityManager();
 	}
 
 	public NamedQueryParser getNamedQueryParser() {
@@ -163,8 +161,12 @@ public class KoalaEntityRepositoryJpa implements
 
 	@Override
 	public <T> T getSingleResult(JpqlQuery jpqlQuery) {
-		List<T> results = find(jpqlQuery);
-		return results.isEmpty() ? null : results.get(0);
+		List<T> results = getQuery(jpqlQuery).getResultList();
+		if(results.isEmpty()){
+			return null;
+		}else{
+			return results.get(0);
+		}
 	}
 
 	@Override

@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>org.openkoala.businesslog</groupId>
-            <artifactId>koala-businesslog-impl</artifactId>
+            <artifactId>koala-businesslog-groovyImpl</artifactId>
             <version>${project.version}</version>
         </dependency>
 
