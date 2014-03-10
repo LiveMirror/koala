@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 线程变量
  * User: zjzhai
  * Date: 11/28/13
  * Time: 2:18 PM
