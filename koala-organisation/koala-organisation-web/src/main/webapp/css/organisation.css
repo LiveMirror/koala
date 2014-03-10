@@ -92,13 +92,14 @@
    margin-right: 10px;
    margin-top: 2px;
    padding: 4px 0;
+   border-radius: 3px;
    min-width: 65px;
    text-align: center;
    cursor: pointer;
 }
 .changePost .selected-post a {
    position: relative;
-   top: -4px;
+   top: -3px;
    float: right;
    outline: none;
    text-decoration: none;
@@ -110,7 +111,7 @@
 }
 .changePost .selected-post a, .changePost .principal a {
 	color: #FFFFFF;
-	font-size: 12px;
+	font-size: 10px;
 }
 .changePost .modal-body {
    padding-top: 4px!important;
