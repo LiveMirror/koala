@@ -116,7 +116,6 @@ var position = function(){
 	var selectDepartments = function(){
 		$.get( contextPath + '/pages/organisation/selectDepartmentTemplate.jsp').done(function(data){
 			var departmentTreeDialog = $(data);
-            departmentTreeDialog.find('.modal-dialog').css({width:'620px'});
             departmentTreeDialog.find('.modal-body').css({height:'325px'});
 			departmentTree = departmentTreeDialog.find('.tree');
             loadDepartmentTree();
@@ -139,8 +138,12 @@ var position = function(){
 	 * 加载部门树
 	 */
 	var loadDepartmentTree = function(){
+		departmentTree.parent().loader({
+			opacity: 0
+		});
         $.get(contextPath  + '/organization/orgTree.koala').done(function(data){
-            var zNodes = new Array();
+           departmentTree.parent().loader('hide');
+           var zNodes = new Array();
             $.each(data, function(){
                 var zNode = {};
                 if(this.organizationType == 'company'){
@@ -263,7 +266,6 @@ var position = function(){
 				});
 			}
 			dialog.find('#save').removeAttr('disabled');
-			refreshToken(dialog.find('input[name="koala.token"]'));
 		});
 	};
 	/*
@@ -285,7 +287,6 @@ var position = function(){
 					positionDto.organizationPrincipal = $(this).val();
 				}
 			});
-			positionDto['koala.token'] = dialog.find('input[name="koala.token"]').val();
 			return positionDto;
 		}else{
 			var data = {};
@@ -298,7 +299,6 @@ var position = function(){
 					data.organizationPrincipal = $(this).val();
 				}
 			});
-			data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 			return data;
 		}
 	};
