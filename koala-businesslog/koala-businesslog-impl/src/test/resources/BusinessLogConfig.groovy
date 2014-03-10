@@ -1,7 +1,7 @@
 import business.ContractApplication
 import org.dayatang.domain.InstanceFactory
 
-class BusinesslogConfig {
+class BusinessLogConfig {
 
     def context
 

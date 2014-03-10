@@ -6,6 +6,7 @@ import org.codehaus.groovy.runtime.GStringImpl;
 import org.openkoala.businesslog.*;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -90,8 +91,9 @@ public class BusinessLogThread implements Runnable {
             throw new KoalaBusinessLogConfigException("Not found any businesslog config, you need a " + STANDALONE_GROOVY_CONFIG_NAME + " or businessLogConfig director");
 
 
-        for (File each : configDir.listFiles()) {
+        for (File each : configDir.listFiles(new GroovyFileNameFilter())) {
             try {
+
                 Class clazz = getGroovyClass(each);
 
                 if (getGroovyClass(each).getMethod(businessMethod) == null) continue;
@@ -134,6 +136,14 @@ public class BusinessLogThread implements Runnable {
             throw new KoalaBusinessLogConfigException("InstantiationException", e);
         } catch (IllegalAccessException e) {
             throw new KoalaBusinessLogConfigException("IllegalAccessException", e);
+        }
+    }
+
+    private class GroovyFileNameFilter implements FilenameFilter {
+
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.endsWith(".groovy");
         }
     }
 
