@@ -1,23 +1,13 @@
 package org.openkoala.businesslog.model;
 
 
-
 import org.dayatang.domain.Entity;
 import org.dayatang.domain.EntityRepository;
 import org.dayatang.domain.InstanceFactory;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-import javax.persistence.Version;
 
 /**
  * User: zjzhai
@@ -156,23 +146,23 @@ public abstract class AbstractBusinessLog implements Entity {
      * @return
      */
     @Deprecated
-    public static <T extends org.dayatang.domain.Entity> boolean exists(Class<T> clazz, Serializable id) {
+    public static <T extends Entity> boolean exists(Class<T> clazz, Serializable id) {
         return getRepository().exists(clazz, id);
     }
 
-    public static <T extends org.dayatang.domain.Entity> T get(Class<T> clazz, Serializable id) {
+    public static <T extends Entity> T get(Class<T> clazz, Serializable id) {
         return getRepository().get(clazz, id);
     }
 
-    public static <T extends org.dayatang.domain.Entity> T getUnmodified(Class<T> clazz, T entity) {
+    public static <T extends Entity> T getUnmodified(Class<T> clazz, T entity) {
         return getRepository().getUnmodified(clazz, entity);
     }
 
-    public static <T extends org.dayatang.domain.Entity> T load(Class<T> clazz, Serializable id) {
+    public static <T extends Entity> T load(Class<T> clazz, Serializable id) {
         return getRepository().load(clazz, id);
     }
 
-    public static <T extends org.dayatang.domain.Entity> List<T> findAll(Class<T> clazz) {
+    public static <T extends Entity> List<T> findAll(Class<T> clazz) {
         return getRepository().findAll(clazz);
     }
 
