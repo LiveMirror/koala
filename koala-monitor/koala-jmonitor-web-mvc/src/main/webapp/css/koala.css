@@ -492,6 +492,7 @@ div.uploader input {
 .tree .tree-folder .tree-folder-header {
 	position: relative;
 	height: 20px;
+	min-width: 250px;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
@@ -509,6 +510,7 @@ div.uploader input {
 .tree .tree-folder .tree-folder-header .tree-folder-name {
 	display: inline;
 	padding-left: 4px;
+	min-width: 200px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	font-size: 14px;
