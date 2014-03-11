@@ -36,6 +36,7 @@ public class SonarCISClientIntegrationTest {
     @Test
     public void testAuthenticate() {
         SonarCISClient sonarCISClient = new SonarCISClient(new SonarConnectConfig(address2, username, password));
+
         assert sonarCISClient.authenticate();
 
         for (Developer developer : createDevelopers()) {
