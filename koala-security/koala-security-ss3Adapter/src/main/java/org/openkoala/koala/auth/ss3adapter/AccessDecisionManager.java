@@ -31,7 +31,11 @@ public class AccessDecisionManager implements org.springframework.security.acces
 
 		com.dayatang.cache.Cache userCache = InstanceFactory.getInstance(com.dayatang.cache.Cache.class, "user_cache");
 		CustomUserDetails currentUser = (CustomUserDetails) userCache.get(authentication.getName());
-		
+
+        if(currentUser==null){
+            throw new AccessDeniedException(MessageFormat.format("Denied to access [{0}]", url));
+        }
+
 		if (currentUser.isSuper()) {
 			return;
 		}
