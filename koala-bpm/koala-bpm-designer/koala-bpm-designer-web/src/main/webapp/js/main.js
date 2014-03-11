@@ -69,6 +69,7 @@ $(function(){
 	$('#userManager').find('li').on('click', function(){
 		self.trigger($(this).data('target'));
 	});
+	
 	 $('body').keydown(function(e) {
 	     if (e.keyCode == 13) {
 	         e.preventDefault();
@@ -88,7 +89,7 @@ var openTab = function(target, title, mark, id, param){
         content.attr('data-value', id);
         loadContent(content, target);
         tabs.find('a[href="#'+mark+'"]').tab('show');
-        //tabs.find('a[href="#'+mark+'"]').find('span').text(title);
+        tabs.find('a[href="#'+mark+'"]').find('span').html(title);
         return;
     }
     content = $('<div id="'+mark+'" class="tab-pane" data-value="'+id+'"></div>');
@@ -96,16 +97,19 @@ var openTab = function(target, title, mark, id, param){
     loadContent(content, target);
     contents.append(content);
     var tab =  $('<li>');
-    tab.html('<a href="#'+mark+'" data-toggle="tab"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><span>'+title+'<span></a>');
+    //tab.html('<a href="#'+mark+'" data-toggle="tab"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><span>'+title+'<span></a>');
+    tab.append($('<a href="#'+mark+'" data-toggle="tab"></a>')).find('a').html('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><span>'+title+'<span>');
     var closeBtn = tab.appendTo(tabs).on('click',function(){
         var $this = $(this);
         if($this.hasClass('active')){
             return;
         }
-        var $li = $('.g-sidec').find('li[data-mark="'+mark+'"]');
-        $li.click();
+        $this.find('a:first').tab('show')
+   		clearMenuEffect();
+   		var $li = $('.g-sidec').find('li[data-mark="'+mark+'"]').addClass('active');
         if($li.parent().hasClass('collapse')){
-            $li.parent().prev('a').click();
+        	var a = $li.parent().prev('a');
+            a.hasClass('collapsed') &&　a.click();
         }
     }).find('a:first')
         .tab('show')
@@ -164,4 +168,20 @@ var changeHeight = function(){
     var height =  windowHeight - headerHeight - footHeight;
     sidebarHeight < height && sidebar.css('height', height);
     $('.g-mainc').css('min-height', height);
+};
+
+$.ajaxSetup({ 
+	contentType : "application/x-www-form-urlencoded;charset=utf-8", 
+	error : function(XMLHttpRequest, textStatus) { 
+		if(XMLHttpRequest.status == 499){
+			window.location.href = contextPath+"/j_spring_security_logout";
+		}
+	} 
+}); 
+
+
+var refreshToken = function($element){
+	$.get('koala.token').done(function(data){
+		$element.val(data);
+	});
 };
