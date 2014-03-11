@@ -94,6 +94,10 @@ public class PostController extends BaseController {
 			post.setOrganization(getBaseApplication().getEntity(Organization.class, organizationId));
 			getBaseApplication().updateParty(post);
 			dataMap.put("result", "success");
+		} catch (PostExistException exception) {
+			dataMap.put("result", "该岗位已经存在，请不要在相同机构中创建相同职务的岗位！");
+		} catch (OrganizationHasPrincipalYetException exception) {
+			dataMap.put("result", "该机构已经有负责岗位！");
 		} catch (SnIsExistException exception) {
 			dataMap.put("result", "岗位编码: " + post.getSn() + " 已被使用！");
 		} catch (Exception e) {
