@@ -4,6 +4,7 @@ Koala业务日志模块分为以下几个子模块：
 
 1. koala-businesslog-api 业务日志系统的核心api
 1. koala-businesslog-impl 业务日志系统的koala的默认实现
+1. koala-businesslog-web 业务日志系统WEB模块
 1. koala-businesslog-acceptance-test 业务日志系统的集成测试
 
 
@@ -29,7 +30,7 @@ Koala业务日志模块分为以下几个子模块：
 
 1. 在类路径下加入`koala-businesslog.properties`文件
 
-        #指定拦截的业务方法，使用Spring的切入点n写法
+        #指定拦截的业务方法，使用Spring的切入点写法
         pointcut=execution(* business.*Application.*(..))
 
         #日志开关
@@ -38,7 +39,7 @@ Koala业务日志模块分为以下几个子模块：
         #指定日志导出器BusinessLogExporter接口的实现。默认有：BusinessLogConsoleExporter和BusinessLogExporterImpl
         businessLogExporter=org.openkoala.businesslog.utils.BusinessLogConsoleExporter
 
-        #线程池配置
+        #线程池配置。因为业务日志的导出借助线程池实现异步
         #核心线程数
         log.threadPool.corePoolSize=10
         #最大线程数
