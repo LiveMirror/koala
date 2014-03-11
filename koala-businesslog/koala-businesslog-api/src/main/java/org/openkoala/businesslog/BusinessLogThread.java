@@ -1,4 +1,4 @@
-package org.openkoala.businesslog.utils;
+package org.openkoala.businesslog;
 
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import static org.openkoala.businesslog.ContextKeyConstant.BUSINESS_METHOD;
 
 /**
  * 日志处理线程

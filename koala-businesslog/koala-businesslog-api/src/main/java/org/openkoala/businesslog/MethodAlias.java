@@ -1,4 +1,4 @@
-package org.openkoala.businesslog.utils;
+package org.openkoala.businesslog;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

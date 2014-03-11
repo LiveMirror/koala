@@ -1,4 +1,4 @@
-package org.openkoala.businesslog.utils;
+package org.openkoala.businesslog;
 
 import java.util.HashMap;
 import java.util.Map;

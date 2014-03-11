@@ -1,6 +1,6 @@
 package org.openkoala.organisation.web.controller;
 
-import org.openkoala.businesslog.utils.MethodAlias;
+import org.openkoala.businesslog.MethodAlias;
 import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.SnIsExistException;
 import org.openkoala.organisation.TerminateNotEmptyOrganizationException;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

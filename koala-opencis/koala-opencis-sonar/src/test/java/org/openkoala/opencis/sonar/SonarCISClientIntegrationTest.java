@@ -53,7 +53,6 @@ public class SonarCISClientIntegrationTest {
 
         sonarCISClient.createUserIfNecessary(null, developer);
 
-
         sonarCISClient.createProject(project);
 
         assert sonarCISClient.existsUser(developer.getId());
