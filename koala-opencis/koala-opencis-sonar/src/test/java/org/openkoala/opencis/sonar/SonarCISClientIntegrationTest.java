@@ -10,13 +10,15 @@ import org.openkoala.opencis.CISClientBaseRuntimeException;
 import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
-@Ignore
+//@Ignore
 public class SonarCISClientIntegrationTest {
 
-    public static final String address2 = "http://10.108.1.128:9000";
+    public static final String address2 = "http://127.0.0.1:9000";
     public static final String username = "admin";
     public static final String password = "admin";
 
@@ -59,13 +61,21 @@ public class SonarCISClientIntegrationTest {
         sonarCISClient.assignUsersToRole(project, "", developer);
 
         //sonarCISClient.removeUser(project, developer);
-       // sonarCISClient.removeProject(project);
-       // assert !sonarCISClient.isActivated(developer.getId());
+        // sonarCISClient.removeProject(project);
+        // assert !sonarCISClient.isActivated(developer.getId());
 
 
         sonarCISClient.close();
 
 
+    }
+
+
+    public List<Developer> createDevelopers() {
+        List<Developer> results = new ArrayList<Developer>();
+
+
+        return results;
     }
 
     @Test(expected = CISClientBaseRuntimeException.class)
@@ -79,7 +89,6 @@ public class SonarCISClientIntegrationTest {
         developer1.setPassword("xxxxx");
         developer1.setFullName("fullname");
         sonarCISClient1.assignUsersToRole(project, "role", developer1);
-
     }
 
 
