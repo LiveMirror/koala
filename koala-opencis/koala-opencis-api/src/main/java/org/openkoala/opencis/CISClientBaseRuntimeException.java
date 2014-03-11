@@ -8,8 +8,12 @@ public class CISClientBaseRuntimeException extends RuntimeException {
 	public CISClientBaseRuntimeException(){
 		super();
 	}
-	
-	public CISClientBaseRuntimeException(String message){
+
+    public CISClientBaseRuntimeException(Throwable cause) {
+        super(cause);
+    }
+
+    public CISClientBaseRuntimeException(String message){
 		super(message);
 	}
 	
