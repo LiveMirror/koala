@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-//@Ignore
+@Ignore
 public class SonarCISClientIntegrationTest {
 
     public static final String address2 = "http://127.0.0.1:9000";
@@ -38,6 +38,10 @@ public class SonarCISClientIntegrationTest {
         SonarCISClient sonarCISClient = new SonarCISClient(new SonarConnectConfig(address2, username, password));
         assert sonarCISClient.authenticate();
 
+        for (Developer developer : createDevelopers()) {
+            sonarCISClient.createUserIfNecessary(null, developer);
+        }
+
 
         Developer developer = new Developer();
         developer.setId("plplhtt");
@@ -46,10 +50,10 @@ public class SonarCISClientIntegrationTest {
         developer.setPassword("xxxxx");
         developer.setFullName("fullname");
 
+        sonarCISClient.createUserIfNecessary(null, developer);
+
 
         sonarCISClient.createProject(project);
-
-        sonarCISClient.createUserIfNecessary(project, developer);
 
         assert sonarCISClient.existsUser(developer.getId());
 
@@ -74,6 +78,15 @@ public class SonarCISClientIntegrationTest {
     public List<Developer> createDevelopers() {
         List<Developer> results = new ArrayList<Developer>();
 
+        for (int i = 0; i < 30; i++) {
+            Developer developer1 = new Developer();
+            developer1.setId("plplhf111111f" + i);
+            developer1.setName("plplff" + i);
+            developer1.setEmail(i + "xxx@d1xx.com");
+            developer1.setPassword("xxxxx");
+            developer1.setFullName(i + "fullname");
+            results.add(developer1);
+        }
 
         return results;
     }
