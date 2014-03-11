@@ -120,7 +120,7 @@ var department = function(){
                         elementData.name = departmentName.val();
                         elementData.description = description.val();
                         $element.data(elementData);
-                        if(type == 'updateCompany'){
+                        if(!$element.hasClass('tree-item')){
                         	$element.find('.tree-folder-name:first').html(elementData.name).click();
                         }else{
                         	$element.find('.tree-item-name').html(elementData.name).click();
@@ -282,7 +282,7 @@ var department = function(){
                 data: zNodes,
                 delay: 400
             };
-            $('#departmentTree').tree({
+            $('#departmentTree').off().data('koala.tree', null).tree({
                 dataSource: dataSourceTree,
                 loadingHTML: '<div class="static-loader">Loading...</div>',
                 multiSelect: false,
