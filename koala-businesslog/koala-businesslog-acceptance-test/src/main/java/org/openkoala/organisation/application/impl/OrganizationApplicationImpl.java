@@ -1,6 +1,6 @@
 package org.openkoala.organisation.application.impl;
 
-import org.openkoala.businesslog.utils.MethodAlias;
+import org.openkoala.businesslog.MethodAlias;
 import org.openkoala.organisation.application.OrganizationApplication;
 import org.openkoala.organisation.application.dto.OrganizationDTO;
 import org.openkoala.organisation.domain.*;
