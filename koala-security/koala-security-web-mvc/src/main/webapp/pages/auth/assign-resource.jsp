@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@ taglib prefix="k" uri="http://www.openkoala.com/token"%>
 <div class="modal fade select-role">
 	<style>
 		.select-role .modal-body {
@@ -8,13 +7,12 @@
 	</style>
     <div class="modal-dialog" style="width:620px;">
         <div class="modal-content">
-        	<k:token/>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">资源授权</h4>
             </div>
             <div class="modal-body" style="padding-left:45px; padding-right:65px;">
-              	 <ul id="resourceTree" class="tree" style="max-height: 280px;"></ul>
+              	 <ul id="resourceTree" class="tree" style="max-height: 280px;margin-top: 2px;"></ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
