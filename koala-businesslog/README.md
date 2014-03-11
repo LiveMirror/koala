@@ -5,7 +5,7 @@ Koala业务日志系统分为以下几个子模块：
 1. koala-businesslog-api 业务日志系统的核心api
 1. koala-businesslog-impl 业务日志系统的koala的默认实现
 1. koala-businesslog-web 业务日志系统WEB模块
-1. koala-businesslog-acceptance-test 业务日志系统的集成测试
+1. koala-businesslog-acceptance-test 业务日志系统的集成测试，也是业务日志系统的**范例**
 
 
 ### Koala业务日志系统的目标
