@@ -1,6 +1,6 @@
 package business;
 
-import org.openkoala.businesslog.utils.MethodAlias;
+import org.openkoala.businesslog.MethodAlias;
 
 import java.util.ArrayList;
 import java.util.List;

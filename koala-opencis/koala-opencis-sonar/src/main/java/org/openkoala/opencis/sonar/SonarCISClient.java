@@ -11,6 +11,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -18,10 +19,14 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.HttpClientParams;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.*;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.openkoala.opencis.CISClientBaseRuntimeException;
 import org.openkoala.opencis.api.CISClient;
@@ -45,7 +50,9 @@ public class SonarCISClient implements CISClient {
     @Override
     public void close() {
         try {
-            httpClient.close();
+            if (null != httpClient) {
+                httpClient.close();
+            }
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("sonar.httpclient.closeFailure");
         }
@@ -64,7 +71,6 @@ public class SonarCISClient implements CISClient {
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
             httpPost.setEntity(entity);
             response = httpClient.execute(httpPost, localContext);
-
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK
                     || response.getStatusLine().getStatusCode() == HttpStatus.SC_BAD_REQUEST) {
                 //删除anyone组的权限
@@ -74,7 +80,10 @@ public class SonarCISClient implements CISClient {
             throw new CISClientBaseRuntimeException("sonar.createProjectFailure");
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("sonar.createProjectFailure", e);
+        } finally {
+            closeResponse(response);
         }
+
     }
 
     private void removeAnyOnePermission(Project project) {
@@ -83,25 +92,25 @@ public class SonarCISClient implements CISClient {
         params1.add(new BasicNameValuePair("permission", "user"));
         params1.add(new BasicNameValuePair("group", "anyone"));
         params1.add(new BasicNameValuePair("component", getKeyOf(project)));
-
+        CloseableHttpResponse response = null;
         try {
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params1, "UTF-8");
             httpPost1.setEntity(entity);
-            HttpResponse response1 = httpClient.execute(httpPost1, localContext);
-            if (response1.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            response = httpClient.execute(httpPost1, localContext);
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 return;
             }
 
-            throw new CISClientBaseRuntimeException("sonar.removeAnyOnePermissionFailure : " + response1.getStatusLine());
+            throw new CISClientBaseRuntimeException("sonar.removeAnyOnePermissionFailure : " + response.getStatusLine());
 
         } catch (UnsupportedEncodingException e) {
             throw new CISClientBaseRuntimeException("sonar.removeAnyOnePermission.UnsupportedEncodingException", e);
-
         } catch (ClientProtocolException e) {
             throw new CISClientBaseRuntimeException("sonar.removeAnyOnePermission.ClientProtocolException", e);
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("sonar.removeAnyOnePermission.IOException", e);
-
+        } finally {
+            closeResponse(response);
         }
 
     }
@@ -119,6 +128,8 @@ public class SonarCISClient implements CISClient {
             throw new CISClientBaseRuntimeException("sonar.deleteProjectFailure");
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("sonar.deleteProjectFailure", e);
+        } finally {
+            closeResponse(response);
         }
 
     }
@@ -127,22 +138,11 @@ public class SonarCISClient implements CISClient {
     public void createUserIfNecessary(Project project, Developer developer) {
 
         HttpPost httpPost = new HttpPost(connectConfig.getAddress() + "/api/users/create");
-
         CloseableHttpResponse response = null;
         try {
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("login", developer.getId()));
-            params.add(new BasicNameValuePair("password", developer.getPassword()));
-            params.add(new BasicNameValuePair("password_confirmation", developer.getPassword()));
-            params.add(new BasicNameValuePair("name", developer.getName()));
-            params.add(new BasicNameValuePair("email", developer.getEmail()));
-            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
-            httpPost.setEntity(entity);
 
+            httpPost.setEntity(createDeveloperHttpEntityBy(developer));
             response = httpClient.execute(httpPost, localContext);
-
-            System.out.println(response.getStatusLine());
-
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 return;
             }
@@ -151,11 +151,26 @@ public class SonarCISClient implements CISClient {
                 return;
             }
 
-
             // TODO
             throw new CISClientBaseRuntimeException("sonar.createUserIfNecessaryFailure");
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("sonar.createUserIfNecessaryFailure", e);
+        } finally {
+            closeResponse(response);
+        }
+    }
+
+    private HttpEntity createDeveloperHttpEntityBy(Developer developer) {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("login", developer.getId()));
+        params.add(new BasicNameValuePair("password", developer.getPassword()));
+        params.add(new BasicNameValuePair("password_confirmation", developer.getPassword()));
+        params.add(new BasicNameValuePair("name", developer.getName()));
+        params.add(new BasicNameValuePair("email", developer.getEmail()));
+        try {
+            return new UrlEncodedFormEntity(params, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new CISClientBaseRuntimeException(e);
         }
     }
 
@@ -173,6 +188,8 @@ public class SonarCISClient implements CISClient {
             return false;
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("sonar.existsUserRequestFailure", e);
+        } finally {
+            closeResponse(response);
         }
 
     }
@@ -196,6 +213,8 @@ public class SonarCISClient implements CISClient {
             return false;
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("sonar.existsUserRequestFailure", e);
+        } finally {
+            closeResponse(response);
         }
     }
 
@@ -220,6 +239,8 @@ public class SonarCISClient implements CISClient {
             throw new CISClientBaseRuntimeException("sonar.removeUserFailure");
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("sonar.removeUserFailure", e);
+        } finally {
+            closeResponse(response);
         }
     }
 
@@ -255,6 +276,8 @@ public class SonarCISClient implements CISClient {
                 throw new CISClientBaseRuntimeException("sonar.assignUsersToRoleFailure");
             } catch (IOException e) {
                 throw new CISClientBaseRuntimeException("sonar.assignUsersToRoleFailure", e);
+            } finally {
+                closeResponse(response);
             }
         }
 
@@ -263,21 +286,20 @@ public class SonarCISClient implements CISClient {
     @Override
     public boolean authenticate() {
 
-        RequestConfig requestConfig = RequestConfig.DEFAULT;
-
         httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(getCredentialsProvider()).build();
-        localContext = HttpClientContext.create();
-
+        localContext = createLocalContext();
+        CloseableHttpResponse response = null;
         try {
-            CloseableHttpResponse response = httpClient.execute(
-                    getHttpHostByConnectConfig(connectConfig),
-                    new HttpGet("/api/authentication/validate"),
+            response = httpClient.execute(
+                    new HttpGet(connectConfig.getAddress() + "/api/authentication/validate"),
                     localContext);
             String str = EntityUtils.toString(response.getEntity());
             return response.getStatusLine().getStatusCode() == HttpStatus.SC_OK
                     && str.contains(":true");
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("sonar.authenticateFailure", e);
+        } finally {
+            closeResponse(response);
         }
     }
 
@@ -297,6 +319,27 @@ public class SonarCISClient implements CISClient {
                 new UsernamePasswordCredentials(connectConfig.getUsername(), connectConfig.getPassword()));
 
         return provider;
+    }
+
+    private HttpClientContext createLocalContext() {
+        AuthCache authCache = new BasicAuthCache();
+        BasicScheme basicAuth = new BasicScheme();
+        authCache.put(getHttpHostByConnectConfig(connectConfig), basicAuth);
+
+        HttpClientContext result = HttpClientContext.create();
+        result.setAttribute(ClientContext.AUTH_CACHE, authCache);
+        result.setCookieStore(new BasicCookieStore());
+        return result;
+    }
+
+    private void closeResponse(CloseableHttpResponse response) {
+        if (null == response) return;
+
+        try {
+            response.close();
+        } catch (IOException e) {
+            throw new CISClientBaseRuntimeException(e);
+        }
     }
 
 
