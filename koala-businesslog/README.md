@@ -1,11 +1,11 @@
-Koala业务日志模块
+Koala业务日志系统
 ----
-Koala业务日志模块分为以下几个子模块：
+Koala业务日志系统分为以下几个子模块：
 
 1. koala-businesslog-api 业务日志系统的核心api
 1. koala-businesslog-impl 业务日志系统的koala的默认实现
 1. koala-businesslog-web 业务日志系统WEB模块
-1. koala-businesslog-acceptance-test 业务日志系统的集成测试
+1. koala-businesslog-acceptance-test 业务日志系统的集成测试，也是业务日志系统的**范例**
 
 
 ### Koala业务日志系统的目标
@@ -24,12 +24,20 @@ Koala业务日志模块分为以下几个子模块：
 ### 目前的缺陷
 
 1. 依赖Spring 的AOP
+1. 只有受Spring IOC容器托管的bean才能被日志
 
 
-### 如何配置
+### 如何使用Koala默认实现的业务日志系统
 
+**大纲**
+
+    1. 在类路径下加入`koala-businesslog.properties`文件
+    1. 为业务方法加上别名，具体做法：在业务方法上加入`@MethodAlias`注解，并设置别名
+    1. 在类路径下加入日志模板配置文件
+
+
+**详细操作**
 1. 在类路径下加入`koala-businesslog.properties`文件
-
         #指定拦截的业务方法，使用Spring的切入点写法
         pointcut=execution(* business.*Application.*(..))
 
@@ -65,21 +73,17 @@ Koala业务日志模块分为以下几个子模块：
         log.maximumConnectionCount=50
         log.minimumConnectionCount=10
 
+1. 为业务方法加上别名。这个别名必须符合Java方法名的命名规则。给业务方法加别名的目的是为了方便业务方法与日志模板之间的映射。
 
+        @MethodAlias("业务方法别名")
+        业务方法
+    
+1. 在类路径下加入日志模板配置文件
 
-1. 配置日志
+    日志模板实际上是groovy文件。在这个groovy文件中，你可以写Java代码，也可以写groovy代码。这样，就可以达到最大的
+    灵活。同时，配置起来又不复杂。
 
-    1. 在你需要日志的业务方法上加入`@MethodAlias`注解，意思是给业务方法加个别名。
-        给业务方法加别名的目的是为了方便业务方法与日志模板之间的映射。
-    1. 定义日志模板
-
-
-1. 如何定义日志模板
-
-日志模板实际上是groovy文件。在这个groovy文件中，你可以写Java代码，也可以写groovy代码。这样，就可以达到最大的
-灵活。同时，配置起来又不复杂。
-
-目前我们支持两种配置方式：单文件配置方式和多文件配置方式。
+    目前我们支持两种配置方式：单文件配置方式和多文件配置方式。
 
 * 单文件配置
     1. 在类路径下加入`BusinessLogConfig.groovy`
@@ -104,7 +108,7 @@ Koala业务日志模块分为以下几个子模块：
         配置模板实际上是一个Groovy类。你可以在类中定义任何方法。如果方法为某个业务方法的别名（使用`@MethodAlias`注解）
         那么，我们就认为它是一个业务日志方法。它的返回值（return或者放在方法最后一行的变量）将会被Set到` org.openkoala.businesslog.BusinessLog`的实例中。
 
-        日志方法返回值有两种情况：1. 只返回一个String类型的日志文本；2. 返回一个Map，这个Map包括Key为`category`的日志分类及，日志文本。
+        日志方法返回值有两种情况：1. 只返回一个String类型的日志文本；2. 返回一个Map，这个Map包括Key为`category`的日志分类及日志文本。
 
         在类中，还会使用Groovy定义变量的方法：`def context`定义一个变量。这个变量实际上是一个Map。
         Map中存储的是业务方法的`返回值`、`参数`。如果需要，你可以存储任何你需要的数据。你可以从这个context中取
@@ -121,32 +125,15 @@ Koala业务日志模块分为以下几个子模块：
     `businessLogConfig`文件夹中的所有以`.groovy`结尾的文件都将被作为日志配置文件。
 
 
-
-
-
 附录
 ---
-
-
 #### 在日志模板中取`context`的内容
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+     key                     value
+    _methodReturn           业务方法返回值
+    _param                  业务方法的参数, _param0代表第一个参数 _param1代表第二个参数，依此类推
+    _executeError           业务方法执行失败的异常信息
+    _businessMethod         业务方法
+    _user                   业务方法操作人
+    _time                   业务方法操作时间
+    _ip                     ip地址
