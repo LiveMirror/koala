@@ -287,7 +287,7 @@ var roleManager = function(){
 					}else{
 						dialog.find('.modal-content').message({
 							type: 'error',
-							content: data.result
+							content: data.actionError
 						});
 					}
 				}).fail(function(data){

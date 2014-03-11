@@ -53,7 +53,6 @@ public class SonarCISClient implements CISClient {
 
     @Override
     public void createProject(Project project) {
-        authenticate();
         project.validate();
         HttpPost httpPost = new HttpPost(connectConfig.getAddress() + "/api/projects/create");
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -78,7 +77,6 @@ public class SonarCISClient implements CISClient {
     }
 
     private void removeAnyOnePermission(Project project) {
-        authenticate();
         HttpPost httpPost1 = new HttpPost(connectConfig.getAddress() + "/api/permissions/remove");
         List<NameValuePair> params1 = new ArrayList<NameValuePair>();
         params1.add(new BasicNameValuePair("permission", "user"));
@@ -109,7 +107,6 @@ public class SonarCISClient implements CISClient {
 
     @Override
     public void removeProject(Project project) {
-        authenticate();
         HttpDelete httpDelete = new HttpDelete(connectConfig.getAddress() + "/api/projects/" + getKeyOf(project));
         CloseableHttpResponse response = null;
         try {
@@ -127,11 +124,6 @@ public class SonarCISClient implements CISClient {
 
     @Override
     public void createUserIfNecessary(Project project, Developer developer) {
-
-        authenticate();
-
-        developer.validate();
-
 
         HttpPost httpPost = new HttpPost(connectConfig.getAddress() + "/api/users/create");
 
