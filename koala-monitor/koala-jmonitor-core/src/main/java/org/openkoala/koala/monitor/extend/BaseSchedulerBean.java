@@ -73,6 +73,7 @@ public abstract class BaseSchedulerBean {
     @Named("km_repository")
     protected EntityRepository repository;
 
+
     public void setRepository(EntityRepository repository) {
 		this.repository = repository;
 	}

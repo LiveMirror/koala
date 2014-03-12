@@ -41,15 +41,18 @@
 			</bean>
 		</property>
 	</bean>
-	
-	<bean id="repository_businessLog" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
-		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory_businessLog" />
-	</bean>
 
-	<bean id="queryChannel_businessLog" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
-		<constructor-arg name="repository" ref="repository_businessLog" />
-	</bean>
-	
+    <bean id="logEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
+        <property name="persistenceUnitName" value="businessLog" />
+    </bean>
+
+    <bean id="repository_businessLog" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
+        <property name="entityManagerName" value="logEntityManager"/>
+    </bean>
+
+    <bean id="queryChannel_businessLog" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+        <constructor-arg name="repository" ref="repository_businessLog" />
+    </bean>
 	
 
 	<bean id="dataSource_businessLog" class="org.logicalcobwebs.proxool.ProxoolDataSource">

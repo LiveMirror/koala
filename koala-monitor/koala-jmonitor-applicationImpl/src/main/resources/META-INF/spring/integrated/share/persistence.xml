@@ -16,13 +16,18 @@
 		http://www.springframework.org/schema/aop 
 		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-	<bean id="km_repository" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
-		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
-	</bean>
 
-	<bean id="km_queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
-		<constructor-arg name="repository" ref="km_repository"/>
-	</bean>
+    <bean id="kmEntityManager" name="kmEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
+        <property name="persistenceUnitName" value="default" />
+    </bean>
+
+    <bean id="km_repository" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
+        <property name="entityManagerName" value="kmEntityManager"/>
+    </bean>
+
+    <bean id="km_queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+        <constructor-arg name="repository" ref="km_repository" />
+    </bean>
 
 	<bean id="km_jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />

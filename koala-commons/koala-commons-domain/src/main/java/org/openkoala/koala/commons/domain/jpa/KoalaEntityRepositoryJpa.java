@@ -53,6 +53,7 @@ public class KoalaEntityRepositoryJpa implements
     @Override
     public <T extends Entity> T save(T entity) {
         if (entity.notExisted()) {
+
             getEntityManager().persist(entity);
             LOGGER.info("create a entity: " + entity.getClass() + "/"
                     + entity.getId() + ".");

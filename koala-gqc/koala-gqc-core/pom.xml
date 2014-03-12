@@ -35,6 +35,13 @@
 			<groupId>org.dayatang.dddlib</groupId>
 			<artifactId>dddlib-domain</artifactId>
 		</dependency>
+
+        <dependency>
+            <groupId>org.openkoala.koalacommons</groupId>
+            <artifactId>koala-commons-domain</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
 		<dependency>
 			<groupId>org.dayatang.dddlib</groupId>
 			<artifactId>dddlib-query-channel</artifactId>

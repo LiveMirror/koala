@@ -19,13 +19,17 @@
 		http://www.springframework.org/schema/aop 
 		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
- 	<bean id="repository_gqc" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
-		<constructor-arg name="entityManagerFactory" ref="entityManagerFactoryJPA" />
-	</bean>
+    <bean id="gqcEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
+        <property name="persistenceUnitName" value="jpadefault" />
+    </bean>
 
-	<bean id="queryChannel_gqc" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
-		<constructor-arg name="repository" ref="repository_ss" />
-	</bean>
+    <bean id="repository_gqc" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
+        <property name="entityManagerName" value="gqcEntityManager"/>
+    </bean>
+
+    <bean id="queryChannel_gqc" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+        <constructor-arg name="repository" ref="repository_gqc" />
+    </bean>
 
     <!-- 标注事务 -->
 	<tx:annotation-driven transaction-manager="transactionManager_gqc" />

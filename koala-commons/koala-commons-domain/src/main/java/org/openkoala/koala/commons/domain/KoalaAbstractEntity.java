@@ -70,6 +70,9 @@ public abstract class KoalaAbstractEntity extends KoalaBaseEntity {
      * 将实体本身持久化到数据库
      */
     public void save() {
+        if(this.notExisted()){
+            setId(null);
+        }
         getRepository().save(this);
     }
 
