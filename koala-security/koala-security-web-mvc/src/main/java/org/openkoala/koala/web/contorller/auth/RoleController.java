@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/auth/Role")
-public class RoleController {
+public class RoleController extends BaseController{
 
 	@Inject
 	private RoleApplication roleApplication;
