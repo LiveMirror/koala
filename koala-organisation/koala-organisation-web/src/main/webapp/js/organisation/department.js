@@ -45,7 +45,7 @@ var department = function(){
 	var del = function(org, type, $element){
         delete org.title;
 		var url = 'terminate-department.koala';
-		if(type == 'Company'){
+		if(type == 'company'){
 			url = 'terminate-company.koala';
 		}
 		$.post(baseUrl + url, org).done(function(data){
@@ -120,7 +120,7 @@ var department = function(){
                         elementData.name = departmentName.val();
                         elementData.description = description.val();
                         $element.data(elementData);
-                        if(type == 'updateCompany'){
+                        if(!$element.hasClass('tree-item')){
                         	$element.find('.tree-folder-name:first').html(elementData.name).click();
                         }else{
                         	$element.find('.tree-item-name').html(elementData.name).click();
@@ -266,7 +266,7 @@ var department = function(){
             var zNodes = new Array();
             $.each(data, function(){
                 var zNode = {};
-                if(this.organizationType == 'Company'){
+                if(this.organizationType == 'company'){
                     zNode.type = 'parent';
                 }else{
                     zNode.icon = 'glyphicon glyphicon-list-alt'
@@ -282,7 +282,7 @@ var department = function(){
                 data: zNodes,
                 delay: 400
             };
-            $('#departmentTree').tree({
+            $('#departmentTree').off().data('koala.tree', null).tree({
                 dataSource: dataSourceTree,
                 loadingHTML: '<div class="static-loader">Loading...</div>',
                 multiSelect: false,
@@ -313,7 +313,7 @@ var department = function(){
                     'update': function(event, data){
                         var $element = $(data);
                         var data = $element.data();
-                        if(data.organizationType == 'Company'){
+                        if(data.organizationType == 'company'){
                             updateCompany(data.id, $element);
                         }else{
                             updateDepartment(data.id, $element);
@@ -354,7 +354,7 @@ var department = function(){
             {title:'修改机构信息', action: 'update'},
             {title:'撤销', action: 'delete'}
         ];
-        if($element.data('organizationType') == 'Company'){
+        if($element.data('organizationType') == 'company'){
             menuData = [
                 {title:'创建分公司', action: 'addCompany'},
                 {title:'创建下级部门', action: 'addDepartment'},
@@ -374,7 +374,7 @@ var department = function(){
     var getChildrenData = function(nodes, items){
         $.each(items, function(){
             var zNode = {};
-            if(this.organizationType == 'Company'){
+            if(this.organizationType == 'company'){
                 zNode.type = 'parent';
             }else{
                 zNode.icon = 'glyphicon glyphicon-list-alt'
@@ -400,7 +400,7 @@ var department = function(){
 			departmentDetail.find('[data-role="principalName"]').html(org.principalName);
 			departmentDetail.find('[data-role="organizationType"]').val(org.organizationType);
 			//loadEmployeeList(org.id);
-			if(org.organizationType == 'Company'){
+			if(org.organizationType == 'company'){
 				$('#addCompany').show();
 				$('#updateCompany').show();
 				$('#updateDepartment').hide();

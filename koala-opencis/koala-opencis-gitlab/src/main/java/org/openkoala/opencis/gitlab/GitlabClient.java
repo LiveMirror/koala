@@ -187,7 +187,7 @@ public class GitlabClient implements CISClient {
         try {
             createGitlabHTTPRequestor().method("POST")
                     .with("email", developer.getEmail()).with("username",
-                    developer.getId()).with("name", URLEncoder.encode(developer.getName(), "UTF-8")).with("password", developer.getPassword())
+                    developer.getId()).with("name", developer.getName()).with("password", developer.getPassword())
                     .to(GitlabUser.URL, GitlabUser.class);
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("gitlab.createUser.IOException", e);
