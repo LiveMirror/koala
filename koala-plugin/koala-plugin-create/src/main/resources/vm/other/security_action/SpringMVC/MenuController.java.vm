@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/auth/Menu")
-public class MenuController {
+public class MenuController extends BaseController{
 
 	@Inject
 	private ResourceTypeApplication resourceTypeApplication;

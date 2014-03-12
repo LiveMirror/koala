@@ -10,7 +10,7 @@ public class DataBindingInitializer implements WebBindingInitializer {
 	@Override
 	@InitBinder
 	public void initBinder(WebDataBinder binder, WebRequest request) {
-		 binder.setAutoGrowCollectionLimit(10000);
+		 binder.setAutoGrowCollectionLimit(Integer.MAX_VALUE);
 	}
 
 }

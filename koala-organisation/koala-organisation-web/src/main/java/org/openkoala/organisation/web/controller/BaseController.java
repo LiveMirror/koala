@@ -35,7 +35,8 @@ public class BaseController {
         dateFormat.setLenient(false);    
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));    
         //CustomDateEditor 可以换成自己定义的编辑器。  
-        //注册一个Date 类型的绑定器 。  
-    }   
+        //注册一个Date 类型的绑定器 。
+        binder.setAutoGrowCollectionLimit(Integer.MAX_VALUE);
+    }
 	
 }

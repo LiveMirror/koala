@@ -148,12 +148,15 @@ public class Post extends Party {
 	 * @return
 	 */
 	public static boolean hasPrincipalPostOfOrganization(Organization organization, Date date) {
-		List<Post> posts = getRepository().createCriteriaQuery(Post.class)
-				.eq("organization", organization)
-				.eq("organizationPrincipal", true)
-				.le("createDate", date)
-				.gt("terminateDate", date).list();
-		return posts.isEmpty() ? false : true;
+//		List<Post> posts = getRepository().createCriteriaQuery(Post.class)
+//				.eq("organization", organization)
+//				.eq("organizationPrincipal", true)
+//				.le("createDate", date)
+//				.gt("terminateDate", date).list();
+        String jpql = "SELECT COUNT(*) FROM Post p WHERE p.organization.id = :organizationId AND p.organizationPrincipal = true " +
+                "AND p.createDate <= :queryDate AND p.terminateDate > :queryDate";
+        Long count = getRepository().createNamedQuery(jpql).addParameter("organizationId",organization.getId()).addParameter("queryDate",date).singleResult();
+		return count > 0;
 	}
 	
 	@Override
@@ -220,8 +223,9 @@ public class Post extends Party {
 	}
 	
 	private boolean hasEmployee(Date date) {
-		List<EmployeePostHolding> holdings = EmployeePostHolding.getByPost(this, date);
-		return holdings.isEmpty() ? false : true;
+		//List<EmployeePostHolding> holdings = EmployeePostHolding.getByPost(this, date);
+        Long size = this.getEmployeeCount(date);
+		return size > 0;
 	}
 
 	@Override

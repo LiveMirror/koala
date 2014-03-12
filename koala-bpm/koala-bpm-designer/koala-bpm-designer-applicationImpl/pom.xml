@@ -112,6 +112,12 @@
 			<artifactId>koala-commons-test-support</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+
+        <dependency>
+            <groupId>org.openkoala.koalacommons</groupId>
+            <artifactId>koala-commons-domain</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 	</dependencies>
 	
 </project>

@@ -39,12 +39,8 @@ public class SvnCreateGroupAndAddGroupUsersCommand extends SvnCommand {
                 .append(storePath).append("authz ")
                 .append("|| echo -ne '\n[groups]\n").append(groupName).append("=").append(groupUsers).append("' >>  ")
                 .append(storePath).append("authz ");
+        System.out.println("assignUserToRoleCommand = " + assignUserToRoleCommand.toString());
         return assignUserToRoleCommand.toString();
-    }
-
-    @Override
-    public void doWork(Connection connection, Session session) {
-
     }
 
 }
