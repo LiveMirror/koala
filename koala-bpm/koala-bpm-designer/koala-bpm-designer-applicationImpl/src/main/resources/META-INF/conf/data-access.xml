@@ -44,12 +44,12 @@
 	</bean>
 
 
-	<bean id="repository" class="org.openkoala.bpm.designer.impl.KoalaEntityRepositoryJpa">
-		<property name="entityManager">
-			<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-				<property name="persistenceUnitName" value="default" />
-			</bean>
-		</property>
+    <bean id="defaultEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
+        <property name="persistenceUnitName" value="default" />
+    </bean>
+
+	<bean id="repository" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
+		<property name="entityManagerName" value="defaultEntityManager"/>
 	</bean>
 
 	<bean id="queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
