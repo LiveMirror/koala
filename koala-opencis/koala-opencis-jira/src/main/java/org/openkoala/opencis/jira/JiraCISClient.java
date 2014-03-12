@@ -143,9 +143,8 @@ public class JiraCISClient implements CISClient {
         for (Developer each : developers) {
             checkProjectRoleUserAllExist(project, each.getId());
             try {
-                if (jiraService.isUserAtProjectDevelopRole(project, each)) {
-                    continue;
-                }
+                if (jiraService.isUserAtProjectDevelopRole(project, each)) continue;
+
                 jiraService.addActorsToProjectRole(KoalaJiraService.getProjectKey(project),
                         each.getId(),
                         KoalaJiraService.DEFAULT_PROJECT_ROLE_DEVELOP);

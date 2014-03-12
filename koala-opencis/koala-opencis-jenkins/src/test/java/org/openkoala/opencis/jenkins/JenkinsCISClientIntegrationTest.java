@@ -13,16 +13,17 @@ import java.util.UUID;
 public class JenkinsCISClientIntegrationTest {
 
 
-    public static String jenkinsURL = "http://127.0.0.1:8080";
+    public static String jenkinsURL = "http://10.108.1.92:8080/jenkins";
+    //public static String jenkinsURL = "http://127.0.0.1:8989";
     public static String username = "admin";
-    public static String apiToken = "fcc8afbe01a72aa1ff71945887bcaf8c";
+    public static String apiToken = "6672ca5d5fad881359029c7165eb57a6";
 
     public static String svnUrl = "http://10.108.1.138/svn/projec";
 
     @Test
     public void test() throws MalformedURLException {
 
-        Project project = getProject("中文名zzzzzxx");
+        Project project = getProject("zzzxssx");
 
         JenkinsCISClient client = new JenkinsCISClient(jenkinsURL, username, apiToken);
 
@@ -32,7 +33,7 @@ public class JenkinsCISClientIntegrationTest {
 
         client.createProject(project);
 
-        String name = "xxxx8";
+        String name = "xddddfdfadasdf";
         String name1 = "xxxx1";
 
 
@@ -47,7 +48,7 @@ public class JenkinsCISClientIntegrationTest {
 
     public Developer getDeveloper(String name) {
         Developer developer = new Developer();
-        developer.setName("中文名");
+        developer.setName("中文名1");
         developer.setId(name);
         developer.setPassword("20140305");
         developer.setEmail(UUID.randomUUID().toString() + "@gmail.com");
