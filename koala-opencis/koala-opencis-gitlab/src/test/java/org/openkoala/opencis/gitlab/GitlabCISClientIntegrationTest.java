@@ -94,7 +94,7 @@ public class GitlabCISClientIntegrationTest {
         developer.setId(id);
         developer.setPassword("12345678");
         developer.setEmail(id + "@123.com");
-        developer.setName(developer.getId() + "name");
+        developer.setName("中文名");
         return developer;
     }
 

@@ -23,8 +23,8 @@ public class OrganizationDTO implements Serializable {
 
 	private static final long serialVersionUID = -6538960709126681092L;
 
-	public static final String COMPANY = "company";
-	public static final String DEPARTMENT = "department";
+	public static final String COMPANY = "Company";
+	public static final String DEPARTMENT = "Department";
 
 	private Long id;
 
