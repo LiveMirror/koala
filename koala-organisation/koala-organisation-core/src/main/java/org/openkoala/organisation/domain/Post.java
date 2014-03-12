@@ -155,7 +155,7 @@ public class Post extends Party {
 //				.gt("terminateDate", date).list();
         String jpql = "SELECT COUNT(*) FROM Post p WHERE p.organization.id = :organizationId AND p.organizationPrincipal = true " +
                 "AND p.createDate <= :queryDate AND p.terminateDate > :queryDate";
-        Long count = getRepository().createNamedQuery(jpql).addParameter("organizationId",organization.getId()).addParameter("queryDate",date).singleResult();
+        Long count = getRepository().createJpqlQuery(jpql).addParameter("organizationId",organization.getId()).addParameter("queryDate",date).singleResult();
 		return count > 0;
 	}
 	
