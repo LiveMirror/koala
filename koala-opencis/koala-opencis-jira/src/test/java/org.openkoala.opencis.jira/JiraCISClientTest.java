@@ -9,6 +9,8 @@ import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: zjzhai
@@ -30,21 +32,12 @@ public class JiraCISClientTest {
     @Before
     public void setUp() throws Exception {
         assert client.authenticate();
-        client.createUserIfNecessary(null, getDeveloper());
-        assert client.isDeveloperExist(getDeveloper());
 
 
     }
 
-    @After
+    //@After
     public void tearDown() throws Exception {
-
-
-        client.removeUser(null, getDeveloper());
-        assert !client.isDeveloperExist(getDeveloper());
-
-        JiraCISClient developClient = new JiraCISClient(url, getDeveloper().getId(), getDeveloper().getPassword());
-        assert !developClient.authenticate();
 
 
         client.removeProject(getProject());
@@ -56,18 +49,26 @@ public class JiraCISClientTest {
     @Test
     public void testName() throws Exception {
 
-
         // 注意project key的问题
         client.createProject(getProject());
 
         assert client.isProjectExist(getProject());
 
-        client.assignUsersToRole(getProject(), "", getDeveloper());
 
-        client.assignUsersToRole(getProject(), "", getDeveloper());
+        for (Developer developer : createDevelopers(10)) {
+            client.createUserIfNecessary(null, developer);
+            client.assignUsersToRole(getProject(), "", developer);
 
-        assert client.authenticate();
-        assert client.isUserAtProjectDevelopRole(getProject(), getDeveloper());
+            JiraCISClient developClient = new JiraCISClient(url, developer.getId(), developer.getPassword());
+            assert developClient.authenticate();
+            assert client.isUserAtProjectDevelopRole(getProject(), developer);
+        }
+
+
+        for (Developer developer : createDevelopers(10)) {
+            client.createUserIfNecessary(null, developer);
+            client.assignUsersToRole(getProject(), "", developer);
+        }
 
     }
 
@@ -82,13 +83,23 @@ public class JiraCISClientTest {
         return project;
     }
 
-    private Developer getDeveloper() {
+
+    private List<Developer> createDevelopers(int count) {
+        List<Developer> developers = new ArrayList<Developer>();
+        for (int i = count; i > 0; i--) {
+            developers.add(getDeveloper("usernamexx" + i));
+        }
+        return developers;
+
+    }
+
+    private Developer getDeveloper(String id) {
         Developer developer = new Developer();
-        developer.setName("name");
+        developer.setName("中文全名");
         developer.setPassword("12345678");
-        developer.setEmail("kkkkkkk@1dfdf.com");
-        developer.setId("username");
-        developer.setFullName("fullname");
+        developer.setEmail(id + "kkkkkkk@1dfdf.com");
+        developer.setId(id);
+        developer.setFullName("中文全名");
         return developer;
     }
 
