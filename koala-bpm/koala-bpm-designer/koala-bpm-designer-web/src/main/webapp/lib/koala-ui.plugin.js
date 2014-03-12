@@ -319,6 +319,7 @@
 					self.gridTableBodyTable.empty();
 					self.gridTableBody.find('[data-role="noData"]').remove();
 					self.gridTableBody.append($('<div data-role="noData" style="font-size:16px ; padding: 20px; width:' + self.gridTableBodyTable.width() + 'px;">' + self.options.noDataText + '</div>'));
+					self.gridTableBody.loader('hide');
 				} else {
 					self.gridTableBody.find('[data-role="noData"]').remove();
 					self.renderDatas();
