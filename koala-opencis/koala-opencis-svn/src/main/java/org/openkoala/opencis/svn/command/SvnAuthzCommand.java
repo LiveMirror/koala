@@ -36,12 +36,8 @@ public class SvnAuthzCommand extends SvnCommand {
                 .append("|| echo -ne '\n[").append(project.getProjectName()).append(":/]\n@")
                 .append(groupName).append("=rw\n' >> ")
                 .append(storePath).append("/authz");
+        System.out.println("authzCommand = " + authzCommand.toString());
         return authzCommand.toString();
-    }
-
-    @Override
-    public void doWork(Connection connection, Session session) {
-
     }
 
 }
