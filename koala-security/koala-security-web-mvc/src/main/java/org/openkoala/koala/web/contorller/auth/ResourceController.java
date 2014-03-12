@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/auth/Resource")
-public class ResourceController {
+public class ResourceController extends BaseController{
 
 	@Inject
 	private ResourceApplication resourceApplication;

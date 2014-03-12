@@ -44,13 +44,17 @@
 		</property>
 	</bean>
 
-	<bean id="repository" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
-		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
-	</bean>
+    <bean id="defaultEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
+        <property name="persistenceUnitName" value="default" />
+    </bean>
 
-	<bean id="queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
-		<constructor-arg name="repository" ref="repository"/>
-	</bean>
+    <bean id="repository" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
+        <property name="entityManagerName" value="defaultEntityManager"/>
+    </bean>
+
+    <bean id="queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+        <constructor-arg name="repository" ref="repository" />
+    </bean>
 	
 	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
 		<property name="driver" value="${db.jdbc.driver}" />

@@ -14,10 +14,10 @@ import org.openkoala.framework.i18n.I18NManager;
  */
 public class I18nTest {
 
-    @Ignore
+
 	@Test
 	public void shouldUsingDefaultLocale(){
-		System.out.println(new Locale("ZH_CN").getDisplayLanguage());
+		System.out.println(Locale.CHINA.getDisplayLanguage());
 		String value = I18NManager.getMessage("name","zh_cn");
 		Assert.assertTrue(value.equals("考拉"));
 	}
