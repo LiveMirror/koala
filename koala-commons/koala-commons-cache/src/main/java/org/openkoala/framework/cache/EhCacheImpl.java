@@ -100,10 +100,14 @@ public class EhCacheImpl implements org.dayatang.cache.Cache  {
 	 */
 	public EhCacheImpl(String name, int maxElementsInMemory, boolean overflowToDisk, boolean eternal, long timeToLiveSeconds, long timeToIdleSeconds)
 	{
-
+		if (!CacheManager.getInstance().cacheExists(name)) {
 			cache = new Cache(name, maxElementsInMemory, overflowToDisk, eternal,
 					timeToLiveSeconds, timeToIdleSeconds);
 			CacheManager.getInstance().addCache(cache);
-
+		}
+        else{
+            cache = CacheManager.getInstance().getCache(name);
+        }
+        cache.removeAll();
 	}
 }
