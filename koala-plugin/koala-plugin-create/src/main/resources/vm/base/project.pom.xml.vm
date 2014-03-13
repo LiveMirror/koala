@@ -45,7 +45,7 @@
                 <hibernate.show_sql>true</hibernate.show_sql>
                 <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
                 <db.jdbcDriver>org.h2.Driver</db.jdbcDriver>
-                <db.connectionURL>jdbc:h2:mem:test;MVCC=true</db.connectionURL>
+                <db.connectionURL>jdbc:h2:~/${Project.appName};MVCC=true</db.connectionURL>
                 <db.username>sa</db.username>
                 <db.password></db.password>
                 <db.Type>H2</db.Type>

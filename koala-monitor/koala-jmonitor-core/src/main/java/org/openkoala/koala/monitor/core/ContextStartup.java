@@ -2,6 +2,7 @@ package org.openkoala.koala.monitor.core;
 
 import java.util.Map;
 
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.koala.monitor.def.NodeDef;
 import org.openkoala.koala.monitor.exception.ContextInitialException;
 
@@ -31,5 +32,7 @@ public class ContextStartup {
 		RuntimeContext context = RuntimeContext.registerContext(config,defManager);
 		context.registerServerInfos(serverInfos);
 		context.startup();
+
+        InstanceFactory.getInstance(DataPolicyHandler.class).onStart();
 	}
 }

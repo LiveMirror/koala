@@ -106,7 +106,7 @@ private QueryChannelService queryChannel;
 
 	
 	@Override
-	public final List<CountVo> getHttpMonitorCount(MainStatVo mainStatVo) {
+	public List<CountVo> getHttpMonitorCount(MainStatVo mainStatVo) {
 		return getMonitorDataService().getHttpMonitorCount(mainStatVo.getPrincipal(),mainStatVo.getUnit(),KoalaDateUtils.parseDate(mainStatVo.getBeginTimeStr()));
 	}
 	
@@ -120,7 +120,7 @@ private QueryChannelService queryChannel;
 	}*/
 	
 	@Override
-	public final Page<HttpDetailsVo> pageGetHttpMonitorDetails(int currentPage, int pageSize, HttpDetailsVo httpDetailsVo) {
+	public Page<HttpDetailsVo> pageGetHttpMonitorDetails(int currentPage, int pageSize, HttpDetailsVo httpDetailsVo) {
 		String queryStr = "from HttpDetails where nodeId = ? and beginTime>=? and beginTime<? order by " 
 				+ httpDetailsVo.getSortname() + " " + httpDetailsVo.getSortorder();
 		Object[] params = new Object[]{httpDetailsVo.getSystem(), httpDetailsVo.getBeginTime(), 
@@ -138,7 +138,7 @@ private QueryChannelService queryChannel;
 	}
 	
 	@Override
-	public final Page<CountVo> pageGetMethodMonitorCount(int currentPage,
+	public  Page<CountVo> pageGetMethodMonitorCount(int currentPage,
 			int pageSize, MainStatVo mainStatVo) {
 		String queryStr = "select method,count(*) from MethodDetails where nodeId = ? and beginTime>=? and beginTime<?  group by method order by count(*) desc ";
 		Object[] params = new Object[]{mainStatVo.getPrincipal(), mainStatVo.getBeginTime(), 
@@ -150,7 +150,7 @@ private QueryChannelService queryChannel;
 	}
 	
 	@Override
-	public final Page<CountVo> pageGetMethodMonitorAvgTimeConsume(int currentPage,
+	public Page<CountVo> pageGetMethodMonitorAvgTimeConsume(int currentPage,
 			int pageSize, MainStatVo mainStatVo) {
 		String queryStr = " select method,avg(timeConsume) from MethodDetails where nodeId = ? and beginTime>=? and beginTime<? group by method order by avg(timeConsume) desc ";
 		Object[] params = new Object[]{mainStatVo.getPrincipal(), mainStatVo.getBeginTime(), 
@@ -163,7 +163,7 @@ private QueryChannelService queryChannel;
 	}
 
 	@Override
-	public final Page<CountVo> pageGetMethodMonitorExceptionCount(int currentPage,
+	public Page<CountVo> pageGetMethodMonitorExceptionCount(int currentPage,
 			int pageSize, MainStatVo mainStatVo) {
 		String queryStr = "select method,count(successed) from MethodDetails where successed=0" +
 				" and nodeId = ? and beginTime>=? and beginTime<? group by method order by count(successed) desc ";
@@ -177,7 +177,7 @@ private QueryChannelService queryChannel;
 	}
 	
 	@Override
-	public final Page<MethodDetailsVo> pageGetMethodMonitorDetails(int currentPage,
+	public  Page<MethodDetailsVo> pageGetMethodMonitorDetails(int currentPage,
 			int pageSize, MethodDetailsVo methodDetailsVo) {
 		
 		StringBuffer jpql = new StringBuffer("from MethodDetails m where 1=1");
@@ -222,7 +222,7 @@ private QueryChannelService queryChannel;
 
 	
 	@Override
-	public final Page<JdbcStatementDetailsVo> getSqlsMonitorDetails(int currentPage, int pageSize, JdbcStatementDetailsVo jdbcStatementDetailsVo) {
+	public Page<JdbcStatementDetailsVo> getSqlsMonitorDetails(int currentPage, int pageSize, JdbcStatementDetailsVo jdbcStatementDetailsVo) {
 
 		String queryStr = " select a from JdbcStatementDetails a where a.jdbcConn.id in (select b.id from JdbcConnDetails b " +
 				" where b.threadKey=(select c.threadKey from MethodDetails c where c.id=:methodId )) order by " +
@@ -235,7 +235,7 @@ private QueryChannelService queryChannel;
 	}
 	
 	@Override
-	public final List<String> getStackTracesDetails(String monitorType, String detailsId){
+	public List<String> getStackTracesDetails(String monitorType, String detailsId){
 		String queryStr = null;
 		if(Constant.MONITOR_TYPE_METHOD.equals(monitorType)){
 			queryStr = " SELECT stackTracesDetails FROM MethodDetails where ID = :detailsId ";
@@ -253,7 +253,7 @@ private QueryChannelService queryChannel;
 	 * @param list
 	 * @return
 	 */
-	private final List<CountVo> turnToCountVoList(List<Object[]> list){
+	private List<CountVo> turnToCountVoList(List<Object[]> list){
 		List<CountVo> countVos = new ArrayList<CountVo>();
 		for(Object[] array : list){
 			CountVo countVo = new CountVo();
@@ -269,7 +269,7 @@ private QueryChannelService queryChannel;
 	 * @param list
 	 * @return
 	 */
-	private final List<CountVo> turnToCountVoAvgTimeConsumeList(List<Object[]> list){
+	private List<CountVo> turnToCountVoAvgTimeConsumeList(List<Object[]> list){
 		List<CountVo> countVos = new ArrayList<CountVo>();
 		for(Object[] array : list){
 			CountVo countVo = new CountVo();
@@ -285,7 +285,7 @@ private QueryChannelService queryChannel;
 	 * @param list
 	 * @return
 	 */
-	private final List<CountVo> turnToCountVoExceptionList(List<Object[]> list){
+	private List<CountVo> turnToCountVoExceptionList(List<Object[]> list){
 		List<CountVo> countVos = new ArrayList<CountVo>();
 		for(Object[] array : list){
 			CountVo countVo = new CountVo();
