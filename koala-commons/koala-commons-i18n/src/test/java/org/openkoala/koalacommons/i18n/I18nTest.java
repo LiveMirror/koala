@@ -15,6 +15,7 @@ import org.openkoala.framework.i18n.I18NManager;
 public class I18nTest {
 
 
+    @Ignore
 	@Test
 	public void shouldUsingDefaultLocale(){
 		System.out.println(Locale.CHINA.getDisplayLanguage());
