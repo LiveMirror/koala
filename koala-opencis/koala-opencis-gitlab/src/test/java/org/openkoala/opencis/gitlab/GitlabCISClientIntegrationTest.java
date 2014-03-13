@@ -43,7 +43,6 @@ public class GitlabCISClientIntegrationTest {
         for (Developer developer : createDevelops()) {
             assert !cisClient.isUserExist(developer);
         }
-
     }
 
     @Test
