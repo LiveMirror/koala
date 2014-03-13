@@ -255,7 +255,7 @@ var showMethodMonitorDetail = function(method){
     });
 };
 var showStackTracesDetail = function(obj){
-    $.get('/pages/monitor/stack-trace-detail.html').done(function(data){
+    $.get('/pages/monitor/stack-trace-detail.jsp').done(function(data){
         $(data).modal({
             keyboard: true,
             backdrop: false
