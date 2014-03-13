@@ -98,7 +98,6 @@ public class I18NManager {
 
 			return message;
 		}
-
 		return accessor.getMessage(key, new Locale(locale));
 	}
 

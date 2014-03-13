@@ -120,7 +120,7 @@ public class PostControllerTest {
 	public void testCatchSnIsExistExceptionWhenUpdatePost() {
 		when(baseApplication.getEntity(Organization.class, organizationId)).thenReturn(organization);
 		doThrow(new SnIsExistException()).when(baseApplication).updateParty(post);
-		assertEquals("岗位编码: " + post.getSn() + " 已被使用！", postController.updatePost(post, organizationId).get("result"));
+        assertEquals("岗位编码: " + post.getSn() + " 已被使用！", postController.updatePost(post, organizationId).get("result"));
 	}
 
 	@Test
