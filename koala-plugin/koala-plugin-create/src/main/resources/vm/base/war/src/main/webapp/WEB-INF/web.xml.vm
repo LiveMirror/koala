@@ -23,7 +23,7 @@
 	
 	<context-param>
 		<param-name>monitor-config</param-name>
-		<param-value>WEB-INF/monitor/koala-monitor.xml</param-value>
+		<param-value>/WEB-INF/monitor/koala-monitor.xml</param-value>
 	</context-param>
 
 	<filter>
@@ -75,12 +75,6 @@
 	</servlet-mapping>
 	
    #end
-
-
-
-	
-	   
-	
 
 	
 	<!--组织子系统的listener-->
