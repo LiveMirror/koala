@@ -1,9 +1,8 @@
 package org.openkoala.organisation.application.impl;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.Remote;
@@ -112,17 +111,17 @@ public class OrganizationApplicationImpl implements OrganizationApplication {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.organisation.application.dto.OrganizationDTO"
 				+ "(r.id,olm.commissioner.id, r.name, r.sn,r.createDate, r.description, r.category) "
 				+ "FROM OrganizationLineManagement olm LEFT JOIN olm.responsible r "
-				+ "WHERE olm.commissioner is null AND olm.toDate > :queryDate AND olm.fromDate <= :queryDate");
+				+ "WHERE olm.commissioner is null AND olm.toDate > :queryDate AND olm.fromDate <= :queryDate ORDER BY r.id ASC");
 		QueryChannelService queryChannel = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel_org");
 		OrganizationDTO top = (OrganizationDTO) queryChannel.createJpqlQuery(jpql.toString()).addParameter("queryDate", new Date()).singleResult();
 
 		jpql = new StringBuilder("SELECT NEW org.openkoala.organisation.application.dto.OrganizationDTO"
 				+ "(r.id,olm.commissioner.id, r.name, r.sn,r.createDate, r.description, r.category) "
 				+ "FROM OrganizationLineManagement olm LEFT JOIN olm.responsible r "
-				+ "WHERE olm.commissioner is not null AND  olm.toDate > :queryDate AND olm.fromDate <= :queryDate");
+				+ "WHERE olm.commissioner is not null AND  olm.toDate > :queryDate AND olm.fromDate <= :queryDate ORDER BY r.id ASC");
 		@SuppressWarnings("unchecked")
 		List<OrganizationDTO> all = queryChannel.createJpqlQuery(jpql.toString()).addParameter("queryDate", new Date()).list();
-		Map<Long, OrganizationDTO> map = new HashMap<Long, OrganizationDTO>();
+		LinkedHashMap<Long, OrganizationDTO> map = new LinkedHashMap<Long, OrganizationDTO>();
 		for (OrganizationDTO organizationDTO : all) {
 			map.put(organizationDTO.getId(), organizationDTO);
 		}

@@ -12,6 +12,7 @@ import java.io.IOException;
  * Date: 11/29/13
  * Time: 8:42 AM
  */
+@Ignore
 public class MainIntegrationTest {
 
     @Test
@@ -43,6 +44,5 @@ public class MainIntegrationTest {
         String context = (String)properties.get("context");*/
         return "http://localhost:7651/";
     }
-
 
 }

@@ -11,8 +11,8 @@
           .selectDepartment .tree {
           	  margin-left: auto;
           	  margin-right: auto;
-          	  width: 78%;
-              min-height: 250px;
+          	  width: 96%;
+              min-height: 285px;
               max-height: 300px;
           }
     </style>
@@ -22,8 +22,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">选择机构</h4>
             </div>
-            <div class="modal-body" style="margin-top: 10px;">
-                  <div class="tree"></div>
+            <div class="modal-body" style="width: 620px;margin-left: auto; margin-right: auto;">
+                  <div class="tree" style="margin-top: 2px;"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

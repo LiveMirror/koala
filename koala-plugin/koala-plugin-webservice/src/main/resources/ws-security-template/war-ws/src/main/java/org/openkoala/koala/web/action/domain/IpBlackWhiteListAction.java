@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.opensymphony.xwork2.ActionSupport;
 import javax.inject.Inject;
-import com.dayatang.querychannel.support.Page;
+import org.dayatang.querychannel.Page;
 import org.apache.struts2.ServletActionContext;
 import org.openkoala.auth.application.domain.IpBlackWhiteListApplication;
 import org.openkoala.auth.application.vo.*;
@@ -42,10 +42,10 @@ public class IpBlackWhiteListAction extends ActionSupport {
 
 	public String pageJson() {
 		Page<IpBlackWhiteListVO> all = ipBlackWhiteListApplication.pageQueryIpBlackWhiteList(ipBlackWhiteListVO, page, pagesize);
-		dataMap.put("Rows", all.getResult());
+		dataMap.put("Rows", all.getData());
 		dataMap.put("start", all.getStart());
 		dataMap.put("limit", pagesize);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 

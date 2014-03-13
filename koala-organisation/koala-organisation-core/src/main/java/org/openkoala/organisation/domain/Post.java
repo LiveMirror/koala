@@ -1,13 +1,11 @@
 package org.openkoala.organisation.domain;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -16,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -38,10 +35,10 @@ public class Post extends Party {
 	
 	private Organization organization;
 
-	
+
 	private Job job;
 
-	
+
 	private String description;
 
 	
@@ -223,8 +220,7 @@ public class Post extends Party {
 	}
 	
 	private boolean hasEmployee(Date date) {
-		List<EmployeePostHolding> holdings = EmployeePostHolding.getByPost(this, date);
-		return holdings.isEmpty() ? false : true;
+		return EmployeePostHolding.getEmployeeCountOfPost(this, date) > 0 ? true : false;
 	}
 
 	@Override

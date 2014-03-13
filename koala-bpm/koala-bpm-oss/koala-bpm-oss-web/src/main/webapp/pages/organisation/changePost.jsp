@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <div class="modal fade changePost">
-    <div class="modal-dialog" style="width:960px;">
+    <div class="modal-dialog" style="width:1060px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -11,7 +11,7 @@
                 <table>
                     <tr>
                         <td width="25%" style="vertical-align: top;">
-                             <div class="tree" id="departmentTree"></div>
+                             <div class="tree" id="departmentTree" style="width: 232px;height: 348px; border-top: 2px solid #DDDDDD; margin-right:5px;"></div>
                         </td>
                         <td width="75%" style="vertical-align: top;">
                              <div id="postGrid" class="postGrid"></div>

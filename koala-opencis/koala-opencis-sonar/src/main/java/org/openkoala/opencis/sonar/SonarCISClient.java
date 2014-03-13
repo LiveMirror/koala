@@ -12,6 +12,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -53,7 +54,6 @@ public class SonarCISClient implements CISClient {
 
     @Override
     public void createProject(Project project) {
-        authenticate();
         project.validate();
         HttpPost httpPost = new HttpPost(connectConfig.getAddress() + "/api/projects/create");
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -78,7 +78,6 @@ public class SonarCISClient implements CISClient {
     }
 
     private void removeAnyOnePermission(Project project) {
-        authenticate();
         HttpPost httpPost1 = new HttpPost(connectConfig.getAddress() + "/api/permissions/remove");
         List<NameValuePair> params1 = new ArrayList<NameValuePair>();
         params1.add(new BasicNameValuePair("permission", "user"));
@@ -109,7 +108,6 @@ public class SonarCISClient implements CISClient {
 
     @Override
     public void removeProject(Project project) {
-        authenticate();
         HttpDelete httpDelete = new HttpDelete(connectConfig.getAddress() + "/api/projects/" + getKeyOf(project));
         CloseableHttpResponse response = null;
         try {
@@ -128,11 +126,6 @@ public class SonarCISClient implements CISClient {
     @Override
     public void createUserIfNecessary(Project project, Developer developer) {
 
-        authenticate();
-
-        developer.validate();
-
-
         HttpPost httpPost = new HttpPost(connectConfig.getAddress() + "/api/users/create");
 
         CloseableHttpResponse response = null;
@@ -145,7 +138,11 @@ public class SonarCISClient implements CISClient {
             params.add(new BasicNameValuePair("email", developer.getEmail()));
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
             httpPost.setEntity(entity);
+
             response = httpClient.execute(httpPost, localContext);
+
+            System.out.println(response.getStatusLine());
+
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 return;
             }
@@ -170,7 +167,6 @@ public class SonarCISClient implements CISClient {
                     + developerId);
             response = httpClient.execute(http, localContext);
             String strResult = EntityUtils.toString(response.getEntity());
-            System.out.println(strResult);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 return strResult.contains(developerId);
             }
@@ -266,21 +262,17 @@ public class SonarCISClient implements CISClient {
 
     @Override
     public boolean authenticate() {
-        HttpHost targetHost = new HttpHost(connectConfig.getHost(), connectConfig.getPort(), connectConfig.getProtocol());
-        CredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials(connectConfig.getUsername(), connectConfig.getPassword()));
-        httpClient = HttpClients.custom()
-                .setDefaultCredentialsProvider(credsProvider)
-                .build();
-        AuthCache authCache = new BasicAuthCache();
-        authCache.put(targetHost, new BasicScheme());
+
+        RequestConfig requestConfig = RequestConfig.DEFAULT;
+
+        httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(getCredentialsProvider()).build();
         localContext = HttpClientContext.create();
-        localContext.setAuthCache(authCache);
-        HttpGet httpget = new HttpGet("/api/authentication/validate");
-        CloseableHttpResponse response = null;
+
         try {
-            response = httpClient.execute(targetHost, httpget, localContext);
+            CloseableHttpResponse response = httpClient.execute(
+                    getHttpHostByConnectConfig(connectConfig),
+                    new HttpGet("/api/authentication/validate"),
+                    localContext);
             String str = EntityUtils.toString(response.getEntity());
             return response.getStatusLine().getStatusCode() == HttpStatus.SC_OK
                     && str.contains(":true");
@@ -291,6 +283,20 @@ public class SonarCISClient implements CISClient {
 
     protected static String getKeyOf(Project project) {
         return project.getGroupId() + ":" + project.getArtifactId();
+    }
+
+    private HttpHost getHttpHostByConnectConfig(SonarConnectConfig connectConfig) {
+        return new HttpHost(connectConfig.getHost(), connectConfig.getPort(), connectConfig.getProtocol());
+
+    }
+
+    private CredentialsProvider getCredentialsProvider() {
+        CredentialsProvider provider = new BasicCredentialsProvider();
+        provider.setCredentials(
+                new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
+                new UsernamePasswordCredentials(connectConfig.getUsername(), connectConfig.getPassword()));
+
+        return provider;
     }
 
 

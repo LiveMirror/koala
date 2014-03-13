@@ -180,8 +180,8 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 * @return
 	 */
 	public static Long getEmployeeCountOfPost(Post post, Date date) {
-		List<Long> account = getRepository().createNamedQuery("getEmployeeCountOfPost").addParameter("post", post).addParameter("date", date).list();
-		return account.isEmpty() ? 0 : account.get(0);
+		List<Long> count = getRepository().createNamedQuery("getEmployeeCountOfPost").addParameter("post", post).addParameter("date", date).list();
+		return count.isEmpty() ? 0 : count.get(0);
 	}
 
 	/**

@@ -118,6 +118,15 @@ public class Role extends Identity {
 	public static List<Role> findRoleByUserAccount(String userAccount) {
 		return getRepository().createNamedQuery("findRoleByUserAccount").addParameter("userAccount", userAccount).addParameter("abolishDate", new Date()).list();
 	}
+	
+	/**
+	 * 查找用户所拥有的角色标识
+	 * @param userAccount
+	 * @return
+	 */
+	public static List<Long> findRoleIdsByUserAccount(String userAccount) {
+		return getRepository().createNamedQuery("findRoleIdsByUserAccount").addParameter("userAccount", userAccount).addParameter("abolishDate", new Date()).list();
+	}
 
 	/**
 	 * 角色是否存在
@@ -148,6 +157,10 @@ public class Role extends Identity {
 	public static List<Role> findAllRoles() {
 		
 		return getRepository().createNamedQuery("findAllRoles").addParameter("abolishDate", new Date()).list();
+	}
+	
+	public static List<Long> findAllRoleIds() {
+		return getRepository().createNamedQuery("findAllRoleIds").addParameter("abolishDate", new Date()).list();
 	}
 
 	@Override

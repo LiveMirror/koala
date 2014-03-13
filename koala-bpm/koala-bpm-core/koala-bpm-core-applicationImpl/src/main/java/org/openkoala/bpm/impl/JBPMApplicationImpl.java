@@ -90,6 +90,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -98,8 +99,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author lingen
  * 
  */
+@Transactional(propagation= Propagation.SUPPORTS)
 @Named("jbpmApplication")
-@SuppressWarnings({ "unchecked", "unused" })
 public class JBPMApplicationImpl implements JBPMApplication {
 
 	private static final Logger logger = LoggerFactory
@@ -623,7 +624,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 	// defaultPackage.Trade@1
 	// defaultPackage.Trade
-	public long startProcess(String processName, String creater,
+	public  long startProcess(String processName, String creater,
 			String paramsString) {
 		UserTransaction owner = null;
 		owner = startUserTransaction();
@@ -717,6 +718,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 			throw new RuntimeException(e);
 		}
 	}
+
 
 	public boolean completeTask(long processInstanceId, long taskId,
 			String user, String params, String data) {
@@ -1175,7 +1177,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	@WebMethod(exclude = true)
 	public Page<ProcessInstanceVO> queryRunningProcessInstances(
 			String processId, String versionNum, long firstRow, int pageSize) {
-		String hql = "select new org.openkoala.jbpm.application.vo.ProcessInstanceVO(log.processId,log.processInstanceId,exlog.processName,log.start,log.end,exlog.processData) from ProcessInstanceLog log , ProcessInstanceExpandLog exlog where"
+		String hql = "select new org.openkoala.bpm.application.vo.ProcessInstanceVO(log.processId,log.processInstanceId,exlog.processName,log.start,log.end,exlog.processData) from ProcessInstanceLog log , ProcessInstanceExpandLog exlog where"
 				+ " exlog.instanceLogId = log.id and exlog.state = 1";
 		if (processId != null && !"".equals(processId)) {
 			if (versionNum != null && !"".equals(versionNum)) {
@@ -1192,7 +1194,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 	@WebMethod(exclude = true)
 	public Page<ProcessInstanceVO> queryCompleteProcessInstances(
 			String processId, String versionNum, long firstRow, int pageSize) {
-		String hql = "select new org.openkoala.jbpm.application.vo.ProcessInstanceVO(log.processId,log.processInstanceId,exlog.processName,log.start,log.end,exlog.processData) from ProcessInstanceLog log , ProcessInstanceExpandLog exlog where"
+		String hql = "select new org.openkoala.bpm.application.vo.ProcessInstanceVO(log.processId,log.processInstanceId,exlog.processName,log.start,log.end,exlog.processData) from ProcessInstanceLog log , ProcessInstanceExpandLog exlog where"
 				+ " exlog.instanceLogId = log.id and exlog.state = 2";
 
 		if (processId != null && !"".equals(processId)) {
@@ -1454,9 +1456,7 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 	/**
 	 * 添加一个流程定义级的变量
-	 * 
-	 * @param packageName
-	 *            流程定义所有的包名
+	 *
 	 * @param processId
 	 *            流程定义的名称
 	 * @param key
@@ -1616,57 +1616,53 @@ public class JBPMApplicationImpl implements JBPMApplication {
 
 	private UserTransaction startUserTransaction() {
 		UserTransaction ut = null;
-		try {
-			try {
-				ut = (UserTransaction) new InitialContext()
-						.lookup("java:jboss/UserTransaction");
-			} catch (NameNotFoundException e) {
-				ut = (UserTransaction) new InitialContext()
-						.lookup("java:comp/UserTransaction");
-			}
-			ut.begin();
-		} catch (NotSupportedException e) {
-			e.printStackTrace();
-		} catch (SystemException e) {
-			e.printStackTrace();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			try {
+//				ut = (UserTransaction) new InitialContext()
+//						.lookup("java:jboss/UserTransaction");
+//			} catch (NameNotFoundException e) {
+//				ut = (UserTransaction) new InitialContext()
+//						.lookup("java:comp/UserTransaction");
+//			}
+//			ut.begin();
+//		} catch (NotSupportedException e) {
+//			e.printStackTrace();
+//		} catch (SystemException e) {
+//			e.printStackTrace();
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
 		return ut;
 	}
 
 	private void commitUserTransaction(UserTransaction ut) {
-		try {
-			if (ut.getStatus() == javax.transaction.Status.STATUS_MARKED_ROLLBACK) {
-				ut.rollback();
-			} else {
-				ut.commit();
-			}
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (RollbackException e) {
-			e.printStackTrace();
-		} catch (HeuristicMixedException e) {
-			e.printStackTrace();
-		} catch (HeuristicRollbackException e) {
-			e.printStackTrace();
-		} catch (SystemException e) {
-			e.printStackTrace();
-		}
+//		try {
+//            ut.commit();
+//		} catch (SecurityException e) {
+//			e.printStackTrace();
+//		} catch (IllegalStateException e) {
+//			e.printStackTrace();
+//		} catch (RollbackException e) {
+//			e.printStackTrace();
+//		} catch (HeuristicMixedException e) {
+//			e.printStackTrace();
+//		} catch (HeuristicRollbackException e) {
+//			e.printStackTrace();
+//		} catch (SystemException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	private void rollbackUserTransaction(UserTransaction ut) {
-		try {
-			ut.rollback();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (SystemException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			ut.rollback();
+//		} catch (IllegalStateException e) {
+//			e.printStackTrace();
+//		} catch (SecurityException e) {
+//			e.printStackTrace();
+//		} catch (SystemException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	private void setVariable(RuleFlowProcessInstance instance, String key,

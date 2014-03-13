@@ -12,7 +12,7 @@
                 <h4 class="modal-title">资源授权</h4>
             </div>
             <div class="modal-body" style="padding-left:45px; padding-right:65px;">
-              	 <ul id="resourceTree" class="tree" style="max-height: 280px;"></ul>
+              	 <ul id="resourceTree" class="tree" style="max-height: 280px;margin-top: 2px;"></ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

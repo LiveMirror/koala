@@ -14,7 +14,7 @@ import org.openkoala.auth.application.vo.ResourceVO;
 import org.openkoala.auth.application.vo.RoleVO;
 import org.openkoala.auth.application.vo.UserVO;
 import org.openkoala.koala.auth.ss3adapter.ehcache.CacheUtil;
-import com.dayatang.querychannel.support.Page;
+import org.dayatang.querychannel.Page;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class RoleAction extends ActionSupport {
@@ -192,14 +192,15 @@ public class RoleAction extends ActionSupport {
 		int limit = Integer.parseInt(pagesize);
 		Page<RoleVO> all = null;
 		if (userAccount == null || userAccount.isEmpty()) {
-			all = roleApplication.pageQueryRole(start, limit);
+			all = roleApplication.pageQueryRole(start - 1, limit);
 		} else {
-			all = new Page<RoleVO>(start, limit, limit, roleApplication.findRoleByUserAccount(userAccount));
+			List<RoleVO> roles = roleApplication.findRoleByUserAccount(userAccount);
+			all = new Page<RoleVO>(start - 1, roles.size(), limit, roles);
 		}
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Rows", all.getData());
+		dataMap.put("start", all.getStart());
+		dataMap.put("limit", all.getPageSize());
+		dataMap.put("Total", all.getResultCount());
 
 		return "JSON";
 	}
@@ -209,11 +210,11 @@ public class RoleAction extends ActionSupport {
 		int limit = Integer.parseInt(pagesize);
 		initSearchCondition();
 
-		Page<RoleVO> all = roleApplication.pageQueryByRoleCustom(start, limit, search);
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		Page<RoleVO> all = roleApplication.pageQueryByRoleCustom(start - 1, limit, search);
+		dataMap.put("Rows", all.getData());
+		dataMap.put("start", all.getStart());
+		dataMap.put("limit", all.getPageSize());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 
@@ -223,22 +224,19 @@ public class RoleAction extends ActionSupport {
 
 		initSearchCondition();
 
-		Page<RoleVO> all = roleApplication.pageQueryByRoleCustom(start, limit, search);
+		Page<RoleVO> all = roleApplication.pageQueryByRoleCustom(start - 1, limit, search);
 
 		if (userId != null) {
-			List<RoleVO> roles = all.getResult();
+			List<RoleVO> roles = all.getData();
 			for (RoleVO role : roleApplication.findRoleByUserAccount(userAccount)) {
 				roles.remove(role);
 			}
 		}
 
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
-		this.page = "";
-		this.pagesize = "";
-
+		dataMap.put("Rows", roles);
+		dataMap.put("start", all.getStart());
+		dataMap.put("limit", all.getPageSize());
+		dataMap.put("Total", all.getResultCount());
 		this.page = "";
 		this.pagesize = "";
 
@@ -268,12 +266,12 @@ public class RoleAction extends ActionSupport {
 
 		UserVO userVoForFind = new UserVO();
 		userVoForFind.setId(userId);
-		Page<RoleVO> all = userApplication.pageQueryNotAssignRoleByUser(start, limit, userVoForFind);
+		Page<RoleVO> all = userApplication.pageQueryNotAssignRoleByUser(start - 1, limit, userVoForFind);
 
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Rows", all.getData());
+		dataMap.put("start", all.getStart());
+		dataMap.put("limit", all.getPageSize());
+		dataMap.put("Total", all.getResultCount());
 
 		return "JSON";
 	}

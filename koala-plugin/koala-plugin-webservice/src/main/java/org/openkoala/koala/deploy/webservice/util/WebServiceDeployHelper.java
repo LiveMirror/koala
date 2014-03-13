@@ -38,6 +38,9 @@ public class WebServiceDeployHelper {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebServiceDeployHelper.class);
 
+	private static final String PAGE_TYPE_IDENTIFIER = "Page<";
+	private static final String PAGE_TYPE_FULL_NAME_IDENTIFIER = "org.dayatang.querychannel.Page<";
+	
 	public static MavenProject getProject(String path) throws KoalaException {
 		MavenProject project = ProjectParseUtil.parseProject(path);
 		return project;
@@ -71,6 +74,10 @@ public class WebServiceDeployHelper {
 						List<MethodDeclaration> methods = JavaManagerUtil.getMethodDeclaration(interfaceJava);
 						List<WebServiceMethod> methodList = new ArrayList<WebServiceMethod>();
 						for (MethodDeclaration method : methods) {
+							if (method.getType().toString().startsWith(PAGE_TYPE_IDENTIFIER) 
+									|| method.getType().toString().startsWith(PAGE_TYPE_FULL_NAME_IDENTIFIER)  ) {
+								continue;
+							}
 							methodList.add(generateRestWebServiceMethod(method));
 						}
 						InterfaceObj interfaceObj = new InterfaceObj(implInter, interfaceJava, java, impl.getPath()

@@ -149,7 +149,7 @@ var employee = function(){
     var selectDepartments = function(){
 		$.get( contextPath + '/pages/organisation/selectDepartmentTemplate.jsp').done(function(data){
 			var departmentTreeDialog = $(data);
-			departmentTreeDialog.find('.modal-dialog').css({width:'800px'});
+			departmentTreeDialog.find('.modal-body').css({height:'325px'});
 			departmentTree = departmentTreeDialog.find('.tree');
             loadDepartmentTree();
 			departmentTreeDialog.find('#confirm').on('click',function(){
@@ -172,7 +172,11 @@ var employee = function(){
      * 加载部门树
      */
     var loadDepartmentTree = function(){
+    	departmentTree.parent().loader({
+			opacity: 0
+		});
         $.get(contextPath  + '/organization/orgTree.koala').done(function(data){
+            departmentTree.parent().loader('hide');
             var zNodes = new Array();
             $.each(data, function(){
                 var zNode = {};
@@ -314,7 +318,6 @@ var employee = function(){
 				});
 			}
 			dialog.find('#save').removeAttr('disabled');
-			refreshToken(dialog.find('input[name="koala.token"]'));
 		});
 	};
 	/*
@@ -359,7 +362,7 @@ var employee = function(){
 		if (terminateDate != null) {
 			data.terminateDate = terminateDate;
 		}
-		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
+
 		return data;
 	};
 	/**

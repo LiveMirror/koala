@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Remote
 @Stateless(name = "ResourceTypeApplication")
 @Transactional(value = "transactionManager_security")
-// @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTypeApplication {
 
 	public boolean isExist(ResourceTypeVO resourceTypeVO) {

@@ -11,8 +11,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.CriteriaQuery;
 import org.openkoala.organisation.NameExistException;
-import org.openkoala.organisation.OrganizationHasPrincipalYetException;
-import org.openkoala.organisation.PostExistException;
 import org.openkoala.organisation.TheJobHasPostAccountabilityException;
 
 /**

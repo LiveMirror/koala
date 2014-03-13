@@ -15,11 +15,8 @@
     <description>业务日志子系统，用于记录用户的业务操作</description>
     <modules>
         <module>koala-businesslog-api</module>
-        <module>koala-businesslog-impl</module>
         <module>koala-businesslog-acceptance-test</module>
-        <module>koala-businesslog-sample</module>
-        <module>koala-businesslog-sample2</module>
-        <module>koala-businesslog-groovyImpl</module>
+        <module>koala-businesslog-impl</module>
     </modules>
 
 
@@ -38,24 +35,6 @@
         <cargo.context>/bl</cargo.context>
         <browser>org.openqa.selenium.firefox.FirefoxDriver</browser>
     </properties>
-
-    <!--<profiles> <profile> <id>businesslog</id> <activation> <activeByDefault>true</activeByDefault>
-        </activation> <properties> <hibernate.hbm2ddl.auto>create-drop</hibernate.hbm2ddl.auto>
-        <hibernate.show_sql>true</hibernate.show_sql> <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
-        <db.jdbcDriver>org.h2.Driver</db.jdbcDriver> <db.connectionURL>jdbc:h2:~/db/businesslog_test;MVCC=true</db.connectionURL>
-        <db.generateDdl>true</db.generateDdl> <db.username>sa</db.username> <db.password/>
-        <db.Type>H2</db.Type> <db.groupId>com.h2database</db.groupId> <db.artifactId>h2</db.artifactId>
-        <db.version>1.3.174</db.version> </properties> </profile> <profile> <id>bl-mysql</id>
-        <activation> <activeByDefault>false</activeByDefault> </activation> <properties>
-        <hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto> <hibernate.show_sql>true</hibernate.show_sql>
-        <db.generateDdl>true</db.generateDdl> <db.Type>MYSQL</db.Type> <db.port>3306</db.port>
-        <db.name>businesslog_test</db.name> <hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</hibernate.dialect>
-        <db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver> <db.groupId>mysql</db.groupId>
-        <db.artifactId>mysql-connector-java</db.artifactId> <db.version>5.1.22</db.version>
-        <db.connectionURL> <![CDATA[jdbc:mysql://127.0.0.1:${db.port}/${db.name}?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8]]></db.connectionURL>
-        <db.username>root</db.username> <db.password></db.password> </properties>
-        </profile> </profiles> -->
-
 
     <developers>
         <developer>

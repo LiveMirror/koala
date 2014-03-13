@@ -9,7 +9,7 @@ import org.openkoala.auth.application.ResourceApplication;
 import org.openkoala.auth.application.vo.ResourceVO;
 import org.openkoala.auth.application.vo.RoleVO;
 import org.openkoala.koala.auth.ss3adapter.ehcache.CacheUtil;
-import com.dayatang.querychannel.support.Page;
+import org.dayatang.querychannel.Page;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ResourceAction extends ActionSupport {
@@ -98,11 +98,11 @@ public class ResourceAction extends ActionSupport {
 	public String pageQueryNotAssignUrlByUser() {
 		int start = Integer.parseInt(page);
 		int limit = Integer.parseInt(pagesize);
-		Page<ResourceVO> all = resourceApplication.pageQueryNotAssignByRole(start, limit, roleVO);
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		Page<ResourceVO> all = resourceApplication.pageQueryNotAssignByRole(start - 1, limit, roleVO);
+		dataMap.put("Rows", all.getData());
+		dataMap.put("start", all.getStart());
+		dataMap.put("limit", all.getPageSize());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 
