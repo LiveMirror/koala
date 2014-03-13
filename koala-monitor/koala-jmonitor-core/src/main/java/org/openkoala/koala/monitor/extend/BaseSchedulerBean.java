@@ -225,8 +225,6 @@ public abstract class BaseSchedulerBean {
         return 60;
     }
 
-
-    //@PostConstruct
     public void onStart() {
         if(StringUtils.isBlank(triggerName))return;
         transactionTemplate.execute(new TransactionCallback<Object>() {

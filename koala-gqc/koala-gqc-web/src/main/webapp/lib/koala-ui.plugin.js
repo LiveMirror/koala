@@ -1060,7 +1060,29 @@
 			}
 		}).focus().parent().addClass('has-error');
 	};
-	ModifyPassword.DEFAULTS.TEMPLATE = '<div class="modal fade" id="modifyPwd">' + '<div class="modal-dialog modify-pwd" style="padding-top:80px;">' + '<div class="modal-content">' + '<div class="modal-header">' + '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + '<h4 class="modal-title">修改密码</h4>' + '</div>' + '<div class="modal-body"> ' + '<form class="form-horizontal" role="form">' + '<div class="form-group">' + '<label for="oldPassword" class="col-lg-3 control-label">原始密码:</label>' + '<div class="col-lg-9">' + '<input type="password" class="form-control" style="width:80%;" id="oldPassword" >' + '</div> ' + '</div>  ' + '<div class="form-group">' + '<label for="newPassword" class="col-lg-3 control-label">新密码:</label>' + '<div class="col-lg-9">' + '<input type="password" class="form-control" style="width:80%;" id="newPassword">' + '</div> ' + '</div> ' + '<div class="form-group"> ' + '<label for="confirmPassword" class="col-lg-3 control-label">确认密码:</label>' + '<div class="col-lg-9">' + '<input type="password" class="form-control" style="width:80%;" id="confirmPassword"> ' + '</div>' + '</div>' + '</form>' + '</div>' + '<div class="modal-footer"> ' + '<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>' + '<button type="button" class="btn btn-success" data-toggle="save">保存</button>' + '</div>' + '</div>  ' + '</div>  ' + '</div>';
+	ModifyPassword.DEFAULTS.TEMPLATE = '<div class="modal fade" id="modifyPwd">' 
+		+ '<div class="modal-dialog modify-pwd" style="padding-top:80px;">' 
+		+ '<div class="modal-content">' 
+		+ '<div class="modal-header">' 
+		+ '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' 
+		+ '<h4 class="modal-title">修改密码</h4>' 
+		+ '</div><div class="modal-body"> ' 
+		+ '<form class="form-horizontal" role="form">' 
+		+ '<div class="form-group">' 
+		+ '<label for="oldPassword" class="col-lg-3 control-label">原始密码:</label>' 
+		+ '<div class="col-lg-9">' 
+		+ '<input type="password" class="form-control" style="width:80%;" id="oldPassword" /><span class="required">*</span>' 
+		+ '</div></div><div class="form-group">' 
+		+ '<label for="newPassword" class="col-lg-3 control-label">新密码:</label>' 
+		+ '<div class="col-lg-9">' 
+		+ '<input type="password" class="form-control" style="width:80%;" id="newPassword"/><span class="required">*</span>' 
+		+ '</div></div><div class="form-group"> ' 
+		+ '<label for="confirmPassword" class="col-lg-3 control-label">确认密码:</label>' 
+		+ '<div class="col-lg-9">' 
+		+ '<input type="password" class="form-control" style="width:80%;" id="confirmPassword"/><span class="required">*</span> ' 
+		+ '</div></div></form></div><div class="modal-footer"> ' 
+		+ '<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>' 
+		+ '<button type="button" class="btn btn-success" data-toggle="save">保存</button>' + '</div>' + '</div>  ' + '</div>  ' + '</div>';
 	var old = $.fn.modifyPassword;
 	$.fn.modifyPassword = function(option) {
 		return this.each(function() {

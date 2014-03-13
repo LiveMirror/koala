@@ -91,14 +91,16 @@ public class LocalDataPolicyHandler extends BaseSchedulerBean implements DataPol
 				@Override
 				public Object doInTransaction(TransactionStatus status) {
 					try {
-						node.active();
+						node.addCache();
+                        repository.save(node);
 					} catch (Exception e) {
-						repository.save(node);
+                        e.printStackTrace();
 					}
 					return null;
 				}
 			});
 		} catch (Exception e) {
+            e.printStackTrace();
 			LOG.error("数据同步服务启动失败["+e.getMessage() + "]");
 		}
 		
@@ -108,7 +110,6 @@ public class LocalDataPolicyHandler extends BaseSchedulerBean implements DataPol
 	
 
 	@Override
-	@PostConstruct
 	public void onStart() {
 		super.onStart();
 		startup();
