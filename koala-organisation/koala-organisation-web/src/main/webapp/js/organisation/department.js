@@ -347,7 +347,6 @@ var department = function(){
 	};
     var createRightMenu = function(ev){
         var $element = $(ev.currentTarget);
-        alert($element.data('organizationType'));
         var menuData = null;
         menuData = [
             {title:'创建分公司', action: 'addCompany'},
