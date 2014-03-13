@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.RoleApplication;
 import org.openkoala.auth.application.UserApplication;
@@ -157,7 +159,7 @@ public class UserController extends BaseController{
 	@ResponseBody
 	@RequestMapping("/add")
 	public Map<String, Object> add(ParamsPojo userPojo) {
-		UserVO userVO = userPojo.getUserVO();
+		UserVO userVO = trimUserVOWhite(userPojo.getUserVO());
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		userVO.setSerialNumber("0");
 		userVO.setUserPassword(passwordEncoder.encode(userVO.getUserPassword()));
@@ -183,7 +185,7 @@ public class UserController extends BaseController{
 	@ResponseBody
 	@RequestMapping("/update")
 	public Map<String, Object> update(ParamsPojo userPojo) {
-		UserVO userVO = userPojo.getUserVO();
+		UserVO userVO =  trimUserVOWhite(userPojo.getUserVO());
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		this.userApplication.updateUser(userVO);
 		dataMap.put("result", "success");
@@ -243,5 +245,12 @@ public class UserController extends BaseController{
 		dataMap.put("result", "success");
 		return dataMap;
 	}
+
+    private UserVO trimUserVOWhite(UserVO userVO){
+        userVO.setEmail(StringUtils.trim(userVO.getEmail()));
+        userVO.setName(StringUtils.trim(userVO.getName()));
+        userVO.setUserAccount(StringUtils.trim(userVO.getUserAccount()));
+        return userVO;
+    }
 
 }
