@@ -79,6 +79,8 @@ public class MainStat extends KmBaseLegacyEntity {
 
     }
 
+
+
     @Id
     @Column(name = "THREAD_KEY")
     public String getThreadKey() {

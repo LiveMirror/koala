@@ -4,7 +4,16 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 	<display-name>${Project.appName}-web</display-name>
-	
+
+    <!-- Spring Listener -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:META-INF/spring/root.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
+    </listener>
+
 	
 	#if ($Module.monitor)
 	<!-- monitor config begin-->
@@ -29,14 +38,7 @@
 #end
 
 	
-<!-- Spring Listener -->
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath*:META-INF/spring/root.xml</param-value>
-	</context-param>
-    <listener>
-		<listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
-	</listener>
+
 
 	<!-- Character Filter -->
 	<filter>
