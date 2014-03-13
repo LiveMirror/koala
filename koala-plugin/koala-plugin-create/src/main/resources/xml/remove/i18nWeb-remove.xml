@@ -5,7 +5,9 @@
 	<property name="funType">i18nWeb</property>
 	<property name="files">
 		<value>src/main/resources/messages_en.properties</value>
-		<value>src/main/resources/messages_zh_CN.properties</value>
+		<value>src/main/resources/messages_en_us.properties</value>
+		<value>src/main/resources/messages_zh_cn.properties</value>
+		<value>src/main/resources/messages_zh_tw.properties</value>
 		<value>src/main/webapp/i18n.jsp</value>
 	</property>
 </ModuleRemove>

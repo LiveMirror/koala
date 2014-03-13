@@ -6,6 +6,8 @@
 	<property name="files">
 	  <value>src/test/java/org/openkoala/i18n/I18nTest.java</value>
 	  <value>src/test/resources/i18n/message_en.properties</value>
-	  <value>src/test/resources/i18n/message_zh_CN.properties</value>
+	  <value>src/test/resources/i18n/message_zh_cn.properties</value>
+	  <value>src/test/resources/i18n/message_zh_tw.properties</value>
+	  <value>src/test/resources/i18n/message_en_us.properties</value>
 	</property>
 </ModuleRemove>
