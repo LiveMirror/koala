@@ -86,8 +86,8 @@ public class LocalDataPolicyHandler extends BaseSchedulerBean implements DataPol
 			for (ComponentDef compDef : components) {
 				node.getConponents().add(new MonitorComponent(compDef));
 			}
-			//TODO 升级dddlib 4之后此段代码不能正常执行 节点无法初始化
-			/*transactionTemplate.execute(new TransactionCallback<Object>() {
+
+			transactionTemplate.execute(new TransactionCallback<Object>() {
 				@Override
 				public Object doInTransaction(TransactionStatus status) {
 					try {
@@ -97,7 +97,7 @@ public class LocalDataPolicyHandler extends BaseSchedulerBean implements DataPol
 					}
 					return null;
 				}
-			});*/
+			});
 		} catch (Exception e) {
 			LOG.error("数据同步服务启动失败["+e.getMessage() + "]");
 		}
@@ -117,17 +117,6 @@ public class LocalDataPolicyHandler extends BaseSchedulerBean implements DataPol
 
 	@Override
 	public void doJob() throws Exception {
-		//TODO 临时采用这种方式进行节点初始化
-		if(!nodeInitOk){
-			transactionTemplate.execute(new TransactionCallback<Object>() {
-				@Override
-				public Object doInTransaction(TransactionStatus status) {
-					node.active();
-					return null;
-				}
-			});
-			nodeInitOk = true;
-		}
 		
 		if(LOG.isDebugEnabled())LOG.debug("====开始同步监控数据===");
 		Map<String, List<Trace>> traces = RuntimeContext.getContext().getDataCache().getAllCacheTrace();

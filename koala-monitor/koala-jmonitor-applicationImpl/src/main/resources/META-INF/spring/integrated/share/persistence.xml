@@ -22,7 +22,7 @@
     </bean>
 
     <bean id="km_repository" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
-        <property name="entityManagerName" value="kmEntityManager"/>
+        <property name="entityManager" ref="kmEntityManager"/>
     </bean>
 
     <bean id="km_queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">

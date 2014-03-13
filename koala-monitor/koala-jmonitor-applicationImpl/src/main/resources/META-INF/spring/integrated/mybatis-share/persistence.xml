@@ -16,12 +16,12 @@
 		http://www.springframework.org/schema/aop 
 		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-    <bean id="kmEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
-        <property name="persistenceUnitName" value="jpadefault" />
+    <bean id="kmEntityManager" name="kmEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
+        <property name="persistenceUnitName" value="default" />
     </bean>
 
     <bean id="km_repository" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
-        <property name="entityManagerName" value="kmEntityManager"/>
+        <property name="entityManager" ref="kmEntityManager"/>
     </bean>
 
     <bean id="km_queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
