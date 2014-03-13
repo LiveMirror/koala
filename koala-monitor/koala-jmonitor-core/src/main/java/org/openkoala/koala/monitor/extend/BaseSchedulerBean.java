@@ -69,9 +69,18 @@ public abstract class BaseSchedulerBean {
     @Named("km_transactionTemplate")
     protected TransactionTemplate transactionTemplate;
     
+
     @Inject
     @Named("km_repository")
     protected EntityRepository repository;
+
+    protected EntityRepository getRepository(){
+        if(repository==null){
+            repository = InstanceFactory.getInstance(EntityRepository.class,"km_repository");
+        }
+        return repository;
+    }
+
 
     public void setRepository(EntityRepository repository) {
 		this.repository = repository;
@@ -217,18 +226,18 @@ public abstract class BaseSchedulerBean {
     }
 
 
-    @PostConstruct
+    //@PostConstruct
     public void onStart() {
         if(StringUtils.isBlank(triggerName))return;
         transactionTemplate.execute(new TransactionCallback<Object>() {
 			@Override
 			public Object doInTransaction(TransactionStatus status) {
-				SchedulerConfg scheduler = repository.get(SchedulerConfg.class, triggerName);
+				SchedulerConfg scheduler = getRepository().get(SchedulerConfg.class, triggerName);
 		        if (scheduler == null) {
 		            scheduler = new SchedulerConfg(triggerName, schedulerName, cronExpression);
 		        }
 		        scheduler.setRunning(false);
-				repository.save(scheduler);
+                getRepository().save(scheduler);
 				return null;
 			}
 		});

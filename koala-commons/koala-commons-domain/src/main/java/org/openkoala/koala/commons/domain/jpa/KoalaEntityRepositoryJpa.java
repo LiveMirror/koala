@@ -29,8 +29,17 @@ public class KoalaEntityRepositoryJpa implements
     private String entityManagerName;
 
 
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    private EntityManager entityManager;
+
     public EntityManager getEntityManager() {
-        return InstanceFactory.getInstance(EntityManager.class, entityManagerName);
+        if(entityManager==null){
+            return InstanceFactory.getInstance(EntityManager.class, entityManagerName);
+        }
+        return entityManager;
     }
 
     private NamedQueryParser namedQueryParser;
@@ -53,6 +62,7 @@ public class KoalaEntityRepositoryJpa implements
     @Override
     public <T extends Entity> T save(T entity) {
         if (entity.notExisted()) {
+
             getEntityManager().persist(entity);
             LOGGER.info("create a entity: " + entity.getClass() + "/"
                     + entity.getId() + ".");

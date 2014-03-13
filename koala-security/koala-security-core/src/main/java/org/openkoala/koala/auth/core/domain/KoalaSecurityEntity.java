@@ -49,7 +49,7 @@ import org.dayatang.domain.NamedParameters;
  * 修 改 者    修改日期     文件版本   修改说明	
  */
 @MappedSuperclass
-public abstract class KoalaSecurityEntity extends BaseEntity {
+public abstract class KoalaSecurityEntity implements Entity {
     
     private static final long serialVersionUID = 1342711951865077906L;
 
@@ -220,7 +220,34 @@ public abstract class KoalaSecurityEntity extends BaseEntity {
 			return false;
 		return true;
 	}
-    
+
+
+    public abstract String[] businessKeys();
+
+    /**
+     * 判断该实体是否已经存在于数据库中。
+     * @return 如果数据库中已经存在拥有该id的实体则返回true，否则返回false。
+     */
+    @Override
+    public boolean existed() {
+        Object id = getId();
+        if (id == null) {
+            return false;
+        }
+        if (id instanceof Number && ((Number)id).intValue() == 0) {
+            return false;
+        }
+        return getRepository().exists(getClass(), getId());
+    }
+
+    /**
+     * 判断该实体是否不存在于数据库中。
+     * @return 如果数据库中已经存在拥有该id的实体则返回false，否则返回true。
+     */
+    @Override
+    public boolean notExisted() {
+        return !existed();
+    }
     
     
 }

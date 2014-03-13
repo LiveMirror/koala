@@ -42,13 +42,17 @@
 		</property>
 	</bean>
 
-	<bean id="repository_gqc" class="org.dayatang.persistence.jpa.EntityRepositoryJpa">
-		<constructor-arg name="entityManagerFactory" ref="entityManagerFactory_gqc" />
-	</bean>
+    <bean id="gqcEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
+        <property name="persistenceUnitName" value="gqc" />
+    </bean>
 
-	<bean id="queryChannel_gqc" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
-		<constructor-arg name="repository" ref="repository_gqc" />
-	</bean>
+    <bean id="repository_gqc" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
+        <property name="entityManagerName" value="gqcEntityManager"/>
+    </bean>
+
+    <bean id="queryChannel_gqc" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+        <constructor-arg name="repository" ref="repository_gqc" />
+    </bean>
 	
 	
 	<bean id="dataSource_gqc" class="org.logicalcobwebs.proxool.ProxoolDataSource">

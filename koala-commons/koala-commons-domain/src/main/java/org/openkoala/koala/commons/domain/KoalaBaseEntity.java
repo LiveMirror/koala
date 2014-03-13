@@ -38,6 +38,7 @@ public abstract class KoalaBaseEntity implements Entity {
         if (id instanceof Number && ((Number)id).intValue() == 0) {
             return false;
         }
+
         return getRepository().exists(getClass(), getId());
     }
 

@@ -63,5 +63,7 @@ public interface DataPolicyHandler {
 	 * @return
 	 */
 	Map<String, JdbcPoolStatusVo> getJdbcPoolStatus(String nodeId);
+
+    public void onStart();
 	
 }

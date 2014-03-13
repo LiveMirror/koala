@@ -19,23 +19,23 @@
 		http://www.springframework.org/schema/aop 
 		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-    <bean id="gqcEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
-        <property name="persistenceUnitName" value="default" />
+    <bean id="logEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
+        <property name="persistenceUnitName" value="jpadefault" />
     </bean>
 
-    <bean id="repository_gqc" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
-        <property name="entityManagerName" value="gqcEntityManager"/>
+    <bean id="repository_businessLog" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
+        <property name="entityManagerName" value="logEntityManager"/>
     </bean>
 
-    <bean id="queryChannel_gqc" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
-        <constructor-arg name="repository" ref="repository_gqc" />
+    <bean id="queryChannel_businessLog" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
+        <constructor-arg name="repository" ref="repository_businessLog" />
     </bean>
 
     <!-- 标注事务 -->
 	<tx:annotation-driven transaction-manager="transactionManager_gqc" />
 	
 	<bean id="transactionManager_gqc" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="entityManagerFactory" ref="entityManagerFactoryJPA" />
 	</bean>
 	
 	<!-- security datasource 的配置   结束-->
