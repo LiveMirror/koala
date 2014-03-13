@@ -14,7 +14,7 @@ $(function(){
     });
     var yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    startTime.datetimepicker('setDate', yesterday)
+    startTime.datetimepicker('setDate', yesterday);
     endTime.datetimepicker({
         language: 'zh-CN',
         format: "yyyy-mm-dd hh:ii:ss",
@@ -99,10 +99,10 @@ $(function(){
             searchCondition: searchCondition,
             url: contextPath + '/monitor/Monitor/methodMonitorCount.koala'
         }).on('complateRenderData', function(event, data){
-                loadChart(data.Rows);
+                loadChart(data.data);
                 $(window).trigger('resize');
             });
-    }
+    };
     var loadChart = function(data){
         if(!data || data.length == 0){
         	$('#methodDetailChart').css('height', 0);
@@ -225,7 +225,7 @@ var showMethodMonitorDetail = function(method){
                             name : 'stackTracesDetails',
                             width : 150,
                             render: function(item, name, index){
-                                return '<a onclick="showSqlsMonitorDetail(\''+item.id+'\')">查看SQLS </a>&nbsp;&nbsp;&nbsp;<a onclick="showStackTracesDetail(this)" stackTracesDetails="'+item.stackTracesDetails+'">查看堆栈信息</a>';
+                                return '<a onclick="showStackTracesDetail(this)" stackTracesDetails="'+item.stackTracesDetails+'">查看堆栈信息</a>';
                             }
                         }
                     ];
@@ -253,7 +253,7 @@ var showMethodMonitorDetail = function(method){
            }
         }
     });
-}
+};
 var showStackTracesDetail = function(obj){
     $.get('/pages/monitor/stack-trace-detail.html').done(function(data){
         $(data).modal({
@@ -263,55 +263,55 @@ var showStackTracesDetail = function(obj){
              $(this).remove();
          }).find('.modal-body').html($(obj).attr('stackTracesDetails'));
     });
-}
-var showSqlsMonitorDetail = function(methodId){
-    $.get('/pages/monitor/sql-monitor-detail.jsp').done(function(data){
-    	var dialog = $(data);
-    	dialog.modal({
-        	keyboard: true,
-        	backdrop: false
-        }).on({
-                'hidden.bs.modal': function(){
-                    $(this).remove();
-                },
-                'shown.bs.modal': function(){
-                    var columns = [
-                        {
-                            title : 'SQL',
-                            name : 'sql',
-                            width : 450
-                        },
-                        {
-                            title : '耗时（毫秒）',
-                            name : 'timeConsume',
-                            width : 150
-                        },
-                        {
-                            title : '开始时间',
-                            name : 'beginTime',
-                            width : 180,
-                            render: function(item, name, index){
-                                var date = new Date(item[name]);
-                                return date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
-                                    +' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
-                            }
-                        }
-                    ];
-                    $(this).find('#dataGrid').grid({
-                        identity: 'id',
-                        isShowIndexCol: false,
-                        columns: columns,
-	                    sortName: 'timeConsume',
-	                    sortOrder : 'DESC',
-                        url : '/monitor/Monitor/sqlsMonitorDetail.koala?methodId='+methodId
-                    });
-                }
-        });
-        //兼容IE8 IE9
-        if(window.ActiveXObject){
-           if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){
-        	   dialog.trigger('shown.bs.modal');
-           }
-        }
-    });
-}
+};
+//var showSqlsMonitorDetail = function(methodId){
+//    $.get('/pages/monitor/sql-monitor-detail.jsp').done(function(data){
+//    	var dialog = $(data);
+//    	dialog.modal({
+//        	keyboard: true,
+//        	backdrop: false
+//        }).on({
+//                'hidden.bs.modal': function(){
+//                    $(this).remove();
+//                },
+//                'shown.bs.modal': function(){
+//                    var columns = [
+//                        {
+//                            title : 'SQL',
+//                            name : 'sql',
+//                            width : 450
+//                        },
+//                        {
+//                            title : '耗时（毫秒）',
+//                            name : 'timeConsume',
+//                            width : 150
+//                        },
+//                        {
+//                            title : '开始时间',
+//                            name : 'beginTime',
+//                            width : 180,
+//                            render: function(item, name, index){
+//                                var date = new Date(item[name]);
+//                                return date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+//                                    +' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+//                            }
+//                        }
+//                    ];
+//                    $(this).find('#dataGrid').grid({
+//                        identity: 'id',
+//                        isShowIndexCol: false,
+//                        columns: columns,
+//	                    sortName: 'timeConsume',
+//	                    sortOrder : 'DESC',
+//                        url : '/monitor/Monitor/sqlsMonitorDetail.koala?methodId='+methodId
+//                    });
+//                }
+//        });
+//        //兼容IE8 IE9
+//        if(window.ActiveXObject){
+//           if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){
+//        	   dialog.trigger('shown.bs.modal');
+//           }
+//        }
+//    });
+//}
