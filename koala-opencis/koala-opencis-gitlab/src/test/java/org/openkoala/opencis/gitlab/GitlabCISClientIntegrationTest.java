@@ -1,5 +1,6 @@
 package org.openkoala.opencis.gitlab;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,37 +38,38 @@ public class GitlabCISClientIntegrationTest {
         assert cisClient.authenticate();
     }
 
-    @After
+    //@After
     public void tearDown() throws Exception {
         for (Developer developer : createDevelops()) {
             assert !cisClient.isUserExist(developer);
         }
-
     }
 
     @Test
     public void test1() throws Exception {
-        Project project = createProject();
 
-        cisClient.createProject(project);
-        assert cisClient.isProjectExist(project);
+        for (int i = 20; i > 0; i--) {
+            Project project = createProject("mavenProject" + i);
+
+            cisClient.createProject(project);
+            assert cisClient.isProjectExist(project);
 
 
-        for (Developer developer : createDevelops()) {
-            cisClient.createUserIfNecessary(project, developer);
-            assert cisClient.isUserExist(developer);
-            cisClient.assignUsersToRole(project, "", developer);
+            for (Developer developer : createDevelops()) {
+                cisClient.createUserIfNecessary(project, developer);
+                assert cisClient.isUserExist(developer);
+                cisClient.assignUsersToRole(project, "", developer);
+            }
+
+
+            for (Developer developer : createDevelops()) {
+                GitlabClient cisClient1 = new GitlabClient(getConfiguration());
+                cisClient1.removeUser(project, developer);
+            }
+
+           cisClient.removeProject(project);
+           assert !cisClient.isProjectExist(project);
         }
-
-
-        for (Developer developer : createDevelops()) {
-            GitlabClient cisClient1 = new GitlabClient(getConfiguration());
-            cisClient1.removeUser(project, developer);
-        }
-
-        cisClient.removeProject(project);
-        assert !cisClient.isProjectExist(project);
-
 
     }
 
@@ -80,13 +82,29 @@ public class GitlabCISClientIntegrationTest {
         return result;
     }
 
-    private Project createProject() {
+    private Project createProject(String name) {
         Project project = new Project();
         project.setArtifactId("projectforte222");
         project.setDescription("This project is for test");
-        project.setProjectName("projettt666");
-        project.setPhysicalPath(GitlabCISClientIntegrationTest.class.getResource("/ProjectTest/").getFile());
+        project.setProjectName(name);
+        project.setPhysicalPath(createProjectDir(name));
         return project;
+    }
+
+
+    private String createProjectDir(String name) {
+        String path = GitlabCISClientIntegrationTest.class.getResource("/").getFile();
+        File file = new File(path + File.separator + name + File.separator);
+        try {
+            file.deleteOnExit();
+            file.createNewFile();
+            assert file.exists();
+            new File(path + "README.md").createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return path;
     }
 
     private Developer createDevelop(String id) {
@@ -102,11 +120,11 @@ public class GitlabCISClientIntegrationTest {
     private GitlabConfiguration getConfiguration() {
         GitlabConfiguration configuration = new GitlabConfiguration();
 
-        configuration.setToken(getToken());
+        configuration.setToken("s4zLyXpWZCwAq6y5Ejar");
         configuration.setGitlabHostURL("http://127.0.0.1");
         configuration.setUsername("root");
         configuration.setEmail("admin@local.com");
-        configuration.setPassword("5iveL!fe");
+        configuration.setPassword("12345678");
         return configuration;
     }
 
@@ -115,8 +133,8 @@ public class GitlabCISClientIntegrationTest {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost post = new HttpPost("http://127.0.0.1/api/v3/session");
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("login", "admin@local.host"));
-        params.add(new BasicNameValuePair("password", "5iveL!fe"));
+        params.add(new BasicNameValuePair("login", "root"));
+        params.add(new BasicNameValuePair("password", "12345678"));
 
 
         try {
