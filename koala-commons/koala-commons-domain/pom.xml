@@ -23,5 +23,11 @@
 			<artifactId>dddlib-domain</artifactId>
 		</dependency>
 
+        <dependency>
+            <groupId>org.dayatang.dddlib</groupId>
+            <artifactId>dddlib-persistence-jpa</artifactId>
+            <optional>true</optional>
+        </dependency>
+
 	</dependencies>
 </project>

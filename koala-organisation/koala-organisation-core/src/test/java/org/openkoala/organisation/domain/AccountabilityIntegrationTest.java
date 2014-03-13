@@ -61,16 +61,7 @@ public class AccountabilityIntegrationTest extends AbstractIntegrationTest {
 		assertEquals(orgLineManagement, Accountability.getByCommissionerAndResponsible(Accountability.class, company, department, now));
 		assertEquals(employeePostHolding, Accountability.getByCommissionerAndResponsible(Accountability.class, post, employee, now));
 	}
-	
-	@Test
-	public void testFindAccountabilities() {
-		List<OrganizationLineManagement> orgLineManagements = Accountability.findAccountabilities(OrganizationLineManagement.class, now);
-		assertTrue(orgLineManagements.contains(orgLineManagement));
-		
-		List<EmployeePostHolding> employeePostHoldings = Accountability.findAccountabilities(EmployeePostHolding.class, now);
-		assertTrue(employeePostHoldings.contains(employeePostHolding));
-	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@Test
 	public void testFindAccountabilitiesByParty() {

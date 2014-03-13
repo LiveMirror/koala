@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/auth/User")
-public class UserController {
+public class UserController extends BaseController{
 
 	private static final String INIT_PASSWORD = "888888";
 

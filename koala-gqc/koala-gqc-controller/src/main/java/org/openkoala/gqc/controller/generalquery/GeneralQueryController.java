@@ -67,7 +67,7 @@ public class GeneralQueryController {
         			generalQuery.getDataSource().getId(), generalQuery.getQueryName(), 
         			generalQuery.getTableName(), generalQuery.getDescription(), generalQuery.getCreateDate()));
         }
-		return new Page<GeneralQueryVo>(all.getStart(), all.getResultCount(), generalQueryVos);
+		return new Page(all.getStart(), all.getResultCount(), all.getPageSize(), generalQueryVos);
 	}
     
 	/**

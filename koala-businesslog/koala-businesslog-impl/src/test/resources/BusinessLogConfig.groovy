@@ -13,6 +13,7 @@ class BusinessLogConfig {
         String xx = contractApplication.addContract(22)
 
         "add invoice " + xx
+        
     }
 
     def ProjectApplicationImpl_findSomeProjects() {

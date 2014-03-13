@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/auth/ResourceType")
-public class ResourceTypeController {
+public class ResourceTypeController extends BaseController{
 
 	@Inject
 	private ResourceTypeApplication resourceTypeApplication;

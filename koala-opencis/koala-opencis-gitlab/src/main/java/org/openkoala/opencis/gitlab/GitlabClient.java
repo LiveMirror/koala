@@ -162,7 +162,7 @@ public class GitlabClient implements CISClient {
             throw new CISClientBaseRuntimeException("project's physicalPath must bet not null!");
         }
 
-        GitClient.init(project.getPhysicalPath(), getHttpTransportUrl(project.getPhysicalPath(), config));
+        GitClient.init(project.getPhysicalPath(), getHttpTransportUrl(project.getProjectName(), config));
 
         GitClient gitClient = new GitClient(config.getUsername(), config.getPassword(), config.getEmail(), project.getPhysicalPath());
 
@@ -176,8 +176,7 @@ public class GitlabClient implements CISClient {
 
     private String getHttpTransportUrl(String projectName, GitlabConfiguration gitlabConfiguration) {
         assert StringUtils.isNotEmpty(projectName);
-        return gitlabConfiguration.getGitlabUserUrl()
-                + "/" + projectName.toLowerCase() + ".git";
+        return gitlabConfiguration.getGitlabUserUrl() + projectName.toLowerCase() + ".git";
     }
 
     @Override
@@ -188,7 +187,7 @@ public class GitlabClient implements CISClient {
         try {
             createGitlabHTTPRequestor().method("POST")
                     .with("email", developer.getEmail()).with("username",
-                    developer.getId()).with("name", URLEncoder.encode(developer.getName(), "UTF-8")).with("password", developer.getPassword())
+                    developer.getId()).with("name", developer.getName()).with("password", developer.getPassword())
                     .to(GitlabUser.URL, GitlabUser.class);
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("gitlab.createUser.IOException", e);

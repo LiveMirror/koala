@@ -26,6 +26,7 @@ import org.openkoala.opencis.support.LocalCommand;
 import org.openkoala.opencis.support.SvnConfig;
 import org.openkoala.opencis.svn.command.CheckExistsAuthCommand;
 import org.openkoala.opencis.svn.command.CheckExistsUserGroupCommand;
+import org.openkoala.opencis.svn.command.SvnAuthUserToProjectCommand;
 import org.openkoala.opencis.svn.command.SvnAuthzCommand;
 import org.openkoala.opencis.svn.command.SvnClearProjectPasswdFileContentCommand;
 import org.openkoala.opencis.svn.command.SvnCommand;
@@ -173,7 +174,7 @@ public class SvnCISClient implements CISClient {
     }
 
 
-
+    
     public boolean assignUserToRole(Project project, String userName, String role) {
         //使用assignUsersToRole方法来实现
         return true;
@@ -379,23 +380,39 @@ public class SvnCISClient implements CISClient {
 			return ;
 		}
 		
-		boolean canGroupAuth= checkExistsAuth(role, userNames, project, configuration);
-		
-		SvnCommand cmdAddUsersGroupAuth = new SvnCreateGroupAndAddGroupUsersCommand(userNames, role, configuration, project);
-		SvnCommand cmdAuthz = new SvnAuthzCommand(role, configuration, project);
+//		boolean canGroupAuth= checkExistsAuth(role, userNames, project, configuration);
+//		
+//		SvnCommand cmdAddUsersGroupAuth = new SvnCreateGroupAndAddGroupUsersCommand(userNames, role, configuration, project);
+//		SvnCommand cmdAuthz = new SvnAuthzCommand(role, configuration, project);
+//		try {
+//			executor.addCommand(cmdAddUsersGroupAuth);
+//			if(canGroupAuth){
+//				executor.addCommand(cmdAuthz);
+//			}
+//			success = executor.executeBatch();
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			throw new RuntimeException(e);
+//		}
 		try {
-			executor.addCommand(cmdAddUsersGroupAuth);
-			if(canGroupAuth){
-				executor.addCommand(cmdAuthz);
+			for(String userName:userNames){
+				SvnCommand cmdAssignUserToRole = new SvnAuthUserToProjectCommand(userName, configuration, project);
+				executor.addCommand(cmdAssignUserToRole);
 			}
 			success = executor.executeBatch();
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+		
 //        createGroupAndAddGroupUsers(project, userNames, role);
 //        authz(project, role);
 	}
+	
+//	private void assignUserToProject(String userName,SvnConfig configuration,Project project){
+//		SvnCommand cmdAssignUserToRole = new SvnAuthUserToProjectCommand(userName, configuration, project);
+//	}
 
 	@Override
 	public boolean authenticate() {

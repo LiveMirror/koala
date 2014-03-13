@@ -104,11 +104,6 @@ public abstract class Accountability<C extends Party, R extends Party> extends O
 				.le("fromDate", date)
 				.gt("toDate", date).singleResult();
 	}
-	
-	@SuppressWarnings("rawtypes")
-	public static <T extends Accountability> List<T> findAccountabilities(Class<T> accountabilityClass, Date date) {
-		return getRepository().createCriteriaQuery(accountabilityClass).le("fromDate", date).gt("toDate", date).list();
-	}
 
 	@SuppressWarnings("rawtypes")
 	public static List<Accountability> findAccountabilitiesByParty(Party party, Date date) {

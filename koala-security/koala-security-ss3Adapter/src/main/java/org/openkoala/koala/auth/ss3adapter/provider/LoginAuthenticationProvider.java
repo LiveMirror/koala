@@ -55,17 +55,19 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		authHandler.authenticate(getUseraccount(authentication), getPassword(authentication));
-		
-		createUserIfNeed(authentication);
-		
-		UserDetails userDetails = getUserDetails(authentication);
-		
-		checker.check(userDetails);
-		
-		modifyLastLoginTime(getUseraccount(authentication));
-		
-		return createSuccessAuthentication(authentication,userDetails);
+		synchronized(getUseraccount(authentication)){
+            authHandler.authenticate(getUseraccount(authentication), getPassword(authentication));
+
+            createUserIfNeed(authentication);
+
+            UserDetails userDetails = getUserDetails(authentication);
+
+            checker.check(userDetails);
+
+            modifyLastLoginTime(getUseraccount(authentication));
+
+            return createSuccessAuthentication(authentication,userDetails);
+        }
 	}
 
 	private void createUserIfNeed(Authentication authentication) {
