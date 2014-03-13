@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label for="lastSyncTime" class="col-sm-4 control-label">上一次同步数据:</label>
                         <div class="col-sm-8">
-                           <label id="lastSyncTime"></label>
+                           <label id="lastSyncTime" style="position: relative;top: 6px;"></label>
                         </div>
                     </div>
                 </form>
