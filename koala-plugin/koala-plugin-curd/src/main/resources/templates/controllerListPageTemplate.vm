@@ -159,10 +159,7 @@ $(function (){
 	                            content: '确定要删除所选记录吗?',
 	                            callBack: remove
 	                        });
-	                   },
-	                   'complate': function(){
-	                        changeHeight();
-	                    }
+	                   }
 	         });
 	    },
 	    add: function(grid){
