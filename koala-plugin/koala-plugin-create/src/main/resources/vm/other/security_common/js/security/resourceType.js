@@ -60,7 +60,6 @@ var resourceTypeManager = function(){
 		dialog.find('.modal-header').find('.modal-title').html(item ? '修改资源类型':'添加资源类型');
 		resourceTypeName = dialog.find('#resourceTypeName');
 		dialog.find('#save').on('click',function(){
-			$(this).attr('disabled', 'disabled');			
 			save(item);
 		}).end().modal({
 			keyboard: false
@@ -106,6 +105,7 @@ var resourceTypeManager = function(){
 					type: 'error',
 					content: data.actionError
 				});
+				refreshToken(dialog.find('input[name="koala.token"]'));
 			}
 			dialog.find('#save').removeAttr('disabled');			
 		});
@@ -125,6 +125,7 @@ var resourceTypeManager = function(){
 	var getAllData = function(item){
 		var data = {};
 		data['resourceTypeVO.name'] = resourceTypeName.val();
+		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 		if(item){
 			data['resourceTypeVO.id'] = item.id;	
 		}

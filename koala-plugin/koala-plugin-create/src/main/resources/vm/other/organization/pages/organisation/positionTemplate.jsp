@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="k" uri="http://www.openkoala.com/token"%>
 <div class="modal fade" id="departmentAdd">
     <style>
         .modal-dialog .col-lg-8 > input, .col-lg-8 > span {
@@ -17,6 +17,7 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form">
+                	<k:token/>
                     <div class="form-group">
                         <label class="col-lg-4 control-label">岗位编号:</label>
                         <div class="col-lg-8">

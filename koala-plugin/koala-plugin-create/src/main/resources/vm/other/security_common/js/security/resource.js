@@ -41,6 +41,7 @@ var resourceManager = function(){
 	var deleteItem = function(resource, grid){
 		var data = {};
 		data['resourceVO.id'] = resource.id;
+		data['resourceVO.identifier'] = resource.identifier;
 		dataGrid = grid;
 		$.post(baseUrl + 'del.koala', data).done(function(data){
 			if(data.result == 'success'){
@@ -141,6 +142,7 @@ var resourceManager = function(){
 					type: 'error',
 					content: data.actionError
 				});
+				refreshToken(dialog.find('input[name="koala.token"]'));
 			}
 			dialog.find('#save').removeAttr('disabled');			
 		});
@@ -181,6 +183,7 @@ var resourceManager = function(){
 			data['resourceVO.name'] = name.val();
 			data['resourceVO.typeId'] = resourceType.getValue();
 		}
+		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 		return data;
 	};
 	return {

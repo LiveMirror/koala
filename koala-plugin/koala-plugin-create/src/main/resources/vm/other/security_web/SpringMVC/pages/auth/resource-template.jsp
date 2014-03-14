@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ taglib prefix="k" uri="http://www.openkoala.com/token"%>
 <div class="modal fade resource">
 	<style>
 		.resource .form-control {
@@ -15,6 +16,7 @@
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
 				<form class="form-horizontal" role="form" >
+					<k:token/>
 					<div class="form-group">
 						<label class="col-lg-3 control-label">父资源名称:</label>
 						<div class="col-lg-9">

@@ -132,7 +132,7 @@ var changePost = function(){
             var zNodes = new Array();
             $.each(data, function(){
                 var zNode = {};
-                if(this.organizationType == 'company'){
+                if(this.organizationType == 'Company'){
                     zNode.type = 'parent';
                 }else{
                     zNode.icon = 'glyphicon glyphicon-list-alt'
@@ -166,7 +166,7 @@ var changePost = function(){
     var getChildrenData = function(nodes, items){
         $.each(items, function(){
             var zNode = {};
-            if(this.organizationType == 'company'){
+            if(this.organizationType == 'Company'){
                 zNode.type = 'parent';
             }else{
                 zNode.icon = 'glyphicon glyphicon-list-alt'
