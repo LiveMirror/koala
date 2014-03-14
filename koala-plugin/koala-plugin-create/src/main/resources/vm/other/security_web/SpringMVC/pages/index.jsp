@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="k" uri="http://www.openkoala.com/token"%>
 <%@ taglib prefix="ss3" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="java.util.Date"%>
 <%Long time = new Date().getTime();%>
@@ -15,7 +16,6 @@
     <link href="<c:url value='/css/koala.css' />?time=<%=time%>" rel="stylesheet">
     <link href="<c:url value='/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' />
     " rel="stylesheet">
-    <link href="<c:url value='/css/organisation.css' />?time=<%=time%>" rel="stylesheet">
     <script>
         var contextPath = '${pageContext.request.contextPath}';
     </script>
@@ -61,7 +61,7 @@
 	<script type="text/javascript" src="<c:url value='/lib/jquery-1.8.3.min.js' />"></script>
 	<script type="text/javascript" src="<c:url value='/lib/respond.min.js' />"></script>
 	<script type="text/javascript" src="<c:url value='/lib/bootstrap/js/bootstrap.min.js' />"></script>
-	<script type="text/javascript" src="<c:url value='/lib/koala-ui.plugin.js' />?time=<%=time%>" ></script>	
+	<script type="text/javascript" src="<c:url value='/lib/koala-ui.plugin.js' />?time=<%=time%>" ></script>
 	<script type="text/javascript" src="<c:url value='/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' />"></script>
 	<script type="text/javascript" src="<c:url value='/lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js' />"></script>
 	<script type="text/javascript" src="<c:url value='/lib/koala-tree.js'/>"></script>
@@ -103,12 +103,12 @@
                     });
                     return;
                 }
-                $.get(contextPath + '/auth/Menu/findTopMenuByUser.koala').done(function(data){
+                $.get(contextPath + '/auth/Menu/findMenuByUser.koala').done(function(data){
                     $.each(data.data, function(){
                         var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.icon+'"></span>&nbsp;'+this.name+'&nbsp;'+
                             '<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu in"></ul></li>');
                         $('.first-level-menu').append($li);
-                        renderSubMenu(this.id, $li);
+                        renderSubMenu(this.children, $li);
                     });
                     /*
                     * 菜单收缩样式变化
@@ -127,15 +127,13 @@
                     });
                 });
             })
-			var renderSubMenu = function(id, $menu){
-				$.get(contextPath + '/auth/Menu/findAllSubMenuByParent.koala?resVO.id='+id).done(function(data){
-						var subMenus = new Array();
-						$.each(data.data, function(){
+			var renderSubMenu = function(data, $menu){
+						$.each(data, function(){
 							if(this.menuType == "2"){
 		                        var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.icon+'"></span>&nbsp;'+this.name+'&nbsp;'+
 		                            '<i class="glyphicon glyphicon-chevron-right pull-right" style="position: relative; right: 12px;font-size: 12px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu collapse"></ul></li>');
 		                        $li.appendTo($menu.find('.second-level-menu:first')).find('a').css('padding-left', parseInt(this.level)*18+'px');
-		                        renderSubMenu(this.id, $li);
+		                        renderSubMenu(this.children, $li);
 		                    }else{
 		                        var $li = $(' <li class="submenu" data-role="openTab" data-target="'+this.identifier+'" data-title="'+this.name+'" ' +
 		                            'data-mark="menuMark'+this.id+'"><a ><span class="'+this.icon+'"></span>&nbsp;'+this.name+'</a></li>');
@@ -171,7 +169,6 @@
 									openTab(target, title, mark);
 								}
 							});
-				});
 			};
 		});
 	</script>
