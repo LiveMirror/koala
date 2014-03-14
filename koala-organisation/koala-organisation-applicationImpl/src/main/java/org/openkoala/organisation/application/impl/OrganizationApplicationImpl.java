@@ -12,6 +12,7 @@ import javax.interceptor.Interceptors;
 
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
+import org.openkoala.businesslog.MethodAlias;
 import org.openkoala.organisation.application.OrganizationApplication;
 import org.openkoala.organisation.application.dto.OrganizationDTO;
 import org.openkoala.organisation.domain.Company;
@@ -38,18 +39,21 @@ public class OrganizationApplicationImpl implements OrganizationApplication {
 		return Organization.getTopOrganization() == null ? false : true;
 	}
 
-	@Override
+    @Override
+    @MethodAlias("OrganizationApplicationImpl_createAsTopOrganization")
 	public void createAsTopOrganization(Company company) {
 		company.createAsTopOrganization();
 	}
 
 	@Override
+    @MethodAlias("OrganizationApplicationImpl_createCompany")
 	public Company createCompany(Company parent, Company company) {
 		company.createUnder(parent);
 		return company;
 	}
 
 	@Override
+    @MethodAlias("OrganizationApplicationImpl_assignChildOrganization")
 	public void assignChildOrganization(Organization parent, Organization child, Date date) {
 		OrganizationLineManagement organizationLineManagement = new OrganizationLineManagement(parent, child, date);
 		organizationLineManagement.save();

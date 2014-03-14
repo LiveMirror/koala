@@ -64,6 +64,8 @@
 		<property name="prototypeCount" value="5" />
 		<property name="maximumConnectionCount" value="${maximumConnectionCount}" />
 		<property name="minimumConnectionCount" value="${minimumConnectionCount}" />
+        <property name="simultaneousBuildThrottle" value="20"/>
+        <property name="maximumActiveTime" value="3600000"/>
 		<property name="alias" value="default"/>
 	</bean>
 	
