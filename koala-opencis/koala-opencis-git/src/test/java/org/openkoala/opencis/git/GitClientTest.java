@@ -18,10 +18,10 @@ public class GitClientTest {
     private static final String REPOSITORY_PATH = GitClientTest.class.getResource("/" + TEST_DIR_NAME).getFile();
 
 
-    private String REPOSITORY_NAME = "gittest";
+    private String REPOSITORY_NAME = "xdffdasdfasd";
 
 
-    private String REMOTE_REPOSITORY_URL = null;
+    private String REMOTE_REPOSITORY_URL = "http://git.oschina.net/xxx/xdffdasdfasd.git";
 
     private GitClient client;
 
@@ -29,8 +29,7 @@ public class GitClientTest {
     @Before
     public void setUp() throws Exception {
 
-
-        client = new GitClient("foreverosstest", "f12345678", "foreverosstest@163.com", REPOSITORY_PATH);
+        client = new GitClient("xxxx", "xxxx", "xxxx", REPOSITORY_PATH);
 
     }
 
@@ -53,6 +52,8 @@ public class GitClientTest {
         client.add(".");
 
         client.commit("init");
+
+        client.pushRepositoryToRemote(REMOTE_REPOSITORY_URL);
 
 
 
