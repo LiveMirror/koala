@@ -318,6 +318,7 @@ var employee = function(){
 				});
 			}
 			dialog.find('#save').removeAttr('disabled');
+			refreshToken(dialog.find('input[name="koala.token"]'));
 		});
 	};
 	/*
@@ -362,7 +363,7 @@ var employee = function(){
 		if (terminateDate != null) {
 			data.terminateDate = terminateDate;
 		}
-
+		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 		return data;
 	};
 	/**
