@@ -20,7 +20,7 @@ public class I18nTest {
         String value = I18NManager.getMessage("name","zh_cn");
 		assertTrue(value.equals("考拉"));
         assertTrue(I18NManager.getMessage("login.msg","zh_TW").equals("陳剛"));
-        assertTrue(I18NManager.getMessage("login.msg","en_us").equals("Glies"));
+        assertTrue(I18NManager.getMessage("login.msg","en").equals("Glies"));
         assertTrue("Koala".equals( I18NManager.getMessage("name","en")));
 
 

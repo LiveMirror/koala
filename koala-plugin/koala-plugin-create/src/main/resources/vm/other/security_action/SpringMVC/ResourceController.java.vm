@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+
 import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.ResourceApplication;
 import org.openkoala.auth.application.ResourceTypeApplication;
@@ -23,7 +24,7 @@ public class ResourceController extends BaseController{
 
 	@Inject
 	private ResourceTypeApplication resourceTypeApplication;
-	
+
 	@RequestMapping("/list")
 	public String list() {
 		return "auth/Resource-list";
@@ -35,7 +36,6 @@ public class ResourceController extends BaseController{
 		String page = params.getPage();
 		String pagesize = params.getPagesize();
 		RoleVO roleVO = params.getRoleVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
 		int start = Integer.parseInt(page);
 		int limit = Integer.parseInt(pagesize);
 		Page<ResourceVO> all = resourceApplication.pageQueryNotAssignByRole(start, limit, roleVO);
@@ -44,9 +44,9 @@ public class ResourceController extends BaseController{
 
 	@ResponseBody
 	@RequestMapping("/add")
-	public Map<String,Object> add(ParamsPojo params) {
+	public Map<String, Object> add(ParamsPojo params) {
 		ResourceVO resourceVO = params.getResourceVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		resourceApplication.saveResource(resourceVO);
 		CacheUtil.refreshUrlAttributes(resourceVO.getIdentifier());
 		dataMap.put("result", "success");
@@ -55,10 +55,10 @@ public class ResourceController extends BaseController{
 
 	@ResponseBody
 	@RequestMapping("/addAndAssignParent")
-	public Map<String,Object> addAndAssignParent(ParamsPojo params) {
+	public Map<String, Object> addAndAssignParent(ParamsPojo params) {
 		ResourceVO childVO = params.getChildVO();
 		ResourceVO parentVO = params.getParentVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		resourceApplication.saveAndAssignParent(childVO, parentVO);
 		CacheUtil.refreshUrlAttributes(childVO.getIdentifier());
 		dataMap.put("result", "success");
@@ -67,9 +67,9 @@ public class ResourceController extends BaseController{
 
 	@ResponseBody
 	@RequestMapping("/del")
-	public Map<String,Object> del(ParamsPojo params) {
-		ResourceVO resourceVO =params.getResourceVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public Map<String, Object> del(ParamsPojo params) {
+		ResourceVO resourceVO = params.getResourceVO();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		resourceApplication.removeResource(resourceVO.getId());
 		CacheUtil.refreshUrlAttributes(resourceVO.getIdentifier());
 		dataMap.put("result", "success");
@@ -78,14 +78,14 @@ public class ResourceController extends BaseController{
 
 	/**
 	 * 查询某节点下一级子菜单并判断是否有权限
-	 * 
+	 *
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public Map<String,Object> update(ParamsPojo params) {
+	public Map<String, Object> update(ParamsPojo params) {
 		ResourceVO resourceVO = params.getResourceVO();
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		resourceApplication.updateResource(resourceVO);
 		CacheUtil.refreshUrlAttributes(resourceVO.getIdentifier());
 		dataMap.put("result", "success");
@@ -94,7 +94,7 @@ public class ResourceController extends BaseController{
 
 	/**
 	 * 资源树
-	 * 
+	 *
 	 * @return
 	 */
 	@ResponseBody
@@ -106,16 +106,16 @@ public class ResourceController extends BaseController{
 
 	@ResponseBody
 	@RequestMapping("/findAllResourceType")
-	public Map<String,Object> findAllResourceType() {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public Map<String, Object> findAllResourceType() {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("data", resourceTypeApplication.findResourceType());
 		return dataMap;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/isResourceEmpty")
-	public Map<String,Object> isResourceEmpty() {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
+	public Map<String, Object> isResourceEmpty() {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("result", resourceApplication.isResourceEmpty());
 		return dataMap;
 	}

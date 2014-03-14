@@ -160,7 +160,7 @@ public class OrganizationDTO implements Serializable {
 		return dto;
 	}
 
-	public OrganizationDTO(Long id, Long pid, String name, String sn, Date createDate, String description, String organizationType) {
+	public OrganizationDTO(Long id, Long pid, String name, String sn, Date createDate, String description, String organizationType, int version) {
 		this.setId(id);
 		this.setPid(pid);
 		this.setName(name);
@@ -168,6 +168,7 @@ public class OrganizationDTO implements Serializable {
 		this.setCreateDate(createDate);
 		this.setDescription(description);
 		this.setOrganizationType(organizationType);
+		this.setVersion(version);
 	}
 
 	public Organization transFormToOrganization() {

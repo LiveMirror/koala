@@ -45,7 +45,7 @@ var department = function(){
 	var del = function(org, type, $element){
         delete org.title;
 		var url = 'terminate-department.koala';
-		if(type == 'company'){
+		if(type == 'Company'){
 			url = 'terminate-company.koala';
 		}
 		$.post(baseUrl + url, org).done(function(data){
@@ -266,7 +266,7 @@ var department = function(){
             var zNodes = new Array();
             $.each(data, function(){
                 var zNode = {};
-                if(this.organizationType == 'company'){
+                if(this.organizationType == 'Company'){
                     zNode.type = 'parent';
                 }else{
                     zNode.icon = 'glyphicon glyphicon-list-alt'
@@ -313,7 +313,7 @@ var department = function(){
                     'update': function(event, data){
                         var $element = $(data);
                         var data = $element.data();
-                        if(data.organizationType == 'company'){
+                        if(data.organizationType == 'Company'){
                             updateCompany(data.id, $element);
                         }else{
                             updateDepartment(data.id, $element);
@@ -332,14 +332,13 @@ var department = function(){
                             }
                         });
                     }
-                })
+                });
             	if(id){
             		var $element = $('#departmentTree').find('#'+id).click();
             		if($element.hasClass('tree-folder')){
             			$element.find('.tree-folder-header:first').click();
             		}
-   					$('#departmentTree').find('.glyphicon-folder-close').removeClass('glyphicon-folder-close').addClass('glyphicon-folder-open');
-            		$('#departmentTree').find('.tree-folder-content').show();
+            		$element.parents().filter('.tree-folder-content').show();
             	}else{
             		$('#departmentTree').find('.tree-folder-header:first').click();
             	}
@@ -354,7 +353,7 @@ var department = function(){
             {title:'修改机构信息', action: 'update'},
             {title:'撤销', action: 'delete'}
         ];
-        if($element.data('organizationType') == 'company'){
+        if($element.data('organizationType') == 'Company'){
             menuData = [
                 {title:'创建分公司', action: 'addCompany'},
                 {title:'创建下级部门', action: 'addDepartment'},
@@ -374,7 +373,7 @@ var department = function(){
     var getChildrenData = function(nodes, items){
         $.each(items, function(){
             var zNode = {};
-            if(this.organizationType == 'company'){
+            if(this.organizationType == 'Company'){
                 zNode.type = 'parent';
             }else{
                 zNode.icon = 'glyphicon glyphicon-list-alt'
@@ -400,7 +399,7 @@ var department = function(){
 			departmentDetail.find('[data-role="principalName"]').html(org.principalName);
 			departmentDetail.find('[data-role="organizationType"]').val(org.organizationType);
 			//loadEmployeeList(org.id);
-			if(org.organizationType == 'company'){
+			if(org.organizationType == 'Company'){
 				$('#addCompany').show();
 				$('#updateCompany').show();
 				$('#updateDepartment').hide();
