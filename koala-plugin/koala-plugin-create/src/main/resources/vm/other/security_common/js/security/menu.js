@@ -178,6 +178,7 @@ var menuManager = function(){
 					type: 'error',
 					content: data.actionError
 				});
+				refreshToken(dialog.find('input[name="koala.token"]'));
 			}
 			dialog.find('#save').removeAttr('disabled');
 		});
@@ -214,6 +215,7 @@ var menuManager = function(){
 			data['parent.id'] = parentId;
 			data['parent.level'] = parentLevel;
 		}
+		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 		return data;
 	};
 
@@ -238,8 +240,9 @@ var menuManager = function(){
 	        return;
 	    }
 		var dataGrid = grid.getGrid();
+		var selectItem = dataGrid.getItemByIndex(indexs[0]);
         if(dataGrid.up(indexs[0])){
-		    changePosition(grid, dataGrid.getAllItems());
+		    changePosition(selectItem,grid, dataGrid.getAllItems());
         }
 	};
 
@@ -264,16 +267,22 @@ var menuManager = function(){
 	        return;
 	    }
 		var dataGrid = grid.getGrid();
+		var selectItem = dataGrid.getItemByIndex(indexs[0]);
 		if(dataGrid.down(indexs[0])){
-		    changePosition(grid, dataGrid.getAllItems());
+		    changePosition(selectItem,grid, dataGrid.getAllItems());
         }
 	};
-	var changePosition = function(grid, items){
+	var changePosition = function(selectItem ,grid, items){
 		var data = {};
+		var index = 0;
 		for(var i=0,j=items.length; i<j; i++){
 			var item = items[i];
-			data['resourceVOs['+i+'].id'] = item.id;
-			data['resourceVOs['+i+'].sortOrder'] = i+1;
+			if(item.parentId == selectItem.parentId){
+				data['resourceVOs['+index+'].id'] = item.id;
+				data['resourceVOs['+index+'].parentId'] = item.parentId;
+				data['resourceVOs['+index+'].sortOrder'] = index;
+				index = index+1;
+			}
 		}
 		$.post(contextPath + '/auth/Menu/updateMenuOrder.koala', data).done(function(result){
 			if(data.actionError){

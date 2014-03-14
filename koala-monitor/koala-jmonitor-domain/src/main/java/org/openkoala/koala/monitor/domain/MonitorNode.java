@@ -187,7 +187,7 @@ public class MonitorNode extends KmBaseLegacyEntity {
 
 	@Override
 	public boolean notExisted() {
-		return existed() == false;
+		return !existed();
 	}
 
 	
@@ -206,11 +206,15 @@ public class MonitorNode extends KmBaseLegacyEntity {
 		setActive(false);
 		this.save();
 	}
+
+    public void addCache(){
+        synchronized (nodeCache) {
+            nodeCache.put(this.getNodeId(), this);
+        }
+    }
 	
 	public void active(){
-		synchronized (nodeCache) {
-			nodeCache.put(this.getNodeId(), this);
-		}
+        addCache();
 		setActive(true);
 		this.save();
 	}

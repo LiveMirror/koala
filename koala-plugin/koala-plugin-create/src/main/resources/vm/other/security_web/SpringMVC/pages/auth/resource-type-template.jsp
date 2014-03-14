@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="k" uri="http://www.openkoala.com/token"%>
 <div class="modal fade">
 	<div class="modal-dialog" style="padding-top:120px;">
 		<div class="modal-content">
@@ -10,6 +11,7 @@
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
 				<form class="form-horizontal" role="form">
+					<k:token/>
 					<div class="form-group">
 						<label class="col-lg-4 control-label">资源类型名称:</label>
 						<div class="col-lg-8">

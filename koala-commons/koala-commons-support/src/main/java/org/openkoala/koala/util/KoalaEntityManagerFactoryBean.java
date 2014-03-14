@@ -208,11 +208,17 @@ public class KoalaEntityManagerFactoryBean extends
 						.getContextClassLoader().getResources(dir);
 				while (urls.hasMoreElements()) {
 					URL u = (URL) urls.nextElement();
+                    System.out.println("URL:"+u.toString());
 					String path = u.getFile();
 					String protocol = u.getProtocol();
-					if ("file".equals(protocol) || "jar".equals(protocol)) {
+                    System.out.print(path+":"+protocol);
+
+					if ("file".equals(protocol) || "jar".equals(protocol) || "zip".equals(protocol)) {
 						if (path.endsWith("!/" + dir)) {
-							path = path.substring(path.indexOf("file:") + 5,
+                            if(path.startsWith("file:")){
+                                path = path.substring(path.indexOf("file:") + 5);
+                            }
+							path = path.substring(0,
 									path.lastIndexOf("!/"));
 							File file = new File(path);
 							JarFile jarFile = new JarFile(file);

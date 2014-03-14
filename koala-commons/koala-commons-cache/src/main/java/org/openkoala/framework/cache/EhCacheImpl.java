@@ -105,5 +105,9 @@ public class EhCacheImpl implements org.dayatang.cache.Cache  {
 					timeToLiveSeconds, timeToIdleSeconds);
 			CacheManager.getInstance().addCache(cache);
 		}
+        else{
+            cache = CacheManager.getInstance().getCache(name);
+        }
+        cache.removeAll();
 	}
 }

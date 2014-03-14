@@ -18,6 +18,7 @@ import org.openkoala.koala.deploy.webservice.pojo.InterfaceObj;
 import org.openkoala.koala.exception.KoalaException;
 import org.openkoala.koala.java.JavaManagerUtil;
 import org.openkoala.koala.java.JavaSaver;
+import org.openkoala.koala.util.FileOperator;
 
 public class ImplObjUtil {
 
@@ -52,17 +53,19 @@ public class ImplObjUtil {
 
 			List<MethodDeclaration> methods = JavaManagerUtil
 					.getMethodDeclaration(compilationUnit);
+			
+			JavaSaver.saveToFile(javasrc, compilationUnit);
+			
 			for (MethodDeclaration method : methods) {
 				if (selectedMethods.contains(JavaManagerUtil.methodDescription(method))) {
 					continue;
 				}
 
-				if (JavaManagerUtil.containsAnnotation(coi, "WebMethod") == false) {
-					method.getAnnotations().add(webMethodAnnotation);
-				}
+//				if (JavaManagerUtil.containsAnnotation(coi, "WebMethod") == false) {
+//					method.getAnnotations().add(webMethodAnnotation);
+//				}
+				FileOperator.removeLinesFromFile(file, method.getBeginLine(), method.getEndLine());
 			}
-
-			JavaSaver.saveToFile(javasrc, compilationUnit);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

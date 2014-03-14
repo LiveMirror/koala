@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.OrganizationHasPrincipalYetException;
 import org.openkoala.organisation.SnIsExistException;
 import org.openkoala.organisation.TerminateHasEmployeePostException;
@@ -109,7 +110,7 @@ public class PostControllerTest {
 		doThrow(new RuntimeException()).when(baseApplication).saveParty(post);
 		assertEquals("保存失败！", postController.createPost(post, organizationId).get("result"));
 	}
-	
+
 	public void testUpdatePost() {
 		when(baseApplication.getEntity(Organization.class, organizationId)).thenReturn(organization);
 		postController.updatePost(post, organizationId);
@@ -122,6 +123,13 @@ public class PostControllerTest {
 		doThrow(new SnIsExistException()).when(baseApplication).updateParty(post);
         assertEquals("岗位编码: " + post.getSn() + " 已被使用！", postController.updatePost(post, organizationId).get("result"));
 	}
+
+    @Test
+    public void testCatchNameExistExceptionWhenUpdatePost() {
+        when(baseApplication.getEntity(Organization.class, organizationId)).thenReturn(organization);
+        doThrow(new NameExistException()).when(baseApplication).updateParty(post);
+        assertEquals("岗位名称: " + post.getName() + " 已经存在！", postController.updatePost(post, organizationId).get("result"));
+    }
 
 	@Test
 	public void testCatchExceptionWhenUpdatePost() {
