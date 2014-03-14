@@ -223,9 +223,7 @@ public class Post extends Party {
 	}
 	
 	private boolean hasEmployee(Date date) {
-		//List<EmployeePostHolding> holdings = EmployeePostHolding.getByPost(this, date);
-        Long size = this.getEmployeeCount(date);
-		return size > 0;
+		return getEmployeeCount(date) > 0;
 	}
 
 	@Override

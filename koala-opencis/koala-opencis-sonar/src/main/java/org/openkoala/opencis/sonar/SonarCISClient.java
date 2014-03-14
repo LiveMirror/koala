@@ -143,6 +143,9 @@ public class SonarCISClient implements CISClient {
 
             httpPost.setEntity(createDeveloperHttpEntityBy(developer));
             response = httpClient.execute(httpPost, localContext);
+
+            System.out.println(response.getStatusLine());
+
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 return;
             }
@@ -341,6 +344,5 @@ public class SonarCISClient implements CISClient {
             throw new CISClientBaseRuntimeException(e);
         }
     }
-
 
 }

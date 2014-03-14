@@ -1,5 +1,6 @@
 package org.openkoala.koala.deploy.webservice.util;
 
+import japa.parser.ASTHelper;
 import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
@@ -31,6 +32,7 @@ import org.openkoala.koala.deploy.webservice.pojo.WebServiceType;
 import org.openkoala.koala.exception.KoalaException;
 import org.openkoala.koala.java.JavaManagerUtil;
 import org.openkoala.koala.java.JavaSaver;
+import org.openkoala.koala.util.FileOperator;
 
 /**
  * 对一个接口进行修改,加入WS的配置
@@ -65,7 +67,7 @@ public class InterfaceObjUtil {
 			
 			List<MethodDeclaration> methods = JavaManagerUtil.getMethodDeclaration(cu);
 			List<WebServiceMethod> webMethods = interfaceObj.getMethods();
-			for(MethodDeclaration method:methods){
+			for(MethodDeclaration method : methods){
 				
 				RestWebServiceMethod webServiceMethod=null;
 				for(WebServiceMethod webMethod : webMethods){
@@ -76,6 +78,7 @@ public class InterfaceObjUtil {
 				}
 				
 				if(!selectedMethod.contains(JavaManagerUtil.methodDescription(method))) {
+					FileOperator.removeLinesFromFile(file, method.getBeginLine(), method.getEndLine());
 					continue;
 				}
 				
@@ -212,6 +215,10 @@ public class InterfaceObjUtil {
 			
 			List<MethodDeclaration> methods = JavaManagerUtil.getMethodDeclaration(compilationUnit);
 			for(MethodDeclaration method:methods){
+				if(!selectedMethod.contains(JavaManagerUtil.methodDescription(method))) {
+					FileOperator.removeLinesFromFile(file, method.getBeginLine(), method.getEndLine());
+					continue;
+				}
 				addKoalaExceptionThrows(method);
 			}
 			

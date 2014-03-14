@@ -43,6 +43,10 @@ public class SonarCISClientIntegrationTest {
             sonarCISClient.createUserIfNecessary(null, developer);
         }
 
+        for (Developer developer : createDevelopers()) {
+            sonarCISClient.createUserIfNecessary(null, developer);
+        }
+
 
         Developer developer = new Developer();
         developer.setId("plplhtt");

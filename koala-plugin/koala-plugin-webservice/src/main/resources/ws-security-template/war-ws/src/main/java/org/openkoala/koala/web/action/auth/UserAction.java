@@ -16,7 +16,7 @@ import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
 import org.openkoala.koala.auth.ss3adapter.SecurityMD5;
 import org.openkoala.koala.auth.ss3adapter.ehcache.CacheUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
-import com.dayatang.querychannel.support.Page;
+import org.dayatang.querychannel.Page;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class UserAction extends ActionSupport {
@@ -156,11 +156,11 @@ public class UserAction extends ActionSupport {
 		int start = Integer.parseInt(this.page);
 		int limit = Integer.parseInt(this.pagesize);
 		initSearchCondition();
-		Page<UserVO> all = userApplication.pageQueryUserCustom(start, limit, search);
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		Page<UserVO> all = userApplication.pageQueryUserCustom(start - 1, limit, search);
+		dataMap.put("Rows", all.getData());
+		dataMap.put("start", all.getStart());
+		dataMap.put("limit", all.getPageSize());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 
@@ -170,17 +170,18 @@ public class UserAction extends ActionSupport {
 
 		Page<UserVO> all = null;
 		if (roleId == null) {
-			all = userApplication.pageQueryUser(start, limit);
+			all = userApplication.pageQueryUser(start - 1, limit);
 		} else {
 			RoleVO roleVoForFind = new RoleVO();
 			roleVoForFind.setId(roleId);
-			all = new Page<UserVO>(start, limit, limit, roleApplication.findUserByRole(roleVoForFind));
+			List<UserVO> users = roleApplication.findUserByRole(roleVoForFind);
+			all = new Page<UserVO>(start - 1, users.size(), limit, users);
 		}
 
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Rows", all.getData());
+		dataMap.put("start", all.getStart());
+		dataMap.put("limit", all.getPageSize());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 
@@ -190,12 +191,12 @@ public class UserAction extends ActionSupport {
 
 		RoleVO roleVoForFind = new RoleVO();
 		roleVoForFind.setId(roleId);
-		Page<UserVO> all = roleApplication.pageQueryNotAssignUserByRole(start, limit, roleVoForFind);
+		Page<UserVO> all = roleApplication.pageQueryNotAssignUserByRole(start - 1, limit, roleVoForFind);
 
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Rows", all.getData());
+		dataMap.put("start", all.getStart());
+		dataMap.put("limit", all.getPageSize());
+		dataMap.put("Total", all.getResultCount());
 		return "JSON";
 	}
 
@@ -205,12 +206,12 @@ public class UserAction extends ActionSupport {
 
 		initSearchCondition();
 
-		Page<UserVO> all = userApplication.pageQueryUserCustom(start, limit, search);
+		Page<UserVO> all = userApplication.pageQueryUserCustom(start - 1, limit, search);
 
 		if (roleId != null) {
 			RoleVO role = new RoleVO();
 			role.setId(roleId);
-			List<UserVO> users = all.getResult();
+			List<UserVO> users = all.getData();
 			try {
 				for (UserVO user : roleApplication.findUserByRole(role)) {
 					users.remove(user);
@@ -220,10 +221,10 @@ public class UserAction extends ActionSupport {
 			}
 		}
 
-		dataMap.put("Rows", all.getResult());
-		dataMap.put("start", start * limit - limit);
-		dataMap.put("limit", limit);
-		dataMap.put("Total", all.getTotalCount());
+		dataMap.put("Rows", users);
+		dataMap.put("start", all.getStart());
+		dataMap.put("limit", all.getPageSize());
+		dataMap.put("Total", all.getResultCount());
 
 		return "JSON";
 	}

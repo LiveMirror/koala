@@ -83,7 +83,7 @@ public class WebServiceSrcCopy {
 				}
 			}
 			
-			root.addElement("import").addAttribute("resource","classpath*:META-INF/spring/security-application.xml");
+//			root.addElement("import").addAttribute("resource","classpath*:META-INF/spring/security-application.xml");
 			DocumentUtil.document2Xml(confModuleRootXmlPath, confModuleRootXml);
 		}
 		

@@ -80,30 +80,34 @@ public class PostController extends BaseController {
         return dataMap;
     }
 
-    /**
-     * 更新岗位信息
-     *
-     * @param post
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/update")
-    public Map<String, Object> updatePost(Post post, Long organizationId) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
-        try {
-            post.setOrganization(getOrganizationById(organizationId));
-            getBaseApplication().updateParty(post);
-            dataMap.put("result", "success");
-        } catch (SnIsExistException exception) {
-            dataMap.put("result", "岗位编码: " + post.getSn() + " 已被使用！");
-        } catch (NameExistException exception) {
+	/**
+	 * 更新岗位信息
+	 * 
+	 * @param post
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/update")
+	public Map<String, Object> updatePost(Post post, Long organizationId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		try {
+			post.setOrganization(getOrganizationById(organizationId));
+			getBaseApplication().updateParty(post);
+			dataMap.put("result", "success");
+		} catch (PostExistException exception) {
+			dataMap.put("result", "请不要在相同机构中创建相同职务的岗位！");
+		} catch (OrganizationHasPrincipalYetException exception) {
+			dataMap.put("result", "该机构已经有负责岗位！");
+		} catch (SnIsExistException exception) {
+			dataMap.put("result", "岗位编码: " + post.getSn() + " 已被使用！");
+		} catch (NameExistException exception) {
             dataMap.put("result", "岗位名称: " + post.getName() + " 已经存在！");
         } catch (Exception e) {
-            dataMap.put("result", "修改失败！");
-            e.printStackTrace();
-        }
-        return dataMap;
-    }
+			dataMap.put("result", "修改失败！");
+			e.printStackTrace();
+		}
+		return dataMap;
+	}
 
     @ResponseBody
     @RequestMapping("/query-post-by-org")
