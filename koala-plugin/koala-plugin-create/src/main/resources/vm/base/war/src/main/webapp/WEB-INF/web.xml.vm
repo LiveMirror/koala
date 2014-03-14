@@ -64,6 +64,27 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
+	<!--token验证过滤器 -->
+	<filter>
+		<filter-name>koalaTokenValidateFilter</filter-name>
+		<filter-class>org.openkoala.koala.token.web.KoalaTokenValidateFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>koalaTokenValidateFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!--token生成器 -->
+	<servlet>
+		<servlet-name>tokenGenerate</servlet-name>
+		<servlet-class>org.openkoala.koala.token.web.KoalaTokenGenerateServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>tokenGenerate</servlet-name>
+		<url-pattern>/koala.token</url-pattern>
+	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>jcaptcha</servlet-name>
 		<servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
@@ -169,6 +190,13 @@
 	<welcome-file-list>
 		<welcome-file>/login.jsp</welcome-file>
 	</welcome-file-list>
+
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://www.openkoala.com/token</taglib-uri>
+			<taglib-location>/WEB-INF/k.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 
 	<distributable />
 </web-app>
