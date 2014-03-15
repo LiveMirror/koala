@@ -176,6 +176,7 @@ var department = function(){
 					type: 'error',
 					content: data.result
 				});	
+				refreshToken(dialog.find('input[name="koala.token"]'));
 			}
 			dialog.find('#save').removeAttr('disabled');
 		}).fail(function(data){
@@ -184,6 +185,7 @@ var department = function(){
 					content: '保存失败'
 				});
 				dialog.find('#save').removeAttr('disabled');
+				refreshToken(dialog.find('input[name="koala.token"]'));
 		});
 	};
 	/*
@@ -195,17 +197,20 @@ var department = function(){
 				department.sn = departmentSN.val();
 				department.name = departmentName.val();
 				department.description = description.val();
+				department['koala.token'] = dialog.find('input[name="koala.token"]').val();
 				return department;
 			}else if(type == 'addCompany'){
 				var company = {};
 				company.sn = departmentSN.val();
 				company.name = departmentName.val();
 				company.description = description.val();
+				company['koala.token'] = dialog.find('input[name="koala.token"]').val();
 				return company;
 		   }else {
 				org.sn = departmentSN.val();
 				org.name = departmentName.val();
 				org.description = description.val();
+				org['koala.token'] = dialog.find('input[name="koala.token"]').val();
 				return org;
 			}
 	};

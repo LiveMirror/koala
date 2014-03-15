@@ -62,7 +62,9 @@ public class RoleApplicationImpl extends BaseImpl implements RoleApplication {
 		if (!roleVO.getName().equals(role.getName())) {
 			Role target = new Role();
 			target.setName(roleVO.getName());
-			isRoleExist(target);
+			if (isRoleExist(target)) {
+				throw new ApplicationException("role.exist");
+			}
 		}
 		role.setName(roleVO.getName());
 		role.setRoleDesc(roleVO.getRoleDesc());

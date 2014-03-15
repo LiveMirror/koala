@@ -264,6 +264,7 @@ var position = function(){
 					type: 'error',
 					content: data.result
 				});
+				refreshToken(dialog.find('input[name="koala.token"]'));
 			}
 			dialog.find('#save').removeAttr('disabled');
 		});
@@ -287,6 +288,7 @@ var position = function(){
 					positionDto.organizationPrincipal = $(this).val();
 				}
 			});
+			positionDto['koala.token'] = dialog.find('input[name="koala.token"]').val();
 			return positionDto;
 		}else{
 			var data = {};
@@ -299,6 +301,7 @@ var position = function(){
 					data.organizationPrincipal = $(this).val();
 				}
 			});
+			data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 			return data;
 		}
 	};
