@@ -48,6 +48,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 public class KoalaSqlSessionFactoryBean implements
@@ -615,61 +617,20 @@ public class KoalaSqlSessionFactoryBean implements
 	private void autoParse(Configuration configuration) throws IOException{
 		String scanMappingResourceDir = this.baseScan;
 		List<String> lists = new ArrayList<String>();
-		Enumeration<?> urls = Thread.currentThread().getContextClassLoader().getResources(scanMappingResourceDir);
-		while (urls.hasMoreElements()) {
-			URL u = (URL)urls.nextElement();
-			String path = u.getFile();
-			System.out.println("PATH:"+path);
-			String protocol = u.getProtocol();
-			if("file".equals(protocol) || "jar".equals(protocol)){
-				if(path.endsWith("!/"+scanMappingResourceDir)){
-					path = path.substring(path.indexOf("file:")+5,path.lastIndexOf("!/"));
-					File file = new File(path);
-					JarFile jarFile = new JarFile(file);  
-				    for (Enumeration<?> entries = jarFile.entries(); entries
-						.hasMoreElements();) {
-					JarEntry entry = (JarEntry) entries.nextElement();
-					String entryName = entry.getName();
-					if (entryName.startsWith(scanMappingResourceDir)
-							&& entryName.endsWith("-mybatis.xml")) {
-						lists.add(entryName);
-					}
-				}
-				}
-				else{
-					File file = new File(path);
-					if(file.exists()==false)continue;
-					String[] files = file.list(new FilenameFilter() {
-						public boolean accept(File dir, String name) {
-							return name.endsWith("-mybatis.xml");
-						}
-					});
-					for (String fileName : files) {
-						lists.add(scanMappingResourceDir+File.separator+fileName);
-					}
-				}
-			}else if("vfs".equals(protocol)){
-				 VirtualFile vf = (VirtualFile)u.getContent();
-				 String filePath = vf.getPhysicalFile().getPath();
-				 String jarPath = filePath.substring(0, filePath.indexOf("contents"));
-				 File[] jarFiles = new File(jarPath).listFiles();
-				 for(File jar:jarFiles){
-					 if(jar.getName().endsWith(".jar")){
-						 JarFile jarFile = new JarFile(jar);
-						    for (Enumeration<?> entries = jarFile.entries(); entries
-								.hasMoreElements();) {
-							JarEntry entry = (JarEntry) entries.nextElement();
-							String entryName = entry.getName();
-							if (entryName.startsWith(scanMappingResourceDir)
-									&& entryName.endsWith("-mybatis.xml")) {
-								lists.add(entryName);
-							}
-						}
-					 }
-				 }
-			}
-			
-		}
+
+            String testPath = "classpath:"+scanMappingResourceDir+File.separator+"*-mybatis.xml";
+            ResourcePatternResolver resourceLoader = new PathMatchingResourcePatternResolver();
+            Resource[] source = new Resource[0];
+            try {
+                source = resourceLoader.getResources(testPath);
+            } catch (IOException e) {
+                logger.warn("未能在目录"+scanMappingResourceDir+"下找到任何XML配置");
+            }
+
+            for (int i = 0; i < source.length; i++) {
+                Resource resource = source[i];
+                lists.add(scanMappingResourceDir+File.separator+resource.getFilename());
+            }
 		for(String resource:lists){
 			 InputStream inputStream = Resources.getResourceAsStream(resource);
 	          XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());

@@ -24,6 +24,7 @@ package org.openkoala.koala.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -41,7 +42,10 @@ import org.jboss.vfs.VirtualFile;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.weaving.LoadTimeWeaverAware;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 import org.springframework.jdbc.datasource.lookup.SingleDataSourceLookup;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
@@ -192,7 +196,7 @@ public class KoalaEntityManagerFactoryBean extends
 
 	public void setScanMappingResourceDir(final String scanMappingResourceDir) {
 
-		if (scanMappingResourceDir == null
+        if (scanMappingResourceDir == null
 				|| "".equals(scanMappingResourceDir.trim()))
 			return;
 
@@ -202,75 +206,21 @@ public class KoalaEntityManagerFactoryBean extends
 
 		for (String dir : dirs) {
 
-			try {
+            String testPath = "classpath:"+dir+File.separator+"*.xml";
+            ResourcePatternResolver resourceLoader = new PathMatchingResourcePatternResolver();
+            Resource[] source = new Resource[0];
+            try {
+                logger.info("PATH:" + testPath);
+                source = resourceLoader.getResources(testPath);
+            } catch (IOException e) {
+                logger.warn("未能在目录"+dir+"下找到任何XML配置");
+            }
 
-				Enumeration<?> urls = Thread.currentThread()
-						.getContextClassLoader().getResources(dir);
-				while (urls.hasMoreElements()) {
-					URL u = (URL) urls.nextElement();
-                    System.out.println("URL:"+u.toString());
-					String path = u.getFile();
-					String protocol = u.getProtocol();
-                    System.out.print(path+":"+protocol);
-
-					if ("file".equals(protocol) || "jar".equals(protocol) || "zip".equals(protocol)) {
-						if (path.endsWith("!/" + dir)) {
-                            if(path.startsWith("file:")){
-                                path = path.substring(path.indexOf("file:") + 5);
-                            }
-							path = path.substring(0,
-									path.lastIndexOf("!/"));
-							File file = new File(path);
-							JarFile jarFile = new JarFile(file);
-							for (Enumeration<?> entries = jarFile.entries(); entries
-									.hasMoreElements();) {
-								JarEntry entry = (JarEntry) entries
-										.nextElement();
-								String entryName = entry.getName();
-								if (entryName.startsWith(dir)
-										&& entryName.endsWith(".xml")) {
-									lists.add(entryName);
-								}
-							}
-						} else {
-							File file = new File(path);
-							if (file.exists() == false)
-								continue;
-							String[] files = file.list(new FilenameFilter() {
-								public boolean accept(File dir, String name) {
-									return name.endsWith("xml");
-								}
-							});
-							for (String fileName : files) {
-								lists.add(dir + File.separator + fileName);
-							}
-						}
-					}else if("vfs".equals(protocol)){
-						 VirtualFile vf = (VirtualFile)u.getContent();
-						 String filePath = vf.getPhysicalFile().getPath();
-						 String jarPath = filePath.substring(0, filePath.indexOf("contents"));
-						 File[] jarFiles = new File(jarPath).listFiles();
-						 for(File jar:jarFiles){
-							 if(jar.getName().endsWith(".jar")){
-								 JarFile jarFile = new JarFile(jar);
-								 for (Enumeration<?> entries = jarFile.entries(); entries
-											.hasMoreElements();) {
-										JarEntry entry = (JarEntry) entries
-												.nextElement();
-										String entryName = entry.getName();
-										if (entryName.startsWith(dir)
-												&& entryName.endsWith(".xml")) {
-											lists.add(entryName);
-										}
-									}
-							 }
-						 }
-					}
-				}
-			} catch (Exception e) {
-				logger.error("load MappingResource by scanMappingResourceDir["
-						+ scanMappingResourceDir + "] error", e);
-			}
+            for (int i = 0; i < source.length; i++) {
+                Resource resource = source[i];
+                logger.info("XML:" + resource.getFilename());
+                lists.add(dir+File.separator+resource.getFilename());
+            }
 		}
 		this.internalPersistenceUnitManager.setMappingResources(lists
 				.toArray(new String[lists.size()]));
@@ -347,7 +297,6 @@ public class KoalaEntityManagerFactoryBean extends
 	 * 
 	 * @see org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver
 	 * @see org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver
-	 * @see org.springframework.instrument.classloading.tomcat.TomcatInstrumentableClassLoader
 	 */
 	public void setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver) {
 		this.internalPersistenceUnitManager.setLoadTimeWeaver(loadTimeWeaver);
