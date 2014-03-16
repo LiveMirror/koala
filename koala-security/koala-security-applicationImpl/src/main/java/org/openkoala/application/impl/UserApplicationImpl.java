@@ -21,11 +21,11 @@ import org.openkoala.koala.auth.core.domain.RoleUserAuthorization;
 import org.openkoala.koala.auth.core.domain.User;
 import org.springframework.transaction.annotation.Transactional;
 
-@Remote
+//@Remote
 @Named("userApplication")
-@Stateless(name = "UserApplication")
+//@Stateless(name = "UserApplication")
 @Transactional(value="transactionManager_security")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class UserApplicationImpl extends BaseImpl implements UserApplication {
 
     public UserVO getUser(Long userId) {

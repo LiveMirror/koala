@@ -24,9 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Named
 @Transactional(value = "transactionManager_org")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-@Stateless(name = "PostApplication")
-@Remote
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Stateless(name = "PostApplication")
+//@Remote
 public class PostApplicationImpl implements PostApplication {
 
 	private QueryChannelService queryChannel;

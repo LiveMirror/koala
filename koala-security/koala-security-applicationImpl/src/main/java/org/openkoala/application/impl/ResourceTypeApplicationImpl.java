@@ -19,10 +19,10 @@ import org.openkoala.koala.auth.core.domain.ResourceTypeAssignment;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named
-@Remote
-@Stateless(name = "ResourceTypeApplication")
+//@Remote
+//@Stateless(name = "ResourceTypeApplication")
 @Transactional(value = "transactionManager_security")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class ResourceTypeApplicationImpl extends BaseImpl implements ResourceTypeApplication {
 
 	public boolean isExist(ResourceTypeVO resourceTypeVO) {

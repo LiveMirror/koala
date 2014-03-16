@@ -69,9 +69,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Named(value="monitorDataManageApplication")
 @Transactional(value="km_transactionManager")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-@Stateless(name = "MonitorDataManageApplication")
-@Remote
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Stateless(name = "MonitorDataManageApplication")
+//@Remote
 public class MonitorDataManageApplicationImpl implements
 		MonitorDataManageApplication {
 	

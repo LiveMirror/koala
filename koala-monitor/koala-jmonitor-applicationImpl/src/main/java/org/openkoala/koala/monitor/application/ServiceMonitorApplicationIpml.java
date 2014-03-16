@@ -44,9 +44,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Named(value="serviceMonitorApplication")
 @Transactional(value="km_transactionManager")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-@Stateless(name = "ServiceMonitorApplication")
-@Remote
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Stateless(name = "ServiceMonitorApplication")
+//@Remote
 public class ServiceMonitorApplicationIpml implements ServiceMonitorApplication {
 
 	@Override

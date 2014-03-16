@@ -27,9 +27,9 @@ import java.util.List;
  */
 @Named
 @Transactional
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-@Stateless(name = "BusinessLogApplication")
-@Remote
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Stateless(name = "BusinessLogApplication")
+//@Remote
 public class BusinessLogApplicationImpl implements BusinessLogApplication {
 
 

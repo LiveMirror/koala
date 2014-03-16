@@ -25,11 +25,11 @@ import org.openkoala.koala.auth.core.domain.Role;
 import org.openkoala.util.DateFormatUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-@Remote
+//@Remote
 @Named("urlApplication")
-@Stateless(name = "ResourceApplication")
+//@Stateless(name = "ResourceApplication")
 @Transactional(value = "transactionManager_security")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class ResourceApplicationImpl extends BaseImpl implements ResourceApplication {
 
 	public static ResourceVO domainObject2Vo(Resource resource) {

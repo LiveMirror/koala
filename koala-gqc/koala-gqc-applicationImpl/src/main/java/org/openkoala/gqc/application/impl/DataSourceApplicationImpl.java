@@ -30,9 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Named
 @Transactional(value="transactionManager_gqc")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-@Stateless(name = "DataSourceApplication")
-@Remote
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Stateless(name = "DataSourceApplication")
+//@Remote
 public class DataSourceApplicationImpl implements DataSourceApplication {
 
 	/**

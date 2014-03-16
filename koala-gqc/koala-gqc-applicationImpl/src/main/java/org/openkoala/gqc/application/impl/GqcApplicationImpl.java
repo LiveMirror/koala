@@ -24,9 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Named
 @Transactional(value="transactionManager_gqc")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-@Stateless(name = "GqcApplication")
-@Remote
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Stateless(name = "GqcApplication")
+//@Remote
 public class GqcApplicationImpl implements GqcApplication {
 
 	/**

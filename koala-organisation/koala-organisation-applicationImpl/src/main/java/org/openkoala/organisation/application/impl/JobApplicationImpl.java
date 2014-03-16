@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Named
 @Transactional(value = "transactionManager_org")
-@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-@Stateless(name = "JobApplication")
-@Remote
+//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+//@Stateless(name = "JobApplication")
+//@Remote
 public class JobApplicationImpl implements JobApplication {
 
 	private QueryChannelService queryChannel;
