@@ -219,7 +219,7 @@ public class KoalaEntityManagerFactoryBean extends
             for (int i = 0; i < source.length; i++) {
                 Resource resource = source[i];
                 logger.info("XML:" + resource.getFilename());
-                lists.add(dir+File.separator+resource.getFilename());
+                lists.add(dir+"/"+resource.getFilename());
             }
 		}
 		this.internalPersistenceUnitManager.setMappingResources(lists
