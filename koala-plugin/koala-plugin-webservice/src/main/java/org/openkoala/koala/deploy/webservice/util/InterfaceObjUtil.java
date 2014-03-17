@@ -1,6 +1,5 @@
 package org.openkoala.koala.deploy.webservice.util;
 
-import japa.parser.ASTHelper;
 import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
@@ -47,8 +46,8 @@ public class InterfaceObjUtil {
 	 * @throws KoalaException 
 	 */
 	public static void updateInterfaceObj(InterfaceObj interfaceObj) throws KoalaException {
-	    List<String> selectedMethod = interfaceObj.getSelectedMethods();
-	    if(selectedMethod == null || selectedMethod.isEmpty()) {
+	    List<String> selectedMethods = interfaceObj.getSelectedMethods();
+	    if(selectedMethods == null || selectedMethods.isEmpty()) {
 	    	return;
 	    }
 	    
@@ -77,8 +76,7 @@ public class InterfaceObjUtil {
 					}
 				}
 				
-				if(!selectedMethod.contains(JavaManagerUtil.methodDescription(method))) {
-					FileOperator.removeLinesFromFile(file, method.getBeginLine(), method.getEndLine());
+				if(!selectedMethods.contains(JavaManagerUtil.methodDescription(method))) {
 					continue;
 				}
 				
@@ -95,6 +93,8 @@ public class InterfaceObjUtil {
 				}
 			}
 			JavaSaver.saveToFile(javasrc, cu);
+			
+			remveNoPublishMethod(javasrc, selectedMethods);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -199,10 +199,21 @@ public class InterfaceObjUtil {
 		}
 	}
 
+	private static void remveNoPublishMethod(String javaFilePath, List<String> selectedMethods) throws ParseException, IOException {
+		File file = new File(javaFilePath);
+		CompilationUnit compilationUnit = JavaParser.parse(file);
+		List<MethodDeclaration> methods = JavaManagerUtil.getMethodDeclaration(compilationUnit);
+		for(MethodDeclaration method : methods){
+			if(!selectedMethods.contains(JavaManagerUtil.methodDescription(method))) {
+				FileOperator.removeLinesFromFile(javaFilePath, method.getBeginLine(), method.getEndLine());
+			}
+		}
+	}
+	
 	public static void updateSoapInterfaceObj(InterfaceObj interfaceObj) throws KoalaException {
-		List<String> selectedMethod = interfaceObj.getSelectedMethods();
+		List<String> selectedMethods = interfaceObj.getSelectedMethods();
 		
-	    if(selectedMethod == null || selectedMethod.isEmpty()) {
+	    if(selectedMethods == null || selectedMethods.isEmpty()) {
 	    	return;
 	    }
 	    
@@ -215,8 +226,7 @@ public class InterfaceObjUtil {
 			
 			List<MethodDeclaration> methods = JavaManagerUtil.getMethodDeclaration(compilationUnit);
 			for(MethodDeclaration method:methods){
-				if(!selectedMethod.contains(JavaManagerUtil.methodDescription(method))) {
-					FileOperator.removeLinesFromFile(file, method.getBeginLine(), method.getEndLine());
+				if(!selectedMethods.contains(JavaManagerUtil.methodDescription(method))) {
 					continue;
 				}
 				addKoalaExceptionThrows(method);
@@ -225,7 +235,6 @@ public class InterfaceObjUtil {
 			compilationUnit.getImports().add(new ImportDeclaration(new NameExpr("javax.jws.WebService"),false,false));
 			compilationUnit.getImports().add(new ImportDeclaration(new NameExpr("org.openkoala.exception.extend.KoalaException"),false,false));
 			
-				
 			AnnotationExpr webServiceAnnotation = new SingleMemberAnnotationExpr(new NameExpr("WebService"), new NameExpr(""));
 			if(JavaManagerUtil.containsAnnotation(coi,"WebService") == false) {
 				if(coi.getAnnotations()==null){
@@ -235,6 +244,8 @@ public class InterfaceObjUtil {
 			}
 			
 			JavaSaver.saveToFile(javasrc, compilationUnit);
+
+			remveNoPublishMethod(javasrc, selectedMethods);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

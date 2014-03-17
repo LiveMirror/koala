@@ -50,26 +50,25 @@ public class ImplObjUtil {
 			if (JavaManagerUtil.containsAnnotation(coi, "WebService") == false) {
 				coi.getAnnotations().add(webServiceAnnotation);
 			}
-
-			List<MethodDeclaration> methods = JavaManagerUtil
-					.getMethodDeclaration(compilationUnit);
 			
 			JavaSaver.saveToFile(javasrc, compilationUnit);
-			
-			for (MethodDeclaration method : methods) {
-				if (selectedMethods.contains(JavaManagerUtil.methodDescription(method))) {
-					continue;
-				}
 
-//				if (JavaManagerUtil.containsAnnotation(coi, "WebMethod") == false) {
-//					method.getAnnotations().add(webMethodAnnotation);
-//				}
-				FileOperator.removeLinesFromFile(file, method.getBeginLine(), method.getEndLine());
-			}
+			remveNoPublishMethod(javasrc, selectedMethods);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private static void remveNoPublishMethod(String javaFilePath, List<String> selectedMethods) throws ParseException, IOException {
+		File file = new File(javaFilePath);
+		CompilationUnit compilationUnit = JavaParser.parse(file);
+		List<MethodDeclaration> methods = JavaManagerUtil.getMethodDeclaration(compilationUnit);
+		for(MethodDeclaration method : methods){
+			if(!selectedMethods.contains(JavaManagerUtil.methodDescription(method))) {
+				FileOperator.removeLinesFromFile(javaFilePath, method.getBeginLine(), method.getEndLine());
+			}
 		}
 	}
 

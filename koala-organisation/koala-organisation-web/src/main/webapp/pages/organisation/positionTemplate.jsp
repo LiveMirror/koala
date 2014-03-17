@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="k" uri="http://www.openkoala.com/token"%>
+
 <div class="modal fade" id="departmentAdd">
     <style>
         .modal-dialog .col-lg-8 > input, .col-lg-8 > span {
@@ -17,7 +17,6 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form">
-                	<k:token/>
                     <div class="form-group">
                         <label class="col-lg-4 control-label">岗位编号:</label>
                         <div class="col-lg-8">
@@ -53,8 +52,8 @@
                     <div class="form-group">
                         <label class="col-lg-4 control-label">是否机构负责岗位:</label>
                         <div class="col-lg-8">
-                                <div class="radio"><span ><input value=true type="radio" name="organizationPrincipal"  style="opacity: 0;"></span></div><span style="position: relative; top: 8px;">是</span>
-                                &nbsp;&nbsp;&nbsp;<div class="radio"><span class="checked"><input type="radio" checked="checked" value=false name="organizationPrincipal" style="opacity: 0;"></span></div><span style="position: relative; top: 8px;">否</span>
+                                <div class="radio"><span ><input value=true type="radio" name="organizationPrincipal"  style="opacity: 0;"></span></div><span style="position: relative; top: 5px;">是</span>
+                                &nbsp;&nbsp;&nbsp;<div class="radio"><span class="checked"><input type="radio" checked="checked" value=false name="organizationPrincipal" style="opacity: 0;"></span></div><span style="position: relative; top: 5px;">否</span>
                        </div>
                     </div>
                     <div class="form-group">
