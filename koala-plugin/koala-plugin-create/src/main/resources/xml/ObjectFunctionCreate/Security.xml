@@ -35,7 +35,7 @@
 	<VelocityFileObject>
 		<property name="vm">vm/other/security_config/security_zh_cn.properties
 		</property>
-		<property name="path">${Project.path}/${Project.appName}/${Project.appName}-web/src/main/resources/i18n/exception/koalaSecurity_zh_CN.properties
+		<property name="path">${Project.path}/${Project.appName}/${Project.appName}-web/src/main/resources/i18n/exception/koalaSecurity_zh_cn.properties
 		</property>
 	</VelocityFileObject>
 	
