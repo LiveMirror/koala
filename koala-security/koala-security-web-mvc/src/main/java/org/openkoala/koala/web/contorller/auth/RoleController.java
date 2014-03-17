@@ -1,6 +1,8 @@
 package org.openkoala.koala.web.contorller.auth;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +19,17 @@ import org.openkoala.auth.application.vo.ResourceVO;
 import org.openkoala.auth.application.vo.RoleVO;
 import org.openkoala.auth.application.vo.UserVO;
 import org.openkoala.koala.auth.ss3adapter.ehcache.CacheUtil;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/auth/Role")
-public class RoleController extends BaseController{
+public class RoleController extends BaseController {
 
 	@Inject
 	private RoleApplication roleApplication;
@@ -34,6 +39,11 @@ public class RoleController extends BaseController{
 
 	@Inject
 	private UserApplication userApplication;
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setAutoGrowCollectionLimit(4096);
+	}
 
 	@RequestMapping("/list")
 	public String list(Long userId, String userAccount, ModelMap modelMap) {
@@ -102,7 +112,7 @@ public class RoleController extends BaseController{
 
 		return all;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/query")
 	public Page query(String page, String pagesize, String roleNameForSearch) {

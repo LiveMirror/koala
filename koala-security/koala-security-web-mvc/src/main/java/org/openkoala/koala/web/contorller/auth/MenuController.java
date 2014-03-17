@@ -182,9 +182,9 @@ public class MenuController extends BaseController{
 		List<ResourceVO> all = null;
 		CustomUserDetails current = AuthUserUtil.getLoginUser();
 		if (current.isSuper()) {
-			all = this.menuApplication.findAllMenuByUser("");
+			all = this.menuApplication.findMenuByUser("");
 		} else {
-			all = this.menuApplication.findAllMenuByUser(AuthUserUtil.getLoginUserName());
+			all = this.menuApplication.findMenuByUser(AuthUserUtil.getLoginUserName());
 		}
 		dataMap.put("data", all);
 		return dataMap;

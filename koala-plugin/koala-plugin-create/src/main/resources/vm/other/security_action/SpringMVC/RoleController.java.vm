@@ -34,6 +34,11 @@ public class RoleController extends BaseController{
 
 	@Inject
 	private UserApplication userApplication;
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setAutoGrowCollectionLimit(4096);
+	}
 
 	@RequestMapping("/list")
 	public String list(Long userId, String userAccount, ModelMap modelMap) {
