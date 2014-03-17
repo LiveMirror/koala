@@ -42,7 +42,9 @@ public class CasUserProvider extends CasAuthenticationProvider {
 	 */
 	@Override
 	protected UserDetails loadUserByAssertion(Assertion assertion) {
-		CasAssertionAuthenticationToken token = new CasAssertionAuthenticationToken(assertion, "");
+
+        CasAssertionAuthenticationToken token = new CasAssertionAuthenticationToken(assertion, "");
+        synchronized (token.getName()){
 		CustomUserDetails loadedUser = (CustomUserDetails) userDetailsService.loadUserByUsername(token.getName());
 		if (retrieveEmailAttribute(assertion) == null) {
 			throw new EmailNotFoundExction("Email not found from cas server response.");
@@ -51,7 +53,9 @@ public class CasUserProvider extends CasAuthenticationProvider {
 			createUser(assertion);
 			loadedUser = createUserDetails();
 		}
+        modifyLastLoginTime(token.getName());
 		return loadedUser;
+        }
 	}
 
 	/**
@@ -82,5 +86,19 @@ public class CasUserProvider extends CasAuthenticationProvider {
 		userVO.setValid(true);
 		userApplication.saveUser(userVO);
 	}
+
+    private void modifyLastLoginTime(String useraccount) {
+        if (isUserExisted(useraccount)) {
+            userApplication.modifyLastLoginTime(useraccount);
+        }
+    }
+
+    private boolean isUserExisted(String useraccount) {
+        UserVO result = userApplication.findByUserAccount(useraccount);
+        if (result == null) {
+            result = userApplication.findByEmail(useraccount);
+        }
+        return result == null ? false : true;
+    }
 
 }

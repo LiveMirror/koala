@@ -55,6 +55,7 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        synchronized (getUseraccount(authentication)){
 		authHandler.authenticate(getUseraccount(authentication), getPassword(authentication));
 		
 		createUserIfNeed(authentication);
@@ -64,6 +65,7 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
 		modifyLastLoginTime(getUseraccount(authentication));
 		
 		return createSuccessAuthentication(authentication);
+        }
 	}
 
 	private void createUserIfNeed(Authentication authentication) {
