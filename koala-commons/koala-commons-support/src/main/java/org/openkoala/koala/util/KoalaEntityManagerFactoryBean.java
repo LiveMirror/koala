@@ -206,7 +206,7 @@ public class KoalaEntityManagerFactoryBean extends
 
 		for (String dir : dirs) {
 
-            String testPath = "classpath:"+dir+File.separator+"*.xml";
+            String testPath = "classpath:"+dir+"/*.xml";
             ResourcePatternResolver resourceLoader = new PathMatchingResourcePatternResolver();
             Resource[] source = new Resource[0];
             try {
