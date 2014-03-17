@@ -64,7 +64,7 @@
 		<property name="prototypeCount" value="5" />
 		<property name="maximumConnectionCount" value="${maximumConnectionCount}" />
 		<property name="minimumConnectionCount" value="${minimumConnectionCount}" />
-		<property name="houseKeepingTestSql" value="select 1"/>
+		<property name="houseKeepingTestSql" value="${db.jdbc.testsql}"/>
 		<property name="testBeforeUse" value="true"/>
         <property name="simultaneousBuildThrottle" value="20"/>
         <property name="maximumActiveTime" value="3600000"/>
