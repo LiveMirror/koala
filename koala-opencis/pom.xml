@@ -25,6 +25,7 @@
         <module>koala-opencis-gitlab</module>
         <module>koala-openci-platform</module>
         <module>koala-cas-management</module>
+        <module>koala-opencis-redmine</module>
     </modules>
 
 

@@ -57,8 +57,13 @@ public class JenkinsCISClient implements CISClient {
             return;
         }
 
-        client.createJob(project.getProjectName(),
+       Job newJob =   client.createJob(project.getProjectName(),
                 koalaScmConfig.getScmConfig(), new ArrayList<User>());
+
+
+        newJob.addFullPermissionsForUser(createByDeveloper(project.getProjectLead(),""));
+        client.updateJob(newJob);
+
     }
 
     private boolean existProject(Project project) {
@@ -117,7 +122,6 @@ public class JenkinsCISClient implements CISClient {
             job.addNotificationRecipient(user);
         }
 
-        job.addFullPermissionsForUser(createByDeveloper(project.getProjectLead(),""));
 
         client.updateJob(job);
     }
