@@ -57,7 +57,7 @@ public class PagingQuerierTest extends KoalaBaseSpringTestCase{
 	@Test
 	public void testGenerateQuerySql() {
 		String sql = pagingQuerier.generateQuerySql().getStatment();
-		assertEquals("select * from DATA_SOURCES limit 10 offset 0", sql);
+		assertEquals("select * from KG_DATA_SOURCES limit 10 offset 0", sql);
 		
 		GeneralQuery generalQuery = new GeneralQuery("person");
 		
@@ -144,7 +144,7 @@ public class PagingQuerierTest extends KoalaBaseSpringTestCase{
 	 */
 	private PagingQuerier createAndInitPagingQuerier(DataSource dataSource){
 		SqlStatmentMode sqlStatmentMode = new SqlStatmentMode();
-		sqlStatmentMode.setStatment("select * from DATA_SOURCES");
+		sqlStatmentMode.setStatment("select * from KG_DATA_SOURCES");
 		PagingQuerier pagingQuerier = new PagingQuerier(sqlStatmentMode, dataSource);
 		return pagingQuerier;
 	}

@@ -148,7 +148,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	}
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "GQ_PRE_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
+	@CollectionTable(name = "KGV_PRE_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
 	@OrderColumn(name = "ORDER_COLUMN")
 	public List<PreQueryCondition> getPreQueryConditions() {
 		return preQueryConditions;
@@ -159,7 +159,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	}
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "GQ_DYNAMIC_QUERIES", joinColumns = @JoinColumn(name = "GQ_ID"))
+	@CollectionTable(name = "KGV_DYNAMIC_QUERIES", joinColumns = @JoinColumn(name = "GQ_ID"))
 	@OrderColumn(name = "ORDER_COLUMN")
 	public List<DynamicQueryCondition> getDynamicQueryConditions() {
 		return dynamicQueryConditions;
@@ -171,7 +171,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	}
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "GQ_FIELD_DETAILS", joinColumns = @JoinColumn(name = "GQ_ID"))
+	@CollectionTable(name = "KGV_FIELD_DETAILS", joinColumns = @JoinColumn(name = "GQ_ID"))
 	@OrderColumn(name = "ORDER_COLUMN")
 	public List<FieldDetail> getFieldDetails() {
 		return fieldDetails;

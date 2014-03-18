@@ -523,57 +523,20 @@ public class KoalaSqlSessionFactoryBean implements
 		
 		List<String> lists = new ArrayList<String>();
 		Enumeration<?> urls = Thread.currentThread().getContextClassLoader().getResources(basePackage);
-		
-		while (urls.hasMoreElements()) {
-			URL u = (URL)urls.nextElement();
-			String path = u.getFile();
-			String protocol = u.getProtocol();
-			if("file".equals(protocol) || "jar".equals(protocol)){
-				if(path.endsWith("!/"+basePackage)){
-					path = path.substring(path.indexOf("file:")+5,path.lastIndexOf("!/"));
-					File file = new File(path);
-					JarFile jarFile = new JarFile(file);  
-				    for (Enumeration<?> entries = jarFile.entries(); entries
-						.hasMoreElements();) {
-					JarEntry entry = (JarEntry) entries.nextElement();
-					String entryName = entry.getName();
-					if (entryName.startsWith(basePackage)
-							&& entryName.endsWith(".class")) {
-						entryName = entryName.substring(entryName.indexOf(basePackage)).replaceAll("\\\\", "/");
-						lists.add(entryName);
-					}
-				}
-				}
-				else{
-					File file = new File(path);
-					if(file.exists()==false)continue;
-					List<String> files = getClassFiles(basePackage,file);
-					lists.addAll(files);
-				}
-			}
-			else if("vfs".equals(protocol)){
-				 VirtualFile vf = (VirtualFile)u.getContent();
-				 String filePath = vf.getPhysicalFile().getPath();
-				 String jarPath = filePath.substring(0, filePath.indexOf("contents"));
-				 File[] jarFiles = new File(jarPath).listFiles();
-				 for(File jar:jarFiles){
-					 if(jar.getName().endsWith(".jar")){
-						 JarFile jarFile = new JarFile(jar);
-						 for (Enumeration<?> entries = jarFile.entries(); entries
-									.hasMoreElements();) {
-								JarEntry entry = (JarEntry) entries.nextElement();
-								String entryName = entry.getName();
-								if (entryName.startsWith(basePackage)
-										&& entryName.endsWith(".class")) {
-									entryName = entryName.substring(entryName.indexOf(basePackage)).replaceAll("\\\\", "/");
-									lists.add(entryName);
-								}
-							}
-					 }
-				 }
-			}
-			
-		}
+
+        String testPath = "classpath:"+basePackage+"**/*.class";
+        ResourcePatternResolver resourceLoader = new PathMatchingResourcePatternResolver();
+        Resource[] source = new Resource[0];
+        try {
+            source = resourceLoader.getResources(testPath);
+        } catch (IOException e) {
+            logger.warn("未能在目录"+basePackage+"下找到任何实体或DTO对象");
+        }
+
+        for (int i = 0; i < source.length; i++) {
+            Resource resource = source[i];
+            lists.add(basePackage+resource.getFilename());
+        }
 		
 		for(String className:lists){
 			try {
@@ -618,7 +581,7 @@ public class KoalaSqlSessionFactoryBean implements
 		String scanMappingResourceDir = this.baseScan;
 		List<String> lists = new ArrayList<String>();
 
-            String testPath = "classpath:"+scanMappingResourceDir+File.separator+"*-mybatis.xml";
+            String testPath = "classpath:"+scanMappingResourceDir+"/*-mybatis.xml";
             ResourcePatternResolver resourceLoader = new PathMatchingResourcePatternResolver();
             Resource[] source = new Resource[0];
             try {
@@ -629,7 +592,7 @@ public class KoalaSqlSessionFactoryBean implements
 
             for (int i = 0; i < source.length; i++) {
                 Resource resource = source[i];
-                lists.add(scanMappingResourceDir+File.separator+resource.getFilename());
+                lists.add(scanMappingResourceDir+"/"+resource.getFilename());
             }
 		for(String resource:lists){
 			 InputStream inputStream = Resources.getResourceAsStream(resource);
