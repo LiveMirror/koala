@@ -40,7 +40,7 @@ import org.dayatang.domain.AbstractEntity;
  * 修 改 者    修改日期     文件版本   修改说明	
  */
 @Entity
-@Table(name = "K_M_STMT_DETAILS")
+@Table(name = "KM_STMT_DETAILS")
 public class JdbcStatementDetails extends AbstractEntity{
 
 	private static final long serialVersionUID = -8440851401946155623L;

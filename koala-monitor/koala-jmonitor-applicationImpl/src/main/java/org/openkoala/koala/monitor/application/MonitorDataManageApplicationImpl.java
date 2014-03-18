@@ -332,7 +332,7 @@ private QueryChannelService queryChannel;
 		final Map<Integer, Integer> result = new TreeMap<Integer, Integer>();
 		Date now = new Date();
 		Date before24h = DateUtils.addHours(now, -24);
-		String sql = "select m.hour, count(*) from K_M_JDBC_CONN_DETAILS c left join k_m_main_stat m on c.THREAD_KEY = m.THREAD_KEY and m.fk_node_id=? and (m.begin_time between ? and ?) and TIME_CONSUME>? group by m.hour order by m.hour";
+		String sql = "select m.hour, count(*) from KM_JDBC_CONN_DETAILS c left join KM_MAIN_STAT m on c.THREAD_KEY = m.THREAD_KEY and m.fk_node_id=? and (m.begin_time between ? and ?) and TIME_CONSUME>? group by m.hour order by m.hour";
 		Object[] params = new Object[]{nodeId,before24h,now,timeoutLimit};
 		
 		getJdbcTemplate().query(sql, params,new ResultSetExtractor<Object>() {

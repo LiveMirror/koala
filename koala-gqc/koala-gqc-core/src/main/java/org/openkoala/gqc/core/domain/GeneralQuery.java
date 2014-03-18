@@ -30,7 +30,7 @@ import org.openkoala.gqc.core.domain.utils.SqlStatmentMode;
  * 作    者：xmfang(xinmin.fang@gmail.com)
  */
 @Entity
-@Table(name = "GENERAL_QUERYS")
+@Table(name = "KG_GENERAL_QUERYS")
 public class GeneralQuery extends GeneralQueryEntity {
 	
 	private static final long serialVersionUID = -3088017969475345884L;

@@ -21,7 +21,7 @@ import org.openkoala.organisation.IdNumberIsExistException;
  *
  */
 @Entity
-@Table(name = "persons")
+@Table(name = "KO_PERSONS")
 public class Person extends OrganizationAbstractEntity {
 
 	private static final long serialVersionUID = 4180083929142881138L;
