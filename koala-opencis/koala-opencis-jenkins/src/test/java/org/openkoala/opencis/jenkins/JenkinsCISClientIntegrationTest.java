@@ -13,17 +13,17 @@ import java.util.UUID;
 public class JenkinsCISClientIntegrationTest {
 
 
-    public static String jenkinsURL = "http://10.108.1.92:8080/jenkins";
+    public static String jenkinsURL = "http://127.0.0.1:8989";
     //public static String jenkinsURL = "http://127.0.0.1:8989";
     public static String username = "admin";
-    public static String apiToken = "6672ca5d5fad881359029c7165eb57a6";
+    public static String apiToken = "9cfe23e07f7d5e3df3dd9d3207cfcc67";
 
     public static String svnUrl = "http://10.108.1.138/svn/projec";
 
     @Test
     public void test() throws MalformedURLException {
 
-        Project project = getProject("zzzxssx");
+        Project project = getProject("uuuuu");
 
         JenkinsCISClient client = new JenkinsCISClient(jenkinsURL, username, apiToken);
 
@@ -33,11 +33,13 @@ public class JenkinsCISClientIntegrationTest {
 
         client.createProject(project);
 
-        String name = "xddddfdfadasdf";
+        String name = "uuuuuu";
         String name1 = "xxxx1";
 
 
         client.createUserIfNecessary(project, getDeveloper(name));
+        client.createUserIfNecessary(project, getDeveloper(name1));
+        project.setProjectLead(name1);
 
         client.assignUsersToRole(project, "", getDeveloper(name));
         //client.removeProject(project);
@@ -50,7 +52,7 @@ public class JenkinsCISClientIntegrationTest {
         Developer developer = new Developer();
         developer.setName("中文名1");
         developer.setId(name);
-        developer.setPassword("20140305");
+        developer.setPassword("123");
         developer.setEmail(UUID.randomUUID().toString() + "@gmail.com");
         return developer;
     }

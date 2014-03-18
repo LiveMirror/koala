@@ -7,13 +7,15 @@ import nl.tudelft.jenkins.client.JenkinsClientFactory;
 import nl.tudelft.jenkins.client.exceptions.NoSuchJobException;
 import nl.tudelft.jenkins.client.exceptions.NoSuchUserException;
 import nl.tudelft.jenkins.jobs.Job;
+import org.apache.commons.lang3.StringUtils;
 import org.openkoala.opencis.CISClientBaseRuntimeException;
 import org.openkoala.opencis.api.*;
 
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,6 @@ public class JenkinsCISClient implements CISClient {
         } catch (NoSuchJobException e) {
             return;
         }
-
     }
 
 
@@ -86,7 +87,7 @@ public class JenkinsCISClient implements CISClient {
     public void createUserIfNecessary(Project project, Developer developer) {
         client.createUser(developer.getId(), developer.getPassword(),
                 developer.getEmail(), developer.getName());
-
+        addUserToProjectMatrixAuthorization(developer.getId());
     }
 
     @Override
@@ -94,9 +95,7 @@ public class JenkinsCISClient implements CISClient {
         try {
             User user =
                     client.retrieveUser(developer.getId());
-            if (null != user) {
-                client.deleteUser(user);
-            }
+            if (null != user) client.deleteUser(user);
         } catch (NoSuchUserException e) {
             return;
         }
@@ -105,6 +104,8 @@ public class JenkinsCISClient implements CISClient {
 
     @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {
+        assert StringUtils.isNotEmpty(project.getProjectLead());
+
         Job job;
         try {
             job = client.retrieveJob(project.getProjectName());
@@ -115,8 +116,10 @@ public class JenkinsCISClient implements CISClient {
             job.addPermissionsForUser(user);
             job.addNotificationRecipient(user);
         }
-        client.updateJob(job);
 
+        job.addFullPermissionsForUser(createByDeveloper(project.getProjectLead(),""));
+
+        client.updateJob(job);
     }
 
     @Override
@@ -137,15 +140,39 @@ public class JenkinsCISClient implements CISClient {
         List<User> result = new ArrayList<User>();
 
         for (Developer each : developers) {
-            result.add(createByDeveloper(each));
+            System.out.println(each.getId() + "++++++++++++++++++");
+            result.add(createByDeveloper(each.getId(), each.getEmail()));
         }
 
         return result;
     }
 
+    public void addUserToProjectMatrixAuthorization(String developerId){
+        client.sendScriptText(MessageFormat.format(getUserAuthorizationConfig(), developerId));
+    }
 
-    private User createByDeveloper(Developer developer) {
-        return new UserImpl(developer.getId(), developer.getEmail());
+    private String getUserAuthorizationConfig() {
+        String configFileName = "UserAuthorizationConfig.groovy";
+        if ( null == JenkinsCISClient.class.getResource("/" + configFileName)) throw new CISClientBaseRuntimeException("Not found UserAuthorizationConfig.groovy");
+
+        File file = new File(getClass().getResource("/" + configFileName).getFile());
+        byte[] fileContent = new byte[Long.valueOf(file.length()).intValue()];
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            inputStream.read(fileContent);
+            inputStream.close();
+        } catch (FileNotFoundException e) {
+            throw new CISClientBaseRuntimeException("Not found UserAuthorizationConfig.groovy",e);
+        } catch (IOException e) {
+            throw new CISClientBaseRuntimeException("There is a Exception when readUserAuthorizationConfig.groovy",e);
+        }
+        return new String(fileContent);
+    }
+
+
+    private User createByDeveloper(String developerId, String developEmail) {
+        System.out.println(developerId + "]]]]]]]]]]]]]");
+        return new UserImpl(developerId,developEmail);
     }
 
 }
