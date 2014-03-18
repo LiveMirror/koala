@@ -108,4 +108,6 @@ public interface UserApplication {
 	 * @return
 	 */
     boolean updatePassword(UserVO userVO, String oldPass);
+
+    void modifyLastLoginTime(String useraccount);
 }

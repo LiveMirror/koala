@@ -67,6 +67,12 @@ public class UserApplicationImpl extends BaseImpl implements UserApplication {
         return false;
     }
 
+    @Override
+    public void modifyLastLoginTime(String useraccount) {
+        User user = User.findByUserAccount(useraccount);
+        user.setLastLoginTime(new Date());
+    }
+
     public void removeUser(Long userId) {
         User user = User.load(User.class, userId);
         user.setAbolishDate(new Date());

@@ -3,6 +3,8 @@ package org.openkoala.koala.auth.ss3adapter;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.LogFactory;
+import org.openkoala.auth.application.UserApplication;
+import org.openkoala.auth.application.vo.UserVO;
 import org.openkoala.koala.auth.AuthDataService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.dayatang.cache.Cache;
 import com.dayatang.domain.InstanceFactory;
+
+import javax.inject.Inject;
 
 /**
  * ClassName:UserDetailManager Function: 查询出用户所具有的权限等信息并进行封装得到UserDetails
@@ -34,6 +38,9 @@ public class UserDetailManager implements UserDetailsService {
 		}
 		return cache;
 	}
+
+    @Inject
+    private UserApplication userApplication;
 
 	/**
 	 * 根据用户名取得及权限等信息
@@ -59,7 +66,9 @@ public class UserDetailManager implements UserDetailsService {
 					.isAccountNonExpired(), user.isAccountNonLocked(), user.isCredentialsNonExpired(),
 					user.isEnabled(), gAuthoritys);
 			result.setSuper(user.isSuper());
+            modifyLastLoginTime(username);
 			getCache().put(username, result);
+
 			return result;
 //
 //		}
@@ -74,5 +83,17 @@ public class UserDetailManager implements UserDetailsService {
 	public void setProvider(AuthDataService provider) {
 		this.provider = provider;
 	}
+
+
+    private void modifyLastLoginTime(String useraccount) {
+        if (isUserExisted(useraccount)) {
+            userApplication.modifyLastLoginTime(useraccount);
+        }
+    }
+
+    private boolean isUserExisted(String useraccount) {
+        UserVO result = userApplication.findByUserAccount(useraccount);
+        return result == null ? false : true;
+    }
 
 }
