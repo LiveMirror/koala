@@ -6,10 +6,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.querychannel.Page;
@@ -157,6 +154,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 	 * @param userAccount
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<ResourceVO> findMenuByUser(String userAccount) {
 		// 找出系统中所有顶级的菜单
 		StringBuilder selectTopValidResource = new StringBuilder();
@@ -185,19 +183,18 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 				.append("AND (resourceType.name=:name1 or resourceType.name=:name2) ")
 				.append("ORDER BY resource.level , resource.sortOrder ,resource.createDate,resource.name");
 
-		@SuppressWarnings("unchecked")
 		List<ResourceVO> all = queryChannel().createJpqlQuery(selectAllValidResource.toString()).addParameter("name1", "KOALA_MENU")
 				.addParameter("name2", "KOALA_DIRETORY").addParameter("abolishDate", new Date()).addParameter("abolishDate", new Date()).list();
 
 		// 如果用户不为空,找出所有用户可用的菜单
 		StringBuilder selectResourceByUser = new StringBuilder();
-		selectResourceByUser.append("SELECT DISTINCT ira.resource.id  ").append("FROM IdentityResourceAuthorization ira , RoleUserAuthorization rua ")
-				.append("WHERE ira.identity.id = rua.role.id AND rua.user.userAccount=:userAccount ")
-				.append("ira.abolishDate>:abolishDate and rua.abolishDate>:abolishDate and rua.user.abolishDate>:abolishDate");
+		selectResourceByUser.append("SELECT ira.resource.id  ").append("FROM IdentityResourceAuthorization ira , RoleUserAuthorization rua ")
+				.append("WHERE ira.identity.id = rua.role.id AND rua.user.userAccount=:userAccount AND ")
+				.append("ira.abolishDate>:abolishDate AND rua.abolishDate>:abolishDate AND rua.user.abolishDate>:abolishDate");
 
 		List<Long> userResourceIds = new ArrayList<Long>();
 		if (!StringUtils.isBlank(userAccount)) {
-			userResourceIds = queryChannel().createJpqlQuery(selectAllValidResource.toString()).addParameter("userAccount", userAccount)
+			userResourceIds = queryChannel().createJpqlQuery(selectResourceByUser.toString()).addParameter("userAccount", userAccount)
 					.addParameter("abolishDate", new Date()).list();
 		}
 		all.addAll(result);
