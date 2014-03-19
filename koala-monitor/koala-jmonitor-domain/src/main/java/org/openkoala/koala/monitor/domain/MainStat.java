@@ -34,7 +34,7 @@ import java.util.Date;
  * 修 改 者    修改日期     文件版本   修改说明
  */
 @Entity
-@Table(name = "K_M_MAIN_STAT")
+@Table(name = "KM_MAIN_STAT")
 public class MainStat extends KmBaseLegacyEntity {
 
     private static final long serialVersionUID = -4332257257969974945L;

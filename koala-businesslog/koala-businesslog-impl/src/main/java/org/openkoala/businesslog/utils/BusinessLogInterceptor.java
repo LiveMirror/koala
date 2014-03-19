@@ -93,7 +93,8 @@ public class BusinessLogInterceptor {
         if (null != error) {
             context.put(BUSINESS_METHOD_EXECUTE_ERROR, error.getCause());
         }
-
+        context.put(BUSINESS_OPERATION_USER, ThreadLocalBusinessLogContext.get().get(BUSINESS_OPERATION_USER));
+        context.put(BUSINESS_OPERATION_IP, ThreadLocalBusinessLogContext.get().get(BUSINESS_OPERATION_IP));
         context.put(BUSINESS_METHOD, getBLMapping(joinPoint));
         context.put(BUSINESS_OPERATION_TIME, new Date());
         return context;

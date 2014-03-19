@@ -261,7 +261,7 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 		
 		generalQuery.setDataSource(this.createAndInitDataSource());
 		generalQuery.setQueryName("test");
-		generalQuery.setTableName("GENERAL_QUERYS");
+		generalQuery.setTableName("KG_GENERAL_QUERYS");
 		generalQuery.setDescription("test 描述");
 		generalQuery.setCreateDate(new Date());
 		generalQuery.setPreQueryConditions(this.createPreQueryConditions());
