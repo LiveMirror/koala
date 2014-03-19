@@ -38,7 +38,7 @@ import org.openkoala.koala.base.KmBaseEntity;
  * 修 改 者    修改日期     文件版本   修改说明	
  */
 //@Entity
-//@Table(name = "K_M_WARN_INFO")
+//@Table(name = "KM_WARN_INFO")
 public class MonitorWarnInfo extends KmBaseEntity {
 
 	private static final long serialVersionUID = -3481793288195803639L;

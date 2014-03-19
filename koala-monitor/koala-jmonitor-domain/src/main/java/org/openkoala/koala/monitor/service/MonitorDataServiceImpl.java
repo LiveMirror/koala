@@ -135,10 +135,10 @@ public class MonitorDataServiceImpl implements MonitorDataService {
 		Date beginDt = KoalaDateUtils.getDayBegin(beginTime);
 		Date endDt = null;
 		if(Constant.UNIT_HOUR.equals(statUnit)){
-			sql = "select m.HOUR, count(*) from K_M_HTTP_DETAILS h left join K_M_MAIN_STAT m on h.THREAD_KEY = m.THREAD_KEY and m.FK_NODE_ID=? and (m.BEGIN_TIME between ? and ?) group by m.HOUR order by m.HOUR";
+			sql = "select m.HOUR, count(*) from KM_HTTP_DETAILS h left join KM_MAIN_STAT m on h.THREAD_KEY = m.THREAD_KEY and m.FK_NODE_ID=? and (m.BEGIN_TIME between ? and ?) group by m.HOUR order by m.HOUR";
 			endDt = KoalaDateUtils.getDayEnd(beginDt);
 		}else if(Constant.UNIT_DAY.equals(statUnit)){
-			sql = "select m.DAY, count(*) from K_M_HTTP_DETAILS h left join K_M_MAIN_STAT m on h.THREAD_KEY = m.THREAD_KEY and m.FK_NODE_ID=? and (m.BEGIN_TIME between ? and ?) group by m.DAY order by m.DAY";
+			sql = "select m.DAY, count(*) from KM_HTTP_DETAILS h left join KM_MAIN_STAT m on h.THREAD_KEY = m.THREAD_KEY and m.FK_NODE_ID=? and (m.BEGIN_TIME between ? and ?) group by m.DAY order by m.DAY";
 			endDt = KoalaDateUtils.getLastDateOfMonth(beginDt);
 		}else{
 			throw new RuntimeException("参数错误");
@@ -183,7 +183,7 @@ public class MonitorDataServiceImpl implements MonitorDataService {
 	
 	@Override
 	public final List<HttpDetailsVo> pageGetHttpMonitorDetails(int start, int pageSize, HttpDetailsVo httpDetailsVo) {
-		String sql = " select URI,IP,PARAMETERS,BEGIN_TIME,END_TIME from K_M_HTTP_DETAILS where THREAD_KEY in(select m.THREAD_KEY from K_M_MAIN_STAT m where m.FK_NODE_ID=? and m.BEGIN_TIME>=? and m.BEGIN_TIME<?) ";
+		String sql = " select URI,IP,PARAMETERS,BEGIN_TIME,END_TIME from KM_HTTP_DETAILS where THREAD_KEY in(select m.THREAD_KEY from KM_MAIN_STAT m where m.FK_NODE_ID=? and m.BEGIN_TIME>=? and m.BEGIN_TIME<?) ";
 		return jdbcTemplate.query(sql, 
 				new Object[]{httpDetailsVo.getSystem(), httpDetailsVo.getBeginTime(), httpDetailsVo.getEndTime()}, 
 				new RowMapper<HttpDetailsVo>(){

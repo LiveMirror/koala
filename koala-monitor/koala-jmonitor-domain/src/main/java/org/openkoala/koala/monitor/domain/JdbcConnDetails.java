@@ -39,7 +39,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "K_M_JDBC_CONN_DETAILS")
+@Table(name = "KM_JDBC_CONN_DETAILS")
 public class JdbcConnDetails extends BaseMonitorDetails {
 
 	private static final long serialVersionUID = -3440499796426034417L;

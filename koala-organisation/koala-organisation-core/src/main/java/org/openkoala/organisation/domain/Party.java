@@ -3,14 +3,7 @@ package org.openkoala.organisation.domain;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import org.dayatang.domain.EntityRepository;
 import org.dayatang.domain.InstanceFactory;
@@ -19,6 +12,7 @@ import org.openkoala.organisation.SnIsExistException;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name="KO_PARTIES")
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
 public abstract class Party extends OrganizationAbstractEntity {
 

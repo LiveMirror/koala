@@ -33,7 +33,7 @@ import javax.persistence.Table;
  * 修 改 者    修改日期     文件版本   修改说明	
  */
 @Entity
-@Table(name = "K_M_JDBC_DETAILS")
+@Table(name = "KM_JDBC_DETAILS")
 public class JdbcDetails extends BaseMonitorDetails {
 
 	private static final long serialVersionUID = 3667605232310643782L;

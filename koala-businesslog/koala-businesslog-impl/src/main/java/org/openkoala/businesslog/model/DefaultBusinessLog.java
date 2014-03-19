@@ -16,7 +16,7 @@ import static org.openkoala.businesslog.ContextKeyConstant.*;
  */
 @Entity
 @DiscriminatorValue(value = "default")
-@Table(name = "koala_businesslogs")
+@Table(name = "KL_BUSSINESSLOGS")
 public class DefaultBusinessLog extends AbstractBusinessLog {
 
    

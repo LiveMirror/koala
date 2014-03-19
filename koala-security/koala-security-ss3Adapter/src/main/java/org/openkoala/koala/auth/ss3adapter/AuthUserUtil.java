@@ -2,7 +2,6 @@ package org.openkoala.koala.auth.ss3adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.auth.application.RoleApplication;
 import org.openkoala.auth.application.vo.ResourceVO;
@@ -20,6 +19,7 @@ public class AuthUserUtil {
 		}
 		return roleApplication;
 	}
+
 	/**
 	 * 获取当前登录用户名
 	 * 
@@ -85,4 +85,5 @@ public class AuthUserUtil {
 		}
 		return resources;
 	}
+
 }

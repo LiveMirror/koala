@@ -20,7 +20,7 @@ import org.openkoala.gqc.core.exception.SystemDataSourceNotExistException;
  *
  */
 @Entity
-@Table(name = "DATA_SOURCES")
+@Table(name = "KG_DATA_SOURCES")
 public class DataSource extends GeneralQueryEntity {
 
 	private static final long serialVersionUID = 7435451055102038439L;

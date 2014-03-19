@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -22,6 +23,7 @@ import org.openkoala.organisation.TerminateRootOrganizationException;
  *
  */
 @Entity
+@Table(name="KO_ORGANIZATIONS")
 public abstract class Organization extends Party {
 
 	private static final long serialVersionUID = -8953682430610195006L;
