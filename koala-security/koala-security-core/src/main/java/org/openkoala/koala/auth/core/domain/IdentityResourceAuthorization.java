@@ -1,5 +1,6 @@
 package org.openkoala.koala.auth.core.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -89,8 +90,12 @@ public class IdentityResourceAuthorization extends Accountability {
 	 * @return
 	 */
 	public static List<String> findAuthorizationByResourceIdentifier(String identifier) {
-		return  getRepository().createNamedQuery("findAuthorizationByResourceIdentifier").addParameter("identifier", identifier).addParameter("abolishDate",new Date()).list();
-		
+		List<Long> roleIds =  getRepository().createNamedQuery("findAuthorizationByResourceIdentifier").addParameter("identifier", identifier).addParameter("abolishDate",new Date()).list();
+		List<String> result = new ArrayList<String>();
+        for(Long roleId : roleIds){
+            result.add(roleId.toString());
+        }
+        return result;
 	}
 
 	@Override
