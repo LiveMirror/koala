@@ -343,7 +343,14 @@ var department = function(){
             		if($element.hasClass('tree-folder')){
             			$element.find('.tree-folder-header:first').click();
             		}
-            		$element.parents().filter('.tree-folder-content').show();
+            		$element.parents().filter('.tree-folder-content').each(function(){
+            			var $this = $(this);
+						$this.show()
+							 .prev('.tree-folder-header')
+							 .find('.glyphicon-folder-close')
+							 .removeClass('glyphicon-folder-close')
+							 .addClass('glyphicon-folder-open');
+            		});
             	}else{
             		$('#departmentTree').find('.tree-folder-header:first').click();
             	}

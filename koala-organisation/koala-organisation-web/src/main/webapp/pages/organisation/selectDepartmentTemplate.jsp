@@ -23,7 +23,7 @@
                 <h4 class="modal-title">选择机构</h4>
             </div>
             <div class="modal-body" style="width: 620px;margin-left: auto; margin-right: auto;">
-                  <div class="tree" style="margin-top: 2px;"></div>
+                  <div class="tree" style="margin: 2px!important;"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

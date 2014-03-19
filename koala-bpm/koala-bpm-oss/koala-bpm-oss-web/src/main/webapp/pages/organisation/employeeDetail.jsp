@@ -29,6 +29,10 @@
 	        .employee-detail .table th, .employee-detail .table td {
 	            border-width: 0 1px 1px 0;
 	        }
+	        .employee-detail div {
+	        	word-wrap: break-word;
+	        	word-break: break-all;
+	        }
 	    </style>
 	    <table class="table table-bordered table-hover">
 		<tr>
@@ -75,13 +79,13 @@
         <tr>
                 <td width="50%">
                     <label class="col-lg-4 control-label">岗位:</label>
-                    <div class="col-lg-8 content" data-id="postName">
+                    <div class="col-lg-8 content" data-id="postName" style="word-wrap: break-word;word-break: break-all;">
 
                     </div>
                 </td>
                 <td width="50%">
-                    <label class="col-lg-4 control-label">兼职岗位:</label>
-                    <div class="col-lg-8 content" data-id="additionalPostNames">
+                    <label class="col-lg-4 control-label" >兼职岗位:</label>
+                    <div class="col-lg-8 content" data-id="additionalPostNames" style="word-wrap: break-word;word-break: break-all;">
 
                     </div>
                 </td>
