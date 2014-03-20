@@ -22,10 +22,10 @@ import org.openkoala.util.DateFormatUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named
-//@Remote
-//@Stateless(name = "MenuApplication")
+// @Remote
+// @Stateless(name = "MenuApplication")
 @Transactional(value = "transactionManager_security")
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
+// @Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
 public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 
 	public static Page<ResourceVO> basePageQuery(String query, Object[] params, int currentPage, int pageSize) {
@@ -214,7 +214,11 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 				map.get(pid).getChildren().add(resourceVO);
 			}
 		}
-
+		for (int i = 0; i < result.size(); i++) {
+			if (!StringUtils.isBlank(userAccount) && !userResourceIds.contains(result.get(i).getId())) {
+				result.remove(i);
+			}
+		}
 		return result;
 	}
 
