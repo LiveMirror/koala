@@ -170,11 +170,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.dayatang.dddlib</groupId>
 			<artifactId>dddlib-persistence-jpa</artifactId>
 		</dependency>
