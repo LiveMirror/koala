@@ -114,17 +114,15 @@ var department = function(){
 						content: '保存成功'
 					});
                     if(type == 'updateCompany' || type == 'updateDepartment'){
-                        showDepartmentDetail(id);
-                        var elementData = $element.data();
-                        elementData.sn = departmentSN.val();
-                        elementData.name = departmentName.val();
-                        elementData.description = description.val();
-                        $element.data(elementData);
-                        if(!$element.hasClass('tree-item')){
-                        	$element.find('.tree-folder-name:first').html(elementData.name).click();
-                        }else{
-                        	$element.find('.tree-item-name').html(elementData.name).click();
-                        }
+                    	 $.get(contextPath + '/organization/getOrg.koala?id='+id).done(function(data){
+ 	                        var org = data.org;
+ 	                        $element.data(org);
+ 	                        if(!$element.hasClass('tree-item')){
+ 	                        	$element.find('.tree-folder-name:first').html(org.name).click();
+ 	                        }else{
+ 	                        	$element.find('.tree-item-name').html(org.name).click();
+ 	                        }
+                         });
                     }else{
                         $('#departmentTree').off().empty().data('koala.tree', null)
                         getTree(data.id);
@@ -405,10 +403,10 @@ var department = function(){
 			var org = data.org;
 			var departmentDetail = $('.right-content');
 			departmentDetail.find('[data-role="id"]').val(org.id);
-			departmentDetail.find('[data-role="number"]').html(org.sn);
-			departmentDetail.find('[data-role="name"]').html(org.name);
-			departmentDetail.find('[data-role="description"]').html(org.description);
-			departmentDetail.find('[data-role="principalName"]').html(org.principalName);
+			departmentDetail.find('[data-role="number"]').text(org.sn);
+			departmentDetail.find('[data-role="name"]').text(org.name);
+			departmentDetail.find('[data-role="description"]').text(org.description);
+			departmentDetail.find('[data-role="principalName"]').text(org.principalName);
 			departmentDetail.find('[data-role="organizationType"]').val(org.organizationType);
 			//loadEmployeeList(org.id);
 			if(org.organizationType == 'Company'){
