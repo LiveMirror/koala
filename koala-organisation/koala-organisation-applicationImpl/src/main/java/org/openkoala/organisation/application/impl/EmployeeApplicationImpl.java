@@ -73,7 +73,7 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 	public Page<EmployeeDTO> pagingQueryEmployeesByOrganization(EmployeeDTO example, Organization organization, int currentPage, int pagesize) {
 		List<Object> conditionVals = new ArrayList<Object>();
 
-		StringBuilder jpql = new StringBuilder("select distinct _holding.responsible from EmployeePostHolding _holding " + "where _holding.commissioner in"
+		StringBuilder jpql = new StringBuilder("select distinct (_holding.responsible) from EmployeePostHolding _holding " + "where _holding.commissioner in"
 				+ " (select p from Post p where p.organization = ?1 and p.createDate <= ?2 and p.terminateDate > ?3)"
 				+ " and _holding.fromDate <= ?4 and _holding.toDate > ?5");
 		Date now = new Date();
@@ -90,7 +90,7 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 	public Page<EmployeeDTO> pagingQueryEmployeesByOrganizationAndChildren(EmployeeDTO example, Organization organization, int currentPage, int pagesize) {
 		List<Object> conditionVals = new ArrayList<Object>();
 
-		StringBuilder jpql = new StringBuilder("select distinct _holding.responsible from EmployeePostHolding _holding " + "where _holding.commissioner in"
+		StringBuilder jpql = new StringBuilder("select distinct (_holding.responsible) from EmployeePostHolding _holding " + "where _holding.commissioner in"
 				+ " (select p from Post p where p.organization in ?1 and p.createDate <= ?2 and p.terminateDate > ?3)"
 				+ " and _holding.fromDate <= ?4 and _holding.toDate > ?5");
 		Date now = new Date();
