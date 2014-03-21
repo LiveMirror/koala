@@ -44,7 +44,7 @@
                     <div class="form-group">
                         <label class="col-lg-3 control-label">编号:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" id="sn"><span>*</span>
+                            <input type="text" class="form-control" id="sn" maxlength="30"><span>*</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -56,7 +56,7 @@
                     <div class="form-group">
                         <label class="col-lg-3 control-label">描述:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" id="description">
+                            <input type="text" class="form-control" id="description" maxlength="30">
                         </div>
                     </div>
                 </form>

@@ -128,16 +128,32 @@ public abstract class Organization extends Party {
 		}
 		
 		Date now = new Date();
-		for (Organization each : parent.getChildren(now)) {
-			if (getName().equals(each.getName())) {
-				throw new NameExistException();
-			}
-		}
+		checkIsNameExistUnder(parent, now);
 		
 		save();
 		new OrganizationLineManagement(parent, this, now).save();
 	}
 
+	private void checkIsNameExistUnder(Organization parent, Date date) {
+		for (Organization each : parent.getChildren(date)) {
+			if (getName().equals(each.getName())) {
+				throw new NameExistException();
+			}
+		}
+	}
+	
+	/**
+	 * 修改组织机构信息
+	 */
+	public void update() {
+		Date now = new Date();
+		Organization old = Organization.get(Organization.class, getId());
+		if (!getName().equals(old.getName())) {
+			checkIsNameExistUnder(getParent(now), now);
+		}
+		super.save();
+	}
+	
 	/**
 	 * 获得该机构相关的岗位
 	 * @param date

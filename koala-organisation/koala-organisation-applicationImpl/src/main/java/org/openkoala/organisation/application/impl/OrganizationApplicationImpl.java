@@ -151,4 +151,9 @@ public class OrganizationApplicationImpl implements OrganizationApplication {
 		}
 	}
 
+	@Override
+	public void updateOrganization(Organization organization) {
+		organization.update();
+	}
+
 }

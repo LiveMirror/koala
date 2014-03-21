@@ -80,4 +80,10 @@ public interface OrganizationApplication {
 	 */
 	OrganizationDTO getOrganizationById(Long id);
 	
+	/**
+	 * 修改某个组织机构信息
+	 * @param organization
+	 */
+	void updateOrganization(Organization organization);
+	
 }

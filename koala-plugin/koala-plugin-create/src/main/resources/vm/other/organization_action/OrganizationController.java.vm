@@ -59,6 +59,7 @@ public class OrganizationController extends BaseController {
     		dataMap.put("result", parent.getName() + "下已经存在名称为: " + company.getName() + "的机构！");
     	} catch (Exception exception) {
     		dataMap.put("result", "创建公司失败！");
+    		exception.printStackTrace();
     	}
     	
     	return dataMap;
@@ -101,10 +102,12 @@ public class OrganizationController extends BaseController {
     public Map<String, Object> updateCompany(Company company) {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
     	try {
-    		getBaseApplication().updateParty(company);
+    		organizationApplication.updateOrganization(company);
         	dataMap.put("result", "success");
     	} catch (SnIsExistException exception) {
     		dataMap.put("result", "机构编码: " + company.getSn() + " 已被使用！");
+    	} catch (NameExistException exception) {
+    		dataMap.put("result", "同级机构下已经存在名称为: " + company.getName() + "的机构！");
     	} catch (Exception exception) {
     		dataMap.put("result", "修改公司信息失败！");
     	}
@@ -122,10 +125,12 @@ public class OrganizationController extends BaseController {
     public Map<String, Object> updateDepartment(Department department) {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
     	try {
-    		getBaseApplication().updateParty(department);
+    		organizationApplication.updateOrganization(department);
         	dataMap.put("result", "success");
     	} catch (SnIsExistException exception) {
     		dataMap.put("result", "机构编码: " + department.getSn() + " 已被使用！");
+    	} catch (NameExistException exception) {
+    		dataMap.put("result", "同级机构下已经存在名称为: " + department.getName() + "的机构！");
     	} catch (Exception exception) {
     		dataMap.put("result", "修改部门信息失败！");
     	}

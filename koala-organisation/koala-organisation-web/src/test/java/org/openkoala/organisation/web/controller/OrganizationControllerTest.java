@@ -123,20 +123,20 @@ public class OrganizationControllerTest {
 	public void testUpdateCompany() {
 		Company company = new Company("广州分公司", "COM-XXX2");
 		organizationController.updateCompany(company);
-		verify(baseApplication, only()).updateParty(company);
+		verify(organizationApplication, only()).updateOrganization(company);
 	}
 	
 	@Test
 	public void testCatchSnIsExistExceptionWhenUpdateCompany() {
 		Company company = new Company("广州分公司", "COM-XXX2");
-		doThrow(new SnIsExistException()).when(baseApplication).updateParty(company);
+		doThrow(new SnIsExistException()).when(organizationApplication).updateOrganization(company);
 		assertEquals("机构编码: " + company.getSn() + " 已被使用！", organizationController.updateCompany(company).get("result"));
 	}
 	
 	@Test
 	public void testExceptionWhenUpdateCompany() {
 		Company company = new Company("广州分公司", "COM-XXX2");
-		doThrow(new RuntimeException()).when(baseApplication).updateParty(company);
+		doThrow(new RuntimeException()).when(organizationApplication).updateOrganization(company);
 		assertEquals("修改公司信息失败！", organizationController.updateCompany(company).get("result"));
 	}
 	
@@ -144,20 +144,20 @@ public class OrganizationControllerTest {
 	public void testUpdateDepartment() {
 		Department department = new Department("财务部", "DEP-XXX2");
 		organizationController.updateDepartment(department);
-		verify(baseApplication, only()).updateParty(department);
+		verify(organizationApplication, only()).updateOrganization(department);
 	}
 	
 	@Test
 	public void testCatchSnIsExistExceptionWhenUpdateDepartment() {
 		Department department = new Department("财务部", "DEP-XXX2");
-		doThrow(new SnIsExistException()).when(baseApplication).updateParty(department);
+		doThrow(new SnIsExistException()).when(organizationApplication).updateOrganization(department);
 		assertEquals("机构编码: " + department.getSn() + " 已被使用！", organizationController.updateDepartment(department).get("result"));
 	}
 	
 	@Test
 	public void testExceptionWhenUpdateDepartment() {
 		Department department = new Department("财务部", "DEP-XXX2");
-		doThrow(new RuntimeException()).when(baseApplication).updateParty(department);
+		doThrow(new RuntimeException()).when(organizationApplication).updateOrganization(department);
 		assertEquals("修改部门信息失败！", organizationController.updateDepartment(department).get("result"));
 	}
 
