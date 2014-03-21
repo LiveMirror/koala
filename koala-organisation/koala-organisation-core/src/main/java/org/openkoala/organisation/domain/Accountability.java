@@ -10,7 +10,7 @@ import javax.persistence.*;
 import org.dayatang.utils.DateUtils;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name="KO_ACCOUNTABLIITYS")
+@Table(name="KO_ACCOUNTABILITIES")
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({@NamedQuery(name = "Accountability.findAccountabilitiesByParty", 
 	query = "select o from Accountability o where o.commissioner = :party or o.responsible = :party and o.fromDate <= :date and o.toDate > :date")})
