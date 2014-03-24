@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import com.dayatang.domain.BaseLegacyEntity;
+import org.openkoala.koala.commons.domain.KoalaLegacyEntity;
 import java.io.Serializable;
 
 /**
@@ -22,7 +22,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="${tableName}")
-public class ${EntityName} extends BaseLegacyEntity {
+public class ${EntityName} extends KoalaLegacyEntity {
 
  private static final long serialVersionUID = 1L;
  
@@ -75,52 +75,6 @@ public class ${EntityName} extends BaseLegacyEntity {
   }
   
 #end
-
-	public int hashCode(){
-	  	final int prime = 31;
-		int result = 1;
-		#foreach ($column in $PrimayKeys)
-		
-		 #if ($column.type=="int" || $column.type=="long" || $column.type=="short" || $column.type=="float" || $column.type=="double")
-		  
-		  result = prime * result
-				+ ((this.$column.name == 0) ? 0 : (int)this.${column.name});
-		  
-		#else
-		
-		  result = prime * result
-				+ ((this.$column.name == null) ? 0 : this.${column.name}.hashCode());
-		
-		 #end
-		#end 
-		  
-		#foreach ($column in $Columns)
-		
-		#if ($column.type=="int" || $column.type=="long" || $column.type=="short" || $column.type=="float" || $column.type=="double")
-		  
-		  result = prime * result
-				+ ((this.$column.name == 0) ? 0 : (int)this.${column.name});
-		  
-		#else
-		
-		  result = prime * result
-				+ ((this.$column.name == null) ? 0 : this.${column.name}.hashCode());
-		
-		#end
-		
-		#end
-		return result;
-	}
-
-	public boolean equals(Object other){
-	   //TODO your must todo it yourself
-	   return false; 
-	}
-
-	public String toString(){
-	   //TODO your must todo it yourself
-	   return null;
-	}
 	
 	public Serializable getId() {
 		// TODO Auto-generated method stub
@@ -144,5 +98,11 @@ public class ${EntityName} extends BaseLegacyEntity {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+   @Override
+    public String[] businessKeys() {
+     // TODO Auto-generated method stub
+     return null;
+    }
 	
 }

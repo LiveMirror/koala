@@ -14,7 +14,7 @@
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-groovysh</artifactId>
+            <artifactId>groovy-all</artifactId>
             <version>2.2.2</version>
         </dependency>
         <dependency>
