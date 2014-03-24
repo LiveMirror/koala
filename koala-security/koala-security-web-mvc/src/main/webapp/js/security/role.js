@@ -332,6 +332,7 @@ var roleManager = function(){
                 menu.title = item.name;
                 menu.open = true;
                 menu.checked = item.ischecked;
+                menu.identifier = item.identifier;
                 zNode.menu = menu;
 				if(item.children && item.children.length > 0){
 					zNode.children = getChildrenData(new Array(), item.children);
@@ -364,6 +365,7 @@ var roleManager = function(){
             menu.title = item.name;
             menu.open = true;
             menu.checked = item.ischecked;
+            menu.identifier = item.identifier;
             zNode.menu = menu;
             if(item.children && item.children.length > 0){
                 zNode.children = getChildrenData(new Array(), item.children);
