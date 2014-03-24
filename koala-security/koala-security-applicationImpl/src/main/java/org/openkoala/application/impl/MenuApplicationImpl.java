@@ -415,7 +415,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 				+ "resource.identifier, resource.valid, resource.name, resource.name, "
 				+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id) "
 				+ "FROM ResourceTypeAssignment assignment LEFT JOIN assignment.resource resource LEFT JOIN assignment.resourceType resourceType "
-				+ "WHERE resource.level=1 AND resource.abolishDate>:abolishDate ORDER BY resource.sortOrder ,resource.createDate";
+				+ "WHERE resource.level=1 AND resource.abolishDate>:abolishDate ORDER BY resource.level ,resource.sortOrder ,resource.createDate ,resource.name";
 		treeVOs = queryChannel().createJpqlQuery(selectTopResource).addParameter("abolishDate", new Date()).list();
 
 		String selectAllResource = "SELECT DISTINCT NEW org.openkoala.auth.application.vo.ResourceVO("
@@ -425,7 +425,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 				+ "FROM ResourceLineAssignment resourceLineAssignment LEFT JOIN resourceLineAssignment.child resource, "
 				+ "ResourceTypeAssignment assignment LEFT JOIN assignment.resource _resource LEFT JOIN assignment.resourceType resourceType "
 				+ "WHERE resourceLineAssignment.parent.id IS NOT NULL AND resource.abolishDate>:abolishDate AND resource.id = _resource.id "
-				+ "ORDER BY resource.sortOrder ,resource.createDate";
+				+ "ORDER BY resource.level ,resource.sortOrder ,resource.createDate ,resource.name";
 
 		List<ResourceVO> all = queryChannel().createJpqlQuery(selectAllResource.toString()).addParameter("abolishDate", new Date()).list();
 
