@@ -20,7 +20,7 @@
 	
 	<named-query name="findRoleByName">
 		<query>
-			select role from Role role where role.name=? and role.abolishDate>? 
+			select role from Role role where role.name=:name and role.abolishDate>:abolishDate 
 		</query>
 	</named-query>
 	
