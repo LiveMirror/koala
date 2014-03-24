@@ -50,7 +50,7 @@
                     <div class="form-group">
                         <label class="col-lg-3 control-label">名称:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" id="name"><span>*</span>
+                            <input type="text" class="form-control" id="name" maxlength="30"><span>*</span>
                         </div>
                     </div>
                     <div class="form-group">
