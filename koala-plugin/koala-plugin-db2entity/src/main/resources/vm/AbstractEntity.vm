@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import com.dayatang.domain.AbstractEntity;
+import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 import java.io.Serializable;
 
 /**
@@ -22,7 +22,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="${tableName}")
-public class ${EntityName} extends AbstractEntity {
+public class ${EntityName} extends KoalaAbstractEntity {
 
 
 #foreach ($column in $Columns)
@@ -49,34 +49,10 @@ public class ${EntityName} extends AbstractEntity {
   
 #end
 
-	public int hashCode(){
-	  	final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((getId() == 0) ? 0 : getId().hashCode());
-		#foreach ($column in $Columns)
-		#if ($column.type=="int" || $column.type=="long" || $column.type=="short" || $column.type=="float" || $column.type=="double")
-		  
-		  result = prime * result
-				+ ((this.$column.name == 0) ? 0 : (int)this.${column.name});
-		  
-		#else
-		
-		  result = prime * result
-				+ ((this.$column.name == null) ? 0 : this.${column.name}.hashCode());
-		
-		#end
-		#end
-		return result;
-	}
+   @Override
+   public String[] businessKeys() {
+     // TODO Auto-generated method stub
+    return null;
+   }
 
-	public boolean equals(Object other){
-	   //TODO your must todo it yourself
-	   return false; 
-	}
-	
-	public String toString(){
-	   //TODO your must todo it yourself
-	   return null;
-	}
 }

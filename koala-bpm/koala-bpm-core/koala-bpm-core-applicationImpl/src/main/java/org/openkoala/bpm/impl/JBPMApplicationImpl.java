@@ -99,7 +99,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author lingen
  * 
  */
-@Transactional(propagation= Propagation.SUPPORTS)
+@Transactional(value="jbpmTxManager",propagation = Propagation.REQUIRED)
 @Named("jbpmApplication")
 public class JBPMApplicationImpl implements JBPMApplication {
 

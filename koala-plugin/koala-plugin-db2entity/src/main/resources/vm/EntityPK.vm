@@ -28,32 +28,8 @@ public class ${EntityName}PK implements Serializable {
   public void set${propertyName}($column.type $column.name) {
 		this.$column.name = $column.name;
   }
-#end 
-  
-   
-	public int hashCode(){
-	  	final int prime = 31;
-		int result = 1;
-		#foreach ($column in $PrimayKeys)
-		
-		#if ($column.type=="int" || $column.type=="long" || $column.type=="short" || $column.type=="float" || $column.type=="double")
-		  
-		  result = prime * result
-				+ ((this.$column.name == 0) ? 0 :(int)this.${column.name});
-		  
-		#else
-		
-		  result = prime * result
-				+ ((this.$column.name == null) ? 0 : this.${column.name}.hashCode());
-		
-		#end
-		#end
-		return result;
-	}
-  
-    public boolean equals(Object obj) {  
-      //TODO you must to it
-       return false;
-    }  
+#end
+
+
   
 } 

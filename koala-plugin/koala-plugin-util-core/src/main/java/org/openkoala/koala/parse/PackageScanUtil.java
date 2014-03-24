@@ -129,10 +129,8 @@ public class PackageScanUtil {
 												thePackageName.length() + 1,
 												name.length() - 6);
 										try {
-											// 添加到classes
-											classes.add(Class
-													.forName(thePackageName + '.'
-															+ className));
+                                            classes.add(Thread.currentThread().getContextClassLoader()
+                                                    .loadClass(thePackageName + '.' + className));
 										} catch (Exception e) {
 										}catch(java.lang.NoClassDefFoundError e){
 											

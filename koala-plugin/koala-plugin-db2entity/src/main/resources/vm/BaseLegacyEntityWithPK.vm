@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import com.dayatang.domain.BaseLegacyEntity;
+import org.openkoala.koala.commons.domain.KoalaLegacyEntity;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 
@@ -22,7 +22,7 @@ import javax.persistence.EmbeddedId;
  */
 @Entity
 @Table(name="${tableName}")
-public class ${EntityName} extends BaseLegacyEntity {
+public class ${EntityName} extends KoalaLegacyEntity {
 
    private static final long serialVersionUID = 1L;
 
@@ -70,32 +70,11 @@ public class ${EntityName} extends BaseLegacyEntity {
 		return ${pkName}PK;
 	}
 
-	public int hashCode(){
-	  	final int prime = 31;
-		int result = 1;
-		result = prime * result + ((${pkName}PK == null) ? 0 : ${pkName}PK.hashCode());
-		#foreach ($column in $Columns)
-		
-		#if ($column.type=="int" || $column.type=="long" || $column.type=="short" || $column.type=="float" || $column.type=="double")
-		  result = prime * result
-				+ ((this.$column.name == 0) ? 0 : (int)this.${column.name});
-		#else
-		  result = prime * result
-				+ ((this.$column.name == null) ? 0 : this.${column.name}.hashCode());
-		#end
-		#end
-		return result;
-	}
-
-	public boolean equals(Object other){
-	   //TODO your must todo it yourself
-	   return false; 
-	}
-
-	public String toString(){
-	   //TODO your must todo it yourself
-	   return null;
-	}
+    @Override
+    public String[] businessKeys() {
+     // TODO Auto-generated method stub
+     return null;
+    }
 	
 	/**
 	 * 实现此方法，返回当前实体在数据库中是否存在

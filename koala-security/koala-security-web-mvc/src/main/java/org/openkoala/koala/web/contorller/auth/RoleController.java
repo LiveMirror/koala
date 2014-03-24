@@ -1,14 +1,13 @@
 package org.openkoala.koala.web.contorller.auth;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.ResourceApplication;
 import org.openkoala.auth.application.RoleApplication;
@@ -19,7 +18,6 @@ import org.openkoala.auth.application.vo.ResourceVO;
 import org.openkoala.auth.application.vo.RoleVO;
 import org.openkoala.auth.application.vo.UserVO;
 import org.openkoala.koala.auth.ss3adapter.ehcache.CacheUtil;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
@@ -235,10 +233,18 @@ public class RoleController extends BaseController {
 		roleApplication.abolishMenu(roleVO, delList);
 		roleApplication.assignMenuResource(roleVO, addList);
 		for (ResourceVO mVO : addList) {
-			CacheUtil.refreshUrlAttributes(((ResourceVO) urlApplication.getResource(mVO.getId())).getIdentifier());
+			String identifier = mVO.getIdentifier();
+			if(StringUtils.isBlank(identifier)){
+				identifier = ((ResourceVO) urlApplication.getResource(mVO.getId())).getIdentifier();
+			}
+			CacheUtil.refreshUrlAttributes(identifier);
 		}
 		for (ResourceVO mVO : delList) {
-			CacheUtil.refreshUrlAttributes(((ResourceVO) urlApplication.getResource(mVO.getId())).getIdentifier());
+			String identifier = mVO.getIdentifier();
+			if(StringUtils.isBlank(identifier)){
+				identifier = ((ResourceVO) urlApplication.getResource(mVO.getId())).getIdentifier();
+			}
+			CacheUtil.refreshUrlAttributes(identifier);
 		}
 		dataMap.put("result", "success");
 
