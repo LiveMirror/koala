@@ -108,9 +108,9 @@
 			var titleHtml = new Array();
 			titleHtml.push('<tr>');
 			if (this.options.isShowIndexCol) {
-				titleHtml.push('<th width="50px;"><div class="checker"><span data-role="selectAll"></span></div></th>');
+				titleHtml.push('<th width="50px;"><div class="checkerbox" data-role="selectAll"></div></th>');
 			} else {
-				titleHtml.push('<th width="50px;" style="display:none"><div class="checker"><span data-role="selectAll"></span></div></th>');
+				titleHtml.push('<th width="50px;" style="display:none"><div class="checkerbox" data-role="selectAll"></div></th>');
 			}
 			for (var i = 0, j = columns.length; i < j; i++) {
 				var column = columns[i];
@@ -541,9 +541,9 @@
 					trHtml.push('<tr>');
 				}
 				if (this.options.isShowIndexCol) {
-					trHtml.push('<td width="50px;"><div class="checker"><span indexValue="' + i + '" data-role="indexCheckbox" data-value="' + item[this.options.identity] + '"></span></div></td>');
+					trHtml.push('<td width="50px;"><div class="checkerbox" indexValue="' + i + '" data-role="indexCheckbox" data-value="' + item[this.options.identity] + '"></div></td>');
 				} else {
-					trHtml.push('<td width="50px;" style="display:none"><div class="checker"><span indexValue="' + i + '" data-role="indexCheckbox" data-value="' + item[this.options.identity] + '"></span></div></td>');
+					trHtml.push('<td width="50px;" style="display:none"><div class="checkerbox" indexValue="' + i + '" data-role="indexCheckbox" data-value="' + item[this.options.identity] + '"></div></td>');
 				}
 				for (var k = 0, h = this.options.columns.length; k < h; k++) {
 					var column = this.options.columns[k];
@@ -689,9 +689,13 @@
 		},
 		removeRows : function(indexs) {
 			var self = this;
-			$.each(indexs, function() {
-				delete self.itemsMap[this];
-			});
+			if(indexs.length){
+				$.each(indexs, function() {
+					delete self.itemsMap[this];
+				});
+			}else{
+				delete self.itemsMap[indexs];
+			}
 			self.items = [];
 			for (var prop in self.itemsMap) {
 				self.items.push(self.itemsMap[prop]);
@@ -1064,7 +1068,28 @@
 			}
 		}).focus().parent().addClass('has-error');
 	};
-	ModifyPassword.DEFAULTS.TEMPLATE = '<div class="modal fade" id="modifyPwd">' + '<div class="modal-dialog modify-pwd" style="padding-top:80px;">' + '<div class="modal-content">' + '<div class="modal-header">' + '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + '<h4 class="modal-title">修改密码</h4>' + '</div>' + '<div class="modal-body"> ' + '<form class="form-horizontal" role="form">' + '<div class="form-group">' + '<label for="oldPassword" class="col-lg-3 control-label">原始密码:</label>' + '<div class="col-lg-9">' + '<input type="password" class="form-control" style="width:80%;" id="oldPassword" >' + '</div> ' + '</div>  ' + '<div class="form-group">' + '<label for="newPassword" class="col-lg-3 control-label">新密码:</label>' + '<div class="col-lg-9">' + '<input type="password" class="form-control" style="width:80%;" id="newPassword">' + '</div> ' + '</div> ' + '<div class="form-group"> ' + '<label for="confirmPassword" class="col-lg-3 control-label">确认密码:</label>' + '<div class="col-lg-9">' + '<input type="password" class="form-control" style="width:80%;" id="confirmPassword"> ' + '</div>' + '</div>' + '</form>' + '</div>' + '<div class="modal-footer"> ' + '<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>' + '<button type="button" class="btn btn-success" data-toggle="save">保存</button>' + '</div>' + '</div>  ' + '</div>  ' + '</div>';
+	ModifyPassword.DEFAULTS.TEMPLATE = '<div class="modal fade" id="modifyPwd">' 
+	+ '<div class="modal-dialog modify-pwd">' 
+	+ '<div class="modal-content">' 
+	+ '<div class="modal-header">' 
+	+ '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' 
+	+ '<h4 class="modal-title">修改密码</h4>' 
+	+ '</div>' + '<div class="modal-body"> ' 
+	+ '<form class="form-horizontal" role="form">' 
+	+ '<div class="form-group">' 
+	+ '<label for="oldPassword" class="col-lg-3 control-label">原始密码:</label>' 
+	+ '<div class="col-lg-9">' 
+	+ '<input type="password" class="form-control" style="width:80%;display:inline;" id="oldPassword" /><span class="required">*</span>' 
+	+ '</div> ' + '</div>  ' + '<div class="form-group">' 
+	+ '<label for="newPassword" class="col-lg-3 control-label">新密码:</label>' 
+	+ '<div class="col-lg-9">' 
+	+ '<input type="password" class="form-control" style="width:80%;display:inline;" id="newPassword"/><span class="required">*</span>' 
+	+ '</div> ' + '</div> ' + '<div class="form-group"> ' 
+	+ '<label for="confirmPassword" class="col-lg-3 control-label">确认密码:</label>' 
+	+ '<div class="col-lg-9">' 
+	+ '<input type="password" class="form-control" style="width:80%;display:inline;" id="confirmPassword"/><span class="required">*</span> ' 
+	+ '</div>' + '</div>' + '</form>' + '</div>' + '<div class="modal-footer"> ' 
+	+ '<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>' + '<button type="button" class="btn btn-success" data-toggle="save">保存</button>' + '</div>' + '</div>  ' + '</div>  ' + '</div>';
 	var old = $.fn.modifyPassword;
 	$.fn.modifyPassword = function(option) {
 		return this.each(function() {
