@@ -18,7 +18,7 @@ import org.openkoala.organisation.domain.Post;
 public interface EmployeeApplication {
 
 	/**
-	 * 获取员工的所属机构
+	 * 获取某个员工的所属机构
 	 * @param employee
 	 * @param date
 	 * @return
@@ -64,7 +64,7 @@ public interface EmployeeApplication {
 	Page<EmployeeDTO> pagingQueryEmployeesWhoNoPost(EmployeeDTO example, int currentPage, int pagesize);
 	
 	/**
-	 * 创建员工及其任职信息和机构关系责任信息
+	 * 创建员工的任职责任信息
 	 * @param employee
 	 * @param post
 	 */

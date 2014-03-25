@@ -1,8 +1,11 @@
 package org.openkoala.koala.auth.web;
 
+import org.openkoala.koala.auth.ss3adapter.AuthUserUtil;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
+import java.util.List;
 
 /**
  * Created by lingen on 14-3-25.
@@ -21,10 +24,6 @@ public class AuthorizeRoleTag extends TagSupport {
     public int doStartTag() throws JspException {
         if (ifAllRoles == null && ifAnyRoles == null && ifNotRoles == null) {
             return Tag.SKIP_BODY;
-        }
-
-        if (permissionController == null) {
-            permissionController = new PermissionController();
         }
 
         if (ifAllRoles != null) {
@@ -62,7 +61,7 @@ public class AuthorizeRoleTag extends TagSupport {
 
     private int ifAllRoles() {
         for(String role:ifAllRoles.split(",")){
-            if(permissionController.hasRole(role)==false){
+            if(hasRole(role)==false){
                 return Tag.SKIP_BODY;
             }
         }
@@ -91,5 +90,16 @@ public class AuthorizeRoleTag extends TagSupport {
 
     public void setIfNotRoles(String ifNotRoles) {
         this.ifNotRoles = ifNotRoles;
+    }
+
+    private boolean hasRole(String role){
+        if (AuthUserUtil.getLoginUser().isSuper()) {
+            return true;
+        }
+        List<String> roles =  AuthUserUtil.getRolesByCurrentUser();
+        if(roles.contains(role)){
+            return true;
+        }
+        return false;
     }
 }

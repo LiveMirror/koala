@@ -11,11 +11,7 @@
     <name>koala-opencis-redmine</name>
     <dependencies>
 
-        <dependency>
-            <groupId>com.taskadapter</groupId>
-            <artifactId>redmine-java-api</artifactId>
-            <version>1.21</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.openkoala.opencis</groupId>
@@ -23,17 +19,20 @@
             <version>${project.parent.version}</version>
         </dependency>
 
-
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>4.2</version>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
         </dependency>
 
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.2</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

@@ -16,20 +16,27 @@ import org.openkoala.organisation.domain.Organization;
  */
 public interface OrganizationApplication {
 
-	
+	/**
+	 * 查询系统中是否存在组织机构的根，即最顶级的机构。
+	 * @return
+	 */
 	boolean isTopOrganizationExists();
 	
+	/**
+	 * 创建组织机构根机构，即最顶级机构。
+	 * @param company
+	 */
 	void createAsTopOrganization(Company company);
 	
 	/**
-	 * 创建组织机构
+	 * 在某个公司下面创建一个分公司
 	 * @param organization
 	 * @return
 	 */
 	Company createCompany(Company parent, Company company);
 	
 	/**
-	 * 在组织机构下创建下级机构
+	 * 在某个组织机构下创建下级部门
 	 * @param parent
 	 * @param child
 	 * @return
@@ -37,7 +44,7 @@ public interface OrganizationApplication {
 	Department createDepartment(Organization parent, Department department);
 	
 	/**
-	 * 为组织机构分配子机构
+	 * 把一个机构分配到另一个机构下，即从属于另一个机构
 	 * @param parent
 	 * @param child
 	 * @param date
@@ -53,7 +60,7 @@ public interface OrganizationApplication {
 	Organization getParentOfOrganization(Organization organization, Date date);
 	
 	/**
-	 * 查找组织机构的所有子机构
+	 * 查找某个机构的所有子机构
 	 * @param organization
 	 * @param date
 	 * @return
