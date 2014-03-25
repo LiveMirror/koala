@@ -6,8 +6,8 @@
         version="2.0">
 
     <tlib-version>1.1</tlib-version>
-    <short-name>ks</short-name>
-    <uri>http://org.openkoala/security</uri>
+    <short-name>p</short-name>
+    <uri>http://openkoala.org/permission</uri>
 
     <tag>
         <name>hasPermission</name>
@@ -34,4 +34,20 @@
             <name>ifNotGranted</name>
         </attribute>
     </tag>
+
+    <tag>
+        <name>hasRole</name>
+        <tag-class>org.openkoala.koala.auth.web.AuthorizeRoleTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>ifAllRoles</name>
+        </attribute>
+        <attribute>
+            <name>ifAnyRoles</name>
+        </attribute>
+        <attribute>
+            <name>ifNotRoles</name>
+        </attribute>
+    </tag>
+
 </taglib>

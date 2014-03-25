@@ -9,7 +9,7 @@
   <display-name>JSTL core</display-name>
   <tlib-version>1.1</tlib-version>
   <short-name>k</short-name>
-  <uri>http://www.openkoala.com/token</uri>
+  <uri>http://www.openkoala.org/token</uri>
 
   <tag>
     <name>token</name>
