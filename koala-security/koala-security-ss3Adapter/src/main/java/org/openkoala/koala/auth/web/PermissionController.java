@@ -3,9 +3,12 @@ package org.openkoala.koala.auth.web;
 import javax.inject.Named;
 
 import org.dayatang.domain.InstanceFactory;
+import org.openkoala.koala.auth.core.domain.Role;
 import org.openkoala.koala.auth.ss3adapter.AuthUserUtil;
 import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
 import org.openkoala.koala.auth.ss3adapter.SecurityMetadataSource;
+
+import java.util.List;
 
 @Named("owner")
 public class PermissionController {
@@ -37,6 +40,17 @@ public class PermissionController {
 		}
 		return getSecuritySource().getResAuthByUseraccount(AuthUserUtil.getLoginUserName(), identifier);
 	}
+
+    public boolean hasRole(String role){
+        if (AuthUserUtil.getLoginUser().isSuper()) {
+            return true;
+        }
+        List<String> roles =  AuthUserUtil.getRolesByCurrentUser();
+        if(roles.contains(role)){
+            return true;
+        }
+        return false;
+    }
 
 	/**
 	 * 获取登录用户

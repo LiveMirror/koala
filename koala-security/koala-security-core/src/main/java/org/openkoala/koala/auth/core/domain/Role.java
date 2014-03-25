@@ -107,7 +107,7 @@ public class Role extends Identity {
 	 * @return
 	 */
 	public static Role findRoleByName(String roleName){
-		return getRepository().createNamedQuery("findRoleByName").addParameter("roleName", roleName).addParameter("abolishDate", new Date()).singleResult();
+		return getRepository().createNamedQuery("findRoleByName").addParameter("name", roleName).addParameter("abolishDate", new Date()).singleResult();
 	}
 
 	/**

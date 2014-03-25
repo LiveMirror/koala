@@ -33,4 +33,20 @@
   		<name>ifNotGranted</name>
   	</attribute>
   </tag>
+
+    <tag>
+        <name>hasRole</name>
+        <tag-class>org.openkoala.koala.auth.web.AuthorizeRoleTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>ifAllRoles</name>
+        </attribute>
+        <attribute>
+            <name>ifAnyRoles</name>
+        </attribute>
+        <attribute>
+            <name>ifNotRoles</name>
+        </attribute>
+    </tag>
+
 </taglib>
