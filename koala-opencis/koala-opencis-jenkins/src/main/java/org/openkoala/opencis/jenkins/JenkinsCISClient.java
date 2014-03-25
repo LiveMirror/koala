@@ -144,7 +144,6 @@ public class JenkinsCISClient implements CISClient {
         List<User> result = new ArrayList<User>();
 
         for (Developer each : developers) {
-            System.out.println(each.getId() + "++++++++++++++++++");
             result.add(createByDeveloper(each.getId(), each.getEmail()));
         }
 
@@ -155,27 +154,19 @@ public class JenkinsCISClient implements CISClient {
         client.sendScriptText(MessageFormat.format(getUserAuthorizationConfig(), developerId));
     }
 
+    // 暂时写死
     private String getUserAuthorizationConfig() {
-        String configFileName = "UserAuthorizationConfig.groovy";
-        if ( null == JenkinsCISClient.class.getResource("/" + configFileName)) throw new CISClientBaseRuntimeException("Not found UserAuthorizationConfig.groovy");
-
-        File file = new File(getClass().getResource("/" + configFileName).getFile());
-        byte[] fileContent = new byte[Long.valueOf(file.length()).intValue()];
-        try {
-            FileInputStream inputStream = new FileInputStream(file);
-            inputStream.read(fileContent);
-            inputStream.close();
-        } catch (FileNotFoundException e) {
-            throw new CISClientBaseRuntimeException("Not found UserAuthorizationConfig.groovy",e);
-        } catch (IOException e) {
-            throw new CISClientBaseRuntimeException("There is a Exception when readUserAuthorizationConfig.groovy",e);
-        }
-        return new String(fileContent);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("import hudson.security.ProjectMatrixAuthorizationStrategy;")
+                .append("import jenkins.model.Jenkins;")
+                .append("ProjectMatrixAuthorizationStrategy authorizations = Jenkins.getInstance().getAuthorizationStrategy();")
+                .append("authorizations.add(Jenkins.READ, \"{0}\");")
+                .append("Jenkins.getInstance().setAuthorizationStrategy(authorizations);");
+        return stringBuilder.toString();
     }
 
 
     private User createByDeveloper(String developerId, String developEmail) {
-        System.out.println(developerId + "]]]]]]]]]]]]]");
         return new UserImpl(developerId,developEmail);
     }
 
