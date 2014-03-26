@@ -78,7 +78,7 @@ public class EmployeeTest extends KoalaBaseSpringTestCase {
 
 	@Test
 	public void getAll() {
-		Employee.getRepository().findAll(Employee.class);
+		List<Employee> employees = Employee.getRepository().findAll(Employee.class);
 	}
 
 	@Test

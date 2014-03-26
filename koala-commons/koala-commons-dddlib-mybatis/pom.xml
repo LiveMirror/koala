@@ -28,15 +28,9 @@
 			<artifactId>mybatis</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jboss</groupId>
-			<artifactId>jboss-vfs</artifactId>
 		</dependency>
 
 		<dependency>
@@ -63,13 +57,13 @@
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-test-support</artifactId>
-			<version>3.0.0-SNAPSHOT</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.dayatang.dddlib</groupId>
 			<artifactId>dddlib-spring-test</artifactId>
-			<scope>compile</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -89,9 +83,14 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.openkoala.koalacommons</groupId>
+            <artifactId>koala-commons-domain</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 
 
-	</dependencies>
+    </dependencies>
 
 
 </project>

@@ -70,7 +70,7 @@
 		<property name="otherFailureUrl" value="/login.koala" />
 	</bean>
 
-	<!-- 验证码过滤器 -->
+
 	<bean id="authenticationFilter"
 		class="org.openkoala.koala.auth.ss3adapter.filter.AuthenticationFilter">
 		<property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler" />
@@ -78,6 +78,7 @@
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="httpHandlers">
 			<list>
+                <!-- 验证码过滤器 -->
 				<bean
 					class="org.openkoala.koala.auth.ss3adapter.http.handler.ValidateCodeHandler" />
 			</list>

@@ -1,4 +1,4 @@
-package org.openkoala.koalacommons.mybatis.repository;
+package org.openkoala.koala.commons.domain.mybatis;
 
 import java.util.List;
 import java.util.Map;
@@ -7,7 +7,7 @@ import org.dayatang.domain.PositionalParameters;
 import org.dayatang.domain.NamedParameters;
 import org.dayatang.domain.QueryParameters;
 import org.dayatang.utils.Assert;
-import org.openkoala.koalacommons.mybatis.MybatisEntityRepository;
+import org.openkoala.koala.commons.domain.MybatisEntityRepository;
 
 public abstract class MybatisBaseQuery<E extends MybatisBaseQuery> {
 
