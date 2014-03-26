@@ -155,7 +155,6 @@ public class JenkinsCISClient implements CISClient {
         client.sendScriptText(MessageFormat.format(getUserAuthorizationConfig(), developerId));
     }
 
-    // 暂时写死
     private String getUserAuthorizationConfig() {
 
         String configFileName = "UserAuthorizationConfig.groovy";
