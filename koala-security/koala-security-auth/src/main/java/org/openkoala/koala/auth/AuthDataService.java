@@ -36,8 +36,19 @@ import java.util.Map;
  */
 public interface AuthDataService {
     
-    
+	 /**
+     * 获取可以访问当前资源的角色标识
+     * @param res
+     * @return
+     */
     public List<String> getAttributes(String res);
+    
+    /**
+     * 获取资源与角色标识的对应关系
+     * @param resourceIds
+     * @return
+     */
+    public Map<String, List<String>> getAttributes(List<Long> resourceIds);
     
     /**
      * 传入用户名，获取当前用户
