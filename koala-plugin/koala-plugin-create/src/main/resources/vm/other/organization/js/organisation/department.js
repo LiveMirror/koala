@@ -404,9 +404,9 @@ var department = function(){
 			var departmentDetail = $('.right-content');
 			departmentDetail.find('[data-role="id"]').val(org.id);
 			departmentDetail.find('[data-role="number"]').text(org.sn);
-			departmentDetail.find('[data-role="name"]').text(org.name);
-			departmentDetail.find('[data-role="description"]').text(org.description);
-			departmentDetail.find('[data-role="principalName"]').text(org.principalName);
+			departmentDetail.find('[data-role="name"]').text(org.name == null ? '':org.name);
+			departmentDetail.find('[data-role="description"]').text(org.description == null ? '':org.description);
+			departmentDetail.find('[data-role="principalName"]').text(org.principalName == null ? '':org.principalName);
 			departmentDetail.find('[data-role="organizationType"]').val(org.organizationType);
 			//loadEmployeeList(org.id);
 			if(org.organizationType == 'Company'){
