@@ -85,7 +85,10 @@ public class RedmineClient implements CISClient {
     public void assignUsersToRole(Project project, String role, Developer... developers) {
         for (Developer developer : developers) {
             try {
-                if (isMemberOfProject(project, developer.getId(), DEVELOPER_ROLE)) continue;
+                if (isMemberOfProject(project, developer.getId(), DEVELOPER_ROLE)
+                        ||isMemberOfProject(project, developer.getId(), PROJECT_MANAGER_ROLE)) {
+                    continue;
+                }
 
                 manager.addMembership(createRedmineMembership(project, developer.getId(), DEVELOPER_ROLE));
 

@@ -14,7 +14,7 @@ import java.util.List;
 @Ignore
 public class MainTest {
 
-    String url = "http://localhost:49153";
+    String url = "http://10.108.1.57:9003";
     String username = "admin";
     String password = "admin";
     String key = "7514e272dc5d4461987762b5ceb4f5d4b2757bb3";
