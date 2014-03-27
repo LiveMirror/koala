@@ -159,7 +159,7 @@ public class JenkinsCISClient implements CISClient {
 
         String configFileName = "UserAuthorizationConfig.groovy";
 
-        InputStream is = this.getClass().getResourceAsStream(File.separator + configFileName);
+        InputStream is = this.getClass().getResourceAsStream("/" + configFileName);
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         StringBuilder builder = new StringBuilder();
         try {
