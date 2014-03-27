@@ -7,20 +7,14 @@ import static org.springframework.util.StringUtils.hasLength;
 import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-
 import javax.sql.DataSource;
-
 import org.apache.ibatis.builder.xml.XMLConfigBuilder;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
@@ -37,7 +31,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.type.TypeHandler;
 import org.dayatang.domain.Entity;
-import org.jboss.vfs.VirtualFile;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
 import org.springframework.beans.factory.FactoryBean;
@@ -524,7 +517,7 @@ public class KoalaSqlSessionFactoryBean implements
 		List<String> lists = new ArrayList<String>();
 		Enumeration<?> urls = Thread.currentThread().getContextClassLoader().getResources(basePackage);
 
-        String testPath = "classpath:"+basePackage+"**/*.class";
+        String testPath = "classpath*:"+basePackage+"**/*.class";
         ResourcePatternResolver resourceLoader = new PathMatchingResourcePatternResolver();
         Resource[] source = new Resource[0];
         try {
@@ -535,7 +528,13 @@ public class KoalaSqlSessionFactoryBean implements
 
         for (int i = 0; i < source.length; i++) {
             Resource resource = source[i];
-            lists.add(basePackage+resource.getFilename());
+
+            logger.debug("file:"+resource.getURI().toString());
+            int start = resource.getURI().toString().lastIndexOf(basePackage)+basePackage.length();
+            int end = resource.getURI().toString().lastIndexOf(resource.getFilename());
+            String packageName = resource.getURI().toString().substring(start,end);
+            lists.add(basePackage+packageName+resource.getFilename());
+            logger.debug("CLASS:"+basePackage+packageName+resource.getFilename());
         }
 		
 		for(String className:lists){
@@ -581,7 +580,7 @@ public class KoalaSqlSessionFactoryBean implements
 		String scanMappingResourceDir = this.baseScan;
 		List<String> lists = new ArrayList<String>();
 
-            String testPath = "classpath:"+scanMappingResourceDir+"/*-mybatis.xml";
+            String testPath = "classpath*:"+scanMappingResourceDir+"/*-mybatis.xml";
             ResourcePatternResolver resourceLoader = new PathMatchingResourcePatternResolver();
             Resource[] source = new Resource[0];
             try {

@@ -35,6 +35,11 @@ public class AuthDataServiceImpl implements AuthDataService {
 		return IdentityResourceAuthorization.findAuthorizationByResourceIdentifier(res);
 	}
 
+	@Override
+	public Map<String, List<String>> getAttributes(List<Long> resourceIds) {
+		return IdentityResourceAuthorization.findAuthorizationsByResourceIds(resourceIds);
+	}
+
 	private Map<String, List<String>> retrieveResourceAndRoles() {
 		Map<String, List<String>> result = new HashMap<String, List<String>>();
 		List<Object[]> list = IdentityResourceAuthorization.findAllResourceIdentifierAndRoleId();
@@ -48,15 +53,15 @@ public class AuthDataServiceImpl implements AuthDataService {
 				result.get(identifier).add(String.valueOf(roleId));
 			}
 		}
-//		for (IdentityResourceAuthorization each : IdentityResourceAuthorization.findAllReourcesAndRoles()) {
-//			Set<String> roles = new HashSet<String>();
-//			roles.add(String.valueOf(each.getIdentity().getId()));
-//			if (result.containsKey(each.getResource().getIdentifier())) {
-//				result.get(each.getResource().getIdentifier()).addAll(roles);
-//			} else {
-//				result.put(each.getResource().getIdentifier(), new ArrayList<String>(roles));
-//			}
-//		}
+		// for (IdentityResourceAuthorization each : IdentityResourceAuthorization.findAllReourcesAndRoles()) {
+		// Set<String> roles = new HashSet<String>();
+		// roles.add(String.valueOf(each.getIdentity().getId()));
+		// if (result.containsKey(each.getResource().getIdentifier())) {
+		// result.get(each.getResource().getIdentifier()).addAll(roles);
+		// } else {
+		// result.put(each.getResource().getIdentifier(), new ArrayList<String>(roles));
+		// }
+		// }
 		return result;
 	}
 

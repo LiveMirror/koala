@@ -1,11 +1,11 @@
-package org.openkoala.koalacommons.mybatis;
-
-import java.io.Serializable;
-import java.util.List;
+package org.openkoala.koala.commons.domain;
 
 import org.dayatang.domain.Entity;
 import org.dayatang.domain.NamedParameters;
-import org.openkoala.koalacommons.mybatis.repository.MybatisNamedQuery;
+import org.openkoala.koala.commons.domain.mybatis.MybatisNamedQuery;
+
+import java.io.Serializable;
+import java.util.List;
 
 public interface MybatisEntityRepository {
 	  /**
@@ -79,7 +79,7 @@ public interface MybatisEntityRepository {
      * @param queryName 命名查询的名字
      * @return 一个命名查询
      */
-    MybatisNamedQuery createNamedQuery(Class namespace,String queryName);
+    MybatisNamedQuery createNamedQuery(Class namespace, String queryName);
 
     /**
      * 执行命名查询，返回符合条件的实体列表

@@ -6,9 +6,9 @@ import java.util.Map;
 import org.dayatang.domain.QueryParameters;
 import org.dayatang.querychannel.Page;
 import org.dayatang.utils.Assert;
-import org.openkoala.koalacommons.mybatis.MybatisEntityRepository;
-import org.openkoala.koalacommons.mybatis.repository.MybatisBaseQuery;
-import org.openkoala.koalacommons.mybatis.repository.MybatisNamedQuery;
+import org.openkoala.koala.commons.domain.MybatisEntityRepository;
+import org.openkoala.koala.commons.domain.mybatis.MybatisBaseQuery;
+import org.openkoala.koala.commons.domain.mybatis.MybatisNamedQuery;
 
 public abstract class MybatisChannelQuery<E extends MybatisChannelQuery> {
 

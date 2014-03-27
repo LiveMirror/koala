@@ -3,8 +3,8 @@ package org.openkoala.koalacommons.mybatis.querychannel;
 import java.util.List;
 import org.dayatang.querychannel.Page;
 import org.dayatang.utils.Assert;
-import org.openkoala.koalacommons.mybatis.MybatisEntityRepository;
-import org.openkoala.koalacommons.mybatis.repository.MybatisNamedQuery;
+import org.openkoala.koala.commons.domain.MybatisEntityRepository;
+import org.openkoala.koala.commons.domain.mybatis.MybatisNamedQuery;
 
 public class MybatisNamedChannelQuery extends
 		MybatisChannelQuery<MybatisNamedChannelQuery> {

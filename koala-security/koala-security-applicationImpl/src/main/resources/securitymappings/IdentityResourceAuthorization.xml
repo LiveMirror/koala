@@ -25,6 +25,13 @@
 		</query>
 	</named-query>
 	
+	<named-query name="findAuthorizationsByResourceIds">
+		<query>
+			select auth.resource.identifier , auth.identity.id from IdentityResourceAuthorization auth 
+			where auth.resource.id IN (:resourceIds) and auth.abolishDate>:abolishDate
+		</query>
+	</named-query>
+	
 	<named-query name="findAllResourceIdentifierAndRoleId">
 		<query>
 			select auth.identity.id ,auth.resource.identifier from IdentityResourceAuthorization auth 

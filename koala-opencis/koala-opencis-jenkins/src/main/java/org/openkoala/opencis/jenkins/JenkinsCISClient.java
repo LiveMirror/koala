@@ -9,12 +9,13 @@ import nl.tudelft.jenkins.client.exceptions.NoSuchUserException;
 import nl.tudelft.jenkins.jobs.Job;
 import org.apache.commons.lang3.StringUtils;
 import org.openkoala.opencis.CISClientBaseRuntimeException;
-import org.openkoala.opencis.api.*;
+import org.openkoala.opencis.api.CISClient;
+import org.openkoala.opencis.api.Developer;
+import org.openkoala.opencis.api.Project;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +58,11 @@ public class JenkinsCISClient implements CISClient {
             return;
         }
 
-       Job newJob =   client.createJob(project.getProjectName(),
+        Job newJob = client.createJob(project.getProjectName(),
                 koalaScmConfig.getScmConfig(), new ArrayList<User>());
 
 
-        newJob.addFullPermissionsForUser(createByDeveloper(project.getProjectLead(),""));
+        newJob.addFullPermissionsForUser(createByDeveloper(project.getProjectLead(), ""));
         client.updateJob(newJob);
 
     }
@@ -144,39 +145,38 @@ public class JenkinsCISClient implements CISClient {
         List<User> result = new ArrayList<User>();
 
         for (Developer each : developers) {
-            System.out.println(each.getId() + "++++++++++++++++++");
             result.add(createByDeveloper(each.getId(), each.getEmail()));
         }
 
         return result;
     }
 
-    public void addUserToProjectMatrixAuthorization(String developerId){
+    public void addUserToProjectMatrixAuthorization(String developerId) {
         client.sendScriptText(MessageFormat.format(getUserAuthorizationConfig(), developerId));
     }
 
+    // 暂时写死
     private String getUserAuthorizationConfig() {
-        String configFileName = "UserAuthorizationConfig.groovy";
-        if ( null == JenkinsCISClient.class.getResource("/" + configFileName)) throw new CISClientBaseRuntimeException("Not found UserAuthorizationConfig.groovy");
 
-        File file = new File(getClass().getResource("/" + configFileName).getFile());
-        byte[] fileContent = new byte[Long.valueOf(file.length()).intValue()];
+        String configFileName = "UserAuthorizationConfig.groovy";
+
+        InputStream is = this.getClass().getResourceAsStream(File.separator + configFileName);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        StringBuilder builder = new StringBuilder();
         try {
-            FileInputStream inputStream = new FileInputStream(file);
-            inputStream.read(fileContent);
-            inputStream.close();
-        } catch (FileNotFoundException e) {
-            throw new CISClientBaseRuntimeException("Not found UserAuthorizationConfig.groovy",e);
+            String line = null;
+            while ((line = br.readLine()) != null)
+                builder.append(line);
         } catch (IOException e) {
-            throw new CISClientBaseRuntimeException("There is a Exception when readUserAuthorizationConfig.groovy",e);
+            throw new CISClientBaseRuntimeException("read " + configFileName + " failure.", e);
         }
-        return new String(fileContent);
+
+        return builder.toString();
     }
 
 
     private User createByDeveloper(String developerId, String developEmail) {
-        System.out.println(developerId + "]]]]]]]]]]]]]");
-        return new UserImpl(developerId,developEmail);
+        return new UserImpl(developerId, developEmail);
     }
 
 }

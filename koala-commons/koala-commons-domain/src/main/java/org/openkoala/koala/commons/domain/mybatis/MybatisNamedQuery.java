@@ -1,12 +1,10 @@
-package org.openkoala.koalacommons.mybatis.repository;
+package org.openkoala.koala.commons.domain.mybatis;
+
+import org.openkoala.koala.commons.domain.MybatisEntityRepository;
 
 import java.util.List;
 
-import org.dayatang.domain.BaseQuery;
-import org.dayatang.domain.EntityRepository;
-import org.openkoala.koalacommons.mybatis.MybatisEntityRepository;
-
-public class MybatisNamedQuery extends MybatisBaseQuery<MybatisBaseQuery> {
+public class MybatisNamedQuery extends org.openkoala.koala.commons.domain.mybatis.MybatisBaseQuery<org.openkoala.koala.commons.domain.mybatis.MybatisBaseQuery> {
 	
 	
 	private String queryName;

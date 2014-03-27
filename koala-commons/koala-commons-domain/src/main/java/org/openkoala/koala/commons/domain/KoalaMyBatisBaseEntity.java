@@ -1,77 +1,55 @@
-/**
- *
- */
 package org.openkoala.koala.commons.domain;
-
-import java.util.Map;
-
-import javax.persistence.*;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.dayatang.domain.Entity;
-import org.dayatang.domain.EntityRepository;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.utils.BeanUtils;
 
-/**
- * 抽象实体类，可作为所有领域实体的基类。
- *
- * @author yang
- *
- */
-@MappedSuperclass
-public abstract class KoalaBaseEntity implements Entity {
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.util.Map;
 
-    private static final long serialVersionUID = 8882145540383345037L;
+public abstract class KoalaMyBatisBaseEntity implements Entity {
 
-    /**
-     * 判断该实体是否已经存在于数据库中。
-     * @return 如果数据库中已经存在拥有该id的实体则返回true，否则返回false。
+
+	private static final long serialVersionUID = 6157567600611070470L;
+
+	public abstract Serializable getId();
+
+	public abstract boolean existed();
+
+	public abstract boolean notExisted();
+	
+	private static MybatisEntityRepository repository;
+
+	/**
+	 * 获取仓储对象实例。如果尚未拥有仓储实例则通过InstanceFactory向IoC容器获取一个。
+	 *
+	 * @return 仓储对象实例
+	 */
+	public static MybatisEntityRepository getRepository() {
+		if (repository == null) {
+			repository = InstanceFactory
+					.getInstance(MybatisEntityRepository.class);
+		}
+		return repository;
+	}
+	
+	 /**
+     * 将实体本身持久化到数据库
      */
-    @Override
-    public boolean existed() {
-        Object id = getId();
-        if (id == null) {
-            return false;
-        }
-        if (id instanceof Number && ((Number)id).intValue() == 0) {
-            return false;
-        }
-
-        return getRepository().exists(getClass(), getId());
+    public void save() {
+        getRepository().save(this);
     }
 
     /**
-     * 判断该实体是否不存在于数据库中。
-     * @return 如果数据库中已经存在拥有该id的实体则返回false，否则返回true。
+     * 将实体本身从数据库中删除
      */
-    @Override
-    public boolean notExisted() {
-        return !existed();
+    public void remove() {
+        getRepository().remove(this);
     }
 
-    private static EntityRepository repository;
-
-    /**
-     * 获取仓储对象实例。如果尚未拥有仓储实例则通过InstanceFactory向IoC容器获取一个。
-     * @return 仓储对象实例
-     */
-    public static EntityRepository getRepository() {
-        if (repository == null) {
-            repository = InstanceFactory.getInstance(EntityRepository.class, "repository");
-        }
-        return repository;
-    }
-
-    /**
-     * 设置仓储实例。该方法主要用于单元测试。产品系统中通常是通过IoC容器获取仓储实例。
-     * @param repository 要设置的仓储对象实例
-     */
-    public static void setRepository(EntityRepository repository) {
-        KoalaBaseEntity.repository = repository;
-    }
-    
     /**
      * 获取业务主键。业务主键是判断相同类型的两个实体在业务上的等价性的依据。如果相同类型的两个
      * 实体的业务主键相同，则认为两个实体是相同的，代表同一个实体。
@@ -89,7 +67,7 @@ public abstract class KoalaBaseEntity implements Entity {
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder(13, 37);
         Map<String, Object> propValues = new BeanUtils(this).getPropValues();
-        
+
         for (String businessKey : businessKeys()) {
             builder = builder.append(propValues.get(businessKey));
         }
@@ -123,5 +101,4 @@ public abstract class KoalaBaseEntity implements Entity {
         }
         return builder.isEquals();
     }
-
 }

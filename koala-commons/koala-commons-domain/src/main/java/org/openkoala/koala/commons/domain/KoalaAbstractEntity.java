@@ -6,8 +6,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.dayatang.domain.Entity;
 import org.dayatang.domain.NamedParameters;
+import org.dayatang.utils.BeanUtils;
 
 /**
  * 一种抽象实体类，提供ID和版本属性，以及基本的持久化方法

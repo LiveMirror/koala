@@ -11,8 +11,8 @@ import org.dayatang.domain.PositionalParameters;
 import org.dayatang.domain.Entity;
 import org.dayatang.domain.NamedParameters;
 import org.dayatang.domain.QueryParameters;
-import org.openkoala.koalacommons.mybatis.MybatisEntityRepository;
-import org.openkoala.koalacommons.mybatis.repository.MybatisNamedQuery;
+import org.openkoala.koala.commons.domain.MybatisEntityRepository;
+import org.openkoala.koala.commons.domain.mybatis.MybatisNamedQuery;
 
 /**
  * 支持DDDLIB，为其提供Mybatis实现

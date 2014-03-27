@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dayatang.querychannel.Page;
 import org.openkoala.auth.application.ResourceApplication;
 import org.openkoala.auth.application.RoleApplication;
@@ -232,20 +231,15 @@ public class RoleController extends BaseController {
 		addList.addAll(tmpList);
 		roleApplication.abolishMenu(roleVO, delList);
 		roleApplication.assignMenuResource(roleVO, addList);
+
+		List<Long> refreshResourceIds = new ArrayList<Long>();
 		for (ResourceVO mVO : addList) {
-			String identifier = mVO.getIdentifier();
-			if(StringUtils.isBlank(identifier)){
-				identifier = ((ResourceVO) urlApplication.getResource(mVO.getId())).getIdentifier();
-			}
-			CacheUtil.refreshUrlAttributes(identifier);
+			refreshResourceIds.add(mVO.getId());
 		}
 		for (ResourceVO mVO : delList) {
-			String identifier = mVO.getIdentifier();
-			if(StringUtils.isBlank(identifier)){
-				identifier = ((ResourceVO) urlApplication.getResource(mVO.getId())).getIdentifier();
-			}
-			CacheUtil.refreshUrlAttributes(identifier);
+			refreshResourceIds.add(mVO.getId());
 		}
+		CacheUtil.refreshUrlAttributes(refreshResourceIds);
 		dataMap.put("result", "success");
 
 		return dataMap;
