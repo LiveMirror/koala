@@ -14,5 +14,9 @@ koala-opencis-redmine
 修改：`Administration -> Settings -> Project`
 
 
+### 客户端使用pm developer两个角色。
+pm 代表项目的管理员，而developer则是项目开发者
+
+
 
 
