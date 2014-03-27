@@ -1,6 +1,6 @@
-import hudson.security.ProjectMatrixAuthorizationStrategy
+import hudson.security.ProjectMatrixAuthorizationStrategy;
 
-import jenkins.model.Jenkins
+import jenkins.model.Jenkins;
 
 ProjectMatrixAuthorizationStrategy authorizations = Jenkins.getInstance().getAuthorizationStrategy();
 authorizations.add(Jenkins.READ, "{0}");

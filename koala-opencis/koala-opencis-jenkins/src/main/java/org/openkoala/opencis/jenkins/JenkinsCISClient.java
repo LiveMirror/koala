@@ -165,7 +165,7 @@ public class JenkinsCISClient implements CISClient {
         try {
             String line = null;
             while ((line = br.readLine()) != null)
-                builder.append(line);
+                builder.append(line).append("\n");
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("read " + configFileName + " failure.", e);
         }
