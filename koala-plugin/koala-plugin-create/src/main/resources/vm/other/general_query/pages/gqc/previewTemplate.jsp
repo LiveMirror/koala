@@ -26,9 +26,6 @@
 
                 </table>
             </div>
-            <div class="buttons">
-                <button class="btn btn-primary" id="searchBtn"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
-            </div>
         </div>
         <div class="previewGrid" id="previewGrid"></div>
         <script type="text/javascript" src="<c:url value='/lib/jquery-1.8.3.min.js' />"></script>

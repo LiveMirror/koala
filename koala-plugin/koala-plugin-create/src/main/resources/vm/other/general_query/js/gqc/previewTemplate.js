@@ -6,6 +6,7 @@ $(function() {
 	var init = function(data) {
 		var previewQuery = $('#previewQuery');
 		var visiblePreQueryConditions = data.visiblePreQueryConditions;
+		var dynamicQueryConditions = data.dynamicQueryConditions;
 		var trHtml = new Array();
 		for (var i = 0, j = visiblePreQueryConditions.length; i < j; i++) {
 			var preQueryCondition = visiblePreQueryConditions[i];
@@ -16,12 +17,14 @@ $(function() {
 				if (preQueryCondition.queryOperation == 'BETWEEN') {
 					trHtml.push('<td class="query-value">' + preQueryCondition.startValue + '&nbsp;&nbsp;AND &nbsp;&nbsp;' + preQueryCondition.endValue + '</td>')
 				} else {
-					trHtml.push('<td class="query-value">' + preQueryCondition.value + '</td>')
+					trHtml.push('<td class="query-value">' + preQueryCondition.value + '</td>');
+				}
+				if(i == j-1 && dynamicQueryConditions.length == 0){
+					trHtml.push('<td><button class="btn btn-primary" id="searchBtn"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button></td>')
 				}
 				trHtml.push('</tr>');
 			}
 		}
-		var dynamicQueryConditions = data.dynamicQueryConditions;
 		var flag = false;
 		for (var i = 0, j = dynamicQueryConditions.length; i < j; i++) {
 			var dynamicQueryCondition = dynamicQueryConditions[i];
@@ -42,6 +45,9 @@ $(function() {
 				} else {
 					trHtml.push('<td class="query-value"><div data-role="time" class="input-group date form_datetime" style="width:160px;"><input class="form-control" size="16" type="text" value="" style="width:156px!important;"><span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span></div></td>');
 				}
+			}
+			if(i == j-1){
+				trHtml.push('<td><button class="btn btn-primary" id="searchBtn"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button></td>')
 			}
 			trHtml.push('</tr>');
 		}
