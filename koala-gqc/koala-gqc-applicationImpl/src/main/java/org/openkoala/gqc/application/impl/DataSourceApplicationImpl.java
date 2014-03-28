@@ -124,15 +124,18 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
                     dataSource.save();
                     return null;
                 } catch (Exception e) {
+                	e.printStackTrace();
                     return "新增失败";
                 }
 			}
 
 			BeanUtils.copyProperties(dataSource, dataSourceVO);
+			dataSource.setId(null);
 			dataSource.save();
 			
 			return null;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return "保存失败";
 		}
 	}
