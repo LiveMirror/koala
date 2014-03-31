@@ -124,6 +124,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
                     dataSource.save();
                     return null;
                 } catch (Exception e) {
+                	e.printStackTrace();
                     return "新增失败";
                 }
 			}
@@ -133,6 +134,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 			
 			return null;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return "保存失败";
 		}
 	}

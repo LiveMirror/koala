@@ -121,6 +121,7 @@ public class GqcApplicationImpl implements GqcApplication {
 			}
 			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException("查询失败！", e);
 		}
 	}

@@ -48,6 +48,7 @@ public class DataSourceController {
 			}
 		} catch (Exception e) {
 			dataMap.put("result", "新增失败！");
+			e.printStackTrace();
 		}
 
 		return dataMap;
