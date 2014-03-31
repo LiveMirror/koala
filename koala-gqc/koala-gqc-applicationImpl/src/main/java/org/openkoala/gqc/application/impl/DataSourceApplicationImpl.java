@@ -130,6 +130,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 			}
 
 			BeanUtils.copyProperties(dataSource, dataSourceVO);
+			dataSource.setId(null);
 			dataSource.save();
 			
 			return null;
