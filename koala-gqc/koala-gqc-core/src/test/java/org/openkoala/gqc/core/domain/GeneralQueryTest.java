@@ -113,15 +113,6 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 	 * 测试
 	 */
 	@Test
-	public void testGetQuerySql() {
-		String jpql = generalQuery.getQuerySql().getStatment();
-		assertNotNull("sql不应该为空！", jpql);
-	}
-
-	/**
-	 * 测试
-	 */
-	@Test
 	public void testGetVisiblePreQueryConditions() {
 		List<PreQueryCondition> results = generalQuery.getVisiblePreQueryConditions();
 		assertEquals("静态查询条件结果集应该为0！", 0, results.size());

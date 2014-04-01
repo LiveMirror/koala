@@ -183,21 +183,21 @@ public class GeneralQuery extends GeneralQueryEntity {
 
 	
 	@Transient
-	public QueryAllQuerier getQueryAllQuerier() {
+	private QueryAllQuerier obtainQueryAllQuerier() {
 		if (queryAllQuerier == null) {
-			queryAllQuerier = new QueryAllQuerier(getQuerySql(), dataSource);
+			queryAllQuerier = new QueryAllQuerier(obtainQuerySql(), dataSource);
 		} else {
-			queryAllQuerier.setQuerySql(getQuerySql());
+			queryAllQuerier.setQuerySql(obtainQuerySql());
 		}
 		return queryAllQuerier;
 	}
 
 	@Transient
-	public PagingQuerier getPagingQuerier() {
+	private PagingQuerier obtainPagingQuerier() {
 		if (pagingQuerier == null) {
-			pagingQuerier = new PagingQuerier(getQuerySql(), dataSource);
+			pagingQuerier = new PagingQuerier(obtainQuerySql(), dataSource);
 		} else {
-			pagingQuerier.setQuerySql(getQuerySql());
+			pagingQuerier.setQuerySql(obtainQuerySql());
 		}
 		return pagingQuerier;
 	}
@@ -207,7 +207,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * @return
 	 */
 	public List<Map<String, Object>> query() {
-		return getQueryAllQuerier().query();
+		return obtainQueryAllQuerier().query();
 	}
 
 	/**
@@ -217,8 +217,8 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * @return 
 	 */
 	public List<Map<String, Object>> pagingQuery(int currentPage, int pagesize) {
-		getPagingQuerier().changePagingParameter(Page.getStartOfPage(currentPage, pagesize), pagesize);
-		return getPagingQuerier().query();
+		obtainPagingQuerier().changePagingParameter(Page.getStartOfPage(currentPage, pagesize), pagesize);
+		return obtainPagingQuerier().query();
 	}
 	
 	/**
@@ -228,7 +228,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * @return
 	 */
 	public Page<Map<String, Object>> pagingQueryPage(int currentPage, int pagesize) {
-		long totalCount = getPagingQuerier().caculateTotalCount();
+		long totalCount = obtainPagingQuerier().caculateTotalCount();
 		return new Page<Map<String, Object>>(Page.getStartOfPage(currentPage, pagesize), totalCount, pagesize, pagingQuery(currentPage, pagesize));
 	}
 	
@@ -247,7 +247,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * @return
 	 */
 	@Transient
-	public SqlStatmentMode getQuerySql() {
+	private SqlStatmentMode obtainQuerySql() {
 		return generateCommonQuerySql();
 	}
 	

@@ -210,7 +210,8 @@ var generalQuery = function(){
 			.on('click', function(){
 				var $this = $(this);
 				var fieldName = $this.data('value');
-				var row = $(' <tr><td class="column-name">'+fieldName+'<input data-role="fieldName" type="hidden" value="'+fieldName+'"/></td>' +
+				var fieldType = $this.data('type');
+				var row = $(' <tr><td class="column-name">'+fieldName+'<input data-role="fieldName" type="hidden" value="'+fieldName+'"/><input data-role="fieldType" type="hidden" value="'+fieldType+'"/></td>' +
 					'<td class="query-operation"><div class="btn-group select" data-role="queryOperation"></div></td>' +
 					'<td class="value"><input data-role="value" class="form-control" required="true"/><span class="required" >*</span></td>' +
 					'<td class="visibility"><div class="checker"><span><input type="checkbox" style="opacity: 0;" data-role="visibility"></span></div></td><td class="delete-btn"><a data-role="delete" data-value="'+fieldName+'"><span class="glyphicon glyphicon-remove">删除</span></a></td></tr>');
@@ -245,7 +246,7 @@ var generalQuery = function(){
 				var $this = $(this);
 				var column = $this.data('value');
 				var fieldType = $this.data('type');
-				var row = $(' <tr><td class="column-name">'+column+'<input data-role="fieldName" type="hidden" value="'+column+'"/><input data-role="fieldType" type="hidden" value="'+fieldType+'"/</td>' +
+				var row = $(' <tr><td class="column-name">'+column+'<input data-role="fieldName" type="hidden" value="'+column+'"/><input data-role="fieldType" type="hidden" value="'+fieldType+'"/></td>' +
 					'<td class="show-label"><input data-role="label" class="form-control" required="true" value="'+column+'"/><span class="required">*</span></td>' +
 					'<td class="widgetType"><div class="btn-group select" data-role="widgetType"></div></td>'+
 					'<td class="query-operation"><div class="btn-group select" data-role="queryOperation"></div></td><td class="delete-btn"><a data-role="delete" data-value="'+column+'"><span class="glyphicon glyphicon-remove">删除</span></a></td></tr>');
@@ -293,7 +294,7 @@ var generalQuery = function(){
 		for(var i=0, j=preQueryConditions.length; i<j; i++){
 			var  preQueryCondition = preQueryConditions[i];
 			var  fieldName =  preQueryCondition.fieldName;
-			var row = $(' <tr><td class="column-name">'+fieldName+'<input data-role="fieldName" type="hidden" value="'+fieldName+'"/></td>' +
+			var row = $(' <tr><td class="column-name">'+fieldName+'<input data-role="fieldName" type="hidden" value="'+fieldName+'"/><input data-role="fieldType" type="hidden" value="'+preQueryCondition.fieldType+'"/></td>' +
 				'<td class="query-operation"><div class="btn-group select" data-role="queryOperation"></div></td>' +
 				'<td class="value"><input data-role="value" class="form-control" required="true" value="'+preQueryCondition.value+'"/><span class="required" >*</span></td>' +
 				'<td class="visibility"><div class="checker"><span><input type="checkbox" style="opacity: 0;" data-role="visibility"></span></div></td><td class="delete-btn"><a data-role="delete" data-value="'+fieldName+'"><span class="glyphicon glyphicon-remove">删除</span></a></td></tr>');
@@ -331,7 +332,7 @@ var generalQuery = function(){
 		for(var i=0, j=dynamicQueryConditions.length; i<j; i++){
 			var  dynamicQueryCondition = dynamicQueryConditions[i];
 			var  fieldName =  dynamicQueryCondition.fieldName;
-			var row = $(' <tr><td class="column-name">'+fieldName+'<input data-role="fieldName" type="hidden" value="'+fieldName+'"/><input data-role="fieldType" type="hidden" value="'+dynamicQueryCondition.fieldType+'"/</td>' +
+			var row = $(' <tr><td class="column-name">'+fieldName+'<input data-role="fieldName" type="hidden" value="'+fieldName+'"/><input data-role="fieldType" type="hidden" value="'+dynamicQueryCondition.fieldType+'"/></td>' +
 				'<td class="show-label"><input data-role="label" class="form-control" required="true" value="'+dynamicQueryCondition.label+'"/><span class="required">*</span></td>' +
 				'<td class="widgetType"><div class="btn-group select" data-role="widgetType"></div></td>'+
 				'<td class="query-operation"><div class="btn-group select" data-role="queryOperation"></div></td><td class="delete-btn"><a data-role="delete" data-value="'+fieldName+'"><span class="glyphicon glyphicon-remove">删除</span></a></td></tr>');
@@ -505,7 +506,7 @@ var generalQuery = function(){
 		staticQueryRightTable.find('tr').each(function(index,tr){
 			var $tr = $(tr);
 			data['preQueryConditions['+index+'].fieldName'] = $tr.find('input[data-role="fieldName"]').val();
-			data['dynamicQueryConditions['+index+'].fieldType'] = $tr.find('input[data-role="fieldType"]').val();
+			data['preQueryConditions['+index+'].fieldType'] = $tr.find('input[data-role="fieldType"]').val();
 			var queryOperation = $tr.find('[data-role="queryOperation"]').getValue();
 			data['preQueryConditions['+index+'].queryOperation'] = queryOperation;
 			if(queryOperation == 'BETWEEN'){
