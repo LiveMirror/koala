@@ -1,5 +1,7 @@
 package org.openkoala.gqc.core.domain;
 
+import java.sql.Types;
+
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,21 +24,20 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 	/**
 	 * 字段名称
 	 */
-	
 	private String fieldName;
 
 	/**
 	 * 查询操作
 	 */
-	
 	private QueryOperation queryOperation;
 	
 	/**
      * 字段数据类型（匹配java.sql.Types中的常量）
      */
-	
     private Integer fieldType;
 	
+    private DataSource dataSource;
+    
 	@Column(name = "FIELD_NAME")
 	public String getFieldName() {
 		return fieldName;
@@ -55,12 +56,8 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 	public void setQueryOperation(QueryOperation queryOperation) {
 		this.queryOperation = queryOperation;
 	}
-
-	public int compareTo(QueryCondition other) {
-		return getFieldName().compareTo(other.getFieldName());
-	}
 	
-	@Transient
+	@Column(name = "FIELD_TYPE")
     public Integer getFieldType() {
         return fieldType;
     }
@@ -69,9 +66,37 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
         this.fieldType = fieldType;
     }
 
+	@Transient
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
+	String generateConditionValueStatment() {
+		if (getFieldType() == Types.TIMESTAMP && isOracleDatabase()) {
+			return "to_date(?,'YYYY-MM-DD HH:mi:SS')";
+		}
+		return "?";
+	}
+	
+	@Transient
+	private boolean isOracleDatabase() {
+		if (getDataSource().getConnectUrl().startsWith("jdbc:oracle")) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * 生成条件语句
 	 * @return
 	 */
     public abstract SqlStatmentMode generateConditionStatment();
+
+	public int compareTo(QueryCondition other) {
+		return getFieldName().compareTo(other.getFieldName());
+	}
 }

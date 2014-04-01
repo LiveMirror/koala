@@ -2,6 +2,7 @@ package org.openkoala.gqc.core.domain;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +22,16 @@ public class PreQueryConditionTest{
 	 */
 	private PreQueryCondition preQueryCondition;
 	
+	private DataSource dataSource = new DataSource();
+	
 	/**
 	 * 初始化实例
 	 * @throws Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		preQueryCondition = this.createAndInitPreQueryConditionOneValue();
+		dataSource.setConnectUrl("jdbc:h2:mem:testdb");
+		preQueryCondition = this.createAndInitPreQueryConditionOneValue(dataSource);
 	}
 
 	/**
@@ -51,7 +55,7 @@ public class PreQueryConditionTest{
 		values.add("%test%");
 		assertEquals(values, preQueryCondition.generateConditionStatment().getValues());
 		
-		preQueryCondition = this.createAndInitPreQueryConditionTwoValues();
+		preQueryCondition = this.createAndInitPreQueryConditionTwoValues(dataSource);
 		queryCondition = preQueryCondition.generateConditionStatment().getStatment();
 		assertEquals(" and age between ? and ?", queryCondition);
 		
@@ -65,8 +69,10 @@ public class PreQueryConditionTest{
 	 * 创建PreQueryCondition实例，查询条件范围使用LIKE
 	 * @return
 	 */
-	private PreQueryCondition createAndInitPreQueryConditionOneValue(){
+	private PreQueryCondition createAndInitPreQueryConditionOneValue(DataSource dataSource){
 		PreQueryCondition preQueryCondition = new PreQueryCondition();
+		preQueryCondition.setDataSource(dataSource);
+		preQueryCondition.setFieldType(Types.TIMESTAMP);
 		preQueryCondition.setFieldName("name");
 		preQueryCondition.setQueryOperation(QueryOperation.LIKE);
 		preQueryCondition.setValue("test");
@@ -77,8 +83,10 @@ public class PreQueryConditionTest{
 	 * 创建PreQueryCondition实例，查询条件范围使用BETWEEN
 	 * @return
 	 */
-	private PreQueryCondition createAndInitPreQueryConditionTwoValues(){
+	private PreQueryCondition createAndInitPreQueryConditionTwoValues(DataSource dataSource){
 		PreQueryCondition preQueryCondition = new PreQueryCondition();
+		preQueryCondition.setDataSource(dataSource);
+		preQueryCondition.setFieldType(Types.TIMESTAMP);
 		preQueryCondition.setFieldName("age");
 		preQueryCondition.setQueryOperation(QueryOperation.BETWEEN);
 		preQueryCondition.setStartValue("18");

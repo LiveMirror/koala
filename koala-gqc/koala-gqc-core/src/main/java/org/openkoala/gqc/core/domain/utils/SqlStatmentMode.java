@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * SQL语句模式（可以是整条sql语句或者是条件语句）
+ * SQL语句模型（可以是整条sql语句或者是条件语句）
  * @author xmfang
  *
  */

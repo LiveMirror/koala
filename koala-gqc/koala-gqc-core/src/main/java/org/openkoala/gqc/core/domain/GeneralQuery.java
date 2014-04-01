@@ -307,6 +307,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 		}
 		
 		for (T queryCondition : queryConditions) {
+			queryCondition.setDataSource(dataSource);
 			SqlStatmentMode conditionSqlStatment = queryCondition.generateConditionStatment();
 			sqlStatmentMode.setStatment(sqlStatmentMode.getStatment() + conditionSqlStatment.getStatment());
 			sqlStatmentMode.addValues(conditionSqlStatment.getValues());

@@ -129,10 +129,8 @@ public class DataSourceTest extends KoalaBaseSpringTestCase{
 	@Test
 	public void testFindAll() {
 		this.save();
-		
 		List<DataSource> list = DataSource.findAll(DataSource.class);
-		
-		assertEquals(1,list.size());
+		assertTrue(list.contains(dataSource));
 	}
 	
 	/**

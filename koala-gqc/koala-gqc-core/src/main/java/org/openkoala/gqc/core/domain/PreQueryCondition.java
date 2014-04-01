@@ -18,25 +18,21 @@ public class PreQueryCondition extends QueryCondition {
 	/**
 	 * 查询值
 	 */
-	
 	private String value;
 	
 	/**
 	 * 查询开始值，用于区间查询
 	 */
-	
 	private String startValue;
 	
 	/**
 	 * 查询值结束值，用于区间查询
 	 */
-	
 	private String endValue;
 
 	/**
 	 * 该条件是否显示在查询页面上
 	 */
-	
 	private Boolean visible = false;
 	
 	public PreQueryCondition() {
@@ -92,14 +88,14 @@ public class PreQueryCondition extends QueryCondition {
 			statment.append(" and " + getFieldName() + " ");
 			statment.append(getQueryOperation().getOperator() + " ");
 			if (getQueryOperation().equals(QueryOperation.LIKE)) {
-				statment.append("?");
+				statment.append(generateConditionValueStatment());
 				result.addValue("%" + value + "%");
 			} else if (getQueryOperation().equals(QueryOperation.BETWEEN)) {
-				statment.append("? and ?");
+				statment.append(generateConditionValueStatment() + " and " + generateConditionValueStatment());
 				result.addValue(startValue);
 				result.addValue(endValue);
 			} else {
-				statment.append("?");
+				statment.append(generateConditionValueStatment());
 				result.addValue(value);
 			}
 		}

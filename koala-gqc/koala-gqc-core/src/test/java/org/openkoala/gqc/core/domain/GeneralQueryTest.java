@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -217,10 +218,8 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 	@Test
 	public void testFindAll() {
 		this.save();
-		
 		List<GeneralQuery> list = GeneralQuery.findAll(GeneralQuery.class);
-		
-		assertEquals(1,list.size());
+		assertTrue(list.contains(generalQuery));
 	}
 	
 	/**
@@ -278,6 +277,7 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 		DataSource dataSource = new DataSource();
 		dataSource.setDataSourceType(DataSourceType.SYSTEM_DATA_SOURCE);
 		dataSource.setDataSourceId("dataSource_gqc");
+		dataSource.setConnectUrl("jdbc:h2:mem:testdb");
 		return dataSource;
 	}
 	
@@ -292,6 +292,7 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 		preQueryCondition.setFieldName("QUERY_NAME");
 		preQueryCondition.setQueryOperation(QueryOperation.EQ);
 		preQueryCondition.setValue("test");
+		preQueryCondition.setFieldType(Types.VARCHAR);
 		
 		preQueryConditions.add(preQueryCondition);
 		

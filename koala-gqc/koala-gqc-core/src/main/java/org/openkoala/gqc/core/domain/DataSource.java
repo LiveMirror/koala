@@ -28,43 +28,36 @@ public class DataSource extends GeneralQueryEntity {
 	/**
 	 * 数据源类型
 	 */
-	
 	private DataSourceType dataSourceType;
 	
 	/**
 	 * 数据源ID
 	 */
-	
 	private String dataSourceId;
 
 	/**
 	 * 数据源描述
 	 */
-	
 	private String dataSourceDescription;
 	
 	/**
 	 * 连接URL
 	 */
-	
 	private String connectUrl;
 	
 	/**
 	 * 数据源驱动
 	 */
-	
 	private String jdbcDriver;
 	
 	/**
 	 * 用户名
 	 */
-	
 	private String username;
 	
 	/**
 	 * 密码
 	 */
-	
 	private String password;
 
 	@Enumerated(EnumType.STRING)
