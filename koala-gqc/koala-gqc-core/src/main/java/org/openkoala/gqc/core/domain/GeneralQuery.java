@@ -159,7 +159,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	}
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "KGV_DYNAMIC_QUERIES", joinColumns = @JoinColumn(name = "GQ_ID"))
+	@CollectionTable(name = "KGV_DYNAMIC_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
 	@OrderColumn(name = "ORDER_COLUMN")
 	public List<DynamicQueryCondition> getDynamicQueryConditions() {
 		return dynamicQueryConditions;
