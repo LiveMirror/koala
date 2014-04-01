@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -112,15 +113,6 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 	 * 测试
 	 */
 	@Test
-	public void testGetQuerySql() {
-		String jpql = generalQuery.getQuerySql().getStatment();
-		assertNotNull("sql不应该为空！", jpql);
-	}
-
-	/**
-	 * 测试
-	 */
-	@Test
 	public void testGetVisiblePreQueryConditions() {
 		List<PreQueryCondition> results = generalQuery.getVisiblePreQueryConditions();
 		assertEquals("静态查询条件结果集应该为0！", 0, results.size());
@@ -217,10 +209,8 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 	@Test
 	public void testFindAll() {
 		this.save();
-		
 		List<GeneralQuery> list = GeneralQuery.findAll(GeneralQuery.class);
-		
-		assertEquals(1,list.size());
+		assertTrue(list.contains(generalQuery));
 	}
 	
 	/**
@@ -278,6 +268,7 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 		DataSource dataSource = new DataSource();
 		dataSource.setDataSourceType(DataSourceType.SYSTEM_DATA_SOURCE);
 		dataSource.setDataSourceId("dataSource_gqc");
+		dataSource.setConnectUrl("jdbc:h2:mem:testdb");
 		return dataSource;
 	}
 	
@@ -292,6 +283,7 @@ public class GeneralQueryTest extends KoalaBaseSpringTestCase{
 		preQueryCondition.setFieldName("QUERY_NAME");
 		preQueryCondition.setQueryOperation(QueryOperation.EQ);
 		preQueryCondition.setValue("test");
+		preQueryCondition.setFieldType(Types.VARCHAR);
 		
 		preQueryConditions.add(preQueryCondition);
 		

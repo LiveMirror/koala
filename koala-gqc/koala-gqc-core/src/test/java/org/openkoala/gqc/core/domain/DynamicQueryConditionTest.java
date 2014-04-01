@@ -2,6 +2,7 @@ package org.openkoala.gqc.core.domain;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +22,16 @@ public class DynamicQueryConditionTest{
 	 */
 	private DynamicQueryCondition dynamicQueryCondition;
 
+	private DataSource dataSource = new DataSource();
+	
 	/**
 	 * 初始化实例
 	 * @throws Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		dynamicQueryCondition = this.createAndInitDynamicQueryConditionOneValue();
+		dataSource.setConnectUrl("jdbc:h2:mem:testdb");
+		dynamicQueryCondition = this.createAndInitDynamicQueryConditionOneValue(dataSource);
 	}
 
 	/**
@@ -51,7 +55,7 @@ public class DynamicQueryConditionTest{
 		values.add("%test%");
 		assertEquals(values, dynamicQueryCondition.generateConditionStatment().getValues());
 		
-		dynamicQueryCondition = this.createAndInitDynamicQueryConditionTwoValues();
+		dynamicQueryCondition = this.createAndInitDynamicQueryConditionTwoValues(dataSource);
 		queryCondition = dynamicQueryCondition.generateConditionStatment().getStatment();
 		assertEquals(" and age between ? and ?", queryCondition);
 		
@@ -65,8 +69,10 @@ public class DynamicQueryConditionTest{
 	 * 创建DynamicQueryCondition实例，查询条件范围使用LIKE
 	 * @return
 	 */
-	private DynamicQueryCondition createAndInitDynamicQueryConditionOneValue(){
+	private DynamicQueryCondition createAndInitDynamicQueryConditionOneValue(DataSource dataSource){
 		DynamicQueryCondition dynamicQueryCondition = new DynamicQueryCondition();
+		dynamicQueryCondition.setFieldType(Types.TIMESTAMP);
+		dynamicQueryCondition.setDataSource(dataSource);
 		dynamicQueryCondition.setFieldName("name");
 		dynamicQueryCondition.setLabel("姓名");
 		dynamicQueryCondition.setQueryOperation(QueryOperation.LIKE);
@@ -79,8 +85,10 @@ public class DynamicQueryConditionTest{
 	 * 创建DynamicQueryCondition实例，查询条件范围使用BETWEEN
 	 * @return
 	 */
-	private DynamicQueryCondition createAndInitDynamicQueryConditionTwoValues(){
+	private DynamicQueryCondition createAndInitDynamicQueryConditionTwoValues(DataSource dataSource){
 		DynamicQueryCondition dynamicQueryCondition = new DynamicQueryCondition();
+		dynamicQueryCondition.setDataSource(dataSource);
+		dynamicQueryCondition.setFieldType(Types.TIMESTAMP);
 		dynamicQueryCondition.setFieldName("age");
 		dynamicQueryCondition.setLabel("年龄");
 		dynamicQueryCondition.setQueryOperation(QueryOperation.BETWEEN);
