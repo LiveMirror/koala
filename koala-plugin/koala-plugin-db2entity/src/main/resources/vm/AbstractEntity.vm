@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
+import org.openkoala.koala.commons.domain.KoalaIDEntity;
 import java.io.Serializable;
 
 /**
@@ -22,7 +22,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="${tableName}")
-public class ${EntityName} extends KoalaAbstractEntity {
+public class ${EntityName} extends KoalaIDEntity {
 
 
 #foreach ($column in $Columns)
