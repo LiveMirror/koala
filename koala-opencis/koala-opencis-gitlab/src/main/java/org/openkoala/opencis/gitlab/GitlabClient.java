@@ -78,7 +78,7 @@ public class GitlabClient implements CISClient {
 
     public GitlabProject getGitlabProjectBy(Project project) {
         try {
-            for (GitlabProject gitlabProject : gitlab.getProjects()) {
+            for (GitlabProject gitlabProject : gitlab.getAllProjects()) {
                 if (gitlabProject.getName().equals(project.getProjectName())) {
                     return gitlabProject;
                 }
