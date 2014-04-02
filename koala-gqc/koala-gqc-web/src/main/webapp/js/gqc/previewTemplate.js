@@ -1,5 +1,6 @@
 $(function() {
-	var id = window.location.search.split('=')[1];
+//	var id = window.location.search.split('=')[1];
+	var id = $('#id').val();
 	$.get(contextPath + '/preview/' + id + '.koala').done(function(data) {
 		init(data.generalQuery);
 	});

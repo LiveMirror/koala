@@ -20,6 +20,7 @@
         </script>
     </head>
     <body>
+    	<input type="hidden" id="id" value="${id}"/>
         <div class="query">
             <div class="query-body">
                 <table class="table table-responsive previewQuery" id="previewQuery">

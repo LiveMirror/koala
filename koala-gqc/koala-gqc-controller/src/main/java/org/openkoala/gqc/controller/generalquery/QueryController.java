@@ -1,11 +1,13 @@
 package org.openkoala.gqc.controller.generalquery;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.application.GqcApplication;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 查询控制器
@@ -27,6 +30,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class QueryController {
+	
+	@RequestMapping("/previewTemplate/{id}")
+	public ModelAndView previewTemplate(@PathVariable Long id, Map<String, Object> map) {
+		map.put("id", id);
+		return new ModelAndView("gqc/previewTemplate");
+	}
 
 	/**
 	 * 查询通道应用层接口实例
