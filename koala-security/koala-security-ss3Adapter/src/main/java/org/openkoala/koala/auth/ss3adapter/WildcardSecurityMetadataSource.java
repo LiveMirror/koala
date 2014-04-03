@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * //TODO 请在适当的时候重构，此类与SecurityMetadataSource的区别在于SecurityMetadataSource是完全匹配，而SecurityMetadataSource则是
  * 支持通配符
  */
-public class WildcardSecurityMetadataSource implements FilterInvocationSecurityMetadataSource, InitializingBean {
+public class WildcardSecurityMetadataSource extends SecurityMetadataSource {
 
     private Cache resourceCache;
 
@@ -79,14 +79,19 @@ public class WildcardSecurityMetadataSource implements FilterInvocationSecurityM
         return false;
     }
 
-    @SuppressWarnings("unchecked")
-    private List<String> getGrantRoles(String res) {
-        List<String> roles = new ArrayList<String>();
-        roles = (List<String>) getResourceCache().get(res);
-        if(roles == null || roles.isEmpty()) {
-            roles = provider.getAttributes(res);
+    private List<String> getGrantRoles(String url) {
+        loadResource();
+        Map<String, List<String>> resMap = (Map<String, List<String>>) getResourceCache().get(ALL_RESOURCE_PRIVI);
+        AntPathMatcher matcher = new AntPathMatcher();
+        Set<String> resKeys = resMap.keySet();
+        List<String> attris = new ArrayList<String>();
+        for (String res : resKeys) {
+            if (matcher.match(res, url)) {
+                List<String> roles = resMap.get(res);
+                attris.addAll(roles);
+            }
         }
-        return roles;
+        return attris;
     }
 
 
@@ -148,39 +153,21 @@ public class WildcardSecurityMetadataSource implements FilterInvocationSecurityM
     /**
      * 根据请求的url从集合中查询出所需权限
      */
+    /**
+     * 根据请求的url从集合中查询出所需权限
+     */
     @SuppressWarnings("unchecked")
     public Collection<ConfigAttribute> getAttributes(Object arg0) throws IllegalArgumentException {
-        try {
-            loadResource();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         String url = ((FilterInvocation) arg0).getRequestUrl();
-
         url = filterUrl(url);
-        Map<String, List<String>> resMap = (Map<String, List<String>>) getResourceCache().get(ALL_RESOURCE_PRIVI);
-
-        AntPathMatcher matcher = new AntPathMatcher();
-
-        Set<String> resKeys = resMap.keySet();
-        Collection<ConfigAttribute> attris = null;
-        for(String res:resKeys){
-            if(matcher.match(res, url)){
-                if(attris==null){
-                    attris = new ArrayList<ConfigAttribute>();
+        List<String> roles = getGrantRoles(url);
+        Collection<ConfigAttribute> attris = new ArrayList<ConfigAttribute>();
+        for (final String role : roles) {
+            attris.add(new ConfigAttribute() {
+                public String getAttribute() {
+                    return role;
                 }
-                List<String> roles = resMap.get(res);
-                if(roles!=null){
-                    for (final String role : roles){
-                        attris.add(new ConfigAttribute(){
-                            public String getAttribute() {
-                                return role;
-                            }
-                        });
-                    }
-                }
-            }
+            });
         }
 
         return attris;
