@@ -1,14 +1,5 @@
 package org.openkoala.koala.auth.ss3adapter.filter;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.openkoala.koala.auth.ss3adapter.http.handler.HttpHandler;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,78 +10,86 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.TextEscapeUtils;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * 验证过滤器
+ *
  * @author zyb
  * @since 2013-04-17 10:37
- *
  */
 public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-	
-	private boolean postOnly = true;
-	
-	private static final String SPRING_SECURITY_FORM_USERNAME_KEY = "j_username";
-	
-	private static final String SPRING_SECURITY_FORM_PASSWORD_KEY = "j_password";
-	
-	private static final String SPRING_SECURITY_LAST_USERNAME_KEY = "SPRING_SECURITY_LAST_USERNAME";
-	
-	@SuppressWarnings("unchecked")
-	private List<HttpHandler> httpHandlers = Collections.EMPTY_LIST;
-	
-	private AuthenticationFailureHandler failureHandler;
-	
-	public boolean isPostOnly() {
-		return postOnly;
-	}
 
-	public void setPostOnly(boolean postOnly) {
-		this.postOnly = postOnly;
-	}
+    private boolean postOnly = true;
 
-	public void setHttpHandlers(List<HttpHandler> httpHandlers) {
-		this.httpHandlers = httpHandlers;
-	}
-	
-	public void setFailureHandler(AuthenticationFailureHandler failureHandler) {
-		this.failureHandler = failureHandler;
-	}
+    private static final String SPRING_SECURITY_FORM_USERNAME_KEY = "j_username";
 
-	public AuthenticationFilter() {
-		super("/j_spring_security_check");
-	}
+    private static final String SPRING_SECURITY_FORM_PASSWORD_KEY = "j_password";
 
-	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-			throws AuthenticationException {
-		
-		if (postOnly && !request.getMethod().equals("POST")) {
-			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
-		}
-		request.setAttribute(SPRING_SECURITY_FORM_USERNAME_KEY, request.getParameter(SPRING_SECURITY_FORM_USERNAME_KEY));
-		request.setAttribute(SPRING_SECURITY_FORM_PASSWORD_KEY, request.getParameter(SPRING_SECURITY_FORM_PASSWORD_KEY));
-		handle(request, response);
-		
-        UsernamePasswordAuthenticationToken authRequest = 
-        		new UsernamePasswordAuthenticationToken(  
-        		obtainUsername(request), 
-        		obtainPassword(request)); 
-        
+    private static final String SPRING_SECURITY_LAST_USERNAME_KEY = "SPRING_SECURITY_LAST_USERNAME";
+
+    @SuppressWarnings("unchecked")
+    private List<HttpHandler> httpHandlers = Collections.EMPTY_LIST;
+
+    private AuthenticationFailureHandler failureHandler;
+
+    public boolean isPostOnly() {
+        return postOnly;
+    }
+
+    public void setPostOnly(boolean postOnly) {
+        this.postOnly = postOnly;
+    }
+
+    public void setHttpHandlers(List<HttpHandler> httpHandlers) {
+        this.httpHandlers = httpHandlers;
+    }
+
+    public void setFailureHandler(AuthenticationFailureHandler failureHandler) {
+        this.failureHandler = failureHandler;
+    }
+
+    public AuthenticationFilter() {
+        super("/j_spring_security_check");
+    }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException {
+
+        if (postOnly && !request.getMethod().equals("POST")) {
+            throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
+        }
+        request.setAttribute(SPRING_SECURITY_FORM_USERNAME_KEY, request.getParameter(SPRING_SECURITY_FORM_USERNAME_KEY));
+        request.setAttribute(SPRING_SECURITY_FORM_PASSWORD_KEY, request.getParameter(SPRING_SECURITY_FORM_PASSWORD_KEY));
+        handle(request, response);
+
+        UsernamePasswordAuthenticationToken authRequest =
+                new UsernamePasswordAuthenticationToken(
+                        obtainUsername(request),
+                        obtainPassword(request));
+
         HttpSession session = request.getSession(false);
 
         if (session != null || getAllowSessionCreation()) {
-            request.getSession().setAttribute(SPRING_SECURITY_LAST_USERNAME_KEY, 
-            		TextEscapeUtils.escapeEntities(obtainUsername(request).toString()));
+            request.getSession().setAttribute(SPRING_SECURITY_LAST_USERNAME_KEY,
+                    TextEscapeUtils.escapeEntities(obtainUsername(request).toString()));
         }
-  
+
         // 允许子类设置详细属性  
-        setDetails(request, authRequest);  
-  
-        return this.getAuthenticationManager().authenticate(authRequest);  
-	}
-	
-	public void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException failed) throws IOException, ServletException {
+        setDetails(request, authRequest);
+
+        return this.getAuthenticationManager().authenticate(authRequest);
+    }
+
+    public void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                           AuthenticationException failed) throws IOException, ServletException {
         SecurityContextHolder.clearContext();
 
         if (logger.isDebugEnabled()) {
@@ -101,25 +100,25 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 
         failureHandler.onAuthenticationFailure(request, response, failed);
     }
-	
-	protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
-		authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
-	}
 
-	private Object obtainPassword(HttpServletRequest request) {
-		return request.getParameter(SPRING_SECURITY_FORM_PASSWORD_KEY);
-	}
+    protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
+        authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
+    }
 
-	private Object obtainUsername(HttpServletRequest request) {
-		return request.getParameter(SPRING_SECURITY_FORM_USERNAME_KEY);
-	}
+    private Object obtainPassword(HttpServletRequest request) {
+        return request.getParameter(SPRING_SECURITY_FORM_PASSWORD_KEY);
+    }
 
-	private void handle(HttpServletRequest request, HttpServletResponse response) {
-		if (!httpHandlers.isEmpty()) {
-			for (HttpHandler each : httpHandlers) {
-				each.handle(request, response);
-			}
-		}
-	}
+    private Object obtainUsername(HttpServletRequest request) {
+        return request.getParameter(SPRING_SECURITY_FORM_USERNAME_KEY);
+    }
+
+    private void handle(HttpServletRequest request, HttpServletResponse response) {
+        if (!httpHandlers.isEmpty()) {
+            for (HttpHandler each : httpHandlers) {
+                each.handle(request, response);
+            }
+        }
+    }
 
 }

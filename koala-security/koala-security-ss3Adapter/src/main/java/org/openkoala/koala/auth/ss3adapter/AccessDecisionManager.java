@@ -57,6 +57,7 @@ public class AccessDecisionManager implements org.springframework.security.acces
 				}
 			}
 		}
+
 		// 无权限抛出拒绝异常
 		throw new AccessDeniedException(MessageFormat.format("Denied to access [{0}]", url));
 	}

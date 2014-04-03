@@ -33,7 +33,7 @@ import org.dayatang.domain.InstanceFactory;
 import org.dayatang.domain.NamedParameters;
 
 /**
- * 类    名：KoalaEntity.java
+ * 类    名：KoalaIDEntity.java
  *   
  * 功能描述：具体功能做描述。	
  *  

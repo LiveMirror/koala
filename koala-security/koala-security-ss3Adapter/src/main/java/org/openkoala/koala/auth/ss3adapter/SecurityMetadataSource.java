@@ -39,6 +39,8 @@ public class SecurityMetadataSource implements FilterInvocationSecurityMetadataS
 	
 	private static final Logger LOGGER = Logger.getLogger("SecurityMetadataSource");
 
+    private static final  String ALL_RESOURCE_PRIVI = "**ALL_RESOURCE_PRIVI";
+
 	/**
 	 * 获取资源缓存
 	 * @return
@@ -130,6 +132,7 @@ public class SecurityMetadataSource implements FilterInvocationSecurityMetadataS
 			Map<String, List<String>> allRes = provider.getAllReourceAndRoles();
 			Set<String> urls = allRes.keySet();
 			for (String url : urls) {
+                getResourceCache().put(ALL_RESOURCE_PRIVI,allRes);
 				getResourceCache().put(url, allRes.get(url));
 			}
 		}
@@ -170,7 +173,6 @@ public class SecurityMetadataSource implements FilterInvocationSecurityMetadataS
 			for (final String role : roles){
 				attris.add(new ConfigAttribute(){
 					private static final long serialVersionUID = -2841059463182100139L;
-
 					public String getAttribute() {
 						return role;
 					}

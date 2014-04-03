@@ -1,94 +1,92 @@
 package org.openkoala.koala.auth.ss3adapter;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * 登录失败处理
- * 
+ *
  * @author zhuyuanbiao
  * @date 2014年1月13日 上午9:43:47
- * 
  */
 public class LoginFailureHandler implements AuthenticationFailureHandler {
 
-	private String userAccountNotFoundUrl;
+    private String userAccountNotFoundUrl;
 
-	private String passwordNotCorrectUrl;
+    private String passwordNotCorrectUrl;
 
-	private String validateCodeNotCorrectUrl;
+    private String validateCodeNotCorrectUrl;
 
-	private String userDisableUrl;
+    private String userDisableUrl;
 
-	private String otherFailureUrl;
+    private String otherFailureUrl;
 
-	public String getUserAccountNotFoundUrl() {
-		return userAccountNotFoundUrl;
-	}
+    public String getUserAccountNotFoundUrl() {
+        return userAccountNotFoundUrl;
+    }
 
-	public void setUserAccountNotFoundUrl(String userAccountNotFoundUrl) {
-		this.userAccountNotFoundUrl = userAccountNotFoundUrl;
-	}
+    public void setUserAccountNotFoundUrl(String userAccountNotFoundUrl) {
+        this.userAccountNotFoundUrl = userAccountNotFoundUrl;
+    }
 
-	public String getPasswordNotCorrectUrl() {
-		return passwordNotCorrectUrl;
-	}
+    public String getPasswordNotCorrectUrl() {
+        return passwordNotCorrectUrl;
+    }
 
-	public void setPasswordNotCorrectUrl(String passwordNotCorrectUrl) {
-		this.passwordNotCorrectUrl = passwordNotCorrectUrl;
-	}
+    public void setPasswordNotCorrectUrl(String passwordNotCorrectUrl) {
+        this.passwordNotCorrectUrl = passwordNotCorrectUrl;
+    }
 
-	public String getValidateCodeNotCorrectUrl() {
-		return validateCodeNotCorrectUrl;
-	}
+    public String getValidateCodeNotCorrectUrl() {
+        return validateCodeNotCorrectUrl;
+    }
 
-	public void setValidateCodeNotCorrectUrl(String validateCodeNotCorrectUrl) {
-		this.validateCodeNotCorrectUrl = validateCodeNotCorrectUrl;
-	}
+    public void setValidateCodeNotCorrectUrl(String validateCodeNotCorrectUrl) {
+        this.validateCodeNotCorrectUrl = validateCodeNotCorrectUrl;
+    }
 
-	public String getUserDisableUrl() {
-		return userDisableUrl;
-	}
+    public String getUserDisableUrl() {
+        return userDisableUrl;
+    }
 
-	public void setUserDisableUrl(String userDisableUrl) {
-		this.userDisableUrl = userDisableUrl;
-	}
+    public void setUserDisableUrl(String userDisableUrl) {
+        this.userDisableUrl = userDisableUrl;
+    }
 
-	public void setOtherFailureUrl(String otherFailureUrl) {
-		this.otherFailureUrl = otherFailureUrl;
-	}
+    public void setOtherFailureUrl(String otherFailureUrl) {
+        this.otherFailureUrl = otherFailureUrl;
+    }
 
-	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException,
-			ServletException {
-		if (exception instanceof UsernameNotFoundException) {
-			request.getRequestDispatcher(userAccountNotFoundUrl).forward(request, response);
-			return;
-		}
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException,
+            ServletException {
+        if (exception instanceof UsernameNotFoundException) {
+            request.getRequestDispatcher(userAccountNotFoundUrl).forward(request, response);
+            return;
+        }
 
-		if (exception instanceof BadCredentialsException) {
-			request.getRequestDispatcher(passwordNotCorrectUrl).forward(request, response);
-			return;
-		}
+        if (exception instanceof BadCredentialsException) {
+            request.getRequestDispatcher(passwordNotCorrectUrl).forward(request, response);
+            return;
+        }
 
-		if (exception instanceof BadValidateCodeException) {
-			request.getRequestDispatcher(validateCodeNotCorrectUrl).forward(request, response);
-			return;
-		}
+        if (exception instanceof BadValidateCodeException) {
+            request.getRequestDispatcher(validateCodeNotCorrectUrl).forward(request, response);
+            return;
+        }
 
-		if (exception instanceof DisabledException) {
-			request.getRequestDispatcher(userDisableUrl).forward(request, response);
-		}
-		response.sendRedirect(otherFailureUrl);
-	}
+        if (exception instanceof DisabledException) {
+            request.getRequestDispatcher(userDisableUrl).forward(request, response);
+        }
+        response.sendRedirect(otherFailureUrl);
+    }
 
 }
