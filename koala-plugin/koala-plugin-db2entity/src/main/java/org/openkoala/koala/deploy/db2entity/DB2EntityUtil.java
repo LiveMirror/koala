@@ -122,7 +122,11 @@ public class DB2EntityUtil {
 		List<String> tables = new ArrayList<String>();
 		ResultSet rs = null;
 		DatabaseMetaData metaData = conn.getMetaData();
-		rs = metaData.getTables(null, null, null, new String[] { "TABLE" });
+		if (connectionURL.startsWith("jdbc:oracle")) {
+			rs = metaData.getTables(null, username.toUpperCase(), null, new String[] { "TABLE" });
+		} else {
+			rs = metaData.getTables(null, null, null, new String[] { "TABLE" });
+		}
 		while (rs.next()) {
 			String tableName = rs.getString("TABLE_NAME");
 			tables.add(tableName);
