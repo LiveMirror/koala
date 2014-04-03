@@ -4,11 +4,13 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
             http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
-	<bean id="securityMetadataSource"
-		class="org.openkoala.koala.auth.ss3adapter.SecurityMetadataSource">
-		<property name="provider" ref="authDataService"></property>
-	</bean>
 
+    <!--支持URL以通配符的配置，不支持通配符的请导入spring-security.xml -->
+    <bean id="securityMetadataSource"
+          class="org.openkoala.koala.auth.ss3adapter.WildcardSecurityMetadataSource">
+        <property name="provider" ref="authDataService"></property>
+    </bean>
+		
 	<bean id="userDetailManager" class="org.openkoala.koala.auth.ss3adapter.UserDetailManager">
 		<property name="provider" ref="authDataService"></property>
 	</bean>

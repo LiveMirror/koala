@@ -1,10 +1,13 @@
 package org.openkoala.koala.auth.ss3adapter.ehcache;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.openkoala.koala.auth.AuthDataService;
 import org.openkoala.koala.auth.UserDetails;
 import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
+import org.openkoala.koala.auth.ss3adapter.WildcardSecurityMetadataSource;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 
 import com.dayatang.domain.InstanceFactory;
@@ -40,6 +43,15 @@ public class CacheUtil {
 	public static void refreshUrlAttributes(String url) {
 		getResourceCache().remove(url);
 		getResourceCache().put(url, getAuthDataService().getAttributes(url));
+
+        if(getResourceCache().isKeyInCache(WildcardSecurityMetadataSource.ALL_RESOURCE_MAP)){
+            Map<String, List<String>> resMap = (Map<String, List<String>>) getResourceCache().get(WildcardSecurityMetadataSource.ALL_RESOURCE_MAP);
+            resMap.remove(url);
+            resMap.put(url,getAuthDataService().getAttributes(url));
+            getResourceCache().remove(WildcardSecurityMetadataSource.ALL_RESOURCE_MAP);
+            getResourceCache().put(WildcardSecurityMetadataSource.ALL_RESOURCE_MAP,resMap);
+
+        }
 	}
 
 	public static void refreshUserAttributes(String user) {

@@ -1,0 +1,216 @@
+package org.openkoala.koala.auth.ss3adapter;
+
+import com.dayatang.cache.Cache;
+import com.dayatang.domain.InstanceFactory;
+import org.apache.commons.logging.LogFactory;
+import org.openkoala.koala.auth.AuthDataService;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.util.AntUrlPathMatcher;
+import org.springframework.security.web.util.UrlMatcher;
+import org.springframework.util.AntPathMatcher;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * ClassName:SecurityMetadataSource Function: 资源与权限建立管理
+ * 在服务器启动时就加载所有访问URL所需的权限，存入resourceMap集合中。
+ * Spring在设置完一个bean所有的合作者后，会检查bean是否实现了InitializingBean接口，
+ * 如果实现就调用bean的afterPropertiesSet方法。 但这样便造成bean和spring的耦合， 最好用init-method
+ * 
+ * @author caoyong
+ * @version 1.0, 2012-12-04
+ * @since ss31.0
+ */
+// @Component("securityMetadataSource")
+public class WildcardSecurityMetadataSource implements FilterInvocationSecurityMetadataSource, InitializingBean {
+	org.apache.commons.logging.Log log = LogFactory.getLog(WildcardSecurityMetadataSource.class);
+
+	private UrlMatcher urlMatcher = new AntUrlPathMatcher();
+
+	private Cache resourceCache;
+
+	private Cache userCache;
+
+	private AuthDataService provider;
+
+    public static final String ALL_RESOURCE_MAP = "all_resource_map";
+
+	private Cache getResourceCache() {
+		if (resourceCache == null) {
+			resourceCache = InstanceFactory.getInstance(Cache.class, "resource_cache");
+		}
+		return resourceCache;
+	}
+
+	private Cache getUserCache() {
+		if (userCache == null) {
+			userCache = InstanceFactory.getInstance(Cache.class, "user_cache");
+		}
+		return userCache;
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean getResAuthByUseraccount(String userAccount, String res) {
+		List<String> grantRoles = getGrantRoles(res);
+		CustomUserDetails user =  getUserInfo(userAccount);
+		if (user != null && grantRoles != null) {
+			Collection<GrantedAuthority> authorities = user.getAuthorities();
+			for (GrantedAuthority grant : authorities) {
+				String role = grant.getAuthority();
+				if (grantRoles.contains(role)) {
+					return true;
+				}
+			}
+
+		}
+		return false;
+	}
+
+	private List<String> getGrantRoles(String res){
+		List<String> roles = new ArrayList<String>();
+		roles =  (List<String>) getResourceCache().get(res);
+		if(roles==null || roles.isEmpty()){
+			roles = provider.getAttributes(res);
+		}
+		return roles;
+	}
+
+	/**
+	 * 获取用户信息
+	 * @param userAccount
+	 * @return
+	 */
+	private CustomUserDetails getUserInfo(String userAccount){
+		CustomUserDetails userInfo = (CustomUserDetails)getUserCache().get(userAccount);
+		if(userInfo==null){
+			org.openkoala.koala.auth.UserDetails user = provider.loadUserByUseraccount(userAccount);
+			List<GrantedAuthority> gAuthoritys = new ArrayList<GrantedAuthority>();
+			for (String role : user.getAuthorities()) {
+				GrantedAuthorityImpl gai = new GrantedAuthorityImpl(role);
+				gAuthoritys.add(gai);
+			}
+			userInfo = new CustomUserDetails(user.getPassword(), user.getUseraccount(), user.isAccountNonExpired(),
+					user.isAccountNonLocked(), user.isCredentialsNonExpired(), user.isEnabled(), gAuthoritys);
+			userInfo.setSuper(user.isSuper());
+			getUserCache().put(userAccount, userInfo);
+		}
+
+		return userInfo;
+	}
+
+
+	/**
+	 * 加载所有资源
+	 *
+	 * @throws Exception
+	 */
+	private void loadResource() throws Exception {
+		// 查询出所有资源
+		if (resourceCache == null) {
+			Map<String, List<String>> allRes = provider.getAllReourceAndRoles();
+			Set<String> urls = allRes.keySet();
+            getResourceCache().put(ALL_RESOURCE_MAP,allRes);
+			for (String url : urls) {
+				getResourceCache().put(url, allRes.get(url));
+			}
+		}
+	}
+
+	/**
+	 * 构造方法中建立请求url(key)与权限(value)的关系集合
+	 */
+	public void afterPropertiesSet() throws Exception {
+
+	}
+
+	public Collection<ConfigAttribute> getAllConfigAttributes() {
+		return null;
+
+	}
+
+	/**
+	 * 根据请求的url从集合中查询出所需权限
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<ConfigAttribute> getAttributes(Object arg0) throws IllegalArgumentException {
+		try {
+			loadResource();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String url = ((FilterInvocation) arg0).getRequestUrl();
+
+        url = filterUrl(url);
+        Map<String, List<String>> resMap = (Map<String, List<String>>) getResourceCache().get(ALL_RESOURCE_MAP);
+
+        AntPathMatcher matcher = new AntPathMatcher();
+
+        Set<String> resKeys = resMap.keySet();
+        Collection<ConfigAttribute> attris = null;
+        for(String res:resKeys){
+            if(matcher.match(res,url)){
+                if(attris==null){
+                    attris = new ArrayList<ConfigAttribute>();
+                }
+                List<String> roles = resMap.get(res);
+               if(roles!=null){
+                   for (final String role : roles){
+                       attris.add(new ConfigAttribute(){
+                           public String getAttribute() {
+                               return role;
+                           }
+                       });
+                   }
+               }
+            }
+        }
+
+        return attris;
+	}
+
+    private String filterUrl(String url){
+        int position = url.indexOf("?");
+        String returnUrl = url;
+        if (-1 != position) {
+            returnUrl = url.substring(0, position);
+        }
+        return returnUrl.substring(url.indexOf("/") + 1);
+    }
+
+	/**
+	 * 返回false则报错 SecurityMetadataSource does not support secure object class:
+	 * class org.springframework.security.web.FilterInvocation
+	 */
+	public boolean supports(Class<?> arg0) {
+		return true;
+	}
+
+	public UrlMatcher getUrlMatcher() {
+		return urlMatcher;
+	}
+
+	public void setUrlMatcher(UrlMatcher urlMatcher) {
+		this.urlMatcher = urlMatcher;
+	}
+
+	public WildcardSecurityMetadataSource() {
+
+	}
+
+	public AuthDataService getProvider() {
+		return provider;
+	}
+
+	public void setProvider(AuthDataService provider) {
+		this.provider = provider;
+	}
+
+}
