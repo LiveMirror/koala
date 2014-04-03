@@ -7,6 +7,7 @@ import org.dayatang.cache.Cache;
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.koala.auth.AuthDataService;
 import org.openkoala.koala.auth.ss3adapter.CustomUserDetails;
+import org.openkoala.koala.auth.ss3adapter.WildcardSecurityMetadataSource;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
@@ -65,6 +66,16 @@ public final class CacheUtil {
 	public static void refreshUrlAttributes(String url) {
 		getResourceCache().remove(url);
 		getResourceCache().put(url, getAuthDataService().getAttributes(url));
+
+        //TODO 请在适当的时候重构 lingen
+        if(getResourceCache().containsKey(WildcardSecurityMetadataSource.ALL_RESOURCE_PRIVI)){
+            Map<String, List<String>> resMap = (Map<String, List<String>>) getResourceCache().get(WildcardSecurityMetadataSource.ALL_RESOURCE_PRIVI);
+            resMap.remove(url);
+            resMap.put(url,getAuthDataService().getAttributes(url));
+            getResourceCache().remove(WildcardSecurityMetadataSource.ALL_RESOURCE_PRIVI);
+            getResourceCache().put(WildcardSecurityMetadataSource.ALL_RESOURCE_PRIVI,resMap);
+
+        }
 	}
 
 	/**
@@ -83,6 +94,19 @@ public final class CacheUtil {
 				getResourceCache().put(identifier, result.get(identifier));
 			}
 		}
+
+        //TODO 请在适当的时候重构  lingen
+        if(getResourceCache().containsKey(WildcardSecurityMetadataSource.ALL_RESOURCE_PRIVI)){
+            if (result != null && result.size() > 0) {
+                Map<String, List<String>> resMap = (Map<String, List<String>>) getResourceCache().get(WildcardSecurityMetadataSource.ALL_RESOURCE_PRIVI);
+                for (String identifier : result.keySet()) {
+                    resMap.remove(identifier);
+                    resMap.put(identifier,result.get(identifier));
+                }
+                getResourceCache().remove(WildcardSecurityMetadataSource.ALL_RESOURCE_PRIVI);
+                getResourceCache().put(WildcardSecurityMetadataSource.ALL_RESOURCE_PRIVI,resMap);
+            }
+        }
 	}
 
 	/**

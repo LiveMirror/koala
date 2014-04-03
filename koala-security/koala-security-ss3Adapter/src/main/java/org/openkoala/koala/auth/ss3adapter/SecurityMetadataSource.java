@@ -39,7 +39,7 @@ public class SecurityMetadataSource implements FilterInvocationSecurityMetadataS
 	
 	private static final Logger LOGGER = Logger.getLogger("SecurityMetadataSource");
 
-    private static final  String ALL_RESOURCE_PRIVI = "**ALL_RESOURCE_PRIVI";
+
 
 	/**
 	 * 获取资源缓存
@@ -132,7 +132,6 @@ public class SecurityMetadataSource implements FilterInvocationSecurityMetadataS
 			Map<String, List<String>> allRes = provider.getAllReourceAndRoles();
 			Set<String> urls = allRes.keySet();
 			for (String url : urls) {
-                getResourceCache().put(ALL_RESOURCE_PRIVI,allRes);
 				getResourceCache().put(url, allRes.get(url));
 			}
 		}

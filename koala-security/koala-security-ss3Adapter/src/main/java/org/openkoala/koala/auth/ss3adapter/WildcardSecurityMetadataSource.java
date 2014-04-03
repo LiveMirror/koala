@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.util.AntPathMatcher;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -30,7 +31,7 @@ public class WildcardSecurityMetadataSource implements FilterInvocationSecurityM
 
     private static final Logger LOGGER = Logger.getLogger("SecurityMetadataSource");
 
-    private static final  String ALL_RESOURCE_PRIVI = "**ALL_RESOURCE_PRIVI";
+    public static final  String ALL_RESOURCE_PRIVI = "**ALL_RESOURCE_PRIVI";
 
     /**
      * 获取资源缓存
@@ -121,9 +122,9 @@ public class WildcardSecurityMetadataSource implements FilterInvocationSecurityM
         // 查询出所有资源
         if (resourceCache == null) {
             Map<String, List<String>> allRes = provider.getAllReourceAndRoles();
+            getResourceCache().put(ALL_RESOURCE_PRIVI,allRes);
             Set<String> urls = allRes.keySet();
             for (String url : urls) {
-                getResourceCache().put(ALL_RESOURCE_PRIVI,allRes);
                 getResourceCache().put(url, allRes.get(url));
             }
         }
@@ -144,40 +145,54 @@ public class WildcardSecurityMetadataSource implements FilterInvocationSecurityM
     /**
      * 根据请求的url从集合中查询出所需权限
      */
+    /**
+     * 根据请求的url从集合中查询出所需权限
+     */
     @SuppressWarnings("unchecked")
-    public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
+    public Collection<ConfigAttribute> getAttributes(Object arg0) throws IllegalArgumentException {
         try {
             loadResource();
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            e.printStackTrace();
         }
 
-        String url = ((FilterInvocation) object).getRequestUrl();
-        int position = url.indexOf('?');
-        if (-1 != position) {
-            url = url.substring(0, position);
-        }
+        String url = ((FilterInvocation) arg0).getRequestUrl();
 
-        Map<String, List<String>> allRes = (Map<String, List<String>>) getResourceCache().get(ALL_RESOURCE_PRIVI);
+        url = filterUrl(url);
+        Map<String, List<String>> resMap = (Map<String, List<String>>) getResourceCache().get(ALL_RESOURCE_PRIVI);
 
-        Set<String> res = allRes.keySet();
-        Collection<ConfigAttribute> attris = new ArrayList<ConfigAttribute>();
-        for(String reUrl:res){
-            if(url.matches(reUrl)){
-                List<String> roles = allRes.get(reUrl);
-                for (final String role : roles){
-                    attris.add(new ConfigAttribute(){
-                        private static final long serialVersionUID = -2841059463182100139L;
-                        public String getAttribute() {
-                            return role;
-                        }
-                    });
+        AntPathMatcher matcher = new AntPathMatcher();
+
+        Set<String> resKeys = resMap.keySet();
+        Collection<ConfigAttribute> attris = null;
+        for(String res:resKeys){
+            if(matcher.match(res, url)){
+                if(attris==null){
+                    attris = new ArrayList<ConfigAttribute>();
+                }
+                List<String> roles = resMap.get(res);
+                if(roles!=null){
+                    for (final String role : roles){
+                        attris.add(new ConfigAttribute(){
+                            public String getAttribute() {
+                                return role;
+                            }
+                        });
+                    }
                 }
             }
-            return attris;
         }
 
-        return null;
+        return attris;
+    }
+
+    private String filterUrl(String url){
+        int position = url.indexOf("?");
+        String returnUrl = url;
+        if (-1 != position) {
+            returnUrl = url.substring(0, position);
+        }
+        return returnUrl.substring(url.indexOf("/") + 1);
     }
 
     /**
