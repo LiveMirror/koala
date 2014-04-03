@@ -122,7 +122,11 @@ public class DB2EntityUtil {
 		List<String> tables = new ArrayList<String>();
 		ResultSet rs = null;
 		DatabaseMetaData metaData = conn.getMetaData();
-		rs = metaData.getTables(null, null, null, new String[] { "TABLE" });
+		if (isOracle()) {
+			rs = metaData.getTables(null, username.toUpperCase(), null, new String[] { "TABLE" });
+		} else {
+			rs = metaData.getTables(null, null, null, new String[] { "TABLE" });
+		}
 		while (rs.next()) {
 			String tableName = rs.getString("TABLE_NAME");
 			tables.add(tableName);
@@ -130,6 +134,10 @@ public class DB2EntityUtil {
 		return tables;
 	}
 
+	private boolean isOracle() {
+		return connectionURL.startsWith("jdbc:oracle");
+	}
+	
 	/**
 	 * 根据表格生成一个实体类
 	 * 
