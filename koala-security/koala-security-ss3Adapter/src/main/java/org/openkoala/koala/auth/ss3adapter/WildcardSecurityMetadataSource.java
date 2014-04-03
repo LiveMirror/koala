@@ -76,7 +76,7 @@ public class WildcardSecurityMetadataSource extends SecurityMetadataSource {
         for (String res : resKeys) {
             if (matcher.match(res, url)) {
                 List<String> roles = resMap.get(res);
-                attris.addAll(roles);
+                if(roles!=null)attris.addAll(roles);
             }
         }
         return attris;
