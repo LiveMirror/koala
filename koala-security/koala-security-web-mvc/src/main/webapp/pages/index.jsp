@@ -73,12 +73,12 @@
 		$(function(){
             $.get(contextPath + '/auth/Resource/isResourceEmpty.koala').done(function(result){
                 if(result.result){
-                    var dialog = $('<div class="modal fade"><div class="modal-dialog" style="padding-top:10%;width:400px;"><div class="modal-content">' +
+                    var dialog = $('<div class="modal fade"></div>').html('<div class="modal-dialog" style="padding-top:10%;width:400px;"><div class="modal-content">' +
                     ' <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">' +
                     '&times;</button><h4 class="modal-title">菜单初始化</h4></div><div class="modal-body">' +
                     '<h5>是否进行菜单初始化？</h5></div><div class="modal-footer"><button type="button" class="btn btn-default"' +
                     ' data-dismiss="modal">取消</button><button id="confirm" type="button" class="btn btn-primary">确定</button></div>' +
-                    '</div></div></div>');
+                    '</div></div>');
                     dialog.modal({
                         keyboard: true
                     }).on('hidden.bs.modal', function(){
@@ -95,9 +95,7 @@
                                     type: 'success',
                                     content: '权限初始化成功'
                                 });
-                                setTimeout(function(){
-                                    window.location.reload();
-                                },2000);
+                                window.location.reload();
                             }
                         });
                     });
