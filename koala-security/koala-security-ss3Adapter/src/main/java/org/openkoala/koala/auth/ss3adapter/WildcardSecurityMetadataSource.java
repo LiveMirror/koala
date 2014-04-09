@@ -72,11 +72,17 @@ public class WildcardSecurityMetadataSource extends SecurityMetadataSource {
         Map<String, List<String>> resMap = (Map<String, List<String>>) getResourceCache().get(ALL_RESOURCE_MAP);
         AntPathMatcher matcher = new AntPathMatcher();
         Set<String> resKeys = resMap.keySet();
+        log.info("getGrantRoles(), resKeys:"+resKeys);//debug
         List<String> attris = new ArrayList<String>();
         for (String res : resKeys) {
-            if (matcher.match(res, url)) {
-                List<String> roles = resMap.get(res);
-                if(roles!=null)attris.addAll(roles);
+            log.info("getGrantRoles(),match befor res:"+res+",url:"+url);//debug
+            try {
+                if (matcher.match(res, url)) {
+                    List<String> roles = resMap.get(res);
+                    attris.addAll(roles);
+                }
+            }catch(Exception e) {
+                log.info("[error], res matcher.match error."+e.getMessage());
             }
         }
         return attris;
@@ -142,16 +148,19 @@ public class WildcardSecurityMetadataSource extends SecurityMetadataSource {
     @SuppressWarnings("unchecked")
     public Collection<ConfigAttribute> getAttributes(Object arg0) throws IllegalArgumentException {
         String url = ((FilterInvocation) arg0).getRequestUrl();
+        log.info("getAttributes(),getRequestUrl, url:"+url);  //debug
         url = filterUrl(url);
+        log.info("getAttributes(),filterUrl after, url:"+url);//debug
         List<String> roles = getGrantRoles(url);
+        log.info("getAttributes(),getGrantRoles after, roles:"+roles);//debug
         Collection<ConfigAttribute> attris = new ArrayList<ConfigAttribute>();
-            for (final String role : roles) {
-                attris.add(new ConfigAttribute() {
-                    public String getAttribute() {
-                        return role;
-                    }
-                });
-            }
+        for (final String role : roles) {
+            attris.add(new ConfigAttribute() {
+                public String getAttribute() {
+                    return role;
+                }
+            });
+        }
 
         return attris;
     }
