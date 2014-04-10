@@ -164,11 +164,11 @@ public class GitClient {
             config.save();
 
         } catch (URISyntaxException e) {
-            throw new CISClientBaseRuntimeException("git.pushRepositoryToRemote.URISyntaxException", e);
+            throw new CISClientBaseRuntimeException("git.init.URISyntaxException", e);
         } catch (IOException e) {
-            throw new CISClientBaseRuntimeException("git.pushRepositoryToRemote.IOException", e);
+            throw new CISClientBaseRuntimeException("git.init.IOException", e);
         } catch (GitAPIException e) {
-            throw new CISClientBaseRuntimeException("git.pushRepositoryToRemote.GitAPIException", e);
+            throw new CISClientBaseRuntimeException("git.init.GitAPIException", e);
         }
     }
 

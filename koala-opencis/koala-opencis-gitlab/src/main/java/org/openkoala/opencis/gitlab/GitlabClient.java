@@ -73,6 +73,11 @@ public class GitlabClient implements CISClient {
             return;
         }
         createProjectInGitLab(project);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new CISClientBaseRuntimeException("gitlab.InterruptedException", e);
+        }
         pushProjectToGitLab(project, config);
     }
 
