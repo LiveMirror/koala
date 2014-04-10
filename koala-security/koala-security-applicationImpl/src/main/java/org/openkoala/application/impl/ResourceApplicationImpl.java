@@ -169,6 +169,9 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		if (isNameExist(resourceVO)) {
 			throw new ApplicationException("resource.name.exist");
 		}
+		if(StringUtils.isBlank(resourceVO.getIdentifier())){
+			throw new ApplicationException("resource.identifier.null");
+		}
 		if (isIdentifierExist(resourceVO)) {
 			throw new ApplicationException("resource.identifier.exist");
 		}

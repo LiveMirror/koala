@@ -4,12 +4,12 @@ import static org.junit.Assert.*;
 
 import javax.inject.Inject;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.auth.application.ResourceApplication;
 import org.openkoala.auth.application.ResourceTypeApplication;
 import org.openkoala.auth.application.vo.ResourceTypeVO;
 import org.openkoala.auth.application.vo.ResourceVO;
+import org.openkoala.exception.extend.ApplicationException;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.util.Assert;
@@ -104,6 +104,22 @@ public class ResourceApplicationImplTest extends KoalaBaseSpringTestCase {
 	public void testIsIdentifierExist() {
 		setUp();
 		assertTrue(resourceApplication.isIdentifierExist(resourceVO));
+	}
+	
+	@Test(expected=ApplicationException.class)
+	public void testIdentifierNull() throws Exception {
+		resourceVO = new ResourceVO();
+		resourceVO.setName("testResource");
+		resourceVO.setDesc("testResource");
+		resourceVO.setIdentifier("");
+		resourceTypeVO = new ResourceTypeVO();
+		resourceTypeVO.setName("testResourceType");
+		resourceTypeApplication.save(resourceTypeVO);
+		assertNotNull(resourceTypeVO.getId());
+		
+		resourceVO.setTypeId(resourceTypeVO.getId());
+		resourceVO.setIdentifier("");
+		resourceApplication.saveResource(resourceVO);
 	}
 
 }
