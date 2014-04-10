@@ -12,6 +12,8 @@ import org.openkoala.opencis.api.Project;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by zjzhai on 3/18/14.
@@ -29,6 +31,7 @@ public class RedmineClient implements CISClient {
     public final static String PROJECT_MANAGER_ROLE = "pm";
 
     private RedmineManager manager;
+
 
     public RedmineClient(String url, String username, String password) {
         manager = new RedmineManager(url, username, password);
@@ -86,7 +89,7 @@ public class RedmineClient implements CISClient {
         for (Developer developer : developers) {
             try {
                 if (isMemberOfProject(project, developer.getId(), DEVELOPER_ROLE)
-                        ||isMemberOfProject(project, developer.getId(), PROJECT_MANAGER_ROLE)) {
+                        || isMemberOfProject(project, developer.getId(), PROJECT_MANAGER_ROLE)) {
                     continue;
                 }
 
@@ -117,7 +120,7 @@ public class RedmineClient implements CISClient {
                 for (Role role : each.getRoles()) {
                     if (each != null
                             && each.getUser() != null
-                            && each.getUser().getId() == user.getId()
+                            && each.getUser().getId().equals(user.getId())
                             && role.getName().equals(roleName))
                         return true;
                 }
@@ -149,9 +152,14 @@ public class RedmineClient implements CISClient {
      * @return
      */
     public boolean isExist(Developer developer) {
+        if (RedmineUserCache.isExist(developer.getId())) {
+            return true;
+        }
+
         try {
             for (User user : manager.getUsers()) {
                 if (user.getLogin().equals(developer.getId())) {
+                    RedmineUserCache.cacheRedmineUser(developer.getId(), user);
                     return true;
                 }
             }
@@ -163,9 +171,14 @@ public class RedmineClient implements CISClient {
     }
 
     private User getUserByDeveloperId(String developerId) {
+        if (RedmineUserCache.isExist(developerId)) {
+            return RedmineUserCache.getUserByDeveloperId(developerId);
+        }
+
         try {
             for (User user : manager.getUsers()) {
                 if (user.getLogin().equals(developerId)) {
+                    RedmineUserCache.cacheRedmineUser(developerId, user);
                     return user;
                 }
             }
@@ -174,6 +187,7 @@ public class RedmineClient implements CISClient {
             throw new CISClientBaseRuntimeException(e);
         }
     }
+
 
     private com.taskadapter.redmineapi.bean.Project createRedmineProject(Project project) {
         com.taskadapter.redmineapi.bean.Project result = new com.taskadapter.redmineapi.bean.Project();
