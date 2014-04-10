@@ -14,12 +14,11 @@ import java.util.List;
 @Ignore
 public class MainTest {
 
-    String url = "http://10.108.1.57:9003";
+    String url = "http://192.168.1.104:9003";
     String username = "admin";
     String password = "admin";
-    String key = "7514e272dc5d4461987762b5ceb4f5d4b2757bb3";
 
-    String leaderName = "leaderXX";
+    String leaderName = "leadjjggerbjbXX";
 
     @Test
     public void testName() throws Exception {
@@ -30,7 +29,7 @@ public class MainTest {
 
         assert client.isExist(createDeveloper(leaderName));
 
-        Project project = getProject("projectXXxxx");
+        Project project = getProject("projecnnjjjgtXXxbbxx");
 
         project.setProjectLead(leaderName);
 
@@ -40,14 +39,14 @@ public class MainTest {
         assert client.isExist(project);
 
         // create some developers
-        for (Developer developer : createDevelopers(new String[]{"qweqweqwe", "qweqwe1", "xxxxxx"})) {
+        for (Developer developer : createDevelopers(new String[]{"qweqbjbwjjnneqwge", "qwebjjjbqwgenn1", "jjxxxbgjnnbxxx"})) {
             client.createUserIfNecessary(null, developer);
             assert client.isExist(developer);
             client.assignUsersToRole(project, null, developer);
             assert client.isMemberOfProject(project, developer.getId(), RedmineClient.DEVELOPER_ROLE);
         }
 
-        Developer otherDeveloper = createDeveloper("nununununiu");
+        Developer otherDeveloper = createDeveloper("nunnjjnjunbbunugniu");
         client.createUserIfNecessary(null, otherDeveloper);
         assert client.isExist(otherDeveloper);
         assert !client.isMemberOfProject(project, otherDeveloper.getId(), RedmineClient.DEVELOPER_ROLE);
