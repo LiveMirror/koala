@@ -74,7 +74,7 @@ public class GitlabClient implements CISClient {
         }
         createProjectInGitLab(project);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new CISClientBaseRuntimeException("gitlab.InterruptedException", e);
         }
