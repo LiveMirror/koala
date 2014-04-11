@@ -79,6 +79,7 @@ public class RedmineClient implements CISClient {
 
         try {
             manager.deleteUser(user.getId());
+            RedmineUserCache.removeUser(developer.getId());
         } catch (RedmineException e) {
             throw new CISClientBaseRuntimeException(e);
         }

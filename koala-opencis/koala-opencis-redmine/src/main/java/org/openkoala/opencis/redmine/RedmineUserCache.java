@@ -27,4 +27,9 @@ public class RedmineUserCache {
     protected static User getUserByDeveloperId(String developerId) {
         return redmineUsers.get(developerId);
     }
+
+
+    protected static void removeUser(String developerId) {
+        redmineUsers.remove(developerId);
+    }
 }
