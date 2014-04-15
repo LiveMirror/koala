@@ -62,12 +62,10 @@ public class RedmineClient implements CISClient {
 
     @Override
     public void createUserIfNecessary(Project project, Developer developer) {
-        if (isExist(developer)) return;
-
         try {
             manager.createUser(createRedmineUser(developer));
         } catch (RedmineException e) {
-            throw new CISClientBaseRuntimeException(e);
+            //失败表示用户已经存在
         }
 
     }

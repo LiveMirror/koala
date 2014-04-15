@@ -19,7 +19,6 @@ public class MainTest {
     String password = "admin";
 
     String leaderName = "leadjjggerbjbXX";
-
     @Test
     public void testName() throws Exception {
         //
@@ -29,7 +28,7 @@ public class MainTest {
 
         assert client.isExist(createDeveloper(leaderName));
 
-        Project project = getProject("projecnnjjjgtXXxbbxx");
+        Project project = getProject("projecn1njjjqgtXXxsbbxx");
 
         project.setProjectLead(leaderName);
 
@@ -39,14 +38,14 @@ public class MainTest {
         assert client.isExist(project);
 
         // create some developers
-        for (Developer developer : createDevelopers(new String[]{"qweqbjbwjjnneqwge", "qwebjjjbqwgenn1", "jjxxxbgjnnbxxx"})) {
+        for (Developer developer : createDevelopers(new String[]{"qweqqbjbwjjnne1qwge", "qwebjjqjbqw1genn1", "qjjxxxbgj1nnbxxx"})) {
             client.createUserIfNecessary(null, developer);
             assert client.isExist(developer);
             client.assignUsersToRole(project, null, developer);
             assert client.isMemberOfProject(project, developer.getId(), RedmineClient.DEVELOPER_ROLE);
         }
 
-        Developer otherDeveloper = createDeveloper("nunnjjnjunbbunugniu");
+        Developer otherDeveloper = createDeveloper("nunnjj1njuqnbbunu1gniu");
         client.createUserIfNecessary(null, otherDeveloper);
         assert client.isExist(otherDeveloper);
         assert !client.isMemberOfProject(project, otherDeveloper.getId(), RedmineClient.DEVELOPER_ROLE);
