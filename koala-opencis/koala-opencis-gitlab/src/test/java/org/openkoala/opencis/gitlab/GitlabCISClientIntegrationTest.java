@@ -24,7 +24,7 @@ import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
 
 
-//@Ignore
+@Ignore
 public class GitlabCISClientIntegrationTest {
 
     private String token;
