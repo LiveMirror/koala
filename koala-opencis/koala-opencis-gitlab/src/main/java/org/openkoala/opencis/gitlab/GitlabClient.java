@@ -46,7 +46,6 @@ public class GitlabClient implements CISClient {
         try {
             usersMap = createGitlabHTTPRequestor().method("GET").to(GitlabUser.URL, List.class);
         } catch (IOException e) {
-
             throw new CISClientBaseRuntimeException("gitlab.getUsers.IOException", e);
         }
         for (LinkedHashMap<String, Object> userMap : usersMap) {
@@ -218,7 +217,7 @@ public class GitlabClient implements CISClient {
         for (Developer developer : developers) {
             Integer userId = getUserIdByDeveloper(developer);
             if (userId == null) {
-                continue;
+                throw new CISClientBaseRuntimeException("gitlab.assignUsersToRole.notFoundTheUser");
             }
             String wsUrl = "/projects/" + getGitlabProjectIdBy(project) + "/members";
             try {
@@ -227,7 +226,7 @@ public class GitlabClient implements CISClient {
                         .with("user_id", userId).with("access_level", DEVELOPER_MODE)
                         .to(wsUrl, GitlabUser.class);
             } catch (IOException e) {
-                throw new CISClientBaseRuntimeException("gitlab.addProjectTeamMember.IOException", e);
+                throw new CISClientBaseRuntimeException("gitlab.assignUsersToRole.IOException", e);
             }
         }
 
