@@ -5,6 +5,7 @@ import org.openkoala.koala.auth.ss3adapter.AuthUserUtil;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
+
 import java.util.List;
 
 /**
@@ -26,6 +27,10 @@ public class AuthorizeRoleTag extends TagSupport {
             return Tag.SKIP_BODY;
         }
 
+        if (permissionController == null) {
+        	permissionController = new PermissionController();
+        }
+        
         if (ifAllRoles != null) {
             return ifAllRoles();
         }
