@@ -33,7 +33,7 @@ public class GitlabCISClientIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-        token = getToken();
+        token = "7tookVRcwFepiNyhvGqE";
         cisClient = new GitlabClient(getConfiguration());
         assert cisClient.authenticate();
     }
@@ -46,36 +46,42 @@ public class GitlabCISClientIntegrationTest {
     }
 
     @Test
-    public void test1() throws Exception {
+    public void tset2(){
+        Developer developer = new Developer();
+        developer.setId("iddd4");
+        Project project = createProject("mggeeent1");
+        cisClient.assignUsersToRole(project, "", developer);
+    }
 
-        for (int i = 20; i > 0; i--) {
-            Project project = createProject("mavenProject" + i);
+    @Test
+    public void test1() throws Exception {
+        for (Developer developer : createDevelops()) {
+            cisClient.createUserIfNecessary(null, developer);
+            assert cisClient.isUserExist(developer);
+        }
+
+        for (int i = 6; i > 0; i--) {
+            Project project = createProject("wwwwww" + i);
 
             cisClient.createProject(project);
             assert cisClient.isProjectExist(project);
 
 
             for (Developer developer : createDevelops()) {
-                cisClient.createUserIfNecessary(project, developer);
-                assert cisClient.isUserExist(developer);
                 cisClient.assignUsersToRole(project, "", developer);
             }
 
 
-            for (Developer developer : createDevelops()) {
-                GitlabClient cisClient1 = new GitlabClient(getConfiguration());
-                cisClient1.removeUser(project, developer);
-            }
 
-           cisClient.removeProject(project);
-           assert !cisClient.isProjectExist(project);
+          // cisClient.removeProject(project);
+          // assert !cisClient.isProjectExist(project);
         }
 
     }
 
     private List<Developer> createDevelops() {
         List<Developer> result = new ArrayList<Developer>();
-        for (String id : Arrays.asList("id4", "id5", "id6")) {
+        for (String id : Arrays.asList("eeeeeee1","eeeee2","eeeee4")) {
             result.add(createDevelop(id));
         }
 
@@ -111,7 +117,7 @@ public class GitlabCISClientIntegrationTest {
         Developer developer = new Developer();
         developer.setId(id);
         developer.setPassword("12345678");
-        developer.setEmail(id + "@123.com");
+        developer.setEmail(id + "359@163.com");
         developer.setName("中文名");
         return developer;
     }
@@ -119,9 +125,8 @@ public class GitlabCISClientIntegrationTest {
 
     private GitlabConfiguration getConfiguration() {
         GitlabConfiguration configuration = new GitlabConfiguration();
-
-        configuration.setToken("s4zLyXpWZCwAq6y5Ejar");
-        configuration.setGitlabHostURL("http://127.0.0.1");
+        configuration.setToken("7tookVRcwFepiNyhvGqE");
+        configuration.setGitlabHostURL("http://192.168.1.104:9002");
         configuration.setUsername("root");
         configuration.setEmail("admin@local.com");
         configuration.setPassword("12345678");
@@ -131,7 +136,7 @@ public class GitlabCISClientIntegrationTest {
 
     public String getToken() {
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost post = new HttpPost("http://127.0.0.1/api/v3/session");
+        HttpPost post = new HttpPost("http://127.0.0.1/org.gitlab.api/v3/session");
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("login", "root"));
         params.add(new BasicNameValuePair("password", "12345678"));

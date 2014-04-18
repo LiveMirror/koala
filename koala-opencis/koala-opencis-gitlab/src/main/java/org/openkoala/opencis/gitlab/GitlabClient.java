@@ -12,7 +12,6 @@ import org.openkoala.opencis.api.Project;
 import org.openkoala.opencis.git.GitClient;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,27 +39,6 @@ public class GitlabClient implements CISClient {
     }
 
 
-    private Set<GitlabUser> getCurrentGitlabUsers() {
-        Set<GitlabUser> currentGitlabUsers = new HashSet<GitlabUser>();
-        List<LinkedHashMap<String, Object>> usersMap = null;
-        try {
-            usersMap = createGitlabHTTPRequestor().method("GET").to(GitlabUser.URL, List.class);
-        } catch (IOException e) {
-            throw new CISClientBaseRuntimeException("gitlab.getUsers.IOException", e);
-        }
-        for (LinkedHashMap<String, Object> userMap : usersMap) {
-            GitlabUser user = new GitlabUser();
-            user.setId((Integer) userMap.get("id"));
-            user.setEmail(String.valueOf(userMap.get("email")));
-            user.setUsername(String.valueOf(userMap.get("username")));
-            user.setName(String.valueOf(userMap.get("name")));
-            user.setState(String.valueOf(userMap.get("state")));
-            currentGitlabUsers.add(user);
-        }
-        return currentGitlabUsers;
-    }
-
-
     @Override
     public void close() {
         // do nothing
@@ -72,51 +50,32 @@ public class GitlabClient implements CISClient {
             return;
         }
         createProjectInGitLab(project);
+
         try {
-            Thread.sleep(1000);
+            Thread.sleep(3000);
+            pushProjectToGitLab(project, config);
+
         } catch (InterruptedException e) {
-            throw new CISClientBaseRuntimeException("gitlab.InterruptedException", e);
+            throw new CISClientBaseRuntimeException(e);
         }
-        pushProjectToGitLab(project, config);
     }
 
-    public GitlabProject getGitlabProjectBy(Project project) {
-        try {
-            for (GitlabProject gitlabProject : gitlab.getAllProjects()) {
-                if (gitlabProject.getName().equals(project.getProjectName())) {
-                    return gitlabProject;
-                }
-            }
-        } catch (IOException e) {
-
-            throw new CISClientBaseRuntimeException("gitClient'method:projectExist IOEXception", e);
-        }
-        return null;
-    }
 
     public boolean isProjectExist(Project project) {
-        return getGitlabProjectBy(project) != null;
+        try {
+            return gitlab.getProject(getProjectFullName(project)) != null;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     @Override
     public void removeProject(Project project) {
-        if (!isProjectExist(project)) {
-            return;
-        }
         try {
-            createGitlabHTTPRequestor().method("DELETE").with("id", getGitlabProjectIdBy(project))
-                    .to("/projects/" + getGitlabProjectIdBy(project), GitlabProject.class);
+            gitlab.deleteProject(getProjectFullName(project));
         } catch (IOException e) {
-
             throw new CISClientBaseRuntimeException("gitlab removeProject failure", e);
         }
-    }
-
-    public Integer getGitlabProjectIdBy(Project project) {
-        if (!isProjectExist(project)) {
-            throw new CISClientBaseRuntimeException("project not found");
-        }
-        return getGitlabProjectBy(project).getId();
     }
 
     /**
@@ -127,12 +86,11 @@ public class GitlabClient implements CISClient {
     private GitlabProject createProjectInGitLab(Project project) {
         GitlabProject gitlabProject = null;
         try {
-            gitlabProject = createGitlabHTTPRequestor().method("POST")
-                    .with("name", project.getProjectName())
-                    .with("description", project.getDescription())
-                    .with("public", true)
-                    .to(GitlabProject.URL, GitlabProject.class);
 
+            gitlabProject = new GitlabProject();
+            gitlabProject.setName(project.getProjectName());
+            gitlabProject.setDescription(project.getDescription());
+            gitlabProject = gitlab.createProject(gitlabProject);
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("gitlab.createProject.IOException", e);
         }
@@ -143,16 +101,19 @@ public class GitlabClient implements CISClient {
     /**
      * 根据用户帐号获取Gitlab用户的id.
      *
-     * @param developer
+     * @param developerId
      * @return
      */
-    public Integer getUserIdByDeveloper(Developer developer) {
-        for (GitlabUser user : getCurrentGitlabUsers()) {
-            if (user.getUsername().equals(developer.getId())) {
-                return user.getId();
-            }
+    public Integer getUserIdByDeveloper(String developerId) {
+
+        try {
+            GitlabUser user = gitlab.getUser(developerId);
+            if (null == user) return null;
+            return user.getId();
+        } catch (IOException e) {
+            return null;
         }
-        return null;
+
     }
 
     /**
@@ -189,10 +150,12 @@ public class GitlabClient implements CISClient {
             return;
         }
         try {
-            createGitlabHTTPRequestor().method("POST")
-                    .with("email", developer.getEmail()).with("username",
-                    developer.getId()).with("name", developer.getName()).with("password", developer.getPassword())
-                    .to(GitlabUser.URL, GitlabUser.class);
+            GitlabUser user = new GitlabUser();
+            user.setUsername(developer.getId());
+            user.setEmail(developer.getEmail());
+            user.setName(developer.getName());
+
+            gitlab.createUser(user, developer.getPassword());
         } catch (IOException e) {
             throw new CISClientBaseRuntimeException("gitlab.createUser.IOException", e);
         }
@@ -200,14 +163,9 @@ public class GitlabClient implements CISClient {
 
     @Override
     public void removeUser(Project project, Developer developer) {
-        if (!isUserExist(developer)) {
-            return;
-        }
         try {
-            createGitlabHTTPRequestor().method("DELETE").with("id", getUserIdByDeveloper(developer))
-                    .to(GitlabUser.URL + "/" + getUserIdByDeveloper(developer), GitlabUser.class);
+            gitlab.deleteUser(developer.getId());
         } catch (IOException e) {
-
             throw new CISClientBaseRuntimeException("gitlab removeUser failure!", e);
         }
     }
@@ -215,22 +173,17 @@ public class GitlabClient implements CISClient {
     @Override
     public void assignUsersToRole(Project project, String role, Developer... developers) {
         for (Developer developer : developers) {
-            Integer userId = getUserIdByDeveloper(developer);
-            if (userId == null) {
-                throw new CISClientBaseRuntimeException("gitlab.assignUsersToRole.notFoundTheUser");
-            }
-            String wsUrl = "/projects/" + getGitlabProjectIdBy(project) + "/members";
+            Integer userId = getUserIdByDeveloper(developer.getId());
+            if (userId == null) throw new CISClientBaseRuntimeException("gitlab.assignUsersToRole.notFoundTheUser");
             try {
-                createGitlabHTTPRequestor().method("POST")
-                        .with("id", getGitlabProjectIdBy(project))
-                        .with("user_id", userId).with("access_level", DEVELOPER_MODE)
-                        .to(wsUrl, GitlabUser.class);
+                gitlab.assignUserAsDeveloperOfProject(developer.getId(), getProjectFullName(project));
             } catch (IOException e) {
                 throw new CISClientBaseRuntimeException("gitlab.assignUsersToRole.IOException", e);
             }
         }
 
     }
+
 
     @Override
     public boolean authenticate() {
@@ -245,18 +198,15 @@ public class GitlabClient implements CISClient {
      * @return
      */
     public boolean isUserExist(Developer developer) {
-        for (GitlabUser user : getCurrentGitlabUsers()) {
-            if (user.getUsername().equals(developer.getId())) {
-                return true;
-            }
+        try {
+            return gitlab.getUser(developer.getId()) != null;
+        } catch (IOException e) {
+            return false;
         }
-        return false;
     }
 
-
-    private GitlabHTTPRequestor createGitlabHTTPRequestor() {
-        GitlabAPI gitlabAPI = GitlabAPI.connect(config.getGitlabHostURL(), config.getToken());
-        return new GitlabHTTPRequestor(gitlabAPI);
+    public String getProjectFullName(Project project) {
+        return config.getUsername() + "/" + project.getProjectName();
     }
 
 

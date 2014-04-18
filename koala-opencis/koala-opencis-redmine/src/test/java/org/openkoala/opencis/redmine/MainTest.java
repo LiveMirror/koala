@@ -1,9 +1,8 @@
 package org.openkoala.opencis.redmine;
 
+import org.openkoala.opencis.api.*;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openkoala.opencis.api.Developer;
-import org.openkoala.opencis.api.Project;
 
 import java.util.ArrayList;
 import java.util.List;

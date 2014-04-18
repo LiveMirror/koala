@@ -205,7 +205,7 @@ public class RedmineManager {
     /**
      * Generic method to search for issues.
      *
-     * @param pParameters the http parameters key/value pairs to append to the rest api request
+     * @param pParameters the http parameters key/value pairs to append to the rest org.gitlab.api request
      * @return empty list if not issues with this summary field exist, never NULL
      * @throws RedmineAuthenticationException invalid or no API access key is used with the server, which
      *                                 requires authorization. Check the constructor arguments.
