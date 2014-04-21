@@ -40,7 +40,6 @@ public class RedmineClient implements CISClient {
     @Override
     public void createProject(Project project) {
         try {
-            if (isExist(project)) return;
             com.taskadapter.redmineapi.bean.Project redmineProject = manager.createProject(createRedmineProject(project));
             manager.addMembership(createRedmineMembership(redmineProject, project.getProjectLead(), PROJECT_MANAGER_ROLE));
         } catch (RedmineException e) {
@@ -51,7 +50,6 @@ public class RedmineClient implements CISClient {
     @Override
     public void removeProject(Project project) {
         try {
-            if (isExist(project)) return;
 
             manager.deleteProject(redmineProjectKeyOf(project));
         } catch (RedmineException e) {
