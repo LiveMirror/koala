@@ -103,7 +103,7 @@ $(function (){
 	                     #foreach( $view in $pageParams.listModel.views)
 	                         #if($view.type.indexOf("oolean") > 0)
 	                         { title: '${view.name}', name: '${view.express}AsString', width: 120, render:function(rowdata, rowindex, value){
-	                             return value == "1" ? "<span style="color:#47a447" class="glyphicon glyphicon-ok"></span>" : "<span style="color:#d2322d" class="glyphicon glyphicon-remove"></span>";
+	                             return value == "1" ? "<span style='color:#47a447' class='glyphicon glyphicon-ok'></span>" : "<span style='color:#d2322d' class='glyphicon glyphicon-remove'></span>";
 	                         }},
 	                         #elseif ($view.viewType=="ReadOnlyView")
 	                         { title: '${view.name}', name: '${view.express}', width: width},
@@ -326,7 +326,7 @@ var openDetailsPage = function(id){
 <div style="width:98%;margin-right:auto; margin-left:auto; padding-top: 15px;">
 <!-- search form -->
 <form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal">
-<input type="hidden" name="page" value="1">
+<input type="hidden" name="page" value="0">
 <input type="hidden" name="pagesize" value="10">
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
