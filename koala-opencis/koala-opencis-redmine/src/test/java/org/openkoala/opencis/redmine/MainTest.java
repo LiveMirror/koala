@@ -18,36 +18,41 @@ public class MainTest {
     String password = "admin";
 
     String leaderName = "leadjjggerbjbXX";
+
     @Test
     public void testName() throws Exception {
-        //
         RedmineClient client = new RedmineClient(url, username, password);
 
-        client.createUserIfNecessary(null, createDeveloper(leaderName));
 
-        assert client.isExist(createDeveloper(leaderName));
+        for (int i = 600; i >= 0; i--) {
 
-        Project project = getProject("projecn1njjjqgtXXxsbbxx");
+            client.createUserIfNecessary(null, createDeveloper(leaderName));
 
-        project.setProjectLead(leaderName);
+            assert client.isExist(createDeveloper(leaderName));
 
-        client.createProject(project);
+            Project project = getProject("xxxxxx" + i);
 
-        assert client.isMemberOfProject(project, leaderName, RedmineClient.PROJECT_MANAGER_ROLE);
-        assert client.isExist(project);
+            project.setProjectLead(leaderName);
 
-        // create some developers
-        for (Developer developer : createDevelopers(new String[]{"qweqqbjbwjjnne1qwge", "qwebjjqjbqw1genn1", "qjjxxxbgj1nnbxxx"})) {
-            client.createUserIfNecessary(null, developer);
-            assert client.isExist(developer);
-            client.assignUsersToRole(project, null, developer);
-            assert client.isMemberOfProject(project, developer.getId(), RedmineClient.DEVELOPER_ROLE);
+            client.createProject(project);
+
+            assert client.isMemberOfProject(project, leaderName, RedmineClient.PROJECT_MANAGER_ROLE);
+            assert client.isExist(project);
+
+            // create some developers
+            for (Developer developer : createDevelopers(new String[]{"qweqqbjbwjjnne1qwge", "qwebjjqjbqw1genn1", "qjjxxxbgj1nnbxxx"})) {
+                client.createUserIfNecessary(null, developer);
+                assert client.isExist(developer);
+                client.assignUsersToRole(project, null, developer);
+                assert client.isMemberOfProject(project, developer.getId(), RedmineClient.DEVELOPER_ROLE);
+            }
+
+            Developer otherDeveloper = createDeveloper("nunnjj1njuqnbbunu1gniu");
+            client.createUserIfNecessary(null, otherDeveloper);
+            assert client.isExist(otherDeveloper);
+            assert !client.isMemberOfProject(project, otherDeveloper.getId(), RedmineClient.DEVELOPER_ROLE);
+            System.out.println(i);
         }
-
-        Developer otherDeveloper = createDeveloper("nunnjj1njuqnbbunu1gniu");
-        client.createUserIfNecessary(null, otherDeveloper);
-        assert client.isExist(otherDeveloper);
-        assert !client.isMemberOfProject(project, otherDeveloper.getId(), RedmineClient.DEVELOPER_ROLE);
 
 
     }
