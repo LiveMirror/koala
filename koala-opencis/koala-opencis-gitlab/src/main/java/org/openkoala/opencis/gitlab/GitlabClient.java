@@ -46,15 +46,13 @@ public class GitlabClient implements CISClient {
 
     @Override
     public void createProject(Project project) {
-        if (isProjectExist(project)) {
-            return;
-        }
+        if (isProjectExist(project)) return;
+
         createProjectInGitLab(project);
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(5000);
             pushProjectToGitLab(project, config);
-
         } catch (InterruptedException e) {
             throw new CISClientBaseRuntimeException(e);
         }

@@ -33,7 +33,7 @@ public class GitlabCISClientIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-        token = "7tookVRcwFepiNyhvGqE";
+        token = "UDkeByJyxiX2eQnmeNxr";
         cisClient = new GitlabClient(getConfiguration());
         assert cisClient.authenticate();
     }
@@ -60,7 +60,7 @@ public class GitlabCISClientIntegrationTest {
             assert cisClient.isUserExist(developer);
         }
 
-        for (int i = 6; i > 0; i--) {
+        for (int i = 60; i > 0; i--) {
             Project project = createProject("wwwwww" + i);
 
             cisClient.createProject(project);
@@ -125,11 +125,11 @@ public class GitlabCISClientIntegrationTest {
 
     private GitlabConfiguration getConfiguration() {
         GitlabConfiguration configuration = new GitlabConfiguration();
-        configuration.setToken("7tookVRcwFepiNyhvGqE");
+        configuration.setToken("UDkeByJyxiX2eQnmeNxr");
         configuration.setGitlabHostURL("http://192.168.1.104:9002");
         configuration.setUsername("root");
         configuration.setEmail("admin@local.com");
-        configuration.setPassword("12345678");
+        configuration.setPassword("123123123");
         return configuration;
     }
 
