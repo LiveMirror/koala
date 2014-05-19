@@ -89,22 +89,22 @@
     	department().getTree();
         $('#employeeListBtn').on('click', function(){
             department().showEmployeeList($('.right-content').find('[data-role="id"]').val(), $('#department-employee-list'));
-        })
+        });
        $('#addDepartment').on('click', function(){
            department().addDepartment($('.right-content').find('[data-role="id"]').val(),
                    $('.right-content').find('[data-role="organizationType"]').val());
-        })
+        });
         $('#addCompany').on('click', function(){
             department().addCompany($('.right-content').find('[data-role="id"]').val());
-        })
+        });
         $('#updateDepartment').on('click', function(){
             var id = $('.right-content').find('[data-role="id"]').val();
             department().updateDepartment(id, $('#departmentTree').find('#'+id))
-        })
+        });
         $('#updateCompany').on('click', function(){
             var id = $('.right-content').find('[data-role="id"]').val();
             department().updateCompany(id, $('#departmentTree').find('#'+id))
-        })
+        });
        $('#delete').on('click', function(event, data){
             $(this).confirm({
                 content: '确定要撤销该机构吗?',
