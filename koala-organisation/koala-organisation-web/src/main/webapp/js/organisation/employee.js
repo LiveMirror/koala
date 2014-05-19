@@ -23,6 +23,7 @@ var employee = function(){
 	var version = null; 
 	var operateType = null;//操作类型
 	var departmentTree = null;
+	$.ajaxSetup({cache:false});
 	/*
 	 *新增 
 	 */
