@@ -8,6 +8,8 @@ var department = function(){
 	/*
 	 *新增部门
 	 */
+	$.ajaxSetup({cache:false});
+	
 	var addDepartment = function(id, organizationType, $element){
 		$.get(contextPath + '/pages/organisation/departmentTemplate.jsp').done(function(data){
 			init(data,  id , 'addDepartment', organizationType, $element);
