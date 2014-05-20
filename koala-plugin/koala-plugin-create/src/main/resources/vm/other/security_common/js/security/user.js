@@ -44,7 +44,7 @@ var userManager = function() {
 			if (data.result == 'success') {
 				dataGrid.message({
 					type : 'success',
-					content : '重置密码成功'
+					content : '重置密码成功，初始密码为888888！'
 				});
 			} else {
 				dataGrid.message({
