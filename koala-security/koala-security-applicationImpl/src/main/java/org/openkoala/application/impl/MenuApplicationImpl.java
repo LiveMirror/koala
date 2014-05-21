@@ -3,6 +3,7 @@ package org.openkoala.application.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -148,7 +149,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 		parent.assignChild(child);
 	}
 
-	/**
+	/**TODO 待优化
 	 * 获取一个用户的目录
 	 * 
 	 * @param userAccount
@@ -201,7 +202,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 		if (!all.isEmpty()) {
 			LinkedHashMap<Long, ResourceVO> map = new LinkedHashMap<Long, ResourceVO>();
 			for (ResourceVO resourceVO : all) {
-				if (!StringUtils.isBlank(userAccount) && !userResourceIds.contains(resourceVO.getId())) {
+				if (userHasResource(userAccount,userResourceIds,resourceVO)) {
 					continue;
 				}
 				map.put(resourceVO.getId(), resourceVO);
@@ -214,11 +215,14 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 				map.get(pid).getChildren().add(resourceVO);
 			}
 		}
-		for (int i = 0; i < result.size(); i++) {
-			if (!StringUtils.isBlank(userAccount) && !userResourceIds.contains(result.get(i).getId())) {
-				result.remove(i);
+	
+		//如果用户资源集合中不包含就删除资源。
+		for (Iterator<ResourceVO> resources = result.iterator(); resources.hasNext();) {
+			if (userHasResource(userAccount, userResourceIds,resources.next())) {
+				resources.remove();
 			}
 		}
+		
 		return result;
 	}
 
@@ -445,5 +449,18 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 			}
 		}
 		return treeVOs;
+	}
+	
+	/**
+	 * 判断某个账户的资源集合是否包含某个资源
+	 * 
+	 * @param userAccount 账户
+	 * @param userResourceIds 用户的资源
+	 * @param resourceVO
+	 * @return
+	 */
+	private boolean userHasResource(String userAccount,
+			List<Long> userResourceIds, ResourceVO resourceVO) {
+		return !StringUtils.isBlank(userAccount)&& !userResourceIds.contains(resourceVO.getId());
 	}
 }
