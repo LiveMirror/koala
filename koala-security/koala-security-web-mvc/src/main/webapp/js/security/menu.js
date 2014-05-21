@@ -19,11 +19,13 @@ var menuManager = function(){
 		dataGrid = grid;
 		opreate = 'add';
 		$.get(contextPath + '/pages/auth/menu-template.jsp').done(function(data){
-			init(data);
 			if(item){
+				init(data);
 				parentId = item.id;
 				parentLevel = item.level;
 				parentName.val(item.name);
+			} else{
+				init(data,null,opreate);
 			}
 		});
 	};
@@ -67,8 +69,9 @@ var menuManager = function(){
 	/**
 	 * 初始化
 	 */
-	var init = function(data, item){
+	var init = function(data, item ,opreate){
 		dialog = $(data);
+		opreate ? dialog.addClass(opreate) : "";
 		dialog.find('.modal-header').find('.modal-title').html(item ? '修改菜单信息':'添加菜单');
 		parentName = dialog.find('#parentName');
 		name = dialog.find('#name');
@@ -228,7 +231,7 @@ var menuManager = function(){
 		if(indexs.length == 0){
 	        grid.message({
 	            type: 'warning',
-	             content: '请选择要操作的记录'
+	            content: '请选择要操作的记录'
 	        });
 	        return;
 	    }
@@ -243,6 +246,11 @@ var menuManager = function(){
 		var selectItem = dataGrid.getItemByIndex(indexs[0]);
         if(dataGrid.up(indexs[0])){
 		    changePosition(selectItem,grid, dataGrid.getAllItems());
+        } else {
+        	grid.message({
+                type: 'warning',
+                content: '已经是最顶'
+            });
         }
 	};
 
@@ -270,20 +278,27 @@ var menuManager = function(){
 		var selectItem = dataGrid.getItemByIndex(indexs[0]);
 		if(dataGrid.down(indexs[0])){
 		    changePosition(selectItem,grid, dataGrid.getAllItems());
+        } else {
+        	grid.message({
+                type: 'warning',
+                content: '已经是最后'
+            });
         }
 	};
+	
 	var changePosition = function(selectItem ,grid, items){
 		var data = {};
 		var index = 0;
-		for(var i=0,j=items.length; i<j; i++){
-			var item = items[i];
-			if(item.parentId == selectItem.parentId){
-				data['resourceVOs['+index+'].id'] = item.id;
-				data['resourceVOs['+index+'].parentId'] = item.parentId;
+		
+		$.each(items,function(i,it){			
+			if(it.parentId == selectItem.parentId){
+				data['resourceVOs['+index+'].id'] = it.id;
+				data['resourceVOs['+index+'].parentId'] = it.parentId;
 				data['resourceVOs['+index+'].sortOrder'] = index;
 				index = index+1;
 			}
-		}
+		});
+				
 		$.post(contextPath + '/auth/Menu/updateMenuOrder.koala', data).done(function(result){
 			if(data.actionError){
 				grid.message({
@@ -300,6 +315,7 @@ var menuManager = function(){
 
 		});
 	};
+	
 	return {
 		add: add,
 		modify: modify,
