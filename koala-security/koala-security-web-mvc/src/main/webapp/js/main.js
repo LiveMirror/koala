@@ -104,12 +104,12 @@ var openTab = function(target, title, mark, id, param){
         if($this.hasClass('active')){
             return;
         }
-        $this.find('a:first').tab('show')
+        $this.find('a:first').tab('show');
    		clearMenuEffect();
    		var $li = $('.g-sidec').find('li[data-mark="'+mark+'"]').addClass('active');
         if($li.parent().hasClass('collapse')){
         	var a = $li.parent().prev('a');
-            a.hasClass('collapsed') &&　a.click();
+            a.hasClass('collapsed') && a.click();
         }
     }).find('a:first')
         .tab('show')
