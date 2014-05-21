@@ -24,7 +24,7 @@ var menuManager = function(){
 				parentId = item.id;
 				parentLevel = item.level;
 				parentName.val(item.name);
-			} else{
+			}else{
 				init(data,null,opreate);
 			}
 		});
@@ -69,9 +69,11 @@ var menuManager = function(){
 	/**
 	 * 初始化
 	 */
-	var init = function(data, item ,opreate){
+	var init = function(data, item, opreate){
 		dialog = $(data);
-		opreate ? dialog.addClass(opreate) : "";
+		
+		opreate ? dialog.addClass(opreate) : null;
+		
 		dialog.find('.modal-header').find('.modal-title').html(item ? '修改菜单信息':'添加菜单');
 		parentName = dialog.find('#parentName');
 		name = dialog.find('#name');

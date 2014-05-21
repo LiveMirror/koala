@@ -17,11 +17,13 @@ var resourceManager = function(){
 		dataGrid = grid;
 		opreate = 'add';
 		$.get(contextPath + '/pages/auth/resource-template.jsp').done(function(data){
-			init(data);
 			if(item){
+				init(data);
 				parentId = item.id;
 				parentLevel = item.level;
 				parentName.val(item.name);
+			}else{
+				init(data,null,opreate);
 			}
 		});
 	};
@@ -66,8 +68,11 @@ var resourceManager = function(){
 	/**
 	 * 初始化
 	 */
-	var init = function(data, item){
+	var init = function(data, item, opreate){
 		dialog = $(data);
+		
+		opreate ? dialog.addClass(opreate) : null;
+		
 		dialog.find('.modal-header').find('.modal-title').html(item ? '修改资源信息':'添加资源');
 		parentName = dialog.find('#parentName');
 		name = dialog.find('#name');

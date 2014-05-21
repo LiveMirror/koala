@@ -5,8 +5,12 @@
         .menu .form-control {
             width: 95%;
         }
+<<<<<<< HEAD
         
         .add .form-group{
+=======
+        .add .parentName  {
+>>>>>>> 390882eddaf269f1a9c825e600d05e4399c51e60
         	display:none;
         }
     </style>
@@ -19,7 +23,7 @@
             <div class="modal-body" style="padding-left:45px; padding-right:65px; height: 350px;">
                 <form class="form-horizontal" role="form">
                 	<k:token/>
-                    <div class="form-group">
+                    <div class="form-group parentName">
                         <label class="col-lg-3 control-label">父菜单名称:</label>
                         <div class="col-lg-9">
                             <input type="text" class="form-control" id="parentName" disabled>
