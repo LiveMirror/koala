@@ -5,6 +5,10 @@
         .menu .form-control {
             width: 95%;
         }
+        
+        .add .form-group{
+        	display:none;
+        }
     </style>
     <div class="modal-dialog">
         <div class="modal-content">

@@ -120,6 +120,7 @@
 				self.render();
 			} else {
 				$.ajax({
+					cache: false,
 					type : "POST",
 					url : options.ajaxUrl,
 					dataType : "text",

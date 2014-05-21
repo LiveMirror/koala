@@ -31,5 +31,4 @@ public class BaseController {
         //注册一个Date 类型的绑定器 。
         binder.setAutoGrowCollectionLimit(Integer.MAX_VALUE);
     }
-
 }

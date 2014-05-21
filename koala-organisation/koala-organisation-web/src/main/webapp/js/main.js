@@ -18,7 +18,7 @@ $(function(){
             'hidden.bs.collapse': function(e){
                 $this.find('i:last').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-right');
             }
-        })
+        });
     });
 	/*
 	 *菜单点击事件
@@ -37,14 +37,14 @@ $(function(){
 		if(target && title && mark ){
 			openTab(target, title, mark);
 		}
-	})
+	});
 
 	/*
 	 点击主页tab事件
 	 */
 	$('a[href="#home"]').on('click', function(){
 		clearMenuEffect();
-		$('.g-sidec').find('li[data-mark="home"]').click()
+		$('.g-sidec').find('li[data-mark="home"]').click();
 	});
 	/*
 	 修改密码
@@ -80,7 +80,7 @@ $(function(){
 /*
  *打开一个Tab
  */
-var openTab = function(target, title, mark, id, param){
+var openTab = function(target, title, mark, id, param,index){
     var mainc =   $('.g-mainc');
     var tabs = mainc.find('#navTabs');
     var contents =  mainc.find('#tabContent');
@@ -104,13 +104,13 @@ var openTab = function(target, title, mark, id, param){
         if($this.hasClass('active')){
             return;
         }
-        $this.find('a:first').tab('show')
+        $this.find('a:first').tab('show');
    		clearMenuEffect();
    		var $li = $('.g-sidec').find('li[data-mark="'+mark+'"]').addClass('active');
         if($li.parent().hasClass('collapse')){
         	var a = $li.parent().prev('a');
-            a.hasClass('collapsed') &&　a.click();
-        }
+            a.hasClass('collapsed') && a.click();
+        };
     }).find('a:first')
         .tab('show')
         .find('.close');
