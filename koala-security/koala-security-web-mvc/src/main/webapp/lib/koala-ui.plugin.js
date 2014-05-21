@@ -47,6 +47,7 @@
 		pageNo : 0,
 		showPage : 4
 	};
+	
 	Grid.prototype = {
 		Constructor : Grid,
 		_initLayout : function() {
@@ -165,7 +166,6 @@
 								checked : true,
 								item : self.items[$(this).attr('indexValue')]
 							});
-							;
 						}
 					});
 				}
@@ -920,7 +920,7 @@
 				'position' : 'fixed',
 				'left' : left + 'px',
 				'top' : top + 'px'
-			})
+			});
 		});
 		setTimeout(function() {
   			self.$element.fadeOut(1000, function() {
@@ -1095,7 +1095,7 @@
 		return this.each(function() {
 			var $this = $(this);
 			var data = $this.data('koala.modifyPassowrd');
-			var options = $.extend({}, ModifyPassword.DEFAULTS, $this.data(), typeof option == 'object' && option)
+			var options = $.extend({}, ModifyPassword.DEFAULTS, $this.data(), typeof option == 'object' && option);
 			$this.data('koala.modifyPassowrd', ( data = new ModifyPassword(this, options)));
 		});
 	};
@@ -1163,7 +1163,7 @@
 			return self.$element;
 		},
 		clickItem : function($item) {
-			this.$element.removeClass('open')
+			this.$element.removeClass('open');
 			this.$button.removeClass('active');
 			var value = $item.data('value');
 			if (this.$value.val() == value) {
@@ -1291,7 +1291,8 @@
 
 /*
  * 加载
- */ + function($) {"use strict";
+ */ 
++ function($) {"use strict";
 
 	var Loader = function(element, options) {
 		this.$element = $(element);
@@ -1324,12 +1325,12 @@
 			top : (self.$element.outerHeight() - self.progress.height()) / 2
 		});
 		self.show();
-	}
+	};
 
 	Loader.prototype.show = function() {
 		var self = this;
 		self.$element.append(self.backdrop).append(self.progress);
-	}
+	};
 
 	Loader.prototype.hide = function() {
 		var self = this;
@@ -1337,8 +1338,9 @@
 		self.backdrop.remove();
 		self.progress.remove();
 		self.$element.data('koala.loader', null);
-	}
+	};
 	var old = $.fn.loader;
+	
 	$.fn.loader = function(option) {
 		return this.each(function() {
 			var $this = $(this);
@@ -1352,10 +1354,12 @@
 			}
 		});
 	};
+	
 	$.fn.loader.Constructor = Loader;
+	
 	$.fn.loader.noConflict = function() {
 		$.fn.loader = old;
 		return this;
 	};
-}(window.jQuery)
+}(window.jQuery);
 

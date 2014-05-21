@@ -4,39 +4,34 @@
 <script type="text/javascript" src="<c:url value='/js/security/menu.js' />"></script>
 <script>
 	$(function(){
-		var columns = [ 
-					{
-						title : "菜单名称",
-						name : "name",
-						width : 150
-					},
-					{
-						title : "菜单标识",
-						name : "identifier",
-						width : 450
-					},
-					{
-						title : "菜单类型",
-						name : "menuType",
-						width : 150,
-						render: function(item, name, index){
-							return item[name] == '2' ? '目录':'菜单';
-						}
-					},
-					{
-						title : "菜单图片",
-						name : "icon",
-						width : 150,
-						render: function(item, name, index){
-							return '<span class="'+item[name]+'"></span>'
-						}
-					},
-					{
-						title : "菜单描述",
-						name : "desc",
-						width : 150
-					}
-				];
+		var columns = [{
+				title : "菜单名称",
+				name : "name",
+				width : 150
+			},{
+				title : "菜单标识",
+				name : "identifier",
+				width : 450
+			},{
+				title : "菜单类型",
+				name : "menuType",
+				width : 150,
+				render: function(item, name, index){
+					return item[name] == '2' ? '目录':'菜单';
+				}
+			},{
+				title : "菜单图片",
+				name : "icon",
+				width : 150,
+				render: function(item, name, index){
+					return '<span class="'+item[name]+'"></span>'
+				}
+			},{
+				title : "菜单描述",
+				name : "desc",
+				width : 150
+			}];
+		
 		var buttons = [
 			{content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>', action: 'add'},
 			{content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>', action: 'modify'},
