@@ -248,6 +248,11 @@ var menuManager = function(){
 		var selectItem = dataGrid.getItemByIndex(indexs[0]);
         if(dataGrid.up(indexs[0])){
 		    changePosition(selectItem,grid, dataGrid.getAllItems());
+        } else {
+       	 	grid.message({
+	            type: 'warning',
+	            content: '已经最顶'
+	        });
         }
 	};
 
@@ -275,6 +280,11 @@ var menuManager = function(){
 		var selectItem = dataGrid.getItemByIndex(indexs[0]);
 		if(dataGrid.down(indexs[0])){
 		    changePosition(selectItem,grid, dataGrid.getAllItems());
+        } else {
+        	 grid.message({
+ 	            type: 'warning',
+ 	            content: '已经最底'
+ 	        });
         }
 	};
 	var changePosition = function(selectItem ,grid, items){
