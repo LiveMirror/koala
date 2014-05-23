@@ -808,24 +808,26 @@
 			var nextRow = currentRow.next('tr');
 			var nextItem = self.items[parseInt(index) + 1];
 			var currentItem = self.items[index];
+			
 			if (self.options.tree && self.options.tree.column) {
 				if (parseInt(currentItem.level) > parseInt(nextItem.level)) {
 					return false;
 				} else {
 					var tempItem = currentRow.nextAll('[data-level=' + currentItem.level + ']:first');
 					if (tempItem.length > 0) {
-						var tempIndex = tempItem.index();
 						var upLevel = currentRow.nextAll('[data-level=' + parseInt(currentItem.level - 1) + ']:first');
-						if (upLevel.length > 0) {
-							if (tempIndex > upLevel.index()) {
-								return false;
-							}
+						if (upLevel.length > 0 && tempItem.index() > upLevel.index()) {
+							/*已经移到最后*/
+							return false;
 						}
 						nextRow = tempItem;
 						var childrenCount = parseInt(tempItem.attr('data-children'));
 						for (var i = 0; i < childrenCount; i++) {
 							nextRow = nextRow.next();
 						}
+					} else {
+						/*已经移到最后*/
+						return false;
 					}
 				}
 			}
