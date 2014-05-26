@@ -1166,9 +1166,6 @@
 			this.$element.removeClass('open')
 			this.$button.removeClass('active');
 			var value = $item.data('value');
-			if (this.$value.val() == value) {
-				return this.$element;
-			}
 			this.$item.html($item.find('a:first').html());
 			this.$value.val(value);
 			this.$element.trigger('change').popover('destroy').parent().removeClass('has-error');
