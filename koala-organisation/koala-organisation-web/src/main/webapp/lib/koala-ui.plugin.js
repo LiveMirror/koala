@@ -47,6 +47,7 @@
 		pageNo : 0,
 		showPage : 4
 	};
+	
 	Grid.prototype = {
 		Constructor : Grid,
 		_initLayout : function() {
@@ -281,6 +282,7 @@
 					return;
 				}
 				var value = self.searchContainer.find('input[data-role="searchValue"]').val().replace(/(^\s*)|(\s*$)/g, "");
+				
 				self.searchCondition[condition] = value;
 				self.pageNo = Grid.DEFAULTS.pageNo;
 				self._loadData();
@@ -298,6 +300,7 @@
 			for (var prop in self.searchCondition) {
 				params[prop] = self.searchCondition[prop];
 			}
+			
 			if (self.sortName && self.sortOrder) {
 				params.sortname = self.sortName;
 				params.sortorder = self.sortOrder;
@@ -370,6 +373,37 @@
 				self.gridTableBody.loader('hide');
 				return;
 			});
+		},
+		update : function(result){
+			var self = this;
+			if (!result.data) {
+				self.$element.message({
+					type : 'error',
+					content : '查询失败'
+				});
+				self.$element.trigger('complate');
+				self.gridTableBody.loader('hide');
+				return;
+			}
+			self.startRecord.text(result.start + 1);
+			self.endRecord.text(result.start + result.pageSize);
+			self.totalRecordHtml.text(result.resultCount);
+			//self._initPageNo(result.Total)
+			self.items = result.data;
+			self.totalRecord = result.resultCount;
+			if (result.data.length == 0) {
+				self.pages.hide();
+				self.gridTableBodyTable.empty();
+				self.gridTableBody.find('[data-role="noData"]').remove();
+				self.gridTableBody.append($('<div data-role="noData" style="font-size:16px ; padding: 20px; width:' + self.gridTableBodyTable.width() + 'px;">' + self.options.noDataText + '</div>'));
+				self.gridTableBody.loader('hide');
+				self.$element.trigger('complate');
+			} else {
+				self.pages.show();
+				self.gridTableBody.find('[data-role="noData"]').remove();
+				self.renderDatas();
+			}
+			self.$element.trigger('complateRenderData', result);
 		},
 		/**
 		 * 根据开始结束记录数从本地数据获取数据
@@ -868,6 +902,9 @@
 			}
 		});
 	};
+	
+	
+	
 	$.fn.grid.Constructor = Grid;
 	$.fn.grid.noConflict = function() {
 		$.fn.grid = old;
