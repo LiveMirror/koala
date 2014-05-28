@@ -1222,11 +1222,12 @@
 	$.fn.select = function(option) {
 		return this.each(function() {
 			var $this = $(this);
-			var data = $this.data('koala.select');
+			//var data = $this.data('koala.select');
+			var data;
 			var options = $.extend({}, Select.DEFAULTS, $this.data(), typeof option == 'object' && option);
-			if (!data) {
+			//if (!data) {
 				$this.data('koala.select', ( data = new Select(this, options)));
-			}
+			//}
 			if ( typeof option == 'string') {
 				data[option]();
 			}
