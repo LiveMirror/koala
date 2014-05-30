@@ -200,7 +200,6 @@ var changePost = function(){
 	 * 加载岗位列表
 	 */
 	var loadPostList = function(id, hostOrgId){
-		
 		var cols = [
 			{ title:'岗位编号', name:'sn' , width: '150px'},
 			{ title:'岗位名称', name:'name', width: '180px'},
@@ -224,8 +223,7 @@ var changePost = function(){
 			identity: 'id',
 			isShowIndexCol: false,
 			columns: cols,
-			querys: [{title: '岗位名称', value: 'name'}],
-			url:  contextPath + '/post/paging-query-post-by-org.koala?organizationId='+id
+			querys: [{title: '岗位名称', value: 'name'}]
 		}).on({
 			'addPost':function(evnet, data){
 				var post = selectedPost.find('[data-value="'+data.postId+'"]');
@@ -281,6 +279,42 @@ var changePost = function(){
 				}
 			}
 		});
+		var grid = postGrid.data("koala.grid");
+		$.post(contextPath + '/post/paging-query-post-by-org.koala?organizationId='+id,{pagesize:10,page:0},function(result){
+			console.log(JSON.stringify(result));
+			var existIds = [];
+			$("#selectedPost .selected-post").each(function(i,t){
+				existIds.push($(t).attr("data-value"));
+			});
+			
+			var data = [];
+			
+			$.each(result.data,function(i,d){
+				var exist = false;
+				$.each(existIds,function(j,t){
+					if(d.id == t){
+						exist = true;
+						return false;
+					}
+				});
+				
+				if(!exist){
+					data.push(d);
+				}
+			});
+			
+			result = {
+				"pageSize"	:result.pageSize,
+				"start"		:result.start,
+				"data"		:data,
+				"resultCount":data.length,
+				"pageIndex"	:result.pageCount,
+				"pageCount"	:result.pageCount
+			};
+			
+			grid.update(result);
+		},"json");
+		
 		if (!!window.ActiveXObject || "ActiveXObject" in window) {
 			postGrid.find('.grid-table-body').css({height: '208px'});
 		}
