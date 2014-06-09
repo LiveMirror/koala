@@ -107,16 +107,9 @@
 		            })
 		             return;
 	            }
-	            if(indexs.length > 1){
-	                $this.message({
-	                    type: 'warning',
-	                    content: '只能选择一条记录进行删除'
-	                })
-	                return;
-	            }
 	            $this.confirm({
 	                content: '确定要删除所选记录吗?',
-	                callBack: function(){menuManager().deleteItem(data.item[0], $this);}
+	                callBack: function(){menuManager().deleteItem(data.item, $this);}
 	            });
         	},
         	'moveUp': function(){

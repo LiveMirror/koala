@@ -68,10 +68,12 @@ public class ResourceController extends BaseController{
 	@ResponseBody
 	@RequestMapping("/del")
 	public Map<String, Object> del(ParamsPojo params) {
-		ResourceVO resourceVO = params.getResourceVO();
+		List<ResourceVO> resourceVOs = params.getResourceVOs();
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		resourceApplication.removeResource(resourceVO.getId());
-		CacheUtil.refreshUrlAttributes(resourceVO.getIdentifier());
+		for (ResourceVO resourceVO : resourceVOs) {
+			resourceApplication.removeResource(resourceVO.getId());
+			CacheUtil.refreshUrlAttributes(resourceVO.getIdentifier());
+		}
 		dataMap.put("result", "success");
 		return dataMap;
 	}
