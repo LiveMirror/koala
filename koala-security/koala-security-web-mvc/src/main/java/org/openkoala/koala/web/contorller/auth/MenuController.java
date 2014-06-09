@@ -116,9 +116,11 @@ public class MenuController extends BaseController{
 	@ResponseBody
 	@RequestMapping("/del")
 	public Map<String, Object> del(ParamsPojo menuPojo) {
-		ResourceVO resVO = menuPojo.getResVO();
+		List<ResourceVO> resourceVOs = menuPojo.getMenus();
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		menuApplication.removeMenu(Long.valueOf(resVO.getId()));
+		for (ResourceVO resourceVO : resourceVOs) {
+			menuApplication.removeMenu(resourceVO.getId());
+		}
 		dataMap.put("result", "success");
 		return dataMap;
 	}
