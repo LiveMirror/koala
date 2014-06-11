@@ -32,12 +32,11 @@ public class MenuResource extends SecurityResource {
 	@OneToMany(mappedBy = "parent")
 	private Set<MenuResource> children = new HashSet<MenuResource>();
 
-	public MenuResource() {
+	MenuResource() {
 	}
 
-	public MenuResource(String name, boolean isValid, String description, String icon,String url) {
-		super(name, isValid, description,url);
-		this.icon = icon;
+	public MenuResource(String name, boolean isValid) {
+		super(name, isValid);
 	}
 
 	public String getIcon() {

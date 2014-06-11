@@ -6,9 +6,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
+import static org.dayatang.utils.Assert.isBlank;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
@@ -28,10 +27,9 @@ public class User extends Actor {
 	@Column(name = "EMAIL")
 	private String email;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "USER_STATUS")
-	private UserStatus userStatus;
-	
+	@Column(name = "ENABLED")
+	private boolean enabled;
+
 	@Column(name = "LAST_LOGIN_TIME")
 	private Date lastLoginTime;
 
@@ -44,6 +42,14 @@ public class User extends Actor {
 	User() {
 	}
 
+	public void disabled() {
+		enabled = false;
+	}
+
+	public void enabled() {
+		enabled = true;
+	}
+
 	public User(String userAccount, String password, String email, String telePhone) {
 		isBlanked(userAccount, password, email, telePhone);
 		this.userAccount = userAccount;
@@ -53,71 +59,10 @@ public class User extends Actor {
 	}
 
 	private void isBlanked(String userAccount, String password, String email, String telePhone) {
-		// isBlank(password, "密码不能为空");
-		// isBlank(email, "邮箱不能为空");
-		// isBlank(telePhone, "联系电话不能为空");
-		// isBlank(userAccount, "账户不能为空");
-	}
-
-	public Date getLastLoginTime() {
-		return lastLoginTime;
-	}
-
-	public void setLastLoginTime(Date lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
-	}
-
-	public String getUserAccount() {
-		return userAccount;
-	}
-
-	public void setUserAccount(String userAccount) {
-		this.userAccount = userAccount;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public UserStatus getUserStatus() {
-		return userStatus;
-	}
-
-	public void setUserStatus(UserStatus userStatus) {
-		this.userStatus = userStatus;
-	}
-
-	public boolean isSuper() {
-		return isSuper;
-	}
-
-	public void setSuper(boolean isSuper) {
-		this.isSuper = isSuper;
-	}
-
-	@Override
-	public String[] businessKeys() {
-		return new String[] { "userAccount" };
-	}
-
-	public String getTelePhone() {
-		return telePhone;
-	}
-
-	public void setTelePhone(String telePhone) {
-		this.telePhone = telePhone;
+//		 isBlank(password, "密码不能为空");
+//		 isBlank(email, "邮箱不能为空");
+//		 isBlank(telePhone, "联系电话不能为空");
+//		 isBlank(userAccount, "账户不能为空");
 	}
 
 	/**
@@ -178,13 +123,12 @@ public class User extends Actor {
 		isBlanked(this.getUserAccount(), this.getName(), this.getEmail(), this.getTelePhone());
 
 		User user = User.get(User.class, this.getId());
-	
+
 		user.setName(this.getName());
 		user.setDescription(this.getDescription());
 		user.setUserAccount(this.getUserAccount());
 		user.setEmail(this.getEmail());
 		user.setTelePhone(this.getTelePhone());
-		user.setUserStatus(this.userStatus);
 	}
 
 	public boolean updatePassword(String oldUserPassword) {
@@ -199,6 +143,63 @@ public class User extends Actor {
 	public void resetPassword() {
 		User user = User.get(User.class, this.getId());
 		user.setPassword(this.getPassword());
+	}
+	
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
+	public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public boolean isSuper() {
+		return isSuper;
+	}
+
+	public void setSuper(boolean isSuper) {
+		this.isSuper = isSuper;
+	}
+
+	@Override
+	public String[] businessKeys() {
+		return new String[] { "userAccount" };
+	}
+
+	public String getTelePhone() {
+		return telePhone;
+	}
+
+	public void setTelePhone(String telePhone) {
+		this.telePhone = telePhone;
 	}
 
 }

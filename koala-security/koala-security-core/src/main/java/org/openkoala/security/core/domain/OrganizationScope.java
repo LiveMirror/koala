@@ -22,7 +22,7 @@ public class OrganizationScope extends Scope {
 	private static final long serialVersionUID = 4668728765272500424L;
 
 	@ManyToOne
-	@JoinTable(name = "KS_ORGANIZATION_SCOPE__RELATION", //
+	@JoinTable(name = "KS_OS__RELATION", //
 	joinColumns = @JoinColumn(name = "PARENT_ID"), //
 	inverseJoinColumns = @JoinColumn(name = "CHILD_ID"))
 	private OrganizationScope parent;

@@ -8,16 +8,12 @@ public class RoleDTO {
 
 	private String description;
 
-	private boolean isMaster;
-
-	public RoleDTO() {
+	RoleDTO() {
 	}
 
-	public RoleDTO(Long roleId, String roleName, String description, boolean isMaster) {
+	public RoleDTO(Long roleId, String roleName) {
 		this.roleId = roleId;
 		this.roleName = roleName;
-		this.description = description;
-		this.isMaster = isMaster;
 	}
 
 	public String getRoleName() {
@@ -42,13 +38,5 @@ public class RoleDTO {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public boolean isMaster() {
-		return isMaster;
-	}
-
-	public void setMaster(boolean isMaster) {
-		this.isMaster = isMaster;
 	}
 }

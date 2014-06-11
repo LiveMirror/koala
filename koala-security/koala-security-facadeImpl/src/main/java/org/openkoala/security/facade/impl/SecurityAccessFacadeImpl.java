@@ -1,8 +1,8 @@
 package org.openkoala.security.facade.impl;
 
 import static org.openkoala.security.facade.util.GenerateDTOUtils.*;
+import static org.openkoala.security.facade.util.TransFromDomainUtils.*;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,19 +18,16 @@ import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.security.application.SecurityAccessApplication;
+import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.User;
-import org.openkoala.security.core.domain.UserStatus;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
-
-import static org.openkoala.security.facade.util.TransFromDomainUtils.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,7 +108,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public Page<UserDTO> pagingQueryUsers(int currentPage, int pageSize, UserDTO userDTO) {
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
-		StringBuilder jpql = new StringBuilder("FROM User _user WHERE _user.userStatus=:userStatus");
+		StringBuilder jpql = new StringBuilder("FROM User _user WHERE _user.enabled = true");
 
 		assembleJpqlAndConditionValues(userDTO, jpql, "_user", conditionVals);
 
@@ -126,8 +123,6 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	private void assembleJpqlAndConditionValues(UserDTO userDTO, StringBuilder jpql, String conditionPrefix,
 			Map<String, Object> conditionVals) {
-
-		conditionVals.put("userStatus", UserStatus.ACTIVATE);
 
 		String andCondition = " AND " + conditionPrefix;
 		if (!StringUtils.isBlank(userDTO.getName())) {
@@ -225,11 +220,21 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	@Override
 	public List<MenuResourceDTO> findMenuResourceDTOByUserAccountInRoleDTO(String userAccount, RoleDTO roleDTO) {
-		securityAccessApplication.checkAuthorization(userAccount,transFromRoleBy(roleDTO));
-		
-		
-		
-		
+		Role role = transFromRoleBy(roleDTO);
+		securityAccessApplication.checkAuthorization(userAccount, role);
+
+		Set<Authority> authorities = new HashSet<Authority>();
+		authorities.add(role);
+		authorities.addAll(role.getPermissions());
+
+		StringBuilder jpql = new StringBuilder(
+				"SELECT _authority.securityResources FROM  Authority _authority JOIN _authority.securityResources. _securityResources");
+		jpql.append("WHEY TYPE(_securityResources) = MenuResouce");
+
+		List<MenuResource> menuResources = getQueryChannelService().createJpqlQuery(jpql.toString()).list();
+
+		LOGGER.info("findMenuResourceDTOByUserAccountInRoleDTO:{}", new Object[] { menuResources });
 		return null;
 	}
+
 }

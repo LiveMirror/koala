@@ -1,11 +1,14 @@
 package org.openkoala.security.application.impl;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Named;
 
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.security.application.SecurityAccessApplication;
-import org.openkoala.security.core.AuthorizationIsNotExisted;
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.Authorization;
@@ -19,6 +22,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Named
 @Transactional
 public class SecurityAccessApplicationImpl implements SecurityAccessApplication {
+
+
+	private QueryChannelService queryChannelService;
+
+	public QueryChannelService getQueryChannelService() {
+		if (queryChannelService == null) {
+			queryChannelService = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel");
+		}
+		return queryChannelService;
+	}
 
 	public boolean hasPermission(User user) {
 		return false;
@@ -65,6 +78,26 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	public void checkAuthorization(String userAccount, Role role) {
 		User user = getUserBy(userAccount);
 		Authorization.checkAuthorization(user, role);
+	}
+
+	public List<SecurityResource> findMenuResourceDTOByUserAccountInRoleDTO(String userAccount, Role role) {
+//		checkAuthorization(userAccount, role);
+		Set<Authority> authorities = new HashSet<Authority>();
+		authorities.add(role);
+		authorities.addAll(role.getPermissions());
+
+		StringBuilder jpql = new StringBuilder(
+				"SELECT _securityResources FROM  Authority _authority JOIN _authority.securityResources. _securityResources");
+		jpql.append(" WHERE TYPE(_securityResources) = MenuResouce");
+
+		List<SecurityResource> menuResources = getQueryChannelService().createJpqlQuery(jpql.toString()).list();
+
+		return menuResources;
+	}
+
+	@Override
+	public Role getRoleBy(Long roleId) {
+		return Role.get(Role.class, roleId);
 	}
 
 }

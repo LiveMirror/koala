@@ -1,5 +1,6 @@
 package org.openkoala.security.application;
 
+import java.util.List;
 import java.util.Set;
 
 import org.openkoala.security.core.domain.Actor;
@@ -55,6 +56,8 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	User getUserBy(Long userId);
+	
+	Role getRoleBy(Long roleId);
 
 	/**
 	 * 根据账户获取用户
@@ -81,6 +84,13 @@ public interface SecurityAccessApplication {
 	 */
 	boolean updatePassword(User user, String oldUserPassword);
 
+	/**
+	 * 通过角色下得用户检查Authorization是否存在
+	 * 
+	 * @param userAccount
+	 * @param role
+	 */
 	void checkAuthorization(String userAccount, Role role);
 
+	public List<SecurityResource> findMenuResourceDTOByUserAccountInRoleDTO(String userAccount, Role role);
 }
