@@ -43,7 +43,7 @@ public final class GenerateDTOUtils {
 		}
 		return results;
 	}
-	
+
 	public static List<RoleDTO> generateRoleDtosBy(List<Role> roles) {
 		List<RoleDTO> results = new ArrayList<RoleDTO>();
 		for (Role role : roles) {
@@ -51,7 +51,7 @@ public final class GenerateDTOUtils {
 		}
 		return results;
 	}
-	
+
 	public static List<PermissionDTO> generatePermissionDtosBy(List<Permission> permissions) {
 		List<PermissionDTO> results = new ArrayList<PermissionDTO>();
 		for (Permission permission : permissions) {
@@ -67,7 +67,8 @@ public final class GenerateDTOUtils {
 	 * @return
 	 */
 	public static RoleDTO generateRoleDtoBy(Role role) {
-		return new RoleDTO(role.getId(), role.getName(), role.getDescription(), role.isMaster());
+		RoleDTO roleDTO = new RoleDTO(role.getId(), role.getName());
+		return roleDTO;
 	}
 
 	/**

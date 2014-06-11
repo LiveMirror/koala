@@ -16,7 +16,6 @@ import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.User;
-import org.openkoala.security.core.domain.UserStatus;
 
 public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTestCase {
 
@@ -26,7 +25,7 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 
 	@Test
 	public void testAddRole() throws Exception {
-		Role role = new Role("开发经理", "主导项目开发",Boolean.FALSE);
+		Role role = new Role("开发经理");
 		securityConfigApplication.createAuthority(role);
 		User user = Actor.get(User.class, 1l);
 		Scope scope = Scope.get(OrganizationScope.class, 1l);
@@ -41,14 +40,13 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 
 		// 角色
 		Role role = initRole();
-		role.setMaster(Boolean.TRUE);
 		securityConfigApplication.createAuthority(role);
 
 		// 权限
-		Permission addPermission = new Permission("菜单添加", "菜单添加权限");
-		Permission updatePermission = new Permission("菜单修改", "菜单修改权限");
-		Permission deletPermission = new Permission("菜单删除", "菜单删除权限");
-		Permission listPermission = new Permission("菜单列表", "菜单列表权限");
+		Permission addPermission = new Permission("菜单添加");
+		Permission updatePermission = new Permission("菜单修改");
+		Permission deletPermission = new Permission("菜单删除");
+		Permission listPermission = new Permission("菜单列表");
 
 		securityConfigApplication.createAuthority(addPermission);
 		securityConfigApplication.createAuthority(updatePermission);
@@ -73,17 +71,25 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 		// 角色管理 role-list
 		// 权限管理 permission-list
 		// 菜单管理 menu-list
+		MenuResource securityMenuResource = new MenuResource("权限管理",Boolean.TRUE);
+		securityMenuResource.setDescription("所有的权限页面");
+		securityMenuResource.setIcon(MENUICON);
 		
-		MenuResource securityMenuResource = new MenuResource("权限管理",Boolean.TRUE, "所有的权限页面", MENUICON,
-				"");
-		MenuResource userMenuResource = new MenuResource("用户管理", Boolean.TRUE, "用户管理", MENUICON,
-				"/pages/auth/user-list.jsp");
-		MenuResource roleMenuResource = new MenuResource("角色管理",Boolean.TRUE, "角色管理", MENUICON,
-				"/pages/auth/role-list.jsp");
-		MenuResource permisisonMenuResource = new MenuResource("权限管理",  Boolean.TRUE, "权限管理",
-				MENUICON, "/pages/auth/permission-list.jsp");
-		MenuResource menuResource = new MenuResource("菜单管理", Boolean.TRUE, "菜单管理", MENUICON,
-				"/pages/auth/menu-list.jsp");
+		MenuResource userMenuResource = new MenuResource("用户管理", Boolean.TRUE);
+		userMenuResource.setIcon(MENUICON);
+		userMenuResource.setUrl("/pages/auth/user-list.jsp");
+		
+		MenuResource roleMenuResource = new MenuResource("角色管理",Boolean.TRUE);
+		roleMenuResource.setIcon(MENUICON);
+		roleMenuResource.setUrl("/pages/auth/role-list.jsp");
+		
+		MenuResource permisisonMenuResource = new MenuResource("权限管理",  Boolean.TRUE);
+		permisisonMenuResource.setIcon(MENUICON);
+		permisisonMenuResource.setUrl("/pages/auth/permission-list.jsp");
+		
+		MenuResource menuResource = new MenuResource("菜单管理", Boolean.TRUE);
+		menuResource.setIcon(MENUICON);
+		permisisonMenuResource.setUrl("/pages/auth/menu-list.jsp");
 		
 		securityConfigApplication.createSecurityResource(securityMenuResource);
 		securityConfigApplication.createSecurityResource(userMenuResource);
@@ -113,17 +119,15 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 	}
 
 	private Role initRole() {
-		return new Role("行政经理", "管理总公司行政部门的经理",Boolean.TRUE);
+		return new Role("行政经理");
 	}
 
 	private User initUser() {
 		User user = new User("zhangsan","zhangsan","zhangsan@koala.com","139*********");
-		user.setCreateDate(new Date());
 		user.setCreateOwner("admin");
 		user.setDescription("普通用户");
 		user.setName("张三");
 		user.setSuper(Boolean.TRUE);
-		user.setUserStatus(UserStatus.ACTIVATE);
 		return user;
 	}
 }

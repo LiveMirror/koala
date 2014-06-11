@@ -14,10 +14,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.dayatang.utils.Assert;
 import org.openkoala.security.core.NameIsExistedException;
 
 /**
@@ -47,83 +46,17 @@ public abstract class Authority extends SecurityAbstractEntity {
 	private String description;
 
 	@ManyToMany
-	@JoinTable(name = "KS_AUTHORITY_SECURITYRESOURCE_MAP", //
+	@JoinTable(name = "KS_AS_MAP", //
 	joinColumns = @JoinColumn(name = "AUTHORITY_ID"), //
 	inverseJoinColumns = @JoinColumn(name = "SECURITYRESOURCE_ID"))
 	private Set<SecurityResource> securityResources = new HashSet<SecurityResource>();
 
-	public Authority() {
+	Authority() {
 	}
 
-	public Authority(String name, String description) {
-		// isBlank(name, "名称不能为空");
+	public Authority(String name) {
+//		Assert.isBlank(name, "名称不能为空");
 		this.name = name;
-		this.description = description;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Set<SecurityResource> getSecurityResources() {
-		return securityResources;
-	}
-
-	public void setSecurityResources(Set<SecurityResource> securityResources) {
-		this.securityResources = securityResources;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Authority other = (Authority) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Authority [name=" + name + ", description=" + description + "]";
-	}
-
-	@Override
-	public String[] businessKeys() {
-		return new String[] { "name", "description" };
 	}
 
 	public void addSecurityResource(SecurityResource... securityResource) {
@@ -196,5 +129,38 @@ public abstract class Authority extends SecurityAbstractEntity {
 		}
 		super.remove();
 	}
+	
+	public String getName() {
+		return name;
+	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Set<SecurityResource> getSecurityResources() {
+		return securityResources;
+	}
+
+	public void setSecurityResources(Set<SecurityResource> securityResources) {
+		this.securityResources = securityResources;
+	}
+
+	@Override
+	public String toString() {
+		return "Authority [name=" + name + ", description=" + description + "]";
+	}
+
+	@Override
+	public String[] businessKeys() {
+		return new String[] { "name", "description" };
+	}
 }

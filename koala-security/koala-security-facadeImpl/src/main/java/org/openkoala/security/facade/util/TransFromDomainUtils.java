@@ -4,7 +4,6 @@ import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.User;
-import org.openkoala.security.core.domain.UserStatus;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
@@ -29,24 +28,27 @@ public final class TransFromDomainUtils {
 				userDTO.getTelePhone());
 		result.setId(userDTO.getId());
 		result.setName(userDTO.getName());
-		result.setCreateDate(userDTO.getCreateDate());
 		result.setDescription(userDTO.getDescription());
-		result.setUserStatus(UserStatus.valueOf(userDTO.getUserStatus()));
 		return result;
 	}
 
 	public static Role transFromRoleBy(RoleDTO roleDTO) {
-		Role result = new Role(roleDTO.getRoleName(), roleDTO.getDescription(), roleDTO.isMaster());
+		Role result = new Role(roleDTO.getRoleName());
+		result.setDescription(roleDTO.getDescription());
 		return result;
 	}
 
 	public static Permission transFromPermissionBy(PermissionDTO permissionDTO) {
-		Permission result = new Permission(permissionDTO.getPermissionName(), permissionDTO.getPermissionName());
+		Permission result = new Permission(permissionDTO.getPermissionName());
+		result.setDescription(permissionDTO.getPermissionName());
 		return result;
 	}
 	
 	public static MenuResource transFromMenuResourceBy(MenuResourceDTO menuResourceDTO) {
-		MenuResource result = new MenuResource(menuResourceDTO.getName(), menuResourceDTO.isValid(), menuResourceDTO.getDescription(), menuResourceDTO.getIcon(), menuResourceDTO.getUrl());
+		MenuResource result = new MenuResource(menuResourceDTO.getName(), menuResourceDTO.isValid());
+		result.setDescription(menuResourceDTO.getDescription());
+		result.setIcon(menuResourceDTO.getIcon());
+		result.setUrl(menuResourceDTO.getUrl());
 //		result.setChildren(new HashSet<MenuResource>(menuResourceDTO.getChildren()));
 		return result;
 	}

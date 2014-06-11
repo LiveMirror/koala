@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -23,12 +22,6 @@ public class Role extends Authority {
 
 	private static final long serialVersionUID = 4327840654680779887L;
 
-	/**
-	 * 是否是主要角色[主要角色会在用户第一次登陆时使用]。
-	 */
-	@Column(name = "IS_MASTER")
-	private boolean isMaster;
-
 	@ManyToMany
 	@JoinTable(name = "KS_ROLE_PERMISSION_MAP", //
 	joinColumns = @JoinColumn(name = "ROLE_ID"), //
@@ -38,17 +31,8 @@ public class Role extends Authority {
 	Role() {
 	}
 
-	public Role(String name, String description, boolean isMaster) {
-		super(name, description);
-		this.isMaster = isMaster;
-	}
-
-	public boolean isMaster() {
-		return isMaster;
-	}
-
-	public void setMaster(boolean isMaster) {
-		this.isMaster = isMaster;
+	public Role(String name) {
+		super(name);
 	}
 
 	public Set<Permission> getPermissions() {
@@ -77,8 +61,13 @@ public class Role extends Authority {
 		Role role = Role.get(Role.class, this.getId());
 		role.setName(this.getName());
 		role.setDescription(this.getDescription());
-		role.setMaster(isMaster);
 	}
-	
+
+	public Set<Authority> findAuthoritiesBy() {
+		Set<Authority> results = new HashSet<Authority>();
+		results.add(this);
+		results.addAll(this.getPermissions());
+		return results;
+	}
 
 }

@@ -36,79 +36,13 @@ public class Authorization extends SecurityAbstractEntity {
 	@JoinColumn(name = "SCOPE_ID")
 	private Scope scope;
 
-	public Authorization() {
+	Authorization() {
 	}
 
 	public Authorization(Actor actor, Authority authority, Scope scope) {
 		this.actor = actor;
 		this.authority = authority;
 		this.scope = scope;
-	}
-
-	public Actor getActor() {
-		return actor;
-	}
-
-	public void setActor(Actor actor) {
-		this.actor = actor;
-	}
-
-	public Authority getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(Authority authority) {
-		this.authority = authority;
-	}
-
-	public Scope getScope() {
-		return scope;
-	}
-
-	public void setScope(Scope scope) {
-		this.scope = scope;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((actor == null) ? 0 : actor.hashCode());
-		result = prime * result + ((authority == null) ? 0 : authority.hashCode());
-		result = prime * result + ((scope == null) ? 0 : scope.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Authorization other = (Authorization) obj;
-		if (actor == null) {
-			if (other.actor != null)
-				return false;
-		} else if (!actor.equals(other.actor))
-			return false;
-		if (authority == null) {
-			if (other.authority != null)
-				return false;
-		} else if (!authority.equals(other.authority))
-			return false;
-		if (scope == null) {
-			if (other.scope != null)
-				return false;
-		} else if (!scope.equals(other.scope))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Authorization [actor=" + actor + ", authority=" + authority + ", scope=" + scope + "]";
 	}
 
 	public static List<Authorization> findByActor(Actor actor) {
@@ -223,6 +157,35 @@ public class Authorization extends SecurityAbstractEntity {
 		if (!exists(user, role, null)) {
 			throw new AuthorizationIsNotExisted();
 		}
+	}
+	
+	public Actor getActor() {
+		return actor;
+	}
+
+	public void setActor(Actor actor) {
+		this.actor = actor;
+	}
+
+	public Authority getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(Authority authority) {
+		this.authority = authority;
+	}
+
+	public Scope getScope() {
+		return scope;
+	}
+
+	public void setScope(Scope scope) {
+		this.scope = scope;
+	}
+
+	@Override
+	public String toString() {
+		return "Authorization [actor=" + actor + ", authority=" + authority + ", scope=" + scope + "]";
 	}
 
 }

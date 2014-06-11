@@ -43,6 +43,40 @@ public abstract class Actor extends SecurityAbstractEntity {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
+	@Override
+	public void remove() {
+		for (Authorization authorization : Authorization.findByActor(this)) {
+			authorization.remove();
+		}
+		super.remove();
+	}
+
+	public void grant(Authority authority, Scope scope) {
+		if (Authorization.exists(this, authority, scope)) {
+			return;
+		}
+		new Authorization(this, authority, scope).save();
+	}
+
+	public Set<Permission> getPermissions(Scope scope) {
+		Set<Permission> results = new HashSet<Permission>();
+		for (Authority authority : getAuthorities(scope)) {
+			if (authority instanceof Permission) {
+				results.add((Permission) authority);
+			} else {
+				Role role = (Role) authority;
+				results.addAll(role.getPermissions());
+			}
+		}
+		return results;
+	}
+
+	private Set<Authority> getAuthorities(Scope scope) {
+		return Authorization.findAuthoritiesByActorInScope(this, scope);
+	}
+
+	public abstract void update();
+	
 	public String getName() {
 		return name;
 	}
@@ -78,42 +112,4 @@ public abstract class Actor extends SecurityAbstractEntity {
 	public Date getCreateDate() {
 		return createDate;
 	}
-
-	// ******************************************************************
-	// =========================== behavior =============================
-	// ******************************************************************
-
-	@Override
-	public void remove() {
-		for (Authorization authorization : Authorization.findByActor(this)) {
-			authorization.remove();
-		}
-		super.remove();
-	}
-
-	public void grant(Authority authority, Scope scope) {
-		if (Authorization.exists(this, authority, scope)) {
-			return;
-		}
-		new Authorization(this, authority, scope).save();
-	}
-
-	public Set<Permission> getPermissions(Scope scope) {
-		Set<Permission> results = new HashSet<Permission>();
-		for (Authority authority : getAuthorities(scope)) {
-			if (authority instanceof Permission) {
-				results.add((Permission) authority);
-			} else {
-				Role role = (Role) authority;
-				results.addAll(role.getPermissions());
-			}
-		}
-		return results;
-	}
-
-	private Set<Authority> getAuthorities(Scope scope) {
-		return Authorization.findAuthoritiesByActorInScope(this, scope);
-	}
-
-	public abstract void update();
 }

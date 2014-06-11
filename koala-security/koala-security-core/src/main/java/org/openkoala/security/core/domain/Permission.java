@@ -23,11 +23,11 @@ public class Permission extends Authority {
 	@ManyToMany(mappedBy = "permissions", cascade = CascadeType.REMOVE)
 	private Set<Role> roles = new HashSet<Role>();
 
-	public Permission() {
+	Permission() {
 	}
 
-	public Permission(String name, String description) {
-		super(name, description);
+	public Permission(String name) {
+		super(name);
 	}
 
 	public Set<Role> getRoles() {
