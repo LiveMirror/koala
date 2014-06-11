@@ -29,7 +29,6 @@ public final class TransFromDomainUtils {
 				userDTO.getTelePhone());
 		result.setId(userDTO.getId());
 		result.setName(userDTO.getName());
-		result.setCreateDate(userDTO.getCreateDate());
 		result.setDescription(userDTO.getDescription());
 		result.setUserStatus(UserStatus.valueOf(userDTO.getUserStatus()));
 		return result;

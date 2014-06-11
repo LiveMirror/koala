@@ -118,7 +118,6 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 
 	private User initUser() {
 		User user = new User("zhangsan","zhangsan","zhangsan@koala.com","139*********");
-		user.setCreateDate(new Date());
 		user.setCreateOwner("admin");
 		user.setDescription("普通用户");
 		user.setName("张三");
