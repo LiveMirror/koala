@@ -66,6 +66,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		String username = (String) token.getPrincipal();
+		System.out.println(username);
 		UserDTO userDTO = securityAccessFacade.getUserDtoBy(username);
 		if (userDTO == null) {
 			throw new UnknownAccountException();// 没找到账户
