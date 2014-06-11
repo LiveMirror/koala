@@ -38,7 +38,7 @@ public abstract class Actor extends SecurityAbstractEntity {
 	private String createOwner;
 
 	@Column(name = "CREATE_DATE")
-	private Date createDate;
+	private Date createDate = new Date();
 
 	@Column(name = "DESCRIPTION")
 	private String description;
@@ -77,10 +77,6 @@ public abstract class Actor extends SecurityAbstractEntity {
 
 	public Date getCreateDate() {
 		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
 	}
 
 	// ******************************************************************

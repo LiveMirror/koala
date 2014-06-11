@@ -12,11 +12,9 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.dayatang.domain.BaseEntity;
 import org.dayatang.domain.Entity;
-import org.dayatang.domain.EntityRepository;
-import org.dayatang.domain.InstanceFactory;
 import org.dayatang.domain.NamedParameters;
+import org.openkoala.koala.commons.domain.KoalaBaseEntity;
 
 /**
  * 抽象实体类，可作为所有领域实体的基类，提供ID和版本属性。
@@ -25,7 +23,7 @@ import org.dayatang.domain.NamedParameters;
  * 
  */
 @MappedSuperclass
-public abstract class SecurityAbstractEntity extends BaseEntity {
+public abstract class SecurityAbstractEntity extends KoalaBaseEntity {
 
 	private static final long serialVersionUID = 8882145540383345037L;
 
@@ -50,8 +48,7 @@ public abstract class SecurityAbstractEntity extends BaseEntity {
 	/**
 	 * 设置实体的标识
 	 * 
-	 * @param id
-	 *            要设置的实体标识
+	 * @param id 要设置的实体标识
 	 */
 	public void setId(Long id) {
 		this.id = id;
@@ -69,8 +66,7 @@ public abstract class SecurityAbstractEntity extends BaseEntity {
 	/**
 	 * 设置实体的版本号。持久化框架以此实现乐观锁。
 	 * 
-	 * @param version
-	 *            要设置的版本号
+	 * @param version 要设置的版本号
 	 */
 	public void setVersion(int version) {
 		this.version = version;
@@ -83,15 +79,6 @@ public abstract class SecurityAbstractEntity extends BaseEntity {
 
 	public abstract String[] businessKeys();
 
-	private static EntityRepository repository;
-
-	public static EntityRepository getRepository() {
-		if (repository == null) {
-			repository = InstanceFactory.getInstance(EntityRepository.class,
-					"repository");
-		}
-		return repository;
-	}
 	/**
      * 将实体本身持久化到数据库
      */
@@ -171,36 +158,5 @@ public abstract class SecurityAbstractEntity extends BaseEntity {
     public static <T extends Entity> List<T> findByProperties(Class<T> clazz, Map<String, Object> propValues) {
         return getRepository().findByProperties(clazz, NamedParameters.create(propValues));
     }
-    /**
-     * 判断该实体是否已经存在于数据库中。
-     * @return 如果数据库中已经存在拥有该id的实体则返回true，否则返回false。
-     */
-    @Override
-    public boolean existed() {
-        Object id = getId();
-        if (id == null) {
-            return false;
-        }
-        if (id instanceof Number && ((Number)id).intValue() == 0) {
-            return false;
-        }
-        return getRepository().exists(getClass(), getId());
-    }
-
-    /**
-     * 判断该实体是否不存在于数据库中。
-     * @return 如果数据库中已经存在拥有该id的实体则返回false，否则返回true。
-     */
-    @Override
-    public boolean notExisted() {
-        return !existed();
-    }
-	@Override
-	public abstract int hashCode();
-
-	@Override
-	public abstract boolean equals(Object other);
-
-	@Override
-	public abstract String toString();
+    
 }

@@ -31,7 +31,7 @@ public class User extends Actor {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "USER_STATUS")
 	private UserStatus userStatus;
-
+	
 	@Column(name = "LAST_LOGIN_TIME")
 	private Date lastLoginTime;
 
@@ -118,37 +118,6 @@ public class User extends Actor {
 
 	public void setTelePhone(String telePhone) {
 		this.telePhone = telePhone;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((userAccount == null) ? 0 : userAccount.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (userAccount == null) {
-			if (other.userAccount != null)
-				return false;
-		} else if (!userAccount.equals(other.userAccount))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "User [userAccount=" + userAccount + ", password=" + password + ", email=" + email + ", userStatus="
-				+ userStatus + ", lastLoginTime=" + lastLoginTime + ", isSuper=" + isSuper + "]";
 	}
 
 	/**
