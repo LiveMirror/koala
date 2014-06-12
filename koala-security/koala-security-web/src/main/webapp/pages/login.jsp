@@ -4,13 +4,14 @@
 <html>
 <head>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <title>欢迎使用Koala</title>
-<link href="<c:url value='/lib/bootstrap/css/bootstrap.min.css' />"   rel="stylesheet">
-<script type="text/javascript" src="<c:url value='/lib/jquery-1.8.3.min.js' />"></script>
-<script type="text/javascript" src="<c:url value='/lib/respond.min.js' />"></script>
-<script type="text/javascript" src="<c:url value='/lib/bootstrap/js/bootstrap.min.js' />"></script>
-<script type="text/javascript" src="<c:url value='/lib/koala-ui.plugin.js' />"></script>	
-<script type="text/javascript" src="<c:url value='/lib/validate.js' />"></script>
+<link href="<c:url value='${pageContext.request.contextPath}/lib/bootstrap/css/bootstrap.min.css' />"   rel="stylesheet">
+<script type="text/javascript" src="<c:url value='${pageContext.request.contextPath}/lib/jquery-1.8.3.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='${pageContext.request.contextPath}/lib/respond.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='${pageContext.request.contextPath}/lib/bootstrap/js/bootstrap.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='${pageContext.request.contextPath}/lib/koala-ui.plugin.js' />"></script>	
+<script type="text/javascript" src="<c:url value='${pageContext.request.contextPath}/lib/validate.js' />"></script>
 <style type="text/css">
 @charset "UTF-8";
 /* CSS Document */
@@ -127,9 +128,6 @@ body {
 }
 </style>
 <script type="text/javascript">
-	function refreshCode(){
-		$('#checkCode').attr('src',"jcaptcha.jpg?time="+new Date().getTime());
-	}
 </script>
 </head>
 <body>
@@ -144,21 +142,16 @@ body {
 		</div>
 		<div class="login_con_R">
 			<h4>登录</h4>
-			<FORM id="loginFormId" method=post action="j_spring_security_check" class="form-horizontal">
+			<FORM id="loginFormId" class="form-horizontal" action="login" method="post">
 				<div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                    <input type="text" class="form-control" placeholder="用户名"  name="j_username" id="j_username" value="${j_username }">
+                    <input type="text" class="form-control" placeholder="用户名"  name="username" id="j_username" value="<shiro:principal/>">
 				</div>
                 <div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                    <input type="password" name="j_password" id="j_password" class="form-control" placeholder="密码" value="${j_password }"/>
+                    <input type="password" name="password" id="j_password" class="form-control" placeholder="密码"/>
                 </div>
-				<div class="form-group input-group">
-				    <span class="input-group-addon"><span class="glyphicon glyphicon-magnet"></span></span>
-					<input type="text" id="jcaptcha"  style="width:50%;" name="jcaptcha" value="" class="form-control" placeholder="验证码"  autocomplete="off"/>
-					<div style="width:120px;"></div>
-				</div>
-				<img src="jcaptcha.jpg" id="checkCode" onclick="refreshCode();" class="checkCode"/>
+				<!-- 删除验证码和图片 -->
 				<div class="form-group input-group" style="margin-top: 45px;">
 					<button type="button"  class="btn btn-primary btn-block" id="loginBtn">登录</button>
 				</div>
@@ -190,49 +183,19 @@ body {
 	            return false;
 	        }
 	        btnLogin.attr('disabled', 'disabled').html('正在登录...');
-	        form.submit();
-	    }
-    });
+    		var param = form.serialize();
+        	$.post("/auth/user/login.koala",param,function(data){
+    			if(data.success){
+    				$('.login_con_R').message({
+    					type: 'success',
+    					content: '登陆成功'
+    				});
+    				window.location.href='${pageContext.request.contextPath}/pages/index.jsp';
+    			}
+    		}); 
+		};
+		});
 	</script>
-	<c:if test="${param.login_error == '1' }">
-     	<script>
-     		$('.login_con_R').message({
-				type: 'error',
-				content: '用户名错误!'
-			});
-     		$('#j_username').focus();
-     		$('#j_username').selectAll();
-     	</script>
-    </c:if>
-    
-	<c:if test="${param.login_error == '2' }">
-      	<script>
-     		$('.login_con_R').message({
-				type: 'error',
-				content: '密码错误!'
-			});
-     		$('#j_password').focus();
-     		$('#j_password').selectAll();
-     	</script>
-	</c:if>
 	
-	<c:if test="${param.login_error == '3' }">
-      	<script>
-     		$('.login_con_R').message({
-				type: 'error',
-				content: '验证码错误!'
-			});
-     		$('#jcaptcha').focus();
-     	</script>
-	</c:if>
-	
-	<c:if test="${param.login_error == '4' }">
-      	<script>
-     		$('.login_con_R').message({
-				type: 'error',
-				content: '该用户已被禁用!'
-			});
-     	</script>
-	</c:if>
 </body>
 </html>
