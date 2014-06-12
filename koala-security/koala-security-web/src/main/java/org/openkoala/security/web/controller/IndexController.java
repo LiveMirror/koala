@@ -11,15 +11,9 @@ public class IndexController {
 		return "index";
 	}
 	
-<<<<<<< HEAD
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login() {
-		return "/login";
-=======
 	@RequestMapping(value = "/login")
 	public String login() {
 		return "login";
->>>>>>> origin/master
 	}
 
 }
