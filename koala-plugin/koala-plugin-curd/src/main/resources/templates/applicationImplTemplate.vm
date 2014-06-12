@@ -166,7 +166,7 @@ public class ${applicationImplClass.name} implements ${applicationClass.name} {
        #end
             result.add(${currntVOVariable});
         }
-        return new Page<${currntVO}>(pages.getPageIndex(), pages.getResultCount(), pageSize, result);
+        return new Page<${currntVO}>(pages.getStart(), pages.getResultCount(), pageSize, result);
 	}
 	
 #foreach(${relation} in ${applicationClass.relations})
