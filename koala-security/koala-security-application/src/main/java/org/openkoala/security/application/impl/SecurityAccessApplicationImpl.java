@@ -1,7 +1,9 @@
 package org.openkoala.security.application.impl;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -80,17 +82,21 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 		Authorization.checkAuthorization(user, role);
 	}
 
-	public List<SecurityResource> findMenuResourceDTOByUserAccountInRoleDTO(String userAccount, Role role) {
+	public List findMenuResourceDTOByUserAccountInRoleDTO(String userAccount, Role role) {
 //		checkAuthorization(userAccount, role);
 		Set<Authority> authorities = new HashSet<Authority>();
 		authorities.add(role);
 		authorities.addAll(role.getPermissions());
 
 		StringBuilder jpql = new StringBuilder(
-				"SELECT _securityResources FROM  Authority _authority JOIN _authority.securityResources. _securityResources");
-		jpql.append(" WHERE TYPE(_securityResources) = MenuResouce");
-
-		List<SecurityResource> menuResources = getQueryChannelService().createJpqlQuery(jpql.toString()).list();
+				"SELECT DISTINCT _authority.securityResources FROM  Authority _authority JOIN _authority.securityResources _securityResources");
+		jpql.append(" WHERE TYPE(_securityResources) = MenuResource");
+		jpql.append(" AND _authority IN (:_authority)");
+		jpql.append(" AND _securityResources.parent IS NULL");
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("_authority", authorities);
+		List menuResources = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(map).list();
 
 		return menuResources;
 	}

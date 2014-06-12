@@ -13,9 +13,9 @@ public class IndexController {
 		return "/index";
 	}
 	
-	@RequestMapping(value = "/login.koala", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
-		return "redirect:user/login";
+		return "/login";
 	}
 
 }

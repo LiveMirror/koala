@@ -25,8 +25,8 @@ public class MenuResource extends SecurityResource {
 
 	@ManyToOne
 	@JoinTable(name = "KS_MENU_RESOURCE_RELATION", //
-	joinColumns = @JoinColumn(name = "PARENT_ID"), //
-	inverseJoinColumns = @JoinColumn(name = "CHILD_ID"))
+	joinColumns = @JoinColumn(name = "CHILD_ID"), //
+	inverseJoinColumns = @JoinColumn(name = "PARENT_ID"))
 	private MenuResource parent;
 
 	@OneToMany(mappedBy = "parent")

@@ -60,7 +60,7 @@
 
 	<servlet-mapping>
 		<servlet-name>spring</servlet-name>
-		<url-pattern>.koala</url-pattern>
+		<url-pattern>*.koala</url-pattern>
 	</servlet-mapping>
 
 

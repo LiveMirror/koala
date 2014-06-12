@@ -27,9 +27,9 @@ public class SecurityAccessApplicationTest extends AbstractSecurityIntegrationTe
 	public void testFindMenuResourceDTOByUserAccountInRoleDTO() throws Exception {
 		securityAccessApplication = new SecurityAccessApplicationImpl();
 		String userAccount = "zhangsan";
-//		Long roleId = 1l;
-//		Role role = securityAccessApplication.getRoleBy(roleId);
-//		List<SecurityResource> menuResources = securityAccessApplication.findMenuResourceDTOByUserAccountInRoleDTO(userAccount, role);
-//		System.out.println(menuResources);
+		Long roleId = 1l;
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		List menuResources = securityAccessApplication.findMenuResourceDTOByUserAccountInRoleDTO(userAccount, role);
+		System.out.println(menuResources);
 	}
 }

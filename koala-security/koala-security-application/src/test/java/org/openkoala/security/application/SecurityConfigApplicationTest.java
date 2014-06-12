@@ -1,7 +1,6 @@
 package org.openkoala.security.application;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +31,7 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 		securityConfigApplication.grantActorToAuthorityInScope(user, role, scope);
 	}
 	
-//	@Test
+	@Test
 	public void testInit() throws Exception {
 		// 用户
 		User user = initUser();

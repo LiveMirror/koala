@@ -9,6 +9,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
  * @author luzhao
  * 
  */
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 public abstract class AbstractSecurityIntegrationTestCase extends KoalaBaseSpringTestCase {
 }
