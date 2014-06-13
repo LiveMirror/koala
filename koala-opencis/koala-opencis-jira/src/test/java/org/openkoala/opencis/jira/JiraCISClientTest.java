@@ -1,16 +1,14 @@
 package org.openkoala.opencis.jira;
 
-import com.atlassian.jira.rpc.soap.client.RemoteIssue;
-import org.junit.After;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.opencis.api.Developer;
 import org.openkoala.opencis.api.Project;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: zjzhai
