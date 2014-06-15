@@ -78,7 +78,7 @@ public class ${dtoClass.name} implements Serializable {
 	
 	#set($propertyName = ${entry.key.substring(0, 1).toUpperCase()} + ${entry.key.substring(1)})
 	
-#if($simpleTypeName.indexOf("boolean") > 0)
+#if($simpleTypeName.indexOf("oolean") > 0)
 	public Boolean get${propertyName}() {
 		return ${entry.key};
 	}
