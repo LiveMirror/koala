@@ -1,8 +1,10 @@
 package org.openkoala.framework.i18n;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+
+import org.openkoala.koalacommons.resourceloader.Resource;
+import org.openkoala.koalacommons.resourceloader.impl.classpath.ClassPathResource;
 
 /**
  * 资源加载器
@@ -12,36 +14,13 @@ import java.net.URL;
  */
 public class ResourceLoaderUtils {
 
-
-    public static URL getResource(String resourceName, Class<?> callingClass) {
-        URL url = Thread.currentThread().getContextClassLoader().getResource(resourceName);
-
-        if (url == null) {
-            url = ResourceLoaderUtils.class.getClassLoader().getResource(resourceName);
-        }
-
-        if (url == null) {
-            ClassLoader cl = callingClass.getClassLoader();
-            if (cl != null) {
-                url = cl.getResource(resourceName);
-            }
-        }
-
-        if ((url == null) && (resourceName != null) && ((resourceName.length() == 0) || (resourceName.charAt(0) != '/'))) { 
-            return getResource('/' + resourceName, callingClass);
-        }
-
-        return url;
-    }
-
-    public static InputStream getResourceAsStream(String resourceName, Class<?> callingClass) {
-        URL url = getResource(resourceName, callingClass);
-
+    public static File getResource(String resourceName, Class<?> callingClass) {
+        Resource resource = new ClassPathResource(resourceName, callingClass.getClassLoader());
         try {
-            return (url != null) ? url.openStream() : null;
-        } catch (IOException e) {
-            return null;
-        }
+			return resource.getFile();
+		} catch (IOException e) {
+			throw new FileNotFoundException(e);
+		}
     }
 
 }
