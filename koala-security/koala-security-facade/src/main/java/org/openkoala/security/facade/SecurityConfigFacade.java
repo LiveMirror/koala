@@ -91,4 +91,12 @@ public interface SecurityConfigFacade {
 	 */
 	void terminateMenuResourceDTOs(MenuResourceDTO[] menuResourceDTOs);
 
+	/**
+	 * 添加一个子菜单到父菜单。
+	 * 
+	 * @param child
+	 * @param parent
+	 */
+	void saveChildToParent(MenuResourceDTO child, MenuResourceDTO parent);
+
 }

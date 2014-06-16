@@ -88,11 +88,18 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 		authorities.add(role);
 		authorities.addAll(role.getPermissions());
 
-		StringBuilder jpql = new StringBuilder(
+		/*StringBuilder jpql = new StringBuilder(
 				"SELECT DISTINCT _authority.securityResources FROM  Authority _authority JOIN _authority.securityResources _securityResources");
 		jpql.append(" WHERE TYPE(_securityResources) = MenuResource");
 		jpql.append(" AND _authority IN (:_authority)");
-		jpql.append(" AND _securityResources.parent IS NULL");
+		jpql.append(" AND _securityResources.parent IS NULL");*/
+		StringBuilder jpql = new StringBuilder(
+				"SELECT _securityResource FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
+		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
+		jpql.append(" AND _authority IN (:_authority)");
+		jpql.append(" AND _securityResource.parent IS NULL");
+		
+		
 		
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("_authority", authorities);

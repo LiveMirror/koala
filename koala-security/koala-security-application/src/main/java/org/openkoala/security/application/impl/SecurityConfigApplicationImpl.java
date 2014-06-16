@@ -62,13 +62,11 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void updateSecurityResource(SecurityResource securityResource) {
-		// TODO Auto-generated method stub
-
+		securityResource.update();
 	}
 
 	public void terminateSecurityResource(SecurityResource securityResource) {
-		// TODO Auto-generated method stub
-
+		securityResource.remove();
 	}
 
 	public void grantAuthoritiesToSecurityResource(List<Authority> authorities, SecurityResource securityResource) {
@@ -156,6 +154,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		for (MenuResource menuResource : menuResources) {
 			menuResource.setParent(toParent);
 		}
+		toParent.setChildren(menuResources);
 	}
 
 	public void addMenuResourceUnderParent(MenuResource menuResource, MenuResource toParent) {
@@ -211,6 +210,11 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	@Override
 	public void resetPassword(User user) {
 		user.resetPassword();
+	}
+
+	@Override
+	public void createChildToParent(MenuResource child, MenuResource parent) {
+		parent.addChild(child);
 	}
 
 }

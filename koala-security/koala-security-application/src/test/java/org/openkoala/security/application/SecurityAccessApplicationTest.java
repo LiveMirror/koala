@@ -1,14 +1,12 @@
 package org.openkoala.security.application;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
 import org.junit.Test;
 import org.openkoala.security.application.impl.SecurityAccessApplicationImpl;
 import org.openkoala.security.core.domain.Role;
-import org.openkoala.security.core.domain.SecurityResource;
 
 public class SecurityAccessApplicationTest extends AbstractSecurityIntegrationTestCase{
 	

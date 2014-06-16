@@ -83,17 +83,24 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void saveMenuResourceDTO(MenuResourceDTO menuResourceDTO) {
-		
+		securityConfigApplication.createSecurityResource(transFromMenuResourceBy(menuResourceDTO));
 	}
 
 	@Override
 	public void updateMenuResourceDTO(MenuResourceDTO menuResourceDTO) {
-		
+		securityConfigApplication.updateSecurityResource(transFromMenuResourceBy(menuResourceDTO));
 	}
 
 	@Override
 	public void terminateMenuResourceDTOs(MenuResourceDTO[] menuResourceDTOs) {
-		
+		for (MenuResourceDTO menuResourceDTO : menuResourceDTOs) {
+			securityConfigApplication.terminateSecurityResource(transFromMenuResourceBy(menuResourceDTO));
+		}
+	}
+
+	@Override
+	public void saveChildToParent(MenuResourceDTO child, MenuResourceDTO parent) {
+		securityConfigApplication.createChildToParent(transFromMenuResourceBy(child),transFromMenuResourceBy(parent));
 	}
 
 }

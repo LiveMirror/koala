@@ -1,11 +1,15 @@
 package org.openkoala.security.core.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -25,11 +29,14 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	/**
 	 * 是否有效
 	 */
-	@Column(name = "IS_VALID")
-	private boolean isValid;
+	@Column(name = "DISABLED")
+	private boolean disabled = false;
 
 	@Column(name = "URL")
 	private String url;
+
+	@Column(name = "IDENTIFIER")
+	private String identifier;
 
 	/**
 	 * 描述
@@ -37,13 +44,24 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	SecurityResource() {
+	@ManyToMany(mappedBy = "securityResources")
+	private Set<Authority> authorities = new HashSet<Authority>();
 
+	SecurityResource() {
 	}
 
-	public SecurityResource(String name, boolean isValid) {
+	public SecurityResource(String name) {
 		this.name = name;
-		this.isValid = isValid;
+	}
+
+	public abstract void update();
+	
+	public void disable() {
+		disabled = false;
+	}
+
+	public void enable() {
+		disabled = true;
 	}
 
 	public String getName() {
@@ -54,22 +72,12 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 		this.name = name;
 	}
 
-
 	public String getUrl() {
 		return url;
 	}
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-
-	public boolean isValid() {
-		return isValid;
-	}
-
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
 	}
 
 	public String getDescription() {
@@ -82,11 +90,12 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 
 	@Override
 	public String[] businessKeys() {
-		return new String[] { "name","description" };
+		return new String[] { "name", "description" };
 	}
 
 	@Override
 	public String toString() {
 		return "SecurityResource [name=" + name + ", description=" + description + "]";
 	}
+
 }

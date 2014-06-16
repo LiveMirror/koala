@@ -1,5 +1,9 @@
 package org.openkoala.security.facade.util;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
@@ -43,13 +47,19 @@ public final class TransFromDomainUtils {
 		result.setDescription(permissionDTO.getPermissionName());
 		return result;
 	}
-	
+
 	public static MenuResource transFromMenuResourceBy(MenuResourceDTO menuResourceDTO) {
-		MenuResource result = new MenuResource(menuResourceDTO.getName(), menuResourceDTO.isValid());
-		result.setDescription(menuResourceDTO.getDescription());
-		result.setIcon(menuResourceDTO.getIcon());
-		result.setUrl(menuResourceDTO.getUrl());
-//		result.setChildren(new HashSet<MenuResource>(menuResourceDTO.getChildren()));
-		return result;
+		MenuResource results = new MenuResource(menuResourceDTO.getName());
+		results.setDescription(menuResourceDTO.getDescription());
+		results.setMenuIcon(menuResourceDTO.getIcon());
+		results.setUrl(menuResourceDTO.getUrl());
+		List<MenuResourceDTO> childrenDTO = menuResourceDTO.getChildren();
+		Set<MenuResource> children = new HashSet<MenuResource>();
+		if (childrenDTO.size() > 0) {
+			for (MenuResourceDTO childDTO : childrenDTO) {
+				children.add(transFromMenuResourceBy(childDTO));
+			}
+		}
+		return results;
 	}
 }

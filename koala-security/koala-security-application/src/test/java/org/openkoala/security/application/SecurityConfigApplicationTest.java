@@ -70,24 +70,24 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 		// 角色管理 role-list
 		// 权限管理 permission-list
 		// 菜单管理 menu-list
-		MenuResource securityMenuResource = new MenuResource("权限管理",Boolean.TRUE);
+		MenuResource securityMenuResource = new MenuResource("权限管理");
 		securityMenuResource.setDescription("所有的权限页面");
-		securityMenuResource.setIcon(MENUICON);
+		securityMenuResource.setMenuIcon(MENUICON);
 		
-		MenuResource userMenuResource = new MenuResource("用户管理", Boolean.TRUE);
-		userMenuResource.setIcon(MENUICON);
+		MenuResource userMenuResource = new MenuResource("用户管理");
+		userMenuResource.setMenuIcon(MENUICON);
 		userMenuResource.setUrl("/pages/auth/user-list.jsp");
 		
-		MenuResource roleMenuResource = new MenuResource("角色管理",Boolean.TRUE);
-		roleMenuResource.setIcon(MENUICON);
+		MenuResource roleMenuResource = new MenuResource("角色管理");
+		roleMenuResource.setMenuIcon(MENUICON);
 		roleMenuResource.setUrl("/pages/auth/role-list.jsp");
 		
-		MenuResource permisisonMenuResource = new MenuResource("权限管理",  Boolean.TRUE);
-		permisisonMenuResource.setIcon(MENUICON);
+		MenuResource permisisonMenuResource = new MenuResource("权限管理");
+		permisisonMenuResource.setMenuIcon(MENUICON);
 		permisisonMenuResource.setUrl("/pages/auth/permission-list.jsp");
 		
-		MenuResource menuResource = new MenuResource("菜单管理", Boolean.TRUE);
-		menuResource.setIcon(MENUICON);
+		MenuResource menuResource = new MenuResource("菜单管理");
+		menuResource.setMenuIcon(MENUICON);
 		permisisonMenuResource.setUrl("/pages/auth/menu-list.jsp");
 		
 		securityConfigApplication.createSecurityResource(securityMenuResource);

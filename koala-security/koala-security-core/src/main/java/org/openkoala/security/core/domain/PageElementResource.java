@@ -9,4 +9,10 @@ public class PageElementResource extends SecurityResource {
 
 	private static final long serialVersionUID = 8933589588651981397L;
 
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

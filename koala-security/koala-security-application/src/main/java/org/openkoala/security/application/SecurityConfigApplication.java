@@ -246,6 +246,17 @@ public interface SecurityConfigApplication {
 	 */
 	void grantActorToAuthorityInScope(Actor actor, Authority authority, Scope scope);
 
+	/**
+	 * 重置密码
+	 * 
+	 * @param user
+	 */
 	void resetPassword(User user);
+
+	/**
+	 * @param child
+	 * @param parent
+	 */
+	void createChildToParent(MenuResource child, MenuResource parent);
 
 }

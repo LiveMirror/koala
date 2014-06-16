@@ -26,12 +26,30 @@ public class MenuResourceController {
 	
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
-
+	
+	/**
+	 * 1、添加。
+	 * 2、添加子菜单。
+	 * 3、修改
+	 * 4、撤销
+	 * 5、查询
+	 * @param menuResourceDTO
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/add")
 	public Map<String, Object> add(MenuResourceDTO menuResourceDTO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.saveMenuResourceDTO(menuResourceDTO);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/addChildToParent")
+	public Map<String, Object> addChildToParent(MenuResourceDTO child,MenuResourceDTO parent) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.saveChildToParent(child,parent);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -62,18 +80,8 @@ public class MenuResourceController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/findMenuByUser",method=RequestMethod.GET)
-	public Map<String, Object> findMenuByUser() {
-		Map<String, Object> result = new HashMap<String, Object>();
-		String username = (String) SecurityUtils.getSubject().getPrincipal();
-		List<MenuResourceDTO> menuResourceDtos = securityAccessFacade.findMenuResourceDtoByUsername(username);
-		result.put("data", menuResourceDtos);
-		return result;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value="/findMenuByUserInRole",method=RequestMethod.GET)
-	public Map<String, Object> findMenuByUserInRole(RoleDTO roleDTO) {
+	@RequestMapping(value="/findAllMenusByUserAsRole",method=RequestMethod.GET)
+	public Map<String, Object> findAllMenusByUserAsRole(RoleDTO roleDTO) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
 		List<MenuResourceDTO> menuResourceDtos = securityAccessFacade.findMenuResourceDTOByUserAccountInRoleDTO(userAccount,roleDTO);

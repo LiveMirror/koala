@@ -9,15 +9,28 @@ public class MenuResourceDTO implements Serializable {
 	private static final long serialVersionUID = 3329310376086930435L;
 
 	private Long id;
+	
 	private String identifier;
+	
 	private String name;
+	
 	private String url;
+	
 	private String icon;
+	
 	private String description;
+	
 	private Long parentId;
+	
 	private boolean isValid;
+	
 	private List<MenuResourceDTO> children = new ArrayList<MenuResourceDTO>();
 
+	public MenuResourceDTO() {
+	}
+	
+	
+	
 	public Long getId() {
 		return id;
 	}

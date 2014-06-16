@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import static org.dayatang.utils.Assert.isBlank;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
@@ -28,7 +27,7 @@ public class User extends Actor {
 	private String email;
 
 	@Column(name = "ENABLED")
-	private boolean enabled;
+	private boolean disabled = false;
 
 	@Column(name = "LAST_LOGIN_TIME")
 	private Date lastLoginTime;
@@ -40,14 +39,6 @@ public class User extends Actor {
 	private String telePhone;
 
 	User() {
-	}
-
-	public void disabled() {
-		enabled = false;
-	}
-
-	public void enabled() {
-		enabled = true;
 	}
 
 	public User(String userAccount, String password, String email, String telePhone) {
@@ -65,6 +56,14 @@ public class User extends Actor {
 //		 isBlank(userAccount, "账户不能为空");
 	}
 
+	public void disable() {
+		disabled = false;
+	}
+
+	public void enable() {
+		disabled = true;
+	}
+	
 	/**
 	 * TODO 密码加密
 	 */
@@ -117,6 +116,10 @@ public class User extends Actor {
 		return Role.findByUser(getBy(userAccount));
 	}
 
+	public static Set<Permission> findAllPermissionsBy(String userAccount){
+		return Permission.findByUser(getBy(userAccount));
+	}
+	
 	@Override
 	public void update() {
 		isExisted();
@@ -177,8 +180,8 @@ public class User extends Actor {
 		this.email = email;
 	}
 
-	public Boolean getEnabled() {
-		return enabled;
+	public Boolean getDisabled() {
+		return disabled;
 	}
 
 	public boolean isSuper() {

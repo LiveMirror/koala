@@ -222,18 +222,22 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	public List<MenuResourceDTO> findMenuResourceDTOByUserAccountInRoleDTO(String userAccount, RoleDTO roleDTO) {
 		Role role = transFromRoleBy(roleDTO);
 		securityAccessApplication.checkAuthorization(userAccount, role);
-
+		
+		//1、User 的角色、2、User本身的Permission 3、角色所关联的Permission。
 		Set<Authority> authorities = new HashSet<Authority>();
 		authorities.add(role);
 		authorities.addAll(role.getPermissions());
-
+		authorities.addAll(User.findAllPermissionsBy(userAccount));
+		
 		StringBuilder jpql = new StringBuilder(
-				"SELECT _authority.securityResources FROM  Authority _authority JOIN _authority.securityResources. _securityResources");
-		jpql.append("WHEY TYPE(_securityResources) = MenuResouce");
-
+				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO() _securityResource FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
+		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
+		jpql.append(" AND _authority IN (:_authority)");
+		jpql.append(" AND _securityResource.parent IS NULL");
+		
+		
 		List<MenuResource> menuResources = getQueryChannelService().createJpqlQuery(jpql.toString()).list();
 
-		LOGGER.info("findMenuResourceDTOByUserAccountInRoleDTO:{}", new Object[] { menuResources });
 		return null;
 	}
 
