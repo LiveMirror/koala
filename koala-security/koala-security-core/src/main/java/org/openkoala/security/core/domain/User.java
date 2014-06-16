@@ -57,11 +57,11 @@ public class User extends Actor {
 	}
 
 	public void disable() {
-		disabled = false;
+		disabled = true;
 	}
 
 	public void enable() {
-		disabled = true;
+		disabled = false;
 	}
 	
 	/**

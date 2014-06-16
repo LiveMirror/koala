@@ -57,11 +57,11 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	public abstract void update();
 	
 	public void disable() {
-		disabled = false;
+		disabled = true;
 	}
 
 	public void enable() {
-		disabled = true;
+		disabled = false;
 	}
 
 	public String getName() {
