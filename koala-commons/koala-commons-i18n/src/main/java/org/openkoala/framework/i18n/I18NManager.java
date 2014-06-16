@@ -42,10 +42,7 @@ public class I18NManager {
 	 * 初始化
 	 */
 	private static void init() {
-		if (getURL() != null) {
-			File file = new File(getURL().getFile());
-			handleBasename(file, I18N_PATH);
-		}
+		handleBasename(ResourceLoaderUtils.getResource(I18N_PATH, I18NManager.class), I18N_PATH);
 	}
 	
 	/**
@@ -66,10 +63,6 @@ public class I18NManager {
 				handleBasename(f, sb + "." + f.getName());
 			}
 		}
-	}
-	
-	private static URL getURL() {
-		return ResourceLoaderUtils.getResource(I18N_PATH, I18NManager.class);
 	}
 	
 
