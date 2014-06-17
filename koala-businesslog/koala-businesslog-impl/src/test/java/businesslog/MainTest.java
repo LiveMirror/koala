@@ -1,15 +1,17 @@
 package businesslog;
 
-import business.ContractApplication;
-import business.InvoiceApplication;
-import business.ProjectApplication;
-import org.junit.Test;
-import org.openkoala.businesslog.ThreadLocalBusinessLogContext;
-
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
+
+import org.junit.Test;
+import org.openkoala.businesslog.utils.ThreadLocalBusinessLogContext;
+
+import business.ContractApplication;
+import business.InvoiceApplication;
+import business.ProjectApplication;
 
 /**
  * User: zjzhai

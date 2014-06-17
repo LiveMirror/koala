@@ -3,11 +3,13 @@ package org.openkoala.businesslog.utils;
 import org.aspectj.lang.JoinPoint;
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.businesslog.*;
+import org.openkoala.koalacommons.resourceloader.impl.classpath.ClassPathResource;
 import org.springframework.aop.ProxyMethodInvocation;
 import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.inject.Inject;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -28,6 +30,8 @@ public class BusinessLogInterceptor {
 
     private static final String LOG_ENABLE = "kaola.businesslog.enable";
 
+    private static Boolean isLogEnabled;
+    
     @Inject
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
@@ -42,7 +46,7 @@ public class BusinessLogInterceptor {
         log(joinPoint, null, error);
     }
 
-    public synchronized void log(JoinPoint joinPoint, Object result, Throwable error) {
+    public void log(JoinPoint joinPoint, Object result, Throwable error) {
 
         String BLMappingValue = getBLMapping(joinPoint);
 
@@ -64,15 +68,17 @@ public class BusinessLogInterceptor {
         } else {
             getThreadPoolTaskExecutor().execute(businessLogThread);
         }
-
-
     }
 
     private boolean isLogEnabled() {
+    	if (isLogEnabled != null) {
+    		return isLogEnabled;
+    	}
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream(getClass().getResource("/" + BUSINESS_LOG_CONFIG_PROPERTIES_NAME).getFile()));
-            return Boolean.valueOf(properties.getProperty(LOG_ENABLE, "true"));
+            properties.load(new FileInputStream(new ClassPathResource(BUSINESS_LOG_CONFIG_PROPERTIES_NAME).getFile()));
+            isLogEnabled = Boolean.valueOf(properties.getProperty(LOG_ENABLE, "true"));
+            return isLogEnabled;
         } catch (IOException e) {
             throw new KoalaBusinessLogConfigException("failure when read " + BUSINESS_LOG_CONFIG_PROPERTIES_NAME, e);
         }

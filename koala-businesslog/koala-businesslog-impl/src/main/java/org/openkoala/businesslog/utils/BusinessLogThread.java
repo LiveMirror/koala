@@ -1,18 +1,17 @@
 package org.openkoala.businesslog.utils;
 
-import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
-import org.codehaus.groovy.runtime.GStringImpl;
-import org.openkoala.businesslog.*;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.openkoala.businesslog.ContextKeyConstant.BUSINESS_METHOD;
+import org.codehaus.groovy.runtime.GStringImpl;
+import org.openkoala.businesslog.BusinessLog;
+import org.openkoala.businesslog.BusinessLogBaseException;
+import org.openkoala.businesslog.BusinessLogExporter;
+import org.openkoala.businesslog.KoalaBusinessLogConfigException;
 
 /**
  * 日志处理线程
@@ -25,10 +24,6 @@ public class BusinessLogThread implements Runnable {
     private static final String LOG_KEY = "log";
 
     private static final String CATEGORY_KEY = "category";
-
-    private static final String STANDALONE_GROOVY_CONFIG_NAME = "/BusinessLogConfig.groovy";
-
-    private static final String GROOVY_CONFIG_DIR = "/businessLogConfig";
 
     private Map<String, Object> context;
 
@@ -79,26 +74,15 @@ public class BusinessLogThread implements Runnable {
     }
 
     private GroovyObject getGroovyConfig(String businessMethod) throws IOException {
+    	GroovyObjectClassCache groovyObjectClassCache = new GroovyObjectClassCache();
+    	
+        if (groovyObjectClassCache.isStandaloneConfig()) return getGroovyObject(groovyObjectClassCache.getStandaloneGroovyObjectClass());
 
-        if (isStandaloneConfig()) return getGroovyObject(getGroovyClass(getStandaloneConfigFile()));
-
-        if (getClass().getResource(GROOVY_CONFIG_DIR) == null)
-            throw new KoalaBusinessLogConfigException("Not found any businesslog config, you need a " + STANDALONE_GROOVY_CONFIG_NAME + " or businessLogConfig director");
-
-        File configDir = new File(getClass().getResource(GROOVY_CONFIG_DIR).getFile());
-
-        if (!configDir.exists() || !configDir.isDirectory())
-            throw new KoalaBusinessLogConfigException("Not found any businesslog config, you need a " + STANDALONE_GROOVY_CONFIG_NAME + " or businessLogConfig director");
-
-
-        for (File each : configDir.listFiles(new GroovyFileNameFilter())) {
+        for (Class each : groovyObjectClassCache.getGroovyObjectClasses()) {
             try {
+                if (each.getMethod(businessMethod) == null) continue;
 
-                Class clazz = getGroovyClass(each);
-
-                if (getGroovyClass(each).getMethod(businessMethod) == null) continue;
-
-                return getGroovyObject(clazz);
+                return getGroovyObject(each);
 
             } catch (NoSuchMethodException e) {
                 continue;
@@ -108,26 +92,7 @@ public class BusinessLogThread implements Runnable {
         return null;
     }
 
-    private boolean isStandaloneConfig() {
-        return getStandaloneConfigFile() != null && getStandaloneConfigFile().exists();
-    }
-
-    private File getStandaloneConfigFile() {
-        if (getClass().getResource(STANDALONE_GROOVY_CONFIG_NAME) == null) return null;
-
-        return new File(getClass().getResource(STANDALONE_GROOVY_CONFIG_NAME).getFile());
-    }
-
-
-    private Class getGroovyClass(File configFile) {
-        try {
-            return new GroovyClassLoader(getClass().getClassLoader()).parseClass(configFile);
-        } catch (IOException e) {
-            throw new KoalaBusinessLogConfigException("There's a failure when read BusinesslogConfig.groovy", e);
-        }
-    }
-
-    private GroovyObject getGroovyObject(Class clazz) {
+	private GroovyObject getGroovyObject(Class clazz) {
         try {
             if (null == clazz) throw new KoalaBusinessLogConfigException("The config must be a groovy class");
 
@@ -136,14 +101,6 @@ public class BusinessLogThread implements Runnable {
             throw new KoalaBusinessLogConfigException("InstantiationException", e);
         } catch (IllegalAccessException e) {
             throw new KoalaBusinessLogConfigException("IllegalAccessException", e);
-        }
-    }
-
-    private class GroovyFileNameFilter implements FilenameFilter {
-
-        @Override
-        public boolean accept(File dir, String name) {
-            return name.endsWith(".groovy");
         }
     }
 

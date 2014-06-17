@@ -129,7 +129,7 @@
     <build>
         <finalName>koala-businesslog</finalName>
         <plugins>
-            <plugin>
+            <!-- <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <version>1.4.6</version>
@@ -184,7 +184,7 @@
                         </deployable>
                     </deployables>
                 </configuration>
-            </plugin>
+            </plugin> -->
             <!--<plugin>
                 <groupId>com.lazerycode.jmeter</groupId>
                 <artifactId>jmeter-maven-plugin</artifactId>
