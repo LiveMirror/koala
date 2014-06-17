@@ -1,0 +1,116 @@
+package org.openkoala.security.application.impl;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.inject.Named;
+
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.QueryChannelService;
+import org.openkoala.security.application.SecurityAccessApplication;
+import org.openkoala.security.core.domain.Actor;
+import org.openkoala.security.core.domain.Authority;
+import org.openkoala.security.core.domain.Authorization;
+import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.Permission;
+import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.SecurityResource;
+import org.openkoala.security.core.domain.User;
+import org.springframework.transaction.annotation.Transactional;
+
+@Named
+@Transactional
+public class SecurityAccessApplicationImpl implements SecurityAccessApplication {
+
+
+	private QueryChannelService queryChannelService;
+
+	public QueryChannelService getQueryChannelService() {
+		if (queryChannelService == null) {
+			queryChannelService = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel");
+		}
+		return queryChannelService;
+	}
+
+	public boolean hasPermission(User user) {
+		return false;
+	}
+
+	public boolean canAccessSecurityResource(User user, SecurityResource securityResource) {
+		return false;
+	}
+
+	public Set<Role> findAllRolesByUserAccount(String userAccount) {
+		return User.findAllRolesBy(userAccount);
+	}
+
+	public Set<Permission> findAllPermissionsByUserAccount(String userAccount) {
+		return Authorization.findAllPermissionsByUserAccount(getUserBy(userAccount));
+	}
+
+	public User getUserBy(Long userId) {
+		return Actor.get(User.class, userId);
+	}
+
+	public User getUserBy(String userAccount) {
+		return User.getBy(userAccount);
+	}
+
+	public Set<MenuResource> findMenuResourceByUserAccount(String userAccount) {
+		User user = getUserBy(userAccount);
+		Set<Authority> authorities = Authorization.findAuthoritiesByActor(user);
+		Set<MenuResource> result = Authority.findMenuResourceByAuthorities(authorities);
+		return result;
+	}
+
+	@Override
+	public void updateActor(Actor actor) {
+		actor.update();
+	}
+
+	@Override
+	public boolean updatePassword(User user, String oldUserPassword) {
+		return user.updatePassword(oldUserPassword);
+	}
+
+	@Override
+	public void checkAuthorization(String userAccount, Role role) {
+		User user = getUserBy(userAccount);
+		Authorization.checkAuthorization(user, role);
+	}
+
+	public List findMenuResourceDTOByUserAccountInRoleDTO(String userAccount, Role role) {
+//		checkAuthorization(userAccount, role);
+		Set<Authority> authorities = new HashSet<Authority>();
+		authorities.add(role);
+		authorities.addAll(role.getPermissions());
+
+		/*StringBuilder jpql = new StringBuilder(
+				"SELECT DISTINCT _authority.securityResources FROM  Authority _authority JOIN _authority.securityResources _securityResources");
+		jpql.append(" WHERE TYPE(_securityResources) = MenuResource");
+		jpql.append(" AND _authority IN (:_authority)");
+		jpql.append(" AND _securityResources.parent IS NULL");*/
+		StringBuilder jpql = new StringBuilder(
+				"SELECT _securityResource FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
+		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
+		jpql.append(" AND _authority IN (:_authority)");
+		jpql.append(" AND _securityResource.parent IS NULL");
+		
+		
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("_authority", authorities);
+		List menuResources = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(map).list();
+
+		return menuResources;
+	}
+
+	@Override
+	public Role getRoleBy(Long roleId) {
+		return Role.get(Role.class, roleId);
+	}
+
+}

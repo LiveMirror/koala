@@ -40,10 +40,15 @@ var resourceManager = function(){
 	/*
 	 删除方法
 	 */
-	var deleteItem = function(resource, grid){
+	var deleteItem = function(resources, grid){
 		var data = {};
-		data['resourceVO.id'] = resource.id;
-		data['resourceVO.identifier'] = resource.identifier;
+		
+		for(var i = 0,j = resources.length; i < j; i++){
+			var resource = resources[i];
+			data['resourceVOs['+i+'].id'] = resource.id;
+			data['resourceVOs['+i+'].identifier'] = resource.identifier;
+		}
+		
 		dataGrid = grid;
 		$.post(baseUrl + 'del.koala', data).done(function(data){
 			if(data.result == 'success'){

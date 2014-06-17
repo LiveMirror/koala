@@ -42,9 +42,12 @@ var menuManager = function(){
 	/*
 	 删除方法
 	 */
-	var deleteItem = function(resource, grid){
+	var deleteItem = function(menus, grid){
 		var data = {};
-		data['resVO.id'] = resource.id;
+		for(var i = 0,j = menus.length; i < j; i++){
+			var menu = menus[i];
+			data['menus['+i+'].id'] = menu.id;
+		}
 		dataGrid = grid;
 		$.post(baseUrl + 'del.koala', data).done(function(data){
 			if(data.result == 'success'){

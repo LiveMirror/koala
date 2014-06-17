@@ -86,6 +86,7 @@
 					})
 					return;
 				}
+				/*
 				if (indexs.length > 1) {
 					$this.message({
 						type : 'warning',
@@ -93,10 +94,11 @@
 					})
 					return;
 				}
-				$this.confirm({
+				*/
+ 				$this.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
-						resourceManager().deleteItem(data.item[0], $this);
+						resourceManager().deleteItem(data.item, $this);
 					}
 				});
 			}
