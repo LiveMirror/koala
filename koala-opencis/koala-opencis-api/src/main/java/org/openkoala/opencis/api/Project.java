@@ -3,6 +3,7 @@ package org.openkoala.opencis.api;
 import org.apache.commons.lang3.StringUtils;
 import org.openkoala.opencis.ProjectValidateFailureException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class Project {
 
     private String description;
 
-    private List<Developer> developers;
+    private List<Developer> developers = new ArrayList<Developer>();
 
     public boolean validate() {
         if (projectName.length() < 2) {
@@ -103,7 +104,11 @@ public class Project {
     }
 
     public void setDevelopers(List<Developer> developers) {
-        this.developers = developers;
+        if (developers == null) {
+            this.developers.clear();
+            return;
+        }
+        this.developers = new ArrayList<Developer>(developers);
     }
 
 

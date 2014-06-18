@@ -189,7 +189,7 @@ public interface SecurityConfigApplication {
 
 	/**
 	 * 
-	 * @param menuResource
+	 * @param menuResources
 	 * @param toParent
 	 */
 	void createMenuResourceUnderParent(Set<MenuResource> menuResources, MenuResource toParent);
@@ -233,7 +233,7 @@ public interface SecurityConfigApplication {
 	/**
 	 * 创建范围
 	 * 
-	 * @param organizationScope
+	 * @param scope
 	 */
 	void createScope(Scope scope);
 
