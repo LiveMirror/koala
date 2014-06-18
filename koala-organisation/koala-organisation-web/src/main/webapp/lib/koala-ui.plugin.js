@@ -288,6 +288,7 @@
 				self._loadData();
 			});
 		},
+		
 		/*
 		 *加载数据
 		 */
@@ -330,50 +331,53 @@
 				}
 				return;
 			}
+			
 			$.ajax({
 				type : this.options.method,
 				url : this.options.url,
 				data : params,
-				dataType : 'json'
-			}).done(function(result) {
-				if (!result.data) {
+				dataType : 'text json',
+				success : function(result){
+					if (!result.data) {
+						self.$element.message({
+							type : 'error',
+							content : '查询失败'
+						});
+						self.$element.trigger('complate');
+						self.gridTableBody.loader('hide');
+						return;
+					}
+					self.startRecord.text(result.start + 1);
+					self.endRecord.text(result.start + result.pageSize);
+					self.totalRecordHtml.text(result.resultCount);
+					//self._initPageNo(result.Total)
+					self.items = result.data;
+					self.totalRecord = result.resultCount;
+					if (result.data.length == 0) {
+						self.pages.hide();
+						self.gridTableBodyTable.empty();
+						self.gridTableBody.find('[data-role="noData"]').remove();
+						self.gridTableBody.append($('<div data-role="noData" style="font-size:16px ; padding: 20px; width:' + self.gridTableBodyTable.width() + 'px;">' + self.options.noDataText + '</div>'));
+						self.gridTableBody.loader('hide');
+						self.$element.trigger('complate');
+					} else {
+						self.pages.show();
+						self.gridTableBody.find('[data-role="noData"]').remove();
+						self.renderDatas();
+					}
+					self.$element.trigger('complateRenderData', result);
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown){
+					console.log(XMLHttpRequest.readyState);
 					self.$element.message({
 						type : 'error',
 						content : '查询失败'
 					});
-					self.$element.trigger('complate');
-					self.gridTableBody.loader('hide');
 					return;
 				}
-				self.startRecord.text(result.start + 1);
-				self.endRecord.text(result.start + result.pageSize);
-				self.totalRecordHtml.text(result.resultCount);
-				//self._initPageNo(result.Total)
-				self.items = result.data;
-				self.totalRecord = result.resultCount;
-				if (result.data.length == 0) {
-					self.pages.hide();
-					self.gridTableBodyTable.empty();
-					self.gridTableBody.find('[data-role="noData"]').remove();
-					self.gridTableBody.append($('<div data-role="noData" style="font-size:16px ; padding: 20px; width:' + self.gridTableBodyTable.width() + 'px;">' + self.options.noDataText + '</div>'));
-					self.gridTableBody.loader('hide');
-					self.$element.trigger('complate');
-				} else {
-					self.pages.show();
-					self.gridTableBody.find('[data-role="noData"]').remove();
-					self.renderDatas();
-				}
-				self.$element.trigger('complateRenderData', result);
-			}).fail(function(result) {
-				self.$element.message({
-					type : 'error',
-					content : '查询失败'
-				});
-				self.$element.trigger('complate');
-				self.gridTableBody.loader('hide');
-				return;
 			});
 		},
+		
 		update : function(result){
 			var self = this;
 			if (!result.data) {
@@ -745,92 +749,6 @@
 			self.gridTableBodyTable.empty();
 			self.renderDatas();
 		},
-		/*直接插入，不刷新*/
-		insertRowsDirectly : function(items){
-			var self = this;
-			if (!self.items) {
-				self.items = new Array();
-			}
-			if (items.length) {
-				$.each(items, function() {
-					self.items.push(this);
-					self.itemsMap[this[self.options.identity], this];
-				});
-			} else {
-				self.items.push(items);
-				self.itemsMap[items[this.options.identity]] = items;
-			}
-			
-			var trHtmls = new Array();
-			for (var i = 0, j = items.length; i < j; i++) {
-				var item = items[i];
-
-				self.itemsMap[item[self.options.identity]] = item;
-				var trHtml = new Array();
-				if (self.options.tree && self.options.tree.column) {
-					trHtml.push('<tr data-level=' + item.level + ' data-children=' + self.getChildrenCount(0, item.children) + '>');
-				} else {
-					trHtml.push('<tr>');
-				}
-				if (this.options.isShowIndexCol) {
-					trHtml.push('<td width="50px;"><div class="checkerbox" indexValue="' + i + '" data-role="indexCheckbox" data-value="' + item[this.options.identity] + '"></div></td>');
-				} else {
-					trHtml.push('<td width="50px;" style="display:none"><div class="checkerbox" indexValue="' + i + '" data-role="indexCheckbox" data-value="' + item[this.options.identity] + '"></div></td>');
-				}
-				for (var k = 0, h = this.options.columns.length; k < h; k++) {
-					var column = this.options.columns[k];
-					var width = column.width.toString();
-					if (width.match(self.widthRgExp)) {
-						width = width.replace('px', '');
-						width = self.scale*parseInt(width) + 'px';
-					}
-					trHtml.push('<td index="' + k + '" width="' + width + '"');
-					if (column.align) {
-						trHtml.push(' align="' + column.align + '"');
-					}
-					trHtml.push('>');
-					if (self.options.tree && self.options.tree.column && self.options.tree.column == column.name) {
-						trHtml.push('<div class="grid-tree-space" style="padding-left:' + (parseInt(item.level) - 1) * 10 + 'px;"><span data-role="grid-tree-icon" class="glyphicon glyphicon-folder-open open"></span></div>&nbsp;&nbsp;');
-					}
-					if (column.render) {
-						trHtml.push(column.render(item, column.name, i, k));
-					} else {
-						trHtml.push(item[column.name]);
-					}
-					trHtml.push('</td>');
-				}
-				trHtml.push('</tr>');
-				trHtmls.push(trHtml.join(''));
-			}
-			this.gridTableBodyTable.append(trHtmls.join(''));
-			return this.$element;
-		},
-		
-		/*直接删除，不刷新*/
-		removeRowsDirectly : function(indexs){
-			var thiz = this;
-			
-			/*同步维护数据：以下*/
-			if(indexs.length){
-				$.each(indexs, function() {
-					delete thiz.itemsMap[this];
-				});
-			}else{
-				delete thiz.itemsMap[indexs];
-			}
-			this.items = [];
-			for (var prop in thiz.itemsMap) {
-				thiz.items.push(thiz.itemsMap[prop]);
-			}
-			/*同步维护数据：以上*/
-			
-			/*删除行*/
-			$.each(indexs,function(i,t){
-				thiz.gridTableBodyTable.find('[data-value="' + t + '"]').parent().parent().remove();
-			});
-		},
-		
-		
 		getIndexByIdentityValue : function(value) {
 			return this.gridTableBodyTable.find('[data-value="' + value + '"]').closest('tr').index();
 		},
