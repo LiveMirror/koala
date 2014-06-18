@@ -28,6 +28,8 @@ public class BusinessLogInterceptor {
 
     private static final String LOG_ENABLE = "kaola.businesslog.enable";
 
+    private static Boolean isLogEnabled;
+    
     @Inject
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
@@ -42,7 +44,7 @@ public class BusinessLogInterceptor {
         log(joinPoint, null, error);
     }
 
-    public synchronized void log(JoinPoint joinPoint, Object result, Throwable error) {
+    public void log(JoinPoint joinPoint, Object result, Throwable error) {
 
         String BLMappingValue = getBLMapping(joinPoint);
 
@@ -64,15 +66,17 @@ public class BusinessLogInterceptor {
         } else {
             getThreadPoolTaskExecutor().execute(businessLogThread);
         }
-
-
     }
 
     private boolean isLogEnabled() {
+    	if (isLogEnabled != null) {
+    		return isLogEnabled;
+    	}
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream(getClass().getResource("/" + BUSINESS_LOG_CONFIG_PROPERTIES_NAME).getFile()));
-            return Boolean.valueOf(properties.getProperty(LOG_ENABLE, "true"));
+            properties.load(new FileInputStream(getClass().getClassLoader().getResource(BUSINESS_LOG_CONFIG_PROPERTIES_NAME).getFile()));
+            isLogEnabled = Boolean.valueOf(properties.getProperty(LOG_ENABLE, "true"));
+            return isLogEnabled;
         } catch (IOException e) {
             throw new KoalaBusinessLogConfigException("failure when read " + BUSINESS_LOG_CONFIG_PROPERTIES_NAME, e);
         }

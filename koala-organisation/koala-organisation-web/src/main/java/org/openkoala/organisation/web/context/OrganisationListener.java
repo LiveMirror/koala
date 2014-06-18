@@ -24,7 +24,7 @@ private OrganizationApplication organizationApplication;
 	
 	private void initTopOrganizationIfNecessary(ServletContextEvent event) {
 		
-		if (getOrganizationApplication().isTopOrganizationExists()==false) {
+		if (!getOrganizationApplication().isTopOrganizationExists()) {
 			getOrganizationApplication().createAsTopOrganization(newTopOrganization());
 		}
 		
