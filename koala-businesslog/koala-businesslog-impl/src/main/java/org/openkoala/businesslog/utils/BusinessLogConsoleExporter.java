@@ -1,12 +1,7 @@
 package org.openkoala.businesslog.utils;
 
-import org.dayatang.domain.InstanceFactory;
 import org.openkoala.businesslog.BusinessLog;
 import org.openkoala.businesslog.BusinessLogExporter;
-import org.openkoala.businesslog.application.BusinessLogApplication;
-import org.openkoala.businesslog.model.DefaultBusinessLog;
-
-import javax.inject.Inject;
 
 /**
  * 日志导出器默认实现
