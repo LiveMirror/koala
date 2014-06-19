@@ -10,6 +10,8 @@ var resourceManager = function(){
 	var opreate = null;
 	var parentId = null;
 	var parentLevel = null;
+	$.ajaxSetup({cache:false});
+	
 	/*
 	 *新增
 	 */
