@@ -558,7 +558,7 @@
 					}
 					trHtml.push('>');
 					if (self.options.tree && self.options.tree.column && self.options.tree.column == column.name) {
-						trHtml.push('<div class="grid-tree-space" style="padding-left:' + (parseInt(item.level) - 1) * 10 + 'px;"><span data-role="grid-tree-icon" class="glyphicon glyphicon-folder-open open"></span></div>&nbsp;&nbsp;');
+						trHtml.push('<div class="grid-tree-space" style="padding-left:' + (parseInt(item.level) - 1) * 25 + 'px;"><span data-role="grid-tree-icon" class="glyphicon glyphicon-folder-open open"></span></div>&nbsp;&nbsp;');
 					}
 					if (column.render) {
 						trHtml.push(column.render(item, column.name, i, k));
