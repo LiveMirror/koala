@@ -1,6 +1,5 @@
 package org.openkoala.security.application;
 
-import java.util.List;
 import java.util.Set;
 
 import org.openkoala.security.core.domain.Actor;
@@ -91,5 +90,9 @@ public interface SecurityAccessApplication {
 	 * @param role
 	 */
 	void checkAuthorization(String userAccount, Role role);
+
+	Permission getPermissionBy(Long permissionId);
+
+	MenuResource getMenuResourceBy(Long menuResourceId);
 
 }

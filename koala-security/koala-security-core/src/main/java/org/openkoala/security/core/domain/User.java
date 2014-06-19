@@ -155,6 +155,9 @@ public class User extends Actor {
 		return false;
 	}
 
+	/**
+	 * TODO 密码加密
+	 */
 	public void resetPassword() {
 		User user = User.get(User.class, this.getId());
 		user.setPassword(this.getPassword());

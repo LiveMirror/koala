@@ -175,13 +175,6 @@ public interface SecurityConfigApplication {
 
 	/**
 	 * 
-	 * @param actors
-	 * @param authority
-	 */
-	void terminateActorsFromAuthority(List<Actor> actors, Authority authority);
-
-	/**
-	 * 
 	 * @param authorities
 	 * @param actor
 	 */

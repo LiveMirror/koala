@@ -133,19 +133,13 @@ public class Authorization extends SecurityAbstractEntity {
 	 * @param user
 	 * @return
 	 */
-	/*public static Set<Permission> findAllPermissionsByUserAccount(User user) {
-		Set<Permission> results = new HashSet<Permission>();
-		Set<Authorization> authorizations = findAuthorizationsByActor(user);
-		for (Authorization authorization : authorizations) {
-			Authority authority = authorization.getAuthority();
-			if (authority instanceof Permission) {
-				results.add((Permission) authority);
-			} else {
-				results.addAll(((Role) authority).getPermissions());
-			}
-		}
-		return results;
-	}*/
+	/*
+	 * public static Set<Permission> findAllPermissionsByUserAccount(User user) { Set<Permission> results = new
+	 * HashSet<Permission>(); Set<Authorization> authorizations = findAuthorizationsByActor(user); for (Authorization
+	 * authorization : authorizations) { Authority authority = authorization.getAuthority(); if (authority instanceof
+	 * Permission) { results.add((Permission) authority); } else { results.addAll(((Role) authority).getPermissions());
+	 * } } return results; }
+	 */
 
 	/**
 	 * TODO 异常信息
@@ -158,7 +152,7 @@ public class Authorization extends SecurityAbstractEntity {
 			throw new AuthorizationIsNotExisted();
 		}
 	}
-	
+
 	public Actor getActor() {
 		return actor;
 	}
@@ -186,6 +180,22 @@ public class Authorization extends SecurityAbstractEntity {
 	@Override
 	public String toString() {
 		return "Authorization [actor=" + actor + ", authority=" + authority + ", scope=" + scope + "]";
+	}
+
+	/**
+	 * TODO 检查是否有
+	 * @param actor
+	 * @param authority
+	 * @return
+	 */
+	public static Authorization findByActorInAuthority(Actor actor, Authority authority) {
+		Authorization authorization = getRepository()//
+				.createCriteriaQuery(Authorization.class)//
+				.eq("actor", actor)//
+				.eq("authority", authority)//
+				.singleResult();
+		
+		return authorization;
 	}
 
 }

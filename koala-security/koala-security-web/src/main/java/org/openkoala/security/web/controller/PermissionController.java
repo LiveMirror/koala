@@ -59,10 +59,10 @@ public class PermissionController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/pagingQueryByUserAccount")
-	public Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int currentPage, int pageSize){
-		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByUserAccount(currentPage,pageSize,userAccount);
+	@RequestMapping("/pagingQueryByUserId")
+	public Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int currentPage, int pageSize,Long userId){
+//		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByUserAccount(currentPage,pageSize,userId);
 		return results;
 	}
 }

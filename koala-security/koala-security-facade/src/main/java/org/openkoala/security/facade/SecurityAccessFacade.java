@@ -113,12 +113,12 @@ public interface SecurityAccessFacade {
 
 	List<OrganizationScopeDTO> findAllOrganizationScopesTree();
 
-	Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition, String userAccount);
+	Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition, Long userId);
 
-	Page<PermissionDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, PermissionDTO queryPermissionCondition,String userAccount);
+	Page<PermissionDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, PermissionDTO queryPermissionCondition,Long userId);
 
-	Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int currentPage, int pageSize, String userAccount);
+	Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int currentPage, int pageSize, Long userId);
 
-	Page<RoleDTO> pagingQueryRolesByUserAccount(int currentPage, int pageSize, String userAccount);
+	Page<RoleDTO> pagingQueryRolesByUserAccount(int currentPage, int pageSize, Long userId);
 
 }

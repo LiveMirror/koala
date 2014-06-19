@@ -1,9 +1,5 @@
 package org.openkoala.security.application.impl;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -24,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Named
 @Transactional
 public class SecurityAccessApplicationImpl implements SecurityAccessApplication {
-
 
 	private QueryChannelService queryChannelService;
 
@@ -85,6 +80,16 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	@Override
 	public Role getRoleBy(Long roleId) {
 		return Role.get(Role.class, roleId);
+	}
+
+	@Override
+	public Permission getPermissionBy(Long permissionId) {
+		return Permission.get(Permission.class, permissionId);
+	}
+
+	@Override
+	public MenuResource getMenuResourceBy(Long menuResourceId) {
+		return MenuResource.get(MenuResource.class, menuResourceId);
 	}
 
 }

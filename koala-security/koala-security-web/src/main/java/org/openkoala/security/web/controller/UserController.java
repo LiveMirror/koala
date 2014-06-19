@@ -1,7 +1,6 @@
 package org.openkoala.security.web.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -25,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /***
- * 1：登陆 、 2：添加 、 3：解除、 4：分页查询 5：重置密码 6：退出 TODO 7：授权角色 查找已经拥有的角色 查找没有分配的角色 8：授权权限
- * 
  * @author luzhao
  * 
  */
@@ -169,6 +166,8 @@ public class UserController {
 	 * @param userId
 	 * @return
 	 */
+	@ResponseBody
+	@RequestMapping("/resetPassword")
 	public Map<String, Object> resetPassword(Long userId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		UserDTO userDTO = new UserDTO();
@@ -187,15 +186,56 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/logout")
 	public Map<String, Object> logout() {
-		Map<String, Object> results = new HashMap<String, Object>();
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		SecurityUtils.getSubject().logout();
-		results.put("success", Boolean.TRUE);
-		results.put("message", "成功退出");
-		return results;
+		dataMap.put("success", true);
+		dataMap.put("message", "成功退出");
+		return dataMap;
 	}
 
+	//激活 
 	@ResponseBody
-	@RequestMapping("grantRole")
+	@RequestMapping("/activate")
+	public Map<String,Object> activate(Long userId){
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.activate(userId);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+	
+	//挂起
+	@ResponseBody
+	@RequestMapping("/suspend")
+	public Map<String,Object> suspend(Long userId){
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.suspend(userId);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+	
+	//批量激活 
+	@ResponseBody
+	@RequestMapping("/activate")
+	public Map<String,Object> activate(Long[] userIds){
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.activate(userIds);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+	
+	//批量挂起
+	@ResponseBody
+	@RequestMapping("/suspend")
+	public Map<String,Object> suspend(Long[] userIds){
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.suspend(userIds);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+	
+	//======================添加授权=======================
+	@ResponseBody
+	@RequestMapping("/grantRole")
 	public Map<String, Object> grantRole(Long userId, Long roleId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.grantRole(userId, roleId);
@@ -204,7 +244,7 @@ public class UserController {
 	}
 
 	@ResponseBody
-	@RequestMapping("grantRoles")
+	@RequestMapping("/grantRoles")
 	public Map<String, Object> grantRoles(Long userId, Long[] roleIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.grantRoles(userId, roleIds);
@@ -213,7 +253,7 @@ public class UserController {
 	}
 
 	@ResponseBody
-	@RequestMapping("grantPermission")
+	@RequestMapping("/grantPermission")
 	public Map<String, Object> grantPermission(Long userId, Long permissionId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.grantPermission(userId, permissionId);
@@ -222,7 +262,7 @@ public class UserController {
 	}
 
 	@ResponseBody
-	@RequestMapping("grantPermissions")
+	@RequestMapping("/grantPermissions")
 	public Map<String, Object> grantPermissions(Long userId, Long[] permissionIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.grantPermissions(userId, permissionIds);
@@ -230,6 +270,47 @@ public class UserController {
 		return dataMap;
 	}
 
+	//=================撤销授权================
+	//撤销授权的角色
+	@ResponseBody
+	@RequestMapping("/terminateAuthorizationByRole")
+	public Map<String,Object> terminateAuthorizationByRole(Long userId, Long roleId){
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.terminateAuthorizationByRole(userId,roleId);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+	
+	//撤销授权的权限
+	@ResponseBody
+	@RequestMapping("/terminateAuthorizationByPermission")
+	public Map<String,Object> terminateAuthorizationByPermission(Long userId, Long permissionId){
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.terminateAuthorizationByPermission(userId,permissionId);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+	
+	//批量撤销授权的角色
+	@ResponseBody
+	@RequestMapping("/terminateAuthorizationsByRoles")
+	public Map<String,Object> terminateAuthorizationsByRoles(Long userId, Long[] roleIds){
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.terminateAuthorizationsByRoles(userId,roleIds);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+	
+	//批量撤销授权的权限
+	@ResponseBody
+	@RequestMapping("/terminateAuthorizationsByPermissions")
+	public Map<String,Object> terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds){
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.terminateAuthorizationsByPermissions(userId,permissionIds);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+	
 	/**
 	 * 根据条件分页查询没有授权的角色
 	 * 
@@ -240,17 +321,17 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
-	public Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize,RoleDTO queryRoleCondition){
-		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(currentPage,pageSize,queryRoleCondition,userAccount);
+	public Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize,RoleDTO queryRoleCondition,Long userId){
+//		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(currentPage,pageSize,queryRoleCondition,userId);
 		return results;
 	}
 
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissions")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int currentPage, int pageSize,PermissionDTO queryPermissionCondition) {
-		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(currentPage,pageSize,queryPermissionCondition,userAccount);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int currentPage, int pageSize,PermissionDTO queryPermissionCondition,Long userId) {
+//		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(currentPage,pageSize,queryPermissionCondition,userId);
 		return results;
 	}
 

@@ -36,10 +36,10 @@ public class RoleController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/pagingQueryByUserAccount")
-	public Page<RoleDTO> pagingQueryRolesByUserAccount(int currentPage, int pageSize){
-		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(currentPage,pageSize,userAccount);
+	@RequestMapping("/pagingQueryByUserId")
+	public Page<RoleDTO> pagingQueryRolesByUserAccount(int currentPage, int pageSize,Long userId){
+//		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(currentPage,pageSize,userId);
 		return results;
 	}
 
@@ -92,5 +92,49 @@ public class RoleController {
 		Page<RoleDTO> results = securityAccessFacade.pagingQueryRoles(currentPage, pageSize, roleDTO);
 		return results;
 	}
+	
+	// ===========分配资源=============
+
+	// 分配菜单资源
+	public Map<String, Object> grantMenuResources(Long roleId,Long[] menuResourceIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantMenuResources(roleId,menuResourceIds);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	// TODO 
+	// 分配页面元素资源
+	public Map<String, Object> grantPageElementResources(Long roleId,Long[] menuResourceIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantPageElementResources(roleId,menuResourceIds);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	// 分配URL资源
+	public Map<String, Object> grantUrlAccessResources(Long roleId,Long[] menuResourceIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantUrlAccessResources(roleId,menuResourceIds);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	// 分配方法级别资源
+	public Map<String, Object> grantMethodInvocationResources(Long roleId,Long[] menuResourceIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantMethodInvocationResources(roleId,menuResourceIds);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	// 分配权限Permission
+	public Map<String, Object> grantPermissions(Long roleId,Long[] menuResourceIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantPermissions(menuResourceIds);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+	
 	
 }

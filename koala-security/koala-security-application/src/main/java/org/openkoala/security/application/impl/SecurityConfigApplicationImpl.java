@@ -31,19 +31,12 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		actor.remove();
 	}
 
-	public void resetPassword() {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void suspendUser(User user) {
-		// TODO Auto-generated method stub
-
+		user.disable();
 	}
 
 	public void activateUser(User user) {
-		// TODO Auto-generated method stub
-
+		user.enable();
 	}
 
 	public void createAuthority(Authority authority) {
@@ -136,18 +129,13 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void terminateActorFromAuthority(Actor actor, Authority authority) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void terminateActorsFromAuthority(List<Actor> actors, Authority authority) {
-		// TODO Auto-generated method stub
-
+		Authorization.findByActorInAuthority(actor,authority).remove();
 	}
 
 	public void terminateAuthoritiesFromActor(List<Authority> authorities, Actor actor) {
-		// TODO Auto-generated method stub
-
+		for (Authority authority : authorities) {
+			this.terminateActorFromAuthority(actor, authority);
+		}
 	}
 
 	public void updateMenuResources(List<MenuResource> menuResources) {

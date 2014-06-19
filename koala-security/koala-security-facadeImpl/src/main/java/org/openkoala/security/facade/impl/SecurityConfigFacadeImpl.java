@@ -8,6 +8,8 @@ import javax.inject.Named;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.core.domain.Actor;
+import org.openkoala.security.core.domain.Authorization;
+import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.User;
@@ -25,7 +27,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Inject
 	private SecurityConfigApplication securityConfigApplication;
-	
+
 	@Inject
 	private SecurityAccessApplication securityAccessApplication;
 
@@ -107,7 +109,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void saveChildToParent(MenuResourceDTO child, Long parentId) {
-		securityConfigApplication.createChildToParent(transFromMenuResourceBy(child),parentId);
+		securityConfigApplication.createChildToParent(transFromMenuResourceBy(child), parentId);
 	}
 
 	@Override
@@ -178,6 +180,99 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		for (Long permissionId : permissionIds) {
 			grantPermission(userId, permissionId);
 		}
+	}
+
+	@Override
+	public void activate(Long userId) {
+		User user = securityAccessApplication.getUserBy(userId);
+		securityConfigApplication.activateUser(user);
+	}
+
+	@Override
+	public void suspend(Long userId) {
+		User user = securityAccessApplication.getUserBy(userId);
+		securityConfigApplication.suspendUser(user);
+	}
+
+	@Override
+	public void activate(Long[] userIds) {
+		for (Long userId : userIds) {
+			this.activate(userId);
+		}
+	}
+
+	@Override
+	public void suspend(Long[] userIds) {
+		for (Long userId : userIds) {
+			this.suspend(userId);
+		}
+	}
+
+	@Override
+	public void terminateAuthorizationByRole(Long userId, Long roleId) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		User user = securityAccessApplication.getUserBy(userId);
+		securityConfigApplication.terminateActorFromAuthority(user, role);
+	}
+
+	@Override
+	public void terminateAuthorizationByPermission(Long userId, Long permissionId) {
+		User user = securityAccessApplication.getUserBy(userId);
+		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		securityConfigApplication.terminateActorFromAuthority(user, permission);
+	}
+
+	// TODO 待优化。。。
+	@Override
+	public void terminateAuthorizationsByRoles(Long userId, Long[] roleIds) {
+		for (Long roleId : roleIds) {
+			this.terminateAuthorizationByRole(userId, roleId);
+		}
+	}
+
+	@Override
+	public void terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds) {
+		for (Long permissionId : permissionIds) {
+			this.terminateAuthorizationByPermission(userId, permissionId);
+		}
+	}
+
+	// 树
+	@Override
+	public void grantMenuResources(Long roleId,Long[] menuResourceIds) {
+		//
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long menuResourceId : menuResourceIds) {
+			this.grantMenuResource(role,menuResourceId);
+		}
+	}
+
+	private void grantMenuResource(Role role,Long menuResourceId) {
+		MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
+		securityConfigApplication.grantAuthorityToSecurityResource(role, menuResource);
+	}
+
+	// 列表
+	@Override
+	public void grantPageElementResources(Long roleId,Long[] menuResourceIds) {
+		
+	}
+
+	@Override
+	public void grantUrlAccessResources(Long roleId,Long[] menuResourceIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void grantMethodInvocationResources(Long roleId,Long[] menuResourceIds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void grantPermissions(Long[] menuResourceIds) {
+		
 	}
 
 }
