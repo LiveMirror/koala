@@ -3,6 +3,7 @@ package org.openkoala.application.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.ejb.Remote;
@@ -119,16 +120,61 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 	}
 
 	public List<ResourceVO> findResourceTree() {
+//		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
+//		List<Resource> topResources = Resource.findChildByParent(null);
+//		for (Resource res : topResources) {
+//			if (!Resource.isMenu(res)) {
+//				ResourceVO treeVO = domainObject2Vo(res);
+//				treeVOs.add(treeVO);
+//				innerFindResourceByParent(treeVO, null);
+//			}
+//		}
+//		return treeVOs;
+		
 		List<ResourceVO> treeVOs = new ArrayList<ResourceVO>();
-		List<Resource> topResources = Resource.findChildByParent(null);
-		for (Resource res : topResources) {
-			if (!Resource.isMenu(res)) {
-				ResourceVO treeVO = domainObject2Vo(res);
-				treeVOs.add(treeVO);
-				innerFindResourceByParent(treeVO, null);
+
+		String selectTopResource = "SELECT DISTINCT NEW org.openkoala.auth.application.vo.ResourceVO("
+				+ "resource.id, resource.desc, resource.version, resource.menuIcon, resource.level, "
+				+ "resource.identifier, resource.valid, resource.name, resource.name, "
+				+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id) "
+				+ "FROM ResourceTypeAssignment assignment LEFT JOIN assignment.resource resource LEFT JOIN assignment.resourceType resourceType "
+				+ "WHERE resource.level=1 AND resource.abolishDate>:abolishDate AND resourceType.name <> :dir AND resourceType.name <> :menu ORDER BY resource.level ,resource.sortOrder ,resource.createDate ,resource.name";
+		treeVOs = queryChannel().createJpqlQuery(selectTopResource).addParameter("abolishDate", new Date())
+				.addParameter("dir", "KOALA_MENU")
+				.addParameter("menu", "KOALA_DIRETORY")
+				.list();
+
+		String selectAllResource = "SELECT DISTINCT NEW org.openkoala.auth.application.vo.ResourceVO("
+				+ "resourceLineAssignment.parent.id,resource.id, resource.desc, resource.version, resource.menuIcon, resource.level, "
+				+ "resource.identifier, resource.valid, resource.name, resource.name, "
+				+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id)"
+				+ "FROM ResourceLineAssignment resourceLineAssignment LEFT JOIN resourceLineAssignment.child resource, "
+				+ "ResourceTypeAssignment assignment LEFT JOIN assignment.resource _resource LEFT JOIN assignment.resourceType resourceType "
+				+ "WHERE resourceLineAssignment.parent.id IS NOT NULL AND resource.abolishDate>:abolishDate AND resource.id = _resource.id "
+				+ "AND resourceType.name <> :dir AND resourceType.name <> :menu "
+				+ "ORDER BY resource.level ,resource.sortOrder ,resource.createDate ,resource.name";
+
+		List<ResourceVO> all = queryChannel().createJpqlQuery(selectAllResource.toString()).addParameter("abolishDate", new Date())
+				.addParameter("dir", "KOALA_MENU")
+				.addParameter("menu", "KOALA_DIRETORY")
+				.list();
+
+		all.addAll(treeVOs);
+		if (!all.isEmpty()) {
+			LinkedHashMap<Long, ResourceVO> map = new LinkedHashMap<Long, ResourceVO>();
+			for (ResourceVO resourceVO : all) {
+				map.put(resourceVO.getId(), resourceVO);
+			}
+			for (ResourceVO resourceVO : map.values()) {
+				Long pid = resourceVO.getParentId();
+				if (pid == null || map.get(pid) == null) {
+					continue;
+				}
+				map.get(pid).getChildren().add(resourceVO);
 			}
 		}
 		return treeVOs;
+
 	}
 
 	public void assign(ResourceVO parentVO, ResourceVO childVO) {
