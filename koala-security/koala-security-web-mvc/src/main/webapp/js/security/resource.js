@@ -34,7 +34,7 @@ var resourceManager = function(){
 		dataGrid = grid;
 		opreate = 'modify';
 		$.get(contextPath + '/pages/auth/resource-template.jsp').done(function(data){
-			init(data,item);
+			init(data,item,"modify");
 		});
 	};
 	/*

@@ -288,6 +288,7 @@
 				self._loadData();
 			});
 		},
+		
 		/*
 		 *加载数据
 		 */
@@ -330,50 +331,53 @@
 				}
 				return;
 			}
+			
 			$.ajax({
 				type : this.options.method,
 				url : this.options.url,
 				data : params,
-				dataType : 'json'
-			}).done(function(result) {
-				if (!result.data) {
+				dataType : 'text json',
+				success : function(result){
+					if (!result.data) {
+						self.$element.message({
+							type : 'error',
+							content : '查询失败'
+						});
+						self.$element.trigger('complate');
+						self.gridTableBody.loader('hide');
+						return;
+					}
+					self.startRecord.text(result.start + 1);
+					self.endRecord.text(result.start + result.pageSize);
+					self.totalRecordHtml.text(result.resultCount);
+					//self._initPageNo(result.Total)
+					self.items = result.data;
+					self.totalRecord = result.resultCount;
+					if (result.data.length == 0) {
+						self.pages.hide();
+						self.gridTableBodyTable.empty();
+						self.gridTableBody.find('[data-role="noData"]').remove();
+						self.gridTableBody.append($('<div data-role="noData" style="font-size:16px ; padding: 20px; width:' + self.gridTableBodyTable.width() + 'px;">' + self.options.noDataText + '</div>'));
+						self.gridTableBody.loader('hide');
+						self.$element.trigger('complate');
+					} else {
+						self.pages.show();
+						self.gridTableBody.find('[data-role="noData"]').remove();
+						self.renderDatas();
+					}
+					self.$element.trigger('complateRenderData', result);
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown){
+					console.log(XMLHttpRequest.readyState);
 					self.$element.message({
 						type : 'error',
 						content : '查询失败'
 					});
-					self.$element.trigger('complate');
-					self.gridTableBody.loader('hide');
 					return;
 				}
-				self.startRecord.text(result.start + 1);
-				self.endRecord.text(result.start + result.pageSize);
-				self.totalRecordHtml.text(result.resultCount);
-				//self._initPageNo(result.Total)
-				self.items = result.data;
-				self.totalRecord = result.resultCount;
-				if (result.data.length == 0) {
-					self.pages.hide();
-					self.gridTableBodyTable.empty();
-					self.gridTableBody.find('[data-role="noData"]').remove();
-					self.gridTableBody.append($('<div data-role="noData" style="font-size:16px ; padding: 20px; width:' + self.gridTableBodyTable.width() + 'px;">' + self.options.noDataText + '</div>'));
-					self.gridTableBody.loader('hide');
-					self.$element.trigger('complate');
-				} else {
-					self.pages.show();
-					self.gridTableBody.find('[data-role="noData"]').remove();
-					self.renderDatas();
-				}
-				self.$element.trigger('complateRenderData', result);
-			}).fail(function(result) {
-				self.$element.message({
-					type : 'error',
-					content : '查询失败'
-				});
-				self.$element.trigger('complate');
-				self.gridTableBody.loader('hide');
-				return;
 			});
 		},
+		
 		update : function(result){
 			var self = this;
 			if (!result.data) {
@@ -592,7 +596,7 @@
 					}
 					trHtml.push('>');
 					if (self.options.tree && self.options.tree.column && self.options.tree.column == column.name) {
-						trHtml.push('<div class="grid-tree-space" style="padding-left:' + (parseInt(item.level) - 1) * 10 + 'px;"><span data-role="grid-tree-icon" class="glyphicon glyphicon-folder-open open"></span></div>&nbsp;&nbsp;');
+						trHtml.push('<div class="grid-tree-space" style="padding-left:' + (parseInt(item.level) - 1) * 25 + 'px;"><span data-role="grid-tree-icon" class="glyphicon glyphicon-folder-open open"></span></div>&nbsp;&nbsp;');
 					}
 					if (column.render) {
 						trHtml.push(column.render(item, column.name, i, k));

@@ -34,7 +34,7 @@ var resourceManager = function(){
 		dataGrid = grid;
 		opreate = 'modify';
 		$.get(contextPath + '/pages/auth/resource-template.jsp').done(function(data){
-			init(data,item);
+			init(data,item,"modify");
 		});
 	};
 	/*
@@ -48,6 +48,7 @@ var resourceManager = function(){
 			data['resourceVOs['+i+'].id'] = resource.id;
 			data['resourceVOs['+i+'].identifier'] = resource.identifier;
 		}
+		
 		dataGrid = grid;
 		$.post(baseUrl + 'del.koala', data).done(function(data){
 			if(data.result == 'success'){
