@@ -50,10 +50,10 @@ public class User extends Actor {
 	}
 
 	private void isBlanked(String userAccount, String password, String email, String telePhone) {
-//		 isBlank(password, "密码不能为空");
-//		 isBlank(email, "邮箱不能为空");
-//		 isBlank(telePhone, "联系电话不能为空");
-//		 isBlank(userAccount, "账户不能为空");
+		// isBlank(password, "密码不能为空");
+		// isBlank(email, "邮箱不能为空");
+		// isBlank(telePhone, "联系电话不能为空");
+		// isBlank(userAccount, "账户不能为空");
 	}
 
 	public void disable() {
@@ -63,7 +63,7 @@ public class User extends Actor {
 	public void enable() {
 		disabled = false;
 	}
-	
+
 	/**
 	 * TODO 密码加密
 	 */
@@ -112,14 +112,26 @@ public class User extends Actor {
 		return getBy(userAccount) != null;
 	}
 
+	/**
+	 * TODO 使用命名查询
+	 * 
+	 * @param userAccount
+	 * @return
+	 */
 	public static Set<Role> findAllRolesBy(String userAccount) {
 		return Role.findByUser(getBy(userAccount));
 	}
 
-	public static Set<Permission> findAllPermissionsBy(String userAccount){
+	/**
+	 * TODO 使用命名查询
+	 * 
+	 * @param userAccount
+	 * @return
+	 */
+	public static Set<Permission> findAllPermissionsBy(String userAccount) {
 		return Permission.findByUser(getBy(userAccount));
 	}
-	
+
 	@Override
 	public void update() {
 		isExisted();
@@ -147,7 +159,7 @@ public class User extends Actor {
 		User user = User.get(User.class, this.getId());
 		user.setPassword(this.getPassword());
 	}
-	
+
 	public Date getLastLoginTime() {
 		return lastLoginTime;
 	}

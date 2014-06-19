@@ -8,6 +8,7 @@ public class ActorTest extends AbstractSecurityIntegrationTestCase{
 	
 	@Test
 	public void testAddActor() throws Exception {
+		System.out.println("add Actor");
 //		User user = new User();
 //		user.setCreateDate(new Date());
 //		user.setCreateOwner("admin");

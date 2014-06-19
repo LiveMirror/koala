@@ -1,5 +1,6 @@
 package org.openkoala.security.core.domain;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,10 +58,14 @@ public class MenuResource extends SecurityResource {
 		super(name);
 	}
 
+	/**
+	 * XXX 维护方为parent 待确定
+	 * */
 	public void addChild(MenuResource child) {
 		child.setLevel(level + 1);
 		child.save();
 		children.add(child);
+		child.setParent(this);
 	}
 	
 	@Override
@@ -73,6 +78,9 @@ public class MenuResource extends SecurityResource {
 		menuResource.setUrl(this.getUrl());
 	}
 
+	/**
+	 * XXX 维护方为parent 待确定
+	 * */
 	public void removeChild(MenuResource child) {
 		children.remove(child);
 		child.remove();
@@ -106,12 +114,12 @@ public class MenuResource extends SecurityResource {
 		return level;
 	}
 
-	public void setLevel(int level) {
+	private void setLevel(int level) {
 		this.level = level;
 	}
 
 	public Set<MenuResource> getChildren() {
-		return children;
+		return Collections.unmodifiableSet(children);
 	}
 
 	public void setChildren(Set<MenuResource> children) {

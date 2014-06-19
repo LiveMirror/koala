@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
@@ -99,16 +100,6 @@ public interface SecurityAccessFacade {
 	 */
 	Page<PermissionDTO> pagingQueryPermissions(int currentPage, int pageSize, PermissionDTO permissionDTO);
 
-	/**
-	 * 分页查询菜单资源
-	 * 
-	 * @param currentPage
-	 * @param pageSize
-	 * @param menuResourceDTO
-	 * @return
-	 */
-	Page<MenuResourceDTO> pagingQueryMenuResources(int currentPage, int pageSize, MenuResourceDTO menuResourceDTO);
-
 	/***
 	 * 查询某个角色下用户的菜单资源。
 	 * 
@@ -116,6 +107,18 @@ public interface SecurityAccessFacade {
 	 * @param roleDTO
 	 * @return
 	 */
-	List<MenuResourceDTO> findMenuResourceDTOByUserAccountInRoleDTO(String username, RoleDTO roleDTO);
+	List<MenuResourceDTO> findMenuResourceDTOByUserAccountAsRole(String userAccount, Long roleId);
+
+	List<MenuResourceDTO> findAllMenusTree();
+
+	List<OrganizationScopeDTO> findAllOrganizationScopesTree();
+
+	Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition, String userAccount);
+
+	Page<PermissionDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, PermissionDTO queryPermissionCondition,String userAccount);
+
+	Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int currentPage, int pageSize, String userAccount);
+
+	Page<RoleDTO> pagingQueryRolesByUserAccount(int currentPage, int pageSize, String userAccount);
 
 }

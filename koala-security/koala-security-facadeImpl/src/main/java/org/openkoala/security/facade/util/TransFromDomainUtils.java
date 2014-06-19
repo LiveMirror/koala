@@ -1,14 +1,12 @@
 package org.openkoala.security.facade.util;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.OrganizationScope;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
@@ -38,6 +36,7 @@ public final class TransFromDomainUtils {
 
 	public static Role transFromRoleBy(RoleDTO roleDTO) {
 		Role result = new Role(roleDTO.getRoleName());
+		result.setId(roleDTO.getRoleId());
 		result.setDescription(roleDTO.getDescription());
 		return result;
 	}
@@ -53,13 +52,12 @@ public final class TransFromDomainUtils {
 		results.setDescription(menuResourceDTO.getDescription());
 		results.setMenuIcon(menuResourceDTO.getIcon());
 		results.setUrl(menuResourceDTO.getUrl());
-		List<MenuResourceDTO> childrenDTO = menuResourceDTO.getChildren();
-		Set<MenuResource> children = new HashSet<MenuResource>();
-		if (childrenDTO.size() > 0) {
-			for (MenuResourceDTO childDTO : childrenDTO) {
-				children.add(transFromMenuResourceBy(childDTO));
-			}
-		}
+		return results;
+	}
+	
+	public static OrganizationScope transFromOrganizationScopeBy(OrganizationScopeDTO organizationScopeDTO) {
+		OrganizationScope results = new OrganizationScope(organizationScopeDTO.getName());
+		results.setDescription(organizationScopeDTO.getDescription());
 		return results;
 	}
 }

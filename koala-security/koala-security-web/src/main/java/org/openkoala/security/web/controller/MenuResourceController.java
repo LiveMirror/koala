@@ -7,32 +7,29 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.shiro.SecurityUtils;
-import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.RoleDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * 1、添加。 2、添加子菜单。 3、修改 4、撤销 5、查询 TODO 图标
+ * */
 @Controller
 @RequestMapping("/auth/menu")
 public class MenuResourceController {
 
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
-	
+
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
-	
+
 	/**
-	 * 1、添加。
-	 * 2、添加子菜单。
-	 * 3、修改
-	 * 4、撤销
-	 * 5、查询
+	 * 
 	 * @param menuResourceDTO
 	 * @return
 	 */
@@ -44,12 +41,12 @@ public class MenuResourceController {
 		dataMap.put("result", "success");
 		return dataMap;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/addChildToParent")
-	public Map<String, Object> addChildToParent(MenuResourceDTO child,MenuResourceDTO parent) {
+	public Map<String, Object> addChildToParent(MenuResourceDTO child, Long parentId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.saveChildToParent(child,parent);
+		securityConfigFacade.saveChildToParent(child, parentId);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -71,21 +68,29 @@ public class MenuResourceController {
 		dataMap.put("result", "success");
 		return dataMap;
 	}
-	
+
+	/**
+	 * 查找菜单树
+	 * 
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("/pagingquery")
-	public Page<MenuResourceDTO> pagingQuery(int currentPage, int pageSize, MenuResourceDTO menuResourceDTO) {
-		Page<MenuResourceDTO> results = securityAccessFacade.pagingQueryMenuResources(currentPage, pageSize, menuResourceDTO);
-		return results;
+	@RequestMapping("/findAllMenusTree")
+	public Map<String, Object> findAllMenusTree() {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		List<MenuResourceDTO> menuResourceDTOs = securityAccessFacade.findAllMenusTree();
+		dataMap.put("data", menuResourceDTOs);
+		return dataMap;
 	}
-	
+
 	@ResponseBody
-	@RequestMapping(value="/findAllMenusByUserAsRole",method=RequestMethod.GET)
-	public Map<String, Object> findAllMenusByUserAsRole(RoleDTO roleDTO) {
-		Map<String, Object> result = new HashMap<String, Object>();
+	@RequestMapping(value = "/findAllMenusByUserAsRole", method = RequestMethod.GET)
+	public Map<String, Object> findAllMenusByUserAsRole(Long roleId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		List<MenuResourceDTO> menuResourceDtos = securityAccessFacade.findMenuResourceDTOByUserAccountInRoleDTO(userAccount,roleDTO);
-		result.put("data", menuResourceDtos);
-		return result;
+		List<MenuResourceDTO> menuResourceDtos = securityAccessFacade.findMenuResourceDTOByUserAccountAsRole(
+				userAccount, roleId);
+		dataMap.put("data", menuResourceDtos);
+		return dataMap;
 	}
 }

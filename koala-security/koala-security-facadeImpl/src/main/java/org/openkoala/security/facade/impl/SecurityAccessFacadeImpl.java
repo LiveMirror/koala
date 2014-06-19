@@ -6,6 +6,7 @@ import static org.openkoala.security.facade.util.TransFromDomainUtils.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +26,7 @@ import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
@@ -212,33 +214,324 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		}
 	}
 
-	@Override
-	public Page<MenuResourceDTO> pagingQueryMenuResources(int currentPage, int pageSize, MenuResourceDTO menuResourceDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<MenuResourceDTO> findMenuResourceDTOByUserAccountInRoleDTO(String userAccount, RoleDTO roleDTO) {
-		Role role = transFromRoleBy(roleDTO);
-		securityAccessApplication.checkAuthorization(userAccount, role);
-		
-		//1、User 的角色、2、User本身的Permission 3、角色所关联的Permission。
-		Set<Authority> authorities = new HashSet<Authority>();
-		authorities.add(role);
-		authorities.addAll(role.getPermissions());
-		authorities.addAll(User.findAllPermissionsBy(userAccount));
-		
+	/**
+	 * 顶级菜单
+	 */
+	private List<MenuResourceDTO> findTopMenuResourceDTOByUserAccountAsRole(Set<Authority> authorities) {
 		StringBuilder jpql = new StringBuilder(
-				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO() _securityResource FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
+				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id, _securityResource.identifier, _securityResource.name, _securityResource.url, _securityResource.menuIcon, _securityResource.description,"
+						+ "_securityResource.parent.id, _securityResource.disabled) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
 		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
-		jpql.append(" AND _authority IN (:_authority)");
-		jpql.append(" AND _securityResource.parent IS NULL");
-		
-		
-		List<MenuResource> menuResources = getQueryChannelService().createJpqlQuery(jpql.toString()).list();
+		jpql.append(" AND _authority IN (:_authority)");// 用户拥有的Authority
+		jpql.append(" AND _securityResource.parent IS NULL");// 顶级
+		jpql.append(" AND _securityResource.disabled = :disabled");// 可用的
+		jpql.append(" AND _securityResource.level = :level");// 顶级
 
-		return null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("_authority", authorities);
+		map.put("disabled", false);
+		map.put("level", 0);
+
+		List<MenuResourceDTO> result = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(map)//
+				.list();
+		LOGGER.info("顶级：findTopMenuResourceDTOByUserAccountAsRole:{}", new Object[] { result });
+		return result;
 	}
 
+	/**
+	 * 所有菜单不包含顶级菜单
+	 * 
+	 * @param userAccount
+	 * @param roleId
+	 * @return
+	 */
+	private List<MenuResourceDTO> findAllMenuResourceDTOByUserAccountAsRole(Set<Authority> authorities) {
+		StringBuilder jpql = new StringBuilder(
+				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id, _securityResource.identifier, _securityResource.name, _securityResource.url, _securityResource.menuIcon, _securityResource.description,"
+						+ "_securityResource.parent.id, _securityResource.disabled) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
+		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
+		jpql.append(" AND _authority IN (:_authority)");// 用户拥有的Authority
+		jpql.append(" AND _securityResource.disabled = :disabled");//
+		jpql.append(" AND _securityResource.level > :level");//
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("_authority", authorities);
+		map.put("disabled", false);
+		map.put("level", 0);
+
+		List<MenuResourceDTO> result = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(map)//
+				.list();
+
+		LOGGER.info("所有：findAllMenuResourceDTOByUserAccountAsRole:{}", new Object[] { result });
+		return result;
+	}
+
+	/**
+	 * 所有菜单不包含顶级菜单
+	 * 
+	 * @param userAccount
+	 * @param roleId
+	 * @return
+	 */
+	@Override
+	public List<MenuResourceDTO> findMenuResourceDTOByUserAccountAsRole(String userAccount, Long roleId) {
+
+		User user = securityAccessApplication.getUserBy(userAccount);
+		Set<Authority> authorities = new HashSet<Authority>();
+		List<MenuResourceDTO> results;
+		List<MenuResourceDTO> childrenMenuResources;
+
+		if (!user.isSuper()) {
+			Role role = securityAccessApplication.getRoleBy(roleId);
+			// securityAccessApplication.checkAuthorization(userAccount, role);
+			authorities.add(role);
+			authorities.addAll(role.getPermissions());
+			authorities.addAll(User.findAllPermissionsBy(userAccount));
+			// 1、User 的角色、2、User本身的Permission 3、角色所关联的Permission。
+			results = findTopMenuResourceDTOByUserAccountAsRole(authorities);
+			childrenMenuResources = findAllMenuResourceDTOByUserAccountAsRole(authorities);
+		} else {
+			results = findTopMenuResource();
+			childrenMenuResources = findChidrenMenuResource();
+		}
+
+		Set<MenuResourceDTO> all = new HashSet<MenuResourceDTO>();
+		all.addAll(results);
+		all.addAll(childrenMenuResources);
+
+		addMenuChildrenToParent(all);
+
+		return results;
+
+	}
+
+	private void addMenuChildrenToParent(Set<MenuResourceDTO> all) {
+		LinkedHashMap<Long, MenuResourceDTO> map = new LinkedHashMap<Long, MenuResourceDTO>();
+		for (MenuResourceDTO menuResourceDTO : all) {
+			map.put(menuResourceDTO.getId(), menuResourceDTO);
+		}
+		for (MenuResourceDTO menuResourceDTO : map.values()) {
+			Long parentId = menuResourceDTO.getParentId();
+			if (!StringUtils.isBlank(parentId + "") && map.get(parentId) != null) {
+				map.get(parentId).getChildren().add(menuResourceDTO);
+			}
+		}
+	}
+
+	private void addOrganizationScopeChildrenToParent(Set<OrganizationScopeDTO> all) {
+		LinkedHashMap<Long, OrganizationScopeDTO> map = new LinkedHashMap<Long, OrganizationScopeDTO>();
+		for (OrganizationScopeDTO organizationScopeDTO : all) {
+			map.put(organizationScopeDTO.getId(), organizationScopeDTO);
+		}
+		for (OrganizationScopeDTO organizationScopeDTO : map.values()) {
+			Long parentId = organizationScopeDTO.getParentId();
+			if (!StringUtils.isBlank(parentId + "") && map.get(parentId) != null) {
+				map.get(parentId).getChildren().add(organizationScopeDTO);
+			}
+		}
+	}
+
+	private List<MenuResourceDTO> findChidrenMenuResource() {
+		StringBuilder jpql = new StringBuilder(
+				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id, _securityResource.identifier, _securityResource.name, _securityResource.url, _securityResource.menuIcon, _securityResource.description,"
+						+ "_securityResource.parent.id, _securityResource.disabled) FROM SecurityResource _securityResource");
+		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
+		jpql.append(" AND _securityResource.disabled = :disabled");//
+		jpql.append(" AND _securityResource.level > :level");//
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("disabled", false);
+		map.put("level", 0);
+
+		List<MenuResourceDTO> results = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(map)//
+				.list();
+
+		LOGGER.info("所有：findAllMenuResourceDTOByUserAccountAsRole:{}", new Object[] { results });
+		return results;
+	}
+
+	private List<MenuResourceDTO> findTopMenuResource() {
+		StringBuilder jpql = new StringBuilder(
+				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id, _securityResource.identifier, _securityResource.name, _securityResource.url, _securityResource.menuIcon, _securityResource.description,"
+						+ "_securityResource.parent.id, _securityResource.disabled) FROM SecurityResource _securityResource");
+		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
+		jpql.append(" AND _securityResource.parent IS NULL");// 顶级
+		jpql.append(" AND _securityResource.disabled = :disabled");//
+		jpql.append(" AND _securityResource.level = :level");//
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("disabled", false);
+		map.put("level", 0);
+
+		List<MenuResourceDTO> results = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(map)//
+				.list();
+
+		return results;
+	}
+
+	@Override
+	public List<MenuResourceDTO> findAllMenusTree() {
+		List<MenuResourceDTO> results = findTopMenuResource();
+		List<MenuResourceDTO> childrenMenuResources = findChidrenMenuResource();
+		Set<MenuResourceDTO> all = new HashSet<MenuResourceDTO>();
+		all.addAll(results);
+		all.addAll(childrenMenuResources);
+		addMenuChildrenToParent(all);
+		return results;
+	}
+
+	@Override
+	public List<OrganizationScopeDTO> findAllOrganizationScopesTree() {
+		List<OrganizationScopeDTO> results = findTopOrganizationScopes();
+		List<OrganizationScopeDTO> childrenOrganizationScopeDTOs = findChidrenOrganizationScopes();
+		Set<OrganizationScopeDTO> all = new HashSet<OrganizationScopeDTO>();
+		all.addAll(results);
+		all.addAll(childrenOrganizationScopeDTOs);
+		addOrganizationScopeChildrenToParent(all);
+		return results;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<OrganizationScopeDTO> findChidrenOrganizationScopes() {
+
+		StringBuilder jpql = new StringBuilder(
+				"SELECT NEW org.openkoala.security.facade.dto.OrganizationScopeDTO(_organizationScope.id, _organizationScope.name, _organizationScope.description, _organizationScope.parent.id) FROM OrganizationScope _organizationScope");
+		jpql.append(" WHERE _organizationScope.level > :level");
+
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("level", 0);
+
+		List<OrganizationScopeDTO> results = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(parameters)//
+				.list();
+
+		return results;
+	}
+
+	private List<OrganizationScopeDTO> findTopOrganizationScopes() {
+		StringBuilder jpql = new StringBuilder(
+				"SELECT NEW org.openkoala.security.facade.dto.OrganizationScopeDTO(_organizationScope.id, _organizationScope.name, _organizationScope.description, _organizationScope.parent.id) FROM OrganizationScope _organizationScope");
+		jpql.append(" WHERE _organizationScope.parent IS NULL");
+		jpql.append(" AND _organizationScope.level = :level");
+
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("level", 0);
+
+		List<OrganizationScopeDTO> results = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(parameters)//
+				.list();
+
+		return results;
+	}
+
+	@Override
+	public Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition,
+			String userAccount) {
+		StringBuilder jpql = new StringBuilder(
+				"SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description)");
+		jpql.append(" FROM Role _role WHERE _role.id");
+		jpql.append(" NOT IN(SELECT _authority.id FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount= :userAccount)");
+		Map<String, Object> conditionVals = new HashMap<String, Object>();
+		conditionVals.put("userAccount", userAccount);
+		assembleRoleJpqlAndConditionValues(queryRoleCondition, jpql, "_role", conditionVals);
+
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(conditionVals)//
+				.setPage(currentPage, pageSize)//
+				.pagedList();
+
+	}
+
+	@Override
+	public Page<PermissionDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize,
+			PermissionDTO queryPermissionCondition, String userAccount) {
+
+		StringBuilder jpql = new StringBuilder(
+				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.description)");
+		jpql.append(" FROM Permission _permission WHERE _permission.id");
+		jpql.append(" NOT IN(SELECT _authority.id FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount= :userAccount)");
+		Map<String, Object> conditionVals = new HashMap<String, Object>();
+		conditionVals.put("userAccount", userAccount);
+
+		assemblePermissionJpqlAndConditionValues(queryPermissionCondition, jpql, "_permission", conditionVals);
+
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(conditionVals)//
+				.setPage(currentPage, pageSize)//
+				.pagedList();
+
+	}
+
+	private void assembleRoleJpqlAndConditionValues(RoleDTO queryRoleCondition, StringBuilder jpql,
+			String conditionPrefix, Map<String, Object> conditionVals) {
+		String andCondition = " AND " + conditionPrefix;
+		String whereCondition = " WHERE " + conditionPrefix;
+		if (!StringUtils.isBlank(queryRoleCondition.getRoleName())) {
+			jpql.append(whereCondition);
+			jpql.append(".name =:name");
+			conditionVals.put("name", queryRoleCondition.getRoleName());
+		}
+		if (!StringUtils.isBlank(queryRoleCondition.getDescription())) {
+			jpql.append(andCondition);
+			jpql.append(".description =:description");
+			conditionVals.put("description", queryRoleCondition.getDescription());
+		}
+	}
+
+	private void assemblePermissionJpqlAndConditionValues(PermissionDTO queryPermissionCondition, StringBuilder jpql,
+			String conditionPrefix, Map<String, Object> conditionVals) {
+		String andCondition = " AND " + conditionPrefix;
+		String whereCondition = " WHERE " + conditionPrefix;
+		if (!StringUtils.isBlank(queryPermissionCondition.getPermissionName())) {
+			jpql.append(whereCondition);
+			jpql.append(".name =:name");
+			conditionVals.put("name", queryPermissionCondition.getPermissionName());
+		}
+		if (!StringUtils.isBlank(queryPermissionCondition.getDescription())) {
+			jpql.append(andCondition);
+			jpql.append(".description =:description");
+			conditionVals.put("description", queryPermissionCondition.getDescription());
+		}
+	}
+
+	@Override
+	public Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int currentPage, int pageSize, String userAccount) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.description)");
+		jpql.append("FROM Permission _permission JOIN Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND _authority.id = _permission.id");
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("userAccount", userAccount);
+		Page<PermissionDTO> results = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(parameters)//
+				.setPage(currentPage, pageSize)//
+				.pagedList();
+		return results;
+	}
+
+	@Override
+	public Page<RoleDTO> pagingQueryRolesByUserAccount(int currentPage, int pageSize, String userAccount) {
+//		Set<Role> roles = securityAccessApplication.findAllRolesByUserAccount(userAccount);
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description)");
+		jpql.append("FROM Role _role JOIN Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND _authority.id = _role.id");
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("userAccount", userAccount);
+		Page<RoleDTO> results = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(parameters)//
+				.setPage(currentPage, pageSize)//
+				.pagedList();
+		return results;
+	}
 }

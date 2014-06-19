@@ -22,15 +22,25 @@ public class MenuResourceDTO implements Serializable {
 	
 	private Long parentId;
 	
-	private boolean isValid;
+	private boolean disabled;
 	
 	private List<MenuResourceDTO> children = new ArrayList<MenuResourceDTO>();
 
 	public MenuResourceDTO() {
 	}
 	
-	
-	
+	public MenuResourceDTO(Long id, String identifier, String name, String url, String icon, String description,
+			Long parentId, boolean disabled) {
+		this.id = id;
+		this.identifier = identifier;
+		this.name = name;
+		this.url = url;
+		this.icon = icon;
+		this.description = description;
+		this.parentId = parentId;
+		this.disabled = disabled;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -95,11 +105,18 @@ public class MenuResourceDTO implements Serializable {
 		this.children = children;
 	}
 
-	public boolean isValid() {
-		return isValid;
+	public boolean isDisabled() {
+		return disabled;
 	}
 
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
+	public void setDisabled(boolean isValid) {
+		this.disabled = isValid;
+	}
+
+	@Override
+	public String toString() {
+		return "MenuResourceDTO [id=" + id + ", identifier=" + identifier + ", name=" + name + ", url=" + url
+				+ ", icon=" + icon + ", description=" + description + ", parentId=" + parentId + ", disabled="
+				+ disabled + ", children=" + children + "]";
 	}
 }

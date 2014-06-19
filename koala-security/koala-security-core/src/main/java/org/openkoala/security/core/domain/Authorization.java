@@ -133,7 +133,7 @@ public class Authorization extends SecurityAbstractEntity {
 	 * @param user
 	 * @return
 	 */
-	public static Set<Permission> findAllPermissionsByUserAccount(User user) {
+	/*public static Set<Permission> findAllPermissionsByUserAccount(User user) {
 		Set<Permission> results = new HashSet<Permission>();
 		Set<Authorization> authorizations = findAuthorizationsByActor(user);
 		for (Authorization authorization : authorizations) {
@@ -145,7 +145,7 @@ public class Authorization extends SecurityAbstractEntity {
 			}
 		}
 		return results;
-	}
+	}*/
 
 	/**
 	 * TODO 异常信息

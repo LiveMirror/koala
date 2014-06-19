@@ -25,6 +25,9 @@ public abstract class Scope extends SecurityAbstractEntity {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
+	@Column(name = "LEVEL")
+	private int level = 0;
+
 	@Transient
 	public abstract Scope getParent();
 
@@ -34,10 +37,11 @@ public abstract class Scope extends SecurityAbstractEntity {
 	Scope() {
 	}
 
-	public Scope(String name, String description) {
+	public Scope(String name) {
 		this.name = name;
-		this.description = description;
 	}
+
+	public abstract void update();
 
 	public String getName() {
 		return name;
@@ -53,6 +57,14 @@ public abstract class Scope extends SecurityAbstractEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	void setLevel(int level) {
+		this.level = level;
 	}
 
 	public boolean contains(Scope scope) {

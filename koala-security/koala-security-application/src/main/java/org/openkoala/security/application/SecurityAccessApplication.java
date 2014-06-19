@@ -92,5 +92,4 @@ public interface SecurityAccessApplication {
 	 */
 	void checkAuthorization(String userAccount, Role role);
 
-	public List findMenuResourceDTOByUserAccountInRoleDTO(String userAccount, Role role);
 }

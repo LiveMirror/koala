@@ -34,6 +34,14 @@ public class RoleController {
 		result.put("result", roleDtos);
 		return result;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/pagingQueryByUserAccount")
+	public Page<RoleDTO> pagingQueryRolesByUserAccount(int currentPage, int pageSize){
+		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(currentPage,pageSize,userAccount);
+		return results;
+	}
 
 	/**
 	 * 添加角色

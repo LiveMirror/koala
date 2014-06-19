@@ -1,6 +1,7 @@
 package org.openkoala.security.core.domain;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -147,7 +148,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 	}
 
 	public Set<SecurityResource> getSecurityResources() {
-		return securityResources;
+		return Collections.unmodifiableSet(securityResources);
 	}
 
 	public void setSecurityResources(Set<SecurityResource> securityResources) {

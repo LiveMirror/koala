@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -22,7 +23,7 @@ public class Role extends Authority {
 
 	private static final long serialVersionUID = 4327840654680779887L;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)//查询Role需要级联的查询出Permission
 	@JoinTable(name = "KS_ROLE_PERMISSION_MAP", //
 	joinColumns = @JoinColumn(name = "ROLE_ID"), //
 	inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID"))

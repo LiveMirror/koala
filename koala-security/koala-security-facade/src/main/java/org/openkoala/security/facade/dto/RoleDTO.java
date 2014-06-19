@@ -15,6 +15,12 @@ public class RoleDTO {
 		this.roleId = roleId;
 		this.roleName = roleName;
 	}
+	
+	public RoleDTO(Long roleId, String roleName, String description) {
+		this.roleId = roleId;
+		this.roleName = roleName;
+		this.description = description;
+	}
 
 	public String getRoleName() {
 		return roleName;

@@ -11,6 +11,7 @@ import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.OrganizationScope;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
@@ -91,8 +92,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void grantActorToAuthority(Actor actor, Authority authority) {
-		// TODO Auto-generated method stub
-
+		new Authorization(actor, authority, null).save();
 	}
 
 	public void grantActorToAuthorities(Actor actor, List<Authority> authorities) {
@@ -150,18 +150,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 
 	}
 
-	public void createMenuResourceUnderParent(Set<MenuResource> menuResources, MenuResource toParent) {
-		for (MenuResource menuResource : menuResources) {
-			menuResource.setParent(toParent);
-		}
-		toParent.setChildren(menuResources);
-	}
-
-	public void addMenuResourceUnderParent(MenuResource menuResource, MenuResource toParent) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void updateMenuResources(List<MenuResource> menuResources) {
 		// TODO Auto-generated method stub
 
@@ -194,6 +182,14 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	public void grantActorToAuthorityInScope(Actor actor, Authority authority, Scope scope) {
 		new Authorization(actor, authority, scope).save();
 	}
+	
+	@Override
+	public void grantActorToAuthorityInScope(Long actorId, Long authorityId, Long scopeId) {
+		Actor actor = Actor.get(Actor.class, actorId);
+		Authority authority = Authority.get(Authority.class, authorityId);
+		Scope scope = Scope.get(Scope.class, scopeId);
+		grantActorToAuthorityInScope(actor, authority, scope);
+	}
 
 	@Override
 	public void grantAuthorityToSecurityResource(Authority authority, SecurityResource securityResource) {
@@ -213,8 +209,39 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	@Override
-	public void createChildToParent(MenuResource child, MenuResource parent) {
+	public void createChildToParent(MenuResource child, Long parentId) {
+		MenuResource parent = MenuResource.get(MenuResource.class, parentId);
 		parent.addChild(child);
+	}
+
+	@Override
+	public void updateScope(Scope scope) {
+		scope.update();
+	}
+
+	@Override
+	public void terminateScope(Scope scope) {
+		scope.remove();
+	}
+
+	@Override
+	public void createChildToParent(OrganizationScope child, Long parentId) {
+		OrganizationScope parent = OrganizationScope.get(OrganizationScope.class, parentId);
+		parent.addChild(child);
+	}
+
+	@Override
+	public void grantActorsToAuthority(Long[] userIds, Long roleId) {
+		for (Long userId : userIds) {
+			grantActorToAuthority(userId, roleId);
+		}
+	}
+
+	@Override
+	public void grantActorToAuthority(Long actorId, Long authorityId) {
+		Actor actor = Actor.get(Actor.class, actorId);
+		Authority authority = Authority.get(Authority.class, authorityId);
+		grantActorToAuthority(actor, authority);
 	}
 
 }

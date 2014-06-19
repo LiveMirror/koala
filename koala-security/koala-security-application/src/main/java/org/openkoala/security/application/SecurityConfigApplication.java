@@ -1,11 +1,11 @@
 package org.openkoala.security.application;
 
 import java.util.List;
-import java.util.Set;
 
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.OrganizationScope;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
@@ -189,20 +189,6 @@ public interface SecurityConfigApplication {
 
 	/**
 	 * 
-	 * @param menuResource
-	 * @param toParent
-	 */
-	void createMenuResourceUnderParent(Set<MenuResource> menuResources, MenuResource toParent);
-
-	/**
-	 * 
-	 * @param menuResource
-	 * @param toParent
-	 */
-	void addMenuResourceUnderParent(MenuResource menuResource, MenuResource toParent);
-
-	/**
-	 * 
 	 * @param menuResources
 	 */
 	void updateMenuResources(List<MenuResource> menuResources);
@@ -245,6 +231,8 @@ public interface SecurityConfigApplication {
 	 * @param scope
 	 */
 	void grantActorToAuthorityInScope(Actor actor, Authority authority, Scope scope);
+	
+	void grantActorToAuthorityInScope(Long actorId, Long authorityId, Long scopeId);
 
 	/**
 	 * 重置密码
@@ -255,8 +243,18 @@ public interface SecurityConfigApplication {
 
 	/**
 	 * @param child
-	 * @param parent
+	 * @param parentId
 	 */
-	void createChildToParent(MenuResource child, MenuResource parent);
+	void createChildToParent(MenuResource child, Long parentId);
+
+	void updateScope(Scope scope);
+
+	void terminateScope(Scope scope);
+
+	void createChildToParent(OrganizationScope child, Long parentId);
+
+	void grantActorsToAuthority(Long[] userIds, Long roleId);
+	
+	void grantActorToAuthority(Long userId, Long roleId);
 
 }

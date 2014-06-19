@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.apache.shiro.SecurityUtils;
 import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
@@ -54,6 +55,14 @@ public class PermissionController {
 	@RequestMapping("/pagingquery")
 	public Page<PermissionDTO> pagingQuery(int currentPage, int pageSize, PermissionDTO permissionDTO) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissions(currentPage, pageSize, permissionDTO);
+		return results;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/pagingQueryByUserAccount")
+	public Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int currentPage, int pageSize){
+		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByUserAccount(currentPage,pageSize,userAccount);
 		return results;
 	}
 }

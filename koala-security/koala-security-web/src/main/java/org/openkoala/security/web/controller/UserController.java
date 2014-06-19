@@ -1,6 +1,7 @@
 package org.openkoala.security.web.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -14,6 +15,8 @@ import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.dto.PermissionDTO;
+import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/***
+ * 1：登陆 、 2：添加 、 3：解除、 4：分页查询 5：重置密码 6：退出 TODO 7：授权角色 查找已经拥有的角色 查找没有分配的角色 8：授权权限
+ * 
+ * @author luzhao
+ * 
+ */
 @Controller
 @RequestMapping("/auth/user")
 public class UserController {
@@ -35,6 +44,7 @@ public class UserController {
 
 	/**
 	 * TODO 修改登陆时间
+	 * 
 	 * @param username
 	 * @param password
 	 * @return
@@ -182,5 +192,102 @@ public class UserController {
 		results.put("success", Boolean.TRUE);
 		results.put("message", "成功退出");
 		return results;
+	}
+
+	@ResponseBody
+	@RequestMapping("grantRole")
+	public Map<String, Object> grantRole(Long userId, Long roleId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantRole(userId, roleId);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+
+	@ResponseBody
+	@RequestMapping("grantRoles")
+	public Map<String, Object> grantRoles(Long userId, Long[] roleIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantRoles(userId, roleIds);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+
+	@ResponseBody
+	@RequestMapping("grantPermission")
+	public Map<String, Object> grantPermission(Long userId, Long permissionId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantPermission(userId, permissionId);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+
+	@ResponseBody
+	@RequestMapping("grantPermissions")
+	public Map<String, Object> grantPermissions(Long userId, Long[] permissionIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantPermissions(userId, permissionIds);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+
+	/**
+	 * 根据条件分页查询没有授权的角色
+	 * 
+	 * @param currentPage
+	 * @param pageSize
+	 * @param queryRoleCondition
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryNotGrantRoles")
+	public Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize,RoleDTO queryRoleCondition){
+		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(currentPage,pageSize,queryRoleCondition,userAccount);
+		return results;
+	}
+
+	@ResponseBody
+	@RequestMapping("/pagingQueryNotGrantPermissions")
+	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int currentPage, int pageSize,PermissionDTO queryPermissionCondition) {
+		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(currentPage,pageSize,queryPermissionCondition,userAccount);
+		return results;
+	}
+
+	// ================Scope=================
+	@ResponseBody
+	@RequestMapping("grantRoleInScope")
+	public Map<String, Object> grantRoleInScope(Long userId, Long roleId, Long scopeId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantRoleInScope(userId, roleId, scopeId);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+
+	@ResponseBody
+	@RequestMapping("grantRolesInScope")
+	public Map<String, Object> grantRolesInScope(Long userId, Long[] roleIds, Long scopeId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantRolesInScope(userId, roleIds, scopeId);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+
+	@ResponseBody
+	@RequestMapping("grantPermissionInScope")
+	public Map<String, Object> grantPermissionInScope(Long userId, Long permissionId, Long scopeId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantPermissionInScope(userId, permissionId, scopeId);
+		dataMap.put("success", true);
+		return dataMap;
+	}
+
+	@ResponseBody
+	@RequestMapping("grantPermissionsInScope")
+	public Map<String, Object> grantPermissionsInScope(Long userId, Long[] permissionIds, Long scopeId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantPermissionsInScope(userId, permissionIds, scopeId);
+		dataMap.put("success", true);
+		return dataMap;
 	}
 }

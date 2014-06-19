@@ -48,7 +48,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	}
 
 	public Set<Permission> findAllPermissionsByUserAccount(String userAccount) {
-		return Authorization.findAllPermissionsByUserAccount(getUserBy(userAccount));
+		return User.findAllPermissionsBy(userAccount);
 	}
 
 	public User getUserBy(Long userId) {
@@ -80,32 +80,6 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	public void checkAuthorization(String userAccount, Role role) {
 		User user = getUserBy(userAccount);
 		Authorization.checkAuthorization(user, role);
-	}
-
-	public List findMenuResourceDTOByUserAccountInRoleDTO(String userAccount, Role role) {
-//		checkAuthorization(userAccount, role);
-		Set<Authority> authorities = new HashSet<Authority>();
-		authorities.add(role);
-		authorities.addAll(role.getPermissions());
-
-		/*StringBuilder jpql = new StringBuilder(
-				"SELECT DISTINCT _authority.securityResources FROM  Authority _authority JOIN _authority.securityResources _securityResources");
-		jpql.append(" WHERE TYPE(_securityResources) = MenuResource");
-		jpql.append(" AND _authority IN (:_authority)");
-		jpql.append(" AND _securityResources.parent IS NULL");*/
-		StringBuilder jpql = new StringBuilder(
-				"SELECT _securityResource FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
-		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
-		jpql.append(" AND _authority IN (:_authority)");
-		jpql.append(" AND _securityResource.parent IS NULL");
-		
-		
-		
-		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("_authority", authorities);
-		List menuResources = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(map).list();
-
-		return menuResources;
 	}
 
 	@Override

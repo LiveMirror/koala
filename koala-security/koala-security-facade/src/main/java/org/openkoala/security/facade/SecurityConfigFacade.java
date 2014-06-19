@@ -1,6 +1,9 @@
 package org.openkoala.security.facade;
 
+import java.util.List;
+
 import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
@@ -95,8 +98,47 @@ public interface SecurityConfigFacade {
 	 * 添加一个子菜单到父菜单。
 	 * 
 	 * @param child
-	 * @param parent
+	 * @param parentId
 	 */
-	void saveChildToParent(MenuResourceDTO child, MenuResourceDTO parent);
+	void saveChildToParent(MenuResourceDTO child, Long parentId);
+
+	/**
+	 * 保存组织范围
+	 * 
+	 * @param organizationDTO
+	 */
+	void saveOrganizationDTO(OrganizationScopeDTO organizationScopeDTO);
+
+	/**
+	 * 更新组织范围
+	 * 
+	 * @param organizationDTO
+	 */
+	void updateOrganizationDTO(OrganizationScopeDTO organizationScopeDTO);
+
+	/**
+	 * 批量撤销组织范围
+	 * 
+	 * @param organizationDTOs
+	 */
+	void terminateOrganizationDTOs(OrganizationScopeDTO[] organizationScopeDTOs);
+
+	void saveChildToParent(OrganizationScopeDTO child, Long parentId);
+
+	void grantRoleInScope(Long userId, Long roleId, Long scopeId);
+
+	void grantRolesInScope(Long userId, Long[] roleIds, Long scopeId);
+
+	void grantPermissionInScope(Long userId, Long permissionId, Long scopeId);
+
+	void grantPermissionsInScope(Long userId, Long[] permissionIds, Long scopeId);
+
+	void grantRole(Long userId, Long roleId);
+	
+	void grantRoles(Long userId, Long[] roleIds);
+
+	void grantPermission(Long userId, Long permissionId);
+
+	void grantPermissions(Long userId, Long[] permissionIds);
 
 }
