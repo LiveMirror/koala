@@ -219,7 +219,7 @@ public interface SecurityConfigApplication {
 	/**
 	 * 创建范围
 	 * 
-	 * @param organizationScope
+	 * @param scope
 	 */
 	void createScope(Scope scope);
 

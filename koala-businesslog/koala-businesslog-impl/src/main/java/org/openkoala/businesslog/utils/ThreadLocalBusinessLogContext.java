@@ -14,9 +14,10 @@ import static org.openkoala.businesslog.ContextKeyConstant.BUSINESS_METHOD;
 public class ThreadLocalBusinessLogContext {
 
     private static ThreadLocal<Map<String, Object>> context = new ThreadLocal<Map<String, Object>>() {
-        protected synchronized Map<String, Object> initialValue() {
-            return new HashMap<String, Object>();
-        }
+    	
+//        protected synchronized Map<String, Object> initialValue() {
+//            return new HashMap<String, Object>();
+//        }
     };
 
     public static Map<String, Object> get() {

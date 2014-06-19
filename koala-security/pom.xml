@@ -21,7 +21,6 @@
 		<module>koala-security-web</module>
 	</modules>
 	<properties>
-		<!-- 
 		<db.groupId>mysql</db.groupId>
 		<db.artifactId>mysql-connector-java</db.artifactId>
 		<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
@@ -30,10 +29,9 @@
 		<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
 		<db.connectionURL>jdbc:mysql://localhost:3306/security?useUnicode=true&amp;characterEncoding=UTF-8</db.connectionURL>
 		<db.username>root</db.username>
-		<db.password></db.password>
+		<db.password>root</db.password>
 		<db.Type>MYSQL</db.Type>
 		<generateDdl>true</generateDdl>
-		 -->
 		<shiro.version>1.2.3</shiro.version>
 	</properties>
 	<dependencyManagement>

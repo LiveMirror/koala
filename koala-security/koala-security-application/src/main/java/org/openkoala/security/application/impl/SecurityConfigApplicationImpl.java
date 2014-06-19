@@ -243,5 +243,5 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		Authority authority = Authority.get(Authority.class, authorityId);
 		grantActorToAuthority(actor, authority);
 	}
-
+	
 }
