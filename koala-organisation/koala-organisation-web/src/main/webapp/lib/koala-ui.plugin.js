@@ -25,13 +25,14 @@
 		this._initHead();
 		this._initOptions();
 		this._initEvents();
-		if (this.options.autoLoad) {
+		if (this.options.autoLoad && this.options.url) {
 			var self = this;
 			setTimeout(function() {
 				self._loadData();
 			}, 0);
 		}
 	};
+	
 	Grid.DEFAULTS = {
 		loadingText : '正在载入...', //数据载入时的提示文字
 		noDataText : '没有数据', //没有数据时的提示文字
@@ -333,10 +334,10 @@
 			}
 			
 			$.ajax({
-				type : this.options.method,
-				url : this.options.url,
-				data : params,
-				dataType : 'text json',
+				type	: this.options.method,
+				url		: this.options.url,
+				data	: params,
+				dataType : 'json',
 				success : function(result){
 					if (!result.data) {
 						self.$element.message({
@@ -367,10 +368,10 @@
 					}
 					self.$element.trigger('complateRenderData', result);
 				},
+				
 				error : function(XMLHttpRequest, textStatus, errorThrown){
-					console.log(XMLHttpRequest.readyState);
 					self.$element.message({
-						type : 'error',
+						type 	: 'error',
 						content : '查询失败'
 					});
 					return;
@@ -392,7 +393,6 @@
 			self.startRecord.text(result.start + 1);
 			self.endRecord.text(result.start + result.pageSize);
 			self.totalRecordHtml.text(result.resultCount);
-			//self._initPageNo(result.Total)
 			self.items = result.data;
 			self.totalRecord = result.resultCount;
 			if (result.data.length == 0) {
@@ -409,6 +409,7 @@
 			}
 			self.$element.trigger('complateRenderData', result);
 		},
+		
 		/**
 		 * 根据开始结束记录数从本地数据获取数据
 		 */
