@@ -1,7 +1,6 @@
 package org.openkoala.framework.i18n; 
 
 import java.io.File;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -9,6 +8,7 @@ import java.util.Set;
 import org.dayatang.i18n.NoSuchMessageException;
 import org.dayatang.i18n.support.I18nServiceAccessor;
 import org.openkoala.framework.i18n.service.ResourceBundleI18nServiceImpl;
+import org.openkoala.framework.i18n.util.LocaleUtil;
 
 /**
  * I18NManager
@@ -91,7 +91,7 @@ public class I18NManager {
 
 			return message;
 		}
-		return accessor.getMessage(key, new Locale(locale));
+		return accessor.getMessage(key, LocaleUtil.toLocale(locale));
 	}
 
 	private static void initResourceBundleI18nServiceImpl() {
