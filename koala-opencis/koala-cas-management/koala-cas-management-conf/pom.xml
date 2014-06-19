@@ -22,8 +22,8 @@
 	<dependencies>
 	
 	    <dependency>
-			<groupId>${db.groupId}</groupId>
-			<artifactId>${db.artifactId}</artifactId>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		
 		<dependency>

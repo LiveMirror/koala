@@ -1,13 +1,13 @@
 package org.openkoala.businesslog.utils;
 
-import org.aspectj.lang.JoinPoint;
-import org.dayatang.domain.InstanceFactory;
-import org.openkoala.businesslog.*;
-import org.springframework.aop.ProxyMethodInvocation;
-import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import static org.openkoala.businesslog.ContextKeyConstant.BUSINESS_METHOD;
+import static org.openkoala.businesslog.ContextKeyConstant.BUSINESS_METHOD_EXECUTE_ERROR;
+import static org.openkoala.businesslog.ContextKeyConstant.BUSINESS_METHOD_RETURN_VALUE_KEY;
+import static org.openkoala.businesslog.ContextKeyConstant.BUSINESS_OPERATION_IP;
+import static org.openkoala.businesslog.ContextKeyConstant.BUSINESS_OPERATION_TIME;
+import static org.openkoala.businesslog.ContextKeyConstant.BUSINESS_OPERATION_USER;
+import static org.openkoala.businesslog.ContextKeyConstant.PRE_OPERATOR_OF_METHOD_KEY;
 
-import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -17,7 +17,17 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.openkoala.businesslog.ContextKeyConstant.*;
+import javax.inject.Inject;
+
+import org.aspectj.lang.JoinPoint;
+import org.dayatang.domain.InstanceFactory;
+import org.openkoala.businesslog.BusinessLogExporter;
+import org.openkoala.businesslog.KoalaBusinessLogConfigException;
+import org.openkoala.businesslog.MethodAlias;
+import org.openkoala.koalacommons.resourceloader.impl.classpath.ClassPathResource;
+import org.springframework.aop.ProxyMethodInvocation;
+import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * User: zjzhai Date: 11/28/13 Time: 11:38 AM
@@ -74,7 +84,7 @@ public class BusinessLogInterceptor {
     	}
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream(getClass().getClassLoader().getResource(BUSINESS_LOG_CONFIG_PROPERTIES_NAME).getFile()));
+            properties.load(new FileInputStream(new ClassPathResource(BUSINESS_LOG_CONFIG_PROPERTIES_NAME).getFile()));
             isLogEnabled = Boolean.valueOf(properties.getProperty(LOG_ENABLE, "true"));
             return isLogEnabled;
         } catch (IOException e) {

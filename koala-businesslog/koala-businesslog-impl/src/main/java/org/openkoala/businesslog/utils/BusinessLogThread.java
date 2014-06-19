@@ -1,23 +1,17 @@
 package org.openkoala.businesslog.utils;
 
-import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
-import groovy.lang.MetaClass;
 
-import org.codehaus.groovy.runtime.GStringImpl;
-import org.openkoala.businesslog.*;
-
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
-import static org.openkoala.businesslog.ContextKeyConstant.BUSINESS_METHOD;
+import org.codehaus.groovy.runtime.GStringImpl;
+import org.openkoala.businesslog.BusinessLog;
+import org.openkoala.businesslog.BusinessLogBaseException;
+import org.openkoala.businesslog.BusinessLogExporter;
+import org.openkoala.businesslog.KoalaBusinessLogConfigException;
 
 /**
  * 日志处理线程
@@ -98,7 +92,7 @@ public class BusinessLogThread implements Runnable {
         return null;
     }
 
-    private GroovyObject getGroovyObject(Class clazz) {
+	private GroovyObject getGroovyObject(Class clazz) {
         try {
             if (null == clazz) throw new KoalaBusinessLogConfigException("The config must be a groovy class");
 

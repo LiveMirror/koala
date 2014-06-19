@@ -42,7 +42,7 @@ public class CasUserManagementWebServiceApiTest {
 
 	private static final int BUFFER_SIZE = 1024;
 
-	private static final String API_URL = "http://localhost:8888/api/user";
+	private static final String API_URL = "http://localhost:8888/koala-cas-management/api/user";
 	
 	private DefaultHttpClient httpClient;
 	

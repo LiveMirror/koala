@@ -22,6 +22,11 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-resourceloader</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.openkoala.businesslog</groupId>
 			<artifactId>koala-businesslog-api</artifactId>
 			<version>${project.version}</version>

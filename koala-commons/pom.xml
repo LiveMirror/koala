@@ -21,6 +21,6 @@
 		<module>koala-commons-test-support</module>
 		<module>koala-commons-domain</module>
 		<module>koala-commons-dddlib-mybatis</module>
-		
+		<module>koala-commons-resourceloader</module>
 	</modules>
 </project>
