@@ -65,4 +65,12 @@ public class PermissionController {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByUserAccount(currentPage,pageSize,userId);
 		return results;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/pagingQueryByRoleId")
+	public Page<PermissionDTO> pagingQueryPermissionsByRole(int currentPage, int pageSize,Long roleId){
+//		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByRole(currentPage,pageSize,roleId);
+		return results;
+	}
 }

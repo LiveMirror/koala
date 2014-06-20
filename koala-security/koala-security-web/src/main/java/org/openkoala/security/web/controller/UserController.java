@@ -236,36 +236,36 @@ public class UserController {
 	//======================添加授权=======================
 	@ResponseBody
 	@RequestMapping("/grantRole")
-	public Map<String, Object> grantRole(Long userId, Long roleId) {
+	public Map<String, Object> grantRoleToUser(Long userId, Long roleId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantRole(userId, roleId);
+		securityConfigFacade.grantRoleToUser(userId, roleId);
 		dataMap.put("success", true);
 		return dataMap;
 	}
 
 	@ResponseBody
 	@RequestMapping("/grantRoles")
-	public Map<String, Object> grantRoles(Long userId, Long[] roleIds) {
+	public Map<String, Object> grantRolesToUser(Long userId, Long[] roleIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantRoles(userId, roleIds);
+		securityConfigFacade.grantRolesToUser(userId, roleIds);
 		dataMap.put("success", true);
 		return dataMap;
 	}
 
 	@ResponseBody
 	@RequestMapping("/grantPermission")
-	public Map<String, Object> grantPermission(Long userId, Long permissionId) {
+	public Map<String, Object> grantPermissionToUser(Long userId, Long permissionId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermission(userId, permissionId);
+		securityConfigFacade.grantPermissionToUser(userId, permissionId);
 		dataMap.put("success", true);
 		return dataMap;
 	}
 
 	@ResponseBody
 	@RequestMapping("/grantPermissions")
-	public Map<String, Object> grantPermissions(Long userId, Long[] permissionIds) {
+	public Map<String, Object> grantPermissionsToUser(Long userId, Long[] permissionIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermissions(userId, permissionIds);
+		securityConfigFacade.grantPermissionsToUser(userId, permissionIds);
 		dataMap.put("success", true);
 		return dataMap;
 	}

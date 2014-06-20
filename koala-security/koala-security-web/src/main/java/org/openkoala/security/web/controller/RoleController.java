@@ -10,6 +10,8 @@ import org.apache.shiro.SecurityUtils;
 import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,18 +98,45 @@ public class RoleController {
 	// ===========分配资源=============
 
 	// 分配菜单资源
-	public Map<String, Object> grantMenuResources(Long roleId,Long[] menuResourceIds) {
+	@ResponseBody
+	@RequestMapping("/grantMenuResources")
+	public Map<String, Object> grantMenuResources(Long roleId,List<MenuResourceDTO> menuResourceDTOs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantMenuResources(roleId,menuResourceIds);
+		securityConfigFacade.grantMenuResourcesToRole(roleId,menuResourceDTOs);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
-
-	// TODO 
+	
+	// 分配权限Permission
+	@ResponseBody
+	@RequestMapping("/grantPermissions")
+	public Map<String, Object> grantPermissions(Long roleId, Long[] permissionIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantPermissionsToRole(roleId,permissionIds);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/terminatePermissions")
+	public Map<String,Object> terminatePermissions(Long roleId, Long[] permssionIds){
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.terminatePermissionsToRole(roleId,permssionIds);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/pagingQueryNotGrantPermissionsByRole")
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int currentPage,int pageSize,Long roleId){
+		return securityAccessFacade.pagingQueryNotGrantPermissionsByRole(currentPage,pageSize,roleId);
+	}
+	
+	// ==================TODO==================
 	// 分配页面元素资源
 	public Map<String, Object> grantPageElementResources(Long roleId,Long[] menuResourceIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPageElementResources(roleId,menuResourceIds);
+		securityConfigFacade.grantPageElementResourcesToRole(roleId,menuResourceIds);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -115,7 +144,7 @@ public class RoleController {
 	// 分配URL资源
 	public Map<String, Object> grantUrlAccessResources(Long roleId,Long[] menuResourceIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantUrlAccessResources(roleId,menuResourceIds);
+		securityConfigFacade.grantUrlAccessResourcesToRole(roleId,menuResourceIds);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -123,18 +152,9 @@ public class RoleController {
 	// 分配方法级别资源
 	public Map<String, Object> grantMethodInvocationResources(Long roleId,Long[] menuResourceIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantMethodInvocationResources(roleId,menuResourceIds);
+		securityConfigFacade.grantMethodInvocationResourcesToUser(roleId,menuResourceIds);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
 
-	// 分配权限Permission
-	public Map<String, Object> grantPermissions(Long roleId,Long[] menuResourceIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermissions(menuResourceIds);
-		dataMap.put("result", "success");
-		return dataMap;
-	}
-	
-	
 }

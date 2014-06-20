@@ -63,7 +63,6 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	public List<RoleDTO> findRoleDtosBy(String username) {
 		List<RoleDTO> results = new ArrayList<RoleDTO>();
 		Set<Role> roles = securityAccessApplication.findAllRolesByUserAccount(username);
-		LOGGER.info("SecurityAccessFacadeImpl findRoleDtosBy roles:{}", new Object[] { roles });
 		for (Role role : roles) {
 			results.add(generateRoleDtoBy(role));
 		}
@@ -533,6 +532,33 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("userId", userId);
 		Page<RoleDTO> results = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(parameters)//
+				.setPage(currentPage, pageSize)//
+				.pagedList();
+		return results;
+	}
+
+	@Override
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int currentPage, int pageSize, Long roleId) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.description)");
+		jpql.append("FROM Permission _permission WHERE _permission.id NOT IN(SELECT _permission.id FROM Permission _permission JOIN _permission.roles _role WHERE _role.id = :roleId)");
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("roleId", roleId);
+		Page<PermissionDTO> results = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(parameters)//
+				.setPage(currentPage, pageSize)//
+				.pagedList();
+		return results;
+	}
+
+	@Override
+	public Page<PermissionDTO> pagingQueryPermissionsByRole(int currentPage, int pageSize, Long roleId) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.description) FROM Permission _permission JOIN _permission.roles _role WHERE _role.id = :roleId");
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("roleId", roleId);
+		Page<PermissionDTO> results = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.setParameters(parameters)//
 				.setPage(currentPage, pageSize)//

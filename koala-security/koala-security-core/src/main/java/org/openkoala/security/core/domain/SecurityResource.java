@@ -1,6 +1,7 @@
 package org.openkoala.security.core.domain;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -64,6 +65,22 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 		disabled = false;
 	}
 
+	public void addAuthority(Authority authority){
+		this.authorities.add(authority);
+	}
+	
+	public void addAuthorities(List<Authority> authorities){
+		this.authorities.addAll(authorities);
+	}
+	
+	public void terminateAuthority(Authority authority){
+		this.authorities.remove(authority);
+	}
+	
+	public void terminateAuthorities(List<Authority> authorities){
+		this.authorities.removeAll(authorities);
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -86,6 +103,14 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Set<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
 	}
 
 	@Override

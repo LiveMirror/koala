@@ -1,5 +1,7 @@
 package org.openkoala.security.facade;
 
+import java.util.List;
+
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
@@ -131,13 +133,13 @@ public interface SecurityConfigFacade {
 
 	void grantPermissionsInScope(Long userId, Long[] permissionIds, Long scopeId);
 
-	void grantRole(Long userId, Long roleId);
+	void grantRoleToUser(Long userId, Long roleId);
 	
-	void grantRoles(Long userId, Long[] roleIds);
+	void grantRolesToUser(Long userId, Long[] roleIds);
 
-	void grantPermission(Long userId, Long permissionId);
+	void grantPermissionToUser(Long userId, Long permissionId);
 
-	void grantPermissions(Long userId, Long[] permissionIds);
+	void grantPermissionsToUser(Long userId, Long[] permissionIds);
 
 	void activate(Long userId);
 
@@ -155,14 +157,16 @@ public interface SecurityConfigFacade {
 
 	void terminateAuthorizationsByPermissions(Long userId,Long[] permissionIds);
 
-	void grantMenuResources(Long roleId,Long[] menuResourceIds);
+	void grantMenuResourcesToRole(Long roleId,List<MenuResourceDTO> menuResourceDTOs);
 
-	void grantPageElementResources(Long roleId,Long[] menuResourceIds);
+	void grantPageElementResourcesToRole(Long roleId,Long[] menuResourceIds);
 
-	void grantUrlAccessResources(Long roleId,Long[] menuResourceIds);
+	void grantUrlAccessResourcesToRole(Long roleId,Long[] menuResourceIds);
 
-	void grantMethodInvocationResources(Long roleId,Long[] menuResourceIds);
+	void grantMethodInvocationResourcesToUser(Long roleId,Long[] menuResourceIds);
 
-	void grantPermissions(Long[] menuResourceIds);
+	void grantPermissionsToRole(Long roleId, Long[] permissionIds);
+
+	void terminatePermissionsToRole(Long roleId, Long[] permssionIds);
 
 }

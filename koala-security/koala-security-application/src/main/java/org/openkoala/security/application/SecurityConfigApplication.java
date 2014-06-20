@@ -136,7 +136,7 @@ public interface SecurityConfigApplication {
 	 * @param securityResources
 	 * @param authority
 	 */
-	void terminateSecurityResourcesFromAuthority(List<SecurityResource> securityResources, Authority authority);
+	void terminateSecurityResourcesFromAuthority(List<? extends SecurityResource> securityResources, Authority authority);
 
 	/**
 	 * 
@@ -249,5 +249,9 @@ public interface SecurityConfigApplication {
 	void grantActorsToAuthority(Long[] userIds, Long roleId);
 	
 	void grantActorToAuthority(Long userId, Long roleId);
+
+	void grantSecurityResourcesToAuthority(List<? extends SecurityResource> securityResources, Authority authority);
+
+	void grantPermissionToRole(Permission permission, Role role);
 
 }

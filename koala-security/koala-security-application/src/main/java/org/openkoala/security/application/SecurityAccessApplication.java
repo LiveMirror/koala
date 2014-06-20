@@ -1,8 +1,10 @@
 package org.openkoala.security.application;
 
+import java.util.List;
 import java.util.Set;
 
 import org.openkoala.security.core.domain.Actor;
+import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
@@ -95,4 +97,5 @@ public interface SecurityAccessApplication {
 
 	MenuResource getMenuResourceBy(Long menuResourceId);
 
+	List<MenuResource> findAllMenuResourcesByRole(Role role);
 }

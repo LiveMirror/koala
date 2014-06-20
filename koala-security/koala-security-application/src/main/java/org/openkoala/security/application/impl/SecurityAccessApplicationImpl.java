@@ -1,5 +1,7 @@
 package org.openkoala.security.application.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -92,4 +94,8 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 		return MenuResource.get(MenuResource.class, menuResourceId);
 	}
 
+	@Override
+	public List<MenuResource> findAllMenuResourcesByRole(Role role) {
+		return new ArrayList<MenuResource>(Authority.findMenuResourceByAuthority(role));
+	}
 }

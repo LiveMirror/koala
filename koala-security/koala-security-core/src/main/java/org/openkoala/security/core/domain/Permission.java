@@ -31,18 +31,10 @@ public class Permission extends Authority {
 		super(name);
 	}
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
 	@Override
 	public void update() {
 		isExisted();
-		Permission permission = Role.get(Permission.class, this.getId());
+		Permission permission = Permission.get(Permission.class, this.getId());
 		permission.setName(this.getName());
 		permission.setDescription(this.getDescription());
 	}
@@ -63,6 +55,30 @@ public class Permission extends Authority {
 			}
 		}
 		return results;
+	}
+	
+	public void addRole(Role role){
+		this.roles.add(role);
+	}
+	
+	public void addRoles(List<Role> roles){
+		this.roles.addAll(roles);
+	}
+	
+	public void removeRole(Role role){
+		this.roles.remove(role);
+	}
+	
+	public void removeRoles(List<Role> roles){
+		this.roles.remove(roles);
+	}
+	
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 }

@@ -1,14 +1,20 @@
 package org.openkoala.security.facade.impl;
 
-import static org.openkoala.security.facade.util.TransFromDomainUtils.*;
+import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromMenuResourceBy;
+import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromMenuResourcesBy;
+import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromOrganizationScopeBy;
+import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromPermissionBy;
+import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromRoleBy;
+import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromUserBy;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
-import org.openkoala.security.core.domain.Actor;
-import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
@@ -20,7 +26,6 @@ import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.openkoala.security.facade.util.TransFromDomainUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 @Named
 public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
@@ -159,26 +164,26 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void grantRole(Long userId, Long roleId) {
+	public void grantRoleToUser(Long userId, Long roleId) {
 		securityConfigApplication.grantActorToAuthority(userId, roleId);
 	}
 
 	@Override
-	public void grantRoles(Long userId, Long[] roleIds) {
+	public void grantRolesToUser(Long userId, Long[] roleIds) {
 		for (Long roleId : roleIds) {
-			grantRole(userId, roleId);
+			grantRoleToUser(userId, roleId);
 		}
 	}
 
 	@Override
-	public void grantPermission(Long userId, Long permissionId) {
+	public void grantPermissionToUser(Long userId, Long permissionId) {
 		securityConfigApplication.grantActorToAuthority(userId, permissionId);
 	}
 
 	@Override
-	public void grantPermissions(Long userId, Long[] permissionIds) {
+	public void grantPermissionsToUser(Long userId, Long[] permissionIds) {
 		for (Long permissionId : permissionIds) {
-			grantPermission(userId, permissionId);
+			grantPermissionToUser(userId, permissionId);
 		}
 	}
 
@@ -237,42 +242,80 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		}
 	}
 
-	// 树
+	// 树 等待验证
 	@Override
-	public void grantMenuResources(Long roleId,Long[] menuResourceIds) {
+	public void grantMenuResourcesToRole(Long roleId, List<MenuResourceDTO> menuResourceDTOs) {
 		//
 		Role role = securityAccessApplication.getRoleBy(roleId);
-		for (Long menuResourceId : menuResourceIds) {
-			this.grantMenuResource(role,menuResourceId);
-		}
-	}
 
-	private void grantMenuResource(Role role,Long menuResourceId) {
-		MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
-		securityConfigApplication.grantAuthorityToSecurityResource(role, menuResource);
+		// 现在的
+		List<MenuResource> targetOwnerMenuResources = transFromMenuResourcesBy(menuResourceDTOs);
+		// 原有的
+		List<MenuResource> originalOwnerMenuResources = securityAccessApplication.findAllMenuResourcesByRole(role);
+
+		List<MenuResource> tmpList = new ArrayList<MenuResource>(originalOwnerMenuResources);
+		// 待添加的
+		List<MenuResource> waitingAddList = new ArrayList<MenuResource>();
+		// 带删除的
+		List<MenuResource> waitingDelList = new ArrayList<MenuResource>();
+
+		targetOwnerMenuResources.retainAll(originalOwnerMenuResources);
+		originalOwnerMenuResources.removeAll(targetOwnerMenuResources);
+
+		waitingDelList.addAll(originalOwnerMenuResources);
+
+		tmpList.removeAll(targetOwnerMenuResources);
+
+		waitingAddList.addAll(tmpList);
+
+		securityConfigApplication.terminateSecurityResourcesFromAuthority(waitingDelList, role);
+		securityConfigApplication.grantSecurityResourcesToAuthority(waitingAddList, role);
+
 	}
 
 	// 列表
 	@Override
-	public void grantPageElementResources(Long roleId,Long[] menuResourceIds) {
-		
-	}
-
-	@Override
-	public void grantUrlAccessResources(Long roleId,Long[] menuResourceIds) {
+	public void grantPageElementResourcesToRole(Long roleId, Long[] menuResourceIds) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void grantMethodInvocationResources(Long roleId,Long[] menuResourceIds) {
+	public void grantUrlAccessResourcesToRole(Long roleId, Long[] menuResourceIds) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void grantPermissions(Long[] menuResourceIds) {
-		
+	public void grantMethodInvocationResourcesToUser(Long roleId, Long[] menuResourceIds) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void grantPermissionsToRole(Long roleId, Long[] permissionIds) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long permissionId : permissionIds) {
+			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+			securityConfigApplication.grantRoleToPermission(role, permission);
+			securityConfigApplication.grantPermissionToRole(permission,role);
+		}
+	}
+
+	@Override
+	public void terminatePermissionsToRole(Long roleId, Long[] permssionIds) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long permissionId : permssionIds) {
+			Permission permission = securityAccessApplication.getPermissionBy(permissionId); 
+			securityConfigApplication.terminatePermissionFromRole(permission, role);
+		}
 	}
 
 }
+
+
+
+
+
+
+
+
