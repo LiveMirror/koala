@@ -215,8 +215,8 @@ public class UserController {
 	
 	//批量激活 
 	@ResponseBody
-	@RequestMapping("/activate")
-	public Map<String,Object> activate(Long[] userIds){
+	@RequestMapping("/activates")
+	public Map<String,Object> activates(Long[] userIds){
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.activate(userIds);
 		dataMap.put("success", true);
@@ -225,8 +225,8 @@ public class UserController {
 	
 	//批量挂起
 	@ResponseBody
-	@RequestMapping("/suspend")
-	public Map<String,Object> suspend(Long[] userIds){
+	@RequestMapping("/suspends")
+	public Map<String,Object> suspends(Long[] userIds){
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.suspend(userIds);
 		dataMap.put("success", true);
