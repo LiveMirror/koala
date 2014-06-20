@@ -42,7 +42,7 @@ public class I18nTag extends SimpleTagSupport {
 		HttpServletRequest request = (HttpServletRequest)((PageContext) this.getJspContext()).getRequest();
 		
 		if (locale == null) {
-			message = I18NManager.getMessage(key, request.getLocale().getLanguage());
+			message = I18NManager.getMessage(key, request.getLocale().toString());
 		} else {
 			message = I18NManager.getMessage(key, locale);
 		}
