@@ -121,4 +121,9 @@ public interface SecurityAccessFacade {
 
 	Page<RoleDTO> pagingQueryRolesByUserAccount(int currentPage, int pageSize, Long userId);
 
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int currentPage, int pageSize, Long roleId);
+
+	Page<PermissionDTO> pagingQueryPermissionsByRole(int currentPage, int pageSize, Long roleId);
+	
+	
 }

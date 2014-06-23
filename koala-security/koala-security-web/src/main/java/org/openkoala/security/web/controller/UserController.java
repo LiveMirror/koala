@@ -132,8 +132,8 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Page<UserDTO> pagingQuery(int currentPage, int pageSize, UserDTO userDTO) {
-		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(currentPage, pageSize, userDTO);
+	public Page<UserDTO> pagingQuery(int page, int pageSize, UserDTO userDTO) {
+		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pageSize, userDTO);
 		return results;
 	}
 
@@ -215,8 +215,8 @@ public class UserController {
 	
 	//批量激活 
 	@ResponseBody
-	@RequestMapping("/activate")
-	public Map<String,Object> activate(Long[] userIds){
+	@RequestMapping("/activates")
+	public Map<String,Object> activates(Long[] userIds){
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.activate(userIds);
 		dataMap.put("success", true);
@@ -225,8 +225,8 @@ public class UserController {
 	
 	//批量挂起
 	@ResponseBody
-	@RequestMapping("/suspend")
-	public Map<String,Object> suspend(Long[] userIds){
+	@RequestMapping("/suspends")
+	public Map<String,Object> suspends(Long[] userIds){
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.suspend(userIds);
 		dataMap.put("success", true);
@@ -236,36 +236,36 @@ public class UserController {
 	//======================添加授权=======================
 	@ResponseBody
 	@RequestMapping("/grantRole")
-	public Map<String, Object> grantRole(Long userId, Long roleId) {
+	public Map<String, Object> grantRoleToUser(Long userId, Long roleId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantRole(userId, roleId);
+		securityConfigFacade.grantRoleToUser(userId, roleId);
 		dataMap.put("success", true);
 		return dataMap;
 	}
 
 	@ResponseBody
 	@RequestMapping("/grantRoles")
-	public Map<String, Object> grantRoles(Long userId, Long[] roleIds) {
+	public Map<String, Object> grantRolesToUser(Long userId, Long[] roleIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantRoles(userId, roleIds);
+		securityConfigFacade.grantRolesToUser(userId, roleIds);
 		dataMap.put("success", true);
 		return dataMap;
 	}
 
 	@ResponseBody
 	@RequestMapping("/grantPermission")
-	public Map<String, Object> grantPermission(Long userId, Long permissionId) {
+	public Map<String, Object> grantPermissionToUser(Long userId, Long permissionId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermission(userId, permissionId);
+		securityConfigFacade.grantPermissionToUser(userId, permissionId);
 		dataMap.put("success", true);
 		return dataMap;
 	}
 
 	@ResponseBody
 	@RequestMapping("/grantPermissions")
-	public Map<String, Object> grantPermissions(Long userId, Long[] permissionIds) {
+	public Map<String, Object> grantPermissionsToUser(Long userId, Long[] permissionIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermissions(userId, permissionIds);
+		securityConfigFacade.grantPermissionsToUser(userId, permissionIds);
 		dataMap.put("success", true);
 		return dataMap;
 	}
@@ -314,24 +314,24 @@ public class UserController {
 	/**
 	 * 根据条件分页查询没有授权的角色
 	 * 
-	 * @param currentPage
+	 * @param page
 	 * @param pageSize
 	 * @param queryRoleCondition
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
-	public Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize,RoleDTO queryRoleCondition,Long userId){
+	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pageSize,RoleDTO queryRoleCondition,Long userId){
 //		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(currentPage,pageSize,queryRoleCondition,userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page,pageSize,queryRoleCondition,userId);
 		return results;
 	}
 
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissions")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int currentPage, int pageSize,PermissionDTO queryPermissionCondition,Long userId) {
+	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pageSize,PermissionDTO queryPermissionCondition,Long userId) {
 //		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(currentPage,pageSize,queryPermissionCondition,userId);
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page,pageSize,queryPermissionCondition,userId);
 		return results;
 	}
 

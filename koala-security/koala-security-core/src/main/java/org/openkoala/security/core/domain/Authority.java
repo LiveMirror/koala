@@ -131,6 +131,22 @@ public abstract class Authority extends SecurityAbstractEntity {
 		super.remove();
 	}
 	
+	public void addSecurityResource(SecurityResource securityResource){
+		this.securityResources.add(securityResource);
+	}
+	
+	public void addSecurityResources(List<? extends SecurityResource> securityResources){
+		this.securityResources.addAll(securityResources);
+	}
+	
+	public void terminateSecurityResource(SecurityResource securityResource){
+		this.securityResources.remove(securityResource);
+	}
+	
+	public void terminateSecurityResources(List<? extends SecurityResource> securityResources){
+		this.securityResources.removeAll(securityResources);
+	}
+	
 	public String getName() {
 		return name;
 	}

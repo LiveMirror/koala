@@ -1,5 +1,8 @@
 package org.openkoala.security.facade.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.OrganizationScope;
 import org.openkoala.security.core.domain.Permission;
@@ -54,7 +57,15 @@ public final class TransFromDomainUtils {
 		results.setUrl(menuResourceDTO.getUrl());
 		return results;
 	}
-	
+
+	public static List<MenuResource> transFromMenuResourcesBy(List<MenuResourceDTO> menuResourceDTOs) {
+		List<MenuResource> results = new ArrayList<MenuResource>();
+		for (MenuResourceDTO menuResourceDTO : menuResourceDTOs) {
+			results.add(transFromMenuResourceBy(menuResourceDTO));
+		}
+		return results;
+	}
+
 	public static OrganizationScope transFromOrganizationScopeBy(OrganizationScopeDTO organizationScopeDTO) {
 		OrganizationScope results = new OrganizationScope(organizationScopeDTO.getName());
 		results.setDescription(organizationScopeDTO.getDescription());

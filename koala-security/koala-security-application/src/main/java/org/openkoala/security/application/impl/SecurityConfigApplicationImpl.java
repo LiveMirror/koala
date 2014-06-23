@@ -1,8 +1,6 @@
 package org.openkoala.security.application.impl;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Named;
 
@@ -64,24 +62,21 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void grantAuthoritiesToSecurityResource(List<Authority> authorities, SecurityResource securityResource) {
-		// TODO Auto-generated method stub
+		securityResource.addAuthorities(authorities);
 	}
 
-	// TODO 需要改进
 	public void grantRoleToPermission(Role role, Permission permission) {
-		Set<Permission> permissions = new HashSet<Permission>();
-		permissions.add(permission);
-		role.setPermissions(permissions);
+		permission.addRole(role);
 	}
 
 	public void grantRoleToPermissions(Role role, List<Permission> permissions) {
-		role.setPermissions(new HashSet<Permission>(permissions));
+		for (Permission permission : permissions) {
+			permission.addRole(role);
+		}
 	}
 
 	public void grantRolesToPermission(List<Role> roles, Permission permission) {
-		for (Role role : roles) {
-			grantRoleToPermission(role, permission);
-		}
+		permission.addRoles(roles);
 	}
 
 	public void grantActorToAuthority(Actor actor, Authority authority) {
@@ -89,43 +84,39 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void grantActorToAuthorities(Actor actor, List<Authority> authorities) {
-		// TODO Auto-generated method stub
-
+		for (Authority authority : authorities) {
+			this.grantActorToAuthority(actor, authority);
+		}
 	}
 
 	public void grantActorsToAuthority(List<Actor> actors, Authority authority) {
-		// TODO Auto-generated method stub
-
+		for (Actor actor : actors) {
+			this.grantActorToAuthority(actor, authority);
+		}
 	}
 
 	public void terminateSecurityResourceFromAuthority(SecurityResource securityResource, Authority authority) {
-		// TODO Auto-generated method stub
-
+		authority.terminateSecurityResource(securityResource);
 	}
 
-	public void terminateSecurityResourcesFromAuthority(List<SecurityResource> securityResources, Authority authority) {
-		// TODO Auto-generated method stub
-
+	public void terminateSecurityResourcesFromAuthority(List<? extends SecurityResource> securityResources, Authority authority) {
+		authority.terminateSecurityResources(securityResources);
 	}
 
 	public void terminateAuthoritiesFromSecurityResource(List<Authority> authorities, SecurityResource securityResource) {
-		// TODO Auto-generated method stub
-
+		securityResource.terminateAuthorities(authorities);
 	}
 
 	public void terminatePermissionFromRole(Permission permission, Role role) {
-		// TODO Auto-generated method stub
-
+		role.terminatePermission(permission);
 	}
 
 	public void terminatePermissionsFromRole(List<Permission> permissions, Role role) {
-		// TODO Auto-generated method stub
-
+		role.terminatePermissions(permissions);
 	}
 
 	public void terminateRolesFromPermission(List<Role> roles, Permission permission) {
-		// TODO Auto-generated method stub
-
+		permission.removeRoles(roles);
 	}
 
 	public void terminateActorFromAuthority(Actor actor, Authority authority) {
@@ -138,6 +129,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		}
 	}
 
+	// TODO 
 	public void updateMenuResources(List<MenuResource> menuResources) {
 		// TODO Auto-generated method stub
 
@@ -181,14 +173,15 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 
 	@Override
 	public void grantAuthorityToSecurityResource(Authority authority, SecurityResource securityResource) {
-		// TODO Auto-generated method stub
-
+		securityResource.addAuthority(authority);
 	}
 
 	@Override
 	public void grantAuthorityToSecurityResources(Authority authority,
 			List<? extends SecurityResource> securityResources) {
-		authority.setSecurityResources(new HashSet<SecurityResource>(securityResources));
+		for (SecurityResource securityResource : securityResources) {
+			this.grantAuthorityToSecurityResource(authority, securityResource);
+		}
 	}
 
 	@Override
@@ -230,6 +223,17 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		Actor actor = Actor.get(Actor.class, actorId);
 		Authority authority = Authority.get(Authority.class, authorityId);
 		grantActorToAuthority(actor, authority);
+	}
+
+	@Override
+	public void grantSecurityResourcesToAuthority(List<? extends SecurityResource> securityResources,
+			Authority authority) {
+		authority.addSecurityResources(securityResources);
+	}
+
+	@Override
+	public void grantPermissionToRole(Permission permission, Role role) {
+		role.addPermission(permission);
 	}
 	
 }

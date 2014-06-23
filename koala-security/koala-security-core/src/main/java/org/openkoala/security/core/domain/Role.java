@@ -36,14 +36,6 @@ public class Role extends Authority {
 		super(name);
 	}
 
-	public Set<Permission> getPermissions() {
-		return permissions;
-	}
-
-	public void setPermissions(Set<Permission> permissions) {
-		this.permissions = permissions;
-	}
-
 	public static Set<Role> findByUser(User user) {
 		Set<Role> results = new HashSet<Role>();
 		List<Authorization> authorizations = Authorization.findByActor(user);
@@ -69,6 +61,30 @@ public class Role extends Authority {
 		results.add(this);
 		results.addAll(this.getPermissions());
 		return results;
+	}
+	
+	public void addPermission(Permission permission){
+		this.permissions.add(permission);
+	}
+	
+	public void addPermissions(List<Permission> permissions){
+		this.permissions.addAll(permissions);
+	}
+	
+	public void terminatePermission(Permission permission){
+		this.permissions.remove(permission);
+	}
+	
+	public void terminatePermissions(List<Permission> permissions){
+		this.permissions.removeAll(permissions);
+	}
+	
+	public Set<Permission> getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(Set<Permission> permissions) {
+		this.permissions = permissions;
 	}
 
 }

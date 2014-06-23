@@ -24,13 +24,15 @@ public class MenuResourceDTO implements Serializable {
 	
 	private boolean disabled;
 	
+	private int level;
+	
 	private List<MenuResourceDTO> children = new ArrayList<MenuResourceDTO>();
 
 	public MenuResourceDTO() {
 	}
 	
 	public MenuResourceDTO(Long id, String identifier, String name, String url, String icon, String description,
-			Long parentId, boolean disabled) {
+			Long parentId, boolean disabled,int level) {
 		this.id = id;
 		this.identifier = identifier;
 		this.name = name;
@@ -39,6 +41,7 @@ public class MenuResourceDTO implements Serializable {
 		this.description = description;
 		this.parentId = parentId;
 		this.disabled = disabled;
+		this.level = level;
 	}
 
 	public Long getId() {
@@ -111,6 +114,14 @@ public class MenuResourceDTO implements Serializable {
 
 	public void setDisabled(boolean isValid) {
 		this.disabled = isValid;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 	@Override

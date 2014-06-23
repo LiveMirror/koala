@@ -38,6 +38,12 @@ public class User extends Actor {
 	@Column(name = "TELE_PHONE")
 	private String telePhone;
 
+	/**
+	 * 加密盐值
+	 */
+	@Column(name = "SALT")
+	private String salt;
+
 	User() {
 	}
 
@@ -218,6 +224,14 @@ public class User extends Actor {
 
 	public void setTelePhone(String telePhone) {
 		this.telePhone = telePhone;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 }
