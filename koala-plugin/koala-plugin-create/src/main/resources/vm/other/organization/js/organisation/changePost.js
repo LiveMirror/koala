@@ -2,12 +2,16 @@
  * 岗位调整
  */
 var changePost = function(){
-
 	var dialog = null;//对话框
     var departmentTree = null;//部门树
 	var postGrid = null; //岗位列表
 	var selectedPost = null;//已选岗位
 	var selectedItem = {};//已选员工数据
+	
+	$("#selectedPost").delegate(".glyphicon.glyphicon-remove","click",function(){
+		alert(343);
+	});
+	
 	var init = function(employeeId){
 		$.get( contextPath + '/pages/organisation/changePost.jsp').done(function(data){
 			dialog = $(data);
@@ -98,7 +102,7 @@ var changePost = function(){
 				selectedItem[post.postId] = {postId:post.postId, principal: post.principal};
 				$('<div title="点击设置主岗位" class="selected-post '+ (post.principal?'principal':'')+'" data-value="'+post.postId+'">'+post.postName+'<a class="glyphicon glyphicon-remove"></a></div>')
 				.appendTo(selectedPost)
-				.on('click', {postId: post.postId}, function(event){
+				.click({postId: post.postId}, function(event){
 						var $this = $(this);
 						if($this.hasClass('principal')){
 							return;
@@ -111,9 +115,12 @@ var changePost = function(){
 						selectedItem[event.data.postId].principal = true;
 						$this.addClass('principal');
 				})
-				.find('a').on('click', {postId: post.postId}, function(event){
+				.find('a').click({postId: post.postId}, function(event){
 					delete selectedItem[event.data.postId];
 					$(this).parent().remove();
+					
+					$("#departmentTree .tree-selected").click();
+					
 					postGrid.find('[data-role="indexCheckbox"][value="'+data.postId+'"]').closest('tr').removeClass('success');
 				});
 			}
@@ -127,6 +134,7 @@ var changePost = function(){
 		departmentTree.loader({
 			opacity: 0
 		});
+		
         $.get(contextPath  + '/organization/orgTree.koala').done(function(data){
         	departmentTree.loader('hide');
             var zNodes = new Array();
@@ -135,7 +143,7 @@ var changePost = function(){
                 if(this.organizationType == 'Company'){
                     zNode.type = 'parent';
                 }else{
-                    zNode.icon = 'glyphicon glyphicon-list-alt'
+                    zNode.icon = 'glyphicon glyphicon-list-alt';
                 }
                 this.title = this.name;
                 zNode.menu = this;
@@ -148,28 +156,31 @@ var changePost = function(){
                 data: zNodes,
                 delay: 400
             };
+            
+            /*部门树*/
             departmentTree.tree({
                 dataSource: dataSourceTree,
                 loadingHTML: '<div class="static-loader">Loading...</div>',
                 multiSelect: false,
                 cacheItems: true
             }).on({
-                    'selectParent': function(event, data){
-                        loadPostList(data.data.id, employeeId);
-                    },
-                    'selectChildren': function(event, data){
-                        loadPostList(data.id, employeeId);
-                    }
+                'selectParent': function(event, data){
+                    loadPostList(data.data.id, employeeId);
+                },
+                'selectChildren': function(event, data){
+                    loadPostList(data.id, employeeId);
+                }
             });
         });
 	};
+	
     var getChildrenData = function(nodes, items){
         $.each(items, function(){
             var zNode = {};
             if(this.organizationType == 'Company'){
                 zNode.type = 'parent';
             }else{
-                zNode.icon = 'glyphicon glyphicon-list-alt'
+                zNode.icon = 'glyphicon glyphicon-list-alt';
             }
             this.title = this.name;
             zNode.menu = this;
@@ -193,9 +204,11 @@ var changePost = function(){
 		}
 	};
 	
-	var addPost = function(postId, postName, obj){
+	var addPost = function(postId, postName, obj, a){
 		$(obj).closest('.grid').trigger('addPost', {postId:postId, postName:postName, obj:obj});
+		$(a).parent().parent().remove();
 	};
+	
 	/**
 	 * 加载岗位列表
 	 */
@@ -209,7 +222,7 @@ var changePost = function(){
 			},
 			{ title:'操作', width: '120px',
 				render: function(item){
-					return '<a data-id="addIcon" onclick="changePost().addPost('+item.id+', \''+item.name+'\', this)"><i class="glyphicon glyphicon-plus"></i></a>';
+					return '<a data-id="addIcon" onclick="var thiz=this;changePost().addPost('+item.id+', \''+item.name+'\', this,thiz)"><i class="glyphicon glyphicon-plus"></i></a>';
 				}
 			}
 		];
@@ -241,7 +254,7 @@ var changePost = function(){
 					}else{
 						selectedItem[data.postId] = {postId:data.postId, principal: false};
 					}
-					$('<div title="点击设置主岗位" class="selected-post '+ (principal?'principal':'')+'" data-value="'+data.postId+'">'+data.postName+'<a class="glyphicon glyphicon-remove"></a></div>')
+					$('<div title="点击设置主岗位" class="selected-post '+ (principal ? 'principal':'')+'" data-value="'+data.postId+'">'+data.postName+'<a class="glyphicon glyphicon-remove"></a></div>')
 						.appendTo(selectedPost)
 						.on('click', {postId: data.postId}, function(event){
 							var $this = $(this);
@@ -259,6 +272,9 @@ var changePost = function(){
 						.find('a').on('click', function(){
 							delete selectedItem[data.postId];
 							$(this).parent().remove();
+							
+							$("#departmentTree .tree-selected").click();
+							
 							postGrid.find('[data-role="indexCheckbox"][value="'+data.postId+'"]').closest('tr').removeClass('success');
 						});
 				}else{
@@ -279,9 +295,9 @@ var changePost = function(){
 				}
 			}
 		});
+		
 		var grid = postGrid.data("koala.grid");
 		$.post(contextPath + '/post/paging-query-post-by-org.koala?organizationId='+id,{pagesize:10,page:0},function(result){
-			console.log(JSON.stringify(result));
 			var existIds = [];
 			$("#selectedPost .selected-post").each(function(i,t){
 				existIds.push($(t).attr("data-value"));
@@ -304,12 +320,12 @@ var changePost = function(){
 			});
 			
 			result = {
-				"pageSize"	:result.pageSize,
-				"start"		:result.start,
-				"data"		:data,
-				"resultCount":data.length,
-				"pageIndex"	:result.pageCount,
-				"pageCount"	:result.pageCount
+				"pageSize"		: result.pageSize,
+				"start"			: result.start,
+				"data"			: data,
+				"resultCount"	: data.length,
+				"pageIndex"		: result.pageCount,
+				"pageCount"		: result.pageCount
 			};
 			
 			grid.update(result);
