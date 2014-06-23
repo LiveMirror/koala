@@ -132,8 +132,8 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Page<UserDTO> pagingQuery(int page, int pageSize, UserDTO userDTO) {
-		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pageSize, userDTO);
+	public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO userDTO) {
+		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pagesize, userDTO);
 		return results;
 	}
 
@@ -321,17 +321,17 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
-	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pageSize,RoleDTO queryRoleCondition,Long userId){
+	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize,RoleDTO queryRoleCondition,Long userId){
 //		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page,pageSize,queryRoleCondition,userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page,pagesize,queryRoleCondition,userId);
 		return results;
 	}
 
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissions")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pageSize,PermissionDTO queryPermissionCondition,Long userId) {
+	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,PermissionDTO queryPermissionCondition,Long userId) {
 //		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page,pageSize,queryPermissionCondition,userId);
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page,pagesize,queryPermissionCondition,userId);
 		return results;
 	}
 

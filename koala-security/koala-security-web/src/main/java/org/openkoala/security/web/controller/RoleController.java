@@ -39,9 +39,9 @@ public class RoleController {
 	
 	@ResponseBody
 	@RequestMapping("/pagingQueryByUserId")
-	public Page<RoleDTO> pagingQueryRolesByUserAccount(int page, int pageSize,Long userId){
+	public Page<RoleDTO> pagingQueryRolesByUserAccount(int page, int pagesize,Long userId){
 //		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(page,pageSize,userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(page,pagesize,userId);
 		return results;
 	}
 
@@ -128,8 +128,8 @@ public class RoleController {
 	
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissionsByRole")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int page,int pageSize,Long roleId){
-		return securityAccessFacade.pagingQueryNotGrantPermissionsByRole(page,pageSize,roleId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int page,int pagesize,Long roleId){
+		return securityAccessFacade.pagingQueryNotGrantPermissionsByRole(page,pagesize,roleId);
 	}
 	
 	// ==================TODO==================
@@ -153,14 +153,6 @@ public class RoleController {
 	public Map<String, Object> grantMethodInvocationResources(Long roleId,Long[] menuResourceIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.grantMethodInvocationResourcesToUser(roleId,menuResourceIds);
-		dataMap.put("result", "success");
-		return dataMap;
-	}
-
-	// 分配权限Permission
-	public Map<String, Object> grantPermissions(Long roleId,Long[] menuResourceIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermissions(menuResourceIds);
 		dataMap.put("result", "success");
 		return dataMap;
 	}

@@ -53,24 +53,24 @@ public class PermissionController {
 	
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Page<PermissionDTO> pagingQuery(int page, int pageSize, PermissionDTO permissionDTO) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissions(page, pageSize, permissionDTO);
+	public Page<PermissionDTO> pagingQuery(int page, int pagesize, PermissionDTO permissionDTO) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissions(page, pagesize, permissionDTO);
 		return results;
 	}
 	
 	@ResponseBody
 	@RequestMapping("/pagingQueryByUserId")
-	public Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int page, int pageSize,Long userId){
+	public Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int page, int pagesize,Long userId){
 //		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByUserAccount(page,pageSize,userId);
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByUserAccount(page,pagesize,userId);
 		return results;
 	}
 	
 	@ResponseBody
 	@RequestMapping("/pagingQueryByRoleId")
-	public Page<PermissionDTO> pagingQueryPermissionsByRole(int page, int pageSize,Long roleId){
+	public Page<PermissionDTO> pagingQueryPermissionsByRole(int page, int pagesize,Long roleId){
 //		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByRole(page,pageSize,roleId);
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByRole(page,pagesize,roleId);
 		return results;
 	}
 }
