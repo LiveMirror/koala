@@ -136,7 +136,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		String selectTopResource = "SELECT DISTINCT NEW org.openkoala.auth.application.vo.ResourceVO("
 				+ "resource.id, resource.desc, resource.version, resource.menuIcon, resource.level, "
 				+ "resource.identifier, resource.valid, resource.name, resource.name, "
-				+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id) "
+				+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id, resourceType.id, resourceType.name) "
 				+ "FROM ResourceTypeAssignment assignment LEFT JOIN assignment.resource resource LEFT JOIN assignment.resourceType resourceType "
 				+ "WHERE resource.level=1 AND resource.abolishDate>:abolishDate AND resourceType.name <> :dir AND resourceType.name <> :menu ORDER BY resource.level ,resource.sortOrder ,resource.createDate ,resource.name";
 		treeVOs = queryChannel().createJpqlQuery(selectTopResource).addParameter("abolishDate", new Date())
@@ -147,7 +147,7 @@ public class ResourceApplicationImpl extends BaseImpl implements ResourceApplica
 		String selectAllResource = "SELECT DISTINCT NEW org.openkoala.auth.application.vo.ResourceVO("
 				+ "resourceLineAssignment.parent.id,resource.id, resource.desc, resource.version, resource.menuIcon, resource.level, "
 				+ "resource.identifier, resource.valid, resource.name, resource.name, "
-				+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id)"
+				+ "resource.sortOrder, resource.serialNumber, resource.abolishDate, resource.createDate, resourceType.id, resourceType.id, resourceType.name)"
 				+ "FROM ResourceLineAssignment resourceLineAssignment LEFT JOIN resourceLineAssignment.child resource, "
 				+ "ResourceTypeAssignment assignment LEFT JOIN assignment.resource _resource LEFT JOIN assignment.resourceType resourceType "
 				+ "WHERE resourceLineAssignment.parent.id IS NOT NULL AND resource.abolishDate>:abolishDate AND resource.id = _resource.id "

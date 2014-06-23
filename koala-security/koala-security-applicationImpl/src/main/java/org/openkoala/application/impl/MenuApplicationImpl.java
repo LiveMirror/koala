@@ -72,7 +72,7 @@ public class MenuApplicationImpl extends BaseImpl implements MenuApplication {
 		resourceVO.setCreateDate(DateFormatUtils.format(new Date()));
 		resourceVO.setLevel("1");
 		resourceVO.setSerialNumber("0");
-		resourceVO.setSortOrder(0);
+		resourceVO.setSortOrder(100000);
 		resourceVO.vo2Domain(resource);
 		resource.save();
 		saveResourceTypeAssignment(resourceVO, resource);
