@@ -135,6 +135,4 @@ public class RoleController {
 		dataMap.put("result", "success");
 		return dataMap;
 	}
-	
-	
 }
