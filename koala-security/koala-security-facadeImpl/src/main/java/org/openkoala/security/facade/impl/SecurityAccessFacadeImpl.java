@@ -219,7 +219,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	private List<MenuResourceDTO> findTopMenuResourceDTOByUserAccountAsRole(Set<Authority> authorities) {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id, _securityResource.identifier, _securityResource.name, _securityResource.url, _securityResource.menuIcon, _securityResource.description,"
-						+ "_securityResource.parent.id, _securityResource.disabled) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
+						+ "_securityResource.parent.id, _securityResource.disabled,_securityResource.level) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
 		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
 		jpql.append(" AND _authority IN (:_authority)");// 用户拥有的Authority
 		jpql.append(" AND _securityResource.parent IS NULL");// 顶级
@@ -249,7 +249,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	private List<MenuResourceDTO> findAllMenuResourceDTOByUserAccountAsRole(Set<Authority> authorities) {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id, _securityResource.identifier, _securityResource.name, _securityResource.url, _securityResource.menuIcon, _securityResource.description,"
-						+ "_securityResource.parent.id, _securityResource.disabled) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
+						+ "_securityResource.parent.id, _securityResource.disabled,_securityResource.level) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority");
 		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
 		jpql.append(" AND _authority IN (:_authority)");// 用户拥有的Authority
 		jpql.append(" AND _securityResource.disabled = :disabled");//
@@ -337,7 +337,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	private List<MenuResourceDTO> findChidrenMenuResource() {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id, _securityResource.identifier, _securityResource.name, _securityResource.url, _securityResource.menuIcon, _securityResource.description,"
-						+ "_securityResource.parent.id, _securityResource.disabled) FROM SecurityResource _securityResource");
+						+ "_securityResource.parent.id, _securityResource.disabled,_securityResource.level) FROM SecurityResource _securityResource");
 		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
 		jpql.append(" AND _securityResource.disabled = :disabled");//
 		jpql.append(" AND _securityResource.level > :level");//
@@ -358,7 +358,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	private List<MenuResourceDTO> findTopMenuResource() {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id, _securityResource.identifier, _securityResource.name, _securityResource.url, _securityResource.menuIcon, _securityResource.description,"
-						+ "_securityResource.parent.id, _securityResource.disabled) FROM SecurityResource _securityResource");
+						+ "_securityResource.parent.id, _securityResource.disabled,_securityResource.level) FROM SecurityResource _securityResource");
 		jpql.append(" WHERE TYPE(_securityResource) = MenuResource");
 		jpql.append(" AND _securityResource.parent IS NULL");// 顶级
 		jpql.append(" AND _securityResource.disabled = :disabled");//
