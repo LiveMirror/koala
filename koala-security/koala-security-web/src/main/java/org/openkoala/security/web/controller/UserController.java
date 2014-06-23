@@ -132,8 +132,8 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Page<UserDTO> pagingQuery(int currentPage, int pageSize, UserDTO userDTO) {
-		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(currentPage, pageSize, userDTO);
+	public Page<UserDTO> pagingQuery(int page, int pageSize, UserDTO userDTO) {
+		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pageSize, userDTO);
 		return results;
 	}
 
@@ -314,24 +314,24 @@ public class UserController {
 	/**
 	 * 根据条件分页查询没有授权的角色
 	 * 
-	 * @param currentPage
+	 * @param page
 	 * @param pageSize
 	 * @param queryRoleCondition
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
-	public Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize,RoleDTO queryRoleCondition,Long userId){
+	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pageSize,RoleDTO queryRoleCondition,Long userId){
 //		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(currentPage,pageSize,queryRoleCondition,userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page,pageSize,queryRoleCondition,userId);
 		return results;
 	}
 
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissions")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int currentPage, int pageSize,PermissionDTO queryPermissionCondition,Long userId) {
+	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pageSize,PermissionDTO queryPermissionCondition,Long userId) {
 //		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(currentPage,pageSize,queryPermissionCondition,userId);
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page,pageSize,queryPermissionCondition,userId);
 		return results;
 	}
 

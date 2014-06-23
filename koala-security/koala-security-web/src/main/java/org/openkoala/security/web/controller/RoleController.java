@@ -39,9 +39,9 @@ public class RoleController {
 	
 	@ResponseBody
 	@RequestMapping("/pagingQueryByUserId")
-	public Page<RoleDTO> pagingQueryRolesByUserAccount(int currentPage, int pageSize,Long userId){
+	public Page<RoleDTO> pagingQueryRolesByUserAccount(int page, int pageSize,Long userId){
 //		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(currentPage,pageSize,userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(page,pageSize,userId);
 		return results;
 	}
 
@@ -128,8 +128,8 @@ public class RoleController {
 	
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissionsByRole")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int currentPage,int pageSize,Long roleId){
-		return securityAccessFacade.pagingQueryNotGrantPermissionsByRole(currentPage,pageSize,roleId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int page,int pageSize,Long roleId){
+		return securityAccessFacade.pagingQueryNotGrantPermissionsByRole(page,pageSize,roleId);
 	}
 	
 	// ==================TODO==================
