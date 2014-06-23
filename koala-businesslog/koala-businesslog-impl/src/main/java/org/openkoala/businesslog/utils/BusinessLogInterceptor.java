@@ -97,7 +97,7 @@ public class BusinessLogInterceptor {
         context.put(BUSINESS_METHOD_RETURN_VALUE_KEY, result);
 
         if (null != error) {
-            context.put(BUSINESS_METHOD_EXECUTE_ERROR, error.getCause());
+            context.put(BUSINESS_METHOD_EXECUTE_ERROR, error);
         }
         context.put(BUSINESS_OPERATION_USER, ThreadLocalBusinessLogContext.get().get(BUSINESS_OPERATION_USER));
         context.put(BUSINESS_OPERATION_IP, ThreadLocalBusinessLogContext.get().get(BUSINESS_OPERATION_IP));
