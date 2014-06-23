@@ -6,15 +6,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <title>欢迎使用Koala</title>
-<link href="<c:url value='${pageContext.request.contextPath}/lib/bootstrap/css/bootstrap.min.css' />"   rel="stylesheet">
-<script type="text/javascript" src="<c:url value='${pageContext.request.contextPath}/lib/jquery-1.8.3.min.js' />"></script>
-<script type="text/javascript" src="<c:url value='${pageContext.request.contextPath}/lib/respond.min.js' />"></script>
-<script type="text/javascript" src="<c:url value='${pageContext.request.contextPath}/lib/bootstrap/js/bootstrap.min.js' />"></script>
-<script type="text/javascript" src="<c:url value='${pageContext.request.contextPath}/lib/koala-ui.plugin.js' />"></script>	
-<script type="text/javascript" src="<c:url value='${pageContext.request.contextPath}/lib/validate.js' />"></script>
+<link href="lib/bootstrap/css/bootstrap.min.css"   rel="stylesheet">
+<script type="text/javascript" src="lib/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="lib/koala-ui.plugin.js"></script>	
+<script type="text/javascript" src="lib/validate.js"></script>
 <style type="text/css">
-@charset "UTF-8";
-/* CSS Document */
 *   .* {
 	margin: 0;
 	padding: 0;
@@ -171,6 +169,7 @@ body {
         btnLogin.on('click',function() {
         	dologin();
         });
+        
 	    var dologin = function() {
 	        var userNameElement = $("#j_username");
 	        var passwordElement = $("#j_password");
@@ -184,7 +183,7 @@ body {
 	        }
 	        btnLogin.attr('disabled', 'disabled').html('正在登录...');
     		var param = form.serialize();
-        	$.post("/auth/user/login.koala",param,function(data){
+        	$.post("auth/user/login.koala",param,function(data){
     			if(data.success){
     				$('.login_con_R').message({
     					type: 'success',
@@ -196,6 +195,5 @@ body {
 		};
 		});
 	</script>
-	
 </body>
 </html>

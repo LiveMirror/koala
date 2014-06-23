@@ -41,3 +41,5 @@ perfStats.log
 /koala-opencis/koala-openci-platform/koala-openci-platform-web/.web.koala
 /koala-plugin/koala-plugin-webservice/.classpath
 /koala-plugin/koala-plugin-webservice/.classpath
+koala-organisation/pom.xml
+koala-security/pom.xml
