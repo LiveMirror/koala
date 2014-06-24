@@ -16,9 +16,13 @@
 					return '<span class="'+item[name]+'"></span>'
 				}
 			},{
+				title : "菜单url",
+				name : "url",
+				width : 150
+			},{
 				title : "菜单标识",
 				name : "identifier",
-				width : 450
+				width : 150
 			},{
 				title : "菜单描述",
 				name : "desc",

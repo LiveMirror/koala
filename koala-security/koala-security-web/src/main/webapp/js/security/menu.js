@@ -4,6 +4,7 @@ var menuManager = function(){
 	var parentName 	= null;	//父资源名称
 	var name 		= null; //资源名称
 	var identifier 	= null; //资源标识
+	var menuUrl		= null;
 	var desc 		= null; //资源描述
 	var menuImg 	= null; //菜单图片
 	var menuImgBtn 	= null; //菜单图片按钮
@@ -78,6 +79,7 @@ var menuManager = function(){
 		
 		parentName 	= dialog.find('#parentName');
 		name 		= dialog.find('#name');
+		menuUrl		= dialog.find("#menuUrl");
 		identifier 	= dialog.find('#identifier');
 		menuImg 	= dialog.find('#menuIcon');
 		menuImgBtn 	= dialog.find('#iconBtn');
@@ -114,6 +116,7 @@ var menuManager = function(){
 				});
 			});
 		});
+		
 		dialog.find('#save').on('click',function(){
 			$(this).attr('disabled', 'disabled');
 			save(item);
@@ -144,6 +147,7 @@ var menuManager = function(){
 		name.val(item.name);
 		desc.val(item.desc);
 		identifier.val(item.identifier);
+		menuUrl.val(item.url);
 		menuImg.removeClass().addClass('menu-icon').addClass(item.icon).attr('src', item.icon);
 	};
 		
@@ -160,7 +164,7 @@ var menuManager = function(){
 			url =  baseUrl + 'update.koala';
 		}
 		if(parentId && parentLevel){
-			url =  baseUrl + 'addAndAssignParent.koala';
+			url =  baseUrl + 'addChildToParent.koala';
 		}
 		
 		$.post(url,getAllData(item)).done(function(data){
@@ -192,19 +196,20 @@ var menuManager = function(){
 	*获取表单数据
 	 */
 	var getAllData = function(item){
-		var data = {};
-		data['resVO.desc'] = desc.val();
-		data['resVO.identifier'] = identifier.val();
-		data['resVO.name'] = name.val();
-		data['resVO.icon'] = menuImg.attr('src');
+		var data 			= {};
+		data['desc'] 		= desc.val();
+		data['identifier'] 	= identifier.val();
+		data['url']			= menuUrl.val();
+		data['name'] 		= name.val();
+		data['icon'] 		= menuImg.attr('src');
+		
+		
 		if(item){
-			data['resVO.id'] = item.id;	
+			data['id'] = item.id;	
 		}
 		if(parentId && parentLevel){
-			data['parent.id'] = parentId;
-			data['parent.level'] = parentLevel;
+			data['parentId'] = parentId;
 		}
-		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 		return data;
 	};
 
