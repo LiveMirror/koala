@@ -99,7 +99,7 @@
 	<script>
 	$(function(){
 		/*获取用户的角色*/
-		$.getJSON(contextPath + '/auth/role/findRoleDtosByUsername.koala', function(data) {
+		$.getJSON(contextPath + '/auth/role/findRolesByUsername.koala', function(data) {
 			var roles = $("#roles").empty();
 			$.each(data.result, function(i,role) {
 				roles.append($("<option/>").attr("value",role.roleId).html(role.roleName));
