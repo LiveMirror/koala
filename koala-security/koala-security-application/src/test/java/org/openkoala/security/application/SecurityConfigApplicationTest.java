@@ -12,6 +12,7 @@ import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.OrganizationScope;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 
 public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTestCase {
@@ -112,12 +113,17 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 		MenuResource menuResource = new MenuResource("菜单管理");
 		menuResource.setMenuIcon(MENUICON);
 		menuResource.setUrl("/pages/auth/menu-list.jsp");
+
+		MenuResource urlAccessResource = new MenuResource("URL管理");
+		urlAccessResource.setMenuIcon(MENUICON);
+		urlAccessResource.setUrl("/pages/auth/url-list.jsp");
 		
 		securityConfigApplication.createSecurityResource(securityMenuResource);
 		securityConfigApplication.createChildToParent(userMenuResource, securityMenuResource.getId());
 		securityConfigApplication.createChildToParent(roleMenuResource, securityMenuResource.getId());
 		securityConfigApplication.createChildToParent(permisisonMenuResource, securityMenuResource.getId());
 		securityConfigApplication.createChildToParent(menuResource, securityMenuResource.getId());
+		securityConfigApplication.createChildToParent(urlAccessResource, securityMenuResource.getId());
 
 		List<MenuResource> resources = new ArrayList<MenuResource>();
 		resources.add(securityMenuResource);
