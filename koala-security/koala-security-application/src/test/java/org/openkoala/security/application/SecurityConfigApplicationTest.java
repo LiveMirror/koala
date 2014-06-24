@@ -111,7 +111,7 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 		
 		MenuResource menuResource = new MenuResource("菜单管理");
 		menuResource.setMenuIcon(MENUICON);
-		permisisonMenuResource.setUrl("/pages/auth/menu-list.jsp");
+		menuResource.setUrl("/pages/auth/menu-list.jsp");
 		
 		securityConfigApplication.createSecurityResource(securityMenuResource);
 		securityConfigApplication.createChildToParent(userMenuResource, securityMenuResource.getId());
