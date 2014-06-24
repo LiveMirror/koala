@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.openkoala</groupId>
@@ -11,7 +10,7 @@
 	<artifactId>koala-security</artifactId>
 	<packaging>pom</packaging>
 	<name>koala-security</name>
-	<description />
+	<description/>
 	<modules>
 		<module>koala-security-core</module>
 		<module>koala-security-application</module>
@@ -19,7 +18,8 @@
 		<module>koala-security-facade</module>
 		<module>koala-security-facadeImpl</module>
 		<module>koala-security-web</module>
-	</modules>
+    	<module>koala-security-infra</module>
+  </modules>
 	<properties>
 		<db.groupId>mysql</db.groupId>
 		<db.artifactId>mysql-connector-java</db.artifactId>
