@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@ taglib prefix="k" uri="http://www.openkoala.com/token"%>
 <div class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -11,7 +10,6 @@
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
 				<form class="form-horizontal" role="form">
-					<k:token/>
 					<div class="form-group">
 						<label class="col-lg-3 control-label">用户名称:</label>
 						<div class="col-lg-9">
@@ -69,12 +67,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					取消
-				</button>
-				<button type="button" class="btn btn-success" id="save">
-					保存
-				</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-success" id="save">保存</button>
 			</div>
 		</div>
 	</div>

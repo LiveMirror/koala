@@ -1,13 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@ taglib prefix="k" uri="http://www.openkoala.com/token"%>
 <div class="modal fade menu">
      <style>
         .menu .form-control {
             width: 95%;
-        }
-        
-        .add .form-group{
-        	display:none;
         }
     </style>
     <div class="modal-dialog">
@@ -18,7 +13,6 @@
             </div>
             <div class="modal-body" style="padding-left:45px; padding-right:65px; height: 350px;">
                 <form class="form-horizontal" role="form">
-                	<k:token/>
                     <div class="form-group parentName">
                         <label class="col-lg-3 control-label">父菜单名称:</label>
                         <div class="col-lg-9">
@@ -35,12 +29,6 @@
                         <label class="col-lg-3 control-label">菜单标识:</label>
                         <div class="col-lg-9">
                             <input type="text" class="form-control" id="identifier"><span class="required">*</span>
-                        </div>
-                    </div>
-                     <div class="form-group">
-                        <label class="col-lg-3 control-label">菜单类型:</label>
-                        <div class="col-lg-9">
-                           <div class="btn-group select" id="menuType"></div><span class="required">*</span>
                         </div>
                     </div>
                     <div class="form-group">

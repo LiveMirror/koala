@@ -9,20 +9,16 @@
 				name : "name",
 				width : 150
 			},{
-				title : "菜单标识",
-				name : "identifier",
-				width : 450
-			},{
-				title : "父级id",
-				name : "parentId",
-				width : 150
-			},{
 				title : "菜单图片",
 				name : "icon",
 				width : 150,
 				render: function(item, name, index){
 					return '<span class="'+item[name]+'"></span>'
 				}
+			},{
+				title : "菜单标识",
+				name : "identifier",
+				width : 450
 			},{
 				title : "菜单描述",
 				name : "desc",
