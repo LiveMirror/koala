@@ -20,15 +20,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 control-label">菜单名称:</label>
+                        <label class="col-lg-3 control-label" for="id">菜单名称:</label>
                         <div class="col-lg-9">
                             <input type="text" class="form-control" id="name"><span class="required">*</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 control-label">菜单标识:</label>
+                        <label class="col-lg-3 control-label" for="identifier">菜单标识:</label>
                         <div class="col-lg-9">
                             <input type="text" class="form-control" id="identifier"><span class="required">*</span>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="col-lg-3 control-label" for="menuUrl">菜单url:</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="menuUrl">
                         </div>
                     </div>
                     <div class="form-group">
