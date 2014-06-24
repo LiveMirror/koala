@@ -6,6 +6,7 @@ import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 
 public interface SecurityConfigFacade {
@@ -168,5 +169,11 @@ public interface SecurityConfigFacade {
 	void grantPermissionsToRole(Long roleId, Long[] permissionIds);
 
 	void terminatePermissionsToRole(Long roleId, Long[] permssionIds);
+
+	void saveUrlAccessResourceDTO(UrlAccessResourceDTO urlAccessResourceDTO);
+
+	void updateUrlAccessResourceDTO(UrlAccessResourceDTO urlAccessResourceDTO);
+
+	void terminateUrlAccessResourceDTOs(UrlAccessResourceDTO[] urlAccessResourceDTOs);
 
 }

@@ -56,5 +56,10 @@
 			<version>${project.parent.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.dayatang.dddlib</groupId>
+			<artifactId>dddlib-db</artifactId>
+		</dependency>
 	</dependencies>
 </project>

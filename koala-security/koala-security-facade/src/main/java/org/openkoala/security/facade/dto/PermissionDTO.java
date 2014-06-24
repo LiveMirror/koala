@@ -10,14 +10,17 @@ public class PermissionDTO {
 
 	private String permissionName;
 
+	private String identifier;
+
 	private String description;
 
 	public PermissionDTO() {
 	}
 
-	public PermissionDTO(Long permissionId, String permissionName, String description) {
+	public PermissionDTO(Long permissionId, String permissionName, String identifier, String description) {
 		this.permissionId = permissionId;
 		this.permissionName = permissionName;
+		this.identifier = identifier;
 		this.description = description;
 	}
 
@@ -60,4 +63,13 @@ public class PermissionDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+	
 }

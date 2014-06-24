@@ -1,5 +1,7 @@
 package org.openkoala.security.web.ini;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import org.apache.shiro.config.Ini;
@@ -7,9 +9,11 @@ import org.apache.shiro.config.Ini.Section;
 import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.web.config.IniFilterChainResolverFactory;
 import org.openkoala.security.facade.SecurityAccessFacade;
+import org.openkoala.security.facade.dto.PermissionDTO;
 import org.springframework.beans.factory.FactoryBean;
 
 public class CustomChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section>{
+	
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
 
@@ -35,8 +39,13 @@ public class CustomChainDefinitionSectionMetaSource implements FactoryBean<Ini.S
 			section = ini.getSection(Ini.DEFAULT_SECTION_NAME);
 		}
 		
+		//查出所有的permissions
+//		Set<PermissionDTO> permissions = securityAccessFacade.findPermissionDtos();
+		
+		
 		//获取到所有的资源url与permission的关联关系。
 		section.put("", "");//key是url value是permission字符串。
+							// key 是url value 是role 字符串
 		
 		return section;
 	}

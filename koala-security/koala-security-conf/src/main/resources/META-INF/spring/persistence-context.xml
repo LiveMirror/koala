@@ -54,7 +54,7 @@
     <bean id="queryChannel" class="org.dayatang.querychannel.impl.QueryChannelServiceImpl">
         <constructor-arg name="repository" ref="repository" />
     </bean>
-	
+    
 	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
 		<property name="driver" value="${db.jdbc.driver}" />
 		<property name="driverUrl" value="${db.jdbc.connection.url}" />

@@ -1,12 +1,17 @@
 package org.openkoala.security.core.domain;
 
+import java.io.UnsupportedEncodingException;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Set;
 
+import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
+import org.dayatang.domain.InstanceFactory;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
@@ -53,6 +58,7 @@ public class User extends Actor {
 		this.password = password;
 		this.email = email;
 		this.telePhone = telePhone;
+//		this.salt = generateSalt();
 	}
 
 	private void isBlanked(String userAccount, String password, String email, String telePhone) {
@@ -70,15 +76,14 @@ public class User extends Actor {
 		disabled = false;
 	}
 
-	/**
-	 * TODO 密码加密
-	 */
 	@Override
 	public void save() {
 		isExisted();
+		String password = getPasswordService().encryptPassword(this);
+		this.setPassword(password);
 		super.save();
 	}
-
+	
 	private void isExisted() {
 		if (isExistUserAccount(this.getUserAccount())) {
 			throw new UserAccountIsExistedException("user.userAccount.exist");
@@ -161,14 +166,39 @@ public class User extends Actor {
 		return false;
 	}
 
-	/**
-	 * TODO 密码加密
-	 */
 	public void resetPassword() {
 		User user = User.get(User.class, this.getId());
 		user.setPassword(this.getPassword());
+		String password = getPasswordService().encryptPassword(user);
+		user.setPassword(password);
 	}
 
+	public static PasswordService passwordService;
+
+	public static PasswordService getPasswordService() {
+		if (passwordService == null) {
+			passwordService = InstanceFactory.getInstance(PasswordService.class,"passwordService");
+		}
+		return passwordService;
+	}
+
+	/**
+	 * 生成盐值
+	 * 
+	 * @return
+	 */
+	private String generateSalt() {
+		SecureRandom random = new SecureRandom();
+		byte[] bytes = new byte[8];
+		random.nextBytes(bytes);
+		try {
+			return new String(bytes,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	
 	public Date getLastLoginTime() {
 		return lastLoginTime;
 	}
@@ -230,8 +260,5 @@ public class User extends Actor {
 		return salt;
 	}
 
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
 
 }

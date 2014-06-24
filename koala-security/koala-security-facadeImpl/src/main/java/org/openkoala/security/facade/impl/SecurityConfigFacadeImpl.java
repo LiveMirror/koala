@@ -1,11 +1,6 @@
 package org.openkoala.security.facade.impl;
 
-import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromMenuResourceBy;
-import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromMenuResourcesBy;
-import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromOrganizationScopeBy;
-import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromPermissionBy;
-import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromRoleBy;
-import static org.openkoala.security.facade.util.TransFromDomainUtils.transFromUserBy;
+import static org.openkoala.security.facade.util.TransFromDomainUtils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +13,14 @@ import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.openkoala.security.facade.util.TransFromDomainUtils;
 
@@ -280,9 +277,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void grantUrlAccessResourcesToRole(Long roleId, Long[] menuResourceIds) {
-		// TODO Auto-generated method stub
-
+	public void grantUrlAccessResourcesToRole(Long roleId, Long[] urlAccessResourceIds) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long urlAccessResourceId : urlAccessResourceIds) {
+			UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+			securityConfigApplication.grantSecurityResourceToAuthority(urlAccessResource, role);
+		}
 	}
 
 	@Override
@@ -297,7 +297,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		for (Long permissionId : permissionIds) {
 			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 			securityConfigApplication.grantRoleToPermission(role, permission);
-			securityConfigApplication.grantPermissionToRole(permission,role);
+			securityConfigApplication.grantPermissionToRole(permission, role);
 		}
 	}
 
@@ -305,17 +305,29 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	public void terminatePermissionsToRole(Long roleId, Long[] permssionIds) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		for (Long permissionId : permssionIds) {
-			Permission permission = securityAccessApplication.getPermissionBy(permissionId); 
+			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 			securityConfigApplication.terminatePermissionFromRole(permission, role);
 		}
 	}
 
+	@Override
+	public void saveUrlAccessResourceDTO(UrlAccessResourceDTO urlAccessResourceDTO) {
+		UrlAccessResource urlAccessResource = transFromUrlAccessResourceBy(urlAccessResourceDTO);
+		securityConfigApplication.createSecurityResource(urlAccessResource);
+	}
+
+	@Override
+	public void updateUrlAccessResourceDTO(UrlAccessResourceDTO urlAccessResourceDTO) {
+		UrlAccessResource urlAccessResource = transFromUrlAccessResourceBy(urlAccessResourceDTO);
+		securityConfigApplication.updateSecurityResource(urlAccessResource);
+	}
+
+	@Override
+	public void terminateUrlAccessResourceDTOs(UrlAccessResourceDTO[] urlAccessResourceDTOs) {
+		for (UrlAccessResourceDTO urlAccessResourceDTO : urlAccessResourceDTOs) {
+			UrlAccessResource urlAccessResource = transFromUrlAccessResourceBy(urlAccessResourceDTO);
+			securityConfigApplication.terminateSecurityResource(urlAccessResource);
+		}
+	}
+
 }
-
-
-
-
-
-
-
-

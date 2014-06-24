@@ -28,6 +28,8 @@ public class UserDTO implements Serializable {
 	private Date lastLoginTime;
 
 	private String telePhone;
+	
+	private String salt;
 
 	public UserDTO() {
 	}
@@ -140,4 +142,13 @@ public class UserDTO implements Serializable {
 	public void setTelePhone(String telePhone) {
 		this.telePhone = telePhone;
 	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+	
 }

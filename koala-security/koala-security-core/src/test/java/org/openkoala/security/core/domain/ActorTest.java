@@ -1,6 +1,5 @@
 package org.openkoala.security.core.domain;
 
-import java.util.Date;
 
 import org.junit.Test;
 

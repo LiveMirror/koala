@@ -90,7 +90,7 @@ public class UserController {
 	}
 
 	/**
-	 * TODO AOP做异常。
+	 * 更新 TODO AOP做异常。
 	 * 
 	 * @param userDTO
 	 * @return
@@ -130,6 +130,14 @@ public class UserController {
 		return dataMap;
 	}
 
+	/**
+	 * 更加条件分页查询用户。
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param userDTO
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/pagingquery")
 	public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO userDTO) {
@@ -193,47 +201,74 @@ public class UserController {
 		return dataMap;
 	}
 
-	//激活 
+	/**
+	 * 激活
+	 * 
+	 * @param userId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/activate")
-	public Map<String,Object> activate(Long userId){
+	public Map<String, Object> activate(Long userId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.activate(userId);
 		dataMap.put("success", true);
 		return dataMap;
 	}
-	
-	//挂起
+
+	/**
+	 * 挂起
+	 * 
+	 * @param userId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/suspend")
-	public Map<String,Object> suspend(Long userId){
+	public Map<String, Object> suspend(Long userId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.suspend(userId);
 		dataMap.put("success", true);
 		return dataMap;
 	}
-	
-	//批量激活 
+
+	/**
+	 * 批量激活
+	 * 
+	 * @param userIds
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/activates")
-	public Map<String,Object> activates(Long[] userIds){
+	public Map<String, Object> activates(Long[] userIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.activate(userIds);
 		dataMap.put("success", true);
 		return dataMap;
 	}
-	
-	//批量挂起
+
+	/**
+	 * 批量挂起
+	 * 
+	 * @param userIds
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/suspends")
-	public Map<String,Object> suspends(Long[] userIds){
+	public Map<String, Object> suspends(Long[] userIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.suspend(userIds);
 		dataMap.put("success", true);
 		return dataMap;
 	}
-	
-	//======================添加授权=======================
+
+	// ======================添加授权=======================
+	/**
+	 * 为用户授权一个角色。
+	 * 
+	 * @param userId
+	 * @param roleId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/grantRole")
 	public Map<String, Object> grantRoleToUser(Long userId, Long roleId) {
@@ -243,6 +278,13 @@ public class UserController {
 		return dataMap;
 	}
 
+	/**
+	 * 为用户授权多个角色。
+	 * 
+	 * @param userId
+	 * @param roleIds
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/grantRoles")
 	public Map<String, Object> grantRolesToUser(Long userId, Long[] roleIds) {
@@ -252,6 +294,13 @@ public class UserController {
 		return dataMap;
 	}
 
+	/**
+	 * 为用户授权一个权限。
+	 * 
+	 * @param userId
+	 * @param permissionId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/grantPermission")
 	public Map<String, Object> grantPermissionToUser(Long userId, Long permissionId) {
@@ -261,6 +310,13 @@ public class UserController {
 		return dataMap;
 	}
 
+	/**
+	 * 为用户授权多个权限。
+	 * 
+	 * @param userId
+	 * @param permissionIds
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/grantPermissions")
 	public Map<String, Object> grantPermissionsToUser(Long userId, Long[] permissionIds) {
@@ -270,47 +326,70 @@ public class UserController {
 		return dataMap;
 	}
 
-	//=================撤销授权================
-	//撤销授权的角色
+	/**
+	 * 撤销用户的一个角色
+	 * 
+	 * @param userId
+	 * @param roleId
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("/terminateAuthorizationByRole")
-	public Map<String,Object> terminateAuthorizationByRole(Long userId, Long roleId){
+	@RequestMapping("/terminateRoleByUser")
+	public Map<String, Object> terminateAuthorizationByRole(Long userId, Long roleId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateAuthorizationByRole(userId,roleId);
+		securityConfigFacade.terminateAuthorizationByRole(userId, roleId);
 		dataMap.put("success", true);
 		return dataMap;
 	}
-	
-	//撤销授权的权限
+
+	/**
+	 * 撤销用户的一个权限
+	 * 
+	 * @param userId
+	 * @param permissionId
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("/terminateAuthorizationByPermission")
-	public Map<String,Object> terminateAuthorizationByPermission(Long userId, Long permissionId){
+	@RequestMapping("/terminatePermissionByUser")
+	public Map<String, Object> terminateAuthorizationByPermission(Long userId, Long permissionId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateAuthorizationByPermission(userId,permissionId);
+		securityConfigFacade.terminateAuthorizationByPermission(userId, permissionId);
 		dataMap.put("success", true);
 		return dataMap;
 	}
-	
-	//批量撤销授权的角色
+
+	/**
+	 * 撤销用户的多个角色。
+	 * 
+	 * @param userId
+	 * @param roleIds
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("/terminateAuthorizationsByRoles")
-	public Map<String,Object> terminateAuthorizationsByRoles(Long userId, Long[] roleIds){
+	@RequestMapping("/terminateRolesByUser")
+	public Map<String, Object> terminateAuthorizationsByRoles(Long userId, Long[] roleIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateAuthorizationsByRoles(userId,roleIds);
+		securityConfigFacade.terminateAuthorizationsByRoles(userId, roleIds);
 		dataMap.put("success", true);
 		return dataMap;
 	}
-	
-	//批量撤销授权的权限
+
+	/**
+	 * 批量用户的多个权限。
+	 * 
+	 * @param userId
+	 * @param permissionIds
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("/terminateAuthorizationsByPermissions")
-	public Map<String,Object> terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds){
+	@RequestMapping("/terminatePermissionsByUser")
+	public Map<String, Object> terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateAuthorizationsByPermissions(userId,permissionIds);
+		securityConfigFacade.terminateAuthorizationsByPermissions(userId, permissionIds);
 		dataMap.put("success", true);
 		return dataMap;
 	}
-	
+
 	/**
 	 * 根据条件分页查询没有授权的角色
 	 * 
@@ -321,21 +400,33 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
-	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize,RoleDTO queryRoleCondition,Long userId){
-//		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page,pagesize,queryRoleCondition,userId);
+	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, RoleDTO queryRoleCondition, Long userId) {
+		// String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,
+				userId);
 		return results;
 	}
 
+	/**
+	 * 根据用户ID分页查找没有授权的权限。
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param queryPermissionCondition
+	 * @param userId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissions")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,PermissionDTO queryPermissionCondition,Long userId) {
-//		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page,pagesize,queryPermissionCondition,userId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,
+			PermissionDTO queryPermissionCondition, Long userId) {
+		// String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize,
+				queryPermissionCondition, userId);
 		return results;
 	}
 
-	// ================Scope=================
+	// ============== TODO ==Scope=================
 	@ResponseBody
 	@RequestMapping("grantRoleInScope")
 	public Map<String, Object> grantRoleInScope(Long userId, Long roleId, Long scopeId) {

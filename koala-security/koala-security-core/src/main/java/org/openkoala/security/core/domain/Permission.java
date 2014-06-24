@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -21,14 +22,21 @@ public class Permission extends Authority {
 
 	private static final long serialVersionUID = 4631351008490511334L;
 
+	/**
+	 * 权限标识符 例如：user:create
+	 */
+	@Column(name = "IDENTIFIER")
+	private String identifier;
+
 	@ManyToMany(mappedBy = "permissions", cascade = CascadeType.REMOVE)
 	private Set<Role> roles = new HashSet<Role>();
 
 	Permission() {
 	}
 
-	public Permission(String name) {
+	public Permission(String name, String identifier) {
 		super(name);
+		this.identifier = identifier;
 	}
 
 	@Override
@@ -56,29 +64,37 @@ public class Permission extends Authority {
 		}
 		return results;
 	}
-	
-	public void addRole(Role role){
+
+	public void addRole(Role role) {
 		this.roles.add(role);
 	}
-	
-	public void addRoles(List<Role> roles){
+
+	public void addRoles(List<Role> roles) {
 		this.roles.addAll(roles);
 	}
-	
-	public void removeRole(Role role){
+
+	public void removeRole(Role role) {
 		this.roles.remove(role);
 	}
-	
-	public void removeRoles(List<Role> roles){
+
+	public void removeRoles(List<Role> roles) {
 		this.roles.remove(roles);
 	}
-	
+
 	public Set<Role> getRoles() {
 		return roles;
 	}
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 
 }

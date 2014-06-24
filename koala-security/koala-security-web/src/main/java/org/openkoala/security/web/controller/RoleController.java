@@ -27,8 +27,13 @@ public class RoleController {
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
 
+	/**
+	 * 根据用户名查找所有的角色。
+	 * 
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("/findRoleDtosByUsername")
+	@RequestMapping("/findRolesByUsername")
 	public Map<String, Object> findRoleDtosByUsername() {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String username = (String) SecurityUtils.getSubject().getPrincipal();
@@ -36,12 +41,20 @@ public class RoleController {
 		result.put("result", roleDtos);
 		return result;
 	}
-	
+
+	/**
+	 * 根据用户ID查找所有的角色
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param userId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryByUserId")
-	public Page<RoleDTO> pagingQueryRolesByUserAccount(int page, int pagesize,Long userId){
-//		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(page,pagesize,userId);
+	public Page<RoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
+		// String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(page, pagesize, userId);
 		return results;
 	}
 
@@ -61,6 +74,7 @@ public class RoleController {
 	}
 
 	/**
+	 * 更新角色
 	 * 
 	 * @param roleDTO
 	 * @return
@@ -75,7 +89,7 @@ public class RoleController {
 	}
 
 	/**
-	 * TODO 支持批量删除,待优化。
+	 * TODO 支持批量撤销,待优化。
 	 * 
 	 * @param userDTOs
 	 */
@@ -87,72 +101,111 @@ public class RoleController {
 		dataMap.put("result", "success");
 		return dataMap;
 	}
-	
+
+	/**
+	 * 根据条件分页查询所有的角色
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param roleDTO
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Page<RoleDTO> pagingQuery(int currentPage, int pageSize, RoleDTO roleDTO) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryRoles(currentPage, pageSize, roleDTO);
+	public Page<RoleDTO> pagingQuery(int page, int pagesize, RoleDTO roleDTO) {
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryRoles(page, pagesize, roleDTO);
 		return results;
 	}
-	
-	// ===========分配资源=============
 
-	// 分配菜单资源
+	/**
+	 * 为角色授权菜单资源。
+	 * 
+	 * @param roleId
+	 * @param menuResourceDTOs
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/grantMenuResources")
-	public Map<String, Object> grantMenuResources(Long roleId,List<MenuResourceDTO> menuResourceDTOs) {
+	public Map<String, Object> grantMenuResources(Long roleId, List<MenuResourceDTO> menuResourceDTOs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantMenuResourcesToRole(roleId,menuResourceDTOs);
+		securityConfigFacade.grantMenuResourcesToRole(roleId, menuResourceDTOs);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
 	
-	// 分配权限Permission
+	/**
+	 * 为角色授权URL资源
+	 * 
+	 * @param roleId
+	 * @param menuResourceIds
+	 * @return
+	 */
+	public Map<String, Object> grantUrlAccessResources(Long roleId, Long[] menuResourceIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantUrlAccessResourcesToRole(roleId, menuResourceIds);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	/**
+	 * 为角色授权权限
+	 * 
+	 * @param roleId
+	 * @param permissionIds
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/grantPermissions")
 	public Map<String, Object> grantPermissions(Long roleId, Long[] permissionIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermissionsToRole(roleId,permissionIds);
-		dataMap.put("result", "success");
-		return dataMap;
-	}
-	
-	@ResponseBody
-	@RequestMapping("/terminatePermissions")
-	public Map<String,Object> terminatePermissions(Long roleId, Long[] permssionIds){
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminatePermissionsToRole(roleId,permssionIds);
-		dataMap.put("result", "success");
-		return dataMap;
-	}
-	
-	@ResponseBody
-	@RequestMapping("/pagingQueryNotGrantPermissionsByRole")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int page,int pagesize,Long roleId){
-		return securityAccessFacade.pagingQueryNotGrantPermissionsByRole(page,pagesize,roleId);
-	}
-	
-	// ==================TODO==================
-	// 分配页面元素资源
-	public Map<String, Object> grantPageElementResources(Long roleId,Long[] menuResourceIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPageElementResourcesToRole(roleId,menuResourceIds);
+		securityConfigFacade.grantPermissionsToRole(roleId, permissionIds);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
 
-	// 分配URL资源
-	public Map<String, Object> grantUrlAccessResources(Long roleId,Long[] menuResourceIds) {
+	/**
+	 * 撤销角色的权限
+	 * 
+	 * @param roleId
+	 * @param permssionIds
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/terminatePermissions")
+	public Map<String, Object> terminatePermissions(Long roleId, Long[] permssionIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantUrlAccessResourcesToRole(roleId,menuResourceIds);
+		securityConfigFacade.terminatePermissionsToRole(roleId, permssionIds);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	/**
+	 * 根据角色ID分页查询没有授权的权限
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param roleId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryNotGrantPermissionsByRole")
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int page, int pagesize, Long roleId) {
+		return securityAccessFacade.pagingQueryNotGrantPermissionsByRole(page, pagesize, roleId);
+	}
+
+	// ==================TODO==================
+	// 分配页面元素资源
+	public Map<String, Object> grantPageElementResources(Long roleId, Long[] menuResourceIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantPageElementResourcesToRole(roleId, menuResourceIds);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
 
 	// 分配方法级别资源
-	public Map<String, Object> grantMethodInvocationResources(Long roleId,Long[] menuResourceIds) {
+	public Map<String, Object> grantMethodInvocationResources(Long roleId, Long[] menuResourceIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantMethodInvocationResourcesToUser(roleId,menuResourceIds);
+		securityConfigFacade.grantMethodInvocationResourcesToUser(roleId, menuResourceIds);
 		dataMap.put("result", "success");
 		return dataMap;
 	}

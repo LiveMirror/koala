@@ -8,6 +8,7 @@ import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 
 public interface SecurityAccessFacade {
@@ -124,6 +125,9 @@ public interface SecurityAccessFacade {
 	Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int currentPage, int pageSize, Long roleId);
 
 	Page<PermissionDTO> pagingQueryPermissionsByRole(int currentPage, int pageSize, Long roleId);
+
+	Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize,
+			UrlAccessResourceDTO urlAccessResourceDTO);
 	
 	
 }

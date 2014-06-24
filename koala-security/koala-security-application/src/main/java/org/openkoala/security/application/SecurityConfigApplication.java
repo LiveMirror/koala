@@ -224,7 +224,7 @@ public interface SecurityConfigApplication {
 	 * @param scope
 	 */
 	void grantActorToAuthorityInScope(Actor actor, Authority authority, Scope scope);
-	
+
 	void grantActorToAuthorityInScope(Long actorId, Long authorityId, Long scopeId);
 
 	/**
@@ -247,11 +247,33 @@ public interface SecurityConfigApplication {
 	void createChildToParent(OrganizationScope child, Long parentId);
 
 	void grantActorsToAuthority(Long[] userIds, Long roleId);
-	
+
 	void grantActorToAuthority(Long userId, Long roleId);
 
+	/**
+	 * 为可授权体:Authority授予多个权限资源:SecurityResources。
+	 * 
+	 * @param securityResources
+	 * @param authority
+	 */
 	void grantSecurityResourcesToAuthority(List<? extends SecurityResource> securityResources, Authority authority);
 
+	/**
+	 * 为可授权体:Authority授予一个权限资源:SecurityResources。
+	 * 
+	 * @param securityResource
+	 * @param authority
+	 */
+	void grantSecurityResourceToAuthority(SecurityResource securityResource, Authority authority);
+
+	/**
+	 * 为角色授予一个权限。
+	 * 
+	 * @param permission
+	 *            权限
+	 * @param role
+	 *            角色
+	 */
 	void grantPermissionToRole(Permission permission, Role role);
 
 }

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -12,10 +13,13 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
+import org.openkoala.security.core.domain.PasswordService;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
@@ -32,6 +36,9 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
+
+	@Inject
+	private PasswordService passwordService;
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -63,16 +70,29 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		return results;
 	}
 
+	/**
+	 * 初始化密码加密匹配器
+	 */
+	@PostConstruct
+	public void initCredentialsMatcher() {
+		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(passwordService.getCredentialsStrategy());
+		matcher.setHashIterations(passwordService.getHashIterations());
+		setCredentialsMatcher(matcher);
+	}
+
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		String username = (String) token.getPrincipal();
-		System.out.println(username);
 		UserDTO userDTO = securityAccessFacade.getUserDtoBy(username);
 		if (userDTO == null) {
 			throw new UnknownAccountException();// 没找到账户
 		}
 		// TODO and so on.
-		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(userDTO.getUserAccount(), userDTO.getUserPassword(),getName());
+		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
+				userDTO.getUserAccount(), //
+				userDTO.getUserPassword(),//
+				getName());
+
 		return result;
 	}
 

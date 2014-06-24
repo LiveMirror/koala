@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.openkoala.security.core.domain.Actor;
-import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.SecurityResource;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 
 public interface SecurityAccessApplication {
@@ -98,4 +98,6 @@ public interface SecurityAccessApplication {
 	MenuResource getMenuResourceBy(Long menuResourceId);
 
 	List<MenuResource> findAllMenuResourcesByRole(Role role);
+
+	UrlAccessResource getUrlAccessResourceBy(Long urlAccessResourceId);
 }

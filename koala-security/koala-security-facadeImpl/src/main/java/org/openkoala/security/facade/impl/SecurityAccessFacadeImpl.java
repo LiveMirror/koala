@@ -29,6 +29,7 @@ import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -298,7 +299,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			childrenMenuResources = findChidrenMenuResource();
 		}
 
-		Set<MenuResourceDTO> all = new HashSet<MenuResourceDTO>();
+		List<MenuResourceDTO> all = new ArrayList<MenuResourceDTO>();
 		all.addAll(results);
 		all.addAll(childrenMenuResources);
 
@@ -308,7 +309,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	}
 
-	private void addMenuChildrenToParent(Set<MenuResourceDTO> all) {
+	private void addMenuChildrenToParent(List<MenuResourceDTO> all) {
 		LinkedHashMap<Long, MenuResourceDTO> map = new LinkedHashMap<Long, MenuResourceDTO>();
 		for (MenuResourceDTO menuResourceDTO : all) {
 			map.put(menuResourceDTO.getId(), menuResourceDTO);
@@ -380,7 +381,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	public List<MenuResourceDTO> findAllMenusTree() {
 		List<MenuResourceDTO> results = findTopMenuResource();
 		List<MenuResourceDTO> childrenMenuResources = findChidrenMenuResource();
-		Set<MenuResourceDTO> all = new HashSet<MenuResourceDTO>();
+		List<MenuResourceDTO> all = new ArrayList<MenuResourceDTO>();
 		all.addAll(results);
 		all.addAll(childrenMenuResources);
 		addMenuChildrenToParent(all);
@@ -457,7 +458,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			PermissionDTO queryPermissionCondition,Long userId) {
 
 		StringBuilder jpql = new StringBuilder(
-				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.description)");
+				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name,_permission.identifier _permission.description)");
 		jpql.append(" FROM Permission _permission WHERE _permission.id");
 		jpql.append(" NOT IN(SELECT _authority.id FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.id= :userId)");
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
@@ -564,5 +565,48 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.setPage(currentPage, pageSize)//
 				.pagedList();
 		return results;
+	}
+
+	@Override
+	public Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize,
+			UrlAccessResourceDTO urlAccessResourceDTO) {
+		
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UrlAccessResourceDTO(_urlAccessResource.id, _urlAccessResource.name, _urlAccessResource.disabled, _urlAccessResource.url, _urlAccessResource.identifier,_urlAccessResource.description) _urlAccessResource FROM UrlAccessResource _urlAccessResource");
+		Map<String, Object> conditionVals = new HashMap<String, Object>();
+		assembleUrlAccessResourceJpqlAndConditionValues(urlAccessResourceDTO,jpql,"_urlAccessResource",conditionVals);
+		
+		Page<UrlAccessResourceDTO> results = getQueryChannelService()//
+		.createJpqlQuery(jpql.toString())//
+		.setParameters(conditionVals)//
+		.setPage(currentPage, pageSize)//
+		.pagedList();
+		
+		return results;
+	}
+	
+	private void assembleUrlAccessResourceJpqlAndConditionValues(UrlAccessResourceDTO urlAccessResourceDTO, StringBuilder jpql,
+			String conditionPrefix, Map<String, Object> conditionVals) {
+		String andCondition = " AND " + conditionPrefix;
+		String whereCondition = " WHERE " + conditionPrefix;
+		
+		jpql.append(whereCondition);
+		jpql.append(".disabled = :disabled");
+		conditionVals.put("disabled", false);
+		
+		if (!StringUtils.isBlank(urlAccessResourceDTO.getName())) {
+			jpql.append(andCondition);
+			jpql.append(".name =:name");
+			conditionVals.put("name", urlAccessResourceDTO.getName());
+		}
+		if (!StringUtils.isBlank(urlAccessResourceDTO.getDescription())) {
+			jpql.append(andCondition);
+			jpql.append(".description =:description");
+			conditionVals.put("description", urlAccessResourceDTO.getDescription());
+		}
+		if (!StringUtils.isBlank(urlAccessResourceDTO.getIdentifier())) {
+			jpql.append(andCondition);
+			jpql.append(".identifier =:identifier");
+			conditionVals.put("identifier", urlAccessResourceDTO.getIdentifier());
+		}
 	}
 }

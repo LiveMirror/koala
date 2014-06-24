@@ -7,11 +7,13 @@ import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.OrganizationScope;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 
 /**
@@ -45,8 +47,8 @@ public final class TransFromDomainUtils {
 	}
 
 	public static Permission transFromPermissionBy(PermissionDTO permissionDTO) {
-		Permission result = new Permission(permissionDTO.getPermissionName());
-		result.setDescription(permissionDTO.getPermissionName());
+		Permission result = new Permission(permissionDTO.getPermissionName(),permissionDTO.getIdentifier());
+		result.setDescription(permissionDTO.getDescription());
 		return result;
 	}
 
@@ -56,6 +58,14 @@ public final class TransFromDomainUtils {
 		results.setMenuIcon(menuResourceDTO.getIcon());
 		results.setUrl(menuResourceDTO.getUrl());
 		return results;
+	}
+	
+	public static UrlAccessResource transFromUrlAccessResourceBy(UrlAccessResourceDTO urlAccessResourceDTO) {
+		UrlAccessResource result = new UrlAccessResource(urlAccessResourceDTO.getName());
+		result.setDescription(urlAccessResourceDTO.getDescription());
+		result.setId(urlAccessResourceDTO.getId());
+		result.setUrl(urlAccessResourceDTO.getUrl());
+		return result;
 	}
 
 	public static List<MenuResource> transFromMenuResourcesBy(List<MenuResourceDTO> menuResourceDTOs) {

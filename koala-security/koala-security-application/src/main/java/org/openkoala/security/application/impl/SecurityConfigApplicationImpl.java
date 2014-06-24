@@ -235,5 +235,10 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	public void grantPermissionToRole(Permission permission, Role role) {
 		role.addPermission(permission);
 	}
+
+	@Override
+	public void grantSecurityResourceToAuthority(SecurityResource securityResource, Authority authority) {
+		authority.addSecurityResource(securityResource);
+	}
 	
 }

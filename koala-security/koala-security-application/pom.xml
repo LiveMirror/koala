@@ -25,6 +25,12 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-infra</artifactId>
+			<version>${project.parent.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-support</artifactId>
 			<version>${project.parent.version}</version>
@@ -55,5 +61,11 @@
 			<version>${project.parent.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+		</dependency>
+		
 	</dependencies>
 </project>

@@ -1,5 +1,7 @@
 package org.openkoala.security.application;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +23,13 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 	@Test
 	public void testAddRole() throws Exception {
 		System.out.println("Add Role");
-//		Role role = new Role("开发经理");
-//		securityConfigApplication.createAuthority(role);
-//		User user = Actor.get(User.class, 1l);
-//		Scope scope = Scope.get(OrganizationScope.class, 1l);
-//		securityConfigApplication.grantActorToAuthorityInScope(user, role, scope);
+		// Role role = new Role("开发经理");
+		// securityConfigApplication.createAuthority(role);
+		// User user = Actor.get(User.class, 1l);
+		// Scope scope = Scope.get(OrganizationScope.class, 1l);
+		// securityConfigApplication.grantActorToAuthorityInScope(user, role, scope);
 	}
-	
+
 	@Test
 	public void testInit() throws Exception {
 		initPrivilege();
@@ -46,10 +48,10 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 		securityConfigApplication.createAuthority(role);
 
 		// 权限
-		Permission addPermission = new Permission("菜单添加");
-		Permission updatePermission = new Permission("菜单修改");
-		Permission deletPermission = new Permission("菜单删除");
-		Permission listPermission = new Permission("菜单列表");
+		Permission addPermission = new Permission("菜单添加","menu:create");
+		Permission updatePermission = new Permission("菜单修改","menu:update");
+		Permission deletPermission = new Permission("菜单撤销","menu:terminate");
+		Permission listPermission = new Permission("菜单列表","menu:list");
 
 		securityConfigApplication.createAuthority(addPermission);
 		securityConfigApplication.createAuthority(updatePermission);
@@ -134,15 +136,16 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 	}
 
 	private User initUser() {
-		User user = new User("zhangsan","000000","zhangsan@koala.com","139*********");
+		User user = new User("zhangsan", "000000", "zhangsan@koala.com", "139*********");
 		user.setCreateOwner("admin");
 		user.setDescription("普通用户");
 		user.setName("张三");
 		user.setSuper(Boolean.FALSE);
 		return user;
 	}
+
 	private User adminUser() {
-		User user = new User("admin","000000","admin@koala.com","193*********");
+		User user = new User("admin", "000000", "admin@koala.com", "193*********");
 		user.setCreateOwner("admin");
 		user.setDescription("超级管理员,拥有所有的权限");
 		user.setName("超级管理员");

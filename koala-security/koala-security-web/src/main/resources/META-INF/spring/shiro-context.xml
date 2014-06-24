@@ -36,6 +36,7 @@
 		<property name="filters">
 			<util:map>
 				<entry key="authc" value-ref="formAuthenticationFilter" />
+				<!-- 定义自己的过滤器注册到shiro过滤器链中 -->
 			</util:map>
 		</property>
 		<property name="filterChainDefinitions">

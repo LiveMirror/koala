@@ -16,6 +16,7 @@ import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.SecurityResource;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,5 +98,10 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	@Override
 	public List<MenuResource> findAllMenuResourcesByRole(Role role) {
 		return new ArrayList<MenuResource>(Authority.findMenuResourceByAuthority(role));
+	}
+
+	@Override
+	public UrlAccessResource getUrlAccessResourceBy(Long urlAccessResourceId) {
+		return UrlAccessResource.get(UrlAccessResource.class, urlAccessResourceId);
 	}
 }

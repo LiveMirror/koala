@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- * 1、添加。 2、添加子菜单。 3、修改 4、撤销 5、查询 TODO 图标
- * */
 @Controller
 @RequestMapping("/auth/menu")
 public class MenuResourceController {
@@ -29,6 +26,7 @@ public class MenuResourceController {
 	private SecurityConfigFacade securityConfigFacade;
 
 	/**
+	 * 添加菜单。
 	 * 
 	 * @param menuResourceDTO
 	 * @return
@@ -42,6 +40,13 @@ public class MenuResourceController {
 		return dataMap;
 	}
 
+	/**
+	 * 选择父菜单，为其添加子菜单。
+	 * 
+	 * @param child
+	 * @param parentId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/addChildToParent")
 	public Map<String, Object> addChildToParent(MenuResourceDTO child, Long parentId) {
@@ -51,6 +56,12 @@ public class MenuResourceController {
 		return dataMap;
 	}
 
+	/**
+	 * 更新菜单
+	 * 
+	 * @param menuResourceDTO
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/update")
 	public Map<String, Object> update(MenuResourceDTO menuResourceDTO) {
@@ -60,6 +71,12 @@ public class MenuResourceController {
 		return dataMap;
 	}
 
+	/**
+	 * 批量撤销菜单
+	 * 
+	 * @param menuResourceDTOs
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/terminate")
 	public Map<String, Object> terminate(MenuResourceDTO[] menuResourceDTOs) {
@@ -83,6 +100,12 @@ public class MenuResourceController {
 		return dataMap;
 	}
 
+	/**
+	 * 查找用户在某个角色下得所有菜单资源。
+	 * 
+	 * @param roleId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/findAllMenusByUserAsRole", method = RequestMethod.GET)
 	public Map<String, Object> findAllMenusByUserAsRole(Long roleId) {
