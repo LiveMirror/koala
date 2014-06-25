@@ -7,7 +7,7 @@
 		var userAccount = tabData.userAccount;
 		var columns = [{
 			title : "角色名称",
-			name : "name",
+			name : "roleName",
 			width : 250
 		}, {
 			title : "角色描述",

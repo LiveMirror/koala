@@ -122,9 +122,9 @@ var openTab = function(url, title, mark, id, param){
     var mainc 		= $('.g-mainc');
     var tabs 		= mainc.find('#navTabs');
     var contents 	= mainc.find('#tabContent');
-    var content;
+    var content		 = contents.find('#'+mark);
     
-    if(mark){
+    if(content.length){
     	content = contents.find('#'+mark);
         content.attr('data-value', id);
         tabs.find('a[href="#'+mark+'"]').tab('show');
