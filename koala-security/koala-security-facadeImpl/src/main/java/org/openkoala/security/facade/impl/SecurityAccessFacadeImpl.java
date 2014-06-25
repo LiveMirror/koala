@@ -609,4 +609,26 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			conditionVals.put("identifier", urlAccessResourceDTO.getIdentifier());
 		}
 	}
+
+	@Override
+	public Set<PermissionDTO> findPermissions() {
+		return null;
+	}
+
+	@Override
+	public Set<RoleDTO> findRoles() {
+		return null;
+	}
+
+	@Override
+	public MenuResourceDTO findMenuResourceBy(PermissionDTO permissionDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UrlAccessResourceDTO findUrlAccessResourceBy(PermissionDTO permissionDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -28,7 +28,7 @@ public class Permission extends Authority {
 	@Column(name = "IDENTIFIER")
 	private String identifier;
 
-	@ManyToMany(mappedBy = "permissions", cascade = CascadeType.REMOVE)
+	@ManyToMany(mappedBy = "permissions")
 	private Set<Role> roles = new HashSet<Role>();
 
 	Permission() {
@@ -63,22 +63,6 @@ public class Permission extends Authority {
 			}
 		}
 		return results;
-	}
-
-	public void addRole(Role role) {
-		this.roles.add(role);
-	}
-
-	public void addRoles(List<Role> roles) {
-		this.roles.addAll(roles);
-	}
-
-	public void removeRole(Role role) {
-		this.roles.remove(role);
-	}
-
-	public void removeRoles(List<Role> roles) {
-		this.roles.remove(roles);
 	}
 
 	public Set<Role> getRoles() {

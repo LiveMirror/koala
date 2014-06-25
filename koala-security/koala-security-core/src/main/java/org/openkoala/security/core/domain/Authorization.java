@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
+import org.dayatang.domain.CriteriaQuery;
 import org.openkoala.security.core.AuthorizationIsNotExisted;
 
 /**
@@ -67,13 +69,14 @@ public class Authorization extends SecurityAbstractEntity {
 	 */
 	public static boolean exists(Actor actor, Authority authority, Scope scope) {
 
-		Authorization authorization = getRepository().createCriteriaQuery(Authorization.class) //
-				.eq("actor", actor) //
-				.eq("authority", authority) //
-				.eq("scope", scope) //
-				.singleResult();
+		CriteriaQuery criteriaQuery = new CriteriaQuery(getRepository(), Authorization.class);
+		criteriaQuery.eq("actor", actor);
+		criteriaQuery.eq("authority", authority);
+		if (scope != null) {
+			criteriaQuery.eq("scope", scope);
+		}
 
-		return authorization != null;
+		return criteriaQuery.singleResult() != null;
 	}
 
 	public static Set<Authority> findAuthoritiesByActorInScope(Actor actor, Scope scope) {
@@ -184,6 +187,7 @@ public class Authorization extends SecurityAbstractEntity {
 
 	/**
 	 * TODO 检查是否有
+	 * 
 	 * @param actor
 	 * @param authority
 	 * @return
@@ -194,7 +198,7 @@ public class Authorization extends SecurityAbstractEntity {
 				.eq("actor", actor)//
 				.eq("authority", authority)//
 				.singleResult();
-		
+
 		return authorization;
 	}
 

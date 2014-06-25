@@ -65,22 +65,6 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 		disabled = false;
 	}
 
-	public void addAuthority(Authority authority){
-		this.authorities.add(authority);
-	}
-	
-	public void addAuthorities(List<Authority> authorities){
-		this.authorities.addAll(authorities);
-	}
-	
-	public void terminateAuthority(Authority authority){
-		this.authorities.remove(authority);
-	}
-	
-	public void terminateAuthorities(List<Authority> authorities){
-		this.authorities.removeAll(authorities);
-	}
-	
 	public String getName() {
 		return name;
 	}
