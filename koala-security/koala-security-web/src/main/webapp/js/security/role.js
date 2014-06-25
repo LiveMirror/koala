@@ -1,13 +1,14 @@
 var roleManager = function(){
-	var baseUrl = contextPath + '/auth/Role/';
-	var dialog = null;    //对话框
-	var roleName = null;   //角色名称
-	var roleDescript = null;    //角色描述
-	var dataGrid = null; //Grid对象
+	var baseUrl 	= contextPath + '/auth/role/';
+	var dialog 		= null;    		//对话框
+	var roleName 	= null;  		//角色名称
+	var roleDescript = null;    	//角色描述
+	var dataGrid 	= null; 		//Grid对象
+	
 	/*
 	 *新增
 	 */
-	var add = function(grid){
+	var add = function(grid) {
 		dataGrid = grid;
 		$.get(contextPath + '/pages/auth/role-template.jsp').done(function(data){
 			init(data);
@@ -16,13 +17,14 @@ var roleManager = function(){
 	/*
 	 * 修改
 	 */
-	var modify = function(item, grid){
+	var modify = function(item, grid) {
 		dataGrid = grid;
 		$.get(contextPath + '/pages/auth/role-template.jsp').done(function(data){
 			init(data,item);
 			setData(item);
 		});
 	};
+	
 	/*
 	 删除方法
 	 */
@@ -47,37 +49,40 @@ var roleManager = function(){
 				});
 			}
 		}).fail(function(data){
-				dataGrid.message({
-					type: 'error',
-					content: '删除失败'
-				});
+			dataGrid.message({
+				type: 'error',
+				content: '删除失败'
 			});
+		});
 	};
+	
 	/**
 	 * 初始化
 	 */
 	var init = function(data, item){
 		dialog = $(data);
 		dialog.find('.modal-header').find('.modal-title').html(item ? '修改角色':'添加角色');
-		roleName = dialog.find('#roleName');
+		
+		roleName 	= dialog.find('#roleName');
 		roleDescript = dialog.find('#roleDescript');
+		
 		dialog.find('#save').on('click',function(){
 			$(this).attr('disabled', 'disabled');
 			save(item);
 		}).end().modal({
 			keyboard: false
 		}).on({
-				'hidden.bs.modal': function(){
-					$(this).remove();
-				},
-				'complete': function(){
-					dataGrid.message({
-						type: 'success',
-						content: '保存成功'
-					});
-					$(this).modal('hide');
-					dataGrid.grid('refresh');
-				}
+			'hidden.bs.modal': function(){
+				$(this).remove();
+			},
+			'complete': function(){
+				dataGrid.message({
+					type: 'success',
+					content: '保存成功'
+				});
+				$(this).modal('hide');
+				dataGrid.grid('refresh');
+			}
 		});
 	};
 
@@ -85,8 +90,9 @@ var roleManager = function(){
 	 *设置值
 	 */
 	var setData = function(item){
-		roleName.val(item.name);
-		roleDescript.val(item.roleDesc);
+		console.log(JSON.stringify(item));
+		roleName.val(item.roleName);
+		roleDescript.val(item.description);
 	};
 		
 	/*
@@ -99,8 +105,9 @@ var roleManager = function(){
 		}
 		var url = baseUrl + 'add.koala';
 		if(item){
-			url =  baseUrl + 'update.koala';
+			url = baseUrl + 'update.koala';
 		}
+		
 		$.post(url,getAllData(item)).done(function(data){
 			if(data.result == 'success'){
 				dialog.trigger('complete');
@@ -122,15 +129,16 @@ var roleManager = function(){
 		}
 		return true;
 	};
+	
 	/*
-	*获取表单数据
+	 * 获取表单数据
 	 */
 	var getAllData = function(item){
 		var data = {};
-		data['roleVO.name'] = roleName.val();
-		data['roleVO.roleDesc'] = roleDescript.val();
+		data['roleName'] = roleName.val();
+		data['description'] = roleDescript.val();
 		if(item){
-			data['roleVO.id'] = item.id;	
+			data['roleId'] = item.roleId;	
 		}
 		return data;
 	};
@@ -209,18 +217,16 @@ var roleManager = function(){
 	 * 初始化角色选择grid
 	 */
 	var initSelectRoleGrid = function(userId, userAccount, dialog){
-		var columns = [ 
-					{
-						title : "角色名称",
-						name : "name",
-						width : 150
-					}, 
-					{
-						title : "角色描述",
-						name : "roleDesc",
-						width : 150
-					}
-				];
+		var columns = [{
+				title : "角色名称",
+				name : "name",
+				width : 150
+			},{
+				title : "角色描述",
+				name : "roleDesc",
+				width : 150
+			}];
+		
 		dialog.find('#selectRoleGrid').grid({
 			 identity: 'id',
              columns: columns,
@@ -375,6 +381,7 @@ var roleManager = function(){
 		}
 		return nodes;
 	};
+	
 	return {
 		add: add,
 		modify: modify,
