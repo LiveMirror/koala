@@ -110,12 +110,12 @@
         <dependency> 
             <groupId>org.openkoala.security</groupId>  
             <artifactId>koala-security-application</artifactId> 
-            <version>${project.parent.version}</version> 
+            <version>${koala.security.version}</version> 
         </dependency> 
        	<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-auth</artifactId>
-			<version>${project.parent.version}</version> 
+			<version>${koala.security.version}</version> 
 		</dependency>
     </dependencies>  
     <build> 
