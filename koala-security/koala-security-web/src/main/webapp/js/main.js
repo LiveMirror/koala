@@ -84,7 +84,7 @@ $(function(){
 	*/
 	self.on('loginOut',function(){
 		//window.location.href 
-		var logOut = contextPath+"/auth/user/logout";
+		var logOut = contextPath+"/auth/user/logout.koala";
 		$.post(logOut,function(result){
 			if(result.success){
 				window.location.href = contextPath+"/login";

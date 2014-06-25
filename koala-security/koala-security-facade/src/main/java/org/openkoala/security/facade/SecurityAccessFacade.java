@@ -116,7 +116,8 @@ public interface SecurityAccessFacade {
 
 	Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition, Long userId);
 
-	Page<PermissionDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, PermissionDTO queryPermissionCondition,Long userId);
+	Page<PermissionDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, PermissionDTO queryPermissionCondition,
+			Long userId);
 
 	Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int currentPage, int pageSize, Long userId);
 
@@ -128,6 +129,23 @@ public interface SecurityAccessFacade {
 
 	Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize,
 			UrlAccessResourceDTO urlAccessResourceDTO);
-	
-	
+
+	/**
+	 * 查找所有的权限
+	 * 
+	 * @return
+	 */
+	Set<PermissionDTO> findPermissions();
+
+	/**
+	 * 查找所有的角色
+	 * 
+	 * @return
+	 */
+	Set<RoleDTO> findRoles();
+
+	MenuResourceDTO findMenuResourceBy(PermissionDTO permissionDTO);
+
+	UrlAccessResourceDTO findUrlAccessResourceBy(PermissionDTO permissionDTO);
+
 }

@@ -64,28 +64,33 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 		permissions.add(listPermission);
 
 		// 范围
-		OrganizationScope scope = new OrganizationScope("总公司");
-		securityConfigApplication.createScope(scope);
-		
-		OrganizationScope child1=new OrganizationScope("广州分公司");
-		securityConfigApplication.createChildToParent(child1, scope.getId());
-		
-		OrganizationScope child2=new OrganizationScope("深圳分公司");
-		securityConfigApplication.createChildToParent(child2, scope.getId());
-		
-		OrganizationScope child11=new OrganizationScope("工程一部");
-		securityConfigApplication.createChildToParent(child11, child1.getId());
-		
-		OrganizationScope child12=new OrganizationScope("工程二部");
-		securityConfigApplication.createChildToParent(child12, child1.getId());
-		
-		OrganizationScope child13=new OrganizationScope("工程三部");
-		securityConfigApplication.createChildToParent(child13, child1.getId());
+//		OrganizationScope scope = new OrganizationScope("总公司");
+//		securityConfigApplication.createScope(scope);
+//		
+//		OrganizationScope child1=new OrganizationScope("广州分公司");
+//		securityConfigApplication.createChildToParent(child1, scope.getId());
+//		
+//		OrganizationScope child2=new OrganizationScope("深圳分公司");
+//		securityConfigApplication.createChildToParent(child2, scope.getId());
+//		
+//		OrganizationScope child11=new OrganizationScope("工程一部");
+//		securityConfigApplication.createChildToParent(child11, child1.getId());
+//		
+//		OrganizationScope child12=new OrganizationScope("工程二部");
+//		securityConfigApplication.createChildToParent(child12, child1.getId());
+//		
+//		OrganizationScope child13=new OrganizationScope("工程三部");
+//		securityConfigApplication.createChildToParent(child13, child1.getId());
 
 		// 授权
 		securityConfigApplication.grantRoleToPermissions(role, permissions);
-		securityConfigApplication.grantActorToAuthorityInScope(user, role, scope);
-		securityConfigApplication.grantActorToAuthorityInScope(user, deletPermission, scope);
+		System.out.println(role);
+		System.out.println(user);
+		securityConfigApplication.grantActorToAuthority(user.getId(), role.getId());
+		securityConfigApplication.grantActorToAuthority(user.getId(), deletPermission.getId());
+		
+//		securityConfigApplication.grantActorToAuthorityInScope(user, role, scope);
+//		securityConfigApplication.grantActorToAuthorityInScope(user, deletPermission, scope);
 
 		// 用户管理 user-list
 		// 角色管理 role-list

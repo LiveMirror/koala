@@ -62,21 +62,23 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void grantAuthoritiesToSecurityResource(List<Authority> authorities, SecurityResource securityResource) {
-		securityResource.addAuthorities(authorities);
-	}
-
-	public void grantRoleToPermission(Role role, Permission permission) {
-		permission.addRole(role);
-	}
-
-	public void grantRoleToPermissions(Role role, List<Permission> permissions) {
-		for (Permission permission : permissions) {
-			permission.addRole(role);
+		for (Authority authority : authorities) {
+			grantAuthorityToSecurityResource(authority, securityResource);
 		}
 	}
 
+	public void grantRoleToPermission(Role role, Permission permission) {
+		role.addPermission(permission);
+	}
+
+	public void grantRoleToPermissions(Role role, List<Permission> permissions) {
+		role.addPermissions(permissions);
+	}
+
 	public void grantRolesToPermission(List<Role> roles, Permission permission) {
-		permission.addRoles(roles);
+		for (Role role : roles) {
+			role.addPermission(permission);
+		}
 	}
 
 	public void grantActorToAuthority(Actor actor, Authority authority) {
@@ -104,7 +106,13 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void terminateAuthoritiesFromSecurityResource(List<Authority> authorities, SecurityResource securityResource) {
-		securityResource.terminateAuthorities(authorities);
+		for (Authority authority : authorities) {
+			terminateAuthorityFromSecurityResource(authority, securityResource);
+		}
+	}
+	
+	public void terminateAuthorityFromSecurityResource(Authority authority, SecurityResource securityResource){
+		authority.terminateSecurityResource(securityResource);
 	}
 
 	public void terminatePermissionFromRole(Permission permission, Role role) {
@@ -116,7 +124,13 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void terminateRolesFromPermission(List<Role> roles, Permission permission) {
-		permission.removeRoles(roles);
+		for (Role role : roles) {
+			terminateRoleFromPermission(role, permission);
+		}
+	}
+
+	private void terminateRoleFromPermission(Role role, Permission permission) {
+		role.terminatePermission(permission);
 	}
 
 	public void terminateActorFromAuthority(Actor actor, Authority authority) {
@@ -173,15 +187,17 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 
 	@Override
 	public void grantAuthorityToSecurityResource(Authority authority, SecurityResource securityResource) {
-		securityResource.addAuthority(authority);
+		authority.addSecurityResource(securityResource);
+		
 	}
 
 	@Override
 	public void grantAuthorityToSecurityResources(Authority authority,
 			List<? extends SecurityResource> securityResources) {
-		for (SecurityResource securityResource : securityResources) {
-			this.grantAuthorityToSecurityResource(authority, securityResource);
-		}
+		authority.addSecurityResources(securityResources);
+//		for (SecurityResource securityResource : securityResources) {
+//			this.grantAuthorityToSecurityResource(authority, securityResource);
+//		}
 	}
 
 	@Override

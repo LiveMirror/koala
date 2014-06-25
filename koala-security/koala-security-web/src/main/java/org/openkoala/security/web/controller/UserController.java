@@ -58,6 +58,7 @@ public class UserController {
 			results.put("message", "登陆成功");
 			results.put("success", Boolean.TRUE);
 		} catch (AuthenticationException e) {
+			e.printStackTrace();
 			results.put("message", "登陆失败");
 		}
 		return results;
