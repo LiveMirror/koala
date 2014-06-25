@@ -26,24 +26,8 @@
 		<property name="loginUrl" value="/login.koala"></property>
 	</bean>
 	
-	<bean id="customAuthorizationFilter" class="org.openkoala.security.web.filter.CustomAuthorizationFilter">
-	
-	</bean>
-
-	<!-- shiro的生命周期，自动初始化和销毁 -->
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/login.koala" />
-		<property name="unauthorizedUrl" value="/unauthorized" />
-		<property name="filters">
-			<util:map>
-				<entry key="authc" value-ref="formAuthenticationFilter" />
-				<entry key="custom" value-ref="customAuthorizationFilter" />
-				<!-- 定义自己的过滤器注册到shiro过滤器链中 -->
-			</util:map>
-		</property>
+	<bean id="customAuthorizationFilter" class="org.openkoala.security.web.filter.CustomAuthorizationFilter" />
+	<bean id="customChainDefinitionSectionMetaSource" class="org.openkoala.security.web.ini.CustomChainDefinitionSectionMetaSource">
 		<property name="filterChainDefinitions">
 			<value>
 				/js/** = anon
@@ -56,5 +40,22 @@
 				/** = authc
 			</value>
 		</property>
+	</bean>
+
+	<!-- shiro的生命周期，自动初始化和销毁 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login.koala" />
+		<property name="unauthorizedUrl" value="/unauthorized.koala" />
+		<property name="filters">
+			<util:map>
+				<entry key="authc" value-ref="formAuthenticationFilter" />
+				<entry key="custom" value-ref="customAuthorizationFilter" />
+				<!-- 定义自己的过滤器注册到shiro过滤器链中 -->
+			</util:map>
+		</property>
+		<property name="filterChainDefinitionMap" ref="customChainDefinitionSectionMetaSource" />
 	</bean>
 </beans>
