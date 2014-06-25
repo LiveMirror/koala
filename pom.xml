@@ -204,6 +204,7 @@
 		<tomcat.version>6.0.35</tomcat.version>
 		<aether.connector.version>1.13.1</aether.connector.version>
 		<hibernate.version>4.2.8.Final</hibernate.version>
+		<koala.security.version>3.0.0-SNAPSHOT</koala.security.version>
 	</properties>
 
 	<profiles>
