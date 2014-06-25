@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.openkoala.bpm</groupId>
 		<artifactId>koala-bpm</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.openkoala.bpm.designer</groupId>
 	<artifactId>koala-bpm-designer</artifactId>

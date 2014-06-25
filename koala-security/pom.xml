@@ -21,10 +21,7 @@
     	<module>koala-security-infra</module>
   </modules>
 	<properties>
-<<<<<<< HEAD
-=======
 		<!--  
->>>>>>> d5daa21faac9b6623987766ef6159c8cea3436ea
 		<db.groupId>mysql</db.groupId>
 		<db.artifactId>mysql-connector-java</db.artifactId>
 		<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
@@ -36,10 +33,7 @@
 		<db.password>root</db.password>
 		<db.Type>MYSQL</db.Type>
 		<generateDdl>true</generateDdl>
-<<<<<<< HEAD
-=======
 		-->
->>>>>>> d5daa21faac9b6623987766ef6159c8cea3436ea
 		<shiro.version>1.2.3</shiro.version>
 	</properties>
 	<dependencyManagement>
