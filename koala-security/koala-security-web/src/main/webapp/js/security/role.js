@@ -258,15 +258,16 @@ var roleManager = function(){
 				});
 			}
 		}).fail(function(data){
-				dataGrid.message({
-					type: 'error',
-					content: '删除失败'
-				});
+			dataGrid.message({
+				type: 'error',
+				content: '删除失败'
 			});
+		});
 	};
 	var assignUser = function(roleId, name){
 		openTab('/pages/auth/user-list.jsp',
-			name+'的用户管理', 'userManager_'+roleId, roleId, {roleId: roleId});
+			name+'的用户管理', 
+			'userManager_'+roleId, roleId, {roleId: roleId});
 	};
 	/**
 	 * 资源授权
@@ -359,6 +360,7 @@ var roleManager = function(){
             });
 		});
 	};
+	
 	/**
 	 * 
 	 */
@@ -383,12 +385,12 @@ var roleManager = function(){
 	};
 	
 	return {
-		add: add,
-		modify: modify,
-		deleteUser: deleteUser,
-		assignRole: assignRole,
-		removeRoleForUser: removeRoleForUser,
-		assignUser: assignUser,
-		assignResource: assignResource
+		add					: add,
+		modify				: modify,
+		deleteUser			: deleteUser,
+		assignRole			: assignRole,
+		assignUser			: assignUser,
+		assignResource		: assignResource,
+		removeRoleForUser	: removeRoleForUser
 	};
 };

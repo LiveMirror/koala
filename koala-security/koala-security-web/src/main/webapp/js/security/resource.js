@@ -1,15 +1,15 @@
 var resourceManager = function(){
-	var baseUrl = contextPath + '/auth/Resource/';
-	var dialog = null;    //对话框
-	var parentName = null;   //父资源名称
-	var name = null; //资源名称
-	var identifier = null; //资源标识
-	var resourceType = null; //资源类型
-	var desc = null; //资源描述
-	var dataGrid = null; //Grid对象
-	var opreate = null;
-	var parentId = null;
-	var parentLevel = null;
+	var baseUrl 		= contextPath + '/auth/Resource/';
+	var dialog 			= null;	//对话框
+	var parentName 		= null;	//父资源名称
+	var name 			= null; //资源名称
+	var identifier 		= null; //资源标识
+	var resourceType	= null; //资源类型
+	var desc 			= null; //资源描述
+	var dataGrid 		= null; //Grid对象
+	var opreate 		= null;
+	var parentId 		= null;
+	var parentLevel 	= null;
 	/*
 	 *新增
 	 */

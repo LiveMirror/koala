@@ -1,5 +1,5 @@
 var userManager = function() {
-	var baseUrl = contextPath + '/auth/User/';
+	var baseUrl = contextPath + '/auth/url/';
 	var dataGrid = null;
 
 	/*
@@ -29,6 +29,14 @@ var userManager = function() {
 		dialog = $(data);
 		dialog.find('.modal-header').find('.modal-title').html( item ? '修改url信息' : '添加url');
 		
+		var form = dialog.find("#url_form");
+		
+		if(opreate == 'modify'){
+			/*TODO*/
+			form.find("input[name='permissionName']").val(item.permissionName);
+			form.find("input[name='identifier']").val(item.identifier);
+			form.find("input[name='description']").val(item.description);
+		}
 		userName 	= dialog.find('#userName');
 		userAccount = dialog.find('#userAccount');
 		

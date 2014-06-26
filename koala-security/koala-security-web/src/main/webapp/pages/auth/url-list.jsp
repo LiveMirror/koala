@@ -52,19 +52,12 @@
 				}, {
 					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
 					action : 'delete'
-				}, {
-					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配角色</button>',
-					action : 'roleAssign'
-				}, {
-					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;重置密码</button>',
-					action : 'resetPassword'
 				}];
 			}
 		};
-		var url = contextPath + '/auth/user/pagingquery.koala';
-		if (roleId) {
-			url += '?roleId=' + roleId;
-		}
+		var url = contextPath + '/auth/url/pagingquery.koala';
+		
+		roleId ? (url += '?roleId=' + roleId) : "";
 		$('[data-role="userGrid"]').off().grid({
 			identity : 'id',
 			columns : columns,
@@ -116,64 +109,6 @@
 						userManager().deleteUser(data.item, $this);
 					}
 				});
-			},
-			'roleAssign' : function(event, data) {
-				var indexs = data.data;
-				var $this = $(this);
-				if (indexs.length == 0) {
-					$this.message({
-						type : 'warning',
-						content : '请选择一条记录进行操作'
-					});
-					return;
-				}
-				if (indexs.length > 1) {
-					$this.message({
-						type : 'warning',
-						content : '只能选择一条记录进行操作'
-					});
-					return;
-				}
-				userManager().assignRole(data.data[0], data.item[0].userAccount);
-			},
-			'assignUser' : function() {
-				userManager().assignUser(roleId, $(this));
-			},
-			'removeUserForRole' : function(evnet, data) {
-				var indexs = data.data;
-				var $this = $(this);
-				if (indexs.length == 0) {
-					$this.message({
-						type : 'warning',
-						content : '请选择要删除的记录'
-					});
-					return;
-				}
-				$this.confirm({
-					content : '确定要删除所选记录吗?',
-					callBack : function() {
-						userManager().removeUserForRole(roleId, data.item, $this);
-					}
-				});
-			},
-			'resetPassword' : function(event, data) {
-				var indexs = data.data;
-				var $this = $(this);
-				if (indexs.length == 0) {
-					$this.message({
-						type : 'warning',
-						content : '请选择一条记录进行修改'
-					});
-					return;
-				}
-				if (indexs.length > 1) {
-					$this.message({
-						type : 'warning',
-						content : '只能选择一条记录进行修改'
-					});
-					return;
-				}
-				userManager().resetPassword(data.item[0], $(this));
 			}
 		});
 	});

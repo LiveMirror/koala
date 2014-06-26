@@ -124,23 +124,23 @@
 				});
 			},
 			'assignUser' : function(event, data) {
-				var indexs = data.data;
+				var item = data.item;
 				var $this = $(this);
-				if (indexs.length == 0) {
+				if (item.length == 0) {
 					$this.message({
 						type : 'warning',
 						content : '请选择一条记录进行操作'
-					})
+					});
 					return;
 				}
-				if (indexs.length > 1) {
+				if (item.length > 1) {
 					$this.message({
 						type : 'warning',
 						content : '只能选择一条记录进行操作'
 					});
 					return;
 				}
-				roleManager().assignUser(data.data[0], data.item[0].name);
+				roleManager().assignUser(item[0].roleId, item[0].roleName);
 			},
 			'assignResource' : function(event, data) {
 				var indexs = data.data;
