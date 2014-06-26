@@ -17,6 +17,7 @@
 		<module>koala-bpm-designer-bizmodel</module>
 		<module>koala-bpm-designer-application</module>
 		<module>koala-bpm-designer-applicationImpl</module>
+		<module>koala-bpm-designer-infra</module>
 		<module>koala-bpm-designer-web</module>
 	</modules>
 
