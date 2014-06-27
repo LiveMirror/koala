@@ -41,7 +41,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 		return false;
 	}
 
-	public Set<Role> findAllRolesByUserAccount(String userAccount) {
+	public List<Role> findAllRolesByUserAccount(String userAccount) {
 		return User.findAllRolesBy(userAccount);
 	}
 
@@ -103,5 +103,10 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	@Override
 	public UrlAccessResource getUrlAccessResourceBy(Long urlAccessResourceId) {
 		return UrlAccessResource.get(UrlAccessResource.class, urlAccessResourceId);
+	}
+
+	@Override
+	public List<Role> findAllRoles() {
+		return Role.findAll(Role.class);
 	}
 }

@@ -15,6 +15,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.dayatang.utils.Assert;
@@ -30,6 +32,11 @@ import org.openkoala.security.core.NameIsExistedException;
 @Table(name = "KS_AUTHORITIES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
+@NamedQueries({
+	@NamedQuery(
+			name="Authority.findAllAuthoritiesByUserAccount",
+			query="SELECT _authority FROM Authorization _authorization JOIN  _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND TYPE(_authority) = :authorityType ORDER BY _authority.id")
+})
 public abstract class Authority extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = -5570169700634882013L;

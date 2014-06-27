@@ -94,7 +94,6 @@ public class PermissionController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryByUserId")
 	public Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int page, int pagesize, Long userId) {
-		// String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByUserAccount(page, pagesize, userId);
 		return results;
 	}
@@ -110,7 +109,6 @@ public class PermissionController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryByRoleId")
 	public Page<PermissionDTO> pagingQueryPermissionsByRole(int page, int pagesize, Long roleId) {
-		// String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByRole(page, pagesize, roleId);
 		return results;
 	}

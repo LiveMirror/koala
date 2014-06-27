@@ -39,7 +39,7 @@ public interface SecurityAccessApplication {
 	 * @param userAccount
 	 * @return
 	 */
-	Set<Role> findAllRolesByUserAccount(String userAccount);
+	List<Role> findAllRolesByUserAccount(String userAccount);
 
 	/**
 	 * 根据账户查找该用户拥有的所有角色
@@ -100,4 +100,6 @@ public interface SecurityAccessApplication {
 	List<MenuResource> findAllMenuResourcesByRole(Role role);
 
 	UrlAccessResource getUrlAccessResourceBy(Long urlAccessResourceId);
+
+	List<Role> findAllRoles();
 }

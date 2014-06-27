@@ -1,12 +1,23 @@
 package org.openkoala.security.facade.dto;
 
-public class RoleDTO {
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+public class RoleDTO implements Serializable{
+
+	private static final long serialVersionUID = -8008875711416716934L;
 
 	private Long roleId;
 
 	private String roleName;
 
 	private String description;
+	
+	private String url;
+	
+	private Set<PermissionDTO> permissionDTOs = new HashSet<PermissionDTO>();
 
 	RoleDTO() {
 	}
@@ -20,6 +31,21 @@ public class RoleDTO {
 		this.roleId = roleId;
 		this.roleName = roleName;
 		this.description = description;
+	}
+	
+	public RoleDTO(Long roleId, String roleName, String description,String url) {
+		this.roleId = roleId;
+		this.roleName = roleName;
+		this.description = description;
+		this.url = url;
+	}
+	
+	public void add(PermissionDTO permissionDTO){
+		this.permissionDTOs.add(permissionDTO);
+	}
+	
+	public void add(Collection<PermissionDTO> permissionDTOs){
+		this.permissionDTOs.addAll(permissionDTOs);
 	}
 
 	public String getRoleName() {
@@ -45,4 +71,21 @@ public class RoleDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public Set<PermissionDTO> getPermissionDTOs() {
+		return permissionDTOs;
+	}
+
+	public void setPermissionDTOs(Set<PermissionDTO> permissionDTOs) {
+		this.permissionDTOs = permissionDTOs;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 }

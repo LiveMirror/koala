@@ -276,4 +276,12 @@ public interface SecurityConfigApplication {
 	 */
 	void grantPermissionToRole(Permission permission, Role role);
 
+	/**
+	 * 为角色授权多个权限Permission
+	 * 
+	 * @param permissions
+	 * @param adminRole
+	 */
+	void grantPermissionsToRole(List<Permission> permissions, Role role);
+
 }

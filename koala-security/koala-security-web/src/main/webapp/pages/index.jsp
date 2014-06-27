@@ -52,7 +52,7 @@
 	            <div class="btn-group navbar-right">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 	                    <i class="glyphicon glyphicon-user"></i>
-	                    <span>&nbsp;<shiro:principal /></span>
+	                    <span>&nbsp;<shiro:principal property="userAccount"/></span>
 	                    <span class="caret"></span>
 	                </button>
 	                <ul class="dropdown-menu" id="userManager">

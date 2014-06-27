@@ -1,16 +1,12 @@
 package org.openkoala.security.web.ini;
 
-import java.util.Set;
-
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.Ini.Section;
 import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.web.config.IniFilterChainResolverFactory;
 import org.openkoala.security.facade.SecurityAccessFacade;
-import org.openkoala.security.facade.dto.PermissionDTO;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.DependsOn;
 
@@ -19,8 +15,10 @@ public class CustomChainDefinitionSectionMetaSource implements FactoryBean<Ini.S
 
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
-	
+
 	private String filterChainDefinitions;
+
+	private int count;
 
 	/**
 	 * 通过filterChainDefinitions对默认的链接过滤定义
@@ -41,13 +39,15 @@ public class CustomChainDefinitionSectionMetaSource implements FactoryBean<Ini.S
 			section = ini.getSection(Ini.DEFAULT_SECTION_NAME);
 		}
 
+		// TODO 扩展点!
+
 		// 查出所有的permissions
-//		Set<PermissionDTO> permissions = securityAccessFacade.findPermissions();
-//		for (PermissionDTO permissionDTO : permissions) {
-//			if ((!StringUtils.isBlank(permissionDTO.getIdentifier()) && !StringUtils.isBlank(permissionDTO.getUrl()))) {
-//				section.put("perms[" + permissionDTO.getIdentifier() + "]", permissionDTO.getUrl());
-//			}
-//		}
+		// Set<PermissionDTO> permissions = securityAccessFacade.findPermissions();
+		// for (PermissionDTO permissionDTO : permissions) {
+		// if ((!StringUtils.isBlank(permissionDTO.getIdentifier()) && !StringUtils.isBlank(permissionDTO.getUrl()))) {
+		// section.put("perms[" + permissionDTO.getIdentifier() + "]", permissionDTO.getUrl());
+		// }
+		// }
 		//
 		// Set<RoleDTO> roles = securityAccessFacade.findRoles();
 		//
@@ -69,7 +69,7 @@ public class CustomChainDefinitionSectionMetaSource implements FactoryBean<Ini.S
 		// section.put("", "");// key是url value是permission字符串。
 		// key 是url value 是role 字符串
 
-		System.out.println("CustomChainDefinitionSectionMetaSource");
+		System.out.println("CustomChainDefinitionSectionMetaSource" + count++);
 		return section;
 	}
 
