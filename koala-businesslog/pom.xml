@@ -4,12 +4,12 @@
     <parent>
         <artifactId>koala-project</artifactId>
         <groupId>org.openkoala</groupId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.openkoala.businesslog</groupId>
     <artifactId>koala-businesslog</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
     <name>koala-businesslog</name>
     <description>业务日志子系统，用于记录用户的业务操作</description>
