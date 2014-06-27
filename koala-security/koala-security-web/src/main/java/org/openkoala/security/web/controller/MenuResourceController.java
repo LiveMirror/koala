@@ -6,10 +6,11 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.apache.shiro.SecurityUtils;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.web.util.AuthUserUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -108,11 +109,11 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/findAllMenusByUserAsRole", method = RequestMethod.GET)
-	public Map<String, Object> findAllMenusByUserAsRole(Long roleId) {
+	public Map<String, Object> findAllMenusByUserAsRole(RoleDTO roleDTO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
 		List<MenuResourceDTO> menuResourceDtos = securityAccessFacade.findMenuResourceDTOByUserAccountAsRole(
-				userAccount, roleId);
+				AuthUserUtil.getUserAccount(), roleDTO.getRoleId());
+		AuthUserUtil.setRoleName(roleDTO.getRoleName());
 		dataMap.put("data", menuResourceDtos);
 		return dataMap;
 	}

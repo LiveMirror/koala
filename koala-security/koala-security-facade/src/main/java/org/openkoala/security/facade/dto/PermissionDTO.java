@@ -14,6 +14,8 @@ public class PermissionDTO {
 
 	private String description;
 
+	private String url;
+
 	public PermissionDTO() {
 	}
 
@@ -22,6 +24,14 @@ public class PermissionDTO {
 		this.permissionName = permissionName;
 		this.identifier = identifier;
 		this.description = description;
+	}
+
+	public PermissionDTO(Long permissionId, String permissionName, String identifier, String description, String url) {
+		this.permissionId = permissionId;
+		this.permissionName = permissionName;
+		this.identifier = identifier;
+		this.description = description;
+		this.url = url;
 	}
 
 	public String getUserName() {
@@ -71,5 +81,44 @@ public class PermissionDTO {
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
-	
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
+		result = prime * result + ((permissionName == null) ? 0 : permissionName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PermissionDTO other = (PermissionDTO) obj;
+		if (identifier == null) {
+			if (other.identifier != null)
+				return false;
+		} else if (!identifier.equals(other.identifier))
+			return false;
+		if (permissionName == null) {
+			if (other.permissionName != null)
+				return false;
+		} else if (!permissionName.equals(other.permissionName))
+			return false;
+		return true;
+	}
+
 }

@@ -1,6 +1,7 @@
 package org.openkoala.security.facade.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.openkoala.security.core.domain.MenuResource;
@@ -32,6 +33,7 @@ public final class GenerateDTOUtils {
 		result.setCreateDate(user.getCreateDate());
 		result.setDescription(user.getDescription());
 		result.setUserAccount(user.getUserAccount());
+		result.setName(user.getName());
 		result.setUserPassword(user.getPassword());
 		return result;
 	}
@@ -52,7 +54,7 @@ public final class GenerateDTOUtils {
 		return results;
 	}
 
-	public static List<PermissionDTO> generatePermissionDtosBy(List<Permission> permissions) {
+	public static List<PermissionDTO> generatePermissionDtosBy(Collection<Permission> permissions) {
 		List<PermissionDTO> results = new ArrayList<PermissionDTO>();
 		for (Permission permission : permissions) {
 			results.add(generatePermissionDtoBy(permission));

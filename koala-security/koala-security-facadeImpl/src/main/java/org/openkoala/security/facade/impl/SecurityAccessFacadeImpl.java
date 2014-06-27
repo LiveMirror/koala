@@ -280,13 +280,12 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public List<MenuResourceDTO> findMenuResourceDTOByUserAccountAsRole(String userAccount, Long roleId) {
 
-		User user = securityAccessApplication.getUserBy(userAccount);
 		Set<Authority> authorities = new HashSet<Authority>();
 		List<MenuResourceDTO> results;
 		List<MenuResourceDTO> childrenMenuResources;
 
-		if (!user.isSuper()) {
-			Role role = securityAccessApplication.getRoleBy(roleId);
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		if (!"admin".equals(role.getName())) {
 			// securityAccessApplication.checkAuthorization(userAccount, role);
 			authorities.add(role);
 			authorities.addAll(role.getPermissions());
@@ -306,6 +305,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		addMenuChildrenToParent(all);
 
 		return results;
+
 
 	}
 

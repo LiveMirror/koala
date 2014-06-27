@@ -37,7 +37,7 @@
 				/login.koala = anon
 				/auth/user/login.koala = anon
 				/authenticated = authc
-				/** = authc
+				/** = authc,custom[admin]
 			</value>
 		</property>
 	</bean>

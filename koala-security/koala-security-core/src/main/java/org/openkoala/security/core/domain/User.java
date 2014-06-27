@@ -3,19 +3,26 @@ package org.openkoala.security.core.domain;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 
+/**
+ * "ASC" 和 "DESC" 分别为升序和降序， JPQL 中默认为 ASC 升序
+ * 
+ * @author luzhao
+ * 
+ */
 @Entity
 @DiscriminatorValue("USER")
 public class User extends Actor {
@@ -37,9 +44,6 @@ public class User extends Actor {
 	@Column(name = "LAST_LOGIN_TIME")
 	private Date lastLoginTime;
 
-	@Column(name = "IS_SUPER")
-	private boolean isSuper;
-
 	@Column(name = "TELE_PHONE")
 	private String telePhone;
 
@@ -58,7 +62,7 @@ public class User extends Actor {
 		this.password = password;
 		this.email = email;
 		this.telePhone = telePhone;
-//		this.salt = generateSalt();
+		// this.salt = generateSalt();
 	}
 
 	private void isBlanked(String userAccount, String password, String email, String telePhone) {
@@ -83,7 +87,7 @@ public class User extends Actor {
 		this.setPassword(password);
 		super.save();
 	}
-	
+
 	private void isExisted() {
 		if (isExistUserAccount(this.getUserAccount())) {
 			throw new UserAccountIsExistedException("user.userAccount.exist");
@@ -124,13 +128,15 @@ public class User extends Actor {
 	}
 
 	/**
-	 * TODO 使用命名查询
-	 * 
 	 * @param userAccount
 	 * @return
 	 */
-	public static Set<Role> findAllRolesBy(String userAccount) {
-		return Role.findByUser(getBy(userAccount));
+	public static List<Role> findAllRolesBy(String userAccount) {
+		return getRepository()//
+				.createNamedQuery("Authority.findAllAuthoritiesByUserAccount")//
+				.addParameter("userAccount", userAccount)//
+				.addParameter("authorityType", Role.class)//
+				.list();
 	}
 
 	/**
@@ -160,7 +166,8 @@ public class User extends Actor {
 	public boolean updatePassword(String oldUserPassword) {
 		User result = getBy(this.getUserAccount());
 		if (result.getPassword().equals(oldUserPassword)) {
-			result.setPassword(this.getPassword());
+			String password = passwordService.encryptPassword(this);
+			result.setPassword(password);
 			return true;
 		}
 		return false;
@@ -177,7 +184,7 @@ public class User extends Actor {
 
 	public static PasswordService getPasswordService() {
 		if (passwordService == null) {
-			passwordService = InstanceFactory.getInstance(PasswordService.class,"passwordService");
+			passwordService = InstanceFactory.getInstance(PasswordService.class, "passwordService");
 		}
 		return passwordService;
 	}
@@ -192,13 +199,12 @@ public class User extends Actor {
 		byte[] bytes = new byte[8];
 		random.nextBytes(bytes);
 		try {
-			return new String(bytes,"UTF-8");
+			return new String(bytes, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	
 	public Date getLastLoginTime() {
 		return lastLoginTime;
 	}
@@ -235,14 +241,6 @@ public class User extends Actor {
 		return disabled;
 	}
 
-	public boolean isSuper() {
-		return isSuper;
-	}
-
-	public void setSuper(boolean isSuper) {
-		this.isSuper = isSuper;
-	}
-
 	@Override
 	public String[] businessKeys() {
 		return new String[] { "userAccount" };
@@ -259,6 +257,5 @@ public class User extends Actor {
 	public String getSalt() {
 		return salt;
 	}
-
 
 }

@@ -1,5 +1,6 @@
 package org.openkoala.security.web.realm;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,15 +20,15 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.openkoala.security.core.domain.PasswordService;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
+import org.openkoala.security.web.util.AuthUserUtil;
 
 /**
- * 自定义Realm 放入用户以及角色和权限
+ * 这里加入一个角色。 自定义Realm 放入用户以及角色和权限
  * 
  * @author luzhao
  * 
@@ -42,30 +44,26 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		String username = (String) principals.getPrimaryPrincipal();
+		ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
 		SimpleAuthorizationInfo result = new SimpleAuthorizationInfo();
-		result.setRoles(getRoleNames(username));
-		result.setStringPermissions(getPermissionNames(username));
+		result.setRoles(getRoles(shiroUser.getRoleName()));
+		result.setStringPermissions(getPermissionIdentifiers(shiroUser.getUserAccount()));
+		shiroUser.setAuthorizationInfo(result);
 		return result;
 	}
 
-	private Set<String> getPermissionNames(String username) {
+	private Set<String> getRoles(String roleName) {
+		Set<String> roles = new HashSet<String>();
+		roles.add(AuthUserUtil.getRoleName());
+		return roles;
+	}
+
+	private Set<String> getPermissionIdentifiers(String username) {
 		Set<String> results = new HashSet<String>();
 
 		Set<PermissionDTO> permissionDtos = securityAccessFacade.findPermissionDtosBy(username);
 		for (PermissionDTO permissionDto : permissionDtos) {
-			results.add(permissionDto.getPermissionName());
-		}
-		return results;
-	}
-
-	private Set<String> getRoleNames(String username) {
-		Set<String> results = new HashSet<String>();
-
-		List<RoleDTO> roleDtos = securityAccessFacade.findRoleDtosBy(username);
-
-		for (RoleDTO roleDto : roleDtos) {
-			results.add(roleDto.getRoleName());
+			results.add(permissionDto.getIdentifier());
 		}
 		return results;
 	}
@@ -84,16 +82,113 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		String username = (String) token.getPrincipal();
 		UserDTO userDTO = securityAccessFacade.getUserDtoBy(username);
+		// TODO and so on.
 		if (userDTO == null) {
 			throw new UnknownAccountException();// 没找到账户
 		}
-		// TODO and so on.
+
+		List<RoleDTO> roleDTOs = securityAccessFacade.findRoleDtosBy(userDTO.getUserAccount());
+		String roleName = roleDTOs.get(0).getRoleName();
+		ShiroUser shiroUser = null;
+		if(!StringUtils.isBlank(roleName)){
+			shiroUser = new ShiroUser(userDTO.getId(), userDTO.getUserAccount(), userDTO.getName(),roleName);
+		}else{
+			shiroUser = new ShiroUser(userDTO.getId(), userDTO.getUserAccount(), userDTO.getName());
+		}
+		
 		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
-				userDTO.getUserAccount(), //
+				shiroUser, //
 				userDTO.getUserPassword(),//
 				getName());
 
 		return result;
 	}
 
+	public static class ShiroUser implements Serializable {
+
+		private static final long serialVersionUID = 5876323074602221444L;
+
+		private Long id;
+
+		private String userAccount;
+
+		private String name;
+
+		private String roleName;
+
+		private AuthenticationInfo authenticationInfo;
+
+		private AuthorizationInfo authorizationInfo;
+
+		ShiroUser() {
+		}
+
+		public ShiroUser(Long id, String userAccount, String name) {
+			this.id = id;
+			this.userAccount = userAccount;
+			this.name = name;
+		}
+		public ShiroUser(Long id, String userAccount, String name,String roleName) {
+			super();
+			this.id = id;
+			this.userAccount = userAccount;
+			this.name = name;
+			this.roleName = roleName;
+		}
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public String getUserAccount() {
+			return userAccount;
+		}
+
+		public void setUserAccount(String userAccount) {
+			this.userAccount = userAccount;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getRoleName() {
+			return roleName;
+		}
+
+		public void setRoleName(String roleName) {
+			this.roleName = roleName;
+		}
+
+		public AuthenticationInfo getAuthenticationInfo() {
+			return authenticationInfo;
+		}
+
+		public void setAuthenticationInfo(AuthenticationInfo authenticationInfo) {
+			this.authenticationInfo = authenticationInfo;
+		}
+
+		public AuthorizationInfo getAuthorizationInfo() {
+			return authorizationInfo;
+		}
+
+		public void setAuthorizationInfo(AuthorizationInfo authorizationInfo) {
+			this.authorizationInfo = authorizationInfo;
+		}
+
+		@Override
+		public String toString() {
+			return "ShiroUser [id=" + id + ", userAccount=" + userAccount + ", name=" + name + ", roleName=" + roleName
+					+ ", authenticationInfo=" + authenticationInfo + ", authorizationInfo=" + authorizationInfo + "]";
+		}
+
+	}
 }

@@ -61,5 +61,12 @@
 			<groupId>org.dayatang.dddlib</groupId>
 			<artifactId>dddlib-db</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<optional>true</optional>
+			<version>0.9.2.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

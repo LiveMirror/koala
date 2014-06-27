@@ -6,13 +6,13 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.apache.shiro.SecurityUtils;
 import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.web.util.AuthUserUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,8 +36,7 @@ public class RoleController {
 	@RequestMapping("/findRolesByUsername")
 	public Map<String, Object> findRoleDtosByUsername() {
 		Map<String, Object> result = new HashMap<String, Object>();
-		String username = (String) SecurityUtils.getSubject().getPrincipal();
-		List<RoleDTO> roleDtos = securityAccessFacade.findRoleDtosBy(username);
+		List<RoleDTO> roleDtos = securityAccessFacade.findRoleDtosBy(AuthUserUtil.getUserAccount());
 		result.put("result", roleDtos);
 		return result;
 	}
@@ -53,7 +52,6 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryByUserId")
 	public Page<RoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
-		// String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
 		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(page, pagesize, userId);
 		return results;
 	}
@@ -132,7 +130,7 @@ public class RoleController {
 		dataMap.put("result", "success");
 		return dataMap;
 	}
-	
+
 	/**
 	 * 为角色授权URL资源
 	 * 

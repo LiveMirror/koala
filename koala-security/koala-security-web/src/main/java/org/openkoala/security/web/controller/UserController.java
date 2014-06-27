@@ -17,6 +17,7 @@ import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
+import org.openkoala.security.web.util.AuthUserUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,7 +59,6 @@ public class UserController {
 			results.put("message", "登陆成功");
 			results.put("success", Boolean.TRUE);
 		} catch (AuthenticationException e) {
-			e.printStackTrace();
 			results.put("message", "登陆失败");
 		}
 		return results;
@@ -157,9 +157,7 @@ public class UserController {
 	@RequestMapping("/updatePassword")
 	public Map<String, Object> updatePassword(@RequestParam String oldUserPassword, @RequestParam String userPassword) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
-		// TODO 加密
-		UserDTO userDTO = new UserDTO(userAccount, userPassword);
+		UserDTO userDTO = new UserDTO(AuthUserUtil.getUserAccount(), userPassword);
 		if (securityAccessFacade.updatePassword(userDTO, oldUserPassword)) {
 			dataMap.put("result", "success");
 			// TODO 刷新缓存
@@ -402,7 +400,6 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
 	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, RoleDTO queryRoleCondition, Long userId) {
-		// String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
 		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,
 				userId);
 		return results;
@@ -421,7 +418,6 @@ public class UserController {
 	@RequestMapping("/pagingQueryNotGrantPermissions")
 	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,
 			PermissionDTO queryPermissionCondition, Long userId) {
-		// String userAccount = (String) SecurityUtils.getSubject().getPrincipal();
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize,
 				queryPermissionCondition, userId);
 		return results;
