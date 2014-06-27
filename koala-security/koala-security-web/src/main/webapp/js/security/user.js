@@ -1,5 +1,5 @@
 var userManager = function() {
-	var baseUrl = contextPath + '/auth/User/';
+	var baseUrl = contextPath + '/auth/user/';
 	var dialog = null;
 	//对话框
 	var userName = null;
@@ -105,7 +105,7 @@ var userManager = function() {
 		isEnable.on('click', function() {
 			isEnable.each(function() {
 				$(this).parent().removeClass('checked');
-			})
+			});
 			$(this).parent().addClass('checked');
 		});
 		dialog.find('#save').on('click', function() {
@@ -141,7 +141,7 @@ var userManager = function() {
 			dialog.find('[name="isEnable"][value="true"]').removeAttr('checked', 'checked').parent().removeClass('checked');
 			dialog.find('[name="isEnable"][value="false"]').attr('checked', 'checked').parent().addClass('checked');
 		}
-	}
+	};
 	/*
 	 *   保存数据 id存在则为修改 否则为新增
 	 */
@@ -197,7 +197,7 @@ var userManager = function() {
 			return false;
 		}
 		return true;
-	}
+	};
 	/*
 	 *获取表单数据
 	 */
@@ -231,7 +231,7 @@ var userManager = function() {
 	var assignUser = function(roleId, grid) {
 		$.get(contextPath + '/pages/auth/select-user.jsp').done(function(data) {
 			var dialog = $(data);
-			dialog.find('#save').on('click', function() {
+			dialog.find('#save').click(function() {
 				var $saveBtn = $(this);
 				var indexs = dialog.find('#selectUserGrid').data('koala.grid').selectedRowsIndex();
 				if (indexs.length == 0) {
@@ -241,6 +241,7 @@ var userManager = function() {
 					});
 					return;
 				}
+				
 				$saveBtn.attr('disabled', 'disabled');	
 				var data = {};
 				data['roleVO.id'] = roleId;
@@ -295,6 +296,7 @@ var userManager = function() {
 			}
 		});
 	};
+	
 	/**
 	 * 初始化角色选择grid
 	 */

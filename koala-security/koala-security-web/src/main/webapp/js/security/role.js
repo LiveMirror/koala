@@ -14,6 +14,7 @@ var roleManager = function(){
 			init(data);
 		});
 	};
+	
 	/*
 	 * 修改
 	 */
@@ -120,6 +121,7 @@ var roleManager = function(){
 			dialog.find('#save').removeAttr('disabled');
 		});
 	};
+	
 	/**
 	 * 数据验证
 	 */
@@ -130,7 +132,7 @@ var roleManager = function(){
 		return true;
 	};
 	
-	/*
+	/**
 	 * 获取表单数据
 	 */
 	var getAllData = function(item){
@@ -151,22 +153,25 @@ var roleManager = function(){
 			var dialog = $(data);
 			dialog.find('#save').on('click',function(){
 				var $saveBtn = $(this);
-				var indexs = dialog.find('#selectRoleGrid').data('koala.grid').selectedRowsIndex();
-				if(indexs.length == 0){
+				var items = dialog.find('#selectRoleGrid').data('koala.grid').selectedRows();
+				
+				if(items.length == 0){
 					dialog.find('.modal-content').message({
 						type: 'warning',
 						content: '请选择要分配的角色'
 					});
 					return;
 				}
+				
 				$saveBtn.attr('disabled', 'disabled');	
-				var data = {};
-				data['userVO.id'] = userId;
-				for(var i=0,j=indexs.length; i<j; i++){
-					data['roles['+i+'].id'] = indexs[i];
+				var data = "userId="+userId;
+				
+				for(var i=0,j=items.length; i<j; i++){
+					data += "&roleIds="+items[i].roleId;
 				}
-				$.post(contextPath + '/auth/User/assignRoles.koala', data).done(function(data){
-					if(data.result == 'success'){
+				
+				$.post(contextPath + '/auth/user/grantRoles.koala', data).done(function(data){
+					if(data.success){
 						dataGrid.message({
 							type: 'success',
 							content: '保存成功'
@@ -219,11 +224,11 @@ var roleManager = function(){
 	var initSelectRoleGrid = function(userId, userAccount, dialog){
 		var columns = [{
 				title : "角色名称",
-				name : "name",
+				name : "roleName",
 				width : 150
 			},{
 				title : "角色描述",
-				name : "roleDesc",
+				name : "description",
 				width : 150
 			}];
 		
@@ -231,7 +236,7 @@ var roleManager = function(){
 			 identity: 'id',
              columns: columns,
              querys: [{title: '角色名称', value: 'roleNameForSearch'}],
-             url: baseUrl+'queryRolesForAssign.koala?userId='+userId+'&userAccount='+userAccount
+             url: contextPath + '/auth/user/pagingQueryNotGrantRoles.koala?username='+userAccount
         });
 	};
 	/**

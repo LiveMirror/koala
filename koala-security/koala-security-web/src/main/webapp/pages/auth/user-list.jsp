@@ -56,6 +56,12 @@
 					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配角色</button>',
 					action : 'roleAssign'
 				}, {
+					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配权限</button>',
+					action : 'permissionAssign'
+				}, {
+					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配url</button>',
+					action : 'roleAssign'
+				}, {
 					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;重置密码</button>',
 					action : 'resetPassword'
 				}];
@@ -135,6 +141,22 @@
 					return;
 				}
 				userManager().assignRole(data.data[0], data.item[0].userAccount);
+			},
+			"permissionAssign":function(event,data) {
+				var items 	= data.item;
+				var thiz	= $(this);
+				if(items.length == 0){
+					thiz.message({type : 'warning',content : '请选择一条记录进行操作'});
+					return;
+				} else if(items.length > 1){
+					thiz.message({type : 'warning',content : '只能选择一条记录进行操作'});
+					return;
+				}
+				
+				var user = items[0];
+				console.log(user);
+				/*打开权限表格*/
+				openTab('/pages/auth/permission-list.jsp', user.userAccount + '的权限管理', 'roleManager_' + user.id, user.id, {});
 			},
 			'assignUser' : function() {
 				userManager().assignUser(roleId, $(this));

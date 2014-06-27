@@ -55,8 +55,9 @@
 		
 		var url = contextPath + '/auth/role/pagingquery.koala';
 		if (userAccount) {
-			url += '?userAccount=' + userAccount;
+			url = contextPath + '/auth/role/findRolesByUsername.koala?username=' + userAccount;
 		}
+		
 		$('[data-role="roleGrid"]').off().grid({
 			identity : 'id',
 			columns : columns,

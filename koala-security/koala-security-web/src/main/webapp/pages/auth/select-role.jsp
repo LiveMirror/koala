@@ -24,12 +24,8 @@
 				<div id="selectRoleGrid"></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					取消
-				</button>
-				<button type="button" class="btn btn-success" id="save">
-					保存
-				</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-success" id="save">保存</button>
 			</div>
 		</div>
 	</div>
