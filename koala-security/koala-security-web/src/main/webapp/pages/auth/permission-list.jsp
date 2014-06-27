@@ -4,6 +4,10 @@
 <script type="text/javascript" src="<c:url value='/js/security/permission.js' />"></script>
 <script>
 	$(function(){
+		var tabData = $('[data-role="roleGrid"]').closest('.tab-pane.active').data();
+		var userId = tabData.userId;
+		var userAccount = tabData.userAccount;
+		
 		var columns = [{
 				title : "权限名称",
 				name : "permissionName",

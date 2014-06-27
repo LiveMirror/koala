@@ -339,10 +339,6 @@
 				dataType : 'text json',
 				success : function(result){
 					if (!result.data) {
-						self.$element.message({
-							type : 'error',
-							content : '查询失败'
-						});
 						self.$element.trigger('complate');
 						self.gridTableBody.loader('hide');
 						return;
@@ -368,7 +364,6 @@
 					self.$element.trigger('complateRenderData', result);
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown){
-					console.log(XMLHttpRequest.readyState);
 					self.$element.message({
 						type : 'error',
 						content : '查询失败'
