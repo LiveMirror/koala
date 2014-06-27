@@ -37,7 +37,7 @@ public class RoleController {
 	public Map<String, Object> findRoleDtosByUsername() {
 		Map<String, Object> result = new HashMap<String, Object>();
 		List<RoleDTO> roleDtos = securityAccessFacade.findRoleDtosBy(AuthUserUtil.getUserAccount());
-		result.put("result", roleDtos);
+		result.put("data", roleDtos);
 		return result;
 	}
 
