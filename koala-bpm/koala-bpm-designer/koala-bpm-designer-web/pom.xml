@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.openkoala.bpm.designer</groupId>
 		<artifactId>koala-bpm-designer</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>koala-bpm-designer-web</artifactId>
 	<name>koala-bpm-designer-web</name>
@@ -85,17 +85,17 @@
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-application</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-authImpl</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-ss3Adapter</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
@@ -105,7 +105,7 @@
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-applicationImpl</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet.jsp.jstl</groupId>

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.Ini.Section;
 import org.apache.shiro.util.CollectionUtils;
@@ -11,12 +12,14 @@ import org.apache.shiro.web.config.IniFilterChainResolverFactory;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.context.annotation.DependsOn;
 
-public class CustomChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section>{
-	
+@DependsOn("queryChannel")
+public class CustomChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section> {
+
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
-
+	
 	private String filterChainDefinitions;
 
 	/**
@@ -31,22 +34,42 @@ public class CustomChainDefinitionSectionMetaSource implements FactoryBean<Ini.S
 	public Section getObject() throws Exception {
 		Ini ini = new Ini();
 		ini.load(filterChainDefinitions);
-		
+
 		Ini.Section section = ini.getSection(IniFilterChainResolverFactory.URLS);
-		
-		if(CollectionUtils.isEmpty(section))
-		{
+
+		if (CollectionUtils.isEmpty(section)) {
 			section = ini.getSection(Ini.DEFAULT_SECTION_NAME);
 		}
-		
-		//查出所有的permissions
-//		Set<PermissionDTO> permissions = securityAccessFacade.findPermissionDtos();
-		
-		
-		//获取到所有的资源url与permission的关联关系。
-		section.put("", "");//key是url value是permission字符串。
-							// key 是url value 是role 字符串
-		
+
+		// 查出所有的permissions
+//		Set<PermissionDTO> permissions = securityAccessFacade.findPermissions();
+//		for (PermissionDTO permissionDTO : permissions) {
+//			if ((!StringUtils.isBlank(permissionDTO.getIdentifier()) && !StringUtils.isBlank(permissionDTO.getUrl()))) {
+//				section.put("perms[" + permissionDTO.getIdentifier() + "]", permissionDTO.getUrl());
+//			}
+//		}
+		//
+		// Set<RoleDTO> roles = securityAccessFacade.findRoles();
+		//
+		//
+		//
+		// for (RoleDTO roleDTO : roles) {
+		// Set<PermissionDTO> permissionDTOs = roleDTO.getPermissionDTOs();
+		// for (PermissionDTO permissionDTO : permissions) {
+		// if(permissionDTOs.contains(permissionDTO)){
+		// String url = permissionDTO.getUrl();
+		// if(!StringUtils.isBlank(url))
+		// section.put("roles[" + roleDTO.getRoleName() + "]", permissionDTO.getUrl());
+		// }
+		// }
+		//
+		// }
+
+		// 获取到所有的资源url与permission的关联关系。
+		// section.put("", "");// key是url value是permission字符串。
+		// key 是url value 是role 字符串
+
+		System.out.println("CustomChainDefinitionSectionMetaSource");
 		return section;
 	}
 

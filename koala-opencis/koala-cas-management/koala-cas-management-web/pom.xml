@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.openkoala.cas</groupId>
 		<artifactId>koala-cas-management</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>koala-cas-management-web</artifactId>
 	<name>koala-cas-management-web</name>
@@ -49,7 +49,6 @@
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -65,7 +64,7 @@
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-core</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -82,27 +81,27 @@
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-ss3Adapter</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-cache</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-application</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-authImpl</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-applicationImpl</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
