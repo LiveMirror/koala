@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<div data-role="roleGrid"></div>
+<div id="roleGrid"></div>
 <script>
 	$(function() {
-		var tabData = $('[data-role="roleGrid"]').closest('.tab-pane.active').data();
+		var tabData = $('#roleGrid').closest('.tab-pane.active').data();
 		var userId = tabData.userId;
 		var userAccount = tabData.userAccount;
 		var columns = [{
@@ -14,6 +14,7 @@
 			name : "roleDesc",
 			width : 250
 		}];
+		
 		var getButtons = function() {
 			if (userId) {
 				return [{
@@ -58,7 +59,7 @@
 			url = contextPath + '/auth/role/findRolesByUsername.koala?username=' + userAccount;
 		}
 		
-		$('[data-role="roleGrid"]').off().grid({
+		$('#roleGrid').off().grid({
 			identity : 'id',
 			columns : columns,
 			buttons : getButtons(),

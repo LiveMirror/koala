@@ -99,7 +99,7 @@
 		/*获取用户的角色*/
 		$.getJSON(contextPath + '/auth/role/findRolesByUsername.koala', function(data) {
 			var roles = $("#roles").empty();
-			$.each(data.result, function(i,role) {
+			$.each(data.data, function(i,role) {
 				roles.append($("<option/>").attr("value",role.roleId).html(role.roleName));
 			});
 			roles.change();
