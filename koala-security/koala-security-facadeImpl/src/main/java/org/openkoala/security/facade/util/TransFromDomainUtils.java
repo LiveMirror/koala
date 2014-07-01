@@ -3,6 +3,7 @@ package org.openkoala.security.facade.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.OrganizationScope;
 import org.openkoala.security.core.domain.Permission;
@@ -33,7 +34,9 @@ public final class TransFromDomainUtils {
 	public static User transFromUserBy(UserDTO userDTO) {
 		User result = new User(userDTO.getUserAccount(), userDTO.getUserPassword(), userDTO.getEmail(),
 				userDTO.getTelePhone());
-		result.setId(userDTO.getId());
+		if (!StringUtils.isBlank(userDTO.getId() + "")) {
+			result.setId(userDTO.getId());
+		}
 		result.setName(userDTO.getName());
 		result.setDescription(userDTO.getDescription());
 		return result;
@@ -41,29 +44,39 @@ public final class TransFromDomainUtils {
 
 	public static Role transFromRoleBy(RoleDTO roleDTO) {
 		Role result = new Role(roleDTO.getRoleName());
-		result.setId(roleDTO.getRoleId());
+		if (!StringUtils.isBlank(roleDTO.getRoleId() + "")) {
+			result.setId(roleDTO.getRoleId());
+		}
 		result.setDescription(roleDTO.getDescription());
 		return result;
 	}
 
 	public static Permission transFromPermissionBy(PermissionDTO permissionDTO) {
-		Permission result = new Permission(permissionDTO.getPermissionName(),permissionDTO.getIdentifier());
+		Permission result = new Permission(permissionDTO.getPermissionName(), permissionDTO.getIdentifier());
+		if (!StringUtils.isBlank(permissionDTO.getPermissionId() + "")) {
+			result.setId(permissionDTO.getPermissionId());
+		}
 		result.setDescription(permissionDTO.getDescription());
 		return result;
 	}
 
 	public static MenuResource transFromMenuResourceBy(MenuResourceDTO menuResourceDTO) {
-		MenuResource results = new MenuResource(menuResourceDTO.getName());
-		results.setDescription(menuResourceDTO.getDescription());
-		results.setMenuIcon(menuResourceDTO.getIcon());
-		results.setUrl(menuResourceDTO.getUrl());
-		return results;
+		MenuResource result = new MenuResource(menuResourceDTO.getName());
+		if (!StringUtils.isBlank(menuResourceDTO.getId() + "")) {
+			result.setId(menuResourceDTO.getId());
+		}
+		result.setDescription(menuResourceDTO.getDescription());
+		result.setMenuIcon(menuResourceDTO.getIcon());
+		result.setUrl(menuResourceDTO.getUrl());
+		return result;
 	}
-	
+
 	public static UrlAccessResource transFromUrlAccessResourceBy(UrlAccessResourceDTO urlAccessResourceDTO) {
 		UrlAccessResource result = new UrlAccessResource(urlAccessResourceDTO.getName());
 		result.setDescription(urlAccessResourceDTO.getDescription());
-		result.setId(urlAccessResourceDTO.getId());
+		if (!StringUtils.isBlank(urlAccessResourceDTO.getId() + "")) {
+			result.setId(urlAccessResourceDTO.getId());
+		}
 		result.setUrl(urlAccessResourceDTO.getUrl());
 		return result;
 	}
@@ -77,8 +90,11 @@ public final class TransFromDomainUtils {
 	}
 
 	public static OrganizationScope transFromOrganizationScopeBy(OrganizationScopeDTO organizationScopeDTO) {
-		OrganizationScope results = new OrganizationScope(organizationScopeDTO.getName());
-		results.setDescription(organizationScopeDTO.getDescription());
-		return results;
+		OrganizationScope result = new OrganizationScope(organizationScopeDTO.getName());
+		if (!StringUtils.isBlank(organizationScopeDTO.getId() + "")) {
+			result.setId(organizationScopeDTO.getId());
+		}
+		result.setDescription(organizationScopeDTO.getDescription());
+		return result;
 	}
 }

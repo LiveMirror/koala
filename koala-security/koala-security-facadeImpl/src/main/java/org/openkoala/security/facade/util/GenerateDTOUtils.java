@@ -72,6 +72,7 @@ public final class GenerateDTOUtils {
 	 */
 	public static RoleDTO generateRoleDTOBy(Role role) {
 		RoleDTO roleDTO = new RoleDTO(role.getId(), role.getName());
+		roleDTO.setDescription(role.getDescription());
 		return roleDTO;
 	}
 
@@ -85,6 +86,8 @@ public final class GenerateDTOUtils {
 		PermissionDTO result = new PermissionDTO();
 		result.setRoleName(null);
 		result.setPermissionName(permission.getName());
+		result.setIdentifier(permission.getIdentifier());
+		result.setDescription(permission.getDescription());
 		return result;
 	}
 
