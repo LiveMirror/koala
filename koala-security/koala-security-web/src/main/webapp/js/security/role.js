@@ -236,7 +236,7 @@ var roleManager = function(){
 			 identity: 'id',
              columns: columns,
              querys: [{title: '角色名称', value: 'roleNameForSearch'}],
-             url: contextPath + '/auth/user/pagingQueryNotGrantRoles.koala?username='+userAccount
+             url: contextPath + '/auth/user/pagingQueryNotGrantRoles.koala?userId='+userId
         });
 	};
 	/**

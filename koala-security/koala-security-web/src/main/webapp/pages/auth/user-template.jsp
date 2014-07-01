@@ -39,26 +39,6 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-3 control-label">是否启用:</label>
-						<div class="col-lg-9">
-							<div class="radio">
-								<span class="checked">
-									<input type="radio"
-									style="opacity: 0;" checked="checked" name="isEnable" value="true">
-								</span>
-							</div>
-							<span style="position: relative; top: 8px;">是</span>
-							&nbsp;&nbsp;&nbsp;
-							<div class="radio">
-								<span>
-									<input type="radio" style="opacity: 0;"
-									name="isEnable" value="false">
-								</span>
-							</div>
-							<span style="position: relative; top: 8px;">否</span>
-						</div>
-					</div>
-					<div class="form-group">
 						<label class="col-lg-3 control-label">描述:</label>
 						<div class="col-lg-9">
 							<input type="text" class="form-control" id="userDescript">

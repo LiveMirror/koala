@@ -11,30 +11,38 @@
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
 				<form class="form-horizontal" id="url_form">
 					<div class="form-group">
-						<label class="col-lg-3 control-label">用户名称:</label>
+						<label class="col-lg-3 control-label">url名称:</label>
 						<div class="col-lg-9">
-							<input type="text" class="form-control" name="userName">
 							<span class="required">*</span>
+							<input type="text" class="form-control" name="name">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-3 control-label">用户账号:</label>
+						<label class="col-lg-3 control-label">url标识:</label>
 						<div class="col-lg-9">
-							<input type="text" class="form-control" name="userAccount">
 							<span class="required">*</span>
+							<input type="text" class="form-control" name="identifier">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label">url链接:</label>
+						<div class="col-lg-9">
+							<span class="required">*</span>
+							<input type="text" class="form-control" name="url">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 control-label">描述:</label>
 						<div class="col-lg-9">
-							<input type="text" class="form-control" name="userDescript">
+							<span class="required"> </span>
+							<input type="text" class="form-control" name="description">
 						</div>
 					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						<button type="button" class="btn btn-success save">保存</button>
+					</div>
 				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-				<button type="button" class="btn btn-success" id="save">保存</button>
 			</div>
 		</div>
 	</div>

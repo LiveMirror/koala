@@ -37,6 +37,9 @@
 				}, {
 					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-user"><span>用户管理</button>',
 					action : 'assignUser'
+				},{
+					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配url</button>',
+					action : 'urlAssign'
 				}, {
 					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th"><span>资源授权</button>',
 					action : 'assignResource'
@@ -107,6 +110,21 @@
 			},
 			'assignRole' : function() {
 				roleManager().assignRole(userId, userAccount, $(this));
+			},
+			"urlAssign" : function(event, data){
+				var items 	= data.item;
+				var thiz	= $(this);
+				if(items.length == 0){
+					thiz.message({type : 'warning',content : '请选择一条记录进行操作'});
+					return;
+				} else if(items.length > 1){
+					thiz.message({type : 'warning',content : '只能选择一条记录进行操作'});
+					return;
+				}
+				
+				var role = items[0];
+				/*打开url表格*/
+				openTab('/pages/auth/url-list.jsp', role.roleName+'的url管理', 'roleManager_' + role.id, role.id, {roleId : role.roleId});
 			},
 			'removeRoleForUser' : function(event, data) {
 				var indexs = data.data;
