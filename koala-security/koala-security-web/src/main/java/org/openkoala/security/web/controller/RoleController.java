@@ -12,6 +12,8 @@ import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
+import org.openkoala.security.web.filter.ShiroFilerChainManager;
 import org.openkoala.security.web.util.AuthUserUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,9 @@ public class RoleController {
 
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
+
+//	@Inject
+//	private ShiroFilerChainManager shiroFilerChainManager;
 
 	/**
 	 * 根据用户名查找所有的角色。
@@ -135,14 +140,64 @@ public class RoleController {
 	 * 为角色授权URL资源
 	 * 
 	 * @param roleId
-	 * @param menuResourceIds
+	 * @param urlAccessResourceIds
 	 * @return
 	 */
-	public Map<String, Object> grantUrlAccessResources(Long roleId, Long[] menuResourceIds) {
+	@ResponseBody
+	@RequestMapping("/grantUrlAccessResources")
+	public Map<String, Object> grantUrlAccessResources(Long roleId, Long[] urlAccessResourceIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantUrlAccessResourcesToRole(roleId, menuResourceIds);
+		securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
+//		shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
 		dataMap.put("result", "success");
 		return dataMap;
+	}
+
+	/**
+	 * 从角色中撤销Url访问资源。
+	 * 
+	 * @param roleId
+	 * @param urlAccessResourceIds
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/terminateUrlAccessResources")
+	public Map<String, Object> terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.terminateUrlAccessResourcesFromRole(roleId, urlAccessResourceIds);
+//		shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
+		return dataMap;
+	}
+
+	/**
+	 * 查出已经授权的URL访问资源。
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param roleId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryGrantUrlAccessResourcesByRoleId")
+	public Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
+		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page, pagesize,
+				roleId);
+		return results;
+	}
+	
+	/**
+	 * 查出没有授权的URL访问资源。
+	 * @param page
+	 * @param pagesize
+	 * @param roleId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryNotGrantUrlAccessResourcesByRoleId")
+	public Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
+		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page, pagesize,
+				roleId);
+		return results;
 	}
 
 	/**

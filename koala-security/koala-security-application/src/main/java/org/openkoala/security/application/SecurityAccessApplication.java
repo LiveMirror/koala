@@ -102,4 +102,6 @@ public interface SecurityAccessApplication {
 	UrlAccessResource getUrlAccessResourceBy(Long urlAccessResourceId);
 
 	List<Role> findAllRoles();
+
+	List<UrlAccessResource> findAllUrlAccessResources();
 }

@@ -7,10 +7,12 @@ import java.util.List;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 
 /**
@@ -27,7 +29,7 @@ public final class GenerateDTOUtils {
 	 * @param user
 	 * @return
 	 */
-	public static UserDTO generateUserDtoBy(User user) {
+	public static UserDTO generateUserDTOBy(User user) {
 		UserDTO result = new UserDTO();
 		result.setId(user.getId());
 		result.setCreateDate(user.getCreateDate());
@@ -38,26 +40,26 @@ public final class GenerateDTOUtils {
 		return result;
 	}
 
-	public static List<UserDTO> generateUserDtosBy(List<User> users) {
+	public static List<UserDTO> generateUserDTOsBy(List<User> users) {
 		List<UserDTO> results = new ArrayList<UserDTO>();
 		for (User user : users) {
-			results.add(generateUserDtoBy(user));
+			results.add(generateUserDTOBy(user));
 		}
 		return results;
 	}
 
-	public static List<RoleDTO> generateRoleDtosBy(List<Role> roles) {
+	public static List<RoleDTO> generateRoleDTOsBy(List<Role> roles) {
 		List<RoleDTO> results = new ArrayList<RoleDTO>();
 		for (Role role : roles) {
-			results.add(generateRoleDtoBy(role));
+			results.add(generateRoleDTOBy(role));
 		}
 		return results;
 	}
 
-	public static List<PermissionDTO> generatePermissionDtosBy(Collection<Permission> permissions) {
+	public static List<PermissionDTO> generatePermissionDTOsBy(Collection<Permission> permissions) {
 		List<PermissionDTO> results = new ArrayList<PermissionDTO>();
 		for (Permission permission : permissions) {
-			results.add(generatePermissionDtoBy(permission));
+			results.add(generatePermissionDTOBy(permission));
 		}
 		return results;
 	}
@@ -68,7 +70,7 @@ public final class GenerateDTOUtils {
 	 * @param role
 	 * @return
 	 */
-	public static RoleDTO generateRoleDtoBy(Role role) {
+	public static RoleDTO generateRoleDTOBy(Role role) {
 		RoleDTO roleDTO = new RoleDTO(role.getId(), role.getName());
 		return roleDTO;
 	}
@@ -79,20 +81,25 @@ public final class GenerateDTOUtils {
 	 * @param permission
 	 * @return
 	 */
-	public static PermissionDTO generatePermissionDtoBy(Permission permission) {
+	public static PermissionDTO generatePermissionDTOBy(Permission permission) {
 		PermissionDTO result = new PermissionDTO();
 		result.setRoleName(null);
 		result.setPermissionName(permission.getName());
 		return result;
 	}
 
-	public static MenuResourceDTO generateMenuResourceDtoBy(MenuResource menuResource) {
+	public static MenuResourceDTO generateMenuResourceDTOBy(MenuResource menuResource) {
 		MenuResourceDTO result = new MenuResourceDTO();
-		MenuResource parentMenuResource = menuResource.getParent();
 		result.setId(menuResource.getId());
 		result.setName(menuResource.getName());
 		result.setUrl(menuResource.getUrl());
 		result.setDescription(menuResource.getDescription());
+		return result;
+	}
+
+	public static UrlAccessResourceDTO generateUrlAccessResourceDTOBy(UrlAccessResource urlAccessResource) {
+		UrlAccessResourceDTO result = new UrlAccessResourceDTO(urlAccessResource.getId(), urlAccessResource.getName(), urlAccessResource.isDisabled(), urlAccessResource.getUrl(), urlAccessResource.getIdentifier());
+		result.setDescription(urlAccessResource.getDescription());
 		return result;
 	}
 }

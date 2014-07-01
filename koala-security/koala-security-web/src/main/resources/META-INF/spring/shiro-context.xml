@@ -36,7 +36,7 @@
 				/login.koala = anon
 				/auth/user/login.koala = anon
 				/authenticated = authc
-				/** = authc,custom[admin]
+				/** = authc,roles[admin]
 			</value>
 		</property>
 	</bean>
@@ -47,7 +47,7 @@
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login.koala" />
-		<property name="unauthorizedUrl" value="/unauthorized.koala" />
+		<property name="unauthorizedUrl" value="/errors/unauthorized.jsp" />
 		<property name="filters">
 			<util:map>
 				<entry key="authc" value-ref="formAuthenticationFilter" />

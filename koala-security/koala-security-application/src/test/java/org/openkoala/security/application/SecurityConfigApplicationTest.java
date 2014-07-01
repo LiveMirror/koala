@@ -1,5 +1,7 @@
 package org.openkoala.security.application;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,24 +11,59 @@ import org.junit.Test;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 
 public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTestCase {
 
 	private static final String MENUICON = "glyphicon  glyphicon-list-alt";
+	
 	@Inject
 	private SecurityConfigApplication securityConfigApplication;
 
+	@Inject
+	private SecurityAccessApplication securityAccessApplication;
+	
 	@Test
 	public void testAddRole() throws Exception {
 		System.out.println("Add Role");
+		
+		List<String> aa = new ArrayList<String>();
+		System.out.println(aa.toString());
 		// Role role = new Role("开发经理");
 		// securityConfigApplication.createAuthority(role);
 		// User user = Actor.get(User.class, 1l);
 		// Scope scope = Scope.get(OrganizationScope.class, 1l);
 		// securityConfigApplication.grantActorToAuthorityInScope(user, role, scope);
 	}
+	
+	@Test
+	public void testOneUrlAccessResource() throws Exception {
+		UrlAccessResource userUrlAccessResource = new UrlAccessResource("测试管理");
+		userUrlAccessResource.setIdentifier("/auth/test/**");
+		securityConfigApplication.createSecurityResource(userUrlAccessResource);
+	}
 
+	@Test
+	public void testInitUrlAccessResources() throws Exception {
+		UrlAccessResource userUrlAccessResource = new UrlAccessResource("用户管理");
+		userUrlAccessResource.setIdentifier("/auth/user/**");
+		UrlAccessResource permissionUrlAccessResource = new UrlAccessResource("权限管理");
+		permissionUrlAccessResource.setIdentifier("/auth/permission/**");
+		securityConfigApplication.createSecurityResource(userUrlAccessResource);
+		securityConfigApplication.createSecurityResource(permissionUrlAccessResource);
+		
+		Role adminRole = securityAccessApplication.getRoleBy(2l);
+		Role testRole = securityAccessApplication.getRoleBy(1l);
+		
+		securityConfigApplication.grantSecurityResourceToAuthority(userUrlAccessResource, adminRole);
+		securityConfigApplication.grantSecurityResourceToAuthority(permissionUrlAccessResource, adminRole);
+		
+		securityConfigApplication.grantSecurityResourceToAuthority(userUrlAccessResource, testRole);
+		securityConfigApplication.grantSecurityResourceToAuthority(permissionUrlAccessResource, testRole);
+		
+	}
+	
 	@Test
 	public void testInit() throws Exception {
 		initPrivilege();

@@ -176,4 +176,10 @@ public interface SecurityConfigFacade {
 
 	void terminateUrlAccessResourceDTOs(UrlAccessResourceDTO[] urlAccessResourceDTOs);
 
+	void terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds);
+
+	void grantUrlAccessResourceToPermission(Long urlAccessResourceId, Long permissionId);
+
+	void terminateUrlAccessResourceFromPermission(Long urlAccessResourceId, Long permissionId);
+
 }
