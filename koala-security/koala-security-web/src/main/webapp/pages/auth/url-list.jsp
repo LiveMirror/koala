@@ -1,22 +1,151 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<div id="urlGrid"></div>
+<link rel="stylesheet" href="../lib/validateForm/css/style.css"/>
+<script src="../lib/validateForm/validateForm.js"></script>
 <script>
 	$(function() {
-		var tabData = $('#urlGrid').closest('.tab-pane.active').data();
-		var userId = tabData ? tabData.userId : null;
+		var baseUrl = contextPath + '/auth/url/';
+		function initEditDialog(data, item, grid) {
+			dialog = $(data);
+			dialog.find('.modal-header').find('.modal-title').html( item ? '修改url信息' : '添加url');
+			
+			var form = dialog.find("#url_form");
+			validate(form, dialog, item);
+			if(item){
+				/*TODO*/
+				form.find("input[name='name']").val(item.name);
+				form.find("input[name='identifier']").val(item.identifier);
+				form.find("input[name='description']").val(item.description);
+				form.find("input[name='url']").val(item.url);
+			}
+			
+			dialog.modal({
+				keyboard : false
+			}).on({
+				'hidden.bs.modal' : function() {
+					$(this).remove();
+				},
+				'complete' : function() {
+					grid.message({
+						type : 'success',
+						content : '保存成功'
+					});
+					$(this).modal('hide');
+					grid.grid('refresh');
+				}
+			});
+		};
+		
+		function validate(form, dialog, item){
+			var rules = {
+				"notnull"		: {
+					"rule" : function(value, formData){
+						return value ? true : false;
+					},
+					"tip" : "不能为空"
+				}
+			};
+			
+			var inputs = [{ 
+					name:"name",	
+					rules:["notnull"],
+					focusMsg:'必填',	
+					rightMsg:"正确"
+				},{ 
+					name:"identifier",	
+					rules:['notnull'],
+					focusMsg:'必填',
+					rightMsg:"正确"
+				}
+			];
+			
+			form.validateForm({
+	            inputs		: inputs,
+	            button		: ".save",
+	            rules 		: rules,
+	            onButtonClick:function(result, button, form){
+	            	/**
+	            	 * result是表单验证的结果。
+	            	 * 如果表单的验证结果为true,说明全部校验都通过，你可以通过ajax提交表单参数
+	            	 */
+	            	if(result){
+	            		var data = form.serialize();
+	            		var url = baseUrl + 'add.koala';
+	        			if (item) {
+	        				url = baseUrl + 'update.koala';
+	        				data += ("&id=" + item.id);
+	        			}
+	        			
+	        			$.ajax({
+	        				url : url,
+	        				data: data,
+	        				type: "post",
+	        				dataType:"json",
+	        				success:function(data){
+	        					if (data.result == 'success') {
+		        					dialog.trigger('complete');
+		        				} else {
+		        					dialog.find('.modal-content').message({
+		        						type : 'error',
+		        						content : data.actionError
+		        					});
+		        					refreshToken(dialog.find('input[name="koala.token"]'));
+		        				}
+		        				dialog.find('#save').removeAttr('disabled');
+	        				}
+	        			});
+					}
+	            }
+	       	});
+		}
+		
+		deleteUrl = function(urls, grid) {
+			$.ajax({
+			    headers: { 
+			        'Accept': 'application/json',
+			        'Content-Type': 'application/json' 
+			    },
+			    'type'	: "Post",
+			    'url'	: baseUrl + 'terminate.koala',
+			    'data': JSON.stringify(urls),
+			    'dataType': 'json'
+			 }).done(function(data){
+			 	if (data.result == 'success') {
+			 		grid.message({
+						type : 'success',
+						content : '删除成功'
+					});
+			 		grid.grid('refresh');
+				} else {
+					grid.message({
+						type : 'error',
+						content : data.actionError
+					});
+				}
+			}).fail(function(data){
+				grid.message({
+					type : 'error',
+					content : '删除失败'
+				});
+			});
+		};
+		
+		var role = $('.tab-pane.active').data();
+		var roleId = role ? role.roleId : null;
+		
+		console.log(role);
 		
 		var columns = [{
-			title : "url路径",
-			name : "url",
-			width : 150
+			title 	: "url路径",
+			name 	: "url",
+			width 	: 150
 		}, {
-			title : "url标识",
-			name : "identifier",
-			width : 150
+			title 	: "url标识",
+			name 	: "identifier",
+			width 	: 150
 		}, {
-			title : "url描述",
-			name : "description",
-			width : 200
+			title 	: "url描述",
+			name 	: "description",
+			width 	: 200
 		}, {
 			title : "是否有效",
 			name : "disabled",
@@ -28,7 +157,7 @@
 			}
 		}];
 		var getButtons = function() {
-			if (userId) {
+			if (roleId) {
 				return [{
 					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配url</button>',
 					action : 'assignUrl'
@@ -49,10 +178,16 @@
 				}];
 			}
 		};
-		var url = contextPath + '/auth/url/pagingquery.koala';
 		
-		//roleId ? (url += '?roleId=' + roleId) : "";
-		$('#urlGrid').off().grid({
+		var url;
+		if(roleId){
+			url = contextPath + '/auth/role/pagingQueryGrantUrlAccessResourcesByRoleId.koala' + '?roleId=' + roleId;
+		} else {
+			url = contextPath + '/auth/url/pagingquery.koala';
+		}
+		
+		/*解决id冲突的问题*/
+		$("<div/>").appendTo($("#tabContent>div:last-child")).grid({
 			identity : 'id',
 			columns : columns,
 			buttons : getButtons(),
@@ -65,8 +200,11 @@
 			}],
 			url : url
 		}).on({
-			'add' : function() {
-				userManager().add($(this));
+			'add' : function(event, item) {
+				var thiz = $(this);
+				$.get(contextPath + '/pages/auth/url-template.jsp').done(function(data) {
+					initEditDialog(data, null, thiz);
+				});
 			},
 			'modify' : function(event, data) {
 				var indexs = data.data;
@@ -85,7 +223,10 @@
 					});
 					return;
 				}
-				userManager().modify(data.item[0], $(this));
+				
+				$.get(contextPath + '/pages/auth/url-template.jsp').done(function(dialog) {
+					initEditDialog(dialog, data.item[0], $this);
+				});
 			},
 			'delete' : function(event, data) {
 				var indexs = data.data;
@@ -100,12 +241,12 @@
 				$this.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
-						userManager().deleteUser(data.item, $this);
+						deleteUrl(data.item, $this);
 					}
 				});
 			},
-			
 			"assignUrl" : function(event, data){
+				var grid = $(this);
         		$.get(contextPath + '/pages/auth/select-url.jsp').done(function(data){
         			var dialog = $(data);
         			dialog.find('#save').click(function(){
@@ -113,7 +254,7 @@
         				var items = dialog.find('#selectUrlGrid').data('koala.grid').selectedRows();
         				
         				if(items.length == 0){
-        					dialog.find('.modal-content').message({
+        					dialog.find('#selectUrlGrid').message({
         						type: 'warning',
         						content: '请选择要分配的url'
         					});
@@ -121,30 +262,32 @@
         				}
         				
         				$saveBtn.attr('disabled', 'disabled');	
-        				var data = "userId="+userId;
+        				var data = "roleId="+roleId;
+        				
+        				console.table(items);
         				
         				for(var i=0,j=items.length; i<j; i++){
-        					data += "&urlIds="+items[i].urlId;
+        					data += "&urlAccessResourceIds="+items[i].id;
         				}
         				
-        				$.post(contextPath + '/auth/user/grantUrls.koala', data).done(function(data){
+        				$.post(contextPath + '/auth/role/grantUrlAccessResources.koala', data).done(function(data){
         					if(data.success){
-        						dataGrid.message({
+        						grid.message({
         							type: 'success',
         							content: '保存成功'
         						});
         						dialog.modal('hide');
-        						dataGrid.grid('refresh');
+        						grid.grid('refresh');
         					}else{
         						$saveBtn.attr('disabled', 'disabled');	
-        						dataGrid.message({
+        						grid.message({
         							type: 'error',
         							content: data.actionError
         						});
         					}
         				}).fail(function(data){
         					$saveBtn.attr('disabled', 'disabled');	
-        					dataGrid.message({
+        					grid.message({
         						type: 'error',
         						content: '保存失败'
         					});
@@ -175,17 +318,17 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: 'url名称', value: 'roleNameForSearch'}],
-        			             url: contextPath + '/auth/user/pagingQueryNotGrantUrls.koala?userId='+userId
+        			             url: contextPath + '/auth/role/pagingQueryNotGrantUrlAccessResourcesByRoleId.koala?roleId='+roleId
         			        });
        					},
        					
        					'complete': function(){
-       						dataGrid.message({
+       						grid.message({
        							type: 'success',
        							content: '保存成功'
        						});
        						$(this).modal('hide');
-       						dataGrid.grid('refresh');
+       						grid.grid('refresh');
        					}
         			});
         			 //兼容IE8 IE9

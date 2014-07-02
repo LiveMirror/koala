@@ -203,17 +203,14 @@ var userManager = function() {
 	 */
 	var getAllData = function(item) {
 		var data = {};
-		data['userVO.name'] = userName.val();
-		data['userVO.userAccount'] = userAccount.val();
-		data['userVO.email'] = email.val();
+		data['name'] = userName.val();
+		data['userAccount'] = userAccount.val();
+		data['email'] = email.val();
+		data['userPassword'] = userPassword.val();
+		data['description'] = userDescript.val();
 		if (item) {
-			data['userVO.id'] = item.id;
-		} else {
-			data['userVO.userPassword'] = userPassword.val();
+			data['id'] = item.id;
 		}
-		data['userVO.userDesc'] = userDescript.val();
-		data['userVO.valid'] = dialog.find(':radio:checked').val();
-		data['koala.token'] = dialog.find('input[name="koala.token"]').val();
 		return data;
 	};
 	/**

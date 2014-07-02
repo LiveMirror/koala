@@ -1,6 +1,7 @@
 package org.openkoala.security.web.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -82,5 +83,14 @@ public class UrlAccessController {
 		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryUrlAccessResources(page, pagesize,
 				urlAccessResourceDTO);
 		return results;
+	}
+	
+	@ResponseBody
+	@RequestMapping("list")
+	public Map<String,Object> list(){
+		Map<String,Object> dataMap = new HashMap<String, Object>();
+		List<UrlAccessResourceDTO> accessResourceDTOs = securityAccessFacade.findAllUrlAccessResources();
+		dataMap.put("data", accessResourceDTOs);
+		return dataMap;
 	}
 }

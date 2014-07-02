@@ -109,4 +109,9 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	public List<Role> findAllRoles() {
 		return Role.findAll(Role.class);
 	}
+
+	@Override
+	public List<UrlAccessResource> findAllUrlAccessResources() {
+		return UrlAccessResource.findAllUrlAccessResources();
+	}
 }
