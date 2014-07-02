@@ -10,8 +10,12 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:META-INF/spring/root.xml</param-value>
 	</context-param>
+	
 	<listener>
 		<listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.openkoala.security.web.listener.SystemEvenmentListener</listener-class>
 	</listener>
 
 	<!-- Character Filter -->
@@ -23,7 +27,22 @@
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
+	<!-- 加入SpringMVC -->
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
+	<servlet-mapping>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>*.koala</url-pattern>
+	</servlet-mapping>
+	
 	<filter>
 		<filter-name>shiroFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -46,23 +65,7 @@
 		<session-timeout>120</session-timeout>
 	</session-config>
 
-
-	<!-- 加入SpringMVC -->
-	<servlet>
-		<servlet-name>spring</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:servlet.xml</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>spring</servlet-name>
-		<url-pattern>*.koala</url-pattern>
-	</servlet-mapping>
-
+	
 	<welcome-file-list>
 		<welcome-file>/login.jsp</welcome-file>
 	</welcome-file-list>

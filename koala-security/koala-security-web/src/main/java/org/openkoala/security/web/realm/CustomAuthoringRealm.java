@@ -104,6 +104,38 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		return result;
 	}
 
+	
+	
+	
+	@Override
+	protected void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+		super.clearCachedAuthorizationInfo(principals);
+	}
+
+	@Override
+	protected void clearCachedAuthenticationInfo(PrincipalCollection principals) {
+		super.clearCachedAuthenticationInfo(principals);
+	}
+	
+	@Override
+	protected void clearCache(PrincipalCollection principals) {
+		super.clearCache(principals);
+	}
+	
+	public void clearAllCachedAuthorizationInfo() {
+		getAuthorizationCache().clear();
+	}
+
+	public void clearAllCachedAuthenticationInfo() {
+		getAuthenticationCache().clear();
+	}
+
+	public void clearAllCache() {
+		clearAllCachedAuthenticationInfo();
+		clearAllCachedAuthorizationInfo();
+	} 
+	
+
 	public static class ShiroUser implements Serializable {
 
 		private static final long serialVersionUID = 5876323074602221444L;

@@ -12,7 +12,9 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 	<tx:annotation-driven />
 
-	<bean id="customAuthoringRealm" class="org.openkoala.security.web.realm.CustomAuthoringRealm"></bean>
+	<bean id="customAuthoringRealm" class="org.openkoala.security.web.realm.CustomAuthoringRealm">
+		<property name="cachingEnabled" value="false"></property>
+	</bean>
 
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="customAuthoringRealm"></property>
@@ -25,9 +27,27 @@
 		<property name="rememberMeParam" value="rememberMe" />
 		<property name="loginUrl" value="/login.koala"></property>
 	</bean>
-	<!--<bean id="customAuthorizationFilter" class="org.openkoala.security.web.filter.CustomAuthorizationFilter" />-->
-	<bean id="customChainDefinitionSectionMetaSource" class="org.openkoala.security.web.ini.CustomChainDefinitionSectionMetaSource">
-		<property name="filterChainDefinitions">
+
+	<bean id = "anyRoleFilter" class="org.openkoala.security.web.filter.AnyRoleAuthorizationFilter"></bean>
+ 	
+	<!-- shiro的生命周期，自动初始化和销毁 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+	<!--  -->
+	<bean id="filterChainResolver" class="org.openkoala.security.web.filter.CustomPathMatchingFilterChainResolver">
+		 <property name="customDefaultFilterChainManager" ref="customDefaultFilterChainManager"/>
+	</bean>
+	
+	<!-- 自定义过滤器链管理 -->
+	<bean id="customDefaultFilterChainManager" class="org.openkoala.security.web.ini.CustomDefaultFilterChainManager">
+		<property name="customFilters">
+			<util:map>
+				<entry key="authc" value-ref="formAuthenticationFilter" />
+				<!-- 定义自己的过滤器注册到shiro过滤器链中 -->
+				 <entry key="anyRole" value-ref="anyRoleFilter"></entry>
+			</util:map>
+		</property>
+		<property name="defaultFilterChainDefinitions">
 			<value>
 				/js/** = anon
 				/images/** = anon
@@ -35,26 +55,24 @@
 				/lib/** = anon
 				/login.koala = anon
 				/auth/user/login.koala = anon
-				/authenticated = authc
-				/** = authc,roles[admin]
+				/authenticated =authc
+				/** = authc
 			</value>
 		</property>
 	</bean>
 
-	<!-- shiro的生命周期，自动初始化和销毁 -->
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-
+	
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login.koala" />
-		<property name="unauthorizedUrl" value="/errors/unauthorized.jsp" />
-		<property name="filters">
-			<util:map>
-				<entry key="authc" value-ref="formAuthenticationFilter" />
-				<!--<entry key="custom" value-ref="customAuthorizationFilter" />-->
-				<!-- 定义自己的过滤器注册到shiro过滤器链中 -->
-			</util:map>
-		</property>
-		<property name="filterChainDefinitionMap" ref="customChainDefinitionSectionMetaSource" />
+		<property name="unauthorizedUrl" value="unauthorized.jsp" />
 	</bean>
+	
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="shiroFilter" />
+		<property name="targetMethod" value="setFilterChainResolver" />
+		<property name="arguments" ref="filterChainResolver" />
+	</bean>
+	
 </beans>
