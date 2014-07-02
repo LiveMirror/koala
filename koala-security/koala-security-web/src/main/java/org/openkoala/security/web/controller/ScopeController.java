@@ -10,7 +10,9 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -51,8 +53,8 @@ public class ScopeController {
 	}
 
 	@ResponseBody
-	@RequestMapping("/terminate")
-	public Map<String, Object> terminate(OrganizationScopeDTO[] organizationDTOs) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
+	public Map<String, Object> terminate(@RequestBody OrganizationScopeDTO[] organizationDTOs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.terminateOrganizationDTOs(organizationDTOs);
 		dataMap.put("result", "success");

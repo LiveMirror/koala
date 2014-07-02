@@ -16,7 +16,9 @@ import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.web.filter.ShiroFilerChainManager;
 import org.openkoala.security.web.util.AuthUserUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -97,8 +99,8 @@ public class RoleController {
 	 * @param userDTOs
 	 */
 	@ResponseBody
-	@RequestMapping("/terminate")
-	public Map<String, Object> terminate(RoleDTO[] roleDTOs) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
+	public Map<String, Object> terminate(@RequestBody RoleDTO[] roleDTOs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.terminateRoleDTOs(roleDTOs);
 		dataMap.put("result", "success");
@@ -128,8 +130,8 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantMenuResources")
-	public Map<String, Object> grantMenuResources(Long roleId, List<MenuResourceDTO> menuResourceDTOs) {
+	@RequestMapping(value = "/grantMenuResources", method = RequestMethod.POST, consumes = "application/json")
+	public Map<String, Object> grantMenuResources(Long roleId, @RequestBody List<MenuResourceDTO> menuResourceDTOs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.grantMenuResourcesToRole(roleId, menuResourceDTOs);
 		dataMap.put("result", "success");

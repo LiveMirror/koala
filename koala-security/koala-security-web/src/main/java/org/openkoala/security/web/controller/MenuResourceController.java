@@ -12,8 +12,10 @@ import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.web.util.AuthUserUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -79,8 +81,8 @@ public class MenuResourceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminate")
-	public Map<String, Object> terminate(MenuResourceDTO[] menuResourceDTOs) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
+	public Map<String, Object> terminate(@RequestBody MenuResourceDTO[] menuResourceDTOs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.terminateMenuResourceDTOs(menuResourceDTOs);
 		dataMap.put("result", "success");

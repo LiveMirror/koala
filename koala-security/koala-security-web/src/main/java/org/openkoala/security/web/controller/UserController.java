@@ -19,6 +19,7 @@ import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.openkoala.security.web.util.AuthUserUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -122,8 +123,8 @@ public class UserController {
 	 * @param userDTOs
 	 */
 	@ResponseBody
-	@RequestMapping("/terminate")
-	public Map<String, Object> terminate(UserDTO[] userDTOs) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
+	public Map<String, Object> terminate(@RequestBody UserDTO[] userDTOs) {
 		// TODO 3、刷新缓存
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.terminateUserDTOs(userDTOs);
