@@ -144,6 +144,13 @@ public interface SecurityConfigApplication {
 	 * @param securityResource
 	 */
 	void terminateAuthoritiesFromSecurityResource(List<Authority> authorities, SecurityResource securityResource);
+	
+	/**
+	 * 
+	 * @param authorities
+	 * @param securityResource
+	 */
+	void terminateAuthorityFromSecurityResource(Authority authority, SecurityResource securityResource);
 
 	/**
 	 * 

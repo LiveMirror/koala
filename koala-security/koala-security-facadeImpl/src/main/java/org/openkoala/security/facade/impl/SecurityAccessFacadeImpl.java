@@ -707,11 +707,29 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		parameters.put("disabled", false);
 		parameters.put("authorityId", roleId);
 		
-		getQueryChannelService().createNamedQuery("").setPage(1, 1).pagedList();
-		
 		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.setParameters(parameters)//
+				.setPage(page, pagesize)//
+				.pagedList();
+	}
+
+	@Override
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize, Long urlAccessResourceId) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.description) FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _securityResource.id = : securityResourceId");
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.addParameter("securityResourceId", urlAccessResourceId)//
+				.setPage(page, pagesize)//
+				.pagedList();
+	}
+
+	@Override
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize, Long urlAccessResourceId) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.description) FROM Authority _authority WHERE _authority.id NOT IN(SELECT _authority.id FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _securityResource.id = : securityResourceId)");
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.addParameter("securityResourceId", urlAccessResourceId)//
 				.setPage(page, pagesize)//
 				.pagedList();
 	}

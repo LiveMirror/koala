@@ -170,4 +170,25 @@ public interface SecurityAccessFacade {
 	 */
 	Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId);
 
+	/**
+	 * 根据URL访问资源分页查询已经授权的权限。
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param urlAccessResourceId
+	 * @return
+	 */
+	Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize, Long urlAccessResourceId);
+
+	/**
+	 * 根据URL访问资源分页查询没有授权的权限。
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param urlAccessResourceId
+	 * @return
+	 */
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
+			Long urlAccessResourceId);
+
 }
