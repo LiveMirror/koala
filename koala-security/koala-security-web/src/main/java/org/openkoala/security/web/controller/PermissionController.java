@@ -112,4 +112,23 @@ public class PermissionController {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByRole(page, pagesize, roleId);
 		return results;
 	}
+
+	@ResponseBody
+	@RequestMapping("grantUrlAccessResource")
+	public Map<String, Object> grantUrlAccessResourceToPermission(Long urlAccessResourceId, Long permissionId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantUrlAccessResourceToPermission(urlAccessResourceId, permissionId);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping("terminateUrlAccessResource")
+	public Map<String, Object> terminateUrlAccessResourceFromPermission(Long urlAccessResourceId, Long permissionId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.terminateUrlAccessResourceFromPermission(urlAccessResourceId, permissionId);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+	
 }

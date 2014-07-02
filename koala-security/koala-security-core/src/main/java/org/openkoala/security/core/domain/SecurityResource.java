@@ -1,22 +1,27 @@
 package org.openkoala.security.core.domain;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "KS_SECURITYRESOURCES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
+@NamedQueries({ 
+	@NamedQuery(name = "SecurityResource.findAllByType", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :_securityResourceType  AND _securityResource.disabled = :disabled")
+})
 public abstract class SecurityResource extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = 6064565786784560656L;
@@ -45,7 +50,10 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@ManyToMany(mappedBy = "securityResources")
+	/**
+	 * 查询的时候禁止懒加载。
+	 */
+	@ManyToMany(mappedBy = "securityResources", fetch = FetchType.EAGER)
 	private Set<Authority> authorities = new HashSet<Authority>();
 
 	SecurityResource() {
@@ -56,13 +64,22 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	}
 
 	public abstract void update();
-	
+
 	public void disable() {
 		disabled = true;
 	}
 
 	public void enable() {
 		disabled = false;
+	}
+
+	/**
+	 * TODO 用get 还是IS
+	 * 
+	 * @return
+	 */
+	public boolean isDisabled() {
+		return disabled;
 	}
 
 	public String getName() {
@@ -95,6 +112,14 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 
 	public void setAuthorities(Set<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 
 	@Override

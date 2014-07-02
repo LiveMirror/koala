@@ -33,6 +33,17 @@ public class UrlAccessResourceDTO implements Serializable {
 	 */
 	private String description;
 
+	/**
+	 * 该URL上所有的角色。 多个以,号分割。
+	 * 
+	 */
+	private String roles;
+
+	/**
+	 * 该URL上所有的权限。 多个以,号分割
+	 */
+	private String permissions;
+
 	public UrlAccessResourceDTO() {
 	}
 
@@ -44,6 +55,14 @@ public class UrlAccessResourceDTO implements Serializable {
 		this.url = url;
 		this.identifier = identifier;
 		this.description = description;
+	}
+
+	public UrlAccessResourceDTO(Long id, String name, boolean disabled, String url, String identifier) {
+		this.id = id;
+		this.name = name;
+		this.disabled = disabled;
+		this.url = url;
+		this.identifier = identifier;
 	}
 
 	public String getName() {
@@ -92,5 +111,21 @@ public class UrlAccessResourceDTO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getRoles() {
+		return roles;
+	}
+
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
+
+	public String getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(String permissions) {
+		this.permissions = permissions;
 	}
 }

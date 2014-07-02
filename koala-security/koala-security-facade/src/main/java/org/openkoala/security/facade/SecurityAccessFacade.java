@@ -148,4 +148,26 @@ public interface SecurityAccessFacade {
 
 	UrlAccessResourceDTO findUrlAccessResourceBy(PermissionDTO permissionDTO);
 
+	List<UrlAccessResourceDTO> findAllUrlAccessResources();
+
+	/**
+	 * 根据角色ID查找所有的URL访问资源。
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param roleId
+	 * @return
+	 */
+	Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId);
+
+	/**
+	 * 根据角色ID查找所有没有授权的URL访问资源。
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param roleId
+	 * @return
+	 */
+	Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId);
+
 }

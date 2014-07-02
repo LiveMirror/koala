@@ -330,4 +330,27 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		}
 	}
 
+	@Override
+	public void terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long urlAccessResourceId : urlAccessResourceIds) {
+			UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+			securityConfigApplication.terminateSecurityResourceFromAuthority(urlAccessResource, role);
+		}
+	}
+
+	@Override
+	public void grantUrlAccessResourceToPermission(Long urlAccessResourceId, Long permissionId) {
+		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+		securityConfigApplication.grantSecurityResourceToAuthority(urlAccessResource, permission);
+	}
+
+	@Override
+	public void terminateUrlAccessResourceFromPermission(Long urlAccessResourceId, Long permissionId) {
+		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+		securityConfigApplication.terminateSecurityResourceFromAuthority(urlAccessResource, permission);
+	}
+
 }
