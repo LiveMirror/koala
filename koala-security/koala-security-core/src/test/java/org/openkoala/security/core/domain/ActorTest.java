@@ -3,8 +3,10 @@ package org.openkoala.security.core.domain;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class ActorTest extends AbstractSecurityIntegrationTestCase{
 	
 	@Test

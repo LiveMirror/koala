@@ -14,6 +14,7 @@
 	<description>Koala的commons项目，提供一些辅助支持</description>
 	<modules>
 		<module>koala-commons-ftp</module>
+		<module>koala-commons-resourceloader</module>
 		<module>koala-commons-i18n</module>
 		<module>koala-commons-cache</module>
 		<module>koala-commons-exception</module>
@@ -21,6 +22,5 @@
 		<module>koala-commons-test-support</module>
 		<module>koala-commons-domain</module>
 		<module>koala-commons-dddlib-mybatis</module>
-		<module>koala-commons-resourceloader</module>
 	</modules>
 </project>

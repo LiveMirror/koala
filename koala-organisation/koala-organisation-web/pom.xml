@@ -90,6 +90,7 @@
 					<webApp>
 						<contextPath>/</contextPath>
 					</webApp>
+					<reload>manual</reload>
 				</configuration>
 			</plugin>
             <!-- 排除WAR的Deploy -->
