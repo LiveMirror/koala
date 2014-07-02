@@ -1,11 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="../lib/validateForm/css/style.css"/>
 <script src="../lib/validateForm/validateForm.js"></script>
-<div id="urlGrid"></div>
 <script>
 	$(function() {
 		var baseUrl = contextPath + '/auth/url/';
-		
 		function initEditDialog(data, item, grid) {
 			dialog = $(data);
 			dialog.find('.modal-header').find('.modal-title').html( item ? '修改url信息' : '添加url');
@@ -101,35 +99,41 @@
 		}
 		
 		deleteUrl = function(urls, grid) {
-			var data = {};
-			for (var i = 0, j = urls.length; i < j; i++) {
-				var url = urls[i];
-				data['users[' + i + '].id'] = url.id;
-			}
-			dataGrid = grid;
-			$.post(baseUrl + 'del.koala', data).done(function(data) {
-				if (data.result == 'success') {
-					dataGrid.message({
+			$.ajax({
+			    headers: { 
+			        'Accept': 'application/json',
+			        'Content-Type': 'application/json' 
+			    },
+			    'type'	: "Post",
+			    'url'	: baseUrl + 'terminate.koala',
+			    'data': JSON.stringify(urls),
+			    'dataType': 'json'
+			 }).done(function(data){
+			 	if (data.result == 'success') {
+			 		grid.message({
 						type : 'success',
 						content : '删除成功'
 					});
-					dataGrid.grid('refresh');
+			 		grid.grid('refresh');
 				} else {
-					dataGrid.message({
+					grid.message({
 						type : 'error',
 						content : data.actionError
 					});
 				}
-			}).fail(function(data) {
-				dataGrid.message({
+			}).fail(function(data){
+				grid.message({
 					type : 'error',
 					content : '删除失败'
 				});
 			});
 		};
 		
-		var role = $('#urlGrid').closest('.tab-pane.active').data();
+		var role = $('.tab-pane.active').data();
 		var roleId = role ? role.roleId : null;
+		
+		console.log(role);
+		
 		var columns = [{
 			title 	: "url路径",
 			name 	: "url",
@@ -174,10 +178,16 @@
 				}];
 			}
 		};
-		var url = contextPath + '/auth/url/pagingquery.koala';
 		
-		//roleId ? (url += '?roleId=' + roleId) : "";
-		$('#urlGrid').off().grid({
+		var url;
+		if(roleId){
+			url = contextPath + '/auth/role/pagingQueryGrantUrlAccessResourcesByRoleId.koala' + '?roleId=' + roleId;
+		} else {
+			url = contextPath + '/auth/url/pagingquery.koala';
+		}
+		
+		/*解决id冲突的问题*/
+		$("<div/>").appendTo($("#tabContent>div:last-child")).grid({
 			identity : 'id',
 			columns : columns,
 			buttons : getButtons(),
@@ -235,8 +245,8 @@
 					}
 				});
 			},
-			
 			"assignUrl" : function(event, data){
+				var grid = $(this);
         		$.get(contextPath + '/pages/auth/select-url.jsp').done(function(data){
         			var dialog = $(data);
         			dialog.find('#save').click(function(){
@@ -244,7 +254,7 @@
         				var items = dialog.find('#selectUrlGrid').data('koala.grid').selectedRows();
         				
         				if(items.length == 0){
-        					dialog.find('.modal-content').message({
+        					dialog.find('#selectUrlGrid').message({
         						type: 'warning',
         						content: '请选择要分配的url'
         					});
@@ -254,28 +264,30 @@
         				$saveBtn.attr('disabled', 'disabled');	
         				var data = "roleId="+roleId;
         				
+        				console.table(items);
+        				
         				for(var i=0,j=items.length; i<j; i++){
-        					data += "&urlIds="+items[i].urlId;
+        					data += "&urlAccessResourceIds="+items[i].id;
         				}
         				
-        				$.post(contextPath + '/auth/url/grantUrls.koala', data).done(function(data){
+        				$.post(contextPath + '/auth/role/grantUrlAccessResources.koala', data).done(function(data){
         					if(data.success){
-        						dataGrid.message({
+        						grid.message({
         							type: 'success',
         							content: '保存成功'
         						});
         						dialog.modal('hide');
-        						dataGrid.grid('refresh');
+        						grid.grid('refresh');
         					}else{
         						$saveBtn.attr('disabled', 'disabled');	
-        						dataGrid.message({
+        						grid.message({
         							type: 'error',
         							content: data.actionError
         						});
         					}
         				}).fail(function(data){
         					$saveBtn.attr('disabled', 'disabled');	
-        					dataGrid.message({
+        					grid.message({
         						type: 'error',
         						content: '保存失败'
         					});
@@ -306,17 +318,17 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: 'url名称', value: 'roleNameForSearch'}],
-        			             url: contextPath + '/auth/user/pagingQueryNotGrantUrls.koala?roleId='+roleId
+        			             url: contextPath + '/auth/role/pagingQueryNotGrantUrlAccessResourcesByRoleId.koala?roleId='+roleId
         			        });
        					},
        					
        					'complete': function(){
-       						dataGrid.message({
+       						grid.message({
        							type: 'success',
        							content: '保存成功'
        						});
        						$(this).modal('hide');
-       						dataGrid.grid('refresh');
+       						grid.grid('refresh');
        					}
         			});
         			 //兼容IE8 IE9

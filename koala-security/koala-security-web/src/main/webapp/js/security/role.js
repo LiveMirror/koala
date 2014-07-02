@@ -29,14 +29,21 @@ var roleManager = function(){
 	/*
 	 删除方法
 	 */
-	var deleteUser = function(roles, grid){
-		var data = {};
-		for(var i=0,j=roles.length; i<j; i++){
-			var role = roles[i];
-			data['roles['+i+'].id'] = role.id;
-		}
+	var deleteRole = function(roles, grid){
+		/*for(var i=0,j=roles.length; i<j; i++){
+			delete roles[i].permissionDTOs;
+		}*/
 		dataGrid = grid;
-		$.post(baseUrl + 'del.koala', data).done(function(data){
+		$.ajax({
+		    headers: { 
+		        'Accept': 'application/json',
+		        'Content-Type': 'application/json' 
+		    },
+		    'type'	: "Post",
+		    'url'	: baseUrl + 'terminate.koala',
+		    'data'	: JSON.stringify(roles),
+		    'dataType': 'json'
+		 }).done(function(data){
 			if(data.result == 'success'){
 				dataGrid.message({
 					type: 'success',
@@ -143,101 +150,6 @@ var roleManager = function(){
 			data['roleId'] = item.roleId;	
 		}
 		return data;
-	};
-	/**
-	 * 分配角色
-	 */
-	var assignRole = function(userId, userAccount, grid){
-		dataGrid = grid;
-		$.get(contextPath + '/pages/auth/select-role.jsp').done(function(data){
-			var dialog = $(data);
-			dialog.find('#save').on('click',function(){
-				var $saveBtn = $(this);
-				var items = dialog.find('#selectRoleGrid').data('koala.grid').selectedRows();
-				
-				if(items.length == 0){
-					dialog.find('.modal-content').message({
-						type: 'warning',
-						content: '请选择要分配的角色'
-					});
-					return;
-				}
-				
-				$saveBtn.attr('disabled', 'disabled');	
-				var data = "userId="+userId;
-				
-				for(var i=0,j=items.length; i<j; i++){
-					data += "&roleIds="+items[i].roleId;
-				}
-				
-				$.post(contextPath + '/auth/user/grantRoles.koala', data).done(function(data){
-					if(data.success){
-						dataGrid.message({
-							type: 'success',
-							content: '保存成功'
-						});
-						dialog.modal('hide');
-						dataGrid.grid('refresh');
-					}else{
-						$saveBtn.attr('disabled', 'disabled');	
-						dataGrid.message({
-							type: 'error',
-							content: data.actionError
-						});
-					}
-				}).fail(function(data){
-					$saveBtn.attr('disabled', 'disabled');	
-					dataGrid.message({
-						type: 'error',
-						content: '保存失败'
-					});
-				});
-			}).end().modal({
-				keyboard: false
-			}).on({
-					'hidden.bs.modal': function(){
-						$(this).remove();
-					},
-					'shown.bs.modal': function(){
-						initSelectRoleGrid(userId, userAccount, dialog);
-					},
-					'complete': function(){
-						dataGrid.message({
-							type: 'success',
-							content: '保存成功'
-						});
-						$(this).modal('hide');
-						dataGrid.grid('refresh');
-					}
-			});
-			 //兼容IE8 IE9
-	        if(window.ActiveXObject){
-	           if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){
-	        	   dialog.trigger('shown.bs.modal');
-	           }
-	        }
-		});
-	};
-	/**
-	 * 初始化角色选择grid
-	 */
-	var initSelectRoleGrid = function(userId, userAccount, dialog){
-		var columns = [{
-				title : "角色名称",
-				name : "roleName",
-				width : 150
-			},{
-				title : "角色描述",
-				name : "description",
-				width : 150
-			}];
-		
-		dialog.find('#selectRoleGrid').grid({
-			 identity: 'id',
-             columns: columns,
-             querys: [{title: '角色名称', value: 'roleNameForSearch'}],
-             url: contextPath + '/auth/user/pagingQueryNotGrantRoles.koala?userId='+userId
-        });
 	};
 	/**
 	 * 解除角色关联
@@ -392,8 +304,7 @@ var roleManager = function(){
 	return {
 		add					: add,
 		modify				: modify,
-		deleteUser			: deleteUser,
-		assignRole			: assignRole,
+		deleteRole			: deleteRole,
 		assignUser			: assignUser,
 		assignResource		: assignResource,
 		removeRoleForUser	: removeRoleForUser

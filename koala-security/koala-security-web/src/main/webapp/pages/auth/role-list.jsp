@@ -104,7 +104,7 @@
 				$this.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
-						roleManager().deleteUser(data.item, $this);
+						roleManager().deleteRole(data.item, $this);
 					}
 				});
 			},

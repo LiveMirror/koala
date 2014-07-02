@@ -117,6 +117,16 @@
 					var menu = initMenu(menuData.data);
 					$("#roleMenu").empty().append(menu);
 					
+					/*删除上一个角色打开的tab*/
+					$("#navTabs").children().each(function(i, t){
+						(i > 0) ? $(t).remove() : "";
+					});
+					$("#tabContent").children().each(function(i, t){
+						(i > 0) ? $(t).remove() : "";
+					});
+					
+					/*激活第一个tab*/
+					$("#navTabs").find("a").click();
 					/*生成角色菜单*/
 					menu.delegate(".leaf_node","click",function(){
 						var thiz 	= $(this),
