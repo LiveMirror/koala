@@ -205,8 +205,7 @@ var changePost = function(){
 	};
 	
 	var addPost = function(postId, postName, obj, a){
-		$(obj).closest('.grid').trigger('addPost', {postId:postId, postName:postName, obj:obj});
-		$(a).parent().parent().remove();
+		$(obj).closest('.grid').trigger('addPost', {postId:postId, postName:postName, obj:obj, addButton:a});
 	};
 	
 	/**
@@ -254,6 +253,7 @@ var changePost = function(){
 					}else{
 						selectedItem[data.postId] = {postId:data.postId, principal: false};
 					}
+					$(data.addButton).parent().parent().remove();
 					$('<div title="点击设置主岗位" class="selected-post '+ (principal ? 'principal':'')+'" data-value="'+data.postId+'">'+data.postName+'<a class="glyphicon glyphicon-remove"></a></div>')
 						.appendTo(selectedPost)
 						.on('click', {postId: data.postId}, function(event){
