@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -15,7 +14,7 @@ import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.springframework.util.StringUtils;
 
 @Named
-public class ShiroFilerChainManager {
+public class ShiroFilerChainManager{
 
     @Inject
     private DefaultFilterChainManager filterChainManager;
@@ -60,5 +59,6 @@ public class ShiroFilerChainManager {
         }
 
     }
+
 
 }

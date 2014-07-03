@@ -11,6 +11,7 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
+import org.openkoala.security.web.filter.ShiroFilerChainManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,9 @@ public class UrlAccessController {
 
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
+	
+	@Inject
+	private ShiroFilerChainManager shiroFilerChainManager;
 
 	/**
 	 * 添加
@@ -68,6 +72,7 @@ public class UrlAccessController {
 	public Map<String, Object> terminate(@RequestBody UrlAccessResourceDTO[] urlAccessResourceDTOs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.terminateUrlAccessResourceDTOs(urlAccessResourceDTOs);
+		shiroFilerChainManager.initFilterChain();
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -100,15 +105,16 @@ public class UrlAccessController {
 	/**
 	 * 为URL访问资源授权权限Permission
 	 * 
-	 * @param PermissionIds
+	 * @param permissionIds
 	 * @param urlAccessResourceId
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/grantPermisssionsToUrlAccessResource")
-	public Map<String, Object> grantPermisssionsToUrlAccessResource(Long[] PermissionIds, Long urlAccessResourceId) {
+	public Map<String, Object> grantPermisssionsToUrlAccessResource(Long[] permissionIds, Long urlAccessResourceId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermisssionsToUrlAccessResource(PermissionIds, urlAccessResourceId);
+		securityConfigFacade.grantPermisssionsToUrlAccessResource(permissionIds, urlAccessResourceId);
+		shiroFilerChainManager.initFilterChain();
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -116,15 +122,16 @@ public class UrlAccessController {
 	/**
 	 * 从URL访问资源中撤销权限Permission
 	 * 
-	 * @param PermissionIds
+	 * @param permissionIds
 	 * @param urlAccessResourceId
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/terminatePermissionsFromUrlAccessResource")
-	public Map<String, Object> terminatePermissionsFromUrlAccessResource(Long[] PermissionIds, Long urlAccessResourceId) {
+	public Map<String, Object> terminatePermissionsFromUrlAccessResource(Long[] permissionIds, Long urlAccessResourceId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminatePermissionsFromUrlAccessResource(PermissionIds, urlAccessResourceId);
+		securityConfigFacade.terminatePermissionsFromUrlAccessResource(permissionIds, urlAccessResourceId);
+		shiroFilerChainManager.initFilterChain();
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -133,24 +140,24 @@ public class UrlAccessController {
 	 * 分页查询
 	 * @param page
 	 * @param pagesize
-	 * @param UrlAccessResourceId
+	 * @param urlAccessResourceId
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryGrantPermissionsByUrlAccessResourceId")
 	public Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResource(int page, int pagesize,
-			Long UrlAccessResourceId) {
+			Long urlAccessResourceId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByUrlAccessResourceId(page,
-				pagesize, UrlAccessResourceId);
+				pagesize, urlAccessResourceId);
 		return results;
 	}
 
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissionsByUrlAccessResourceId")
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResource(int page, int pagesize,
-			Long UrlAccessResourceId) {
+			Long urlAccessResourceId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(page,
-				pagesize, UrlAccessResourceId);
+				pagesize, urlAccessResourceId);
 		return results;
 	}
 

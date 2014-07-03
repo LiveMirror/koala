@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 
@@ -26,13 +27,13 @@ import org.apache.shiro.web.filter.mgt.SimpleNamedFilterList;
  * 
  */
 public class CustomDefaultFilterChainManager extends DefaultFilterChainManager {
-	
+
 	private Map<String, String> filterChainDefinitionMap = null;
-	
+
 	private String loginUrl;
-	
+
 	private String successUrl;
-	
+
 	private String unauthorizedUrl;
 
 	/**
@@ -93,6 +94,7 @@ public class CustomDefaultFilterChainManager extends DefaultFilterChainManager {
 			for (Map.Entry<String, String> entry : chains.entrySet()) {
 				String url = entry.getKey();
 				String chainDefinition = entry.getValue();
+				System.out.println(url+"="+chainDefinition);
 				createChain(url, chainDefinition);
 			}
 		}

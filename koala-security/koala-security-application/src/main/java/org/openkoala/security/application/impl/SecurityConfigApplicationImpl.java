@@ -15,13 +15,18 @@ import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named
 @Transactional
 public class SecurityConfigApplicationImpl implements SecurityConfigApplication {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfigApplicationImpl.class);
+	
 	public void createActor(Actor actor) {
+		LOGGER.info("create actor:{}",actor);
 		actor.save();
 	}
 

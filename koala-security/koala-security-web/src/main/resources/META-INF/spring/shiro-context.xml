@@ -30,16 +30,16 @@
 
 	<bean id = "anyRoleFilter" class="org.openkoala.security.web.filter.AnyRoleAuthorizationFilter"></bean>
  	
-	<!-- shiro的生命周期，自动初始化和销毁 -->
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-
 	<!--  -->
 	<bean id="filterChainResolver" class="org.openkoala.security.web.filter.CustomPathMatchingFilterChainResolver">
-		 <property name="customDefaultFilterChainManager" ref="customDefaultFilterChainManager"/>
+		 <property name="customDefaultFilterChainManager" ref="filterChainManager"/>
 	</bean>
 	
 	<!-- 自定义过滤器链管理 -->
-	<bean id="customDefaultFilterChainManager" class="org.openkoala.security.web.ini.CustomDefaultFilterChainManager">
+	<bean id="filterChainManager" class="org.openkoala.security.web.ini.CustomDefaultFilterChainManager">
+		<property name="loginUrl" value="/login.koala" />
+		<property name="successUrl" value="/"/>
+		<property name="unauthorizedUrl" value="unauthorized.jsp" />
 		<property name="customFilters">
 			<util:map>
 				<entry key="authc" value-ref="formAuthenticationFilter" />
@@ -64,8 +64,6 @@
 	
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/login.koala" />
-		<property name="unauthorizedUrl" value="unauthorized.jsp" />
 	</bean>
 	
 	<bean
@@ -74,5 +72,8 @@
 		<property name="targetMethod" value="setFilterChainResolver" />
 		<property name="arguments" ref="filterChainResolver" />
 	</bean>
+	
+	<!-- shiro的生命周期，自动初始化和销毁 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 	
 </beans>

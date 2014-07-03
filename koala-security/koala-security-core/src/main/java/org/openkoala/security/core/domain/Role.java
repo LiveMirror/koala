@@ -23,7 +23,10 @@ public class Role extends Authority {
 
 	private static final long serialVersionUID = 4327840654680779887L;
 
-	@ManyToMany(fetch=FetchType.EAGER)//查询Role需要级联的查询出Permission
+	/**
+	 * 查询Role需要级联的查询出Permission
+	 */
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "KS_ROLE_PERMISSION_MAP", //
 	joinColumns = @JoinColumn(name = "ROLE_ID"), //
 	inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID"))
@@ -62,23 +65,23 @@ public class Role extends Authority {
 		results.addAll(this.getPermissions());
 		return results;
 	}
-	
-	public void addPermission(Permission permission){
+
+	public void addPermission(Permission permission) {
 		this.permissions.add(permission);
 	}
-	
-	public void addPermissions(List<Permission> permissions){
+
+	public void addPermissions(List<Permission> permissions) {
 		this.permissions.addAll(permissions);
 	}
-	
-	public void terminatePermission(Permission permission){
+
+	public void terminatePermission(Permission permission) {
 		this.permissions.remove(permission);
 	}
-	
-	public void terminatePermissions(List<Permission> permissions){
+
+	public void terminatePermissions(List<Permission> permissions) {
 		this.permissions.removeAll(permissions);
 	}
-	
+
 	public Set<Permission> getPermissions() {
 		return permissions;
 	}

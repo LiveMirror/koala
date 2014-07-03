@@ -400,7 +400,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
-	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, RoleDTO queryRoleCondition, Long userId) {
+	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, Long userId, RoleDTO queryRoleCondition) {
 		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,userId);
 		return results;
 	}

@@ -186,4 +186,8 @@ public interface SecurityConfigFacade {
 
 	void terminatePermissionsFromUrlAccessResource(Long[] permissionIds, Long urlAccessResourceId);
 
+	void grantPermisssionsToMenuResource(Long[] permissionIds, Long menuResourceId);
+
+	void terminatePermissionsFromMenuResource(Long[] permissionIds, Long menuResourceId);
+
 }
