@@ -25,8 +25,10 @@ import org.openkoala.security.facade.dto.UserDTO;
 import org.openkoala.security.facade.util.TransFromDomainUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 @Named
+@Transactional
 public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfigFacadeImpl.class);
