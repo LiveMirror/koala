@@ -147,9 +147,13 @@ public abstract class Organization extends Party {
 	 */
 	public void update() {
 		Date now = new Date();
-		Organization old = Organization.get(Organization.class, getId());
-		if (!getName().equals(old.getName())) {
-			checkIsNameExistUnder(getParent(now), now);
+		
+		if  (getParent(now) != null)  {
+			Organization old = Organization.get(Organization.class, getId());
+			
+			if (!getName().equals(old.getName())) {
+				checkIsNameExistUnder(getParent(now), now);
+			}
 		}
 		super.save();
 	}

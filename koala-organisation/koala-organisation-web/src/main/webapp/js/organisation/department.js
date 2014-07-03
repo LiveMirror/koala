@@ -427,10 +427,10 @@ var department = function(){
 				});
 			});
 	};
+	
 	var showEmployeeList = function(id){
 		$.get( contextPath + '/pages/organisation/departmentEmployeeList.jsp').done(function(data){
 			var employeeListDialog = $(data);
-
 			employeeListDialog.find('#deleteRelation').on('click',function(){
 				var grid = employeeListDialog.find('#employeeList');
 				deleteEmployeeRelation(employeeListDialog, id, grid.data('koala.grid').selectedRows() , grid);
@@ -441,9 +441,28 @@ var department = function(){
 						loadEmployeeList(employeeListDialog,id);
 					},
 					'hidden.bs.modal': function(){
-						$(this).remove();
+						/*====解除员工后关闭弹出框重新加载该公司信息=======*/
+						if(id){
+		            		var $element = $('#departmentTree').find('#'+id).click();
+		            		if($element.hasClass('tree-folder')){
+		            			$element.find('.tree-folder-header:first').click();
+		            		}
+		            		$element.parents().filter('.tree-folder-content').each(function(){
+		            			var $this = $(this);
+								$this.show()
+									 .prev('.tree-folder-header')
+									 .find('.glyphicon-folder-close')
+									 .removeClass('glyphicon-folder-close')
+									 .addClass('glyphicon-folder-open');
+		            		});
+		            	}else{
+		            		$('#departmentTree').find('.tree-folder-header:first').click();
+		            	}
+						/*==============================================	*/
+						$(this).remove();						
 					}
 				});
+			
                 //兼容IE8 IE9
                 if(window.ActiveXObject){
                    if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){

@@ -104,7 +104,8 @@ var openTab = function(target, title, mark, id, param,index){
         if($this.hasClass('active')){
             return;
         }
-        $this.find('a:first').tab('show');
+         loadContent(content, target);/*修改点击标签，重新加载DIV数据 */ 
+         $this.find('a:first').tab('show');
    		clearMenuEffect();
    		var $li = $('.g-sidec').find('li[data-mark="'+mark+'"]').addClass('active');
         if($li.parent().hasClass('collapse')){
