@@ -225,7 +225,7 @@ var userManager = function() {
 	/**
 	 * 分配用户
 	 */
-	var assignUser = function(roleId, grid) {
+	var assignUserToRole = function(roleId, grid) {
 		$.get(contextPath + '/pages/auth/select-user.jsp').done(function(data) {
 			var dialog = $(data);
 			dialog.find('#save').click(function() {
@@ -362,7 +362,7 @@ var userManager = function() {
 		modify : modify,
 		deleteUser : deleteUser,
 		assignRole : assignRole,
-		assignUser : assignUser,
+		assignUserToRole : assignUserToRole,
 		removeUserForRole : removeUserForRole,
 		resetPassword : resetPassword
 	};

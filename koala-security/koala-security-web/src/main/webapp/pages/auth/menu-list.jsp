@@ -4,6 +4,9 @@
 <script type="text/javascript" src="<c:url value='/js/security/menu.js' />"></script>
 <script>
 	$(function(){
+		var role = $('.tab-pane.active').data();
+		var roleId = role.roleId ? role.roleId : null;
+		
 		var columns = [{
 				title : "菜单名称",
 				name : "name",
@@ -13,7 +16,7 @@
 				name : "icon",
 				width : 150,
 				render: function(item, name, index){
-					return '<span class="'+item[name]+'"></span>'
+					return '<span class="'+item[name]+'"></span>';
 				}
 			},{
 				title : "菜单url",
@@ -29,17 +32,41 @@
 				width : 150
 			}];
 		
-		var buttons = [
-			{content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>', action: 'add'},
-			{content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>', action: 'modify'},
-			{content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>', action: 'delete'}
-		];
+		var url;
+		if(roleId === null){
+			url = contextPath + "/auth/menu/findAllMenusTree.koala";
+		} else {
+			url = contextPath + "/auth/role/";
+		}
+		var buttons = (function(){
+			if(roleId === null){
+				return [{
+					content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>',
+					action: 'add'
+				},{
+					content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>',
+					action: 'modify'
+				},{
+					content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
+					action: 'delete'
+				}];
+			} else {
+				return [{
+					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配url</button>',
+					action : 'assignMenu'
+				}, {
+					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
+					action : 'removeMenuFromRole'
+				}];
+			}
+		})();
+		
 		$('#menuListGrid').grid({
 			 identity: 'id',
              columns: columns,
              buttons: buttons,
              isShowPages: false,
-             url: contextPath + '/auth/menu/findAllMenusTree.koala',
+             url: url,
              tree: {
              	column: 'name'
              }
@@ -51,7 +78,7 @@
 	                $this.message({
 	                    type: 'warning',
 	                    content: '只能选择一条记录'
-	                })
+	                });
 	                return;
 	            }
 	            if(indexs.length == 1){
@@ -60,7 +87,7 @@
 	            		 $this.message({
 	 	                    type: 'warning',
 	 	                    content: '菜单下不能新增菜单！'
-	 	                })
+	 	                });
 	 	                return;
 	            	}
         			menuManager().add($(this), data);
@@ -75,14 +102,14 @@
 	                $this.message({
 	                    type: 'warning',
 	                    content: '请选择一条记录进行修改'
-	                })
+	                });
 	                return;
 	            }
 	            if(indexs.length > 1){
 	                $this.message({
 	                    type: 'warning',
 	                    content: '只能选择一条记录进行修改'
-	                })
+	                });
 	                return;
 	            }
 				menuManager().modify(data.item[0], $(this));
@@ -97,14 +124,6 @@
 		            });
 		             return;
 	            }
-        		/*
-	            if(indexs.length > 1){
-	                $this.message({
-	                    type: 'warning',
-	                    content: '只能选择一条记录进行删除'
-	                });
-	                return;
-	            }*/
 	            $this.confirm({
 	                content: '确定要删除所选记录吗?',
 	                callBack: function(){menuManager().deleteItem(data.item, $this);}
@@ -117,5 +136,5 @@
 				menuManager().moveDown($(this));
         	}
         });
-	})
+	});
 </script>

@@ -4,7 +4,7 @@
 <script type="text/javascript" src="<c:url value='/js/security/permission.js' />"></script>
 <script>
 	$(function(){
-		var tabData = $("#permissionListGrid").closest('.tab-pane.active').data();
+		var tabData = $('.tab-pane.active').data();
 		var userId = tabData ? tabData.userId : null;
 		
 		var columns = [{
@@ -104,12 +104,13 @@
 	                callBack: function(){menuManager().deleteItem(data.item, $this);}
 	            });
         	},
-        	'assignPermission' : function(event, data){ //
+        	'assignPermission' : function(event, data){
+        		var grid = $(this);
         		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
         			var dialog = $(data);
         			dialog.find('#save').click(function(){
-        				var $saveBtn = $(this);
-        				var items = dialog.find('#selectPermissionGrid').data('koala.grid').selectedRows();
+        				var saveBtn = $(this);
+        				var items = dialog.find('.selectPermissionGrid').data('koala.grid').selectedRows();
         				
         				if(items.length == 0){
         					dialog.find('.modal-content').message({
@@ -119,7 +120,7 @@
         					return;
         				}
         				
-        				$saveBtn.attr('disabled', 'disabled');	
+        				saveBtn.attr('disabled', 'disabled');	
         				var data = "userId="+userId;
         				
         				for(var i=0,j=items.length; i<j; i++){
@@ -135,14 +136,14 @@
         						dialog.modal('hide');
         						dataGrid.grid('refresh');
         					}else{
-        						$saveBtn.attr('disabled', 'disabled');	
+        						saveBtn.attr('disabled', 'disabled');	
         						dataGrid.message({
         							type: 'error',
         							content: data.actionError
         						});
         					}
         				}).fail(function(data){
-        					$saveBtn.attr('disabled', 'disabled');	
+        					saveBtn.attr('disabled', 'disabled');	
         					dataGrid.message({
         						type: 'error',
         						content: '保存失败'

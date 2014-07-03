@@ -163,7 +163,7 @@
 					action : 'assignUrl'
 				}, {
 					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
-					action : 'removeUrlForUser'
+					action : 'removeUrlFromRole'
 				}];
 			} else {
 				return [{
@@ -191,13 +191,6 @@
 			identity : 'id',
 			columns : columns,
 			buttons : getButtons(),
-			querys : [{
-				title : '用户名称',
-				value : 'userNameForSearch'
-			}, {
-				title : '用户账号',
-				value : 'userAccountForSearch'
-			}],
 			url : url
 		}).on({
 			'add' : function(event, item) {
@@ -271,20 +264,12 @@
         				}
         				
         				$.post(contextPath + '/auth/role/grantUrlAccessResources.koala', data).done(function(data){
-        					if(data.success){
-        						grid.message({
-        							type: 'success',
-        							content: '保存成功'
-        						});
-        						dialog.modal('hide');
-        						grid.grid('refresh');
-        					}else{
-        						$saveBtn.attr('disabled', 'disabled');	
-        						grid.message({
-        							type: 'error',
-        							content: data.actionError
-        						});
-        					}
+       						grid.message({
+       							type: 'success',
+       							content: '保存成功'
+       						});
+       						dialog.modal('hide');
+       						grid.grid('refresh');
         				}).fail(function(data){
         					$saveBtn.attr('disabled', 'disabled');	
         					grid.message({
@@ -340,20 +325,37 @@
         		});
 			},
 			
-			"removeUrlForUser" : function(event, data){ //解除授予
+			"removeUrlFromRole" : function(event, data){ //解除授予
 				var indexs = data.data;
-				var $this = $(this);
+				var grid = $(this);
 				if (indexs.length == 0) {
-					$this.message({
+					grid.message({
 						type : 'warning',
 						content : '请选择要删除的记录'
 					});
 					return;
 				}
-				$this.confirm({
+				grid.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
-						userManager().removeUserForRole(roleId, data.item, $this);
+						var url = contextPath + '/auth/role/terminateUrlAccessResources.koala';
+						var params = "roleId="+roleId;
+						for (var i = 0, j = data.item.length; i < j; i++) {
+							params += ("&urlAccessResourceIds=" + data.item[i].id);
+						}
+						
+						$.post(url, params).done(function(data) {
+							grid.message({
+								type : 'success',
+								content : '删除成功'
+							});
+							grid.grid('refresh');
+						}).fail(function(data) {
+							grid.message({
+								type : 'error',
+								content : '删除失败'
+							});
+						});
 					}
 				});
 			}

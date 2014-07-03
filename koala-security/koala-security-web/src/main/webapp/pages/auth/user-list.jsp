@@ -19,26 +19,22 @@
 			width : 180
 		}, {
 			title : "用户描述",
-			name : "userDesc",
+			name : "description",
 			width : 200
 		}, {
 			title : "是否有效",
 			name : "valid",
 			width : 100,
 			render : function(item, name, index) {
-				return item[name] == true ? '<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>' : '<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>';
+				return item[name] == true ? '<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>' : '<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>';
 			}
-		}, {
-			title : "最后登录时间",
-			name : "lastLoginTime",
-			width : 150
 		}];
 		
 		var getButtons = function() {
 			if (roleId) {
 				return [{
 					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配用户</button>',
-					action : 'assignUser'
+					action : 'assignUserToRole'
 				}, {
 					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
 					action : 'removeUserForRole'
@@ -156,8 +152,8 @@
 				/*打开权限表格*/
 				openTab('/pages/auth/permission-list.jsp', user.userAccount + '的权限管理', 'roleManager_' + user.id, user.id, {userId:user.id});
 			},
-			'assignUser' : function() {
-				userManager().assignUser(roleId, $(this));
+			'assignUserToRole' : function() {
+				userManager().assignRole(roleId, $(this));
 			},
 			'removeUserForRole' : function(evnet, data) {
 				var indexs = data.data;

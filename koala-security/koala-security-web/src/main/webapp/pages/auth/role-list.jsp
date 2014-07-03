@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<div id="roleGrid"></div>
 <script>
 	$(function() {
-		var tabData = $('#roleGrid').closest('.tab-pane.active').data();
-		var userId = tabData.userId;
+		var tabData 	= $('.tab-pane.active').data();
+		var userId 		= tabData.userId;
 		var userAccount = tabData.userAccount;
 		var columns = [{
 			title : "角色名称",
@@ -15,7 +14,7 @@
 			width : 250
 		}];
 		
-		var getButtons = function() {
+		var buttons = (function() {
 			if (userId) {
 				return [{
 					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配角色</button>',
@@ -37,39 +36,31 @@
 				}, {
 					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-user"><span>用户管理</button>',
 					action : 'assignUser'
-				},{
+				}, {
 					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配url</button>',
 					action : 'urlAssign'
 				}, {
+					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配menu</button>',
+					action : 'menuAssign'
+				} ,{
 					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th"><span>资源授权</button>',
 					action : 'assignResource'
 				}];
 			}
-		};
-		var getQuerys = function() {
-			if (userId) {
-				return [];
-			} else {
-				return [{
-					title : '角色名称',
-					value : 'roleNameForSearch'
-				}];
-			}
-		};
+		})();
 		
 		var url = contextPath + '/auth/role/pagingquery.koala';
-		if (userAccount) {
+		if (userId) {
 			url = contextPath + '/auth/role/findRolesByUsername.koala?username=' + userAccount;
 		}
 		
-		$('#roleGrid').off().grid({
+		$("<div/>").appendTo($("#tabContent>div:last-child")).grid({
 			identity : 'id',
 			columns : columns,
-			buttons : getButtons(),
-			querys : getQuerys(),
-			url : url
+			buttons : buttons,
+			url 	: url
 		}).on({
-			'add' : function() {
+			'add' 	: function() {
 				roleManager().add($(this));
 			},
 			'modify' : function(event, data) {
@@ -109,7 +100,84 @@
 				});
 			},
 			'assignRole' : function() {
-				roleManager().assignRole(userId, userAccount, $(this));
+				var grid = $(this);
+        		$.get(contextPath + '/pages/auth/select-role.jsp').done(function(data){
+        			var dialog = $(data);
+        			dialog.find('#save').click(function(){
+        				var saveBtn = $(this);
+        				var items = dialog.find('.selectUrlGrid').data('koala.grid').selectedRows();
+        				
+        				if(items.length == 0){
+        					dialog.find('.selectRoleGrid').message({
+        						type: 'warning',
+        						content: '请选择要分配的角色'
+        					});
+        					return;
+        				}
+        				
+        				saveBtn.attr('disabled', 'disabled');	
+        				var data = "userId="+userId;
+        				
+        				for(var i=0,j=items.length; i<j; i++){
+        					data += "&roleIds="+items[i].id;
+        				}
+        				
+        				$.post(contextPath + '/auth/user/grantRoles.koala', data).done(function(data){
+       						grid.message({
+       							type: 'success',
+       							content: '保存成功'
+       						});
+       						dialog.modal('hide');
+       						grid.grid('refresh');
+        				}).fail(function(data){
+        					saveBtn.attr('disabled', 'disabled');	
+        					grid.message({
+        						type: 'error',
+        						content: '保存失败'
+        					});
+        				});
+        			}).end().modal({
+        				keyboard: false
+        			}).on({
+       					'hidden.bs.modal': function(){
+       						$(this).remove();
+       					},
+       					
+       					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化url选择表格
+       						var columns = [{
+       							title : "角色名称",
+       							name : "roleName",
+       							width : 250
+       						}, {
+       							title : "角色描述",
+       							name : "description",
+       							width : 250
+       						}];
+       					
+        					dialog.find('.selectRoleGrid').grid({
+        						 identity: 'id',
+        			             columns: columns,
+        			             querys: [{title: 'url名称', value: 'roleNameForSearch'}],
+        			             url: contextPath + '/auth/role/pagingQueryNotGrantRoles.koala?userId='+userId
+        			        });
+       					},
+       					
+       					'complete': function(){
+       						grid.message({
+       							type: 'success',
+       							content: '保存成功'
+       						});
+       						$(this).modal('hide');
+       						grid.grid('refresh');
+       					}
+        			});
+        			 //兼容IE8 IE9
+        	        if(window.ActiveXObject){
+        	           if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){
+        	        	   dialog.trigger('shown.bs.modal');
+        	           }
+        	        }
+        		});
 			},
 			"urlAssign" : function(event, data){
 				var items 	= data.item;
@@ -125,6 +193,21 @@
 				var role = items[0];
 				/*打开url表格*/
 				openTab('/pages/auth/url-list.jsp', role.roleName+'的url管理', 'roleManager_' + role.id, role.id, {roleId : role.roleId});
+			},
+			"menuAssign" : function(event, data){
+				var items 	= data.item;
+				var thiz	= $(this);
+				if(items.length == 0){
+					thiz.message({type : 'warning',content : '请选择一条记录进行操作'});
+					return;
+				} else if(items.length > 1){
+					thiz.message({type : 'warning',content : '只能选择一条记录进行操作'});
+					return;
+				}
+				
+				var role = items[0];
+				/*打开url表格*/
+				openTab('/pages/auth/menu-list.jsp', role.roleName+'的菜单管理', 'menuManager_' + role.id, role.id, {roleId : role.roleId});
 			},
 			'removeRoleForUser' : function(event, data) {
 				var indexs = data.data;

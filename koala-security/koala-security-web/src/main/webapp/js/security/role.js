@@ -181,7 +181,7 @@ var roleManager = function(){
 			});
 		});
 	};
-	var assignUser = function(roleId, name){
+	var assignRole = function(roleId, name){
 		openTab('/pages/auth/user-list.jsp',
 			name+'的用户管理', 
 			'userManager_'+roleId, roleId, {roleId: roleId});
@@ -305,7 +305,7 @@ var roleManager = function(){
 		add					: add,
 		modify				: modify,
 		deleteRole			: deleteRole,
-		assignUser			: assignUser,
+		assignRole			: assignRole,
 		assignResource		: assignResource,
 		removeRoleForUser	: removeRoleForUser
 	};
