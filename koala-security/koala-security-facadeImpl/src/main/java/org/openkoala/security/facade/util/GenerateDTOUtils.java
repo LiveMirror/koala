@@ -36,6 +36,7 @@ public final class GenerateDTOUtils {
 		result.setDescription(user.getDescription());
 		result.setUserAccount(user.getUserAccount());
 		result.setName(user.getName());
+		result.setEmail(user.getEmail());
 		result.setUserPassword(user.getPassword());
 		return result;
 	}

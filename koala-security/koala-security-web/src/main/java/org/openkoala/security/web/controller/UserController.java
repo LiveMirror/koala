@@ -77,8 +77,8 @@ public class UserController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
 			securityConfigFacade.saveUserDTO(userDTO);
-			// } catch (UserAccountIsExistedException e) {
-			// dataMap.put("result",MessageFormat.format("user.userAccount.exist", userDTO.getUserAccount()));
+		} catch (UserAccountIsExistedException e) {
+			dataMap.put("result", "账号:" + userDTO.getUserAccount() + "已经存在");
 		} catch (EmailIsExistedException e) {
 			dataMap.put("result", "邮箱：" + userDTO.getEmail() + "已经存在！");
 
@@ -388,6 +388,21 @@ public class UserController {
 		securityConfigFacade.terminateAuthorizationsByPermissions(userId, permissionIds);
 		dataMap.put("success", true);
 		return dataMap;
+	}
+	
+	/**
+	 * 根据用户ID查找所有的已经授权的角色。
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param userId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryGrantRoleByUserId")
+	public Page<RoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserId(page, pagesize, userId);
+		return results;
 	}
 
 	/**

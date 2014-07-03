@@ -478,9 +478,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			PermissionDTO queryPermissionCondition, Long userId) {
 
 		StringBuilder jpql = new StringBuilder(
-				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name,_permission.identifier _permission.description)");
-		jpql.append(" FROM Permission _permission WHERE _permission.id");
-		jpql.append(" NOT IN(SELECT _authority.id FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.id= :userId)");
+				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name,_permission.identifier _permission.description) FROM Permission _permission WHERE _permission.id NOT IN(SELECT _authority.id FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.id= :userId)");
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 		conditionVals.put("userId", userId);
 
@@ -545,14 +543,14 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	}
 
 	@Override
-	public Page<RoleDTO> pagingQueryRolesByUserAccount(int currentPage, int pageSize, Long userId) {
-		// Set<Role> roles = securityAccessApplication.findAllRolesByUserAccount(userAccount);
+	public Page<RoleDTO> pagingQueryRolesByUserId(int currentPage, int pageSize, Long userId) {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_authority.id, _authority.name, _authority.description)");
 		jpql.append(" FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority");
-		jpql.append(" WHERE TYPE(_authority) = Role");
+		jpql.append(" WHERE TYPE(_authority) = :authorityType");
 		jpql.append(" AND _actor.id = :userId");
 		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("authorityType", Role.class);
 		parameters.put("userId", userId);
 		Page<RoleDTO> results = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//

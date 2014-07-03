@@ -49,21 +49,6 @@ public class RoleController {
 	}
 
 	/**
-	 * 根据用户ID查找所有的角色
-	 * 
-	 * @param page
-	 * @param pagesize
-	 * @param userId
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("/pagingQueryByUserId")
-	public Page<RoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserAccount(page, pagesize, userId);
-		return results;
-	}
-
-	/**
 	 * 添加角色
 	 * 
 	 * @param roleDTO

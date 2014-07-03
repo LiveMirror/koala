@@ -47,6 +47,7 @@ public final class TransFromDomainUtils {
 		if (!StringUtils.isBlank(roleDTO.getRoleId() + "")) {
 			result.setId(roleDTO.getRoleId());
 		}
+		
 		result.setDescription(roleDTO.getDescription());
 		return result;
 	}
