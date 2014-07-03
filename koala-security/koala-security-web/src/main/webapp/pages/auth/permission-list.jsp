@@ -120,11 +120,11 @@
         					return;
         				}
         				
-        				saveBtn.attr('disabled', 'disabled');	
-        				var data = "userId="+userId;
+        				saveBtn.attr('disabled', 'disabled');
         				
+        				var data = "userId="+userId;
         				for(var i=0,j=items.length; i<j; i++){
-        					data += "&permissionIds="+items[i].permissionId;
+        					data += "&permissionIds=" + items[i].permissionId;
         				}
         				
         				$.post(contextPath + '/auth/user/grantPermissions.koala', data).done(function(data){
@@ -167,7 +167,7 @@
        							width : 150
        						}];
        					
-        					dialog.find('#selectPermissionGrid').grid({
+        					dialog.find('.selectPermissionGrid').grid({
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],

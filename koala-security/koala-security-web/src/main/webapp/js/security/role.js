@@ -151,36 +151,6 @@ var roleManager = function(){
 		}
 		return data;
 	};
-	/**
-	 * 解除角色关联
-	 */
-	var removeRoleForUser = function(userId, roles, grid){
-		var data = {};
-		for(var i=0,j=roles.length; i<j; i++){
-			data['roles['+i+'].id'] = roles[i].id;
-		}
-		data.userId = userId;
-		dataGrid = grid;
-		$.post(baseUrl + 'removeRoleForUser.koala', data).done(function(data){
-			if(data.result == 'success'){
-				dataGrid.message({
-					type: 'success',
-					content: '删除成功'
-				});
-				dataGrid.grid('refresh');
-			}else{
-				dataGrid.message({
-					type: 'error',
-					content: data.actionError
-				});
-			}
-		}).fail(function(data){
-			dataGrid.message({
-				type: 'error',
-				content: '删除失败'
-			});
-		});
-	};
 	var assignRole = function(roleId, name){
 		openTab('/pages/auth/user-list.jsp',
 			name+'的用户管理', 
@@ -306,7 +276,6 @@ var roleManager = function(){
 		modify				: modify,
 		deleteRole			: deleteRole,
 		assignRole			: assignRole,
-		assignResource		: assignResource,
-		removeRoleForUser	: removeRoleForUser
+		assignResource		: assignResource
 	};
 };

@@ -10,7 +10,7 @@
 			width : 250
 		}, {
 			title : "角色描述",
-			name : "roleDesc",
+			name : "description",
 			width : 250
 		}];
 		
@@ -105,7 +105,7 @@
         			var dialog = $(data);
         			dialog.find('#save').click(function(){
         				var saveBtn = $(this);
-        				var items = dialog.find('.selectUrlGrid').data('koala.grid').selectedRows();
+        				var items = dialog.find('.selectRoleGrid').data('koala.grid').selectedRows();
         				
         				if(items.length == 0){
         					dialog.find('.selectRoleGrid').message({
@@ -118,8 +118,10 @@
         				saveBtn.attr('disabled', 'disabled');	
         				var data = "userId="+userId;
         				
+        				console.log(items);
+        				
         				for(var i=0,j=items.length; i<j; i++){
-        					data += "&roleIds="+items[i].id;
+        					data += "&roleIds="+items[i].roleId;
         				}
         				
         				$.post(contextPath + '/auth/user/grantRoles.koala', data).done(function(data){
@@ -157,8 +159,8 @@
         					dialog.find('.selectRoleGrid').grid({
         						 identity: 'id',
         			             columns: columns,
-        			             querys: [{title: 'url名称', value: 'roleNameForSearch'}],
-        			             url: contextPath + '/auth/role/pagingQueryNotGrantRoles.koala?userId='+userId
+        			             querys: [{title: 'roleId', value: 'roleId'}],
+        			             url: contextPath + '/auth/user/pagingQueryNotGrantRoles.koala?userId='+userId
         			        });
        					},
        					
@@ -210,19 +212,51 @@
 				openTab('/pages/auth/menu-list.jsp', role.roleName+'的菜单管理', 'menuManager_' + role.id, role.id, {roleId : role.roleId});
 			},
 			'removeRoleForUser' : function(event, data) {
-				var indexs = data.data;
-				var $this = $(this);
-				if (indexs.length == 0) {
+				var items = data.item;
+				
+				var grid = $(this);
+				if (items.length == 0) {
 					$this.message({
 						type : 'warning',
 						content : '请选择要删除的记录'
 					});
 					return;
 				}
-				$this.confirm({
+				grid.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
-						roleManager().removeRoleForUser(userId, data.item, $this);
+						console.table(items);
+						
+						/* var data = {};
+						data.userId = userId;
+						data.roleIds = []; */
+						var data = "userId="+userId;
+						for(var i=0,j=items.length; i<j; i++){
+							/* roleIds['+'] = 
+							data.roleIds.push(items[i].roleId); */
+							
+							data += ("&roldIds=" + items[i].roleId);
+						}
+						
+						$.post(contextPath + '/auth/user/terminateRolesByUser.koala', data).done(function(data){
+							if(data.result == 'success'){
+								grid.message({
+									type: 'success',
+									content: '删除成功'
+								});
+								grid.grid('refresh');
+							}else{
+								grid.message({
+									type: 'error',
+									content: data.actionError
+								});
+							}
+						}).fail(function(data){
+							grid.message({
+								type: 'error',
+								content: '删除失败'
+							});
+						});
 					}
 				});
 			},

@@ -49,14 +49,14 @@ $(function(){
                          $this.message({
                              type: 'warning',
                              content: '请选择一条记录进行修改'
-                         })
+                         });
                          return;
                      }
                      if(indexs.length > 1){
                          $this.message({
                              type: 'warning',
                              content: '只能选择一条记录进行修改'
-                         })
+                         });
                          return;
                      }
                      employee().modify(indexs[0], $this);
@@ -68,7 +68,7 @@ $(function(){
                          $this.message({
                              type: 'warning',
                              content: '请选择要操作的记录'
-                         })
+                         });
                          return;
                      }
                      $this.confirm({
