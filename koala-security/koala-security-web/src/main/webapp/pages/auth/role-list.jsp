@@ -51,7 +51,7 @@
 		
 		var url = contextPath + '/auth/role/pagingquery.koala';
 		if (userId) {
-			url = contextPath + '/auth/user/findRolesByUsername.koala?username=' + userAccount;
+			url = contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId=' + userId;
 		}
 		
 		$("<div/>").appendTo($("#tabContent>div:last-child")).grid({
