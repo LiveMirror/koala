@@ -26,11 +26,17 @@ public class MenuResourceDTO implements Serializable {
 	
 	private int level;
 	
+	private boolean isChecked;
+	
 	private List<MenuResourceDTO> children = new ArrayList<MenuResourceDTO>();
 
 	public MenuResourceDTO() {
 	}
 	
+	public MenuResourceDTO(Long id) {
+		this.id = id;
+	}
+
 	public MenuResourceDTO(Long id, String identifier, String name, String url, String icon, String description,
 			Long parentId, boolean disabled,int level) {
 		this.id = id;
@@ -122,6 +128,39 @@ public class MenuResourceDTO implements Serializable {
 
 	public void setLevel(int level) {
 		this.level = level;
+	}
+
+	public boolean isChecked() {
+		return isChecked;
+	}
+
+	public void setChecked(boolean isChecked) {
+		this.isChecked = isChecked;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MenuResourceDTO other = (MenuResourceDTO) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 	@Override

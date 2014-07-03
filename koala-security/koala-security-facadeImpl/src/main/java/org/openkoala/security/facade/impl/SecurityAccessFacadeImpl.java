@@ -388,7 +388,27 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		addMenuChildrenToParent(all);
 		return results;
 	}
-
+	
+	@Override
+	public List<MenuResourceDTO> findMenuResourceTreeSelectItemByRoleId(Long roleId) {
+		
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority WHERE TYPE(_securityResource) = :_securityResourceType AND _authority.id = :authorityId");
+		
+		List<MenuResourceDTO> allMenResourcesAsRole = getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.addParameter("_securityResourceType", MenuResource.class)//
+				.addParameter("authorityId", roleId)//
+				.list();
+		
+		List<MenuResourceDTO> allMenuResources = findAllMenusTree();
+		
+		for (MenuResourceDTO menuResourceDTO : allMenuResources) {
+			menuResourceDTO.setChecked(allMenResourcesAsRole.contains(menuResourceDTO));
+		}
+		
+		return allMenuResources;
+	}
+	
 	@Override
 	public List<OrganizationScopeDTO> findAllOrganizationScopesTree() {
 		List<OrganizationScopeDTO> results = findTopOrganizationScopes();
@@ -689,7 +709,6 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UrlAccessResourceDTO(_securityResource.id, _securityResource.name, _securityResource.disabled, _securityResource.url, _securityResource.identifier,_securityResource.description) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority WHERE TYPE(_securityResource) =:_securityResourceType AND _securityResource.disabled = :disabled AND _authority.id = :authorityId");
 		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
-				// .createNamedQuery("SecurityResource.pagingQuerySecurityResourcesByRoleId")//
 				.addParameter("_securityResourceType", UrlAccessResource.class)//
 				.addParameter("disabled", false)//
 				.addParameter("authorityId", roleId)//
@@ -733,4 +752,26 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.setPage(page, pagesize)//
 				.pagedList();
 	}
+
+	@Override
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.description) FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _securityResource.id = : securityResourceId");
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.addParameter("securityResourceId", menuResourceId)//
+				.setPage(page, pagesize)//
+				.pagedList();
+	}
+
+	@Override
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,
+			Long menuResourceId) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.description) FROM Authority _authority WHERE _authority.id NOT IN(SELECT _authority.id FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _securityResource.id = : securityResourceId)");
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.addParameter("securityResourceId", menuResourceId)//
+				.setPage(page, pagesize)//
+				.pagedList();
+	}
+
 }

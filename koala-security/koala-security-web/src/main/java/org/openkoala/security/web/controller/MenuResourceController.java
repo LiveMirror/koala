@@ -6,9 +6,11 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.web.util.AuthUserUtil;
 import org.springframework.stereotype.Controller;
@@ -118,5 +120,62 @@ public class MenuResourceController {
 		AuthUserUtil.setRoleName(roleDTO.getRoleName());
 		dataMap.put("data", menuResourceDtos);
 		return dataMap;
+	}
+	
+	/**
+	 * 为菜单资源授予权限Permission
+	 * 
+	 * @param PermissionIds
+	 * @param urlAccessResourceId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/grantPermisssionsToMenuResource")
+	public Map<String, Object> grantPermisssionsToMenuResource(Long[] permissionIds, Long menuResourceId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantPermisssionsToMenuResource(permissionIds, menuResourceId);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	/**
+	 * 从菜单资源中撤销权限Permission
+	 * 
+	 * @param permissionIds
+	 * @param urlAccessResourceId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/terminatePermissionsFromMenuResource")
+	public Map<String, Object> terminatePermissionsFromMenuResource(Long[] permissionIds, Long menuResourceId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.terminatePermissionsFromMenuResource(permissionIds, menuResourceId);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	/**
+	 * 分页查询
+	 * @param page
+	 * @param pagesize
+	 * @param UrlAccessResourceId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryGrantPermissionsByMenuResourceId")
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize,
+			Long menuResourceId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByMenuResourceId(page,
+				pagesize, menuResourceId);
+		return results;
+	}
+
+	@ResponseBody
+	@RequestMapping("/pagingQueryNotGrantPermissionsByMenuResourceId")
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,
+			Long menuResourceId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(page,
+				pagesize, menuResourceId);
+		return results;
 	}
 }

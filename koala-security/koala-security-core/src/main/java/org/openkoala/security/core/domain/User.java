@@ -9,13 +9,13 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * "ASC" 和 "DESC" 分别为升序和降序， JPQL 中默认为 ASC 升序
@@ -28,6 +28,8 @@ import org.openkoala.security.core.UserAccountIsExistedException;
 public class User extends Actor {
 
 	private static final long serialVersionUID = 7849700468353029794L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
 
 	@Column(name = "USER_ACCOUNT")
 	private String userAccount;
@@ -82,9 +84,10 @@ public class User extends Actor {
 
 	@Override
 	public void save() {
-		isExisted();
+//		isExisted();
 		String password = getPasswordService().encryptPassword(this);
 		this.setPassword(password);
+		LOGGER.info("user save:{}",this);
 		super.save();
 	}
 

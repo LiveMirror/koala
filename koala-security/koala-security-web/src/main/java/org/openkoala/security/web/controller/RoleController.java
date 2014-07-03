@@ -31,8 +31,8 @@ public class RoleController {
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
 
-//	@Inject
-//	private ShiroFilerChainManager shiroFilerChainManager;
+	@Inject
+	private ShiroFilerChainManager shiroFilerChainManager;
 
 	/**
 	 * 根据用户名查找所有的角色。
@@ -122,6 +122,15 @@ public class RoleController {
 		return results;
 	}
 
+	@ResponseBody
+	@RequestMapping("/findMenuResourceTreeSelectItemByRoleId")
+	public Map<String,Object> findMenuResourceTreeSelectItemByRoleId(Long roleId){
+		Map<String,Object> dataMap = new HashMap<String, Object>();
+		List<MenuResourceDTO> menuResourceDTOs = securityAccessFacade.findMenuResourceTreeSelectItemByRoleId(roleId);
+		dataMap.put("data", menuResourceDTOs);
+		return dataMap;
+	}
+	
 	/**
 	 * 为角色授权菜单资源。
 	 * 
@@ -150,7 +159,7 @@ public class RoleController {
 	public Map<String, Object> grantUrlAccessResources(Long roleId, Long[] urlAccessResourceIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
-//		shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
+		shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -167,7 +176,7 @@ public class RoleController {
 	public Map<String, Object> terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.terminateUrlAccessResourcesFromRole(roleId, urlAccessResourceIds);
-//		shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
+		shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
 		return dataMap;
 	}
 

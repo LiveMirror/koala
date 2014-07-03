@@ -23,10 +23,13 @@ import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.openkoala.security.facade.util.TransFromDomainUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named
 public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfigFacadeImpl.class);
 	@Inject
 	private SecurityConfigApplication securityConfigApplication;
 
@@ -35,6 +38,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	public void saveUserDTO(UserDTO userDTO) {
 		User user = transFromUserBy(userDTO);
+		LOGGER.info("save user:{}",user);
 		securityConfigApplication.createActor(user);
 	}
 
@@ -369,6 +373,24 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 			securityConfigApplication.terminateAuthorityFromSecurityResource(permission,urlAccessResource);
 		}
+	}
+
+	@Override
+	public void grantPermisssionsToMenuResource(Long[] permissionIds, Long menuResourceId) {
+		MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
+		for (Long permissionId : permissionIds) {
+			Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
+			securityConfigApplication.grantAuthorityToSecurityResource(permssion, menuResource);
+		}
+	}
+
+	@Override
+	public void terminatePermissionsFromMenuResource(Long[] permissionIds, Long menuResourceId) {
+		MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
+		for (Long permissionId : permissionIds) {
+			Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
+			securityConfigApplication.terminateAuthorityFromSecurityResource(permssion, menuResource);
+		}	
 	}
 
 }

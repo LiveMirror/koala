@@ -178,7 +178,8 @@ public interface SecurityAccessFacade {
 	 * @param urlAccessResourceId
 	 * @return
 	 */
-	Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize, Long urlAccessResourceId);
+	Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
+			Long urlAccessResourceId);
 
 	/**
 	 * 根据URL访问资源分页查询没有授权的权限。
@@ -190,5 +191,18 @@ public interface SecurityAccessFacade {
 	 */
 	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
 			Long urlAccessResourceId);
+
+	/**
+	 * 根据角色ID查询菜单树（已经选择的有选择标识）。
+	 * 
+	 * @param roleId
+	 *            角色ID
+	 * @return
+	 */
+	List<MenuResourceDTO> findMenuResourceTreeSelectItemByRoleId(Long roleId);
+
+	Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId);
+
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId);
 
 }
