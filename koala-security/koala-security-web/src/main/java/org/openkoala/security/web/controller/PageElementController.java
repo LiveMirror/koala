@@ -9,6 +9,7 @@ import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
+import org.openkoala.security.facade.dto.PermissionDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,10 +53,67 @@ public class PageElementController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("pagingQuery")
+	@RequestMapping("/pagingQuery")
 	public Page<PageElementResourceDTO> pagingQuery(int page, int pagesize, PageElementResourceDTO pageElementResourceDTO){
 		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryPageElementResources(page, pagesize,
 				pageElementResourceDTO);
+		return results;
+	}
+	
+	/**
+	 * 为页面元素资源授予权限Permission
+	 * 
+	 * @param permissionIds
+	 * @param pageElementResourceId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/grantPermisssionsToPageElementResource")
+	public Map<String, Object> grantPermisssionsToPageElementResource(Long[] permissionIds, Long pageElementResourceId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.grantPermisssionsToPageElementResource(permissionIds, pageElementResourceId);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	/**
+	 * 从页面元素资源中撤销权限Permission
+	 * 
+	 * @param permissionIds
+	 * @param pageElementResourceId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/terminatePermissionsFromPageElementResource")
+	public Map<String, Object> terminatePermissionsFromPageElementResource(Long[] permissionIds, Long pageElementResourceId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.terminatePermissionsFromPageElementResource(permissionIds, pageElementResourceId);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	/**
+	 * 分页查询
+	 * @param page
+	 * @param pagesize
+	 * @param pageElementResourceId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryGrantPermissionsByPageElementResourceId")
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize,
+			Long pageElementResourceId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(page,
+				pagesize, pageElementResourceId);
+		return results;
+	}
+
+	@ResponseBody
+	@RequestMapping("/pagingQueryNotGrantPermissionsByPageElementResourceId")
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
+			Long pageElementResourceId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(page,
+				pagesize, pageElementResourceId);
 		return results;
 	}
 }

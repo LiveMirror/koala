@@ -124,9 +124,9 @@ public interface SecurityAccessFacade {
 
 	Page<RoleDTO> pagingQueryRolesByUserId(int currentPage, int pageSize, Long userId);
 
-	Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int currentPage, int pageSize, Long roleId);
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId);
 
-	Page<PermissionDTO> pagingQueryPermissionsByRole(int currentPage, int pageSize, Long roleId);
+	Page<PermissionDTO> pagingQueryGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId);
 
 	Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize,UrlAccessResourceDTO urlAccessResourceDTO);
 
@@ -210,5 +210,15 @@ public interface SecurityAccessFacade {
 
 	Page<PageElementResourceDTO> pagingQueryPageElementResources(int page, int pagesize,
 			PageElementResourceDTO pageElementResourceDTO);
+
+	Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId);
+
+	Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId);
+
+	Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize,
+			Long pageElementResourceId);
+
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
+			Long pageElementResourceId);
 
 }

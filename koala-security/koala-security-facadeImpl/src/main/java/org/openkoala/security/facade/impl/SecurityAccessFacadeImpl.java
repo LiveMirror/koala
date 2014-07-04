@@ -563,7 +563,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	}
 
 	@Override
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int currentPage, int pageSize, Long roleId) {
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId) {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.description)");
 		jpql.append(" FROM Permission _permission WHERE _permission.id NOT IN(SELECT _permission.id FROM Permission _permission JOIN _permission.roles _role WHERE _role.id = :roleId)");
@@ -578,7 +578,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	}
 
 	@Override
-	public Page<PermissionDTO> pagingQueryPermissionsByRole(int currentPage, int pageSize, Long roleId) {
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId) {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.description) FROM Permission _permission JOIN _permission.roles _role WHERE _role.id = :roleId");
 		Map<String, Object> parameters = new HashMap<String, Object>();
@@ -828,6 +828,52 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			jpql.append(".identifier =:identifier");
 			conditionVals.put("identifier", pageElementResourceDTO.getIdentifier());
 		}
+	}
+
+	@Override
+	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PageElementResourceDTO(_securityResource.id,_securityResource.version, _securityResource.name, _securityResource.disabled, _securityResource.identifier, _securityResource.description,_securityResource.pageElementType) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority WHERE TYPE(_securityResource) =:_securityResourceType AND _securityResource.disabled = :disabled AND _authority.id = :authorityId");
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.addParameter("_securityResourceType", PageElementResource.class)//
+				.addParameter("disabled", false)//
+				.addParameter("authorityId", roleId)//
+				.setPage(page, pagesize)//
+				.pagedList();
+	}
+
+	@Override
+	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PageElementResourceDTO(_securityResource.id,_securityResource.version, _securityResource.name, _securityResource.disabled, _securityResource.identifier, _securityResource.description,_securityResource.pageElementType) FROM SecurityResource _securityResource WHERE TYPE(_securityResource) =:_securityResourceType AND _securityResource.disabled = :disabled AND _securityResource.id NOT IN(SELECT _securityResource.id FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority  WHERE TYPE(_securityResource) =:_securityResourceType AND _securityResource.disabled = :disabled AND _authority.id = :authorityId ) ");
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.addParameter("_securityResourceType", PageElementResource.class)//
+				.addParameter("disabled", false)//
+				.addParameter("authorityId", roleId)//
+				.setPage(page, pagesize)//
+				.pagedList();
+	}
+
+	@Override
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize,
+			Long pageElementResourceId) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.description) FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _securityResource.id = : securityResourceId");
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.addParameter("securityResourceId", pageElementResourceId)//
+				.setPage(page, pagesize)//
+				.pagedList();
+	}
+
+	@Override
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
+			Long pageElementResourceId) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.description) FROM Authority _authority WHERE _authority.id NOT IN(SELECT _authority.id FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _securityResource.id = : securityResourceId)");
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.addParameter("securityResourceId", pageElementResourceId)//
+				.setPage(page, pagesize)//
+				.pagedList();
 	}
 
 }

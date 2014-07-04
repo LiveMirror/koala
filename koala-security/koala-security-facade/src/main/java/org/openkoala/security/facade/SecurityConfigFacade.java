@@ -161,7 +161,7 @@ public interface SecurityConfigFacade {
 
 	void grantMenuResourcesToRole(Long roleId,List<MenuResourceDTO> menuResourceDTOs);
 
-	void grantPageElementResourcesToRole(Long roleId,Long[] menuResourceIds);
+	void grantPageElementResourcesToRole(Long roleId,Long[] pageElementResourceIds);
 
 	void grantUrlAccessResourcesToRole(Long roleId,Long[] menuResourceIds);
 
@@ -169,7 +169,7 @@ public interface SecurityConfigFacade {
 
 	void grantPermissionsToRole(Long roleId, Long[] permissionIds);
 
-	void terminatePermissionsToRole(Long roleId, Long[] permssionIds);
+	void terminatePermissionsFromRole(Long roleId, Long[] permssionIds);
 
 	void saveUrlAccessResourceDTO(UrlAccessResourceDTO urlAccessResourceDTO);
 
@@ -196,5 +196,11 @@ public interface SecurityConfigFacade {
 	void updatePageElementResourceDTO(PageElementResourceDTO pageElementResourceDTO);
 
 	void terminatePageElementResourceDTOs(PageElementResourceDTO[] pageElementResourceDTOs);
+
+	void terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds);
+
+	void grantPermisssionsToPageElementResource(Long[] permissionIds, Long pageElementResourceId);
+
+	void terminatePermissionsFromPageElementResource(Long[] permissionIds, Long pageElementResourceId);
 
 }

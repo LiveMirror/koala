@@ -13,6 +13,7 @@ import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.SecurityResource;
@@ -113,5 +114,10 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	@Override
 	public List<UrlAccessResource> findAllUrlAccessResources() {
 		return UrlAccessResource.findAllUrlAccessResources();
+	}
+
+	@Override
+	public PageElementResource getPageElementResourceBy(Long pageElementResourceId) {
+		return PageElementResource.get(PageElementResource.class, pageElementResourceId);
 	}
 }

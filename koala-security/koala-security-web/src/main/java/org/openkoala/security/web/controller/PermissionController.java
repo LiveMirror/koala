@@ -85,21 +85,6 @@ public class PermissionController {
 		return results;
 	}
 
-	/**
-	 * 根据角色ID分页查询权限
-	 * 
-	 * @param page
-	 * @param pagesize
-	 * @param roleId
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("/pagingQueryByRoleId")
-	public Page<PermissionDTO> pagingQueryPermissionsByRole(int page, int pagesize, Long roleId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByRole(page, pagesize, roleId);
-		return results;
-	}
-
 	@ResponseBody
 	@RequestMapping("grantUrlAccessResource")
 	public Map<String, Object> grantUrlAccessResourceToPermission(Long urlAccessResourceId, Long permissionId) {

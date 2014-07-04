@@ -10,6 +10,7 @@ import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
@@ -109,13 +110,13 @@ public class RoleController {
 
 	@ResponseBody
 	@RequestMapping("/findMenuResourceTreeSelectItemByRoleId")
-	public Map<String,Object> findMenuResourceTreeSelectItemByRoleId(Long roleId){
-		Map<String,Object> dataMap = new HashMap<String, Object>();
+	public Map<String, Object> findMenuResourceTreeSelectItemByRoleId(Long roleId) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		List<MenuResourceDTO> menuResourceDTOs = securityAccessFacade.findMenuResourceTreeSelectItemByRoleId(roleId);
 		dataMap.put("data", menuResourceDTOs);
 		return dataMap;
 	}
-	
+
 	/**
 	 * 为角色授权菜单资源。
 	 * 
@@ -176,13 +177,14 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryGrantUrlAccessResourcesByRoleId")
 	public Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
-		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page, pagesize,
-				roleId);
+		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page,
+				pagesize, roleId);
 		return results;
 	}
-	
+
 	/**
 	 * 查出没有授权的URL访问资源。
+	 * 
 	 * @param page
 	 * @param pagesize
 	 * @param roleId
@@ -191,8 +193,8 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantUrlAccessResourcesByRoleId")
 	public Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
-		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page, pagesize,
-				roleId);
+		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page,
+				pagesize, roleId);
 		return results;
 	}
 
@@ -223,9 +225,24 @@ public class RoleController {
 	@RequestMapping("/terminatePermissions")
 	public Map<String, Object> terminatePermissions(Long roleId, Long[] permssionIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminatePermissionsToRole(roleId, permssionIds);
+		securityConfigFacade.terminatePermissionsFromRole(roleId, permssionIds);
 		dataMap.put("result", "success");
 		return dataMap;
+	}
+
+	/**
+	 * 根据角色ID分页查询权限
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param roleId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryGrantPermissionsByRoleId")
+	public Page<PermissionDTO> pagingQueryPermissionsByRoleId(int page, int pagesize, Long roleId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByRoleId(page, pagesize, roleId);
+		return results;
 	}
 
 	/**
@@ -237,20 +254,74 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryNotGrantPermissionsByRole")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRole(int page, int pagesize, Long roleId) {
-		return securityAccessFacade.pagingQueryNotGrantPermissionsByRole(page, pagesize, roleId);
+	@RequestMapping("/pagingQueryNotGrantPermissionsByRoleId")
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId) {
+		return securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize, roleId);
 	}
 
-	// ==================TODO==================
-	// 分配页面元素资源
-	public Map<String, Object> grantPageElementResources(Long roleId, Long[] menuResourceIds) {
+	/**
+	 * 授权页面元素资源
+	 * 
+	 * @param roleId
+	 * @param PageElementResourceIds
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/grantPageElementResources")
+	public Map<String, Object> grantPageElementResourcesToRole(Long roleId, Long[] PageElementResourceIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPageElementResourcesToRole(roleId, menuResourceIds);
+		securityConfigFacade.grantPageElementResourcesToRole(roleId, PageElementResourceIds);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
 
+	/**
+	 * 从角色中撤销页面元素资源。
+	 * 
+	 * @param roleId
+	 * @param PageElementResourceIds
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/terminatePageElementResources")
+	public Map<String, Object> terminatePageElementResources(Long roleId, Long[] PageElementResourceIds) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		securityConfigFacade.terminatePageElementResourcesFromRole(roleId, PageElementResourceIds);
+		dataMap.put("result", "success");
+		return dataMap;
+	}
+
+	/**
+	 * 根据角色ID分页查询没有授权的页面元素
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param roleId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryGrantPageElementResourcesByRoleId")
+	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
+		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page, pagesize,
+				roleId);
+		return results;
+	}
+
+	/**
+	 * 根据角色ID分页查询没有授权的页面元素
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param roleId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryNotGrantPageElementResourcesByRoleId")
+	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
+		return securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(page, pagesize, roleId);
+	}
+
+	// ==================TODO==================
 	// 分配方法级别资源
 	public Map<String, Object> grantMethodInvocationResources(Long roleId, Long[] menuResourceIds) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
