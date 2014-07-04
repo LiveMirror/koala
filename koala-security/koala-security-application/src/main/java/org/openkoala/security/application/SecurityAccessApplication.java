@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.SecurityResource;
@@ -104,4 +105,6 @@ public interface SecurityAccessApplication {
 	List<Role> findAllRoles();
 
 	List<UrlAccessResource> findAllUrlAccessResources();
+
+	PageElementResource getPageElementResourceBy(Long pageElementResourceId);
 }

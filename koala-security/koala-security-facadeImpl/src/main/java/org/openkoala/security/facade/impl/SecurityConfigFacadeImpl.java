@@ -282,10 +282,13 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	}
 
-	// 列表
 	@Override
-	public void grantPageElementResourcesToRole(Long roleId, Long[] menuResourceIds) {
-		// TODO Auto-generated method stub
+	public void grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long pageElementResourceId : pageElementResourceIds) {
+			PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+			securityConfigApplication.grantSecurityResourceToAuthority(pageElementResource, role);
+		}
 	}
 
 	@Override
@@ -314,7 +317,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void terminatePermissionsToRole(Long roleId, Long[] permssionIds) {
+	public void terminatePermissionsFromRole(Long roleId, Long[] permssionIds) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		for (Long permissionId : permssionIds) {
 			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
@@ -418,6 +421,33 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		for (PageElementResourceDTO pageElementResourceDTO : pageElementResourceDTOs) {
 			PageElementResource pageElementResource = transFromPageElementResourceBy(pageElementResourceDTO);
 			securityConfigApplication.terminateSecurityResource(pageElementResource);
+		}
+	}
+
+	@Override
+	public void terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long pageElementResourceId : pageElementResourceIds) {
+			PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+			securityConfigApplication.terminateSecurityResourceFromAuthority(pageElementResource, role);
+		}
+	}
+
+	@Override
+	public void grantPermisssionsToPageElementResource(Long[] permissionIds, Long pageElementResourceId) {
+		PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+		for (Long permissionId : permissionIds) {
+			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+			securityConfigApplication.grantAuthorityToSecurityResource(permission, pageElementResource);
+		}
+	}
+
+	@Override
+	public void terminatePermissionsFromPageElementResource(Long[] permissionIds, Long pageElementResourceId) {
+		PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+		for (Long permissionId : permissionIds) {
+			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+			securityConfigApplication.terminateAuthorityFromSecurityResource(permission, pageElementResource);
 		}
 	}
 
