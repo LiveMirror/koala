@@ -86,21 +86,6 @@ public class PermissionController {
 	}
 
 	/**
-	 * 根据用户ID分页查询权限
-	 * 
-	 * @param page
-	 * @param pagesize
-	 * @param userId
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("/pagingQueryByUserId")
-	public Page<PermissionDTO> pagingQueryPermissionsByUserAccount(int page, int pagesize, Long userId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissionsByUserAccount(page, pagesize, userId);
-		return results;
-	}
-
-	/**
 	 * 根据角色ID分页查询权限
 	 * 
 	 * @param page

@@ -183,7 +183,7 @@ body {
 	        btnLogin.attr('disabled', 'disabled').html('正在登录...');
     		var param = form.serialize();
         	$.post("auth/user/login.koala",param,function(data){
-    			if(data.success){
+    			if(data.result = "success"){
     				$('.login_con_R').message({
     					type: 'success',
     					content: '登陆成功'

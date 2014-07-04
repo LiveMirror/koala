@@ -63,30 +63,33 @@ var userManager = function() {
 	 删除方法
 	 */
 	var deleteUser = function(users, grid) {
-		var data = {};
-		for (var i = 0, j = users.length; i < j; i++) {
-			var user = users[i];
-			data['users[' + i + '].id'] = user.id;
-			data['users[' + i + '].userAccount'] = user.userAccount;
-		}
 		dataGrid = grid;
-		$.post(baseUrl + 'del.koala', data).done(function(data) {
-			if (data.result == 'success') {
+		$.ajax({
+		    headers: { 
+		        'Accept': 'application/json',
+		        'Content-Type': 'application/json' 
+		    },
+		    'type'	: "Post",
+		    'url'	: baseUrl + 'terminate.koala',
+		    'data'	: JSON.stringify(users),
+		    'dataType': 'json'
+		 }).done(function(data){
+			if(data.result == 'success'){
 				dataGrid.message({
-					type : 'success',
-					content : '删除成功'
+					type: 'success',
+					content: '删除成功'
 				});
 				dataGrid.grid('refresh');
-			} else {
-				dataGrid.message({
-					type : 'error',
-					content : data.actionError
+			}else{
+				$('body').message({
+					type: 'error',
+					content: data.actionError
 				});
 			}
-		}).fail(function(data) {
+		}).fail(function(data){
 			dataGrid.message({
-				type : 'error',
-				content : '删除失败'
+				type: 'error',
+				content: '删除失败'
 			});
 		});
 	};

@@ -234,8 +234,11 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	// TODO 待优化。。。
 	@Override
 	public void terminateAuthorizationsByRoles(Long userId, Long[] roleIds) {
+		User user = securityAccessApplication.getUserBy(userId);
+		LOGGER.info("roleIds:{}",roleIds);
 		for (Long roleId : roleIds) {
-			this.terminateAuthorizationByRole(userId, roleId);
+			Role role = securityAccessApplication.getRoleBy(roleId);
+			securityConfigApplication.terminateActorFromAuthority(user,role);
 		}
 	}
 

@@ -139,7 +139,10 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void terminateActorFromAuthority(Actor actor, Authority authority) {
-		Authorization.findByActorInAuthority(actor,authority).remove();
+		LOGGER.info("terminateActorFromAuthority actor:{},authority:{}",actor,authority);
+		Authorization authorization = Authorization.findByActorInAuthority(actor,authority);
+		LOGGER.info("terminate authorization:{}",authorization);
+		authorization.remove();
 	}
 
 	public void terminateAuthoritiesFromActor(List<Authority> authorities, Actor actor) {

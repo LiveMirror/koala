@@ -58,11 +58,27 @@ public class UserController {
 		try {
 			SecurityUtils.getSubject().login(usernamePasswordToken);
 			results.put("message", "登陆成功");
-			results.put("success", Boolean.TRUE);
+			results.put("result", "success");
 		} catch (AuthenticationException e) {
 			results.put("message", "登陆失败");
+			results.put("result", "failure");
 		}
 		return results;
+	}
+
+	/**
+	 * 退出
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/logout")
+	public Map<String, Object> logout() {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		SecurityUtils.getSubject().logout();
+		dataMap.put("result", "success");
+		dataMap.put("message", "成功退出");
+		return dataMap;
 	}
 
 	/**
@@ -92,7 +108,7 @@ public class UserController {
 	}
 
 	/**
-	 * 更新 TODO AOP做异常。
+	 * 更新用户
 	 * 
 	 * @param userDTO
 	 * @return
@@ -107,7 +123,6 @@ public class UserController {
 			dataMap.put("result", "账户：" + userDTO.getUserAccount() + "已经存在！");
 		} catch (EmailIsExistedException e) {
 			dataMap.put("result", "邮箱：" + userDTO.getEmail() + "已经存在！");
-
 		} catch (TelePhoneIsExistedException e) {
 			dataMap.put("result", "联系电话：" + userDTO.getTelePhone() + "已经存在！");
 		} catch (Exception e) {
@@ -125,7 +140,6 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
 	public Map<String, Object> terminate(@RequestBody UserDTO[] userDTOs) {
-		// TODO 3、刷新缓存
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.terminateUserDTOs(userDTOs);
 		dataMap.put("result", "success");
@@ -161,7 +175,6 @@ public class UserController {
 		UserDTO userDTO = new UserDTO(AuthUserUtil.getUserAccount(), userPassword);
 		if (securityAccessFacade.updatePassword(userDTO, oldUserPassword)) {
 			dataMap.put("result", "success");
-			// TODO 刷新缓存
 		} else {
 			dataMap.put("result", "failure");
 		}
@@ -186,20 +199,7 @@ public class UserController {
 		return dataMap;
 	}
 
-	/**
-	 * 退出
-	 * 
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("/logout")
-	public Map<String, Object> logout() {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		SecurityUtils.getSubject().logout();
-		dataMap.put("success", true);
-		dataMap.put("message", "成功退出");
-		return dataMap;
-	}
+	
 
 	/**
 	 * 激活
@@ -368,6 +368,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/terminateRolesByUser")
 	public Map<String, Object> terminateAuthorizationsByRoles(Long userId, Long[] roleIds) {
+		System.out.println(roleIds);
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.terminateAuthorizationsByRoles(userId, roleIds);
 		dataMap.put("success", true);
@@ -406,6 +407,21 @@ public class UserController {
 	}
 
 	/**
+	 * 根据用户ID分页查询权限
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param userId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQueryGrantPermissionByUserId")
+	public Page<PermissionDTO> pagingQueryGrantPermissionByUserId(int page, int pagesize, Long userId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionByUserId(page, pagesize, userId);
+		return results;
+	}
+
+	/**
 	 * 根据条件分页查询没有授权的角色
 	 * 
 	 * @param page
@@ -433,7 +449,7 @@ public class UserController {
 	@RequestMapping("/pagingQueryNotGrantPermissions")
 	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,
 			PermissionDTO queryPermissionCondition, Long userId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize,
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissions(page, pagesize,
 				queryPermissionCondition, userId);
 		return results;
 	}

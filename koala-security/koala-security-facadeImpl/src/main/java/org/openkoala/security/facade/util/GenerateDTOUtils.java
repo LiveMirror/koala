@@ -38,6 +38,8 @@ public final class GenerateDTOUtils {
 		result.setName(user.getName());
 		result.setEmail(user.getEmail());
 		result.setUserPassword(user.getPassword());
+		result.setTelePhone(user.getTelePhone());
+		result.setLastLoginTime(user.getLastLoginTime());
 		return result;
 	}
 

@@ -23,8 +23,6 @@ public class UserDTO implements Serializable {
 
 	private String oldUserPassword;
 
-	private String userStatus;
-
 	private Date lastLoginTime;
 
 	private String telePhone;
@@ -39,12 +37,11 @@ public class UserDTO implements Serializable {
 		this.userPassword = userPassword;
 	}
 
-	public UserDTO(String username, String userPassword, Date createDate, String description, String userStatus) {
+	public UserDTO(String username, String userPassword, Date createDate, String description) {
 		this.userAccount = username;
 		this.userPassword = userPassword;
 		this.createDate = createDate;
 		this.description = description;
-		this.userStatus = userStatus;
 	}
 
 	public Long getId() {
@@ -61,14 +58,6 @@ public class UserDTO implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getOldPassword() {
-		return oldUserPassword;
-	}
-
-	public void setOldPassword(String oldPassword) {
-		this.oldUserPassword = oldPassword;
 	}
 
 	public String getUserPassword() {
@@ -93,14 +82,6 @@ public class UserDTO implements Serializable {
 
 	public void setOldUserPassword(String oldUserPassword) {
 		this.oldUserPassword = oldUserPassword;
-	}
-
-	public String getUserStatus() {
-		return userStatus;
-	}
-
-	public void setUserStatus(String userStatus) {
-		this.userStatus = userStatus;
 	}
 
 	public String getUserAccount() {

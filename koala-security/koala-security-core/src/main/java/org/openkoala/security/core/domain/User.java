@@ -11,6 +11,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import org.dayatang.domain.InstanceFactory;
+import static org.dayatang.utils.Assert.*;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class User extends Actor {
 
 	private static final long serialVersionUID = 7849700468353029794L;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
 
 	@Column(name = "USER_ACCOUNT")
@@ -58,8 +59,16 @@ public class User extends Actor {
 	User() {
 	}
 
+	/**
+	 * XXX 不能在构造方法中检查。因为删除的会报错。
+	 * 
+	 * @param userAccount
+	 * @param password
+	 * @param email
+	 * @param telePhone
+	 */
 	public User(String userAccount, String password, String email, String telePhone) {
-		isBlanked(userAccount, password, email, telePhone);
+		// isBlanked(userAccount, password, email, telePhone);
 		this.userAccount = userAccount;
 		this.password = password;
 		this.email = email;
@@ -68,10 +77,10 @@ public class User extends Actor {
 	}
 
 	private void isBlanked(String userAccount, String password, String email, String telePhone) {
-		// isBlank(password, "密码不能为空");
-		// isBlank(email, "邮箱不能为空");
-		// isBlank(telePhone, "联系电话不能为空");
-		// isBlank(userAccount, "账户不能为空");
+		isBlank(password, "密码不能为空");
+		isBlank(email, "邮箱不能为空");
+		isBlank(telePhone, "联系电话不能为空");
+		isBlank(userAccount, "账户不能为空");
 	}
 
 	public void disable() {
@@ -87,13 +96,13 @@ public class User extends Actor {
 //		isExisted();
 		String password = getPasswordService().encryptPassword(this);
 		this.setPassword(password);
-		LOGGER.info("user save:{}",this);
+		LOGGER.info("user save:{}", this);
 		super.save();
 	}
 
 	private void isExisted() {
 		if (isExistUserAccount(this.getUserAccount())) {
-			throw new UserAccountIsExistedException("user.userAccount.exist");
+			throw new UserAccountIsExistedException();
 		}
 
 		if (isExistEmail(this.getEmail())) {
@@ -154,8 +163,8 @@ public class User extends Actor {
 
 	@Override
 	public void update() {
-		isExisted();
-		isBlanked(this.getUserAccount(), this.getName(), this.getEmail(), this.getTelePhone());
+//		isExisted();
+//		isBlanked(this.getUserAccount(), this.getName(), this.getEmail(), this.getTelePhone());
 
 		User user = User.get(User.class, this.getId());
 

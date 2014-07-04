@@ -212,10 +212,9 @@
 				openTab('/pages/auth/menu-list.jsp', role.roleName+'的菜单管理', 'menuManager_' + role.id, role.id, {roleId : role.roleId});
 			},
 			'removeRoleForUser' : function(event, data) {
-				var items = data.item;
-				
+				var indexs = data.data;
 				var grid = $(this);
-				if (items.length == 0) {
+				if (indexs.length == 0) {
 					$this.message({
 						type : 'warning',
 						content : '请选择要删除的记录'
@@ -225,21 +224,14 @@
 				grid.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
-						console.table(items);
-						
-						/* var data = {};
-						data.userId = userId;
-						data.roleIds = []; */
-						var data = "userId="+userId;
-						for(var i=0,j=items.length; i<j; i++){
-							/* roleIds['+'] = 
-							data.roleIds.push(items[i].roleId); */
-							
-							data += ("&roldIds=" + items[i].roleId);
+						var url = contextPath + '/auth/user/terminateRolesByUser.koala';
+						var params = "userId="+userId;
+						for (var i = 0, j = data.item.length; i < j; i++) {
+							params += ("&roleIds=" + data.item[i].roleId);
 						}
 						
-						$.post(contextPath + '/auth/user/terminateRolesByUser.koala', data).done(function(data){
-							if(data.result == 'success'){
+						$.post(url, params).done(function(data){
+							if(data.success){
 								grid.message({
 									type: 'success',
 									content: '删除成功'

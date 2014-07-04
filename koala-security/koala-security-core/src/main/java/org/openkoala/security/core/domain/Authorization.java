@@ -186,8 +186,6 @@ public class Authorization extends SecurityAbstractEntity {
 	}
 
 	/**
-	 * TODO 检查是否有
-	 * 
 	 * @param actor
 	 * @param authority
 	 * @return
