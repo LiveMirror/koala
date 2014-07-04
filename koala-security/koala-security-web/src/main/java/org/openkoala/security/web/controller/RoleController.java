@@ -128,7 +128,7 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping(value = "/grantMenuResources", method = RequestMethod.POST, consumes = "application/json")
 //	@RequestMapping(value = "/grantMenuResources", method = RequestMethod.POST)
-	public Map<String, Object> grantMenuResources(Long roleId,MenuResourceDTO[] menuResourceDTOs) {
+	public Map<String, Object> grantMenuResources(Long roleId,@RequestBody MenuResourceDTO[] menuResourceDTOs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		securityConfigFacade.grantMenuResourcesToRole(roleId, Arrays.asList(menuResourceDTOs));
 		dataMap.put("result", "success");
