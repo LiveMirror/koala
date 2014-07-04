@@ -132,8 +132,6 @@
 		var role = $('.tab-pane.active').data();
 		var roleId = role ? role.roleId : null;
 		
-		console.log(role);
-		
 		var columns = [{
 			title 	: "url路径",
 			name 	: "url",

@@ -148,7 +148,6 @@
 				}
 				
 				var user = items[0];
-				console.log(user);
 				/*打开权限表格*/
 				openTab('/pages/auth/permission-list.jsp', user.userAccount + '的权限管理', 'roleManager_' + user.id, user.id, {userId:user.id});
 			},

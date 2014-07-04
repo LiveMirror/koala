@@ -163,34 +163,55 @@ var roleManager = function(){
 		$.get(contextPath + '/pages/auth/assign-resource.jsp').done(function(data){
 			var dialog = $(data);
             initResourceTree(dialog, roleId);
-            dialog.find('#save').on('click',function(){
-				var treeObj = $("#resourceTree").getTree();
+            dialog.find('.save').on('click',function(){
+				var treeObj = $(".resourceTree").getTree();
 				var nodes = treeObj.selectedItems();
-				var data = {};
-				data['roleVO.id'] = roleId;
+				
+				var data = 'roleId=' + roleId;
 				for(var i=0,j=nodes.length; i<j; i++){
-					data['menus['+i+'].id'] = nodes[i].id;
-					data['menus['+i+'].identifier'] = nodes[i].identifier;
+					data += ('&menuResourceDTOs['+i+'].id=' + nodes[i].id);
 				}
-				$.post(baseUrl + 'assignMenuResources.koala', data).done(function(data){
-					if(data.result == 'success'){
+				
+				$.post(contextPath + '/auth/role/grantMenuResources.koala',data,function(){
+					
+				});
+				
+				
+				/*var data = {};
+				var mDTOs = [];
+				data.roleId = roleId;
+				for(var i=0,j=nodes.length; i<j; i++){
+					var dto = {};
+					dto.id = nodes[i].id;
+					mDTOs.push(dto);
+				}
+				data.MenuResourceDTOs = mDTOs;
+				
+				$.ajax({
+					 headers : { 
+					        'Accept': 'application/json',
+					        'Content-Type': 'application/json' 
+					    },
+					url 	: contextPath + '/auth/role/grantMenuResources.koala',
+					type 	: "post",
+					dataType : "json",
+					data 	: JSON.stringify(data),
+					success : function(data){
 						grid.message({
-							type: 'success',
-							content: '保存成功'
-						});
-						dialog.modal('hide');
-					}else{
-						dialog.find('.modal-content').message({
-							type: 'error',
-							content: data.actionError
-						});
-					}
-				}).fail(function(data){
-						dialog.find('.modal-content').message({
-							type: 'error',
-							content: '保存失败'
-						});
-					});
+   							type: 'success',
+   							content: '保存成功'
+   						});
+   						dialog.modal('hide');
+   						grid.grid('refresh');
+					},
+					error:function(data){
+    					saveBtn.attr('disabled', 'disabled');	
+    					grid.message({
+    						type: 'error',
+    						content: '保存失败'
+    					});
+    				}
+				});*/
 			}).end().modal({
 				keyboard: false
 			}).on({
@@ -212,12 +233,13 @@ var roleManager = function(){
 	* 加载资源树
 	 */
 	var initResourceTree = function(dialog, roleId){
-		$.get(contextPath + '/auth/Menu/findMenuTreeSelectItemByRole.koala?time='+new Date().getTime()+'&roleId='+roleId).done(function(result){
+		$.get(contextPath + '/auth/role/findMenuResourceTreeSelectItemByRoleId.koala?time='+new Date().getTime()+'&roleId='+roleId).done(function(result){
 			var zNodes = new Array();
 			var items = result.data;
 			if(!items){
 				return;
 			}
+			
 			for(var i=0, j=items.length; i<j; i++){
 				var item = items[i];
 				var zNode = {};
@@ -238,7 +260,7 @@ var roleManager = function(){
                 data: zNodes,
                 delay: 400
             };
-            dialog.find('#resourceTree').tree({
+            dialog.find('.resourceTree').tree({
                 dataSource: dataSourceTree,
                 loadingHTML: '<div class="static-loader">Loading...</div>',
                 multiSelect: true,

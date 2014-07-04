@@ -20,7 +20,7 @@
 				<h4 class="modal-title">分配权限</h4>
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
-				<div id="selectPermissionGrid"></div>
+				<div class="selectMenuGrid"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
