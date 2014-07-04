@@ -1,5 +1,6 @@
 package org.openkoala.security.web.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,9 +127,10 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/grantMenuResources", method = RequestMethod.POST, consumes = "application/json")
-	public Map<String, Object> grantMenuResources(Long roleId, @RequestBody List<MenuResourceDTO> menuResourceDTOs) {
+//	@RequestMapping(value = "/grantMenuResources", method = RequestMethod.POST)
+	public Map<String, Object> grantMenuResources(Long roleId,MenuResourceDTO[] menuResourceDTOs) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantMenuResourcesToRole(roleId, menuResourceDTOs);
+		securityConfigFacade.grantMenuResourcesToRole(roleId, Arrays.asList(menuResourceDTOs));
 		dataMap.put("result", "success");
 		return dataMap;
 	}
