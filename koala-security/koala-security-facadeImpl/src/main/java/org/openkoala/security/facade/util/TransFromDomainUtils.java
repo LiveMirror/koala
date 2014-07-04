@@ -6,12 +6,14 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.OrganizationScope;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
+import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
@@ -38,6 +40,8 @@ public final class TransFromDomainUtils {
 			result.setId(userDTO.getId());
 		}
 		result.setName(userDTO.getName());
+		result.setVersion(userDTO.getVersion());
+		result.setLastLoginTime(userDTO.getLastLoginTime());
 		result.setDescription(userDTO.getDescription());
 		return result;
 	}
@@ -47,7 +51,7 @@ public final class TransFromDomainUtils {
 		if (!StringUtils.isBlank(roleDTO.getRoleId() + "")) {
 			result.setId(roleDTO.getRoleId());
 		}
-		
+		result.setVersion(roleDTO.getVersion());
 		result.setDescription(roleDTO.getDescription());
 		return result;
 	}
@@ -58,6 +62,7 @@ public final class TransFromDomainUtils {
 			result.setId(permissionDTO.getPermissionId());
 		}
 		result.setDescription(permissionDTO.getDescription());
+		result.setVersion(permissionDTO.getVersion());
 		return result;
 	}
 
@@ -69,6 +74,8 @@ public final class TransFromDomainUtils {
 		result.setDescription(menuResourceDTO.getDescription());
 		result.setMenuIcon(menuResourceDTO.getIcon());
 		result.setUrl(menuResourceDTO.getUrl());
+		result.setIdentifier(menuResourceDTO.getIdentifier());
+		result.setVersion(menuResourceDTO.getVersion());
 		return result;
 	}
 
@@ -78,7 +85,20 @@ public final class TransFromDomainUtils {
 		if (!StringUtils.isBlank(urlAccessResourceDTO.getId() + "")) {
 			result.setId(urlAccessResourceDTO.getId());
 		}
+		result.setVersion(urlAccessResourceDTO.getVersion());
+		result.setIdentifier(urlAccessResourceDTO.getIdentifier());
 		result.setUrl(urlAccessResourceDTO.getUrl());
+		return result;
+	}
+	public static PageElementResource transFromPageElementResourceBy(PageElementResourceDTO pageElementResourceDTO) {
+		PageElementResource result = new PageElementResource(pageElementResourceDTO.getName());
+		result.setDescription(pageElementResourceDTO.getDescription());
+		if (!StringUtils.isBlank(pageElementResourceDTO.getId() + "")) {
+			result.setId(pageElementResourceDTO.getId());
+		}
+		result.setVersion(pageElementResourceDTO.getVersion());
+		result.setIdentifier(pageElementResourceDTO.getIdentifier());
+		result.setPageElementType(pageElementResourceDTO.getPageElementType());
 		return result;
 	}
 
@@ -96,6 +116,7 @@ public final class TransFromDomainUtils {
 			result.setId(organizationScopeDTO.getId());
 		}
 		result.setDescription(organizationScopeDTO.getDescription());
+		result.setVersion(organizationScopeDTO.getVersion());
 		return result;
 	}
 }

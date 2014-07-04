@@ -8,11 +8,35 @@ import javax.persistence.Entity;
 public class PageElementResource extends SecurityResource {
 
 	private static final long serialVersionUID = 8933589588651981397L;
+	
+	/**
+	 * 页面元素类型。
+	 */
+	private String pageElementType;
 
+	PageElementResource() {
+	}
+	
+	public PageElementResource(String name) {
+		super(name);
+	}
+	
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
+		PageElementResource pageElementResource = get(PageElementResource.class, this.getId());
+		pageElementResource.setName(this.getName());
+		pageElementResource.setIdentifier(this.getIdentifier());
+		pageElementResource.setPageElementType(this.getPageElementType());
+		pageElementResource.setDescription(this.getDescription());
+		pageElementResource.setVersion(this.getVersion());
+	}
+
+	public String getPageElementType() {
+		return pageElementType;
+	}
+
+	public void setPageElementType(String type) {
+		this.pageElementType = type;
 	}
 
 }

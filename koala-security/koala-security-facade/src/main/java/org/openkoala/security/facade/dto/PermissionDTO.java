@@ -3,6 +3,8 @@ package org.openkoala.security.facade.dto;
 public class PermissionDTO {
 
 	private Long permissionId;
+	
+	private int version;
 
 	private String userName;
 
@@ -40,6 +42,14 @@ public class PermissionDTO {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public String getRoleName() {

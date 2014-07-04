@@ -10,6 +10,8 @@ public class OrganizationScopeDTO implements Serializable{
 
 	private Long id;
 	
+	private int version;
+	
 	private String name;
 	
 	private String description;
@@ -34,6 +36,14 @@ public class OrganizationScopeDTO implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public String getName() {

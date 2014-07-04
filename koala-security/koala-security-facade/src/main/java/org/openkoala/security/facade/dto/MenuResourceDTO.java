@@ -10,6 +10,8 @@ public class MenuResourceDTO implements Serializable {
 
 	private Long id;
 	
+	private int version;
+	
 	private String identifier;
 	
 	private String name;
@@ -136,6 +138,14 @@ public class MenuResourceDTO implements Serializable {
 
 	public void setChecked(boolean isChecked) {
 		this.isChecked = isChecked;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	@Override

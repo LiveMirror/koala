@@ -10,6 +10,8 @@ public class RoleDTO implements Serializable{
 	private static final long serialVersionUID = -8008875711416716934L;
 
 	private Long roleId;
+	
+	private int version;
 
 	private String roleName;
 
@@ -54,6 +56,14 @@ public class RoleDTO implements Serializable{
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+	
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public Long getRoleId() {

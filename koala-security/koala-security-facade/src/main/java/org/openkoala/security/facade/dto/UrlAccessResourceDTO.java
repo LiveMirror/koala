@@ -7,6 +7,8 @@ public class UrlAccessResourceDTO implements Serializable {
 	private static final long serialVersionUID = -2406552978317692278L;
 
 	private Long id;
+	
+	private int version;
 
 	/**
 	 * 名称
@@ -128,4 +130,13 @@ public class UrlAccessResourceDTO implements Serializable {
 	public void setPermissions(String permissions) {
 		this.permissions = permissions;
 	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+	
 }

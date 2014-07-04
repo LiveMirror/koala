@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
+import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
@@ -189,5 +190,11 @@ public interface SecurityConfigFacade {
 	void grantPermisssionsToMenuResource(Long[] permissionIds, Long menuResourceId);
 
 	void terminatePermissionsFromMenuResource(Long[] permissionIds, Long menuResourceId);
+
+	void savePageElementResourceDTO(PageElementResourceDTO pageElementResourceDTO);
+
+	void updatePageElementResourceDTO(PageElementResourceDTO pageElementResourceDTO);
+
+	void terminatePageElementResourceDTOs(PageElementResourceDTO[] pageElementResourceDTOs);
 
 }

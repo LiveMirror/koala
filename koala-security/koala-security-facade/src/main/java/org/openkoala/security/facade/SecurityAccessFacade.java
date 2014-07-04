@@ -6,6 +6,7 @@ import java.util.Set;
 import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
+import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
@@ -206,5 +207,8 @@ public interface SecurityAccessFacade {
 
 	Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize, PermissionDTO queryPermissionCondition,
 			Long userId);
+
+	Page<PageElementResourceDTO> pagingQueryPageElementResources(int page, int pagesize,
+			PageElementResourceDTO pageElementResourceDTO);
 
 }

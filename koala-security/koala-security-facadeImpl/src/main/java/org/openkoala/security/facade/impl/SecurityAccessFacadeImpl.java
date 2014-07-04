@@ -21,6 +21,7 @@ import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
@@ -28,6 +29,7 @@ import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
+import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
@@ -789,6 +791,43 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.setParameters(conditionVals)//
 				.setPage(page, pagesize)//
 				.pagedList();
+	}
+
+	@Override
+	public Page<PageElementResourceDTO> pagingQueryPageElementResources(int page, int pagesize,
+			PageElementResourceDTO pageElementResourceDTO) {
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PageElementResourceDTO(_securityResource.id,_securityResource.version, _securityResource.name, _securityResource.disabled, _securityResource.identifier, _securityResource.description,_securityResource.pageElementType) FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType AND _securityResource.disabled = :disabled");
+		Map<String,Object> conditionVals = new HashMap<String, Object>();
+		conditionVals.put("securityResourceType", PageElementResource.class);
+		conditionVals.put("disabled", false);
+		assemblePageElementResourceJpqlAndConditionValues(pageElementResourceDTO, jpql, "_securityResource", conditionVals);
+		
+		return getQueryChannelService()//
+				.createJpqlQuery(jpql.toString())//
+				.setParameters(conditionVals)//
+				.setPage(page, pagesize)//
+				.pagedList();
+	}
+	
+	private void assemblePageElementResourceJpqlAndConditionValues(PageElementResourceDTO pageElementResourceDTO,
+			StringBuilder jpql, String conditionPrefix, Map<String, Object> conditionVals) {
+		String andCondition = " AND " + conditionPrefix;
+
+		if (!StringUtils.isBlank(pageElementResourceDTO.getName())) {
+			jpql.append(andCondition);
+			jpql.append(".name =:name");
+			conditionVals.put("name", pageElementResourceDTO.getName());
+		}
+		if (!StringUtils.isBlank(pageElementResourceDTO.getDescription())) {
+			jpql.append(andCondition);
+			jpql.append(".description =:description");
+			conditionVals.put("description", pageElementResourceDTO.getDescription());
+		}
+		if (!StringUtils.isBlank(pageElementResourceDTO.getIdentifier())) {
+			jpql.append(andCondition);
+			jpql.append(".identifier =:identifier");
+			conditionVals.put("identifier", pageElementResourceDTO.getIdentifier());
+		}
 	}
 
 }

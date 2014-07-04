@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.logicalcobwebs.proxool.Version;
 import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
@@ -40,6 +43,7 @@ public final class GenerateDTOUtils {
 		result.setUserPassword(user.getPassword());
 		result.setTelePhone(user.getTelePhone());
 		result.setLastLoginTime(user.getLastLoginTime());
+		result.setVersion(user.getVersion());
 		return result;
 	}
 
@@ -74,9 +78,10 @@ public final class GenerateDTOUtils {
 	 * @return
 	 */
 	public static RoleDTO generateRoleDTOBy(Role role) {
-		RoleDTO roleDTO = new RoleDTO(role.getId(), role.getName());
-		roleDTO.setDescription(role.getDescription());
-		return roleDTO;
+		RoleDTO result = new RoleDTO(role.getId(), role.getName());
+		result.setVersion(role.getVersion());
+		result.setDescription(role.getDescription());
+		return result;
 	}
 
 	/**
@@ -88,6 +93,8 @@ public final class GenerateDTOUtils {
 	public static PermissionDTO generatePermissionDTOBy(Permission permission) {
 		PermissionDTO result = new PermissionDTO();
 		result.setRoleName(null);
+		result.setPermissionId(permission.getId());
+		result.setVersion(permission.getVersion());
 		result.setPermissionName(permission.getName());
 		result.setIdentifier(permission.getIdentifier());
 		result.setDescription(permission.getDescription());
@@ -97,6 +104,10 @@ public final class GenerateDTOUtils {
 	public static MenuResourceDTO generateMenuResourceDTOBy(MenuResource menuResource) {
 		MenuResourceDTO result = new MenuResourceDTO();
 		result.setId(menuResource.getId());
+		result.setVersion(menuResource.getVersion());
+		result.setDisabled(menuResource.isDisabled());
+		result.setIcon(menuResource.getMenuIcon());
+		result.setLevel(menuResource.getLevel());
 		result.setName(menuResource.getName());
 		result.setUrl(menuResource.getUrl());
 		result.setDescription(menuResource.getDescription());
@@ -105,7 +116,19 @@ public final class GenerateDTOUtils {
 
 	public static UrlAccessResourceDTO generateUrlAccessResourceDTOBy(UrlAccessResource urlAccessResource) {
 		UrlAccessResourceDTO result = new UrlAccessResourceDTO(urlAccessResource.getId(), urlAccessResource.getName(), urlAccessResource.isDisabled(), urlAccessResource.getUrl(), urlAccessResource.getIdentifier());
+		result.setVersion(urlAccessResource.getVersion());
 		result.setDescription(urlAccessResource.getDescription());
+		return result;
+	}
+	
+	public static PageElementResourceDTO generatePageElementResourceDTOBy(PageElementResource pageElementResource) {
+		PageElementResourceDTO result = new PageElementResourceDTO();
+		result.setId(pageElementResource.getId());
+		result.setVersion(pageElementResource.getVersion());
+		result.setName(pageElementResource.getName());
+		result.setIdentifier(pageElementResource.getIdentifier());
+		result.setDescription(pageElementResource.getDescription());
+		result.setPageElementType(pageElementResource.getPageElementType());
 		return result;
 	}
 }

@@ -11,6 +11,7 @@ import javax.inject.Named;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
@@ -18,6 +19,7 @@ import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.OrganizationScopeDTO;
+import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
@@ -397,6 +399,26 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 			Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
 			securityConfigApplication.terminateAuthorityFromSecurityResource(permssion, menuResource);
 		}	
+	}
+
+	@Override
+	public void savePageElementResourceDTO(PageElementResourceDTO pageElementResourceDTO) {
+		PageElementResource pageElementResource = transFromPageElementResourceBy(pageElementResourceDTO);
+		securityConfigApplication.createSecurityResource(pageElementResource);
+	}
+
+	@Override
+	public void updatePageElementResourceDTO(PageElementResourceDTO pageElementResourceDTO) {
+		PageElementResource pageElementResource = transFromPageElementResourceBy(pageElementResourceDTO);
+		securityConfigApplication.updateSecurityResource(pageElementResource);
+	}
+
+	@Override
+	public void terminatePageElementResourceDTOs(PageElementResourceDTO[] pageElementResourceDTOs) {
+		for (PageElementResourceDTO pageElementResourceDTO : pageElementResourceDTOs) {
+			PageElementResource pageElementResource = transFromPageElementResourceBy(pageElementResourceDTO);
+			securityConfigApplication.terminateSecurityResource(pageElementResource);
+		}
 	}
 
 }

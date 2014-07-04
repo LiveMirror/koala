@@ -22,7 +22,12 @@ public class UrlAccessResource extends SecurityResource {
 
 	@Override
 	public void update() {
-
+		UrlAccessResource urlAccessResource = get(UrlAccessResource.class, this.getId());
+		urlAccessResource.setName(this.getName());
+		urlAccessResource.setIdentifier(this.getIdentifier());
+		urlAccessResource.setDescription(this.getDescription());
+		urlAccessResource.setUrl(this.getUrl());
+		urlAccessResource.setVersion(this.getVersion());
 	}
 
 	public static List<String> getRoleNames(Set<Authority> authorities) {
