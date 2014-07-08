@@ -1,6 +1,6 @@
 package org.openkoala.koala.actionvo;
 
-import org.apache.velocity.VelocityContext;
+import forkoala.org.apache.velocity.VelocityContext;
 import org.openkoala.koala.action.file.FileCopyAction;
 import org.openkoala.koala.action.velocity.VelocityUtil;
 import org.slf4j.Logger;

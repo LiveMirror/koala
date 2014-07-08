@@ -2,8 +2,8 @@ package org.openkoala.koala.action.velocity;
 
 import java.util.Properties;
 
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.VelocityEngine;
+import forkoala.org.apache.velocity.app.Velocity;
+import forkoala.org.apache.velocity.app.VelocityEngine;
 
 /**
  * 获取Velocity对象
@@ -19,7 +19,7 @@ public class VelocityHelper {
 		if (engine == null) {
 			Properties p = new Properties();
 			p.setProperty("file.resource.loader.class",
-					"org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+					"forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
 			p.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, "");
 			p.setProperty(Velocity.ENCODING_DEFAULT, "UTF-8");
 			p.setProperty(Velocity.INPUT_ENCODING, "UTF-8");

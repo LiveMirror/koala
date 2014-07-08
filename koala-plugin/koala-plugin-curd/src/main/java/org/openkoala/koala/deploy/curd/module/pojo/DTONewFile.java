@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.velocity.VelocityContext;
+import forkoala.org.apache.velocity.VelocityContext;
 import org.openkoala.koala.action.velocity.VelocityUtil;
 import org.openkoala.koala.deploy.curd.generator.PrimitiveType;
 import org.openkoala.koala.deploy.curd.generator.VelocityContextUtils;

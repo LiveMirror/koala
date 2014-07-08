@@ -2,7 +2,7 @@ package org.openkoala.koala.deploy.curd.generator;
 
 import java.util.List;
 
-import org.apache.velocity.VelocityContext;
+import forkoala.org.apache.velocity.VelocityContext;
 import org.openkoala.koala.deploy.curd.module.analysis.CURDCoreAnalysis;
 import org.openkoala.koala.deploy.curd.module.analysis.CURDDefaultUIView;
 import org.openkoala.koala.deploy.curd.module.analysis.CURDFileCreateAnalysis;

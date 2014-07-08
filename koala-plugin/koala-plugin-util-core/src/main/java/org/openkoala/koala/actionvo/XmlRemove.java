@@ -2,7 +2,7 @@ package org.openkoala.koala.actionvo;
 
 import java.util.List;
 
-import org.apache.velocity.VelocityContext;
+import forkoala.org.apache.velocity.VelocityContext;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.openkoala.koala.action.velocity.VelocityUtil;

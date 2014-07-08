@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.velocity.VelocityContext;
+import forkoala.org.apache.velocity.VelocityContext;
 import org.dom4j.Document;
 import org.openkoala.koala.action.XmlParseUtil;
 import org.openkoala.koala.action.file.FileCopyAction;

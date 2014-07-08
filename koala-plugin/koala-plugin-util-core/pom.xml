@@ -20,10 +20,18 @@
 
 		<!-- 加入Velocity模板支持 -->
 		<dependency>
-			<groupId>org.apache.velocity</groupId>
+			<groupId>org.openkoala.velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+		</dependency>
 
 
 		<!-- 加入maven embedd的支持 -->
