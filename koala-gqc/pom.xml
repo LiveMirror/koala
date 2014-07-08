@@ -4,13 +4,13 @@
 	<parent>
 		<groupId>org.openkoala</groupId>
 		<artifactId>koala-project</artifactId>
-		<version>3.0.0</version>
+		<version>3.0.1</version>
 	</parent>
 	<groupId>org.openkoala.gqc</groupId>
 	<artifactId>koala-gqc</artifactId>
 	<packaging>pom</packaging>
 	<name>koala-gqc</name>
-	<description />
+	<description/>
 	<modules>
 		<module>koala-gqc-conf</module>
 		<module>koala-gqc-infra</module>

@@ -1,9 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>org.openkoala.businesslog</groupId>
         <artifactId>koala-businesslog</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>koala-businesslog-acceptance-test</artifactId>
@@ -30,7 +30,7 @@
                 <db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
                 <db.connectionURL><![CDATA[jdbc:mysql://${db.host}:${db.port}/${db.name}?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8]]></db.connectionURL>
                 <db.username>root</db.username>
-                <db.password />
+                <db.password/>
                 <db.Type>MYSQL</db.Type>
                 <generateDdl>true</generateDdl>
             </properties>

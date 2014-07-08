@@ -4,13 +4,13 @@
 	<parent>
 		<groupId>org.openkoala</groupId>
 		<artifactId>koala-project</artifactId>
-		<version>3.0.0</version>
+		<version>3.0.1</version>
 	</parent>
 	<groupId>org.openkoala.security</groupId>
 	<artifactId>koala-security</artifactId>
 	<packaging>pom</packaging>
 	<name>koala-security</name>
-	<description />
+	<description/>
 	<modules>
 		<module>koala-security-core</module>
 		<module>koala-security-infra</module>
