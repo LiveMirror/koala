@@ -22,6 +22,11 @@
         <property name="srcDir">vm/module/src/main/java</property>
         <property name="destDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/java/${Module.basePackagePath}/</property>
      </CopyFiles>
+    
+     <CopyFiles>
+        <property name="srcDir">vm/module/src/main/java</property>
+        <property name="destDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/java/</property>
+     </CopyFiles>
      
      <CopyFiles>
         <property name="srcDir">vm/module/src/main/resources</property>
@@ -47,5 +52,5 @@
         <property name="srcDir">vm/module/src/test/resources</property>
         <property name="destDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/test/resources/</property>
      </CopyFiles>
-     
+      
 </XmlParse>

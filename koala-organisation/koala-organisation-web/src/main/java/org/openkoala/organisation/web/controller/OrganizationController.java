@@ -110,6 +110,7 @@ public class OrganizationController extends BaseController {
     		dataMap.put("result", "同级机构下已经存在名称为: " + company.getName() + "的机构！");
     	} catch (Exception exception) {
     		dataMap.put("result", "修改公司信息失败！");
+    		exception.printStackTrace();
     	}
     	
     	return dataMap;

@@ -71,6 +71,13 @@
 		</property>
 	</CopyFiles>
 
+	<VelocityDirObject>
+		<property name="express">$Module.moduleType=='applicationInterface'</property>
+		<property name="vmDir">vm/base/application/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Module.moduleName}/
+		</property>
+	</VelocityDirObject>
+
 	<CopyFiles>
 		<property name="express">$Module.moduleType=='war'</property>
 		<property name="srcDir">vm/other/webapp/</property>

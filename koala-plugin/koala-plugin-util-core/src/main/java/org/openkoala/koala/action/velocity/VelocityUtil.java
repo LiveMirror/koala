@@ -17,10 +17,10 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.VelocityEngine;
+import forkoala.org.apache.velocity.Template;
+import forkoala.org.apache.velocity.VelocityContext;
+import forkoala.org.apache.velocity.app.Velocity;
+import forkoala.org.apache.velocity.app.VelocityEngine;
 import org.openkoala.koala.exception.KoalaException;
 import org.openkoala.koala.util.EclipseUrlParseUtils;
 import org.slf4j.Logger;

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.velocity.VelocityContext;
+import forkoala.org.apache.velocity.VelocityContext;
 import org.openkoala.koala.action.velocity.VelocityUtil;
 
 

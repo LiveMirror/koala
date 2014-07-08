@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.velocity.VelocityContext;
+import forkoala.org.apache.velocity.VelocityContext;
 import org.openkoala.koala.action.velocity.VelocityUtil;
 import org.openkoala.koala.action.xml.WebXmlUtil;
 import org.openkoala.koala.actionvo.CopyFiles;
