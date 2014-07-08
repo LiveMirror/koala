@@ -102,7 +102,7 @@
                     });
                     return;
                 }
-                $.get(contextPath + '/auth/Menu/findMenuByUser.koala').done(function(data){
+                $.get(contextPath + '/auth/Menu/findMenuByUser.koala?'+new Date().getTime()).done(function(data){
                     $.each(data.data, function(){
                         var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.icon+'"></span>&nbsp;'+this.name+'&nbsp;'+
                             '<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu in"></ul></li>');
