@@ -3,7 +3,7 @@ package org.openkoala.koala.action;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.velocity.VelocityContext;
+import forkoala.org.apache.velocity.VelocityContext;
 import org.openkoala.koala.action.velocity.VelocityUtil;
 import org.openkoala.koala.exception.KoalaException;
 import org.openkoala.koala.parse.XML2ObjectUtil;
