@@ -3,15 +3,13 @@ package org.openkoala.security.core.domain;
 
 import java.util.List;
 
-import org.junit.Ignore;
+import org.dayatang.dbunit.DbUnitUtils;
 import org.junit.Test;
 
-@Ignore
-public class ActorTest extends AbstractSecurityIntegrationTestCase{
+public class ActorTest extends AbstractDomainIntegrationTestCase{
 	
 	@Test
 	public void testAddActor() throws Exception {
-		System.out.println("add Actor");
 		User user = new User();
 		user.setCreateOwner("admin");
 		user.setDescription("测试");
@@ -24,8 +22,8 @@ public class ActorTest extends AbstractSecurityIntegrationTestCase{
 	
 	@Test
 	public void testExportAllData() throws Exception {
-//		DbUnitUtils dbUnitUtils = DbUnitUtils.configFromClasspath("/jdbc.properties");
-//		dbUnitUtils.exportData("dbunit", "data.xml");
+		DbUnitUtils dbUnitUtils = DbUnitUtils.configFromClasspath("/jdbc.properties");
+		dbUnitUtils.exportData("dbunit", "data.xml");
 	}
 	
 	@Test

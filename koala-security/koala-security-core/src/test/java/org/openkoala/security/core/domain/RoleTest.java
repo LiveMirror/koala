@@ -2,7 +2,7 @@ package org.openkoala.security.core.domain;
 
 import org.junit.Test;
 
-public class RoleTest extends AbstractSecurityIntegrationTestCase {
+public class RoleTest extends AbstractDomainIntegrationTestCase {
 	@Test
 	public void testFindMenuResourceByRole() throws Exception {
 		System.out.println("find Role");
