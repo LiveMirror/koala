@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="koala" uri="http://www.openkoala.org/security" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -49,7 +49,7 @@
 	            <div class="btn-group navbar-right">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 	                    <i class="glyphicon glyphicon-user"></i>
-	                    <span>&nbsp;<shiro:principal property="userAccount"/></span>
+	                    <span>&nbsp;<koala:user property="userAccount"/></span>
 	                    <span class="caret"></span>
 	                </button>
 	                <ul class="dropdown-menu" id="userManager">

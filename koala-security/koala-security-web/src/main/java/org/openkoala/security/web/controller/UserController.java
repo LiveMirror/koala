@@ -94,13 +94,16 @@ public class UserController {
 		try {
 			securityConfigFacade.saveUserDTO(userDTO);
 		} catch (UserAccountIsExistedException e) {
+			e.printStackTrace();
 			dataMap.put("result", "账号:" + userDTO.getUserAccount() + "已经存在");
 		} catch (EmailIsExistedException e) {
+			e.printStackTrace();
 			dataMap.put("result", "邮箱：" + userDTO.getEmail() + "已经存在！");
-
 		} catch (TelePhoneIsExistedException e) {
+			e.printStackTrace();
 			dataMap.put("result", "联系电话：" + userDTO.getTelePhone() + "已经存在！");
 		} catch (Exception e) {
+			e.printStackTrace();
 			dataMap.put("result", "保存失败");
 		}
 		dataMap.put("result", "success");

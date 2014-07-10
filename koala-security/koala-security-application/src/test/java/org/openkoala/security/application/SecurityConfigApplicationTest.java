@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
@@ -23,6 +24,30 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 
 	@Inject
 	private SecurityAccessApplication securityAccessApplication;
+	
+	@Test
+	public void testPageElementResource() throws Exception {
+		PageElementResource addPpageElementResource = new PageElementResource("用户添加");
+		addPpageElementResource.setPageElementType("按钮");
+		addPpageElementResource.setIdentifier("userAdd");
+		
+		PageElementResource terminatePageElementResource = new PageElementResource("用户删除");
+		terminatePageElementResource.setPageElementType("按钮");
+		terminatePageElementResource.setIdentifier("userTerminate");
+		
+		PageElementResource updatePageElementResource = new PageElementResource("用户修改");
+		updatePageElementResource.setPageElementType("按钮");
+		updatePageElementResource.setIdentifier("userUpdate");
+		
+		PageElementResource listPageElementResource = new PageElementResource("用户列表");
+		listPageElementResource.setPageElementType("按钮");
+		listPageElementResource.setIdentifier("userList");
+		
+		securityConfigApplication.createSecurityResource(addPpageElementResource);
+		securityConfigApplication.createSecurityResource(terminatePageElementResource);
+		securityConfigApplication.createSecurityResource(updatePageElementResource);
+		securityConfigApplication.createSecurityResource(listPageElementResource);
+	}
 	
 	@Test
 	public void testAddRole() throws Exception {

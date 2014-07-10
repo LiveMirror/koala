@@ -3,13 +3,16 @@ package org.openkoala.security.facade.impl;
 import static org.openkoala.security.facade.util.TransFromDomainUtils.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
+import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
@@ -451,4 +454,28 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		}
 	}
 
+	@Override
+	public boolean checkUserHasPageElementResource(String userAccount,String currentRoleName, String securityResourceName) {
+		
+		Role role = securityAccessApplication.getRoleBy(currentRoleName);
+		Set<Permission> rolePermissions = role.getPermissions();
+		Set<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
+		
+		Set<Authority> authorities = new HashSet<Authority>();
+		authorities.add(role);
+		authorities.addAll(userPermissions);
+		authorities.addAll(rolePermissions);
+		
+		PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(securityResourceName);
+		
+		return securityConfigApplication.checkAuthoritiHasPageElementResource(authorities,pageElementResource);
+	}
+
 }
+
+
+
+
+
+
+

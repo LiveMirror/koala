@@ -1,6 +1,7 @@
 package org.openkoala.security.application.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Named;
 
@@ -10,6 +11,7 @@ import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.OrganizationScope;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
@@ -268,6 +270,12 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	@Override
 	public void grantPermissionsToRole(List<Permission> permissions, Role role) {
 		role.addPermissions(permissions);
+	}
+
+	@Override
+	public boolean checkAuthoritiHasPageElementResource(Set<Authority> authorities,
+			PageElementResource pageElementResource) {
+		return Authority.checkHasPageElementResource(authorities,pageElementResource);
 	}
 	
 }

@@ -1,11 +1,13 @@
 package org.openkoala.security.application;
 
 import java.util.List;
+import java.util.Set;
 
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.OrganizationScope;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
@@ -290,5 +292,7 @@ public interface SecurityConfigApplication {
 	 * @param adminRole
 	 */
 	void grantPermissionsToRole(List<Permission> permissions, Role role);
+
+	boolean checkAuthoritiHasPageElementResource(Set<Authority> authorities, PageElementResource pageElementResource);
 
 }
