@@ -107,4 +107,8 @@ public interface SecurityAccessApplication {
 	List<UrlAccessResource> findAllUrlAccessResources();
 
 	PageElementResource getPageElementResourceBy(Long pageElementResourceId);
+
+	PageElementResource getPageElementResourceBy(String securityResourceName);
+
+	Role getRoleBy(String roleName);
 }

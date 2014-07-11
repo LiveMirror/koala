@@ -93,24 +93,28 @@ public class User extends Actor {
 
 	@Override
 	public void save() {
-//		isExisted();
-		String password = getPasswordService().encryptPassword(this);
+		isExisted();
+		String password = encryptPassword(this);
 		this.setPassword(password);
 		LOGGER.info("user save:{}", this);
 		super.save();
 	}
+	
+	protected String encryptPassword(User user){
+		return getPasswordService().encryptPassword(user);
+	}
 
 	private void isExisted() {
 		if (isExistUserAccount(this.getUserAccount())) {
-			throw new UserAccountIsExistedException();
+			throw new UserAccountIsExistedException("user.userAccount.existed");
 		}
 
 		if (isExistEmail(this.getEmail())) {
-			throw new EmailIsExistedException();
+			throw new EmailIsExistedException("user.email.existed");
 		}
 
 		if (isExistTelePhone(this.getTelePhone())) {
-			throw new TelePhoneIsExistedException();
+			throw new TelePhoneIsExistedException("user.telePhone.existed");
 		}
 	}
 
@@ -167,7 +171,6 @@ public class User extends Actor {
 //		isBlanked(this.getUserAccount(), this.getName(), this.getEmail(), this.getTelePhone());
 
 		User user = User.get(User.class, this.getId());
-
 		user.setName(this.getName());
 		user.setDescription(this.getDescription());
 		user.setUserAccount(this.getUserAccount());
@@ -192,9 +195,13 @@ public class User extends Actor {
 		user.setPassword(password);
 	}
 
-	public static PasswordService passwordService;
-
-	public static PasswordService getPasswordService() {
+	protected static PasswordService passwordService;
+	
+	protected static void setPasswordService(PasswordService passwordService) {
+		User.passwordService = passwordService;
+	}
+	
+	protected static PasswordService getPasswordService() {
 		if (passwordService == null) {
 			passwordService = InstanceFactory.getInstance(PasswordService.class, "passwordService");
 		}
@@ -217,6 +224,12 @@ public class User extends Actor {
 		}
 	}
 
+	@Override
+	public String[] businessKeys() {
+		return new String[] { "userAccount" };
+	}
+
+	
 	public Date getLastLoginTime() {
 		return lastLoginTime;
 	}
@@ -251,11 +264,6 @@ public class User extends Actor {
 
 	public Boolean getDisabled() {
 		return disabled;
-	}
-
-	@Override
-	public String[] businessKeys() {
-		return new String[] { "userAccount" };
 	}
 
 	public String getTelePhone() {

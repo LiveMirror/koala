@@ -120,4 +120,14 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	public PageElementResource getPageElementResourceBy(Long pageElementResourceId) {
 		return PageElementResource.get(PageElementResource.class, pageElementResourceId);
 	}
+
+	@Override
+	public PageElementResource getPageElementResourceBy(String securityResourceName) {
+		return PageElementResource.getBy(securityResourceName);
+	}
+
+	@Override
+	public Role getRoleBy(String roleName) {
+		return Role.getBy(roleName);
+	}
 }

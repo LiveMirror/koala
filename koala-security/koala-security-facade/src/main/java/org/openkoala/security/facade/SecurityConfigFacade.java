@@ -203,4 +203,6 @@ public interface SecurityConfigFacade {
 
 	void terminatePermissionsFromPageElementResource(Long[] permissionIds, Long pageElementResourceId);
 
+	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceName);
+
 }

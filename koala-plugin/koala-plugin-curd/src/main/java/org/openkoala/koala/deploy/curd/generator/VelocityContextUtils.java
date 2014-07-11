@@ -1,6 +1,6 @@
 package org.openkoala.koala.deploy.curd.generator; 
 
-import org.apache.velocity.VelocityContext;
+import forkoala.org.apache.velocity.VelocityContext;
 
 /**
  * 

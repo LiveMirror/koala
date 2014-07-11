@@ -104,9 +104,6 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		return result;
 	}
 
-	
-	
-	
 	@Override
 	protected void clearCachedAuthorizationInfo(PrincipalCollection principals) {
 		super.clearCachedAuthorizationInfo(principals);

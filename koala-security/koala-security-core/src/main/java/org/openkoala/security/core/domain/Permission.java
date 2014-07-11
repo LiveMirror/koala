@@ -59,11 +59,13 @@ public class Permission extends Authority {
 			Authority authority = authorization.getAuthority();
 			if (authority instanceof Permission) {
 				results.add((Permission) authority);
+			}else{
+				results.addAll(((Role)authority).getPermissions());
 			}
 		}
 		return results;
 	}
-
+	
 	public Set<Role> getRoles() {
 		return roles;
 	}

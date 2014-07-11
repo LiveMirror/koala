@@ -34,7 +34,7 @@ public class UrlAccessResource extends SecurityResource {
 		List<String> results = new ArrayList<String>();
 		for (Authority authority : authorities) {
 			if (authority instanceof Role) {
-				results.add(((Role) authority).getName());
+				results.add(((Role) authority).getName().trim());
 			}
 		}
 		return results;
@@ -44,7 +44,7 @@ public class UrlAccessResource extends SecurityResource {
 		List<String> results = new ArrayList<String>();
 		for (Authority authority : authorities) {
 			if (authority instanceof Permission) {
-				results.add(((Permission) authority).getIdentifier());
+				results.add(((Permission) authority).getIdentifier().trim());
 			}
 		}
 		return results;
