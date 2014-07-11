@@ -1,6 +1,5 @@
 package org.openkoala.security.application;
 
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
+import org.springframework.test.context.TestExecutionListeners;
 
 public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTestCase {
 

@@ -60,7 +60,7 @@
 	            <!--  -->
 	            <div class="btn-group navbar-right">
 	            	<select id="roles"></select>
-	                <ul class="dropdown-menu" id="allRolesId"></ul>
+	                <!-- <ul class="dropdown-menu" id="allRolesId"></ul> -->
 	            </div>
 	        </div>
 	    </nav>
