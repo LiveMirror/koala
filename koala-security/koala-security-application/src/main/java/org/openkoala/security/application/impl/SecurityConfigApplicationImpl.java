@@ -28,7 +28,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfigApplicationImpl.class);
 	
 	public void createActor(Actor actor) {
-		LOGGER.info("create actor:{}",actor);
 		actor.save();
 	}
 

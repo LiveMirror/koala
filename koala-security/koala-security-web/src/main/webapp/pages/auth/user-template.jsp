@@ -27,21 +27,28 @@
 					<div class="form-group">
 						<label class="col-lg-3 control-label">用户邮箱:</label>
 						<div class="col-lg-9">
-							<input type="text" class="form-control" id="email">
+							<input type="text" class="form-control" id="email" name="email">
+							<span class="required">*</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label">联系电话:</label>
+						<div class="col-lg-9">
+							<input type="text" class="form-control" id="telePhone" name="telePhone">
 							<span class="required">*</span>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="userPassword" class="col-lg-3 control-label">用户密码:</label>
 						<div class="col-lg-9">
-							<input type="password" class="form-control" id="userPassword">
+							<input type="password" class="form-control" id="userPassword" name="userPassword">
 							<span class="required">*</span>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 control-label">描述:</label>
 						<div class="col-lg-9">
-							<input type="text" class="form-control" id="userDescript">
+							<input type="text" class="form-control" id="description">
 						</div>
 					</div>
 				</form>

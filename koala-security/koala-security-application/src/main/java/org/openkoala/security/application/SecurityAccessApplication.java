@@ -48,7 +48,7 @@ public interface SecurityAccessApplication {
 	 * @param userAccount
 	 * @return
 	 */
-	Set<Permission> findAllPermissionsByUserAccount(String userAccount);
+	List<Permission> findAllPermissionsByUserAccount(String userAccount);
 
 	/**
 	 * 根据用户ID获取用户

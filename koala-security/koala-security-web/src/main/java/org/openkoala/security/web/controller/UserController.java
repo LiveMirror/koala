@@ -33,8 +33,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/auth/user")
 public class UserController {
 
-	private static final String INIT_PASSWORD = "888888";
-
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
 
@@ -93,6 +91,7 @@ public class UserController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
 			securityConfigFacade.saveUserDTO(userDTO);
+			dataMap.put("result", "success");
 		} catch (UserAccountIsExistedException e) {
 			e.printStackTrace();
 			dataMap.put("result", "账号:" + userDTO.getUserAccount() + "已经存在");
@@ -106,7 +105,6 @@ public class UserController {
 			e.printStackTrace();
 			dataMap.put("result", "保存失败");
 		}
-		dataMap.put("result", "success");
 		return dataMap;
 	}
 
@@ -122,6 +120,7 @@ public class UserController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
 			securityAccessFacade.updateUserDTO(userDTO);
+			dataMap.put("result", "success");
 		} catch (UserAccountIsExistedException e) {
 			dataMap.put("result", "账户：" + userDTO.getUserAccount() + "已经存在！");
 		} catch (EmailIsExistedException e) {
@@ -131,7 +130,6 @@ public class UserController {
 		} catch (Exception e) {
 			dataMap.put("result", "更新失败");
 		}
-		dataMap.put("result", "success");
 		return dataMap;
 	}
 
@@ -196,7 +194,6 @@ public class UserController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(userId);
-		userDTO.setUserPassword(INIT_PASSWORD);
 		securityConfigFacade.resetPassword(userDTO);
 		dataMap.put("result", "success");
 		return dataMap;

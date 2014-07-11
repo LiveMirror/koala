@@ -1,7 +1,6 @@
 package org.openkoala.security.core.domain;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -46,26 +45,6 @@ public class Permission extends Authority {
 		permission.setDescription(this.getDescription());
 	}
 
-	/**
-	 * TODO 是否直接写JPQL查询?
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public static Set<Permission> findByUser(User user) {
-		Set<Permission> results = new HashSet<Permission>();
-		List<Authorization> authorizations = Authorization.findByActor(user);
-		for (Authorization authorization : authorizations) {
-			Authority authority = authorization.getAuthority();
-			if (authority instanceof Permission) {
-				results.add((Permission) authority);
-			}else{
-				results.addAll(((Role)authority).getPermissions());
-			}
-		}
-		return results;
-	}
-	
 	public Set<Role> getRoles() {
 		return roles;
 	}

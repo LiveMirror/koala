@@ -97,7 +97,7 @@ public abstract class Actor extends SecurityAbstractEntity {
 		return lastModifyTime;
 	}
 
-	public void setLastModifyTime(Date lastModifyTime) {
+	protected void setLastModifyTime(Date lastModifyTime) {
 		this.lastModifyTime = lastModifyTime;
 	}
 

@@ -4,15 +4,15 @@ import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
-import static org.dayatang.utils.Assert.*;
 import org.openkoala.security.core.EmailIsExistedException;
+import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.slf4j.Logger;
@@ -31,6 +31,8 @@ public class User extends Actor {
 	private static final long serialVersionUID = 7849700468353029794L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
+	
+	private static final String INIT_PASSWORD = "888888";
 
 	@Column(name = "USER_ACCOUNT")
 	private String userAccount;
@@ -59,6 +61,11 @@ public class User extends Actor {
 	User() {
 	}
 
+	public User(String userAccount, String password) {
+		this.userAccount = userAccount;
+		this.password = password;
+	}
+
 	/**
 	 * XXX 不能在构造方法中检查。因为删除的会报错。
 	 * 
@@ -76,12 +83,8 @@ public class User extends Actor {
 		// this.salt = generateSalt();
 	}
 
-	private void isBlanked(String userAccount, String password, String email, String telePhone) {
-		isBlank(password, "密码不能为空");
-		isBlank(email, "邮箱不能为空");
-		isBlank(telePhone, "联系电话不能为空");
-		isBlank(userAccount, "账户不能为空");
-	}
+	// ~ Methods
+	// ========================================================================================================
 
 	public void disable() {
 		disabled = true;
@@ -91,56 +94,68 @@ public class User extends Actor {
 		disabled = false;
 	}
 
+	/**
+	 * 保存用户 TODO 验证规则，账号，邮箱，电话。
+	 */
 	@Override
 	public void save() {
 		isExisted();
 		String password = encryptPassword(this);
 		this.setPassword(password);
-		LOGGER.info("user save:{}", this);
+		this.setLastModifyTime(new Date());
 		super.save();
 	}
-	
-	protected String encryptPassword(User user){
-		return getPasswordService().encryptPassword(user);
+
+	/**
+	 * 更新用户
+	 */
+	@Override
+	public void update() {
+		User user = User.get(User.class, this.getId());
+		if (user == null) {
+			throw new NullArgumentException("user");
+		}
+
+		if (!StringUtils.isBlank(this.getEmail()) && !this.getEmail().equals(user.getEmail())) {
+			isExistEmail(this.getEmail());
+			user.setEmail(this.getEmail());
+		}
+
+		if (!StringUtils.isBlank(this.getTelePhone()) && !this.getTelePhone().equals(user.getTelePhone())) {
+			isExistTelePhone(this.getTelePhone());
+			user.setTelePhone(this.getTelePhone());
+		}
+
+		if (this.getLastLoginTime() != null) {
+			user.setLastLoginTime(this.getLastLoginTime());
+		}
+
+		// 每次修改自动插入修改时间。
+		user.setLastModifyTime(new Date());
+
+		if (!StringUtils.isBlank(this.getCreateOwner())) {
+			user.setCreateOwner(this.getCreateOwner());
+		}
+
+		user.setName(this.getName());
+		user.setDescription(this.getDescription());
 	}
 
-	private void isExisted() {
-		if (isExistUserAccount(this.getUserAccount())) {
-			throw new UserAccountIsExistedException("user.userAccount.existed");
+	public static User getBy(Long userId) {
+		if (StringUtils.isBlank(userId + "")) {
+			throw new NullArgumentException("user.id");
 		}
-
-		if (isExistEmail(this.getEmail())) {
-			throw new EmailIsExistedException("user.email.existed");
-		}
-
-		if (isExistTelePhone(this.getTelePhone())) {
-			throw new TelePhoneIsExistedException("user.telePhone.existed");
-		}
+		return User.get(User.class, userId);
 	}
 
 	public static User getBy(String userAccount) {
+		if (StringUtils.isBlank(userAccount)) {
+			throw new NullArgumentException("user.userAccount");
+		}
 		User user = getRepository().createCriteriaQuery(User.class)//
 				.eq("userAccount", userAccount) //
 				.singleResult();
 		return user == null ? null : user;
-	}
-
-	private boolean isExistTelePhone(String telePhone) {
-		User user = getRepository().createCriteriaQuery(User.class)//
-				.eq("telePhone", telePhone)//
-				.singleResult();
-		return user != null;
-	}
-
-	private boolean isExistEmail(String email) {
-		User user = getRepository().createCriteriaQuery(User.class)//
-				.eq("email", email)//
-				.singleResult();
-		return user != null;
-	}
-
-	public boolean isExistUserAccount(String userAccount) {
-		return getBy(userAccount) != null;
 	}
 
 	/**
@@ -156,33 +171,23 @@ public class User extends Actor {
 	}
 
 	/**
-	 * TODO 使用命名查询
 	 * 
 	 * @param userAccount
 	 * @return
 	 */
-	public static Set<Permission> findAllPermissionsBy(String userAccount) {
-		return Permission.findByUser(getBy(userAccount));
-	}
-
-	@Override
-	public void update() {
-//		isExisted();
-//		isBlanked(this.getUserAccount(), this.getName(), this.getEmail(), this.getTelePhone());
-
-		User user = User.get(User.class, this.getId());
-		user.setName(this.getName());
-		user.setDescription(this.getDescription());
-		user.setUserAccount(this.getUserAccount());
-		user.setEmail(this.getEmail());
-		user.setTelePhone(this.getTelePhone());
+	public static List<Permission> findAllPermissionsBy(String userAccount) {
+		return getRepository()//
+				.createNamedQuery("Authority.findAllAuthoritiesByUserAccount")//
+				.addParameter("userAccount", userAccount)//
+				.addParameter("authorityType", Permission.class)//
+				.list();
 	}
 
 	public boolean updatePassword(String oldUserPassword) {
-		User result = getBy(this.getUserAccount());
-		if (result.getPassword().equals(oldUserPassword)) {
+		User user = getBy(this.getUserAccount());
+		if (user.getPassword().equals(oldUserPassword)) {
 			String password = passwordService.encryptPassword(this);
-			result.setPassword(password);
+			user.setPassword(password);
 			return true;
 		}
 		return false;
@@ -190,22 +195,48 @@ public class User extends Actor {
 
 	public void resetPassword() {
 		User user = User.get(User.class, this.getId());
-		user.setPassword(this.getPassword());
+		user.setPassword(INIT_PASSWORD);
 		String password = getPasswordService().encryptPassword(user);
 		user.setPassword(password);
 	}
 
 	protected static PasswordService passwordService;
-	
+
 	protected static void setPasswordService(PasswordService passwordService) {
 		User.passwordService = passwordService;
 	}
-	
+
 	protected static PasswordService getPasswordService() {
 		if (passwordService == null) {
 			passwordService = InstanceFactory.getInstance(PasswordService.class, "passwordService");
 		}
 		return passwordService;
+	}
+
+	/*------------- Private helper methods  -----------------*/
+
+	private boolean isExistTelePhone(String telePhone) {
+		if (StringUtils.isBlank(telePhone)) {
+			throw new NullArgumentException("user.telePhone");
+		}
+		User user = getRepository().createCriteriaQuery(User.class)//
+				.eq("telePhone", telePhone)//
+				.singleResult();
+		return user != null;
+	}
+
+	private boolean isExistEmail(String email) {
+		if (StringUtils.isBlank(email)) {
+			throw new NullArgumentException("user.email");
+		}
+		User user = getRepository().createCriteriaQuery(User.class)//
+				.eq("email", email)//
+				.singleResult();
+		return user != null;
+	}
+
+	private boolean isExistUserAccount(String userAccount) {
+		return getBy(userAccount) != null;
 	}
 
 	/**
@@ -224,12 +255,29 @@ public class User extends Actor {
 		}
 	}
 
+	protected String encryptPassword(User user) {
+		return getPasswordService().encryptPassword(user);
+	}
+
+	private void isExisted() {
+		if (isExistUserAccount(this.getUserAccount())) {
+			throw new UserAccountIsExistedException("user.userAccount.existed");
+		}
+
+		if (isExistEmail(this.getEmail())) {
+			throw new EmailIsExistedException("user.email.existed");
+		}
+
+		if (isExistTelePhone(this.getTelePhone())) {
+			throw new TelePhoneIsExistedException("user.telePhone.existed");
+		}
+	}
+
 	@Override
 	public String[] businessKeys() {
 		return new String[] { "userAccount" };
 	}
 
-	
 	public Date getLastLoginTime() {
 		return lastLoginTime;
 	}
@@ -242,9 +290,9 @@ public class User extends Actor {
 		return userAccount;
 	}
 
-	public void setUserAccount(String userAccount) {
-		this.userAccount = userAccount;
-	}
+	// protected void setUserAccount(String userAccount) {
+	// this.userAccount = userAccount;
+	// }
 
 	public String getPassword() {
 		return password;
@@ -258,11 +306,11 @@ public class User extends Actor {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	protected void setEmail(String email) {
 		this.email = email;
 	}
 
-	public Boolean getDisabled() {
+	public boolean isDisabled() {
 		return disabled;
 	}
 
@@ -270,7 +318,7 @@ public class User extends Actor {
 		return telePhone;
 	}
 
-	public void setTelePhone(String telePhone) {
+	protected void setTelePhone(String telePhone) {
 		this.telePhone = telePhone;
 	}
 

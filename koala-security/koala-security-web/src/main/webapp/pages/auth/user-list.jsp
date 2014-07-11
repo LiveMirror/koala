@@ -17,6 +17,10 @@
 			title : "用户邮箱",
 			name : "email",
 			width : 180
+		},{
+			title : "联系电话",
+			name : "telePhone",
+			width : 180
 		}, {
 			title : "用户描述",
 			name : "description",
