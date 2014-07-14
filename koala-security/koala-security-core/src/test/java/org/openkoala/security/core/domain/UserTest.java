@@ -5,24 +5,16 @@ import static org.junit.Assert.*;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
-import static org.openkoala.security.core.domain.util.EntitiesHelper.*;
+
+import static org.openkoala.security.core.util.EntitiesHelper.*;
 
 public class UserTest extends AbstractDomainIntegrationTestCase {
-
-	private PasswordService passwordService;
-
-	@Before
-	public void setUp() {
-		passwordService = Mockito.mock(PasswordService.class);
-		User.setPasswordService(passwordService);
-	}
 
 	// ~ User Save Test
 	// ========================================================================================================
@@ -30,33 +22,33 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 	@Test
 	public void testSave() throws Exception {
 		User user = initUser();
-		encryptPassword(user,"670b14728ad9902aecba32e22fa4f6bd");
+		encryptPassword(user, "670b14728ad9902aecba32e22fa4f6bd");
 		assertFalse(user.existed());
 		user.save();
 		User loadUser = User.getBy(user.getId());
-		assertTrue(loadUser.existed());
-		assertNotNull(loadUser.getId());
+		assertTrue(user.existed());
+		assertNotNull(user.getId());
 		assertUser(user, loadUser);
 	}
 
 	@Test(expected = NullArgumentException.class)
 	public void testSaveUserAccountNull() throws Exception {
 		testSave();
-		User user = new User(null,"aaa");
+		User user = new User(null, "aaa");
 		user.save();
 	}
 
 	@Test(expected = UserAccountIsExistedException.class)
 	public void testSaveUserAccountExisted() throws Exception {
 		testSave();
-		User user = new User("test000000000000000001","aaa");
+		User user = new User("test000000000000000001", "aaa");
 		user.save();
 	}
 
 	@Test(expected = NullArgumentException.class)
 	public void testSaveUserEmailNull() throws Exception {
 		testSave();
-		User user = new User("test02","aaa");
+		User user = new User("test02", "aaa");
 		user.setEmail(null);
 		user.save();
 	}
@@ -64,7 +56,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 	@Test(expected = EmailIsExistedException.class)
 	public void testSaveUserEmailExisted() throws Exception {
 		testSave();
-		User user = new User("test02","aaa");
+		User user = new User("test02", "aaa");
 		user.setEmail("test01@foreveross.com");
 		user.save();
 	}
@@ -72,7 +64,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 	@Test(expected = NullArgumentException.class)
 	public void testSaveUserTelePhoneNull() throws Exception {
 		testSave();
-		User user = new User("test03","aaa");
+		User user = new User("test03", "aaa");
 		user.setEmail("test03@foreveross.com");
 		user.setTelePhone(null);
 		user.save();
@@ -81,7 +73,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 	@Test(expected = TelePhoneIsExistedException.class)
 	public void testSaveUserTelePhoneExisted() throws Exception {
 		testSave();
-		User user = new User("test03","aaa");
+		User user = new User("test03", "aaa");
 		user.setEmail("test03@foreveross.com");
 		user.setTelePhone("18665588990");
 		user.save();
@@ -117,16 +109,16 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 
 	@Test
 	public void testDisable() throws Exception {
-		User user =  initUser();
+		User user = initUser();
 		user.save();
 		assertFalse(user.isDisabled());
 		user.disable();
 		assertTrue(user.isDisabled());
 	}
-	
+
 	@Test
 	public void testEnable() throws Exception {
-		User user =  initUser();
+		User user = initUser();
 		user.save();
 		assertFalse(user.isDisabled());
 		user.disable();
@@ -134,7 +126,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		user.enable();
 		assertFalse(user.isDisabled());
 	}
-	
+
 	@Test
 	public void testGetUserById() throws Exception {
 		User user = initUser();
@@ -142,12 +134,12 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		User getUser = User.getBy(user.getId());
 		assertNotNull(getUser);
 	}
-	
+
 	@Test(expected = NullArgumentException.class)
 	public void testGetUserByNullId() throws Exception {
 		User.getBy("");
 	}
-	
+
 	@Test
 	public void testGetByUserAccount() throws Exception {
 		User user = initUser();
@@ -155,12 +147,12 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		User getUser = User.getBy(user.getUserAccount());
 		assertNotNull(getUser);
 	}
-	
+
 	@Test(expected = NullArgumentException.class)
 	public void testGetByNullUserAccount() throws Exception {
-		 User.getBy("");
+		User.getBy("");
 	}
-	
+
 	@Test
 	public void testFindAllRolesByUserAccount() throws Exception {
 		User user = initUser();
@@ -173,7 +165,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		roles = User.findAllRolesBy(user.getUserAccount());
 		assertEquals(1, roles.size());
 	}
-	
+
 	@Test
 	public void testfindAllPermissionsByUserAccount() throws Exception {
 		User user = initUser();
@@ -186,21 +178,22 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		permissions = User.findAllPermissionsBy(user.getUserAccount());
 		assertEquals(1, permissions.size());
 	}
-	
+
 	/**
 	 * XXX 同一个Session中。
+	 * 
 	 * @throws Exception
 	 */
 	@Test
 	public void testUpdatePassword() throws Exception {
 		User user = initUser();
-		encryptPassword(user,"670b14728ad9902aecba32e22fa4f6bd");
+		encryptPassword(user, "670b14728ad9902aecba32e22fa4f6bd");
 		user.save();
 		User loadUser = User.getBy(user.getId());
 		loadUser.setPassword("170b25431ad9902aecba32e22fa4f6bd");
 		loadUser.updatePassword(user.getPassword());
 	}
-	
+
 	@Test
 	public void testResetPassword() throws Exception {
 		User user = initUser();
@@ -208,10 +201,10 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		user.save();
 		user.resetPassword();
 	}
-	
+
 	/*------------- Private helper methods  -----------------*/
-	
-	private void encryptPassword(User user,String returnPassword) {
+
+	private void encryptPassword(User user, String returnPassword) {
 		Mockito.when(user.encryptPassword(user)).thenReturn(returnPassword);
 	}
 }

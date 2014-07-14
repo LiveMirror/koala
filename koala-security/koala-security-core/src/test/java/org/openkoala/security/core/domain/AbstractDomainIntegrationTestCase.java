@@ -1,5 +1,7 @@
 package org.openkoala.security.core.domain;
 
+import org.junit.Before;
+import org.mockito.Mockito;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
@@ -12,4 +14,11 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public abstract class AbstractDomainIntegrationTestCase extends KoalaBaseSpringTestCase {
 	
+	protected PasswordService passwordService;
+	
+	@Before
+	public void setUp() {
+		passwordService = Mockito.mock(PasswordService.class);
+		User.setPasswordService(passwordService);
+	}
 }

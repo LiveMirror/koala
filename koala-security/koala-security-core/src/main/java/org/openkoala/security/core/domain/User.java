@@ -1,7 +1,5 @@
 package org.openkoala.security.core.domain;
 
-import java.io.UnsupportedEncodingException;
-import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 
@@ -94,7 +92,7 @@ public class User extends Actor {
 		disabled = false;
 	}
 
-	/**
+	/**TODO 邮箱、电话可能为空。
 	 * 保存用户 TODO 验证规则，账号，邮箱，电话。
 	 */
 	@Override
@@ -244,7 +242,7 @@ public class User extends Actor {
 	 * 
 	 * @return
 	 */
-	private String generateSalt() {
+	/*private String generateSalt() {
 		SecureRandom random = new SecureRandom();
 		byte[] bytes = new byte[8];
 		random.nextBytes(bytes);
@@ -253,7 +251,7 @@ public class User extends Actor {
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
-	}
+	}*/
 
 	protected String encryptPassword(User user) {
 		return getPasswordService().encryptPassword(user);
@@ -289,10 +287,6 @@ public class User extends Actor {
 	public String getUserAccount() {
 		return userAccount;
 	}
-
-	// protected void setUserAccount(String userAccount) {
-	// this.userAccount = userAccount;
-	// }
 
 	public String getPassword() {
 		return password;

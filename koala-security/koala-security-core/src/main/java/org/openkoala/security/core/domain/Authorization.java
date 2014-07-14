@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.CriteriaQuery;
 import org.openkoala.security.core.AuthorizationIsNotExisted;
 
@@ -40,15 +41,23 @@ public class Authorization extends SecurityAbstractEntity {
 	Authorization() {
 	}
 
-	public Authorization(Actor actor, Authority authority)
-	{
+	public Authorization(Actor actor, Authority authority) {
 		this.actor = actor;
 		this.authority = authority;
 	}
+
 	public Authorization(Actor actor, Authority authority, Scope scope) {
 		this.actor = actor;
 		this.authority = authority;
 		this.scope = scope;
+	}
+
+	@Override
+	public void save() {
+		if (exists(actor, authority, scope)) {
+			return;
+		}
+		super.save();
 	}
 
 	public static List<Authorization> findByActor(Actor actor) {
@@ -61,26 +70,6 @@ public class Authorization extends SecurityAbstractEntity {
 		return getRepository().createCriteriaQuery(Authorization.class)//
 				.eq("authority", authority)//
 				.list();
-	}
-
-	/**
-	 * 判断参与者actor是否已经被授予了在某个范围scope下得authority权限
-	 * 
-	 * @param actor
-	 * @param authority
-	 * @param scope
-	 * @return
-	 */
-	public static boolean exists(Actor actor, Authority authority, Scope scope) {
-
-		CriteriaQuery criteriaQuery = new CriteriaQuery(getRepository(), Authorization.class);
-		criteriaQuery.eq("actor", actor);
-		criteriaQuery.eq("authority", authority);
-		if (scope != null) {
-			criteriaQuery.eq("scope", scope);
-		}
-
-		return criteriaQuery.singleResult() != null;
 	}
 
 	public static Set<Authority> findAuthoritiesByActorInScope(Actor actor, Scope scope) {
@@ -98,37 +87,28 @@ public class Authorization extends SecurityAbstractEntity {
 		return results;
 	}
 
-	private static Set<Authorization> findAuthorizationsByActor(Actor actor) {
-		Set<Authorization> results = new HashSet<Authorization>();
-		List<Authorization> authorizations = getRepository().createCriteriaQuery(Authorization.class)//
-				.eq("actor", actor)//
-				.list();
-
-		results.addAll(authorizations);
-
-		return results;
-	}
-
-	@Override
-	public void save() {
-		if (exists(actor, authority, scope)) {
-			return;
-		}
-		super.save();
-	}
-
-	@Override
-	public String[] businessKeys() {
-		return new String[] { getActor().toString() + getAuthority().toString() + getScope().toString() };
-	}
-
-	public static Set<Authority> findAuthoritiesByActor(User user) {
+	public static Set<Authority> findAuthoritiesByActor(Actor actor) {
 		Set<Authority> results = new HashSet<Authority>();
-		Set<Authorization> authorizations = findAuthorizationsByActor(user);
+		Set<Authorization> authorizations = findAuthorizationsByActor(actor);
 		for (Authorization authorization : authorizations) {
 			results.add(authorization.getAuthority());
 		}
 		return results;
+	}
+
+	/**
+	 * @param actor
+	 * @param authority
+	 * @return
+	 */
+	public static Authorization findByActorInAuthority(Actor actor, Authority authority) {
+		Authorization authorization = getRepository()//
+				.createCriteriaQuery(Authorization.class)//
+				.eq("actor", actor)//
+				.eq("authority", authority)//
+				.singleResult();
+
+		return authorization;
 	}
 
 	/**
@@ -148,16 +128,47 @@ public class Authorization extends SecurityAbstractEntity {
 	 * } } return results; }
 	 */
 
-	/**
-	 * TODO 异常信息
-	 * 
-	 * @param user
-	 * @param role
-	 */
-	public static void checkAuthorization(User user, Role role) {
-		if (!exists(user, role, null)) {
+	public static void checkAuthorization(Actor actor, Authority authority) {
+		if (!exists(actor, authority, null)) {
 			throw new AuthorizationIsNotExisted();
 		}
+	}
+
+	public static void checkAuthorization(Actor actor, Authority authority, Scope scope) {
+		if (!exists(actor, authority, scope)) {
+			throw new AuthorizationIsNotExisted();
+		}
+	}
+
+	/**
+	 * 判断参与者actor是否已经被授予了在某个范围scope下得authority权限
+	 * 
+	 * @param actor
+	 * @param authority
+	 * @param scope
+	 * @return
+	 */
+	protected static boolean exists(Actor actor, Authority authority, Scope scope) {
+
+		CriteriaQuery criteriaQuery = new CriteriaQuery(getRepository(), Authorization.class);
+		criteriaQuery.eq("actor", actor);
+		criteriaQuery.eq("authority", authority);
+		if (scope != null) {
+			criteriaQuery.eq("scope", scope);
+		}
+
+		return criteriaQuery.singleResult() != null;
+	}
+
+	private static Set<Authorization> findAuthorizationsByActor(Actor actor) {
+		Set<Authorization> results = new HashSet<Authorization>();
+		List<Authorization> authorizations = getRepository().createCriteriaQuery(Authorization.class)//
+				.eq("actor", actor)//
+				.list();
+
+		results.addAll(authorizations);
+
+		return results;
 	}
 
 	public Actor getActor() {
@@ -185,23 +196,17 @@ public class Authorization extends SecurityAbstractEntity {
 	}
 
 	@Override
-	public String toString() {
-		return "Authorization [actor=" + actor + ", authority=" + authority + ", scope=" + scope + "]";
+	public String[] businessKeys() {
+		if (this.getScope() != null) {
+			return new String[] { getActor().toString() + getAuthority().toString() + getScope().toString() };
+		} else {
+			return new String[] { getActor().toString() + getAuthority().toString() };
+		}
 	}
 
-	/**
-	 * @param actor
-	 * @param authority
-	 * @return
-	 */
-	public static Authorization findByActorInAuthority(Actor actor, Authority authority) {
-		Authorization authorization = getRepository()//
-				.createCriteriaQuery(Authorization.class)//
-				.eq("actor", actor)//
-				.eq("authority", authority)//
-				.singleResult();
-
-		return authorization;
+	@Override
+	public String toString() {
+		return "Authorization [actor=" + actor + ", authority=" + authority + ", scope=" + scope + "]";
 	}
 
 }

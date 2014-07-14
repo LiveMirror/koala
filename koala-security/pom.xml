@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.openkoala</groupId>
@@ -10,7 +11,7 @@
 	<artifactId>koala-security</artifactId>
 	<packaging>pom</packaging>
 	<name>koala-security</name>
-	<description/>
+	<description />
 	<modules>
 		<module>koala-security-core</module>
 		<module>koala-security-application</module>
@@ -18,23 +19,18 @@
 		<module>koala-security-facade</module>
 		<module>koala-security-facadeImpl</module>
 		<module>koala-security-web</module>
-    	<module>koala-security-infra</module>
-  </modules>
+		<module>koala-security-infra</module>
+	</modules>
 	<properties>
-		<!-- 
-		<db.groupId>mysql</db.groupId>
-		<db.artifactId>mysql-connector-java</db.artifactId>
-		<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
-		<hibernate.show_sql>true</hibernate.show_sql>
-		<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
-		<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
-		<db.connectionURL>jdbc:mysql://localhost:3306/security?useUnicode=true&amp;characterEncoding=UTF-8</db.connectionURL>
-		<db.username>root</db.username>
-		<db.password>root</db.password>
-		<db.Type>MYSQL</db.Type>
-		<generateDdl>true</generateDdl>
-		 -->
+		<!-- <db.groupId>mysql</db.groupId> <db.artifactId>mysql-connector-java</db.artifactId> 
+			<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto> <hibernate.show_sql>true</hibernate.show_sql> 
+			<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect> 
+			<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver> <db.connectionURL>jdbc:mysql://localhost:3306/security?useUnicode=true&amp;characterEncoding=UTF-8</db.connectionURL> 
+			<db.username>root</db.username> <db.password>root</db.password> <db.Type>MYSQL</db.Type> 
+			<generateDdl>true</generateDdl> -->
 		<shiro.version>1.2.3</shiro.version>
+		<guava.version>17.0</guava.version>
+		<hamcrest.version>1.3</hamcrest.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -47,6 +43,16 @@
 				<groupId>org.apache.shiro</groupId>
 				<artifactId>shiro-spring</artifactId>
 				<version>${shiro.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest-all</artifactId>
+				<version>${hamcrest.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

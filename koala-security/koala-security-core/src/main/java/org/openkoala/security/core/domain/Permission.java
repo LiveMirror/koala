@@ -8,6 +8,9 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
+import org.apache.commons.lang3.StringUtils;
+import org.openkoala.security.core.IdentifierIsExistedException;
+
 /**
  * 权限。代表系统的一项操作或功能。
  * 
@@ -38,13 +41,58 @@ public class Permission extends Authority {
 	}
 
 	@Override
+	public void save() {
+		isNameExisted();
+		isIdentifierExisted(this.identifier);
+		super.save();
+	}
+
+	public Permission getPermissionBy(String identifier) {
+		return getRepository()//
+				.createCriteriaQuery(Permission.class)//
+				.eq("identifier", identifier)//
+				.singleResult();
+	}
+
+	@Override
 	public void update() {
-		isExisted();
 		Permission permission = Permission.get(Permission.class, this.getId());
-		permission.setName(this.getName());
+		
+		if(!StringUtils.isBlank(this.getName()) && !permission.getName().equals(this.getName())){
+			isNameExisted();
+			permission.name = this.getName();
+		}
+		
+		if(!StringUtils.isBlank(this.getIdentifier()) && !permission.getIdentifier().equals(this.getIdentifier()))
+		{
+			isIdentifierExisted(this.getIdentifier());
+			permission.identifier = this.getIdentifier();
+		}
 		permission.setDescription(this.getDescription());
 	}
 
+	@Override
+	public Authority getAuthorityBy(String name) {
+		return getRepository()//
+				.createNamedQuery("Authority.getAuthorityByName")//
+				.addParameter("authorityType", Permission.class)//
+				.addParameter("name", name)//
+				.singleResult();
+
+	}
+	
+	public static Permission getBy(Long id){
+		return Permission.get(Permission.class, id);
+	}
+	
+	private void isIdentifierExisted(String identifier) {
+		Permission permission = getPermissionBy(identifier);
+		if(permission != null){
+			throw new IdentifierIsExistedException("permission.identifier.existed");
+		}
+		
+	}
+	
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -55,10 +103,6 @@ public class Permission extends Authority {
 
 	public String getIdentifier() {
 		return identifier;
-	}
-
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
 	}
 
 }
