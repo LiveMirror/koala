@@ -142,7 +142,7 @@ body {
 			<FORM id="loginFormId" class="form-horizontal" action="login" method="post">
 				<div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                    <input type="text" class="form-control" placeholder="用户名"  name="username" id="j_username" value="<shiro:principal/>">
+                    <input type="text" class="form-control" placeholder="用户名"  name="username" id="j_username" value="">
 				</div>
                 <div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>

@@ -255,7 +255,7 @@
         				$saveBtn.attr('disabled', 'disabled');	
         				var data = "roleId="+roleId;
         				
-        				console.table(items);
+        				//console.table(items);
         				
         				for(var i=0,j=items.length; i<j; i++){
         					data += "&urlAccessResourceIds="+items[i].id;
