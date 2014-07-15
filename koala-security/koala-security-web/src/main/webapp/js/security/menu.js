@@ -141,7 +141,7 @@ var menuManager = function(){
 	 *设置值
 	 */
 	var setData = function(item){
-		console.log(JSON.stringify(item));
+		//console.log(JSON.stringify(item));
 		
 		parentName.closest('.form-group').hide();
 		name.val(item.name);

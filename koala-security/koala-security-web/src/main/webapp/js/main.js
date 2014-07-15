@@ -231,6 +231,7 @@ var changeHeight = function(){
     var footHeight = $('#footer').outerHeight();
     var height =  windowHeight - headerHeight - footHeight;
     sidebarHeight < height && sidebar.css('height', height);
+   // $('.g-sidec').css('min-height',height);
     $('.g-mainc').css('min-height', height);
 };
 

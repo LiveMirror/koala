@@ -26,6 +26,10 @@
 			name : "description",
 			width : 200
 		}, {
+			title : "用户电话",
+			name : "telePhone",
+			width : 200
+		}, {
 			title : "是否有效",
 			name : "valid",
 			width : 100,
