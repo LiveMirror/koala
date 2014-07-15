@@ -13,7 +13,6 @@ import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
-import org.springframework.test.context.TestExecutionListeners;
 
 public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTestCase {
 

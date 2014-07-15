@@ -46,7 +46,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 		return User.findAllRolesBy(userAccount);
 	}
 
-	public Set<Permission> findAllPermissionsByUserAccount(String userAccount) {
+	public List<Permission> findAllPermissionsByUserAccount(String userAccount) {
 		return User.findAllPermissionsBy(userAccount);
 	}
 

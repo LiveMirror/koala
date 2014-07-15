@@ -9,12 +9,15 @@ var userManager = function() {
 	var email = null;
 	//用户邮箱
 	var userPassword = null;
+	// 联系电话
+	var telePhone = null;
 	//用户密码
-	var userDescript = null;
+	var description = null;
 	//描述
 	var isEnable = null;
 	//是否启用
 	var dataGrid = null;
+	
 	//Grid对象
 	/*
 	 *新增
@@ -103,7 +106,8 @@ var userManager = function() {
 		userAccount = dialog.find('#userAccount');
 		email = dialog.find('#email');
 		userPassword = dialog.find('#userPassword');
-		userDescript = dialog.find('#userDescript');
+		description = dialog.find('#description');
+		telePhone = dialog.find('#telePhone');
 		isEnable = dialog.find('[name="isEnable"]');
 		isEnable.on('click', function() {
 			isEnable.each(function() {
@@ -139,7 +143,7 @@ var userManager = function() {
 		userAccount.val(item.userAccount).attr('disabled', 'disabled');
 		email.val(item.email).attr('disabled', 'disabled');
 		userPassword.closest('.form-group').hide();
-		userDescript.val(item.userDesc);
+		description.val(item.userDesc);
 		if (!item.valid) {
 			dialog.find('[name="isEnable"][value="true"]').removeAttr('checked', 'checked').parent().removeClass('checked');
 			dialog.find('[name="isEnable"][value="false"]').attr('checked', 'checked').parent().addClass('checked');
@@ -210,7 +214,8 @@ var userManager = function() {
 		data['userAccount'] = userAccount.val();
 		data['email'] = email.val();
 		data['userPassword'] = userPassword.val();
-		data['description'] = userDescript.val();
+		data['description'] = description.val();
+		data['telePhone'] = telePhone.val();
 		if (item) {
 			data['id'] = item.id;
 		}

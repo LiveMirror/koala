@@ -37,7 +37,10 @@ import org.openkoala.security.core.NameIsExistedException;
 				query = "SELECT _authority FROM Authorization _authorization JOIN  _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND TYPE(_authority) = :authorityType ORDER BY _authority.id"),
 		@NamedQuery(
 				name = "Authority.checkHasSecurityResource", 
-				query = "SELECT _authority FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _authority IN (:authorities) AND TYPE(_securityResource) = :securityResourceType  AND _securityResource = :securityResource") 
+				query = "SELECT _authority FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _authority IN (:authorities) AND TYPE(_securityResource) = :securityResourceType  AND _securityResource = :securityResource"),
+		@NamedQuery(
+				name="Authority.getAuthorityByName",
+				query="SELECT _authority FROM Authority _authority WHERE TYPE(_authority) = :authorityType AND _authority.name = :name")
 		})
 public abstract class Authority extends SecurityAbstractEntity {
 
@@ -47,7 +50,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 	 * 名称[用于判断存储中是否已经存在]
 	 */
 	@Column(name = "NAME")
-	private String name;
+	protected String name;
 
 	/**
 	 * 描述
@@ -107,20 +110,16 @@ public abstract class Authority extends SecurityAbstractEntity {
 		return new HashSet<MenuResource>(menuResources);
 	}
 
-	public Authority getAuthorityBy(String name) {
-		Authority authority = getRepository().createCriteriaQuery(Authority.class)//
-				.eq("name", this.name)//
-				.singleResult();
-		return authority != null ? authority : null;
-	}
+	public abstract Authority getAuthorityBy(String name);
+	
+//	public Authority getAuthorityBy(String name) {
+//		Authority authority = getRepository().createCriteriaQuery(Authority.class)//
+//				.eq("name", this.name)//
+//				.singleResult();
+//		return authority != null ? authority : null;
+//	}
 
-	@Override
-	public final void save() {
-		// isExisted();
-		super.save();
-	}
-
-	protected void isExisted() {
+	protected void isNameExisted() {
 		if (isExistName(this.name)) {
 			throw new NameIsExistedException("name.exist");
 		}
@@ -164,16 +163,16 @@ public abstract class Authority extends SecurityAbstractEntity {
 				.addParameter("securityResourceType", PageElementResource.class)//
 				.addParameter("securityResource", pageElementResource)//
 				.list();
-		return results.size() > 0 ? true : false;
+		return results.isEmpty() ? false : true;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+//	public void setName(String name) {
+//		this.name = name;
+//	}
 
 	public String getDescription() {
 		return description;

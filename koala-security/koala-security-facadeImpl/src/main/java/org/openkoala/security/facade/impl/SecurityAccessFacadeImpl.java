@@ -76,7 +76,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	public Set<PermissionDTO> findPermissionDtosBy(String username) {
 		Set<PermissionDTO> results = new HashSet<PermissionDTO>();
-		Set<Permission> permissions = securityAccessApplication.findAllPermissionsByUserAccount(username);
+		List<Permission> permissions = securityAccessApplication.findAllPermissionsByUserAccount(username);
 		for (Permission permission : permissions) {
 			PermissionDTO permissionDto = generatePermissionDTOBy(permission);
 			permissionDto.setUserName(username);

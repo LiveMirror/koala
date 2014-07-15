@@ -459,7 +459,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		
 		Role role = securityAccessApplication.getRoleBy(currentRoleName);
 		Set<Permission> rolePermissions = role.getPermissions();
-		Set<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
+		List<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
 		
 		Set<Authority> authorities = new HashSet<Authority>();
 		authorities.add(role);
