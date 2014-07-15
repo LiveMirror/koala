@@ -68,7 +68,6 @@ public abstract class Authority extends SecurityAbstractEntity {
 	}
 
 	public Authority(String name) {
-		// Assert.isBlank(name, "名称不能为空");
 		this.name = name;
 	}
 
@@ -112,21 +111,10 @@ public abstract class Authority extends SecurityAbstractEntity {
 
 	public abstract Authority getAuthorityBy(String name);
 	
-//	public Authority getAuthorityBy(String name) {
-//		Authority authority = getRepository().createCriteriaQuery(Authority.class)//
-//				.eq("name", this.name)//
-//				.singleResult();
-//		return authority != null ? authority : null;
-//	}
-
 	protected void isNameExisted() {
 		if (isExistName(this.name)) {
-			throw new NameIsExistedException("name.exist");
+			throw new NameIsExistedException("authority.name.exist");
 		}
-	}
-
-	private boolean isExistName(String name) {
-		return getAuthorityBy(name) != null;
 	}
 
 	public abstract void update();
@@ -166,13 +154,15 @@ public abstract class Authority extends SecurityAbstractEntity {
 		return results.isEmpty() ? false : true;
 	}
 
+	/*------------- Private helper methods  -----------------*/
+	
+	private boolean isExistName(String name) {
+		return getAuthorityBy(name) != null;
+	}
+	
 	public String getName() {
 		return name;
 	}
-
-//	public void setName(String name) {
-//		this.name = name;
-//	}
 
 	public String getDescription() {
 		return description;

@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.CriteriaQuery;
 import org.openkoala.security.core.AuthorizationIsNotExisted;
 
@@ -110,23 +109,6 @@ public class Authorization extends SecurityAbstractEntity {
 
 		return authorization;
 	}
-
-	/**
-	 * <pre>
-	 * 1、获取本身的Permission。
-	 * 2、获取Role中的所有Permission。
-	 * </pre>
-	 * 
-	 * @param user
-	 * @return
-	 */
-	/*
-	 * public static Set<Permission> findAllPermissionsByUserAccount(User user) { Set<Permission> results = new
-	 * HashSet<Permission>(); Set<Authorization> authorizations = findAuthorizationsByActor(user); for (Authorization
-	 * authorization : authorizations) { Authority authority = authorization.getAuthority(); if (authority instanceof
-	 * Permission) { results.add((Permission) authority); } else { results.addAll(((Role) authority).getPermissions());
-	 * } } return results; }
-	 */
 
 	public static void checkAuthorization(Actor actor, Authority authority) {
 		if (!exists(actor, authority, null)) {

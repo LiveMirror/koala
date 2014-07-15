@@ -3,10 +3,8 @@ package org.openkoala.security.core.domain;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
 import java.util.Set;
 
-import org.dayatang.dbunit.DbUnitUtils;
 import org.junit.Test;
 
 import static org.openkoala.security.core.util.EntitiesHelper.*;
@@ -49,4 +47,22 @@ public class ActorTest extends AbstractDomainIntegrationTestCase{
 		assertNotNull(authorities);
 		assertTrue(authorities.size() == 1);
 	}
+	
+	@Test
+	public void testGetPermissions() throws Exception {
+		
+		User user = initUser();
+		user.save();
+		Permission permission = initPermission();
+		permission.save();
+		Scope scope = new OrganizationScope("testscope0000000000");
+		scope.setDescription("testDescription00000");
+		scope.save();
+		user.grant(permission, scope);
+		
+		Set<Permission> permissions = user.getPermissions(scope);
+		assertNotNull(permissions);
+		assertEquals(1, permissions.size());
+	}
+	
 }

@@ -63,17 +63,14 @@ public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTe
 	
 	@Test
 	public void testOneUrlAccessResource() throws Exception {
-		UrlAccessResource userUrlAccessResource = new UrlAccessResource("测试管理");
-		userUrlAccessResource.setIdentifier("/auth/test/**");
+		UrlAccessResource userUrlAccessResource = new UrlAccessResource("测试管理","/auth/test/**");
 		securityConfigApplication.createSecurityResource(userUrlAccessResource);
 	}
 
 	@Test
 	public void testInitUrlAccessResources() throws Exception {
-		UrlAccessResource userUrlAccessResource = new UrlAccessResource("用户管理");
-		userUrlAccessResource.setIdentifier("/auth/user/**");
-		UrlAccessResource permissionUrlAccessResource = new UrlAccessResource("权限管理");
-		permissionUrlAccessResource.setIdentifier("/auth/permission/**");
+		UrlAccessResource userUrlAccessResource = new UrlAccessResource("用户管理","/auth/user/**");
+		UrlAccessResource permissionUrlAccessResource = new UrlAccessResource("权限管理","/auth/permission/**");
 		securityConfigApplication.createSecurityResource(userUrlAccessResource);
 		securityConfigApplication.createSecurityResource(permissionUrlAccessResource);
 		

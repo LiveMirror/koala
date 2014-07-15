@@ -221,7 +221,6 @@ public class KoalaEntityRepositoryJpa implements
         return getQuery(namedQuery).getResultList();
     }
 
-    // TODO 未对异常做处理。
     @Override
     public <T> T getSingleResult(NamedQuery namedQuery) {
 		try {
