@@ -214,4 +214,6 @@ public interface SecurityAccessFacade {
 	Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
 			Long pageElementResourceId);
 
+	UserDTO login(String principal, String password);
+
 }

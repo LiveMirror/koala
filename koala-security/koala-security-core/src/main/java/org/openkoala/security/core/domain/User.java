@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
@@ -13,6 +15,7 @@ import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
+import org.openkoala.security.core.UserNotExistedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,12 +27,16 @@ import org.slf4j.LoggerFactory;
  */
 @Entity
 @DiscriminatorValue("USER")
+@NamedQueries({ 
+	@NamedQuery(
+			name = "User.loginByUserAccount", 
+			query = "SELECT _user FROM User _user WHERE _user.userAccount = :userAccount AND _user.password = :password") })
 public class User extends Actor {
 
 	private static final long serialVersionUID = 7849700468353029794L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
-	
+
 	private static final String INIT_PASSWORD = "888888";
 
 	@Column(name = "USER_ACCOUNT")
@@ -92,8 +99,8 @@ public class User extends Actor {
 		disabled = false;
 	}
 
-	/**TODO 邮箱、电话可能为空。
-	 * 保存用户 TODO 验证规则，账号，邮箱，电话。
+	/**
+	 * TODO 邮箱、电话可能为空。 保存用户 TODO 验证规则，账号，邮箱，电话。
 	 */
 	@Override
 	public void save() {
@@ -183,7 +190,8 @@ public class User extends Actor {
 
 	public boolean updatePassword(String oldUserPassword) {
 		User user = getBy(this.getUserAccount());
-		if (user.getPassword().equals(oldUserPassword)) {
+		String encryptOldUserPassword = encryptPassword(new User(user.getUserAccount(), oldUserPassword));
+		if (user.getPassword().equals(encryptOldUserPassword)) {
 			String password = passwordService.encryptPassword(this);
 			user.setPassword(password);
 			return true;
@@ -193,9 +201,24 @@ public class User extends Actor {
 
 	public void resetPassword() {
 		User user = User.get(User.class, this.getId());
-		user.setPassword(INIT_PASSWORD);
-		String password = getPasswordService().encryptPassword(user);
+		String password = encryptPassword(new User(user.getUserAccount(), INIT_PASSWORD));
 		user.setPassword(password);
+	}
+
+	public static User login(String principal, String password) {
+		if(StringUtils.isBlank(principal) || StringUtils.isBlank(password)){
+			throw new NullArgumentException("userAccount or password is empty");
+		}
+		User user = getRepository()//
+				.createNamedQuery("User.loginByUserAccount")//
+				.addParameter("userAccount", principal)//
+				.addParameter("password", encryptPassword(new User(principal, password)))//
+				.singleResult();
+		
+		if(user == null){
+			throw new UserNotExistedException("userAccount or password is error");
+		}
+		return user;
 	}
 
 	protected static PasswordService passwordService;
@@ -209,6 +232,10 @@ public class User extends Actor {
 			passwordService = InstanceFactory.getInstance(PasswordService.class, "passwordService");
 		}
 		return passwordService;
+	}
+
+	protected static String encryptPassword(User user) {
+		return getPasswordService().encryptPassword(user);
 	}
 
 	/*------------- Private helper methods  -----------------*/
@@ -242,20 +269,11 @@ public class User extends Actor {
 	 * 
 	 * @return
 	 */
-	/*private String generateSalt() {
-		SecureRandom random = new SecureRandom();
-		byte[] bytes = new byte[8];
-		random.nextBytes(bytes);
-		try {
-			return new String(bytes, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
-	}*/
-
-	protected String encryptPassword(User user) {
-		return getPasswordService().encryptPassword(user);
-	}
+	/*
+	 * private String generateSalt() { SecureRandom random = new SecureRandom(); byte[] bytes = new byte[8];
+	 * random.nextBytes(bytes); try { return new String(bytes, "UTF-8"); } catch (UnsupportedEncodingException e) {
+	 * throw new RuntimeException(e); } }
+	 */
 
 	private void isExisted() {
 		if (isExistUserAccount(this.getUserAccount())) {

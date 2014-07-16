@@ -102,6 +102,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public boolean updatePassword(UserDTO userDto, String oldUserPassword) {
 		User user = transFromUserBy(userDto);
+		LOGGER.info("user :{}",user);
 		return securityAccessApplication.updatePassword(user, oldUserPassword);
 	}
 
@@ -868,6 +869,12 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.addParameter("securityResourceId", pageElementResourceId)//
 				.setPage(page, pagesize)//
 				.pagedList();
+	}
+
+	@Override
+	public UserDTO login(String principal, String password) {
+		User user = securityAccessApplication.login(principal,password);
+		return generateUserDTOBy(user);
 	}
 
 }

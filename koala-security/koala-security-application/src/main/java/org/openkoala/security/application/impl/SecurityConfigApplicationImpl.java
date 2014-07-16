@@ -141,9 +141,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void terminateActorFromAuthority(Actor actor, Authority authority) {
-		LOGGER.info("terminateActorFromAuthority actor:{},authority:{}", actor, authority);
 		Authorization authorization = Authorization.findByActorInAuthority(actor, authority);
-		LOGGER.info("terminate authorization:{}", authorization);
 		authorization.remove();
 	}
 
@@ -182,13 +180,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		new Authorization(actor, authority, scope).save();
 	}
 
-	@Override
-	public void grantActorToAuthorityInScope(Long actorId, Long authorityId, Long scopeId) {
-		Actor actor = Actor.get(Actor.class, actorId);
-		Authority authority = Authority.get(Authority.class, authorityId);
-		Scope scope = Scope.get(Scope.class, scopeId);
-		grantActorToAuthorityInScope(actor, authority, scope);
-	}
 
 	@Override
 	public void grantAuthorityToSecurityResource(Authority authority, SecurityResource securityResource) {
@@ -200,9 +191,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	public void grantAuthorityToSecurityResources(Authority authority,
 			List<? extends SecurityResource> securityResources) {
 		authority.addSecurityResources(securityResources);
-		// for (SecurityResource securityResource : securityResources) {
-		// this.grantAuthorityToSecurityResource(authority, securityResource);
-		// }
 	}
 
 	@Override
@@ -230,20 +218,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	public void createChildToParent(OrganizationScope child, Long parentId) {
 		OrganizationScope parent = OrganizationScope.get(OrganizationScope.class, parentId);
 		parent.addChild(child);
-	}
-
-	@Override
-	public void grantActorsToAuthority(Long[] userIds, Long roleId) {
-		for (Long userId : userIds) {
-			grantActorToAuthority(userId, roleId);
-		}
-	}
-
-	@Override
-	public void grantActorToAuthority(Long actorId, Long authorityId) {
-		Actor actor = Actor.get(Actor.class, actorId);
-		Authority authority = Authority.get(Authority.class, authorityId);
-		grantActorToAuthority(actor, authority);
 	}
 
 	@Override
@@ -307,5 +281,10 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	@Override
 	public void updateActor(Actor actor) {
 		actor.update();
+	}
+
+	@Override
+	public void grantAuthorityToActor(Authority authority, Actor actor) {
+		new Authorization(actor, authority, null).save();
 	}
 }

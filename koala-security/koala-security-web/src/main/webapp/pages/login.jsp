@@ -182,15 +182,26 @@ body {
 	        }
 	        btnLogin.attr('disabled', 'disabled').html('正在登录...');
     		var param = form.serialize();
-        	$.post("auth/user/login.koala",param,function(data){
-    			if(data.result = "success"){
-    				$('.login_con_R').message({
-    					type: 'success',
-    					content: '登陆成功'
-    				});
-    				window.location.href='${pageContext.request.contextPath}/pages/index.jsp';
-    			}
-    		}); 
+        	$.ajax({
+        		url : "auth/user/login.koala",
+        		dataType:"json",
+        		data:param,
+        		type:"post",
+        		success:function(data){
+        			if(data.result == "success"){
+        				$('.login_con_R').message({
+        					type: 'success',
+        					content:  data.message
+        				});
+        				window.location.href='${pageContext.request.contextPath}/pages/index.jsp';
+        			}else{
+        				$('.login_con_R').message({
+        					type: 'error',
+        					content: data.message
+        				});
+        			}
+        		}
+        	});
 		};
 		});
 	</script>

@@ -146,9 +146,9 @@ public class SecurityConfigApplicationTest extends AbstractApplicationIntegratio
 		securityConfigApplication.grantPermissionToRole(updatePermission, adminRole);
 		securityConfigApplication.grantPermissionToRole(deletPermission, adminRole);
 
-		securityConfigApplication.grantActorToAuthority(adminUser.getId(), adminRole.getId());
-		securityConfigApplication.grantActorToAuthority(user.getId(), role.getId());
-		securityConfigApplication.grantActorToAuthority(user.getId(), deletPermission.getId());
+//		securityConfigApplication.grantActorToAuthority(adminUser.getId(), adminRole.getId());
+//		securityConfigApplication.grantActorToAuthority(user.getId(), role.getId());
+//		securityConfigApplication.grantActorToAuthority(user.getId(), deletPermission.getId());
 
 		// securityConfigApplication.grantActorToAuthorityInScope(user, role, scope);
 		// securityConfigApplication.grantActorToAuthorityInScope(user, deletPermission, scope);

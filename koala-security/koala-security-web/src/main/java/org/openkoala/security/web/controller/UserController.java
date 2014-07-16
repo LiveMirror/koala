@@ -10,8 +10,10 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.dayatang.querychannel.Page;
 import org.openkoala.security.core.EmailIsExistedException;
+import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
+import org.openkoala.security.core.UserNotExistedException;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
@@ -50,15 +52,26 @@ public class UserController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public Map<String, Object> login(@RequestParam String username, @RequestParam String password) {
 		Map<String, Object> results = new HashMap<String, Object>();
-		// 这个以后可以扩展
 		UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
-
 		try {
 			SecurityUtils.getSubject().login(usernamePasswordToken);
 			results.put("message", "登陆成功");
 			results.put("result", "success");
+		} catch (NullArgumentException e) {
+			e.printStackTrace();
+			results.put("message", "用户名或者密码为空");
+			results.put("result", "failure");
+		} catch (UserNotExistedException e) {
+			e.printStackTrace();
+			results.put("message", "用户名或者密码不正确");
+			results.put("result", "failure");
 		} catch (AuthenticationException e) {
-			results.put("message", "登陆失败");
+			e.printStackTrace();
+			results.put("message", "登录失败");
+			results.put("result", "failure");
+		} catch (Exception e) {
+			e.printStackTrace();
+			results.put("message", "登录失败");
 			results.put("result", "failure");
 		}
 		return results;
@@ -198,8 +211,6 @@ public class UserController {
 		dataMap.put("result", "success");
 		return dataMap;
 	}
-
-	
 
 	/**
 	 * 激活
@@ -390,7 +401,7 @@ public class UserController {
 		dataMap.put("success", true);
 		return dataMap;
 	}
-	
+
 	/**
 	 * 根据用户ID查找所有的已经授权的角色。
 	 * 
@@ -432,7 +443,8 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
 	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, Long userId, RoleDTO queryRoleCondition) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,
+				userId);
 		return results;
 	}
 

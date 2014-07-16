@@ -7,6 +7,7 @@ import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
@@ -75,7 +76,7 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	User getUserBy(String userAccount);
-	
+
 	/**
 	 * 根据权限ID得到权限
 	 * 
@@ -93,7 +94,7 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	MenuResource getMenuResourceBy(Long menuResourceId);
-	
+
 	/**
 	 * 根据URL访问资源ID得到URL访问资源
 	 * 
@@ -101,7 +102,7 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	UrlAccessResource getUrlAccessResourceBy(Long urlAccessResourceId);
-	
+
 	/**
 	 * 根据页面元素ID得到页面元素资源
 	 * 
@@ -128,6 +129,8 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	Role getRoleBy(String roleName);
+
+	Scope getScope(Long scopeId);
 
 	/**
 	 * 根据账户查找拥有的菜单资源
@@ -181,4 +184,16 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	List<UrlAccessResource> findAllUrlAccessResources();
+
+	/**
+	 * 用户登录
+	 * 
+	 * @param principal
+	 *            当事人 可能是用户名、邮箱、电话 目前只实现用户名,
+	 * @param password
+	 *            密码
+	 * @return
+	 */
+	User login(String principal, String password);
+
 }

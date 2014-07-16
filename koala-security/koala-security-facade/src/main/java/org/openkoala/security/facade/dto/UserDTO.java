@@ -34,13 +34,13 @@ public class UserDTO implements Serializable {
 	public UserDTO() {
 	}
 
-	public UserDTO(String username, String userPassword) {
-		this.userAccount = username;
+	public UserDTO(String userAccount, String userPassword) {
+		this.userAccount = userAccount;
 		this.userPassword = userPassword;
 	}
 
-	public UserDTO(String username, String userPassword, Date createDate, String description) {
-		this.userAccount = username;
+	public UserDTO(String userAccount, String userPassword, Date createDate, String description) {
+		this.userAccount = userAccount;
 		this.userPassword = userPassword;
 		this.createDate = createDate;
 		this.description = description;

@@ -17,6 +17,7 @@ import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityConfigFacade;
@@ -37,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfigFacadeImpl.class);
-	
+
 	@Inject
 	private SecurityConfigApplication securityConfigApplication;
 
@@ -46,7 +47,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	public void saveUserDTO(UserDTO userDTO) {
 		User user = transFromUserBy(userDTO);
-		LOGGER.info("save user:{}",user);
+		LOGGER.info("save user:{}", user);
 		securityConfigApplication.createActor(user);
 	}
 
@@ -83,7 +84,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 			securityConfigApplication.terminateAuthority(role);
 		}
 	}
-	
+
 	@Override
 	public void updateUserDTO(UserDTO userDTO) {
 		User user = transFromUserBy(userDTO);
@@ -156,7 +157,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void grantRoleInScope(Long userId, Long roleId, Long scopeId) {
-		securityConfigApplication.grantActorToAuthorityInScope(userId, roleId, scopeId);
+		User user = securityAccessApplication.getUserBy(userId);
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		Scope scope = securityAccessApplication.getScope(scopeId);
+		securityConfigApplication.grantActorToAuthorityInScope(user, role, scope);
 	}
 
 	@Override
@@ -168,7 +172,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void grantPermissionInScope(Long userId, Long permissionId, Long scopeId) {
-		securityConfigApplication.grantActorToAuthorityInScope(userId, permissionId, scopeId);
+		User user = securityAccessApplication.getUserBy(userId);
+		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		Scope scope = securityAccessApplication.getScope(scopeId);
+		securityConfigApplication.grantActorToAuthorityInScope(user, permission, scope);
 	}
 
 	@Override
@@ -180,7 +187,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void grantRoleToUser(Long userId, Long roleId) {
-		securityConfigApplication.grantActorToAuthority(userId, roleId);
+		User user = securityAccessApplication.getUserBy(userId);
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		securityConfigApplication.grantAuthorityToActor(role, user);
 	}
 
 	@Override
@@ -192,7 +201,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void grantPermissionToUser(Long userId, Long permissionId) {
-		securityConfigApplication.grantActorToAuthority(userId, permissionId);
+		User user = securityAccessApplication.getUserBy(userId);
+		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		securityConfigApplication.grantAuthorityToActor(permission, user);
 	}
 
 	@Override
@@ -246,10 +257,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	@Override
 	public void terminateAuthorizationsByRoles(Long userId, Long[] roleIds) {
 		User user = securityAccessApplication.getUserBy(userId);
-		LOGGER.info("roleIds:{}",roleIds);
+		LOGGER.info("roleIds:{}", roleIds);
 		for (Long roleId : roleIds) {
 			Role role = securityAccessApplication.getRoleBy(roleId);
-			securityConfigApplication.terminateActorFromAuthority(user,role);
+			securityConfigApplication.terminateActorFromAuthority(user, role);
 		}
 	}
 
@@ -295,7 +306,8 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	public void grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		for (Long pageElementResourceId : pageElementResourceIds) {
-			PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+			PageElementResource pageElementResource = securityAccessApplication
+					.getPageElementResourceBy(pageElementResourceId);
 			securityConfigApplication.grantSecurityResourceToAuthority(pageElementResource, role);
 		}
 	}
@@ -391,7 +403,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
 		for (Long permissionId : permissionIds) {
 			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-			securityConfigApplication.terminateAuthorityFromSecurityResource(permission,urlAccessResource);
+			securityConfigApplication.terminateAuthorityFromSecurityResource(permission, urlAccessResource);
 		}
 	}
 
@@ -410,7 +422,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		for (Long permissionId : permissionIds) {
 			Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
 			securityConfigApplication.terminateAuthorityFromSecurityResource(permssion, menuResource);
-		}	
+		}
 	}
 
 	@Override
@@ -437,14 +449,16 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	public void terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		for (Long pageElementResourceId : pageElementResourceIds) {
-			PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+			PageElementResource pageElementResource = securityAccessApplication
+					.getPageElementResourceBy(pageElementResourceId);
 			securityConfigApplication.terminateSecurityResourceFromAuthority(pageElementResource, role);
 		}
 	}
 
 	@Override
 	public void grantPermisssionsToPageElementResource(Long[] permissionIds, Long pageElementResourceId) {
-		PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+		PageElementResource pageElementResource = securityAccessApplication
+				.getPageElementResourceBy(pageElementResourceId);
 		for (Long permissionId : permissionIds) {
 			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 			securityConfigApplication.grantAuthorityToSecurityResource(permission, pageElementResource);
@@ -453,7 +467,8 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void terminatePermissionsFromPageElementResource(Long[] permissionIds, Long pageElementResourceId) {
-		PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+		PageElementResource pageElementResource = securityAccessApplication
+				.getPageElementResourceBy(pageElementResourceId);
 		for (Long permissionId : permissionIds) {
 			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 			securityConfigApplication.terminateAuthorityFromSecurityResource(permission, pageElementResource);
@@ -461,27 +476,22 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public boolean checkUserHasPageElementResource(String userAccount,String currentRoleName, String securityResourceName) {
-		
+	public boolean checkUserHasPageElementResource(String userAccount, String currentRoleName,
+			String securityResourceName) {
+
 		Role role = securityAccessApplication.getRoleBy(currentRoleName);
 		Set<Permission> rolePermissions = role.getPermissions();
 		List<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
-		
+
 		Set<Authority> authorities = new HashSet<Authority>();
 		authorities.add(role);
 		authorities.addAll(userPermissions);
 		authorities.addAll(rolePermissions);
-		
-		PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(securityResourceName);
-		
-		return securityConfigApplication.checkAuthoritiHasPageElementResource(authorities,pageElementResource);
+
+		PageElementResource pageElementResource = securityAccessApplication
+				.getPageElementResourceBy(securityResourceName);
+
+		return securityConfigApplication.checkAuthoritiHasPageElementResource(authorities, pageElementResource);
 	}
 
 }
-
-
-
-
-
-
-
