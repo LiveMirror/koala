@@ -411,7 +411,7 @@
         				var items = dialog.find('.selectMenuGrid').data('koala.grid').selectedRows();
         				
         				if(items.length == 0){
-        					dialog.find('#selectMenuGrid').message({
+        					dialog.find('.selectMenuGrid').message({
         						type: 'warning',
         						content: '请选择要分配的menu'
         					});
