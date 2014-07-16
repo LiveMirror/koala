@@ -998,7 +998,7 @@
 				$(this).remove();
 			}
 		});
-		this.oldPwd = this.$element.find('#oldPassword');
+		this.oldPwd = this.$element.find('#oldUserPassword');
 		this.newPwd = this.$element.find('#newPassword');
 		this.confirmPwd = this.$element.find('#confirmPassword');
 		this.oldPwd.on('blur.koala.modifyPassowrd', $.proxy(this.blur, this, this.oldPwd));
@@ -1060,7 +1060,8 @@
 			});
 			return;
 		}
-		var data = "oldPassword=" + this.oldPwd.val() + "&userPassword=" + this.newPwd.val();
+		var data = "oldUserPassword=" + this.oldPwd.val() + "&userPassword=" + this.newPwd.val();
+		console.log(data);
 		$.ajax({
 			method : "post",
 			url : this.options.service,
@@ -1113,9 +1114,9 @@
 	+ '</div>' + '<div class="modal-body"> ' 
 	+ '<form class="form-horizontal" role="form">' 
 	+ '<div class="form-group">' 
-	+ '<label for="oldPassword" class="col-lg-3 control-label">原始密码:</label>' 
+	+ '<label for="oldUserPassword" class="col-lg-3 control-label">原始密码:</label>' 
 	+ '<div class="col-lg-9">' 
-	+ '<input type="password" class="form-control" style="width:80%;display:inline;" id="oldPassword" /><span class="required">*</span>' 
+	+ '<input type="password" class="form-control" style="width:80%;display:inline;" id="oldUserPassword" /><span class="required">*</span>' 
 	+ '</div> ' + '</div>  ' + '<div class="form-group">' 
 	+ '<label for="newPassword" class="col-lg-3 control-label">新密码:</label>' 
 	+ '<div class="col-lg-9">' 
