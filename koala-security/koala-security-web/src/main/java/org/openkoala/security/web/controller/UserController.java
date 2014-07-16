@@ -119,7 +119,7 @@ public class UserController {
 	public Map<String, Object> update(UserDTO userDTO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
-			securityAccessFacade.updateUserDTO(userDTO);
+			securityConfigFacade.updateUserDTO(userDTO);
 			dataMap.put("result", "success");
 		} catch (UserAccountIsExistedException e) {
 			dataMap.put("result", "账户：" + userDTO.getUserAccount() + "已经存在！");

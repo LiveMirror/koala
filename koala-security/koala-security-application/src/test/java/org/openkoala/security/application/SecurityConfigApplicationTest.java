@@ -14,7 +14,7 @@ import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 
-public class SecurityConfigApplicationTest extends AbstractSecurityIntegrationTestCase {
+public class SecurityConfigApplicationTest extends AbstractApplicationIntegrationTestCase {
 
 	private static final String MENUICON = "glyphicon  glyphicon-list-alt";
 	

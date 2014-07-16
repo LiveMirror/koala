@@ -83,6 +83,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 			securityConfigApplication.terminateAuthority(role);
 		}
 	}
+	
+	@Override
+	public void updateUserDTO(UserDTO userDTO) {
+		User user = transFromUserBy(userDTO);
+		securityConfigApplication.updateActor(user);
+	}
 
 	@Override
 	public void savePermissionDTO(PermissionDTO permissionDTO) {
