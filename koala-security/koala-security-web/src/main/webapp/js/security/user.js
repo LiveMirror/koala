@@ -43,8 +43,12 @@ var userManager = function() {
 	 */
 	var resetPassword = function(item, grid) {
 		var dataGrid = grid;
+		var oldUserPassword = 888888;
 		$.post(baseUrl + 'resetPassword.koala?userId=' + item.id).done(function(data) {
+		     console.log(item.userPassword);
+			//console.log(oldUserPassword);
 			if (data.result == 'success') {
+				item.userPassword = oldUserPassword;
 				dataGrid.message({
 					type : 'success',
 					content : '重置密码成功，初始密码为888888！'

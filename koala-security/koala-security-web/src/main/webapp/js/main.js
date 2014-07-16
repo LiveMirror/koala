@@ -70,7 +70,7 @@ $(function(){
 	 */
 	self.on('modifyPwd',function(){
 		$('body').modifyPassword({
-			service: contextPath + '/auth/User/updatePassword.koala'
+			service: contextPath + '/auth/user/updatePassword.koala'
 		});
 	});
 	/*
@@ -84,6 +84,7 @@ $(function(){
 	*/
 	self.on('loginOut',function(){
 		//window.location.href 
+		
 		var logOut = contextPath+"/auth/user/logout.koala";
 		$.post(logOut,function(result){
 			if(result.result == 'success'){
