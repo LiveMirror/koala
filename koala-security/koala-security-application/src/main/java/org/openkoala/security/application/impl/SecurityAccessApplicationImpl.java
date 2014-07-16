@@ -38,7 +38,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 		return false;
 	}
 
-	public boolean canAccessSecurityResource(User user, SecurityResource securityResource) {
+	public boolean hasOwnSecurityResource(User user, SecurityResource securityResource) {
 		return false;
 	}
 
@@ -63,11 +63,6 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 		Set<Authority> authorities = Authorization.findAuthoritiesByActor(user);
 		Set<MenuResource> result = Authority.findMenuResourceByAuthorities(authorities);
 		return result;
-	}
-
-	@Override
-	public void updateActor(Actor actor) {
-		actor.update();
 	}
 
 	@Override

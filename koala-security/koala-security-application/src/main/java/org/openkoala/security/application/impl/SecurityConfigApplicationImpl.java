@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SecurityConfigApplicationImpl implements SecurityConfigApplication {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfigApplicationImpl.class);
-	
+
 	public void createActor(Actor actor) {
 		actor.save();
 	}
@@ -107,7 +107,8 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		authority.terminateSecurityResource(securityResource);
 	}
 
-	public void terminateSecurityResourcesFromAuthority(List<? extends SecurityResource> securityResources, Authority authority) {
+	public void terminateSecurityResourcesFromAuthority(List<? extends SecurityResource> securityResources,
+			Authority authority) {
 		authority.terminateSecurityResources(securityResources);
 	}
 
@@ -116,8 +117,8 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 			terminateAuthorityFromSecurityResource(authority, securityResource);
 		}
 	}
-	
-	public void terminateAuthorityFromSecurityResource(Authority authority, SecurityResource securityResource){
+
+	public void terminateAuthorityFromSecurityResource(Authority authority, SecurityResource securityResource) {
 		authority.terminateSecurityResource(securityResource);
 	}
 
@@ -140,9 +141,9 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void terminateActorFromAuthority(Actor actor, Authority authority) {
-		LOGGER.info("terminateActorFromAuthority actor:{},authority:{}",actor,authority);
-		Authorization authorization = Authorization.findByActorInAuthority(actor,authority);
-		LOGGER.info("terminate authorization:{}",authorization);
+		LOGGER.info("terminateActorFromAuthority actor:{},authority:{}", actor, authority);
+		Authorization authorization = Authorization.findByActorInAuthority(actor, authority);
+		LOGGER.info("terminate authorization:{}", authorization);
 		authorization.remove();
 	}
 
@@ -152,7 +153,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		}
 	}
 
-	// TODO 
+	// TODO
 	public void updateMenuResources(List<MenuResource> menuResources) {
 		// TODO Auto-generated method stub
 
@@ -173,11 +174,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		return false;
 	}
 
-	public void initSecurityResources() {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void createScope(Scope scope) {
 		scope.save();
 	}
@@ -185,7 +181,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	public void grantActorToAuthorityInScope(Actor actor, Authority authority, Scope scope) {
 		new Authorization(actor, authority, scope).save();
 	}
-	
+
 	@Override
 	public void grantActorToAuthorityInScope(Long actorId, Long authorityId, Long scopeId) {
 		Actor actor = Actor.get(Actor.class, actorId);
@@ -197,16 +193,16 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	@Override
 	public void grantAuthorityToSecurityResource(Authority authority, SecurityResource securityResource) {
 		authority.addSecurityResource(securityResource);
-		
+
 	}
 
 	@Override
 	public void grantAuthorityToSecurityResources(Authority authority,
 			List<? extends SecurityResource> securityResources) {
 		authority.addSecurityResources(securityResources);
-//		for (SecurityResource securityResource : securityResources) {
-//			this.grantAuthorityToSecurityResource(authority, securityResource);
-//		}
+		// for (SecurityResource securityResource : securityResources) {
+		// this.grantAuthorityToSecurityResource(authority, securityResource);
+		// }
 	}
 
 	@Override
@@ -274,7 +270,42 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	@Override
 	public boolean checkAuthoritiHasPageElementResource(Set<Authority> authorities,
 			PageElementResource pageElementResource) {
-		return Authority.checkHasPageElementResource(authorities,pageElementResource);
+		return Authority.checkHasPageElementResource(authorities, pageElementResource);
+	}
+
+	@Override
+	public void initSecuritySystem() {
+		initUser();
+		initRole();
+	}
+
+	private void initUser() {
+		User user = initGeneralUser();
+		createActor(user);
 	}
 	
+	private void initRole() {
+		Role adminRole = adminRole();
+		createAuthority(adminRole);
+	}
+
+	// TODO 暂未考虑密码加密
+	private User initGeneralUser() {
+		User user = new User("zhangsan", "000000", "zhangsan@koala.com", "139*********");
+		user.setCreateOwner("admin");
+		user.setDescription("普通用户");
+		user.setName("张三");
+		return user;
+	}
+
+	private Role adminRole() {
+		Role role = new Role("admin");
+		role.setDescription("超级管理员");
+		return role;
+	}
+
+	@Override
+	public void updateActor(Actor actor) {
+		actor.update();
+	}
 }

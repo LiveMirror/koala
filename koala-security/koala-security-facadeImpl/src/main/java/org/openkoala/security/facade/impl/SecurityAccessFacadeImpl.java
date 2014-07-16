@@ -106,12 +106,6 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	}
 
 	@Override
-	public void updateUserDTO(UserDTO userDTO) {
-		User user = transFromUserBy(userDTO);
-		securityAccessApplication.updateActor(user);
-	}
-
-	@Override
 	public Page<UserDTO> pagingQueryUsers(int currentPage, int pageSize, UserDTO userDTO) {
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 		StringBuilder jpql = new StringBuilder("FROM User _user WHERE _user.disabled = false");

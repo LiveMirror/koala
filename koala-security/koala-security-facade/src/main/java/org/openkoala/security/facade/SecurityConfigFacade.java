@@ -25,6 +25,13 @@ public interface SecurityConfigFacade {
 	 * @param userDTOs
 	 */
 	void terminateUserDTOs(UserDTO[] userDTOs);
+	
+	/**
+	 * 更新用户
+	 * 
+	 * @param userDTO
+	 */
+	void updateUserDTO(UserDTO userDTO);
 
 	/**
 	 * 重置用户密码

@@ -21,6 +21,8 @@ public interface SecurityConfigApplication {
 	 * @param actor
 	 */
 	void terminateActor(Actor actor);
+	
+	void updateActor(Actor actor);
 
 	/**
 	 * 
@@ -146,7 +148,7 @@ public interface SecurityConfigApplication {
 	 * @param securityResource
 	 */
 	void terminateAuthoritiesFromSecurityResource(List<Authority> authorities, SecurityResource securityResource);
-	
+
 	/**
 	 * 
 	 * @param authorities
@@ -209,7 +211,10 @@ public interface SecurityConfigApplication {
 	 */
 	boolean isSecurityResourceIdentifierExist(SecurityResource securityResource);
 
-	void initSecurityResources();
+	/**
+	 * 初始化权限数据
+	 */
+	void initSecuritySystem();
 
 	/***
 	 * TODO 1、判断账户是否存在 ； 2、判断邮箱是否存在 ； 3、判断电话是否已经存在 。 添加参与者

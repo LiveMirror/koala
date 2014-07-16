@@ -66,13 +66,6 @@ public interface SecurityAccessFacade {
 	boolean updatePassword(UserDTO userDto, String oldUserPassword);
 
 	/**
-	 * 更新用户
-	 * 
-	 * @param userDTO
-	 */
-	void updateUserDTO(UserDTO userDTO);
-
-	/**
 	 * 分页查询用户信息
 	 * 
 	 * @param currentPage
