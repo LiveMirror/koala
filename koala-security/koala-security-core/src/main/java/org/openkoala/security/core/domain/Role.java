@@ -61,7 +61,7 @@ public class Role extends Authority {
 
 	@Override
 	public void update() {
-		Role role = Role.getBy(this.getId());
+		Role role = getBy(this.getId());
 
 		if (!StringUtils.isBlank(this.getName()) && !role.getName().equals(this.getName())) {
 			isNameExisted();

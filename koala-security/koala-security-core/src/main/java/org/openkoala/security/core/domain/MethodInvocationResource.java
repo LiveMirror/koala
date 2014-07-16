@@ -12,7 +12,17 @@ public class MethodInvocationResource extends SecurityResource {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public SecurityResource findByName(String name) {
+		return getRepository()//
+				.createNamedQuery("SecurityResource.findByName")//
+				.addParameter("securityResourceType", MethodInvocationResource.class)//
+				.addParameter("name", name)//
+				.addParameter("disabled", false)//
+				.singleResult();
 	}
 
 }

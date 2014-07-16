@@ -71,6 +71,8 @@ public abstract class Actor extends SecurityAbstractEntity {
 		return results;
 	}
 
+	/*------------- Private helper methods  -----------------*/
+	
 	private Set<Authority> getAuthorities(Scope scope) {
 		return Authorization.findAuthoritiesByActorInScope(this, scope);
 	}

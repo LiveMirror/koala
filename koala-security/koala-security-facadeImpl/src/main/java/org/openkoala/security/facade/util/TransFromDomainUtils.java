@@ -80,7 +80,7 @@ public final class TransFromDomainUtils {
 	}
 
 	public static UrlAccessResource transFromUrlAccessResourceBy(UrlAccessResourceDTO urlAccessResourceDTO) {
-		UrlAccessResource result = new UrlAccessResource(urlAccessResourceDTO.getName());
+		UrlAccessResource result = new UrlAccessResource(urlAccessResourceDTO.getName(),urlAccessResourceDTO.getUrl());
 		result.setDescription(urlAccessResourceDTO.getDescription());
 		if (!StringUtils.isBlank(urlAccessResourceDTO.getId() + "")) {
 			result.setId(urlAccessResourceDTO.getId());

@@ -109,7 +109,7 @@ public class User extends Actor {
 	 */
 	@Override
 	public void update() {
-		User user = User.get(User.class, this.getId());
+		User user = getBy(this.getId());
 		if (user == null) {
 			throw new NullArgumentException("user");
 		}

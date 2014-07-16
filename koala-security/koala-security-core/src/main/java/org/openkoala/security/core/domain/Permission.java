@@ -56,7 +56,7 @@ public class Permission extends Authority {
 
 	@Override
 	public void update() {
-		Permission permission = Permission.get(Permission.class, this.getId());
+		Permission permission = getBy(this.getId());
 		
 		if(!StringUtils.isBlank(this.getName()) && !permission.getName().equals(this.getName())){
 			isNameExisted();
