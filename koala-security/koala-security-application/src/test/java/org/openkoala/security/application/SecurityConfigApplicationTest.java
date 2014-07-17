@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
@@ -14,6 +15,7 @@ import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 
+@Ignore
 public class SecurityConfigApplicationTest extends AbstractApplicationIntegrationTestCase {
 
 	private static final String MENUICON = "glyphicon  glyphicon-list-alt";

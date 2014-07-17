@@ -11,6 +11,7 @@ import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
+import org.openkoala.security.core.UserNotExistedException;
 
 import static org.openkoala.security.core.util.EntitiesHelper.*;
 
@@ -202,9 +203,34 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		user.resetPassword();
 	}
 
+	@Test
+	public void testGetUserCount() throws Exception {
+		User user = initUser();
+		user.save();
+		long size = User.getCount();
+		assertTrue(size > 0);
+	}
+
+	@Test
+	public void testLogin() throws Exception {
+		User user = initUser();
+		encryptPassword(user,"aaaaaaaaa");
+		user.save();
+		User loginUser = User.login(user.getUserAccount(), user.getPassword());
+		assertNotNull(loginUser);
+	}
+
+	@Test(expected = NullArgumentException.class)
+	public void testLoginUserAccountOrPasswordIsNull() throws Exception {
+		User user = initUser();
+		encryptPassword(user,"aaaaaaaaa");
+		user.save();
+		User.login("", user.getPassword());
+	}
+	
 	/*------------- Private helper methods  -----------------*/
 
 	private void encryptPassword(User user, String returnPassword) {
-		Mockito.when(user.encryptPassword(user)).thenReturn(returnPassword);
+		Mockito.when(User.encryptPassword(user)).thenReturn(returnPassword);
 	}
 }

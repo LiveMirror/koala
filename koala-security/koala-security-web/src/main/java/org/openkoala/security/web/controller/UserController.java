@@ -418,7 +418,7 @@ public class UserController {
 	}
 
 	/**
-	 * 根据用户ID分页查询权限
+	 * 根据用户ID分页查询已经授权的权限
 	 * 
 	 * @param page
 	 * @param pagesize

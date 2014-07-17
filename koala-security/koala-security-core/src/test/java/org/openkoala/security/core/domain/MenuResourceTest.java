@@ -58,6 +58,7 @@ public class MenuResourceTest extends AbstractDomainIntegrationTestCase {
 		MenuResource childMenuResource = new MenuResource("update0000000000");
 		securityMenuResource.save();
 		securityMenuResource.addChild(childMenuResource);
+		assertNotNull(childMenuResource.getId());
 		Set<MenuResource> childrenMenuResource  = securityMenuResource.getChildren();
 		assertNotNull(childrenMenuResource);
 		assertTrue(childrenMenuResource.size() == 1);

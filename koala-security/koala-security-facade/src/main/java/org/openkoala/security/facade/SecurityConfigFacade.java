@@ -25,7 +25,7 @@ public interface SecurityConfigFacade {
 	 * @param userDTOs
 	 */
 	void terminateUserDTOs(UserDTO[] userDTOs);
-	
+
 	/**
 	 * 更新用户
 	 * 
@@ -143,7 +143,7 @@ public interface SecurityConfigFacade {
 	void grantPermissionsInScope(Long userId, Long[] permissionIds, Long scopeId);
 
 	void grantRoleToUser(Long userId, Long roleId);
-	
+
 	void grantRolesToUser(Long userId, Long[] roleIds);
 
 	void grantPermissionToUser(Long userId, Long permissionId);
@@ -158,21 +158,21 @@ public interface SecurityConfigFacade {
 
 	void suspend(Long[] userIds);
 
-	void terminateAuthorizationByRole(Long userId,Long roleId);
+	void terminateAuthorizationByRole(Long userId, Long roleId);
 
-	void terminateAuthorizationByPermission(Long userId,Long permissionId);
+	void terminateAuthorizationByPermission(Long userId, Long permissionId);
 
-	void terminateAuthorizationsByRoles(Long userId,Long[] roleIds);
+	void terminateAuthorizationsByRoles(Long userId, Long[] roleIds);
 
-	void terminateAuthorizationsByPermissions(Long userId,Long[] permissionIds);
+	void terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds);
 
-	void grantMenuResourcesToRole(Long roleId,List<MenuResourceDTO> menuResourceDTOs);
+	void grantMenuResourcesToRole(Long roleId, List<MenuResourceDTO> menuResourceDTOs);
 
-	void grantPageElementResourcesToRole(Long roleId,Long[] pageElementResourceIds);
+	void grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds);
 
-	void grantUrlAccessResourcesToRole(Long roleId,Long[] menuResourceIds);
+	void grantUrlAccessResourcesToRole(Long roleId, Long[] menuResourceIds);
 
-	void grantMethodInvocationResourcesToUser(Long roleId,Long[] menuResourceIds);
+	void grantMethodInvocationResourcesToUser(Long roleId, Long[] menuResourceIds);
 
 	void grantPermissionsToRole(Long roleId, Long[] permissionIds);
 
@@ -211,5 +211,10 @@ public interface SecurityConfigFacade {
 	void terminatePermissionsFromPageElementResource(Long[] permissionIds, Long pageElementResourceId);
 
 	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceName);
+
+	/**
+	 * 初始化系统权限资源。
+	 */
+	public void initSecuritySystem();
 
 }

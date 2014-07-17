@@ -30,7 +30,9 @@ import org.slf4j.LoggerFactory;
 @NamedQueries({ 
 	@NamedQuery(
 			name = "User.loginByUserAccount", 
-			query = "SELECT _user FROM User _user WHERE _user.userAccount = :userAccount AND _user.password = :password") })
+			query = "SELECT _user FROM User _user WHERE _user.userAccount = :userAccount AND _user.password = :password"),
+	@NamedQuery(name="User.count",query="SELECT COUNT(_user.id) FROM User _user")
+})
 public class User extends Actor {
 
 	private static final long serialVersionUID = 7849700468353029794L;
@@ -207,7 +209,7 @@ public class User extends Actor {
 
 	public static User login(String principal, String password) {
 		if(StringUtils.isBlank(principal) || StringUtils.isBlank(password)){
-			throw new NullArgumentException("userAccount or password is empty");
+			throw new NullArgumentException("userAccount or password is empty ");
 		}
 		User user = getRepository()//
 				.createNamedQuery("User.loginByUserAccount")//
@@ -220,7 +222,11 @@ public class User extends Actor {
 		}
 		return user;
 	}
-
+	
+	public static long getCount(){
+		return getRepository().createNamedQuery("User.count").singleResult();
+	}
+	
 	protected static PasswordService passwordService;
 
 	protected static void setPasswordService(PasswordService passwordService) {

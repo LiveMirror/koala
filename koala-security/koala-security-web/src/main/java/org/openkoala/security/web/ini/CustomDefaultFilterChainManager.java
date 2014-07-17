@@ -94,7 +94,6 @@ public class CustomDefaultFilterChainManager extends DefaultFilterChainManager {
 			for (Map.Entry<String, String> entry : chains.entrySet()) {
 				String url = entry.getKey();
 				String chainDefinition = entry.getValue();
-				System.out.println(url+"="+chainDefinition);
 				createChain(url, chainDefinition);
 			}
 		}

@@ -41,7 +41,7 @@ public class OrganizationScope extends Scope {
 	public void addChild(OrganizationScope child) {
 		child.setLevel(this.getLevel() + 1);
 		child.save();
-		children.add(child);
+		child.setParent(this);
 	}
 
 	public void removeChild(OrganizationScope child) {

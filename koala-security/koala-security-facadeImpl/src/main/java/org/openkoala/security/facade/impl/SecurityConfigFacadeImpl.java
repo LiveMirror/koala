@@ -28,7 +28,6 @@ import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UserDTO;
-import org.openkoala.security.facade.util.TransFromDomainUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +46,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	public void saveUserDTO(UserDTO userDTO) {
 		User user = transFromUserBy(userDTO);
-		LOGGER.info("save user:{}", user);
 		securityConfigApplication.createActor(user);
 	}
 
@@ -99,7 +97,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void updatePermissionDTO(PermissionDTO permissionDTO) {
-		Permission permission = TransFromDomainUtils.transFromPermissionBy(permissionDTO);
+		Permission permission = transFromPermissionBy(permissionDTO);
 		securityConfigApplication.updateAuthority(permission);
 	}
 
@@ -257,7 +255,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	@Override
 	public void terminateAuthorizationsByRoles(Long userId, Long[] roleIds) {
 		User user = securityAccessApplication.getUserBy(userId);
-		LOGGER.info("roleIds:{}", roleIds);
 		for (Long roleId : roleIds) {
 			Role role = securityAccessApplication.getRoleBy(roleId);
 			securityConfigApplication.terminateActorFromAuthority(user, role);
@@ -492,6 +489,11 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 				.getPageElementResourceBy(securityResourceName);
 
 		return securityConfigApplication.checkAuthoritiHasPageElementResource(authorities, pageElementResource);
+	}
+	
+	@Override
+	public void initSecuritySystem(){
+		securityConfigApplication.initSecuritySystem();
 	}
 
 }

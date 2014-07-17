@@ -195,5 +195,6 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	User login(String principal, String password);
+	
 
 }

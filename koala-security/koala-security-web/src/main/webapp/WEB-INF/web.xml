@@ -15,6 +15,9 @@
 		<listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
 	</listener>
 	<listener>
+		<listener-class>org.openkoala.security.web.listener.SecurityDBInitListener</listener-class>
+	</listener>
+	<listener>
 		<listener-class>org.openkoala.security.web.listener.SystemEvenmentListener</listener-class>
 	</listener>
 

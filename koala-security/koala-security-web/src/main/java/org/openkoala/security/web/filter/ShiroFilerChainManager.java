@@ -41,7 +41,6 @@ public class ShiroFilerChainManager{
         if(defaultFilterChains != null) {
             filterChainManager.getFilterChains().putAll(defaultFilterChains);
         }
-
         //2、循环URL Filter 注册filter chain
         for (UrlAccessResourceDTO urlAccessResource : urlAccessResources) {
             String url = urlAccessResource.getUrl();
@@ -57,7 +56,7 @@ public class ShiroFilerChainManager{
 	            }
             }
         }
-
+        
     }
 
 

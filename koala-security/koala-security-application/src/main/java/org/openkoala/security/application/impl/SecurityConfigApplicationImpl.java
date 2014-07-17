@@ -16,10 +16,13 @@ import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.SecurityResource;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
 
 @Named
 @Transactional
@@ -180,7 +183,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		new Authorization(actor, authority, scope).save();
 	}
 
-
 	@Override
 	public void grantAuthorityToSecurityResource(Authority authority, SecurityResource securityResource) {
 		authority.addSecurityResource(securityResource);
@@ -248,37 +250,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	@Override
-	public void initSecuritySystem() {
-		initUser();
-		initRole();
-	}
-
-	private void initUser() {
-		User user = initGeneralUser();
-		createActor(user);
-	}
-	
-	private void initRole() {
-		Role adminRole = adminRole();
-		createAuthority(adminRole);
-	}
-
-	// TODO 暂未考虑密码加密
-	private User initGeneralUser() {
-		User user = new User("zhangsan", "000000", "zhangsan@koala.com", "139*********");
-		user.setCreateOwner("admin");
-		user.setDescription("普通用户");
-		user.setName("张三");
-		return user;
-	}
-
-	private Role adminRole() {
-		Role role = new Role("admin");
-		role.setDescription("超级管理员");
-		return role;
-	}
-
-	@Override
 	public void updateActor(Actor actor) {
 		actor.update();
 	}
@@ -287,4 +258,146 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	public void grantAuthorityToActor(Authority authority, Actor actor) {
 		new Authorization(actor, authority, null).save();
 	}
+
+	// TODO 其他的URL 其他的页面元素资源
+	@Override
+	public void initSecuritySystem() {
+		if (User.getCount() == 0) {
+			User user = initUser();
+			Role role = initRole();
+			grantAuthorityToActor(role, user);
+			List<MenuResource> menuResources = initMenuResource();
+			grantSecurityResourcesToAuthority(menuResources, role);
+			initUserUrlAccessResource();
+		}
+	}
+
+	private void initUserUrlAccessResource() {
+
+		UrlAccessResource usersUrlAccessResource = new UrlAccessResource("用户管理", "/auth/user/**");
+		UrlAccessResource userLoginUrlAccessResource = new UrlAccessResource("用户管理-登陆", "/auth/user/login");
+		UrlAccessResource userLogoutUrlAccessResource = new UrlAccessResource("用户管理-退出", "/auth/user/logout");
+		UrlAccessResource userAddUrlAccessResource = new UrlAccessResource("用户管理-添加", "/auth/user/add");
+		UrlAccessResource userUpdateUrlAccessResource = new UrlAccessResource("用户管理-更新", "/auth/user/update");
+		UrlAccessResource userTerminateUrlAccessResource = new UrlAccessResource("用户管理-撤销", "/auth/user/terminate");
+		UrlAccessResource userPagingqueryUrlAccessResource = new UrlAccessResource("用户管理-分页查询",
+				"/auth/user/pagingquery");
+		UrlAccessResource userUpdatePasswordUrlAccessResource = new UrlAccessResource("用户管理-更新密码",
+				"/auth/user/updatePassword");
+		UrlAccessResource userResetPasswordUrlAccessResource = new UrlAccessResource("用户管理-重置密码",
+				"/auth/user/resetPassword");
+		UrlAccessResource userActivateUrlAccessResource = new UrlAccessResource("用户管理-激活", "/auth/user/activate");
+		UrlAccessResource userActivatesUrlAccessResource = new UrlAccessResource("用户管理-激动所有", "/auth/user/activates");
+		UrlAccessResource userSuspendsUrlAccessResource = new UrlAccessResource("用户管理-挂起所有", "/auth/user/suspends");
+		UrlAccessResource userGrantRoleUrlAccessResource = new UrlAccessResource("用户管理-授权一个角色", "/auth/user/grantRole");
+		UrlAccessResource userGrantRolesUrlAccessResource = new UrlAccessResource("用户管理-授权多个角色",
+				"/auth/user/grantRoles");
+		UrlAccessResource userGrantPermissionUrlAccessResource = new UrlAccessResource("用户管理-授权一个权限",
+				"/auth/user/grantPermission");
+		UrlAccessResource userGrantPermissionsUrlAccessResource = new UrlAccessResource("用户管理-授权多个权限",
+				"/auth/user/grantPermissions");
+		UrlAccessResource userTerminateRoleByUserUrlAccessResource = new UrlAccessResource("用户管理-撤销一个角色",
+				"/auth/user/terminateRoleByUser");
+		UrlAccessResource userTerminatePermissionByUserUrlAccessResource = new UrlAccessResource("用户管理-撤销一个权限",
+				"/auth/user/terminatePermissionByUser");
+		UrlAccessResource userTerminateRolesByUserUrlAccessResource = new UrlAccessResource("用户管理-撤销多个角色",
+				"/auth/user/suspend/terminateRolesByUser");
+		UrlAccessResource userTerminatePermissionsByUserUrlAccessResource = new UrlAccessResource("用户管理-撤销多个权限",
+				"/auth/user/terminatePermissionsByUser");
+		UrlAccessResource userPagingQueryGrantRoleByUserIdUrlAccessResource = new UrlAccessResource("用户管理-查找授权的角色",
+				"/auth/user/pagingQueryGrantRoleByUserId");
+		UrlAccessResource userPagingQueryGrantPermissionByUserIdUrlAccessResource = new UrlAccessResource(
+				"用户管理-查找授权的权限", "/auth/user/pagingQueryGrantPermissionByUserId");
+		UrlAccessResource userPagingQueryNotGrantRolesUrlAccessResource = new UrlAccessResource("用户管理-查找没有授权的角色",
+				"/auth/user/pagingQueryNotGrantRoles");
+		UrlAccessResource userPagingQueryNotGrantPermissionsUrlAccessResource = new UrlAccessResource("用户管理-查找没有授权的权限",
+				"/auth/user/pagingQueryNotGrantPermissions");
+
+		createSecurityResource(usersUrlAccessResource);
+		createSecurityResource(userLoginUrlAccessResource);
+		createSecurityResource(userLogoutUrlAccessResource);
+		createSecurityResource(userAddUrlAccessResource);
+		createSecurityResource(userUpdateUrlAccessResource);
+		createSecurityResource(userTerminateUrlAccessResource);
+		createSecurityResource(userPagingqueryUrlAccessResource);
+		createSecurityResource(userUpdatePasswordUrlAccessResource);
+		createSecurityResource(userResetPasswordUrlAccessResource);
+		createSecurityResource(userActivateUrlAccessResource);
+		createSecurityResource(userActivatesUrlAccessResource);
+		createSecurityResource(userSuspendsUrlAccessResource);
+		createSecurityResource(userGrantRoleUrlAccessResource);
+		createSecurityResource(userGrantRolesUrlAccessResource);
+		createSecurityResource(userGrantPermissionUrlAccessResource);
+		createSecurityResource(userGrantPermissionsUrlAccessResource);
+		createSecurityResource(userTerminateRoleByUserUrlAccessResource);
+		createSecurityResource(userTerminatePermissionByUserUrlAccessResource);
+		createSecurityResource(userTerminateRolesByUserUrlAccessResource);
+		createSecurityResource(userTerminatePermissionsByUserUrlAccessResource);
+		createSecurityResource(userPagingQueryGrantRoleByUserIdUrlAccessResource);
+		createSecurityResource(userPagingQueryGrantPermissionByUserIdUrlAccessResource);
+		createSecurityResource(userPagingQueryNotGrantRolesUrlAccessResource);
+		createSecurityResource(userPagingQueryNotGrantPermissionsUrlAccessResource);
+	}
+
+	private List<MenuResource> initMenuResource() {
+		String menuIcon = "glyphicon  glyphicon-list-alt";
+
+		MenuResource securityMenuResource = new MenuResource("权限");
+		securityMenuResource.setDescription("所有的权限页面");
+		securityMenuResource.setMenuIcon(menuIcon);
+
+		MenuResource userMenuResource = new MenuResource("用户管理");
+		userMenuResource.setMenuIcon(menuIcon);
+		userMenuResource.setUrl("/pages/auth/user-list.jsp");
+
+		MenuResource roleMenuResource = new MenuResource("角色管理");
+		roleMenuResource.setMenuIcon(menuIcon);
+		roleMenuResource.setUrl("/pages/auth/role-list.jsp");
+
+		MenuResource permisisonMenuResource = new MenuResource("权限管理");
+		permisisonMenuResource.setMenuIcon(menuIcon);
+		permisisonMenuResource.setUrl("/pages/auth/permission-list.jsp");
+
+		MenuResource menuResource = new MenuResource("菜单资源管理");
+		menuResource.setMenuIcon(menuIcon);
+		menuResource.setUrl("/pages/auth/menu-list.jsp");
+
+		MenuResource urlAccessResource = new MenuResource("URL访问管理");
+		urlAccessResource.setMenuIcon(menuIcon);
+		urlAccessResource.setUrl("/pages/auth/url-list.jsp");
+
+		MenuResource pageElementResource = new MenuResource("页面元素管理");
+		pageElementResource.setMenuIcon(menuIcon);
+		pageElementResource.setUrl("/pages/auth/page-list.jsp");
+
+		createSecurityResource(securityMenuResource);
+
+		createChildToParent(userMenuResource, securityMenuResource.getId());
+		createChildToParent(roleMenuResource, securityMenuResource.getId());
+		createChildToParent(permisisonMenuResource, securityMenuResource.getId());
+		createChildToParent(menuResource, securityMenuResource.getId());
+		createChildToParent(urlAccessResource, securityMenuResource.getId());
+		createChildToParent(pageElementResource, securityMenuResource.getId());
+
+		LOGGER.info("init menuResource :userMenuResource{},", new Object[] { userMenuResource.getId() });
+		return Lists.newArrayList(securityMenuResource, userMenuResource, roleMenuResource, permisisonMenuResource,
+				menuResource, urlAccessResource, pageElementResource);
+	}
+
+	private User initUser() {
+		User user = new User("zhangsan", "000000", "zhangsan@koala.com", "139*********");
+		user.setCreateOwner("admin");
+		user.setDescription("普通用户");
+		user.setName("张三");
+		createActor(user);
+		return user;
+	}
+
+	private Role initRole() {
+		Role role = new Role("admin");
+		role.setDescription("超级管理员");
+		createAuthority(role);
+		return role;
+	}
+
 }

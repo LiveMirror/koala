@@ -55,7 +55,7 @@
 				/lib/** = anon
 				/login.koala = anon
 				/auth/user/login.koala = anon
-				/authenticated =authc
+				/authenticated = authc
 				/** = authc
 			</value>
 		</property>
