@@ -481,7 +481,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	@Override
 	public Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
-		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.description) FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _securityResource.id = : securityResourceId");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.identifier ,_authority.description) FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _securityResource.id = :securityResourceId");
 		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.addParameter("securityResourceId", menuResourceId)//
