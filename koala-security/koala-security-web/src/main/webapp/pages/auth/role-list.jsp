@@ -2,6 +2,7 @@
 <script>
 	$(function() {
 		var tabData 	= $('.tab-pane.active').data();
+
 		var userId 		= tabData.userId;
 		var columns = [{
 			title : "角色名称",
@@ -38,6 +39,9 @@
 				}, {
 					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配menu</button>',
 					action : 'menuAssign'
+				},{
+					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配page</button>',
+					action : 'pageAssign'
 				}];
 			}
 		})();
@@ -208,6 +212,26 @@
 				}
 				roleManager().assignResource($(this), items[0].roleId);
 			},
+			'pageAssign' : function(event, data) {
+				var items = data.item;
+				var $this = $(this);
+				if (items.length == 0) {
+					$this.message({
+						type : 'warning',
+						content : '请选择一条记录进行操作'
+					});
+					return;
+				}
+				if (items.length > 1) {
+					$this.message({
+						type : 'warning',
+						content : '只能选择一条记录进行操作'
+					});
+					return;
+				}
+				roleManager().assignResource($(this), items[0].roleId);
+			}
+			,
 			'removeRoleForUser' : function(event, data) {
 				var indexs = data.data;
 				var grid = $(this);

@@ -154,16 +154,8 @@
 				width : 150
 			}];
 		
-	
-		//var url = contextPath + "/auth/page/pagingQuery.koala";
 		
-		/*if (roleId) {
-			url = contextPath + '/auth/user/pagingQueryGrantPermissionsByPageElementResourceId.?roleId=' + roleId;
-		}*/
-					
-		var buttons = (function(){
-			if(roleId){
-				return [{
+		var buttons = [{
 					content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>',
 					action: 'add'
 				},{
@@ -172,17 +164,12 @@
 				},{
 					content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
 					action: 'delete'
+				},{
+					content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>授权</button>',
+					action: 'permissionAssign'
 				}];
-			} else {
-				return [{
-					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配url</button>',
-					action : 'assignPage'
-				}, {
-					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
-					action : 'removePageFromRole'
-				}];
-			}
-		})();
+	
+
 		
 		
 		//add here
@@ -241,6 +228,21 @@
 	                }
 	            });
 	            
+        	},
+        	"permissionAssign" : function(event,data){
+        		var items 	= data.item;
+				var thiz	= $(this);
+				if(items.length == 0){
+					thiz.message({type : 'warning',content : '请选择一条记录进行操作'});
+					return;
+				} else if(items.length > 1){
+					thiz.message({type : 'warning',content : '只能选择一条记录进行操作'});
+					return;
+				}
+				
+				var page = items[0];
+                   console.log(page);
+				openTab('/pages/auth/permission-list.jsp', page.name+'的权限管理', 'roleManager_' + page.id, page.id, {pageId : page.pageId});
         	},
         	"assignPage" : function(event, data){
 				var grid = $(this);

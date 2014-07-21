@@ -134,6 +134,10 @@
 		var roleId = role ? role.roleId : null;
 		
 		var columns = [{
+			title 	: "url名称",
+			name 	: "name",
+			width 	: 150
+		},{
 			title 	: "url路径",
 			name 	: "url",
 			width 	: 150
@@ -174,6 +178,9 @@
 				}, {
 					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
 					action : 'delete'
+				},{
+					content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>授权</button>',
+					action: 'permissionAssign'
 				}];
 			}
 		};
@@ -237,6 +244,21 @@
 					}
 				});
 			},
+			"permissionAssign" : function(event,data){
+        		var items 	= data.item;
+				var thiz	= $(this);
+				if(items.length == 0){
+					thiz.message({type : 'warning',content : '请选择一条记录进行操作'});
+					return;
+				} else if(items.length > 1){
+					thiz.message({type : 'warning',content : '只能选择一条记录进行操作'});
+					return;
+				}
+				
+				var role = items[0];
+				console.log(role);
+				openTab('/pages/auth/permission-list.jsp', role.name+'的权限管理', 'roleManager_' + role.id, role.id, {roleId : role.roleId});
+        	},
 			"assignUrl" : function(event, data){
 				var grid = $(this);
         		$.get(contextPath + '/pages/auth/select-url.jsp').done(function(data){

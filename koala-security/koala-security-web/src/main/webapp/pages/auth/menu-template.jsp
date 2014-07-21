@@ -19,7 +19,7 @@
                     <div class="form-group parentName">
                         <label class="col-lg-3 control-label">父菜单名称:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" id="parentName" disabled>
+                            <input type="text" class="form-control" name = "parentId" disabled>
                         </div>
                     </div>
                     <div class="form-group">
@@ -51,7 +51,7 @@
                     <div class="form-group">
                         <label class="col-lg-3 control-label">资源描述:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="description"/>
+                            <input type="text" class="form-control" id = "description" name="description"/>
                         </div>
                     </div>
 		            <div class="modal-footer">

@@ -21,6 +21,12 @@ public class PermissionDTO {
 	public PermissionDTO() {
 	}
 
+	public PermissionDTO(Long permissionId, String permissionName,String url) {
+		this.permissionId = permissionId;
+		this.permissionName = permissionName;
+		this.url = url;
+	}
+	
 	public PermissionDTO(Long permissionId, String permissionName, String identifier, String description) {
 		this.permissionId = permissionId;
 		this.permissionName = permissionName;
