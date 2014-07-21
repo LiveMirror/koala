@@ -97,8 +97,16 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		
 		userDTO = securityAccessFacade.login(principal, password);		
 		
+		// TODO 以后修改成前后台获取一致。
 		List<RoleDTO> roleDTOs = securityAccessFacade.findRoleDtosBy(userDTO.getUserAccount());
-		String roleName = roleDTOs.get(0).getRoleName();
+		String roleName = "";
+		
+		if(roleDTOs.isEmpty()){
+			// no deal
+		}else{
+			roleName = roleDTOs.get(0).getRoleName();
+		}
+		
 		ShiroUser shiroUser = null;
 		if (!StringUtils.isBlank(roleName)) {
 			shiroUser = new ShiroUser(userDTO.getId(), userDTO.getUserAccount(), userDTO.getName(), roleName);
