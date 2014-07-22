@@ -70,11 +70,13 @@ public class UrlAccessResource extends SecurityResource {
 	}
 
 	public static List<UrlAccessResource> findAllUrlAccessResources() {
-		return getRepository()//
-				.createNamedQuery("SecurityResource.findAllByType")//
-				.addParameter("securityResourceType", UrlAccessResource.class)//
-				.addParameter("disabled", false)//
-				.list();
+		return UrlAccessResource.findAll(UrlAccessResource.class);
+//		List<UrlAccessResource> results =  getRepository()//
+//				.createNamedQuery("SecurityResource.findAllByType")//
+//				.addParameter("securityResourceType", UrlAccessResource.class)//
+//				.addParameter("disabled", false)//
+//				.list();
+//		return results;
 	}
 
 	@Override
@@ -94,5 +96,17 @@ public class UrlAccessResource extends SecurityResource {
 				.eq("url", url)//
 				.singleResult();
 	}
+
+	public Set<Authority> getAllAuthorities() {
+		return this.getAuthorities();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

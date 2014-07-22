@@ -13,11 +13,30 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-test-support</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-conf</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>${db.groupId}</groupId>
+			<artifactId>${db.artifactId}</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-facade</artifactId>
@@ -31,11 +50,6 @@
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-application</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openkoala.security</groupId>
-			<artifactId>koala-security-conf</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>

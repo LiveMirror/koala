@@ -12,6 +12,7 @@ import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.UserNotExistedException;
+import org.openkoala.security.core.UserNotHasRoleException;
 
 import static org.openkoala.security.core.util.EntitiesHelper.*;
 
@@ -154,16 +155,21 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		User.getBy("");
 	}
 
+	@Test(expected = UserNotHasRoleException.class)
+	public void testFindAllRolesByUserAccountNoHasRole() throws Exception {
+		User user = initUser();
+		user.save();
+		User.findAllRolesBy(user.getUserAccount());
+	}
+	
 	@Test
 	public void testFindAllRolesByUserAccount() throws Exception {
 		User user = initUser();
 		user.save();
-		List<Role> roles = User.findAllRolesBy(user.getUserAccount());
-		assertEquals(0, roles.size());
 		Role role = initRole();
 		role.save();
 		new Authorization(user, role).save();
-		roles = User.findAllRolesBy(user.getUserAccount());
+		List<Role> roles = User.findAllRolesBy(user.getUserAccount());
 		assertEquals(1, roles.size());
 	}
 

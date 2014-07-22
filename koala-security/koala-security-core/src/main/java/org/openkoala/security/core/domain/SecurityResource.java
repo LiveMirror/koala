@@ -23,8 +23,12 @@ import org.openkoala.security.core.UrlIsExistedException;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({
-		@NamedQuery(name = "SecurityResource.findAllByType", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType  AND _securityResource.disabled = :disabled"),
-		@NamedQuery(name = "SecurityResource.findByName", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType AND _securityResource.name = :name AND _securityResource.disabled = :disabled") })
+		@NamedQuery(
+				name = "SecurityResource.findAllByType", 
+				query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType  AND _securityResource.disabled = :disabled"),
+		@NamedQuery(
+				name = "SecurityResource.findByName", 
+				query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType AND _securityResource.name = :name AND _securityResource.disabled = :disabled") })
 public abstract class SecurityResource extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = 6064565786784560656L;

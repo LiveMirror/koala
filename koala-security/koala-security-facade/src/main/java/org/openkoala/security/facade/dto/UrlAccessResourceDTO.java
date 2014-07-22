@@ -18,7 +18,7 @@ public class UrlAccessResourceDTO implements Serializable {
 	/**
 	 * 是否有效
 	 */
-	private boolean disabled = false;
+	private Boolean disabled;
 
 	/**
 	 * URL 路径
@@ -45,7 +45,7 @@ public class UrlAccessResourceDTO implements Serializable {
 	 * 该URL上所有的权限。 多个以,号分割
 	 */
 	private String permissions;
-
+	
 	public UrlAccessResourceDTO() {
 	}
 
@@ -75,11 +75,11 @@ public class UrlAccessResourceDTO implements Serializable {
 		this.name = name;
 	}
 
-	public boolean isDisabled() {
+	public Boolean getDisabled() {
 		return disabled;
 	}
 
-	public void setDisabled(boolean disabled) {
+	public void setDisabled(Boolean disabled) {
 		this.disabled = disabled;
 	}
 

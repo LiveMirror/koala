@@ -148,7 +148,12 @@ body {
                     <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                     <input type="password" name="password" id="j_password" class="form-control" placeholder="密码"/>
                 </div>
-				<!-- 删除验证码和图片 -->
+				<div class="form-group input-group">
+				    <span class="input-group-addon"><span class="glyphicon glyphicon-magnet"></span></span>
+					<input type="text" id="jCaptchaCode"  style="width:50%;" name="jCaptchaCode" value="" class="form-control" placeholder="验证码"  autocomplete="off"/>
+					<div style="width:120px;"></div>
+				</div>
+				<img src="jcaptcha.jpg" id="checkCode" onclick='$(this).attr("src","jcaptcha.jpg?time="+new Date().getTime());' class="checkCode"/>
 				<div class="form-group input-group" style="margin-top: 45px;">
 					<button type="button"  class="btn btn-primary btn-block" id="loginBtn">登录</button>
 				</div>

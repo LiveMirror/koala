@@ -44,6 +44,9 @@ public final class GenerateDTOUtils {
 		result.setTelePhone(user.getTelePhone());
 		result.setLastLoginTime(user.getLastLoginTime());
 		result.setVersion(user.getVersion());
+		result.setCreateOwner(user.getCreateOwner());
+		result.setLastModifyTime(user.getLastModifyTime());
+		result.setDisabled(user.isDisabled());
 		return result;
 	}
 

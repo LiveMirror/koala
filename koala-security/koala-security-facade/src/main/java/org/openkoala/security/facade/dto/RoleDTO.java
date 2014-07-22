@@ -97,5 +97,11 @@ public class RoleDTO implements Serializable{
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	@Override
+	public String toString() {
+		return "RoleDTO [roleId=" + roleId + ", version=" + version + ", roleName=" + roleName + ", description="
+				+ description + ", url=" + url + ", permissionDTOs=" + permissionDTOs + "]";
+	}
 	
 }

@@ -93,6 +93,9 @@ public class Role extends Authority {
 		this.permissions.removeAll(permissions);
 	}
 
+	public static List<Role> findAll(){
+		return Role.findAll(Role.class);
+	}
 	public static Role getBy(String name) {
 		return getRepository()//
 				.createCriteriaQuery(Role.class)//
