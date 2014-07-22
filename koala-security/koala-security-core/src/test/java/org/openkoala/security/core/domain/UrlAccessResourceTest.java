@@ -3,6 +3,7 @@ package org.openkoala.security.core.domain;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.openkoala.security.core.NameIsExistedException;
@@ -144,5 +145,25 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		urlAccessResources = UrlAccessResource.findAllUrlAccessResources();
 		assertTrue(urlAccessResources.size() == 2);
 	}
+	
+	@Test
+	public void testFindAll() throws Exception {
+		init();
+		List<UrlAccessResource> urlAccessResources = UrlAccessResource.findAllUrlAccessResources();
+		System.out.println("---->"+urlAccessResources);
+		for (UrlAccessResource urlAccessResource : urlAccessResources) {
+			Set<Authority> authorities = urlAccessResource.getAllAuthorities();
+			for (Authority authority : authorities) {
+				System.out.println("---->" + authority);
+			}
+		}
+	}
 
+	private void init() {
+		Role role = initRole();
+		role.save();
+		UrlAccessResource urlAccessResource = initUrlAccessResource();
+		urlAccessResource.save();
+		role.addSecurityResource(urlAccessResource);
+	}
 }

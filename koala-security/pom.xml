@@ -36,6 +36,7 @@
 		<shiro.version>1.2.3</shiro.version>
 		<guava.version>17.0</guava.version>
 		<hamcrest.version>1.3</hamcrest.version>
+		<jcaptcha.version>2.0-alpha-1</jcaptcha.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>

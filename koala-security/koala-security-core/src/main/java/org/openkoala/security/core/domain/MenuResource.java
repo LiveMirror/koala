@@ -83,6 +83,7 @@ public class MenuResource extends SecurityResource {
 	public void addChild(MenuResource child) {
 		child.setLevel(level + 1);
 		child.save();
+		this.children.add(child);
 		child.setParent(this);
 	}
 

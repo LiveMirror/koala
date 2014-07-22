@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -50,29 +52,36 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public Map<String, Object> login(@RequestParam String username, @RequestParam String password) {
+	public Map<String, Object> login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
 		Map<String, Object> results = new HashMap<String, Object>();
-		UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
-		try {
-			SecurityUtils.getSubject().login(usernamePasswordToken);
-			results.put("message", "登陆成功");
-			results.put("result", "success");
-		} catch (NullArgumentException e) {
-			e.printStackTrace();
-			results.put("message", "用户名或者密码为空");
+		String exceptionInfo = (String) request.getAttribute("shiroLoginFailure");
+		System.out.println(exceptionInfo);
+		if(!StringUtils.isBlank(exceptionInfo)){
+			results.put("message", "验证码错误");
 			results.put("result", "failure");
-		} catch (UserNotExistedException e) {
-			e.printStackTrace();
-			results.put("message", "用户名或者密码不正确");
-			results.put("result", "failure");
-		} catch (AuthenticationException e) {
-			e.printStackTrace();
-			results.put("message", "登录失败");
-			results.put("result", "failure");
-		} catch (Exception e) {
-			e.printStackTrace();
-			results.put("message", "登录失败");
-			results.put("result", "failure");
+		}else{
+			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
+			try {
+				SecurityUtils.getSubject().login(usernamePasswordToken);
+				results.put("message", "登陆成功");
+				results.put("result", "success");
+			} catch (NullArgumentException e) {
+				e.printStackTrace();
+				results.put("message", "用户名或者密码为空");
+				results.put("result", "failure");
+			} catch (UserNotExistedException e) {
+				e.printStackTrace();
+				results.put("message", "用户名或者密码不正确");
+				results.put("result", "failure");
+			} catch (AuthenticationException e) {
+				e.printStackTrace();
+				results.put("message", "登录失败");
+				results.put("result", "failure");
+			} catch (Exception e) {
+				e.printStackTrace();
+				results.put("message", "登录失败");
+				results.put("result", "failure");
+			}
 		}
 		return results;
 	}
@@ -171,7 +180,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/pagingquery")
 	public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO userDTO) {
-		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pagesize, userDTO);
+		Page<UserDTO> results = securityAccessFacade.pagingQueryUserDTOs(page, pagesize, userDTO);
 		return results;
 	}
 
@@ -187,7 +196,7 @@ public class UserController {
 	public Map<String, Object> updatePassword(@RequestParam String oldUserPassword, @RequestParam String userPassword) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		UserDTO userDTO = new UserDTO(AuthUserUtil.getUserAccount(), userPassword);
-		if (securityAccessFacade.updatePassword(userDTO, oldUserPassword)) {
+		if (securityConfigFacade.updatePassword(userDTO, oldUserPassword)) {
 			dataMap.put("result", "success");
 		} else {
 			dataMap.put("result", "failure");
@@ -417,7 +426,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryGrantRoleByUserId")
 	public Page<RoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserId(page, pagesize, userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryGrantRolesByUserId(page, pagesize, userId);
 		return results;
 	}
 
@@ -465,7 +474,7 @@ public class UserController {
 	@RequestMapping("/pagingQueryNotGrantPermissions")
 	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,
 			PermissionDTO queryPermissionCondition, Long userId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissions(page, pagesize,
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(page, pagesize,
 				queryPermissionCondition, userId);
 		return results;
 	}

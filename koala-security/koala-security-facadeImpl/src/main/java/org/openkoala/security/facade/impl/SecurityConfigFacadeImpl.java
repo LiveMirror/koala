@@ -64,6 +64,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
+	public boolean updatePassword(UserDTO userDto, String oldUserPassword) {
+		User user = transFromUserBy(userDto);
+		return securityAccessApplication.updatePassword(user, oldUserPassword);
+	}
+	
+	@Override
 	public void saveRoleDTO(RoleDTO roleDTO) {
 		Role role = transFromRoleBy(roleDTO);
 		securityConfigApplication.createAuthority(role);

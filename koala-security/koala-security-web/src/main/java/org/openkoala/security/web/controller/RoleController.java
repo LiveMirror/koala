@@ -45,7 +45,7 @@ public class RoleController {
 	@RequestMapping("/findRolesByUsername")
 	public Map<String, Object> findRoleDtosByUsername() {
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<RoleDTO> roleDtos = securityAccessFacade.findRoleDtosBy(AuthUserUtil.getUserAccount());
+		List<RoleDTO> roleDtos = securityAccessFacade.findRoleDTOsBy(AuthUserUtil.getUserAccount());
 		result.put("data", roleDtos);
 		return result;
 	}
@@ -105,7 +105,7 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingquery")
 	public Page<RoleDTO> pagingQuery(int page, int pagesize, RoleDTO roleDTO) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryRoles(page, pagesize, roleDTO);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryRoleDTOs(page, pagesize, roleDTO);
 		return results;
 	}
 

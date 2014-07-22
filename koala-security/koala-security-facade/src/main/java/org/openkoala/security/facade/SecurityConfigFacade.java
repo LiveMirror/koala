@@ -32,6 +32,15 @@ public interface SecurityConfigFacade {
 	 * @param userDTO
 	 */
 	void updateUserDTO(UserDTO userDTO);
+	
+	/**
+	 * 更新密码
+	 * 
+	 * @param userDto
+	 * @param oldUserPassword
+	 * @return
+	 */
+	boolean updatePassword(UserDTO userDto, String oldUserPassword);
 
 	/**
 	 * 重置用户密码

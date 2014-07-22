@@ -16,6 +16,7 @@ import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.UserNotExistedException;
+import org.openkoala.security.core.UserNotHasRoleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,9 @@ import org.slf4j.LoggerFactory;
 	@NamedQuery(
 			name = "User.loginByUserAccount", 
 			query = "SELECT _user FROM User _user WHERE _user.userAccount = :userAccount AND _user.password = :password"),
-	@NamedQuery(name="User.count",query="SELECT COUNT(_user.id) FROM User _user")
+	@NamedQuery(
+			name="User.count",
+			query="SELECT COUNT(_user.id) FROM User _user")
 })
 public class User extends Actor {
 
@@ -170,11 +173,15 @@ public class User extends Actor {
 	 * @return
 	 */
 	public static List<Role> findAllRolesBy(String userAccount) {
-		return getRepository()//
+		List<Role> results = getRepository()//
 				.createNamedQuery("Authority.findAllAuthoritiesByUserAccount")//
 				.addParameter("userAccount", userAccount)//
 				.addParameter("authorityType", Role.class)//
 				.list();
+		if(results.isEmpty()){
+			throw new UserNotHasRoleException("user do have not a role");
+		}
+		return results;
 	}
 
 	/**

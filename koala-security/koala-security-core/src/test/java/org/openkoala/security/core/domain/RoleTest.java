@@ -3,6 +3,7 @@ package org.openkoala.security.core.domain;
 import static org.junit.Assert.*;
 import static org.openkoala.security.core.util.EntitiesHelper.*;
 
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
@@ -27,6 +28,26 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		testSave();
 		Role role = new Role("testRole0000000000");
 		role.save();
+	}
+
+	@Test
+	public void testFindAll() throws Exception {
+		init();
+		List<Role> roles = Role.findAll();
+		for (Role role : roles) {
+			Set<SecurityResource> securityResources = role.getSecurityResources();
+			for (SecurityResource securityResource : securityResources) {
+				System.out.println(securityResource);
+			}
+		}
+	}
+
+	private void init() {
+		Role role = initRole();
+		role.save();
+		UrlAccessResource urlAccessResource = initUrlAccessResource();
+		urlAccessResource.save();
+		role.addSecurityResource(urlAccessResource);
 	}
 
 	@Test
@@ -62,7 +83,7 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		assertNotNull(loadRole);
 		assertRole(updateRole, loadRole);
 	}
-	
+
 	@Test
 	public void testFindRoleByUser() throws Exception {
 		User user = initUser();
@@ -71,13 +92,13 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		role.save();
 		Authorization authorization = initAuthorization(user, role);
 		authorization.save();
-		
+
 		Set<Role> roles = Role.findByUser(user);
-		
+
 		assertNotNull(roles);
 		assertEquals(1, roles.size());
 	}
-	
+
 	@Test
 	public void testFindAuthoritiesByRole() throws Exception {
 		Role role = initRole();
@@ -88,13 +109,13 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		permission2.save();
 		role.addPermission(permission);
 		role.addPermission(permission2);
-		
+
 		Set<Authority> authorities = role.findAuthoritiesBy();
-		
+
 		assertNotNull(authorities);
 		assertEquals(3, authorities.size());
 	}
-	
+
 	@Test
 	public void testAddPermission() throws Exception {
 		Role role = initRole();
@@ -106,7 +127,7 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		assertNotNull(permissions);
 		assertEquals(1, permissions.size());
 	}
-	
+
 	@Test
 	public void testAddPermissions() throws Exception {
 		Role role = initRole();
@@ -115,13 +136,13 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		role.save();
 		permission.save();
 		permission2.save();
-		
-		role.addPermissions(Lists.newArrayList(permission,permission2));
+
+		role.addPermissions(Lists.newArrayList(permission, permission2));
 		Set<Permission> permissions = role.getPermissions();
 		assertNotNull(permissions);
 		assertEquals(2, permissions.size());
 	}
-	
+
 	@Test
 	public void testTerminatePermission() throws Exception {
 		Role role = initRole();
@@ -130,19 +151,19 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		role.save();
 		permission.save();
 		permission2.save();
-		
-		role.addPermissions(Lists.newArrayList(permission,permission2));
+
+		role.addPermissions(Lists.newArrayList(permission, permission2));
 		Set<Permission> permissions = role.getPermissions();
 		assertNotNull(permissions);
 		assertEquals(2, permissions.size());
-		
+
 		role.terminatePermission(permission);
-		
+
 		permissions = role.getPermissions();
 		assertNotNull(permissions);
 		assertEquals(1, permissions.size());
 	}
-	
+
 	@Test
 	public void testTerminatePermissions() throws Exception {
 		Role role = initRole();
@@ -151,19 +172,19 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		role.save();
 		permission.save();
 		permission2.save();
-		
-		role.addPermissions(Lists.newArrayList(permission,permission2));
+
+		role.addPermissions(Lists.newArrayList(permission, permission2));
 		Set<Permission> permissions = role.getPermissions();
 		assertNotNull(permissions);
 		assertEquals(2, permissions.size());
-		
-		role.terminatePermissions(Lists.newArrayList(permission,permission2));
-		
+
+		role.terminatePermissions(Lists.newArrayList(permission, permission2));
+
 		permissions = role.getPermissions();
 		assertNotNull(permissions);
 		assertEquals(0, permissions.size());
 	}
-	
+
 	@Test
 	public void testGetAuthorityBy() throws Exception {
 		Role role = initRole();
@@ -171,14 +192,14 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		Authority authority = role.getAuthorityBy(role.getName());
 		assertNotNull(authority);
 	}
-	
+
 	@Test
 	public void testGetBy() throws Exception {
 		Role role = initRole();
 		role.save();
-		
+
 		Role loadRole = Role.getBy(role.getId());
 		assertNotNull(loadRole);
-		
+
 	}
 }
