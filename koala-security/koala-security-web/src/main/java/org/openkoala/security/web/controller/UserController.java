@@ -237,7 +237,11 @@ public class UserController {
 	@RequestMapping("/suspend")
 	public Map<String, Object> suspend(Long userId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.suspend(userId);
+		try {
+			securityConfigFacade.suspend(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		dataMap.put("success", true);
 		return dataMap;
 	}
