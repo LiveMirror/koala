@@ -1,6 +1,7 @@
-package org.openkoala.security.web.filter;
+package org.openkoala.security.web.shiro;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class ShiroFilerChainManager{
     
 //    @PostConstruct
     public void init() {
-        defaultFilterChains = new HashMap<String, NamedFilterList>(filterChainManager.getFilterChains());
+        defaultFilterChains = new LinkedHashMap<String, NamedFilterList>(filterChainManager.getFilterChains());
         LOGGER.info("defaultFilterChains:{}",defaultFilterChains);
     }
     
