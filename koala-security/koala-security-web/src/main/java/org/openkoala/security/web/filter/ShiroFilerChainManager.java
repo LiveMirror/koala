@@ -11,12 +11,16 @@ import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.NamedFilterList;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 @Named
 public class ShiroFilerChainManager{
 
-    @Inject
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShiroFilerChainManager.class);
+   
+	@Inject
     private DefaultFilterChainManager filterChainManager;
     
     @Inject
@@ -27,6 +31,7 @@ public class ShiroFilerChainManager{
 //    @PostConstruct
     public void init() {
         defaultFilterChains = new HashMap<String, NamedFilterList>(filterChainManager.getFilterChains());
+        LOGGER.info("defaultFilterChains:{}",defaultFilterChains);
     }
     
 //    @PostConstruct
@@ -41,7 +46,7 @@ public class ShiroFilerChainManager{
         if(defaultFilterChains != null) {
             filterChainManager.getFilterChains().putAll(defaultFilterChains);
         }
-
+        
         //2、循环URL Filter 注册filter chain
         for (UrlAccessResourceDTO urlAccessResource : urlAccessResources) {
             String url = urlAccessResource.getUrl();
@@ -57,7 +62,7 @@ public class ShiroFilerChainManager{
 	            }
             }
         }
-
+        
     }
 
 

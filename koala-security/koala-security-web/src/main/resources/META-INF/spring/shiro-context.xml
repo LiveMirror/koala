@@ -21,18 +21,24 @@
 	</bean>
 
 	<bean id="formAuthenticationFilter"
-		class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
+		class="org.openkoala.security.web.filter.CustomFormAuthenticationFilter">
 		<property name="usernameParam" value="username" />
 		<property name="passwordParam" value="password" />
 		<property name="rememberMeParam" value="rememberMe" />
+		<property name="failureKeyAttribute" value="shiroLoginFailure"></property>
 		<property name="loginUrl" value="/login.koala"></property>
 	</bean>
 
 	<bean id = "anyRoleFilter" class="org.openkoala.security.web.filter.AnyRoleAuthorizationFilter"></bean>
  	
-	<!--  -->
 	<bean id="filterChainResolver" class="org.openkoala.security.web.filter.CustomPathMatchingFilterChainResolver">
 		 <property name="customDefaultFilterChainManager" ref="filterChainManager"/>
+	</bean>
+	
+	<bean id="jCaptchaValidateFilter" class="org.openkoala.security.web.Jcaptcha.JCaptchaValidateFilter">
+		<property name="jCaptchaDisabled" value="false" />
+		<property name="jCaptchaCode" value="jCaptchaCode" />
+		<property name="failureKeyAttribute" value="shiroLoginFailure" />
 	</bean>
 	
 	<!-- 自定义过滤器链管理 -->
@@ -44,7 +50,8 @@
 			<util:map>
 				<entry key="authc" value-ref="formAuthenticationFilter" />
 				<!-- 定义自己的过滤器注册到shiro过滤器链中 -->
-				 <entry key="anyRole" value-ref="anyRoleFilter"></entry>
+				 <entry key="anyRole" value-ref="anyRoleFilter" />
+				 <entry key="jCaptchaValidate" value-ref="jCaptchaValidateFilter" />
 			</util:map>
 		</property>
 		<property name="defaultFilterChainDefinitions">
@@ -53,15 +60,15 @@
 				/images/** = anon
 				/css/** = anon
 				/lib/** = anon
-				/login.koala = anon
-				/auth/user/login.koala = anon
-				/authenticated =authc
-				/** = authc
+				/login.koala = jCaptchaValidate
+				/jcaptcha.jpg = anon
+				/auth/user/login.koala = jCaptchaValidate,authc
+				/authenticated = authc
+				/** = user,authc
 			</value>
 		</property>
 	</bean>
 
-	
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 	</bean>

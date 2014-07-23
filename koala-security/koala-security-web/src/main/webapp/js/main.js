@@ -70,7 +70,7 @@ $(function(){
 	 */
 	self.on('modifyPwd',function(){
 		$('body').modifyPassword({
-			service: contextPath + '/auth/User/updatePassword.koala'
+			service: contextPath + '/auth/user/updatePassword.koala'
 		});
 	});
 	/*
@@ -84,9 +84,10 @@ $(function(){
 	*/
 	self.on('loginOut',function(){
 		//window.location.href 
+		
 		var logOut = contextPath+"/auth/user/logout.koala";
 		$.post(logOut,function(result){
-			if(result.success){
+			if(result.result == 'success'){
 				window.location.href = contextPath+"/login.koala";
 			}
 		});
@@ -231,6 +232,7 @@ var changeHeight = function(){
     var footHeight = $('#footer').outerHeight();
     var height =  windowHeight - headerHeight - footHeight;
     sidebarHeight < height && sidebar.css('height', height);
+   // $('.g-sidec').css('min-height',height);
     $('.g-mainc').css('min-height', height);
 };
 

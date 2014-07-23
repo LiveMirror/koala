@@ -20,57 +20,41 @@ public interface SecurityAccessFacade {
 	 * @param userId
 	 * @return
 	 */
-	UserDTO getUserDtoBy(Long userId);
+	UserDTO getUserDTOBy(Long userId);
 
 	/**
 	 * 根据用户名获取用户
 	 * 
-	 * @param username
+	 * @param userAccount
 	 * @return
 	 */
-	UserDTO getUserDtoBy(String username);
+	UserDTO getUserDTOBy(String userAccount);
 
 	/**
 	 * 根据用户名查找所有的角色
 	 * 
-	 * @param username
+	 * @param userAccount
 	 *            用户名
 	 * @return
 	 */
-	List<RoleDTO> findRoleDtosBy(String username);
+	List<RoleDTO> findRoleDTOsBy(String userAccount);
 
 	/**
 	 * 根据用户名查找其拥有的所有权限
 	 * 
-	 * @param username
+	 * @param userAccount
 	 *            用户名
 	 * @return
 	 */
-	Set<PermissionDTO> findPermissionDtosBy(String username);
+	Set<PermissionDTO> findPermissionDTOsBy(String userAccount);
 
 	/**
 	 * 根据用户名查找该
 	 * 
-	 * @param username
+	 * @param userAccount
 	 * @return
 	 */
-	List<MenuResourceDTO> findMenuResourceDtoByUsername(String username);
-
-	/**
-	 * 更新密码
-	 * 
-	 * @param userDto
-	 * @param oldUserPassword
-	 * @return
-	 */
-	boolean updatePassword(UserDTO userDto, String oldUserPassword);
-
-	/**
-	 * 更新用户
-	 * 
-	 * @param userDTO
-	 */
-	void updateUserDTO(UserDTO userDTO);
+	List<MenuResourceDTO> findMenuResourceDTOByUserAccount(String userAccount);
 
 	/**
 	 * 分页查询用户信息
@@ -80,7 +64,7 @@ public interface SecurityAccessFacade {
 	 * @param userDTO
 	 * @return
 	 */
-	Page<UserDTO> pagingQueryUsers(int currentPage, int pageSize, UserDTO userDTO);
+	Page<UserDTO> pagingQueryUserDTOs(int currentPage, int pageSize, UserDTO userDTO);
 
 	/**
 	 * 分页查询角色信息
@@ -90,7 +74,7 @@ public interface SecurityAccessFacade {
 	 * @param roleDTO
 	 * @return
 	 */
-	Page<RoleDTO> pagingQueryRoles(int currentPage, int pageSize, RoleDTO roleDTO);
+	Page<RoleDTO> pagingQueryRoleDTOs(int currentPage, int pageSize, RoleDTO roleDTO);
 
 	/**
 	 * 分页查询权限信息
@@ -100,7 +84,7 @@ public interface SecurityAccessFacade {
 	 * @param permissionDTO
 	 * @return
 	 */
-	Page<PermissionDTO> pagingQueryPermissions(int currentPage, int pageSize, PermissionDTO permissionDTO);
+	Page<PermissionDTO> pagingQueryPermissionDTOs(int currentPage, int pageSize, PermissionDTO permissionDTO);
 
 	/***
 	 * 查询某个角色下用户的菜单资源。
@@ -117,12 +101,9 @@ public interface SecurityAccessFacade {
 
 	Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition, Long userId);
 
-	Page<PermissionDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, PermissionDTO queryPermissionCondition,
-			Long userId);
-
 	Page<PermissionDTO> pagingQueryGrantPermissionByUserId(int currentPage, int pageSize, Long userId);
 
-	Page<RoleDTO> pagingQueryRolesByUserId(int currentPage, int pageSize, Long userId);
+	Page<RoleDTO> pagingQueryGrantRolesByUserId(int currentPage, int pageSize, Long userId);
 
 	Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId);
 
@@ -131,22 +112,18 @@ public interface SecurityAccessFacade {
 	Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize,UrlAccessResourceDTO urlAccessResourceDTO);
 
 	/**
-	 * 查找所有的权限
+	 * 根据URL或者菜单类型查找所有的权限
 	 * 
 	 * @return
 	 */
-	Set<PermissionDTO> findPermissions();
+	Set<PermissionDTO> findPermissionDTOsByMenuOrUrl();
 
 	/**
 	 * 查找所有的角色
 	 * 
 	 * @return
 	 */
-	Set<RoleDTO> findRoles();
-
-	MenuResourceDTO findMenuResourceBy(PermissionDTO permissionDTO);
-
-	UrlAccessResourceDTO findUrlAccessResourceBy(PermissionDTO permissionDTO);
+	Set<RoleDTO> findRoleDTOsByMenuOrUrl();
 
 	List<UrlAccessResourceDTO> findAllUrlAccessResources();
 
@@ -205,7 +182,7 @@ public interface SecurityAccessFacade {
 
 	Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId);
 
-	Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize, PermissionDTO queryPermissionCondition,
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUserId(int page, int pagesize, PermissionDTO queryPermissionCondition,
 			Long userId);
 
 	Page<PageElementResourceDTO> pagingQueryPageElementResources(int page, int pagesize,
@@ -220,5 +197,7 @@ public interface SecurityAccessFacade {
 
 	Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
 			Long pageElementResourceId);
+
+	UserDTO login(String principal, String password);
 
 }

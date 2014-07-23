@@ -1,11 +1,13 @@
 package org.openkoala.security.application;
 
 import java.util.List;
+import java.util.Set;
 
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.OrganizationScope;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
@@ -19,6 +21,8 @@ public interface SecurityConfigApplication {
 	 * @param actor
 	 */
 	void terminateActor(Actor actor);
+
+	void updateActor(Actor actor);
 
 	/**
 	 * 
@@ -144,7 +148,7 @@ public interface SecurityConfigApplication {
 	 * @param securityResource
 	 */
 	void terminateAuthoritiesFromSecurityResource(List<Authority> authorities, SecurityResource securityResource);
-	
+
 	/**
 	 * 
 	 * @param authorities
@@ -207,7 +211,10 @@ public interface SecurityConfigApplication {
 	 */
 	boolean isSecurityResourceIdentifierExist(SecurityResource securityResource);
 
-	void initSecurityResources();
+	/**
+	 * 初始化权限数据
+	 */
+	void initSecuritySystem();
 
 	/***
 	 * TODO 1、判断账户是否存在 ； 2、判断邮箱是否存在 ； 3、判断电话是否已经存在 。 添加参与者
@@ -232,8 +239,6 @@ public interface SecurityConfigApplication {
 	 */
 	void grantActorToAuthorityInScope(Actor actor, Authority authority, Scope scope);
 
-	void grantActorToAuthorityInScope(Long actorId, Long authorityId, Long scopeId);
-
 	/**
 	 * 重置密码
 	 * 
@@ -252,10 +257,6 @@ public interface SecurityConfigApplication {
 	void terminateScope(Scope scope);
 
 	void createChildToParent(OrganizationScope child, Long parentId);
-
-	void grantActorsToAuthority(Long[] userIds, Long roleId);
-
-	void grantActorToAuthority(Long userId, Long roleId);
 
 	/**
 	 * 为可授权体:Authority授予多个权限资源:SecurityResources。
@@ -290,5 +291,15 @@ public interface SecurityConfigApplication {
 	 * @param adminRole
 	 */
 	void grantPermissionsToRole(List<Permission> permissions, Role role);
+
+	boolean checkAuthoritiHasPageElementResource(Set<Authority> authorities, PageElementResource pageElementResource);
+
+	/**
+	 * 为参与者授权授权体
+	 * 
+	 * @param authority
+	 * @param actor
+	 */
+	void grantAuthorityToActor(Authority authority, Actor actor);
 
 }

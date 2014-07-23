@@ -42,6 +42,27 @@ public abstract class Scope extends SecurityAbstractEntity {
 	}
 
 	public abstract void update();
+	
+	public static Scope getBy(Long scopeId) {
+		return Scope.get(Scope.class, scopeId);
+	}
+	
+	public boolean contains(Scope scope) {
+
+		if (scope == null) {
+			return false;
+		}
+
+		if (equals(scope)) {
+			return true;
+		}
+
+		if (getChildren().contains(scope)) {
+			return true;
+		}
+
+		return contains(scope.getParent());
+	}
 
 	public String getName() {
 		return name;
@@ -67,23 +88,6 @@ public abstract class Scope extends SecurityAbstractEntity {
 		this.level = level;
 	}
 
-	public boolean contains(Scope scope) {
-
-		if (scope == null) {
-			return false;
-		}
-
-		if (equals(scope)) {
-			return true;
-		}
-
-		if (getChildren().contains(scope)) {
-			return true;
-		}
-
-		return contains(scope.getParent());
-	}
-
 	@Override
 	public String[] businessKeys() {
 		return new String[] { "name", "description" };
@@ -93,5 +97,4 @@ public abstract class Scope extends SecurityAbstractEntity {
 	public String toString() {
 		return "Scope [name=" + name + ", description=" + description + "]";
 	}
-
 }

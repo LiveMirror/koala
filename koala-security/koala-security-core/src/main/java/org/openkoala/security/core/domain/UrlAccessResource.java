@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Entity
 @DiscriminatorValue("URL_ACCESS_RESOURCE")
 public class UrlAccessResource extends SecurityResource {
@@ -16,25 +18,42 @@ public class UrlAccessResource extends SecurityResource {
 	UrlAccessResource() {
 	}
 
-	public UrlAccessResource(String name) {
-		super(name);
+	public UrlAccessResource(String name, String url) {
+		super(name, url);
+	}
+
+	@Override
+	public void save() {
+		isNameExisted();
+		isUrlExisted();
+		super.save();
 	}
 
 	@Override
 	public void update() {
-		UrlAccessResource urlAccessResource = get(UrlAccessResource.class, this.getId());
-		urlAccessResource.setName(this.getName());
+		UrlAccessResource urlAccessResource = getBy(this.getId());
+		if(!StringUtils.isBlank(this.getName()) && !urlAccessResource.getName().equals(this.getName())){
+			isNameExisted();
+			urlAccessResource.name = this.getName();
+		}
+		if(!StringUtils.isBlank(this.getUrl()) && !urlAccessResource.getUrl().equals(this.getUrl())){
+			isUrlExisted();
+			urlAccessResource.setUrl(this.getUrl());
+		}
 		urlAccessResource.setIdentifier(this.getIdentifier());
 		urlAccessResource.setDescription(this.getDescription());
-		urlAccessResource.setUrl(this.getUrl());
 		urlAccessResource.setVersion(this.getVersion());
+	}
+
+	public static UrlAccessResource getBy(Long id) {
+		return UrlAccessResource.get(UrlAccessResource.class, id);
 	}
 
 	public static List<String> getRoleNames(Set<Authority> authorities) {
 		List<String> results = new ArrayList<String>();
 		for (Authority authority : authorities) {
 			if (authority instanceof Role) {
-				results.add(((Role) authority).getName());
+				results.add(((Role) authority).getName().trim());
 			}
 		}
 		return results;
@@ -44,16 +63,50 @@ public class UrlAccessResource extends SecurityResource {
 		List<String> results = new ArrayList<String>();
 		for (Authority authority : authorities) {
 			if (authority instanceof Permission) {
-				results.add(((Permission) authority).getIdentifier());
+				results.add(((Permission) authority).getIdentifier().trim());
 			}
 		}
 		return results;
 	}
 
 	public static List<UrlAccessResource> findAllUrlAccessResources() {
-		return getRepository().createNamedQuery("SecurityResource.findAllByType")//
-				.addParameter("_securityResourceType", UrlAccessResource.class)//
-				.addParameter("disabled", false)//
-				.list();
+		return UrlAccessResource.findAll(UrlAccessResource.class);
+//		List<UrlAccessResource> results =  getRepository()//
+//				.createNamedQuery("SecurityResource.findAllByType")//
+//				.addParameter("securityResourceType", UrlAccessResource.class)//
+//				.addParameter("disabled", false)//
+//				.list();
+//		return results;
 	}
+
+	@Override
+	public SecurityResource findByName(String name) {
+		return getRepository()//
+				.createNamedQuery("SecurityResource.findByName")//
+				.addParameter("securityResourceType", UrlAccessResource.class)//
+				.addParameter("name", name)//
+				.addParameter("disabled", false)//
+				.singleResult();
+	}
+
+	@Override
+	protected SecurityResource findByUrl(String url) {
+		return getRepository()//
+				.createCriteriaQuery(UrlAccessResource.class)//
+				.eq("url", url)//
+				.singleResult();
+	}
+
+	public Set<Authority> getAllAuthorities() {
+		return this.getAuthorities();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
 }

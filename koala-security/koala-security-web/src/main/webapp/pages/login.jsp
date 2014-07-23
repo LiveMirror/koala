@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html>
@@ -142,13 +141,20 @@ body {
 			<FORM id="loginFormId" class="form-horizontal" action="login" method="post">
 				<div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                    <input type="text" class="form-control" placeholder="用户名"  name="username" id="j_username" value="<shiro:principal/>">
+                    <input type="text" class="form-control" placeholder="用户名"  name="username" id="j_username" value="">
 				</div>
                 <div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                     <input type="password" name="password" id="j_password" class="form-control" placeholder="密码"/>
                 </div>
-				<!-- 删除验证码和图片 -->
+                <!-- 
+				<div class="form-group input-group">
+				    <span class="input-group-addon"><span class="glyphicon glyphicon-magnet"></span></span>
+					<input type="text" id="jCaptchaCode"  style="width:50%;" name="jCaptchaCode" value="" class="form-control" placeholder="验证码"  autocomplete="off"/>
+					<div style="width:120px;"></div>
+				</div>
+				<img src="jcaptcha.jpg" id="checkCode" onclick='$(this).attr("src","jcaptcha.jpg?time="+new Date().getTime());' class="checkCode"/>
+				 -->
 				<div class="form-group input-group" style="margin-top: 45px;">
 					<button type="button"  class="btn btn-primary btn-block" id="loginBtn">登录</button>
 				</div>
@@ -182,15 +188,26 @@ body {
 	        }
 	        btnLogin.attr('disabled', 'disabled').html('正在登录...');
     		var param = form.serialize();
-        	$.post("auth/user/login.koala",param,function(data){
-    			if(data.result = "success"){
-    				$('.login_con_R').message({
-    					type: 'success',
-    					content: '登陆成功'
-    				});
-    				window.location.href='${pageContext.request.contextPath}/pages/index.jsp';
-    			}
-    		}); 
+        	$.ajax({
+        		url : "auth/user/login.koala",
+        		dataType:"json",
+        		data:param,
+        		type:"post",
+        		success:function(data){
+        			if(data.result == "success"){
+        				$('.login_con_R').message({
+        					type: 'success',
+        					content:  data.message
+        				});
+        				window.location.href='${pageContext.request.contextPath}/pages/index.jsp';
+        			}else{
+        				$('.login_con_R').message({
+        					type: 'error',
+        					content: data.message
+        				});
+        			}
+        		}
+        	});
 		};
 		});
 	</script>

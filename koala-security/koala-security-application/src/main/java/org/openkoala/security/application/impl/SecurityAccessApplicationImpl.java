@@ -6,8 +6,6 @@ import java.util.Set;
 
 import javax.inject.Named;
 
-import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
@@ -16,6 +14,7 @@ import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
@@ -25,20 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class SecurityAccessApplicationImpl implements SecurityAccessApplication {
 
-	private QueryChannelService queryChannelService;
-
-	public QueryChannelService getQueryChannelService() {
-		if (queryChannelService == null) {
-			queryChannelService = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel");
-		}
-		return queryChannelService;
-	}
-
+	@Override
 	public boolean hasPermission(User user) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean canAccessSecurityResource(User user, SecurityResource securityResource) {
+	public boolean hasOwnSecurityResource(User user, SecurityResource securityResource) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -46,7 +39,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 		return User.findAllRolesBy(userAccount);
 	}
 
-	public Set<Permission> findAllPermissionsByUserAccount(String userAccount) {
+	public List<Permission> findAllPermissionsByUserAccount(String userAccount) {
 		return User.findAllPermissionsBy(userAccount);
 	}
 
@@ -63,11 +56,6 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 		Set<Authority> authorities = Authorization.findAuthoritiesByActor(user);
 		Set<MenuResource> result = Authority.findMenuResourceByAuthorities(authorities);
 		return result;
-	}
-
-	@Override
-	public void updateActor(Actor actor) {
-		actor.update();
 	}
 
 	@Override
@@ -119,5 +107,25 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	@Override
 	public PageElementResource getPageElementResourceBy(Long pageElementResourceId) {
 		return PageElementResource.get(PageElementResource.class, pageElementResourceId);
+	}
+
+	@Override
+	public PageElementResource getPageElementResourceBy(String securityResourceName) {
+		return PageElementResource.getBy(securityResourceName);
+	}
+
+	@Override
+	public Role getRoleBy(String roleName) {
+		return Role.getBy(roleName);
+	}
+
+	@Override
+	public Scope getScope(Long scopeId) {
+		return Scope.getBy(scopeId);
+	}
+
+	@Override
+	public User login(String principal, String password) {
+		return User.login(principal,password);
 	}
 }

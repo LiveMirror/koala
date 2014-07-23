@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 角色。角色是权限的集合。
  * 
@@ -39,6 +41,12 @@ public class Role extends Authority {
 		super(name);
 	}
 
+	@Override
+	public void save() {
+		isNameExisted();
+		super.save();
+	}
+
 	public static Set<Role> findByUser(User user) {
 		Set<Role> results = new HashSet<Role>();
 		List<Authorization> authorizations = Authorization.findByActor(user);
@@ -53,9 +61,12 @@ public class Role extends Authority {
 
 	@Override
 	public void update() {
-		isExisted();
-		Role role = Role.get(Role.class, this.getId());
-		role.setName(this.getName());
+		Role role = getBy(this.getId());
+
+		if (!StringUtils.isBlank(this.getName()) && !role.getName().equals(this.getName())) {
+			isNameExisted();
+			role.name = this.getName();
+		}
 		role.setDescription(this.getDescription());
 	}
 
@@ -82,12 +93,35 @@ public class Role extends Authority {
 		this.permissions.removeAll(permissions);
 	}
 
+	public static List<Role> findAll(){
+		return Role.findAll(Role.class);
+	}
+	public static Role getBy(String name) {
+		return getRepository()//
+				.createCriteriaQuery(Role.class)//
+				.eq("name", name)//
+				.singleResult();
+	}
+
 	public Set<Permission> getPermissions() {
 		return permissions;
 	}
 
 	public void setPermissions(Set<Permission> permissions) {
 		this.permissions = permissions;
+	}
+
+	@Override
+	public Authority getAuthorityBy(String name) {
+		return getRepository()//
+				.createNamedQuery("Authority.getAuthorityByName")//
+				.addParameter("authorityType", Role.class)//
+				.addParameter("name", name)//
+				.singleResult();
+	}
+
+	public static Role getBy(Long id) {
+		return Role.get(Role.class, id);
 	}
 
 }

@@ -4,6 +4,9 @@
         .menu .form-control {
             width: 95%;
         }
+       .modal-footer{
+       padding:10px 20px;
+       }
     </style>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -16,7 +19,7 @@
                     <div class="form-group parentName">
                         <label class="col-lg-3 control-label">父菜单名称:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" id="parentName" disabled>
+                            <input type="text" class="form-control" name = "parentId" disabled>
                         </div>
                     </div>
                     <div class="form-group">
@@ -32,22 +35,23 @@
                         </div>
                     </div>
                      <div class="form-group">
-                        <label class="col-lg-3 control-label" for="menuUrl">菜单url:</label>
+                        <label class="col-lg-3 control-label" for="url">菜单url:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="menuUrl"/>
+                            <input type="text" class="form-control" name="url"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label">菜单图片:</label>
                         <div class="col-lg-9">
-                            <span id="menuIcon" name="menuIcon" class="menu-icon "></span>
+                            <span id="menuIcon" class="menu-icon"></span>
+                            <input type="hidden" name="icon"/>
                             <button id="iconBtn" type="button" class="btn btn-info">浏览图片</button>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label">资源描述:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="description"/>
+                            <input type="text" class="form-control" id = "description" name="description"/>
                         </div>
                     </div>
 		            <div class="modal-footer">

@@ -29,18 +29,29 @@ public class UserDTO implements Serializable {
 
 	private String telePhone;
 	
+	private String createOwner;
+	
+	private Date lastModifyTime;
+	
 	private String salt;
+	
+	/**
+	 * TRUE
+	 * FALSE
+	 * NULL
+	 */
+	private Boolean disabled;
 
 	public UserDTO() {
 	}
 
-	public UserDTO(String username, String userPassword) {
-		this.userAccount = username;
+	public UserDTO(String userAccount, String userPassword) {
+		this.userAccount = userAccount;
 		this.userPassword = userPassword;
 	}
 
-	public UserDTO(String username, String userPassword, Date createDate, String description) {
-		this.userAccount = username;
+	public UserDTO(String userAccount, String userPassword, Date createDate, String description) {
+		this.userAccount = userAccount;
 		this.userPassword = userPassword;
 		this.createDate = createDate;
 		this.description = description;
@@ -141,5 +152,28 @@ public class UserDTO implements Serializable {
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
-	
+
+	public String getCreateOwner() {
+		return createOwner;
+	}
+
+	public void setCreateOwner(String createOwner) {
+		this.createOwner = createOwner;
+	}
+
+	public Date getLastModifyTime() {
+		return lastModifyTime;
+	}
+
+	public void setLastModifyTime(Date lastModifyTime) {
+		this.lastModifyTime = lastModifyTime;
+	}
+
+	public Boolean getDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(Boolean disabled) {
+		this.disabled = disabled;
+	}
 }

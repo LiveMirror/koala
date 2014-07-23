@@ -71,6 +71,8 @@ public abstract class Actor extends SecurityAbstractEntity {
 		return results;
 	}
 
+	/*------------- Private helper methods  -----------------*/
+	
 	private Set<Authority> getAuthorities(Scope scope) {
 		return Authorization.findAuthoritiesByActorInScope(this, scope);
 	}
@@ -97,7 +99,7 @@ public abstract class Actor extends SecurityAbstractEntity {
 		return lastModifyTime;
 	}
 
-	public void setLastModifyTime(Date lastModifyTime) {
+	protected void setLastModifyTime(Date lastModifyTime) {
 		this.lastModifyTime = lastModifyTime;
 	}
 
@@ -111,5 +113,9 @@ public abstract class Actor extends SecurityAbstractEntity {
 
 	public Date getCreateDate() {
 		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 }

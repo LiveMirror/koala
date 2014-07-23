@@ -22,6 +22,7 @@ public class SystemEvenmentListener implements ServletContextListener{
 		shiroFilerChainManager.init();
 		filterChainManager.init();
 		shiroFilerChainManager.initFilterChain();
+		LOGGER.info("init System Evenment.");
 	}
 
 	@Override

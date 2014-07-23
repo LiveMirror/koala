@@ -1,13 +1,15 @@
 package org.openkoala.security.core.domain;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+
+import org.apache.commons.lang3.StringUtils;
+import org.openkoala.security.core.IdentifierIsExistedException;
 
 /**
  * 权限。代表系统的一项操作或功能。
@@ -39,31 +41,58 @@ public class Permission extends Authority {
 	}
 
 	@Override
+	public void save() {
+		isNameExisted();
+		isIdentifierExisted(this.identifier);
+		super.save();
+	}
+
+	public Permission getPermissionBy(String identifier) {
+		return getRepository()//
+				.createCriteriaQuery(Permission.class)//
+				.eq("identifier", identifier)//
+				.singleResult();
+	}
+
+	@Override
 	public void update() {
-		isExisted();
-		Permission permission = Permission.get(Permission.class, this.getId());
-		permission.setName(this.getName());
+		Permission permission = getBy(this.getId());
+		
+		if(!StringUtils.isBlank(this.getName()) && !permission.getName().equals(this.getName())){
+			isNameExisted();
+			permission.name = this.getName();
+		}
+		
+		if(!StringUtils.isBlank(this.getIdentifier()) && !permission.getIdentifier().equals(this.getIdentifier()))
+		{
+			isIdentifierExisted(this.getIdentifier());
+			permission.identifier = this.getIdentifier();
+		}
 		permission.setDescription(this.getDescription());
 	}
 
-	/**
-	 * TODO 是否直接写JPQL查询?
-	 * 
-	 * @param user
-	 * @return
-	 */
-	public static Set<Permission> findByUser(User user) {
-		Set<Permission> results = new HashSet<Permission>();
-		List<Authorization> authorizations = Authorization.findByActor(user);
-		for (Authorization authorization : authorizations) {
-			Authority authority = authorization.getAuthority();
-			if (authority instanceof Permission) {
-				results.add((Permission) authority);
-			}
-		}
-		return results;
-	}
+	@Override
+	public Authority getAuthorityBy(String name) {
+		return getRepository()//
+				.createNamedQuery("Authority.getAuthorityByName")//
+				.addParameter("authorityType", Permission.class)//
+				.addParameter("name", name)//
+				.singleResult();
 
+	}
+	
+	public static Permission getBy(Long id){
+		return Permission.get(Permission.class, id);
+	}
+	
+	private void isIdentifierExisted(String identifier) {
+		Permission permission = getPermissionBy(identifier);
+		if(permission != null){
+			throw new IdentifierIsExistedException("permission.identifier.existed");
+		}
+		
+	}
+	
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -74,10 +103,6 @@ public class Permission extends Authority {
 
 	public String getIdentifier() {
 		return identifier;
-	}
-
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
 	}
 
 }

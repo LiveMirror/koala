@@ -14,7 +14,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -61,7 +61,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 	private Set<String> getPermissionIdentifiers(String username) {
 		Set<String> results = new HashSet<String>();
 
-		Set<PermissionDTO> permissionDtos = securityAccessFacade.findPermissionDtosBy(username);
+		Set<PermissionDTO> permissionDtos = securityAccessFacade.findPermissionDTOsBy(username);
 		for (PermissionDTO permissionDto : permissionDtos) {
 			results.add(permissionDto.getIdentifier());
 		}
@@ -80,22 +80,40 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		String username = (String) token.getPrincipal();
-		UserDTO userDTO = securityAccessFacade.getUserDtoBy(username);
-		// TODO and so on.
-		if (userDTO == null) {
-			throw new UnknownAccountException();// 没找到账户
+
+		UsernamePasswordToken toToken = null;
+
+		if (token instanceof UsernamePasswordToken) {
+			toToken = (UsernamePasswordToken) token;
 		}
 
-		List<RoleDTO> roleDTOs = securityAccessFacade.findRoleDtosBy(userDTO.getUserAccount());
-		String roleName = roleDTOs.get(0).getRoleName();
-		ShiroUser shiroUser = null;
-		if(!StringUtils.isBlank(roleName)){
-			shiroUser = new ShiroUser(userDTO.getId(), userDTO.getUserAccount(), userDTO.getName(),roleName);
+		String principal = (String) toToken.getPrincipal();
+		String password = "";
+
+		if (toToken.getCredentials() != null) {
+			password = new String(toToken.getPassword());
+		}
+		UserDTO userDTO = null;
+		
+		userDTO = securityAccessFacade.login(principal, password);		
+		
+		// TODO 以后修改成前后台获取一致。
+		List<RoleDTO> roleDTOs = securityAccessFacade.findRoleDTOsBy(userDTO.getUserAccount());
+		String roleName = "";
+		
+		if(roleDTOs.isEmpty()){
+			// no deal
 		}else{
-			shiroUser = new ShiroUser(userDTO.getId(), userDTO.getUserAccount(), userDTO.getName());
+			roleName = roleDTOs.get(0).getRoleName();
 		}
 		
+		ShiroUser shiroUser = null;
+		if (!StringUtils.isBlank(roleName)) {
+			shiroUser = new ShiroUser(userDTO.getId(), userDTO.getUserAccount(), userDTO.getName(), roleName);
+		} else {
+			shiroUser = new ShiroUser(userDTO.getId(), userDTO.getUserAccount(), userDTO.getName());
+		}
+
 		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
 				shiroUser, //
 				userDTO.getUserPassword(),//
@@ -104,9 +122,6 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		return result;
 	}
 
-	
-	
-	
 	@Override
 	protected void clearCachedAuthorizationInfo(PrincipalCollection principals) {
 		super.clearCachedAuthorizationInfo(principals);
@@ -116,12 +131,12 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 	protected void clearCachedAuthenticationInfo(PrincipalCollection principals) {
 		super.clearCachedAuthenticationInfo(principals);
 	}
-	
+
 	@Override
 	protected void clearCache(PrincipalCollection principals) {
 		super.clearCache(principals);
 	}
-	
+
 	public void clearAllCachedAuthorizationInfo() {
 		getAuthorizationCache().clear();
 	}
@@ -133,8 +148,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 	public void clearAllCache() {
 		clearAllCachedAuthenticationInfo();
 		clearAllCachedAuthorizationInfo();
-	} 
-	
+	}
 
 	public static class ShiroUser implements Serializable {
 
@@ -160,7 +174,8 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 			this.userAccount = userAccount;
 			this.name = name;
 		}
-		public ShiroUser(Long id, String userAccount, String name,String roleName) {
+
+		public ShiroUser(Long id, String userAccount, String name, String roleName) {
 			super();
 			this.id = id;
 			this.userAccount = userAccount;

@@ -99,6 +99,22 @@
 			<artifactId>standard</artifactId>
 			<version>1.1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha</artifactId>
+			<version>${jcaptcha.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha-integration-simple-servlet</artifactId>
+			<version>${jcaptcha.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>koala-security-web</finalName>
@@ -109,19 +125,19 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<configuration>
 					<connectors>
-                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>8080</port>
-                            <maxIdleTime>60000</maxIdleTime>
-                        </connector>
-                    </connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>8080</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
 					<!-- 设置扫描target/classes内部文件变化时间间隔 -->
 					<!--<scanIntervalSeconds>10</scanIntervalSeconds> -->
 					<webApp>
 						<contextPath>/</contextPath>
 					</webApp>
 					<jvmArgs>-Xmx1024m -XX:PermSize=512m -XX:MaxPermSize=1024m
-                        -Dfile.encoding=UTF-8
-                    </jvmArgs>
+						-Dfile.encoding=UTF-8
+					</jvmArgs>
 				</configuration>
 			</plugin>
 		</plugins>

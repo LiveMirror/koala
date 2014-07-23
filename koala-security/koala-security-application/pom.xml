@@ -39,15 +39,17 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 		</dependency>
+		
 		<!-- Test -->
 		<dependency>
-			<groupId>${db.groupId}</groupId>
-			<artifactId>${db.artifactId}</artifactId>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-test-support</artifactId>
+			<version>${project.parent.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito</artifactId>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -56,16 +58,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.openkoala.koalacommons</groupId>
-			<artifactId>koala-commons-test-support</artifactId>
-			<version>${project.parent.version}</version>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
+			<groupId>${db.groupId}</groupId>
+			<artifactId>${db.artifactId}</artifactId>
+			<scope>test</scope>
 		</dependency>
-		
 	</dependencies>
 </project>

@@ -19,7 +19,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import org.dayatang.utils.Assert;
 import org.openkoala.security.core.NameIsExistedException;
 
 /**
@@ -33,10 +32,16 @@ import org.openkoala.security.core.NameIsExistedException;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({
-	@NamedQuery(
-			name="Authority.findAllAuthoritiesByUserAccount",
-			query="SELECT _authority FROM Authorization _authorization JOIN  _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND TYPE(_authority) = :authorityType ORDER BY _authority.id")
-})
+		@NamedQuery(
+				name = "Authority.findAllAuthoritiesByUserAccount", 
+				query = "SELECT _authority FROM Authorization _authorization JOIN  _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND TYPE(_authority) = :authorityType ORDER BY _authority.id"),
+		@NamedQuery(
+				name = "Authority.checkHasSecurityResource", 
+				query = "SELECT _authority FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _authority IN (:authorities) AND TYPE(_securityResource) = :securityResourceType  AND _securityResource = :securityResource"),
+		@NamedQuery(
+				name="Authority.getAuthorityByName",
+				query="SELECT _authority FROM Authority _authority WHERE TYPE(_authority) = :authorityType AND _authority.name = :name")
+		})
 public abstract class Authority extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = -5570169700634882013L;
@@ -45,7 +50,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 	 * 名称[用于判断存储中是否已经存在]
 	 */
 	@Column(name = "NAME")
-	private String name;
+	protected String name;
 
 	/**
 	 * 描述
@@ -63,7 +68,6 @@ public abstract class Authority extends SecurityAbstractEntity {
 	}
 
 	public Authority(String name) {
-//		Assert.isBlank(name, "名称不能为空");
 		this.name = name;
 	}
 
@@ -105,27 +109,12 @@ public abstract class Authority extends SecurityAbstractEntity {
 		return new HashSet<MenuResource>(menuResources);
 	}
 
-	public Authority getAuthorityBy(String name) {
-		Authority authority = getRepository().createCriteriaQuery(Authority.class)//
-				.eq("name", this.name)//
-				.singleResult();
-		return authority != null ? authority : null;
-	}
-
-	@Override
-	public final void save() {
-		// isExisted();
-		super.save();
-	}
-
-	protected void isExisted() {
+	public abstract Authority getAuthorityBy(String name);
+	
+	protected void isNameExisted() {
 		if (isExistName(this.name)) {
-			throw new NameIsExistedException("name.exist");
+			throw new NameIsExistedException("authority.name.exist");
 		}
-	}
-
-	private boolean isExistName(String name) {
-		return getAuthorityBy(name) != null;
 	}
 
 	public abstract void update();
@@ -137,29 +126,42 @@ public abstract class Authority extends SecurityAbstractEntity {
 		}
 		super.remove();
 	}
-	
-	public void addSecurityResource(SecurityResource securityResource){
+
+	public void addSecurityResource(SecurityResource securityResource) {
 		this.securityResources.add(securityResource);
 	}
-	
-	public void addSecurityResources(List<? extends SecurityResource> securityResources){
+
+	public void addSecurityResources(List<? extends SecurityResource> securityResources) {
 		this.securityResources.addAll(securityResources);
 	}
-	
-	public void terminateSecurityResource(SecurityResource securityResource){
+
+	public void terminateSecurityResource(SecurityResource securityResource) {
 		this.securityResources.remove(securityResource);
 	}
-	
-	public void terminateSecurityResources(List<? extends SecurityResource> securityResources){
+
+	public void terminateSecurityResources(List<? extends SecurityResource> securityResources) {
 		this.securityResources.removeAll(securityResources);
+	}
+	
+	public static boolean checkHasPageElementResource(Set<Authority> authorities,
+			PageElementResource pageElementResource) {
+		List<Authority> results = getRepository()//
+				.createNamedQuery("Authority.checkHasSecurityResource")//
+				.addParameter("authorities", authorities)//
+				.addParameter("securityResourceType", PageElementResource.class)//
+				.addParameter("securityResource", pageElementResource)//
+				.list();
+		return results.isEmpty() ? false : true;
+	}
+
+	/*------------- Private helper methods  -----------------*/
+	
+	private boolean isExistName(String name) {
+		return getAuthorityBy(name) != null;
 	}
 	
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getDescription() {

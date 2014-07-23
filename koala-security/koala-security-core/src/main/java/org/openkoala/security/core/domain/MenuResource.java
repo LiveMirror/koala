@@ -12,6 +12,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 菜单权限资源
  * 
@@ -40,7 +42,7 @@ public class MenuResource extends SecurityResource {
 	 * 菜单排序位置号
 	 */
 	@Column(name = "POSITION")
-	private int position;
+	private int position = 0;
 
 	@ManyToOne
 	@JoinTable(name = "KS_MENU_RESOURCE_RELATION", //
@@ -58,29 +60,33 @@ public class MenuResource extends SecurityResource {
 		super(name);
 	}
 
-	/**
-	 * XXX 维护方为parent 待确定
-	 * */
+	@Override
+	public void save() {
+		isNameExisted();
+		super.save();
+	}
+
+	@Override
+	public void update() {
+		MenuResource menuResource = getBy(this.getId());
+		if (!StringUtils.isBlank(this.getName()) && !menuResource.getName().equals(this.getName())) {
+			isNameExisted();
+			menuResource.name = this.getName();
+		}
+		menuResource.setIdentifier(this.getIdentifier());
+		menuResource.setDescription(this.getDescription());
+		menuResource.setMenuIcon(this.getMenuIcon());
+		menuResource.setUrl(this.getUrl());
+		menuResource.setPosition(this.getPosition());
+	}
+
 	public void addChild(MenuResource child) {
 		child.setLevel(level + 1);
 		child.save();
-		children.add(child);
+		this.children.add(child);
 		child.setParent(this);
 	}
-	
-	@Override
-	public void update() {
-		MenuResource menuResource = get(MenuResource.class, this.getId());
-		menuResource.setChildren(this.getChildren());
-		menuResource.setDescription(this.getDescription());
-		menuResource.setMenuIcon(this.getMenuIcon());
-		menuResource.setName(this.getName());
-		menuResource.setUrl(this.getUrl());
-	}
 
-	/**
-	 * XXX 维护方为parent 待确定
-	 * */
 	public void removeChild(MenuResource child) {
 		children.remove(child);
 		child.remove();
@@ -92,6 +98,20 @@ public class MenuResource extends SecurityResource {
 			child.remove();
 		}
 		super.remove();
+	}
+
+	public static MenuResource getBy(Long id) {
+		return MenuResource.get(MenuResource.class, id);
+	}
+
+	@Override
+	public SecurityResource findByName(String name) {
+		return getRepository()//
+				.createNamedQuery("SecurityResource.findByName")//
+				.addParameter("securityResourceType", MenuResource.class)//
+				.addParameter("name", name)//
+				.addParameter("disabled", false)//
+				.singleResult();
 	}
 
 	public String getMenuIcon() {
@@ -133,5 +153,4 @@ public class MenuResource extends SecurityResource {
 	public void setPosition(int position) {
 		this.position = position;
 	}
-
 }

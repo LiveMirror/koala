@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -221,7 +223,11 @@ public class KoalaEntityRepositoryJpa implements
 
     @Override
     public <T> T getSingleResult(NamedQuery namedQuery) {
-        return (T) getQuery(namedQuery).getSingleResult();
+		try {
+			return (T) getQuery(namedQuery).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
     }
 
     @Override

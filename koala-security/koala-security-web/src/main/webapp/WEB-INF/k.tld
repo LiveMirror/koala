@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+
+	<tlib-version>1.1</tlib-version>
+	<!-- 这个路径需要确定 -->
+	<uri>http://www.openkoala.org/security</uri>
+	<description>Koala Security 4.0 JSP Tag Library</description>
+	<tag>
+		<name>user</name>
+		<tag-class>org.openkoala.security.web.tags.UserTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>type</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>property</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>defaultValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>hasRole</name>
+		<tag-class>org.openkoala.security.web.tags.RoleTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>ifAllRoles</name>
+		</attribute>
+		<attribute>
+			<name>ifAnyRoles</name>
+		</attribute>
+		<attribute>
+			<name>ifNotRoles</name>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>hasPermission</name>
+		<tag-class>org.openkoala.security.web.tags.PermissionTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>ifAllPermissions</name>
+		</attribute>
+		<attribute>
+			<name>ifAnyPermissions</name>
+		</attribute>
+		<attribute>
+			<name>ifNotPermissions</name>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>hasSecurityResource</name>
+		<tag-class>org.openkoala.security.web.tags.SecurityResourceTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>name</name>
+		</attribute>
+	</tag>
+	
+</taglib>

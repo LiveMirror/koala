@@ -1,4 +1,4 @@
-package org.openkoala.security.core.domain;
+package org.openkoala.security.application;
 
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -10,5 +10,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
  * 
  */
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
-public abstract class AbstractSecurityIntegrationTestCase extends KoalaBaseSpringTestCase {
+public abstract class AbstractApplicationIntegrationTestCase extends KoalaBaseSpringTestCase {
+	
 }

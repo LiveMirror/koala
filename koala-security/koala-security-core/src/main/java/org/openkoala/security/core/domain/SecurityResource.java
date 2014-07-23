@@ -15,13 +15,20 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.openkoala.security.core.NameIsExistedException;
+import org.openkoala.security.core.UrlIsExistedException;
+
 @Entity
 @Table(name = "KS_SECURITYRESOURCES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
-@NamedQueries({ 
-	@NamedQuery(name = "SecurityResource.findAllByType", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :_securityResourceType  AND _securityResource.disabled = :disabled")
-})
+@NamedQueries({
+		@NamedQuery(
+				name = "SecurityResource.findAllByType", 
+				query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType  AND _securityResource.disabled = :disabled"),
+		@NamedQuery(
+				name = "SecurityResource.findByName", 
+				query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType AND _securityResource.name = :name AND _securityResource.disabled = :disabled") })
 public abstract class SecurityResource extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = 6064565786784560656L;
@@ -30,7 +37,7 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	 * 名称
 	 */
 	@Column(name = "NAME")
-	private String name;
+	protected String name;
 
 	/**
 	 * 是否有效
@@ -63,7 +70,14 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 		this.name = name;
 	}
 
+	public SecurityResource(String name, String url) {
+		this.name = name;
+		this.url = url;
+	}
+
 	public abstract void update();
+
+	public abstract SecurityResource findByName(String name);
 
 	public void disable() {
 		disabled = true;
@@ -73,21 +87,36 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 		disabled = false;
 	}
 
-	/**
-	 * TODO 用get 还是IS
-	 * 
-	 * @return
-	 */
+	protected void isNameExisted() {
+		if (isExistName(this.getName())) {
+			throw new NameIsExistedException("securityResource.name.exist");
+		}
+	}
+
+	protected void isUrlExisted() {
+		if (isExistUrl(this.getUrl())) {
+			throw new UrlIsExistedException("securityResource.name.exist");
+		}
+	}
+	
+	protected SecurityResource findByUrl(String url){
+		return null;
+	}
+
+	private boolean isExistUrl(String url) {
+		return findByUrl(url) != null;
+	}
+
+	private boolean isExistName(String name) {
+		return findByName(name) != null;
+	}
+
 	public boolean isDisabled() {
 		return disabled;
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getUrl() {

@@ -4,14 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.dayatang.querychannel.Page;
 import org.openkoala.security.core.EmailIsExistedException;
+import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
+import org.openkoala.security.core.UserNotExistedException;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
@@ -33,8 +37,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/auth/user")
 public class UserController {
 
-	private static final String INIT_PASSWORD = "888888";
-
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
 
@@ -50,18 +52,36 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public Map<String, Object> login(@RequestParam String username, @RequestParam String password) {
+	public Map<String, Object> login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
 		Map<String, Object> results = new HashMap<String, Object>();
-		// 这个以后可以扩展
-		UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
-
-		try {
-			SecurityUtils.getSubject().login(usernamePasswordToken);
-			results.put("message", "登陆成功");
-			results.put("result", "success");
-		} catch (AuthenticationException e) {
-			results.put("message", "登陆失败");
+		String exceptionInfo = (String) request.getAttribute("shiroLoginFailure");
+		System.out.println(exceptionInfo);
+		if(!StringUtils.isBlank(exceptionInfo)){
+			results.put("message", "验证码错误");
 			results.put("result", "failure");
+		}else{
+			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
+			try {
+				SecurityUtils.getSubject().login(usernamePasswordToken);
+				results.put("message", "登陆成功");
+				results.put("result", "success");
+			} catch (NullArgumentException e) {
+				e.printStackTrace();
+				results.put("message", "用户名或者密码为空");
+				results.put("result", "failure");
+			} catch (UserNotExistedException e) {
+				e.printStackTrace();
+				results.put("message", "用户名或者密码不正确");
+				results.put("result", "failure");
+			} catch (AuthenticationException e) {
+				e.printStackTrace();
+				results.put("message", "登录失败");
+				results.put("result", "failure");
+			} catch (Exception e) {
+				e.printStackTrace();
+				results.put("message", "登录失败");
+				results.put("result", "failure");
+			}
 		}
 		return results;
 	}
@@ -93,17 +113,20 @@ public class UserController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
 			securityConfigFacade.saveUserDTO(userDTO);
+			dataMap.put("result", "success");
 		} catch (UserAccountIsExistedException e) {
+			e.printStackTrace();
 			dataMap.put("result", "账号:" + userDTO.getUserAccount() + "已经存在");
 		} catch (EmailIsExistedException e) {
+			e.printStackTrace();
 			dataMap.put("result", "邮箱：" + userDTO.getEmail() + "已经存在！");
-
 		} catch (TelePhoneIsExistedException e) {
+			e.printStackTrace();
 			dataMap.put("result", "联系电话：" + userDTO.getTelePhone() + "已经存在！");
 		} catch (Exception e) {
+			e.printStackTrace();
 			dataMap.put("result", "保存失败");
 		}
-		dataMap.put("result", "success");
 		return dataMap;
 	}
 
@@ -118,7 +141,8 @@ public class UserController {
 	public Map<String, Object> update(UserDTO userDTO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
-			securityAccessFacade.updateUserDTO(userDTO);
+			securityConfigFacade.updateUserDTO(userDTO);
+			dataMap.put("result", "success");
 		} catch (UserAccountIsExistedException e) {
 			dataMap.put("result", "账户：" + userDTO.getUserAccount() + "已经存在！");
 		} catch (EmailIsExistedException e) {
@@ -128,7 +152,6 @@ public class UserController {
 		} catch (Exception e) {
 			dataMap.put("result", "更新失败");
 		}
-		dataMap.put("result", "success");
 		return dataMap;
 	}
 
@@ -157,7 +180,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/pagingquery")
 	public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO userDTO) {
-		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pagesize, userDTO);
+		Page<UserDTO> results = securityAccessFacade.pagingQueryUserDTOs(page, pagesize, userDTO);
 		return results;
 	}
 
@@ -173,7 +196,7 @@ public class UserController {
 	public Map<String, Object> updatePassword(@RequestParam String oldUserPassword, @RequestParam String userPassword) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		UserDTO userDTO = new UserDTO(AuthUserUtil.getUserAccount(), userPassword);
-		if (securityAccessFacade.updatePassword(userDTO, oldUserPassword)) {
+		if (securityConfigFacade.updatePassword(userDTO, oldUserPassword)) {
 			dataMap.put("result", "success");
 		} else {
 			dataMap.put("result", "failure");
@@ -193,13 +216,10 @@ public class UserController {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		UserDTO userDTO = new UserDTO();
 		userDTO.setId(userId);
-		userDTO.setUserPassword(INIT_PASSWORD);
 		securityConfigFacade.resetPassword(userDTO);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
-
-	
 
 	/**
 	 * 激活
@@ -226,7 +246,11 @@ public class UserController {
 	@RequestMapping("/suspend")
 	public Map<String, Object> suspend(Long userId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.suspend(userId);
+		try {
+			securityConfigFacade.suspend(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		dataMap.put("success", true);
 		return dataMap;
 	}
@@ -390,7 +414,7 @@ public class UserController {
 		dataMap.put("success", true);
 		return dataMap;
 	}
-	
+
 	/**
 	 * 根据用户ID查找所有的已经授权的角色。
 	 * 
@@ -402,12 +426,12 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryGrantRoleByUserId")
 	public Page<RoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesByUserId(page, pagesize, userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryGrantRolesByUserId(page, pagesize, userId);
 		return results;
 	}
 
 	/**
-	 * 根据用户ID分页查询权限
+	 * 根据用户ID分页查询已经授权的权限
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -432,7 +456,8 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
 	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, Long userId, RoleDTO queryRoleCondition) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,
+				userId);
 		return results;
 	}
 
@@ -449,7 +474,7 @@ public class UserController {
 	@RequestMapping("/pagingQueryNotGrantPermissions")
 	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,
 			PermissionDTO queryPermissionCondition, Long userId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissions(page, pagesize,
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(page, pagesize,
 				queryPermissionCondition, userId);
 		return results;
 	}

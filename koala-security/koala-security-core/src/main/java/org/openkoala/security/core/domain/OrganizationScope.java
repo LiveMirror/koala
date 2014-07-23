@@ -38,22 +38,14 @@ public class OrganizationScope extends Scope {
 		super(name);
 	}
 
-	/**
-	 * XXX 维护方为parent 待确定
-	 * */
 	public void addChild(OrganizationScope child) {
 		child.setLevel(this.getLevel() + 1);
 		child.save();
-		children.add(child);
 		child.setParent(this);
 	}
 
-	/**
-	 * XXX 维护方为parent 待确定
-	 * */
 	public void removeChild(OrganizationScope child) {
 		children.remove(child);
-		// child.setParent(null);
 		child.remove();
 	}
 

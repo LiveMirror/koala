@@ -886,7 +886,7 @@
 	$.fn.getGrid = function() {
 		return $(this).data('koala.grid');
 	};
-	Grid.DEFAULTS.TEMPLATE = '<div class="table-responsive"><table class="table table-responsive table-bordered grid"><thead><tr><th><div class="btn-group buttons"></div><div class="search"><div class="btn-group select " data-role="condition"></div><div class="input-group" style="width:180px;"><input type="text" class="input-medium form-control" placeholder="Search" data-role="searchValue"><div class="input-group-btn"><button type="button" class="btn btn-default" data-role="searchBtn"><span class="glyphicon glyphicon-search"></span></button></div></div></div></th></tr></thead><tbody><tr><td><div class="colResizePointer"></div><div class="grid-body"><div class="grid-table-head"><table class="table table-bordered"></table></div><div class="grid-table-body"><table class="table table-responsive table-bordered table-hover table-striped"></table></div></div></td></tr></tbody><tfoot><tr><td><div class="records">显示:<span data-role="start-record">1</span>-<span data-role="end-record">10</span>, 共<span data-role="total-record">0</span>条记录。&nbsp;每页显示:<div class="btn-group select " data-role="pageSizeSelect"></div>条</div><div><div class="btn-group pages"><ul class="pagination"></ul></div></div></td></tr></tfoot></table></div>';
+	Grid.DEFAULTS.TEMPLATE = '<div class="table-responsive"><table class="table table-responsive table-bordered grid"><thead><tr><th><div class="btn-group buttons" style = "width:100%;"></div><div class="search"><div class="btn-group select " data-role="condition"></div><div class="input-group" style="width:180px;"><input type="text" class="input-medium form-control" placeholder="Search" data-role="searchValue"><div class="input-group-btn"><button type="button" class="btn btn-default" data-role="searchBtn"><span class="glyphicon glyphicon-search"></span></button></div></div></div></th></tr></thead><tbody><tr><td><div class="colResizePointer"></div><div class="grid-body"><div class="grid-table-head"><table class="table table-bordered"></table></div><div class="grid-table-body"><table class="table table-responsive table-bordered table-hover table-striped"></table></div></div></td></tr></tbody><tfoot><tr><td><div class="records">显示:<span data-role="start-record">1</span>-<span data-role="end-record">10</span>, 共<span data-role="total-record">0</span>条记录。&nbsp;每页显示:<div class="btn-group select " data-role="pageSizeSelect"></div>条</div><div><div class="btn-group pages"><ul class="pagination"></ul></div></div></td></tr></tfoot></table></div>';
 	var old = $.fn.grid;
 	$.fn.grid = function(option) {
 		return this.each(function() {
@@ -998,13 +998,13 @@
 				$(this).remove();
 			}
 		});
-		this.oldPwd = this.$element.find('#oldPassword');
+		this.oldPwd = this.$element.find('#oldUserPassword');
 		this.newPwd = this.$element.find('#newPassword');
 		this.confirmPwd = this.$element.find('#confirmPassword');
-		this.oldPwd.on('blur.koala.modifyPassowrd', $.proxy(this.blur, this, this.oldPwd));
-		this.newPwd.on('blur.koala.modifyPassowrd', $.proxy(this.blur, this, this.newPwd));
-		this.confirmPwd.on('blur.koala.modifyPassowrd', $.proxy(this.blur, this, this.confirmPwd));
-		this.$element.find('.modal-footer button[data-toggle="save"]').on('click.koala.modifyPassowrd', $.proxy(this.save, this));
+		var thiz = this;
+		this.$element.find(".btn-updatepassword").on("click",function(){
+			ModifyPassword.prototype.save(thiz)
+		});
 	};
 	ModifyPassword.DEFAULTS = {
 
@@ -1021,68 +1021,73 @@
 			}
 		}
 	};
-	ModifyPassword.prototype.save = function() {
-		var self = this;
-		if (!Validation.notNull(self.$element, this.oldPwd, this.oldPwd.val(), '原始密码不能为空')) {
+	
+	ModifyPassword.prototype.save = function(thiz) {
+		var self = thiz;
+		if (!Validation.notNull(self.$element, thiz.oldPwd, thiz.oldPwd.val(), '原始密码不能为空')) {
 			return false;
 		}
-		if (!Validation.checkByRegExp(self.$element, this.oldPwd, '^[0-9a-zA-Z]*$', this.oldPwd.val(), '只能输入字母及数字')) {
+		if (!Validation.checkByRegExp(self.$element, thiz.oldPwd, '^[0-9a-zA-Z]*$', thiz.oldPwd.val(), '只能输入字母及数字')) {
 			return false;
 		}
-		if (this.oldPwd.val().length < 6 || this.oldPwd.val().length > 10) {
-			showErrorMessage(self.$element, this.oldPwd, '请输入6-10位数字或者字母');
+		if (thiz.oldPwd.val().length < 6 || thiz.oldPwd.val().length > 10) {
+			showErrorMessage(self.$element, thiz.oldPwd, '请输入6-10位数字或者字母');
 			return false;
 		}
-		if (!Validation.notNull(self.$element, this.newPwd, this.newPwd.val(), '新密码不能为空')) {
+		if (!Validation.notNull(self.$element, thiz.newPwd, thiz.newPwd.val(), '新密码不能为空')) {
 			return false;
 		}
-		if (!Validation.checkByRegExp(self.$element, this.newPwd, '^[0-9a-zA-Z]*$', this.newPwd.val(), '只能输入字母及数字')) {
+		if (!Validation.checkByRegExp(self.$element, thiz.newPwd, '^[0-9a-zA-Z]*$', thiz.newPwd.val(), '只能输入字母及数字')) {
 			return false;
 		}
-		if (this.newPwd.val().length < 6 || this.newPwd.val().length > 10) {
-			showErrorMessage(self.$element, this.newPwd, '请输入6-10位数字或者字母');
+		if (thiz.newPwd.val().length < 6 || thiz.newPwd.val().length > 10) {
+			showErrorMessage(self.$element, thiz.newPwd, '请输入6-10位数字或者字母');
 			return false;
 		}
-		if (!Validation.notNull(self.$element, this.confirmPwd, this.confirmPwd.val(), '确认密码不能为空')) {
+		if (!Validation.notNull(self.$element, thiz.confirmPwd, thiz.confirmPwd.val(), '确认密码不能为空')) {
 			return false;
 		}
-		if (!Validation.checkByRegExp(self.$element, this.confirmPwd, '^[0-9a-zA-Z]*$', this.confirmPwd.val(), '只能输入字母及数字')) {
+		if (!Validation.checkByRegExp(self.$element, thiz.confirmPwd, '^[0-9a-zA-Z]*$', thiz.confirmPwd.val(), '只能输入字母及数字')) {
 			return false;
 		}
-		if (this.confirmPwd.val().length < 6 || this.confirmPwd.val().length > 10) {
-			showErrorMessage(self.$element, this.confirmPwd, '请输入6-10位数字或者字母');
+		if (thiz.confirmPwd.val().length < 6 || thiz.confirmPwd.val().length > 10) {
+			showErrorMessage(self.$element, thiz.confirmPwd, '请输入6-10位数字或者字母');
 			return false;
 		}
-		if (this.newPwd.val() != this.confirmPwd.val()) {
+		if (thiz.newPwd.val() != thiz.confirmPwd.val()) {
 			self.$element.find('.modal-content').message({
 				type : 'error',
 				content : '新密码与确认密码不一致'
 			});
 			return;
 		}
-		var data = "oldPassword=" + this.oldPwd.val() + "&userPassword=" + this.newPwd.val();
+		var data = "oldUserPassword=" + thiz.oldPwd.val() + "&userPassword=" + thiz.newPwd.val();
+		var url = contextPath + '/auth/user/updatePassword.koala';
 		$.ajax({
-			method : "post",
-			url : this.options.service,
-			data : data
-		}).done(function(msg) {
-			if (msg.result == "success") {
-				$('body').message({
-					type : 'success',
-					content : '修改成功'
-				});
-				self.$element.modal('hide');
-			} else {
+			type : "post",
+			url : url,
+			data : data,
+			dataType:"json",
+			success:function(msg){
+				if (msg.result == "success") {
+					$('body').message({
+						type : 'success',
+						content : '修改成功'
+					});
+					self.$element.modal('hide');
+				} else {
+					self.$element.find('.modal-content').message({
+						type : 'error',
+						content : msg.result
+					});
+				}
+			},
+			error:function(){
 				self.$element.find('.modal-content').message({
 					type : 'error',
-					content : msg.result
+					content : '修改失败'
 				});
 			}
-		}).fail(function(msg) {
-			self.$element.find('.modal-content').message({
-				type : 'error',
-				content : '修改失败'
-			});
 		});
 	};
 	/**
@@ -1104,6 +1109,7 @@
 			}
 		}).focus().parent().addClass('has-error');
 	};
+	
 	ModifyPassword.DEFAULTS.TEMPLATE = '<div class="modal fade" id="modifyPwd">' 
 	+ '<div class="modal-dialog modify-pwd">' 
 	+ '<div class="modal-content">' 
@@ -1113,9 +1119,9 @@
 	+ '</div>' + '<div class="modal-body"> ' 
 	+ '<form class="form-horizontal" role="form">' 
 	+ '<div class="form-group">' 
-	+ '<label for="oldPassword" class="col-lg-3 control-label">原始密码:</label>' 
+	+ '<label for="oldUserPassword" class="col-lg-3 control-label">原始密码:</label>' 
 	+ '<div class="col-lg-9">' 
-	+ '<input type="password" class="form-control" style="width:80%;display:inline;" id="oldPassword" /><span class="required">*</span>' 
+	+ '<input type="password" class="form-control" style="width:80%;display:inline;" id="oldUserPassword" value="000000"/><span class="required">*</span>' 
 	+ '</div> ' + '</div>  ' + '<div class="form-group">' 
 	+ '<label for="newPassword" class="col-lg-3 control-label">新密码:</label>' 
 	+ '<div class="col-lg-9">' 
@@ -1125,9 +1131,10 @@
 	+ '<div class="col-lg-9">' 
 	+ '<input type="password" class="form-control" style="width:80%;display:inline;" id="confirmPassword"/><span class="required">*</span> ' 
 	+ '</div>' + '</div>' + '</form>' + '</div>' + '<div class="modal-footer"> ' 
-	+ '<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>' + '<button type="button" class="btn btn-success" data-toggle="save">保存</button>' + '</div>' + '</div>  ' + '</div>  ' + '</div>';
+	+ '<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>' + '<button type="button" class="btn btn-success btn-updatepassword" data-toggle="save">保存</button>' + '</div>' + '</div>  ' + '</div>  ' + '</div>';
 	var old = $.fn.modifyPassword;
 	$.fn.modifyPassword = function(option) {
+		
 		return this.each(function() {
 			var $this = $(this);
 			var data = $this.data('koala.modifyPassowrd');
