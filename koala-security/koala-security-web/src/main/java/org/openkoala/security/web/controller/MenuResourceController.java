@@ -13,6 +13,8 @@ import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.web.util.AuthUserUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/auth/menu")
 public class MenuResourceController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MenuResourceController.class);
 
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
@@ -39,6 +43,7 @@ public class MenuResourceController {
 	@RequestMapping("/add")
 	public Map<String, Object> add(MenuResourceDTO menuResourceDTO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
+		LOGGER.info("---------------> menuResourceDTO:{}",menuResourceDTO);
 		securityConfigFacade.saveMenuResourceDTO(menuResourceDTO);
 		dataMap.put("result", "success");
 		return dataMap;

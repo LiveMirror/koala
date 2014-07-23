@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -92,8 +92,11 @@
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
-			<scope>provided</scope>
 		</dependency>
+		<dependency>
+				<groupId>javax.servlet.jsp.jstl</groupId>
+				<artifactId>jstl-api</artifactId>
+			</dependency>
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
@@ -126,7 +129,7 @@
 				<configuration>
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-							<port>8080</port>
+							<port>8070</port>
 							<maxIdleTime>60000</maxIdleTime>
 						</connector>
 					</connectors>

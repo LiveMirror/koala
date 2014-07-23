@@ -144,12 +144,19 @@ var roleManager = function(){
 	 */
 	var getAllData = function(item){
 		var data = {};
+		data['roleVO.name'] = roleName.val();
+		data['roleVO.roleDesc'] = roleDescript.val();
+		if(item){
+			data['roleVO.id'] = item.id;	
+		}
+		return data;
+		/*var data = {};
 		data['roleName'] = roleName.val();
 		data['description'] = roleDescript.val();
 		if(item){
 			data['roleId'] = item.roleId;	
 		}
-		return data;
+		return data;*/
 	};
 	var assignRole = function(roleId, name){
 		openTab('/pages/auth/user-list.jsp',
@@ -166,20 +173,50 @@ var roleManager = function(){
             dialog.find('.save').on('click',function(){
 				var treeObj = $(".resourceTree").getTree();
 				var nodes = treeObj.selectedItems();
-				
+				/*
 				var data = 'roleId=' + roleId;
+		         console.log(data);
 				for(var i=0,j=nodes.length; i<j; i++){
 					data += ('&menuResourceDTOs['+i+'].id=' + nodes[i].id);
 				}
 				
 				$.post(contextPath + '/auth/role/grantMenuResources.koala',data,function(){
 					
-				});
+				});*/
 				
+				
+				var data = {};
+				data['roleVO.id'] = roleId;
+				for(var i=0,j=nodes.length; i<j; i++){
+					data['menus['+i+'].id'] = nodes[i].id;
+					data['menus['+i+'].identifier'] = nodes[i].identifier;
+				}
+				$.post(baseUrl + 'grantMenuResources.koala', data).done(function(data){
+					if(data.result == 'success'){
+						grid.message({
+							type: 'success',
+							content: '保存成功'
+						});
+						dialog.modal('hide');
+					}else{
+						dialog.find('.modal-content').message({
+							type: 'error',
+							content: data.actionError
+						});
+					}
+				}).fail(function(data){
+						dialog.find('.modal-content').message({
+							type: 'error',
+							content: '保存失败'
+						});
+					});
 				
 				/*var data = {};
 				var mDTOs = [];
 				data.roleId = roleId;
+				
+		
+				
 				for(var i=0,j=nodes.length; i<j; i++){
 					var dto = {};
 					dto.id = nodes[i].id;
@@ -187,31 +224,27 @@ var roleManager = function(){
 				}
 				data.MenuResourceDTOs = mDTOs;
 				
-				$.ajax({
-					 headers : { 
-					        'Accept': 'application/json',
-					        'Content-Type': 'application/json' 
-					    },
-					url 	: contextPath + '/auth/role/grantMenuResources.koala',
-					type 	: "post",
-					dataType : "json",
-					data 	: JSON.stringify(data),
-					success : function(data){
+				$.post(baseUrl + 'grantMenuResources.koala', data).done(function(data){
+					if(data.result == 'success'){
 						grid.message({
-   							type: 'success',
-   							content: '保存成功'
-   						});
-   						dialog.modal('hide');
-   						grid.grid('refresh');
-					},
-					error:function(data){
-    					saveBtn.attr('disabled', 'disabled');	
-    					grid.message({
-    						type: 'error',
-    						content: '保存失败'
-    					});
-    				}
-				});*/
+							type: 'success',
+							content: '保存成功'
+						});
+						dialog.modal('hide');
+					}else{
+						dialog.find('.modal-content').message({
+							type: 'error',
+							content: data.actionError
+						});
+					}
+				}).fail(function(data){
+						dialog.find('.modal-content').message({
+							type: 'error',
+							content: '保存失败'
+						});
+					});*/
+				
+				
 			}).end().modal({
 				keyboard: false
 			}).on({
@@ -287,6 +320,7 @@ var roleManager = function(){
             if(item.children && item.children.length > 0){
                 zNode.children = getChildrenData(new Array(), item.children);
             }
+           
             zNode.type = item.menuType == '1' ?  'children' : 'parent';
             nodes.push(zNode);
 		}

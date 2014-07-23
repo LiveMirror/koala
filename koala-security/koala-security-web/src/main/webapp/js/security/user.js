@@ -19,6 +19,8 @@ var userManager = function() {
 	var dataGrid = null;
 	
 	//Grid对象
+
+
 	/*
 	 *新增
 	 */
@@ -60,6 +62,58 @@ var userManager = function() {
 			dataGrid.message({
 				type : 'error',
 				content : '重置密码失败'
+			});
+		});
+	};
+	/*
+	 * 可用
+	 */
+	var available = function(item, grid) {
+		var dataGrid = grid;
+		console.log(item.id);
+		$.post(baseUrl + 'activate.koala?userId=' + item.id).done(function(data) {
+		    
+			if (data.result == 'success') {				
+				dataGrid.message({
+					type : 'success',
+					content : '用户现在可用！'
+				});
+			} else {
+				dataGrid.message({
+					type : 'error',
+					content : data.actionError
+				});
+			}
+		}).fail(function(data) {
+			dataGrid.message({
+				type : 'error',
+				content : '可用失败'
+			});
+		});
+	};
+	/*
+	 禁用
+	 */
+	var forbidden = function(item, grid) {
+		var dataGrid = grid;
+	    console.log(item.id);
+		$.post(baseUrl + 'suspend.koala?userId=' + item.id).done(function(data) {
+		    
+			if (data.result == 'success') {				
+				dataGrid.message({
+					type : 'success',
+					content : '用户禁用成功！'
+				});
+			} else {
+				dataGrid.message({
+					type : 'error',
+					content : data.actionError
+				});
+			}
+		}).fail(function(data) {
+			dataGrid.message({
+				type : 'error',
+				content : '禁用失败'
 			});
 		});
 	};
@@ -145,6 +199,7 @@ var userManager = function() {
 		email.val(item.email).attr('disabled', 'disabled');
 		userPassword.closest('.form-group').hide();
 		description.val(item.userDesc);
+		telePhone.val(item.telePhone);
 		if (!item.valid) {
 			dialog.find('[name="isEnable"][value="true"]').removeAttr('checked', 'checked').parent().removeClass('checked');
 			dialog.find('[name="isEnable"][value="false"]').attr('checked', 'checked').parent().addClass('checked');
@@ -159,6 +214,9 @@ var userManager = function() {
 			return false;
 		}
 		var url = baseUrl + 'add.koala';
+		
+		
+		
 		if (item) {
 			url = baseUrl + 'update.koala';
 		}
@@ -226,6 +284,7 @@ var userManager = function() {
 	 * 分配角色
 	 */
 	var assignRole = function(userId, userAccount) {
+		console.log(userId+"wewewe"+userAccount);
 		openTab('/pages/auth/role-list.jsp', userAccount + '的角色管理', 'roleManager_' + userId, userId, {
 			userId : userId,
 			userAccount : userAccount
@@ -373,6 +432,8 @@ var userManager = function() {
 		assignRole : assignRole,
 		assignUserToRole : assignUserToRole,
 		removeUserForRole : removeUserForRole,
-		resetPassword : resetPassword
+		resetPassword : resetPassword,
+		available : available,
+		forbidden : forbidden
 	};
 }; 
