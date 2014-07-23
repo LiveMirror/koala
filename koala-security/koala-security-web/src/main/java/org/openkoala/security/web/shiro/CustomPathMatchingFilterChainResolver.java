@@ -1,8 +1,7 @@
-package org.openkoala.security.web.filter;
+package org.openkoala.security.web.shiro;
 
 import org.apache.shiro.web.filter.mgt.FilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
-import org.openkoala.security.web.ini.CustomDefaultFilterChainManager;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;

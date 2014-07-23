@@ -11,7 +11,7 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
-import org.openkoala.security.web.filter.ShiroFilerChainManager;
+import org.openkoala.security.web.shiro.ShiroFilerChainManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

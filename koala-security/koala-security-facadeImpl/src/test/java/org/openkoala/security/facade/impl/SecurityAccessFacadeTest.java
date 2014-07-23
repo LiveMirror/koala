@@ -216,6 +216,15 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	}
 
 	@Test
+	public void testPagingQueryNotGrantRolesConditionIsNull() {
+		Role role = new Role("PagingQueryNotGrantRolesIntIntPermissionDTOLong");
+		role.save();
+		Page<RoleDTO> roleDTOPages = securityAccessFacade.pagingQueryNotGrantRoles(currentPage, pageSize, new RoleDTO(null, ""), user.getId());
+		assertFalse(roleDTOPages.getData().isEmpty());
+		assertTrue(roleDTOPages.getPageCount() == 1);
+	}
+	
+	@Test
 	public void testPagingQueryNotGrantRoles() {
 		Role role = new Role("PagingQueryNotGrantRolesIntIntPermissionDTOLong");
 		role.save();

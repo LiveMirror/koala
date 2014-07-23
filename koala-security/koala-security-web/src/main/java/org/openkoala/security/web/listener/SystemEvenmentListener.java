@@ -3,8 +3,8 @@ package org.openkoala.security.web.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.openkoala.security.web.filter.ShiroFilerChainManager;
-import org.openkoala.security.web.ini.CustomDefaultFilterChainManager;
+import org.openkoala.security.web.shiro.CustomDefaultFilterChainManager;
+import org.openkoala.security.web.shiro.ShiroFilerChainManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
@@ -19,9 +19,9 @@ public class SystemEvenmentListener implements ServletContextListener{
 		WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
 		CustomDefaultFilterChainManager filterChainManager = (CustomDefaultFilterChainManager) applicationContext.getBean("filterChainManager");
 		ShiroFilerChainManager shiroFilerChainManager = (ShiroFilerChainManager) applicationContext.getBean("shiroFilerChainManager");
-		shiroFilerChainManager.init();
 		filterChainManager.init();
-		shiroFilerChainManager.initFilterChain();
+		shiroFilerChainManager.init();
+//		shiroFilerChainManager.initFilterChain();
 		LOGGER.info("init System Evenment.");
 	}
 
