@@ -1,4 +1,4 @@
-package org.openkoala.security.web.ini;
+package org.openkoala.security.web.shiro;
 
 import java.util.LinkedHashMap;
 import java.util.List;

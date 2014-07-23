@@ -42,8 +42,7 @@ public class JCaptchaValidateFilter extends AccessControlFilter {
 	private static final String REQUEST_METHOD = "POST";
 
 	@Override
-	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
-			throws Exception {
+	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
 		LOGGER.info("into JCaptchaValidateFilter isAccessAllowed");
 		request.setAttribute("jCaptchaDisabled", jCaptchaDisabled);
 		HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
@@ -55,9 +54,7 @@ public class JCaptchaValidateFilter extends AccessControlFilter {
 		if(httpServletRequest.getSession(false) == null){
 			return false;
 		}
-//		boolean validated = false;
-//		String sessionId = httpServletRequest.getSession().getId();
-//		
+
 		return SimpleImageCaptchaServlet.validateResponse(httpServletRequest,
 				jCaptchaCodeParamter);
 	}
