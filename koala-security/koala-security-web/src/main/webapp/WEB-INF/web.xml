@@ -52,7 +52,7 @@
 		<session-timeout>120</session-timeout>
 	</session-config>
 	
-	<!-- 生成验证码 -->
+	<!-- 生成验证码
 	<servlet>
 		<servlet-name>jcaptcha</servlet-name>
 		<servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
@@ -61,7 +61,7 @@
 		<servlet-name>jcaptcha</servlet-name>
 		<url-pattern>/jcaptcha.jpg</url-pattern>
 	</servlet-mapping>
-	
+	 -->
 	<!-- 加入SpringMVC -->
 	<servlet>
 		<servlet-name>spring</servlet-name>

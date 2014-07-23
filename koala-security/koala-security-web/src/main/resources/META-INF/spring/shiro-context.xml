@@ -56,15 +56,6 @@
 		</property>
 		<property name="defaultFilterChainDefinitions">
 			<value>
-				/js/** = anon
-				/images/** = anon
-				/css/** = anon
-				/lib/** = anon
-				/login.koala = jCaptchaValidate
-				/jcaptcha.jpg = anon
-				/auth/user/login.koala = jCaptchaValidate,authc
-				/authenticated = authc
-				/** = user,authc
 			</value>
 		</property>
 	</bean>
