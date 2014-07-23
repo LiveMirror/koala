@@ -20,6 +20,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import forkoala.org.apache.velocity.VelocityContext;
+
 import org.openkoala.koala.action.velocity.VelocityUtil;
 import org.openkoala.koala.deploy.curd.generator.VelocityContextUtils;
 import org.openkoala.koala.deploy.curd.module.core.EntityModel;
@@ -62,10 +63,10 @@ public class ApplicationNewFile extends NewFile {
 
     @Override
 	public String getPath() {
-        String[] temparr = entityModel.getClassName().split("\\.");
-        String lastPackageName = temparr[temparr.length - 2];
-        String targetPath = MessageFormat.format("{0}/src/main/java/{1}/{2}/{3}.java", projectPath, //
-                getPackageName().replaceAll("\\.", "/"), lastPackageName, getName());
+        /*String[] temparr = entityModel.getClassName().split("\\.");
+        String lastPackageName = temparr[temparr.length - 2];*/
+        String targetPath = MessageFormat.format("{0}/src/main/java/{1}/{2}.java", projectPath, //
+                getPackageName().replaceAll("\\.", "/").replaceAll("/impl", ""), getName());
         return targetPath;
 	}
 

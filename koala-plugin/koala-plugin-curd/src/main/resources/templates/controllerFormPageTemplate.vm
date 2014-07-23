@@ -15,7 +15,7 @@
 #if($view.type.indexOf("oolean") > 0)
                     <div class="col-lg-9">
                            <div class="btn-group select" id="${view.express}ID"></div>
-	                       <input type="hidden" id="${view.express}ID_" name="${view.express}AsString" ${view.validateAttrs}/>                    </div>
+	                       <input type="hidden" id="${view.express}ID_" name="${view.express}" ${view.validateAttrs}/>                    </div>
 #elseif($view.widgetType == 'text')
                     <div class="col-lg-9">
                            <input name="${view.express}" style="display:inline; width:94%;" class="form-control"  type="text" ${view.validateAttrs} id="${view.express}ID" />

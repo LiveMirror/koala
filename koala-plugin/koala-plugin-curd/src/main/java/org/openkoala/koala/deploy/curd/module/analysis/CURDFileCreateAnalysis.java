@@ -29,6 +29,8 @@ import org.openkoala.koala.deploy.curd.module.pojo.ControllerNewFile;
 import org.openkoala.koala.deploy.curd.module.pojo.ControllerWebFormpageNewFile;
 import org.openkoala.koala.deploy.curd.module.pojo.ControllerWebListpageNewFile;
 import org.openkoala.koala.deploy.curd.module.pojo.ControllerWebViewpageNewFile;
+import org.openkoala.koala.deploy.curd.module.pojo.FacadeImplNewFile;
+import org.openkoala.koala.deploy.curd.module.pojo.FacadeNewFile;
 import org.openkoala.koala.deploy.curd.module.pojo.ImplNewFile;
 import org.openkoala.koala.deploy.curd.module.pojo.NewFile;
 import org.openkoala.koala.deploy.curd.module.pojo.NewFileType;
@@ -74,16 +76,23 @@ public class CURDFileCreateAnalysis {
     
     public static List<NewFile> getCreateFileList(MavenProject project,EntityViewUI entityUI){
         List<NewFile> newFiles = new ArrayList<NewFile>();
-        List<MavenProject> applicationProjects = new ArrayList<MavenProject>();
-        List<MavenProject> implProjects = new ArrayList<MavenProject>();
+        //List<MavenProject> implProjects = new ArrayList<MavenProject>();
+        List<MavenProject> facadeProjects = new ArrayList<MavenProject>();
+        List<MavenProject> facadeImplProjects = new ArrayList<MavenProject>();
         List<MavenProject> webProject = new ArrayList<MavenProject>();
-        
-        addChildProject(project, applicationProjects, implProjects, webProject);
-        handleFault(applicationProjects, implProjects, webProject);
-        createSelfDtoFile(project, entityUI, entityUI.getEntityModel(), newFiles, applicationProjects);
-        createRelationDtoFile(project, entityUI, entityUI.getEntityModel(), newFiles, applicationProjects);
+        List<MavenProject> applicationProjects = new ArrayList<MavenProject>();
+        addChildProject(project, applicationProjects, facadeProjects,facadeImplProjects, webProject);
+        handleFault(project, applicationProjects, facadeProjects,facadeImplProjects, webProject);
+       
+        createSelfImplFile(project, entityUI, entityUI.getEntityModel(), newFiles, applicationProjects);
+        createRelationImplFile(project, entityUI,  entityUI.getEntityModel(), newFiles, applicationProjects);
+        createSelfDtoFile(project, entityUI, entityUI.getEntityModel(), newFiles, facadeProjects);
+        createRelationDtoFile(project, entityUI, entityUI.getEntityModel(), newFiles, facadeProjects);
         createApplicationFile(entityUI, entityUI.getEntityModel(), newFiles, applicationProjects);
-        createApplicationImplFile(entityUI, entityUI.getEntityModel(), newFiles, implProjects);
+        
+     /*   createApplicationImplFile(entityUI, entityUI.getEntityModel(), newFiles, implProjects);        */
+        createFacadeImplFile(entityUI, entityUI.getEntityModel(), newFiles, facadeImplProjects);
+        createFacadeFile(entityUI, entityUI.getEntityModel(), newFiles, facadeProjects);
         createActionIfNeed(project, entityUI, entityUI.getEntityModel(), newFiles, webProject);
         createControllerIfNeed(project, entityUI, entityUI.getEntityModel(), newFiles, webProject);
         
@@ -99,13 +108,17 @@ public class CURDFileCreateAnalysis {
      */
 	private static void addChildProject(MavenProject project,
 			List<MavenProject> applicationProjects,
-			List<MavenProject> implProjects, List<MavenProject> webProject) {
+			List<MavenProject> facadeProjects,List<MavenProject> facadeImplProjects, List<MavenProject> webProject) {
 		for (MavenProject child : project.getChilds()) {
+			System.out.println(child.getType());
             if (child.getType().equals(ModuleType.Application)) {
             	applicationProjects.add(child);
             }
-            if (child.getType().equals(ModuleType.Impl)) {
-            	implProjects.add(child);
+            if (child.getType().equals(ModuleType.Facade)) {	
+            	facadeProjects.add(child);
+            }
+            if (child.getType().equals(ModuleType.FacadeImpl)) {
+            	facadeImplProjects.add(child);
             }
             if (child.getType().equals(ModuleType.War)) {
             	webProject.add(child);
@@ -119,14 +132,19 @@ public class CURDFileCreateAnalysis {
      * @param implProjects
      * @param webProject
      */
-	private static void handleFault(List<MavenProject> applicationProjects, 
-			List<MavenProject> implProjects, List<MavenProject> webProject) {
+	private static void handleFault(MavenProject project,
+			List<MavenProject> applicationProjects,
+			List<MavenProject> facade,List<MavenProject> facadeImpl, List<MavenProject> webProject) {
 		if (applicationProjects.size() == 0) {
         	throw new KoalaException("找不到应用层接口");
         }
         
-        if (implProjects.size() == 0) {
-        	throw new KoalaException("找不到应用层实现");
+        if (facade.size() == 0) {
+        	throw new KoalaException("找不到门面层接口");
+        }
+        
+        if (facadeImpl.size() == 0) {
+        	throw new KoalaException("找不到门面层实现");
         }
         
         if (webProject.size() == 0) {
@@ -178,18 +196,47 @@ public class CURDFileCreateAnalysis {
         }
 	}
 
-    /**
+   /* *//**
      * 创建ApplicationImpl的Java文件 
      * @param entityUI
      * @param entity
      * @param newFiles
      * @param implProjects
-     */
+     *//*
 	private static void createApplicationImplFile(EntityViewUI entityUI,
 			EntityModel entity, List<NewFile> newFiles,
 			List<MavenProject> implProjects) {
 		ImplNewFile impl = new ImplNewFile(getApplicationImplClassName(entity), implProjects,NewFileType.IMPL, entity, entityUI);
         impl.setReliations(getRelationModel(entityUI));
+        newFiles.add(impl);
+	}*/
+	
+	/**
+     * 创建FacadeImpl的Java文件 
+     * @param entityUI
+     * @param entity
+     * @param newFiles
+     * @param implProjects
+     */
+	private static void createFacadeImplFile(EntityViewUI entityUI,
+			EntityModel entity, List<NewFile> newFiles,
+			List<MavenProject> facadeImplProjects ) {
+		FacadeImplNewFile impl = new FacadeImplNewFile(getFacadeImplClassName(entity), facadeImplProjects,NewFileType.FacadeImpl, entity, entityUI);
+        impl.setReliations(getRelationModel(entityUI));
+        newFiles.add(impl);
+	}
+	/**
+     * 创建Facade的Java文件 
+     * @param entityUI
+     * @param entity
+     * @param newFiles
+     * @param implProjects
+     */
+	private static void createFacadeFile(EntityViewUI entityUI,
+			EntityModel entity, List<NewFile> newFiles,
+			List<MavenProject> facadeProjects ) {
+		FacadeNewFile impl = new FacadeNewFile(getFacadeClassName(entity), facadeProjects, NewFileType.Facade, entity);
+        impl.setRelations(getRelationModel(entityUI));
         newFiles.add(impl);
 	}
 
@@ -204,10 +251,17 @@ public class CURDFileCreateAnalysis {
 			EntityModel entity, List<NewFile> newFiles,
 			List<MavenProject> applicationProjects) {
 		ApplicationNewFile file = new ApplicationNewFile(getApplicationClassName(entity), applicationProjects, NewFileType.APPLICATION, entity);
-        file.setRelations(getRelationModel(entityUI));
+	    file.setRelations(getRelationModel(entityUI));      
         newFiles.add(file);
 	}
-
+	/*private static void createApplicationImplFile(EntityViewUI entityUI,
+			EntityModel entity, List<NewFile> newFiles,
+			List<MavenProject> applicationProjects) {
+		ImplNewFile implfile = new ImplNewFile(getApplicationClassName(entity), applicationProjects, NewFileType.APPLICATION, entity, entityUI);        
+        newFiles.add(implfile);        
+	}*/
+	
+	
     /**
      * 获取ApplicationImpl的类名
      * @param entity
@@ -216,6 +270,26 @@ public class CURDFileCreateAnalysis {
 	private static String getApplicationImplClassName(EntityModel entity) {
 		return entity.getName() + "ApplicationImpl";
 	}
+
+	/**
+     * 获取FacadeImpl的类名
+     * @param entity
+     * @return
+     */
+	private static String getFacadeImplClassName(EntityModel entity) {
+
+		return entity.getName() + "FacadeImpl";
+	}
+
+	/**
+     * 获取Facade的类名
+     * @param entity
+     * @return
+     */
+	private static String getFacadeClassName(EntityModel entity) {
+		return entity.getName() + "Facade";
+	}
+
 
     /**
      * 获取Application的类名
@@ -276,6 +350,37 @@ public class CURDFileCreateAnalysis {
         newFiles.add(dtoNewFile);
 	}
 
+	/**
+     * 创建自身的Impl
+     * @param project
+     * @param entityUI
+     * @param entity
+     * @param newFiles
+     * @param applicationProjects
+     */
+	private static void createSelfImplFile(MavenProject project,
+			EntityViewUI entityUI, EntityModel entity, List<NewFile> newFiles,
+			List<MavenProject> applicationProjects) {
+		ImplNewFile implNewFile = new ImplNewFile(getApplicationImplClassName(entity), applicationProjects, NewFileType.IMPL, entity, entityUI);
+        newFiles.add(implNewFile);
+	}
+
+	private static void createRelationImplFile(MavenProject project,
+			EntityViewUI entityUI, EntityModel entity, List<NewFile> newFiles,
+			List<MavenProject> applicationProjects) {
+		for(RelationFieldModel reliation:entity.getRelationFieldModel()){
+            if (reliation.getRelationModel().getEntityModel().getName().equals(entity.getName())) {
+            	continue;
+            }
+            ImplNewFile implNewFile = new ImplNewFile(getRelationImplClassName( reliation), applicationProjects, NewFileType.IMPL, entity, entityUI);
+            newFiles.add(implNewFile);
+        }
+	}
+	
+	private static String getRelationImplClassName(RelationFieldModel reliation) {
+		return reliation.getRelationModel().getEntityModel().getName() + "IMPL";
+	}
+	
     /**
      * 获取DTO的类名
      * @param entity

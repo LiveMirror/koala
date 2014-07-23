@@ -118,7 +118,8 @@ public class DTONewFile extends NewFile {
     
     @Override
     public String getPackageName() {
-    	return super.getPackageName() + ".dto";
+    	//return super.getPackageName() + ".dto";
+    	return super.getPackageName() ;
     }
     
     /**
