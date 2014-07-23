@@ -13,7 +13,7 @@
 			name : "description",
 			width : 250
 		}];
-		
+	
 		var buttons = (function() {
 			if (userId) {
 				return [{
@@ -98,12 +98,13 @@
 			},
 			'assignRole' : function() {
 				var grid = $(this);
+				//console.log(grid);
         		$.get(contextPath + '/pages/auth/select-role.jsp').done(function(data){
         			var dialog = $(data);
+        			console.log();
         			dialog.find('#save').click(function(){
         				var saveBtn = $(this);
         				var items = dialog.find('.selectRoleGrid').data('koala.grid').selectedRows();
-        				
         				if(items.length == 0){
         					dialog.find('.selectRoleGrid').message({
         						type: 'warning',

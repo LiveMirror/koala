@@ -129,7 +129,7 @@
 		var menuId = tabData.menuId;
 		var pageId = tabData.pageId;
 		var urlId = tabData.urlId;
-	
+	    console.log(userId);
 		
 		var columns = [{
 				title : "权限名称",
@@ -256,7 +256,7 @@
 	                }
 	            });
         	},
-        	'assignPermission' : function(event, data){
+        	'assignPermissionForUser' : function(event, data){
         		var grid = $(this);
         		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
         			var dialog = $(data);
@@ -653,15 +653,15 @@
 						});
 					}
 				});
-			},
+			}, 
 			//TODO Url
 			'assignPermissionForUrl': function(event, data){
         		var grid = $(this);
-        		$.get(contextPath + '/pages/auth/select-url.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
         			var dialog = $(data);
         			dialog.find('#save').click(function(){
         				var saveBtn = $(this);
-        				var items = dialog.find('#selectUrlGrid').data('koala.grid').selectedRows();
+        				var items = dialog.find('.selectPermissionGrid').data('koala.grid').selectedRows();
         				
         				if(items.length == 0){
         					dialog.find('.modal-content').message({
