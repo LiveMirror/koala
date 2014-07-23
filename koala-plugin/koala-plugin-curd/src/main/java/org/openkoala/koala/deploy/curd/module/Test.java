@@ -46,7 +46,7 @@ public class Test {
      */
     public static void main(String[] args) {
         //第一步，选中领域对象，获得到此领域对象的绝对路径
-        String path = "G:/project/foss-project/src/KoalaSecurity/core/src/main/java/org/openkoala/koala/auth/core/domain/User.java";
+        String path = "F:/runtime-EclipseApplication/ttt/ttt-core/src/main/java/org/openkoala/ttt/core/domain/UserInfo2 .java";
         //分析获得到此领域对象的建模
         CURDCoreAnalysis util = CURDCoreAnalysis.getInstance();
         EntityModel entity = util.analysis(path);

@@ -107,7 +107,7 @@
 		$("#roles").change(function(){
 			var roleId = $(this).val(),
 				roleName = $(this).find("option:selected").text(),
-				url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala";
+				url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
 			$.get(
 				url,
 				{"roleId":roleId,"roleName":roleName},

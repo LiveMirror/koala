@@ -20,7 +20,6 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import forkoala.org.apache.velocity.VelocityContext;
-
 import org.openkoala.koala.action.velocity.VelocityUtil;
 import org.openkoala.koala.deploy.curd.generator.VelocityContextUtils;
 import org.openkoala.koala.deploy.curd.module.core.EntityModel;
@@ -43,20 +42,20 @@ import org.openkoala.koala.pojo.MavenProject;
  * 修改记录： 
  * 修 改 者    修改日期     文件版本   修改说明	
  */
-public class ApplicationNewFile extends NewFile {
+public class FacadeNewFile extends NewFile {
     
     private EntityModel entityModel;
-    
+
     private List<RelationFieldModel> relations;
     
-    private static final String TEMPLATE_PATH = "templates/applicationTemplate.vm";
+    private static final String TEMPLATE_PATH = "templates/facadeTemplate.vm";
     
     /**
      * @param name
      * @param projects
      * @param type
      */
-    public ApplicationNewFile(String name, List<MavenProject> projects, NewFileType type,EntityModel entityModel) {
+    public FacadeNewFile(String name, List<MavenProject> projects, NewFileType type,EntityModel entityModel) {
         super(name, projects, type);
         this.entityModel = entityModel;
     }
@@ -66,7 +65,7 @@ public class ApplicationNewFile extends NewFile {
         /*String[] temparr = entityModel.getClassName().split("\\.");
         String lastPackageName = temparr[temparr.length - 2];*/
         String targetPath = MessageFormat.format("{0}/src/main/java/{1}/{2}.java", projectPath, //
-                getPackageName().replaceAll("\\.", "/").replaceAll("/impl", ""), getName());
+                getPackageName().replaceAll("\\.", "/").replaceAll("/dto", ""), getName());
         return targetPath;
 	}
 
@@ -92,7 +91,7 @@ public class ApplicationNewFile extends NewFile {
     @Override
     public void process() {
         VelocityContext context = VelocityContextUtils.getVelocityContext();
-        context.put("applicationClass", this);
+        context.put("facadeClass", this);
         try {
             VelocityUtil.vmToFile(context, TEMPLATE_PATH, getPath());
         } catch (IOException e) {

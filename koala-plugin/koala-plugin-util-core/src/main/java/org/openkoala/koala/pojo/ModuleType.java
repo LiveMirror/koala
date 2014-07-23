@@ -13,6 +13,10 @@ public enum ModuleType {
 	
 	Infra,//基础设施层项目
 	
+	Facade,//门面层
+	
+	FacadeImpl,//门面实现
+	
 	Application,//应用层
 	
 	Impl,//实现层

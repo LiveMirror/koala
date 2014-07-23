@@ -66,10 +66,11 @@ public class ImplNewFile extends NewFile {
     
     @Override
 	public String getPath() {
-        String[] temparr = entityModel.getClassName().split("\\.");
-        String lastPackageName = temparr[temparr.length - 2];
-        String targetPath = MessageFormat.format("{0}/src/main/java/{1}/{2}/{3}.java", projectPath, //
-                getPackageName().replaceAll("\\.", "/"), lastPackageName, getName());
+     /*   String[] temparr = entityModel.getClassName().split("\\.");
+      String lastPackageName = temparr[temparr.length - 2];*/ 
+    	        String targetPath = MessageFormat.format("{0}/src/main/java/{1}/{2}.java", projectPath, //
+                getPackageName().replaceAll("\\.", "/"), getName());
+
         return targetPath;
 	}
 
@@ -103,7 +104,7 @@ public class ImplNewFile extends NewFile {
     @Override
     public void process() {
         VelocityContext context = VelocityContextUtils.getVelocityContext();
-        context.put("applicationImplClass", this);
+        context.put("applicationClass", this);
         try {
             VelocityUtil.vmToFile(context, TEMPLATE_PATH, getPath());
         } catch (IOException e) {

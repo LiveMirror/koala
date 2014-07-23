@@ -261,6 +261,23 @@ public class MavenProject {
 		return impls;
 	}
 	
+	public List<MavenProject> getFacadeProjects(){
+		List<MavenProject> impls = new ArrayList<MavenProject>();
+		 for(MavenProject project:this.childs){
+			 if(project.getType().equals(ModuleType.Facade))
+				 impls.add(project);
+		 }
+		return impls;
+	}
+	public List<MavenProject> getFacadeImplProjects(){
+		List<MavenProject> impls = new ArrayList<MavenProject>();
+		 for(MavenProject project:this.childs){
+			 if(project.getType().equals(ModuleType.FacadeImpl))
+				 impls.add(project);
+		 }
+		return impls;
+	}
+	
 	public List<MavenProject> getIntrefaceProjects(){
 		List<MavenProject> interfaces = new ArrayList<MavenProject>();
 		 for(MavenProject project:this.childs){

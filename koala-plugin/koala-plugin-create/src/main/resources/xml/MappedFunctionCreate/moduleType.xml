@@ -84,11 +84,27 @@
 		<property name="destDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/webapp/
 		</property>
 	</CopyFiles>
+	
 
 	<VelocityDirObject>
-		<property name="express">$Module.moduleType=='applicationImpl'
+		<property name="express">$Module.moduleType=='application'
 		</property>
-		<property name="vmDir">vm/base/applicationImpl/</property>
+		<property name="vmDir">vm/base/application/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Module.moduleName}/
+		</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="express">$Module.moduleType=='facadeImpl'
+		</property>
+		<property name="vmDir">vm/base/facadeImpl/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Module.moduleName}/
+		</property>
+	</VelocityDirObject>
+	<VelocityDirObject>
+		<property name="express">$Module.moduleType=='facade'
+		</property>
+		<property name="vmDir">vm/base/facade/</property>
 		<property name="pathDir">${Project.path}/${Project.appName}/${Module.moduleName}/
 		</property>
 	</VelocityDirObject>

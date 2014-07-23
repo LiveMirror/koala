@@ -275,7 +275,13 @@ var openDetailsPage = function(id){
                        json = json.data;
                         var elm;
                         for(var index in json){
-                           dialog.find('#'+ index + 'ID').html(json[index]);
+                        if(json[index]+"" == "false"){
+                        		dialog.find('#'+ index + 'ID').html("<span style='color:#d2322d' class='glyphicon glyphicon-remove'></span>");
+                        	}else if(json[index]+"" == "true"){
+                        		dialog.find('#'+ index + 'ID').html("<span style='color:#47a447' class='glyphicon glyphicon-ok'></span>");
+                        	}else{
+                          		 dialog.find('#'+ index + 'ID').html(json[index]+"");
+                        	}
                         }
                });
                 dialog.modal({
