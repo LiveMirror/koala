@@ -99,12 +99,6 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 	   		conditionVals.add(queryVo.get${propertyName}());
 	   	}	
 #end
-#if(${field.type.toString()} == "char")
-		if (queryVo.get${propertyName}()+"" != null && !"".equals(queryVo.get${propertyName}()+"")) {
-	   		jpql.append(" and _${variableName}.${field.name} like ?");
-	   		conditionVals.add(MessageFormat.format("%{0}%", queryVo.get${propertyName}()));
-	   	}		
-#end	
 #if(${dtoClass.isBooleanType(${field.type})})
 	   	if (queryVo.get${propertyName}() != null) {
 		   	jpql.append(" and _${variableName}.${field.name} is ?");

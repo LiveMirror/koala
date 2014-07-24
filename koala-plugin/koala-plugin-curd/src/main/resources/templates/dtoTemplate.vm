@@ -35,7 +35,7 @@ public class ${dtoClass.name} implements Serializable {
 		#elseif(${entry.value} == "boolean")
 			#set($simpleTypeName = "Boolean")
 			#elseif(${entry.value} == "char")
-			#set($simpleTypeName = "char")
+			#set($simpleTypeName = "Character")
 		#end
 	#else
 		#set($index = ${entry.value.lastIndexOf(".")} + 1)
@@ -43,7 +43,6 @@ public class ${dtoClass.name} implements Serializable {
 	#end
 #if($simpleTypeName.indexOf("Boolean") > 0)
 	private Boolean ${entry.key};
-    private String ${entry.key}AsString;
 #else
 
 #if(${dtoClass.isDateType(${entry.value})} && ${project.mvcType} == "SpringMVC")
@@ -74,7 +73,7 @@ public class ${dtoClass.name} implements Serializable {
 		#elseif(${entry.value} == "boolean")
 			#set($simpleTypeName = "Boolean")
 			#elseif(${entry.value} == "char")
-			#set($simpleTypeName = "char")
+			#set($simpleTypeName = "Character")
 		#end
 		#else
 		#set($index = ${entry.value.lastIndexOf(".")} + 1)
@@ -91,17 +90,6 @@ public class ${dtoClass.name} implements Serializable {
 		this.${entry.key}AsString = ${entry.key} ? "1" : "0";
 	}
 	
-	public String get${propertyName}AsString() {
-		return this.${entry.key}AsString;
-	}
-	
-	public void set${propertyName}AsString(String ${entry.key}) { 
-		this.${entry.key}AsString = ${entry.key};
-		if(${entry.key} == null || "".equals(${entry.key}.trim()))
-	       this.${entry.key} = null;
-	    else
-	       this.${entry.key} =  "1".equals(${entry.key});
-	}
 #else
 
 	public void set${propertyName}($simpleTypeName ${entry.key}) { 
