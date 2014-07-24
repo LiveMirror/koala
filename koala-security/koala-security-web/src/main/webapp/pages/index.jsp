@@ -28,6 +28,26 @@
     	.leaf_node > a .glyphicon{
     		display:none;
     	}
+    	.menu_name{
+    	  font-size:16px;
+    	}
+    	.leaf_node span{
+    	  font-size:14px !important;
+    	}
+    	.user_name{
+    	  color:#fff;
+    	}
+    	.yhmc{
+    	padding-top:10px;
+    	float:left;
+    	}
+    	.menu_icon_change{
+    	background-color:#428baa !important;
+    	margin : 0 !important;
+    	}
+    	.menu_icon_change:hover{
+    	background-color:transparent !important;
+    	}
     </style>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
@@ -46,18 +66,20 @@
 	        <div class="collapse navbar-collapse navbar-ex1-collapse">
 	            <!-- 账号信息 -->
 	            <div class="btn-group navbar-right">
+	                <label for = "userAccount" class = "user_name yhmc">用户名称  : </label>
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 	                    <i class="glyphicon glyphicon-user"></i>
-	                    <span>&nbsp;<koala:user property="userAccount"/></span>
+	                    <span>&nbsp;<koala:user property="name"/></span>
 	                    <span class="caret"></span>
 	                </button>
+	                <!-- <i class = "menu-icon glyphicon  glyphicon-cog menu_icon_change"></i> -->
 	                <ul class="dropdown-menu" id="userManager">
 	                    <li data-target="modifyPwd"><a href="#">修改密码</a></li>
 	                    <li data-target="loginOut"><a href="#">注销</a></li>
 	                </ul>
 	            </div>
-	            <!--  -->
 	            <div class="btn-group navbar-right">
+	                <label for = "roles" class = "user_name">用户角色 :</label>
 	            	<select id="roles"></select>
 	                <ul class="dropdown-menu" id="allRolesId"></ul>
 	            </div>
