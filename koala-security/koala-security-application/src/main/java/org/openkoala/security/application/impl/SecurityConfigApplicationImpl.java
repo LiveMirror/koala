@@ -400,4 +400,9 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		return role;
 	}
 
+	@Override
+	public void updateUserLastLoginTime(User user) {
+		user.updateLastLoginTime();
+	}
+
 }

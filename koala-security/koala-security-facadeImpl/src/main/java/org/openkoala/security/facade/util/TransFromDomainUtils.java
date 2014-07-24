@@ -41,7 +41,6 @@ public final class TransFromDomainUtils {
 		}
 		result.setName(userDTO.getName());
 		result.setVersion(userDTO.getVersion());
-		result.setLastLoginTime(userDTO.getLastLoginTime());
 		result.setDescription(userDTO.getDescription());
 		return result;
 	}

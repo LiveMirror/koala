@@ -28,14 +28,9 @@ import org.slf4j.LoggerFactory;
  */
 @Entity
 @DiscriminatorValue("USER")
-@NamedQueries({ 
-	@NamedQuery(
-			name = "User.loginByUserAccount", 
-			query = "SELECT _user FROM User _user WHERE _user.userAccount = :userAccount AND _user.password = :password"),
-	@NamedQuery(
-			name="User.count",
-			query="SELECT COUNT(_user.id) FROM User _user")
-})
+@NamedQueries({
+		@NamedQuery(name = "User.loginByUserAccount", query = "SELECT _user FROM User _user WHERE _user.userAccount = :userAccount AND _user.password = :password"),
+		@NamedQuery(name = "User.count", query = "SELECT COUNT(_user.id) FROM User _user") })
 public class User extends Actor {
 
 	private static final long serialVersionUID = 7849700468353029794L;
@@ -53,7 +48,7 @@ public class User extends Actor {
 	@Column(name = "EMAIL")
 	private String email;
 
-	@Column(name = "ENABLED")
+	@Column(name = "DISABLED")
 	private boolean disabled = false;
 
 	@Column(name = "LAST_LOGIN_TIME")
@@ -136,10 +131,6 @@ public class User extends Actor {
 			user.setTelePhone(this.getTelePhone());
 		}
 
-		if (this.getLastLoginTime() != null) {
-			user.setLastLoginTime(this.getLastLoginTime());
-		}
-
 		// 每次修改自动插入修改时间。
 		user.setLastModifyTime(new Date());
 
@@ -169,6 +160,8 @@ public class User extends Actor {
 	}
 
 	/**
+	 * 根据账户查找拥有的所有角色Role
+	 * 
 	 * @param userAccount
 	 * @return
 	 */
@@ -178,13 +171,14 @@ public class User extends Actor {
 				.addParameter("userAccount", userAccount)//
 				.addParameter("authorityType", Role.class)//
 				.list();
-		if(results.isEmpty()){
+		if (results.isEmpty()) {
 			throw new UserNotHasRoleException("user do have not a role");
 		}
 		return results;
 	}
 
 	/**
+	 * 根据账户查找拥有的所有权限Permission
 	 * 
 	 * @param userAccount
 	 * @return
@@ -215,7 +209,7 @@ public class User extends Actor {
 	}
 
 	public static User login(String principal, String password) {
-		if(StringUtils.isBlank(principal) || StringUtils.isBlank(password)){
+		if (StringUtils.isBlank(principal) || StringUtils.isBlank(password)) {
 			throw new NullArgumentException("userAccount or password is empty ");
 		}
 		User user = getRepository()//
@@ -223,17 +217,25 @@ public class User extends Actor {
 				.addParameter("userAccount", principal)//
 				.addParameter("password", encryptPassword(new User(principal, password)))//
 				.singleResult();
-		
-		if(user == null){
+
+		if (user == null) {
 			throw new UserNotExistedException("userAccount or password is error");
 		}
 		return user;
 	}
-	
-	public static long getCount(){
+
+	public static long getCount() {
 		return getRepository().createNamedQuery("User.count").singleResult();
 	}
-	
+
+	/**
+	 * 修改最后登陆时间。
+	 */
+	public void updateLastLoginTime() {
+		User user = getBy(this.getId());
+		user.lastLoginTime = new Date();
+	}
+
 	protected static PasswordService passwordService;
 
 	protected static void setPasswordService(PasswordService passwordService) {
@@ -309,10 +311,6 @@ public class User extends Actor {
 
 	public Date getLastLoginTime() {
 		return lastLoginTime;
-	}
-
-	public void setLastLoginTime(Date lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
 	}
 
 	public String getUserAccount() {

@@ -502,4 +502,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		securityConfigApplication.initSecuritySystem();
 	}
 
+	@Override
+	public void updateUserLastLoginTime(Long userId) {
+		User user = securityAccessApplication.getUserBy(userId);
+		securityConfigApplication.updateUserLastLoginTime(user);
+	}
+
 }

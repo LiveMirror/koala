@@ -302,4 +302,6 @@ public interface SecurityConfigApplication {
 	 */
 	void grantAuthorityToActor(Authority authority, Actor actor);
 
+	void updateUserLastLoginTime(User user);
+
 }
