@@ -36,5 +36,17 @@ public enum WrapperType {
 		public String toString() {
 			return "java.lang.Double";
 		}
+	},
+	CHAR {
+		@Override
+		public String toString() {
+			return "java.lang.Character";
+		}
+	},
+	BYTE {
+		@Override
+		public String toString() {
+			return "java.lang.Byte";
+		}
 	}
 }
