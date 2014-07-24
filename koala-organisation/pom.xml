@@ -20,8 +20,7 @@
 		<module>koala-organisation-applicationImpl</module>
 		<module>koala-organisation-web</module>
 	</modules>
-			<!-- <properties>
-
+		<properties>
 				<db.groupId>mysql</db.groupId>
 				<db.artifactId>mysql-connector-java</db.artifactId>
 				<db.version>5.1.22</db.version>
@@ -30,12 +29,12 @@
 				<hibernate.show_sql>true</hibernate.show_sql>
 				<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
 				<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
-				<db.connectionURL>jdbc:mysql://10.108.1.12:3306/koala?useUnicode=true&amp;characterEncoding=UTF-8</db.connectionURL>
+				<db.connectionURL>jdbc:mysql://localhost:3306/koala?useUnicode=true&amp;characterEncoding=UTF-8</db.connectionURL>
 				<db.username>root</db.username>
 				<db.password>123456</db.password>
 				<db.Type>MYSQL</db.Type>
-				<generateDdl>true</generateDdl>
-			</properties> -->
+				<generateDdl>true</generateDdl> 
+			</properties> 
 
 	<dependencies>
 		<dependency>

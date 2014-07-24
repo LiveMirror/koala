@@ -32,7 +32,7 @@ public interface SecurityConfigFacade {
 	 * @param userDTO
 	 */
 	void updateUserDTO(UserDTO userDTO);
-	
+
 	/**
 	 * 更新密码
 	 * 
@@ -225,5 +225,12 @@ public interface SecurityConfigFacade {
 	 * 初始化系统权限资源。
 	 */
 	public void initSecuritySystem();
+
+	/**
+	 * 更新登陆时间
+	 * 
+	 * @param userId
+	 */
+	void updateUserLastLoginTime(Long userId);
 
 }

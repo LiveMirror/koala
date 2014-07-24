@@ -93,7 +93,6 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		updateUser.setTelePhone("18665588990");
 		updateUser.setCreateOwner("test01");
 		updateUser.setDescription("ceshi");
-		updateUser.setLastLoginTime(new Date());
 		updateUser.setName("更新test01");
 		updateUser.update();
 		User actual = User.getBy(updateUser.getId());

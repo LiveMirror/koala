@@ -54,6 +54,8 @@ public class DTONewFile extends NewFile {
 	private static final String STRING_TYPE = "java.lang.String";
 	
 	private static final String BOOLEAN_TYPE = "java.lang.Boolean";
+	
+	
 
 	private static final String TEMPLATE_PATH = "templates/dtoTemplate.vm";
 
@@ -118,7 +120,8 @@ public class DTONewFile extends NewFile {
     
     @Override
     public String getPackageName() {
-    	return super.getPackageName() + ".dto";
+    	//return super.getPackageName() + ".dto";
+    	return super.getPackageName() ;
     }
     
     /**

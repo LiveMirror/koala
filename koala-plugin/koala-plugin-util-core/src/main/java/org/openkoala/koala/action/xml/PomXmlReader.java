@@ -127,6 +127,15 @@ public class PomXmlReader {
 	}
 	
 	/**
+	 * 通过XML查询一个子项目是否是门面层实现模块
+	 * @param document
+	 * @return
+	 */
+	public static boolean isFacadeImpl(Document document){
+		return isDependencyExists("com.dayatang.commons","dayatang-commons-querychannel",document);
+	}
+	
+	/**
 	 * 查询一个子项目是否是EAR模块
 	 * @param document
 	 * @return
@@ -156,5 +165,25 @@ public class PomXmlReader {
 		if(count>(max-count))return true;
 		return false;
 	}
+	
+	/**
+	 * 查询一个子项目是否是门面层接口模块
+	 * @param project
+	 * @return
+	 * @throws JavaDoException
+	 */
+	public static boolean isFacadeInterface(MavenProject project) throws JavaDoException{
+		List<String> files = project.getSrcMainJavas();
+		int max = files.size();
+		//只取11个JAVA类来判断，以查证其是否是接口层
+		if(max>11)max=11;
+		int count = 0;
+		for(int i=0;i<max;i++){
+			if(JavaManagerUtil.isInterface(project.getPath()+"/"+project.getName()+"/"+files.get(i)))count++;
+		}
+		if(count>(max-count))return true;
+		return false;
+	}
+	
 	
 }

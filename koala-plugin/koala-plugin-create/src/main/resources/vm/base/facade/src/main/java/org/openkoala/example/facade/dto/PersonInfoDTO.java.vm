@@ -1,15 +1,18 @@
-package org.openkoala.example.application.dto;
+package org.openkoala.example.facade.dto;
 
 import java.util.Date;
 import java.io.Serializable;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.openkoala.koala.springmvc.JsonTimestampSerializer;
+import org.openkoala.example.domain.PersonInfo;
 import org.openkoala.koala.springmvc.JsonDateSerializer;
 
 
 public class PersonInfoDTO implements Serializable {
+
+	private static final long serialVersionUID = 1428864474382580128L;
+
 
 	private Long id;
 
@@ -27,14 +30,11 @@ public class PersonInfoDTO implements Serializable {
 	
 	private Boolean married;
 	
-		
-	private String name;
+    private String name;
 	
 		
 	private String identityCardNumber;
 	
-			
-		
 
 	public void setProceeds(Double proceeds) { 
 		this.proceeds = proceeds;
@@ -116,6 +116,30 @@ public class PersonInfoDTO implements Serializable {
 	public Long getId() {
 		return id;
 	}
+
+	public  PersonInfoDTO personInfoEntityToDTO(PersonInfo personInfo){
+			PersonInfoDTO result = new PersonInfoDTO();
+			result.setBirthday(personInfo.getBirthday());
+			result.setId(personInfo.getId());
+			result.setIdentityCardNumber(personInfo.getIdentityCardNumber());
+			result.setMarried(personInfo.getMarried());
+			result.setName(personInfo.getName());
+			result.setProceeds(personInfo.getProceeds());
+			result.setSex(personInfo.getSex());		
+			return result;
+		}
+		
+	    public PersonInfo personInfoDTOToEntity(PersonInfoDTO personInfoDTO){
+			PersonInfo result = new PersonInfo();
+			result.setBirthday(personInfoDTO.getBirthday());
+			result.setId(personInfoDTO.getId());
+			result.setIdentityCardNumber(personInfoDTO.getIdentityCardNumber());
+			result.setMarried(personInfoDTO.getMarried());
+			result.setName(personInfoDTO.getName());
+			result.setProceeds(personInfoDTO.getProceeds());
+			result.setSex(personInfoDTO.getSex());		
+			return result;
+		}		
 
     @Override
 	public int hashCode() {

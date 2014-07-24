@@ -63,6 +63,9 @@ public class UserController {
 			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
 			try {
 				SecurityUtils.getSubject().login(usernamePasswordToken);
+				
+				securityConfigFacade.updateUserLastLoginTime(AuthUserUtil.getCurrentUser().getId());
+				
 				results.put("message", "登陆成功");
 				results.put("result", "success");
 			} catch (NullArgumentException e) {

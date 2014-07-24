@@ -196,5 +196,4 @@ public interface SecurityAccessApplication {
 	 */
 	User login(String principal, String password);
 	
-
 }

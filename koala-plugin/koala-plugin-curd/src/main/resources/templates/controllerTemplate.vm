@@ -1,6 +1,5 @@
 #set($package = ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})})
-
-package ${controllerClass.packageName}${package.substring(${package.lastIndexOf(".")})};
+package ${controllerClass.packageName.replaceAll(".domain","")};
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.dayatang.querychannel.Page;
-import ${applicationClass.packageName}${package.substring(${package.lastIndexOf(".")})}.${applicationClass.name};
+import ${applicationClass.packageName.replaceAll("impl","")}${applicationClass.name};
 import ${dtoClass.packageName}.*;
+import ${dtoClass.packageName.replaceAll("dto","")}${facadeImplClass.name.replaceAll("Impl","")};
 
 @Controller
 @RequestMapping("/${controllerClass.name.substring(0, 1).toUpperCase()}${controllerClass.name.substring(1, ${controllerClass.name.indexOf("Controller")})}")
@@ -23,7 +23,7 @@ public class ${controllerClass.name} {
 	#set($domainClass = ${applicationClass.name.substring(0, ${applicationClass.name.indexOf("Application")})})
 	
 	@Inject
-	private ${applicationClass.name} ${applicationName};
+	private ${facadeImplClass.name.replaceAll("Impl","")} ${applicationName};
 	
 	@ResponseBody
 	@RequestMapping("/add")

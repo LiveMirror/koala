@@ -30,16 +30,17 @@ public class ControllerNewFile extends NewFile {
 
     @Override
 	public String getPath() {
-		String[] temparr = entityModel.getClassName().split("\\.");
-        String lastPackageName = temparr[temparr.length - 2];
-        String targetPath = MessageFormat.format("{0}/src/main/java/{1}/{2}/{3}.java", projectPath, //
-                getPackageName().replaceAll("\\.", "/"), lastPackageName, getName());
+		/*String[] temparr = entityModel.getClassName().split("\\.");
+        String lastPackageName = temparr[temparr.length - 2];*/
+        String targetPath = MessageFormat.format("{0}/src/main/java/{1}/{2}.java", projectPath, //
+                getPackageName().replaceAll("\\.", "/"), getName());
         return targetPath;
 	}
 	
     @Override
     public String getPackageName() {
-    	return super.getPackageName() + ".controller";
+    	//return super.getPackageName() + ".controller";
+    	return super.getPackageName();
     }
     
 	@Override

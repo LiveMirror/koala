@@ -194,20 +194,44 @@ public class Project implements Serializable {
 		bizModel.setModuleType("bizModel");
 		bizModel.setModuleName("core");
 		bizModel.setProjectName(appName);
-		bizModel.setBasePackage(getGroupId() + "." + getPackageName() + ".core");
+		bizModel.setBasePackage(getGroupId() + "." + getPackageName() + ".core.domain");
 		getModule().add(bizModel);
 
 		// 初始化一个接口层
-		Module applicationInterface = new Module();
-		applicationInterface.setModuleType("applicationInterface");
-		applicationInterface.setModuleName("application");
-		applicationInterface.setProjectName(appName);
-		applicationInterface.setBasePackage(getGroupId() + "."
-				+ getPackageName() + ".application");
-		getModule().add(applicationInterface);
-
+		Module application = new Module();
+		application.setModuleType("applicationInterface");
+		application.setModuleName("application");
+		application.setProjectName(appName);
+		application.setBasePackage(getGroupId() + "."
+				+ getPackageName() + ".application"+".impl");
+		application.getDependencies().add("core");
+		getModule().add(application);
+		
+		// 初始化一个门面层
+		Module  facade= new Module();
+		facade.setModuleType("facade");
+		facade.setModuleName("facade");
+		facade.setProjectName(appName);
+		facade.setBasePackage(getGroupId() + "."
+				+ getPackageName() + ".facade.dto");
+		facade.getDependencies().add("core");
+		facade.getDependencies().add("application");
+		facade.getDependencies().add("infra");
+		getModule().add(facade);
+		// 初始化一个门面层的实现
+				Module  facadeImpl= new Module();
+				facadeImpl.setModuleType("facadeImpl");
+				facadeImpl.setModuleName("facadeImpl");
+				facadeImpl.setProjectName(appName);
+				facadeImpl.setBasePackage(getGroupId() + "."
+						+ getPackageName() + ".facade.impl");
+				facadeImpl.getDependencies().add("application");
+				facadeImpl.getDependencies().add("core");
+				facadeImpl.getDependencies().add("infra");
+				facadeImpl.getDependencies().add("facade");
+				getModule().add(facadeImpl);				
 		// 初始化一个实现层
-		Module applicationImpl = new Module();
+		/*Module applicationImpl = new Module();
 		applicationImpl.setModuleName("applicationImpl");
 		applicationImpl.setProjectName(appName);
 		applicationImpl.setModuleType("applicationImpl");
@@ -216,15 +240,13 @@ public class Project implements Serializable {
 		applicationImpl.getDependencies().add("application");
 		applicationImpl.getDependencies().add("core");
 		applicationImpl.getDependencies().add("infra");
-		getModule().add(applicationImpl);
+		getModule().add(applicationImpl);*/
 
 		// 初始化一个infra层
 		Module infra = new Module();
 		infra.setModuleType("infra");
 		infra.setModuleName("infra");
 		infra.setProjectName(appName);
-		infra.getDependencies().add("core");
-		infra.getDependencies().add("application");
 		infra.setBasePackage(getGroupId() + "." + getPackageName() + ".infra");
 		getModule().add(infra);
 
@@ -232,12 +254,11 @@ public class Project implements Serializable {
 		Module war = new Module();
 		war.setModuleName("web");
 		war.setProjectName(appName);
-		war.setBasePackage(getGroupId() + "." + getPackageName() + ".web");
+		war.setBasePackage(getGroupId() + "." + getPackageName() + ".web"+".controller");
 		war.setModuleType("war");
 		// war.getFunctions().add("");
-		war.getDependencies().add("applicationImpl");
-		war.getDependencies().add("application");
-		war.getDependencies().add("infra");
+		war.getDependencies().add("facade");
+		war.getDependencies().add("facadeImpl");
 		getModule().add(war);
 	}
 

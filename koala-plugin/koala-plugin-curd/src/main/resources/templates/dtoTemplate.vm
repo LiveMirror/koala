@@ -4,10 +4,11 @@ package ${dtoClass.packageName};
 #set($variableName = ${domainClass.substring(0, 1).toLowerCase()} + ${domainClass.substring(1)})
 #foreach($import in ${dtoClass.imports})
 import $import;
+
 #end
 import java.io.Serializable;
 #if (${project.mvcType} == "SpringMVC")
-
+import ${entity.className};
 import org.springframework.format.annotation.DateTimeFormat;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.openkoala.koala.springmvc.JsonTimestampSerializer;
@@ -33,14 +34,15 @@ public class ${dtoClass.name} implements Serializable {
 			#set($simpleTypeName = "Double")
 		#elseif(${entry.value} == "boolean")
 			#set($simpleTypeName = "Boolean")
+			#elseif(${entry.value} == "char")
+			#set($simpleTypeName = "Character")
 		#end
 	#else
 		#set($index = ${entry.value.lastIndexOf(".")} + 1)
 		#set($simpleTypeName = ${entry.value.substring($index)})
 	#end
-#if($simpleTypeName.indexOf("oolean") > 0)
+#if($simpleTypeName.indexOf("Boolean") > 0)
 	private Boolean ${entry.key};
-    private String ${entry.key}AsString;
 #else
 
 #if(${dtoClass.isDateType(${entry.value})} && ${project.mvcType} == "SpringMVC")
@@ -70,15 +72,15 @@ public class ${dtoClass.name} implements Serializable {
 			#set($simpleTypeName = "Double")
 		#elseif(${entry.value} == "boolean")
 			#set($simpleTypeName = "Boolean")
+			#elseif(${entry.value} == "char")
+			#set($simpleTypeName = "Character")
 		#end
 		#else
 		#set($index = ${entry.value.lastIndexOf(".")} + 1)
 		#set($simpleTypeName = ${entry.value.substring($index)})
 	#end
-	
 	#set($propertyName = ${entry.key.substring(0, 1).toUpperCase()} + ${entry.key.substring(1)})
-	
-#if($simpleTypeName.indexOf("oolean") > 0)
+#if($simpleTypeName.indexOf("Boolean") > 0)
 	public Boolean get${propertyName}() {
 		return ${entry.key};
 	}
@@ -88,17 +90,6 @@ public class ${dtoClass.name} implements Serializable {
 		this.${entry.key}AsString = ${entry.key} ? "1" : "0";
 	}
 	
-	public String get${propertyName}AsString() {
-		return this.${entry.key}AsString;
-	}
-	
-	public void set${propertyName}AsString(String ${entry.key}) { 
-		this.${entry.key}AsString = ${entry.key};
-		if(${entry.key} == null || "".equals(${entry.key}.trim()))
-	       this.${entry.key} = null;
-	    else
-	       this.${entry.key} =  "1".equals(${entry.key});
-	}
 #else
 
 	public void set${propertyName}($simpleTypeName ${entry.key}) { 
@@ -132,8 +123,28 @@ public class ${dtoClass.name} implements Serializable {
 	}
 	
 	public ${dtoClass.entityModel.singleIDFieldModel.simpleType} get${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}() {
+		
 		return ${dtoClass.entityModel.singleIDFieldModel.name};
 	}
+
+	public static ${dtoClass.name}  EntityToDto(${entity.name}  ${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}){
+    	${dtoClass.name} result  = new ${dtoClass.name}();
+#foreach($field in  ${entity.fields} )
+#set($propertyName = ${field.name.substring(0, 1).toUpperCase()} + ${field.name.substring(1)})
+        result.set${propertyName} (${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}.get${propertyName}());
+ #end
+	    return result;
+	 }
+	
+	 public static ${entity.name}  DtoToEntity(${dtoClass.name}  ${dtoClass.name.substring(0, 1).toLowerCase()}${dtoClass.name.substring(1)}){
+	 	${entity.name} result  = new ${entity.name}();
+#foreach($field in  ${entity.fields} )
+#set($propertyName = ${field.name.substring(0, 1).toUpperCase()} + ${field.name.substring(1)})
+        result.set${propertyName} (${dtoClass.name.substring(0, 1).toLowerCase()}${dtoClass.name.substring(1)}.get${propertyName}());
+ #end
+	  	return result;
+	 }
+
 
     @Override
 	public int hashCode() {

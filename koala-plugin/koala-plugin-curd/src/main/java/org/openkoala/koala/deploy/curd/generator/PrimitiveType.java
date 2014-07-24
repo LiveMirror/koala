@@ -73,7 +73,19 @@ public enum PrimitiveType {
 		public String convertToWrapper() {
 			return "Double";
 		}
-	};
+			
+	},
+	CHAR {
+		@Override
+		public String toString() {
+			return "char";
+		}
+
+		@Override
+		public String convertToWrapper() {
+			return "Character";
+		}
+		};
 	
 	/**
 	 * 转成包装类型

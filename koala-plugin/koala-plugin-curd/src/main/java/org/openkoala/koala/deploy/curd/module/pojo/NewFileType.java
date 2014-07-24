@@ -32,10 +32,28 @@ package org.openkoala.koala.deploy.curd.module.pojo;
  * 修 改 者    修改日期     文件版本   修改说明	
  */
 public enum NewFileType {
-    /*数据转换对象DTO*/
+   /* 数据转换对象DTO
     DTO {
         public String toString() {
             return "application.dto";
+        }
+    },*/
+    /*数据转换对象DTO*/
+    DTO {
+        public String toString() {
+            return "facade.dto";
+        }
+    },
+    /* Facade 接口*/
+    Facade {
+        public String toString() {
+            return "facade";
+        }
+    },
+    /* Facade 接口实现*/
+    FacadeImpl {
+        public String toString() {
+            return "facadeImpl";
         }
     },
     /*APPLICATIO接口*/

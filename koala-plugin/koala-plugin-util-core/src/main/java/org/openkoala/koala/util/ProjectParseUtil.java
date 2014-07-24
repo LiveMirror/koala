@@ -69,6 +69,8 @@ public class ProjectParseUtil {
 			if("ear".equals(moduleType))project.setType(ModuleType.Ear);
 			else if("bizModel".equals(moduleType))project.setType(ModuleType.BizModel);
 			else if("applicationInterface".equals(moduleType))project.setType(ModuleType.Application);
+			else if("facade".equals(moduleType))project.setType(ModuleType.Facade);
+			else if("facadeImpl".equals(moduleType))project.setType(ModuleType.FacadeImpl);
 			else if("applicationImpl".equals(moduleType))project.setType(ModuleType.Impl);
 			else if("infra".equals(moduleType))project.setType(ModuleType.Infra);
 			else if("conf".equals(moduleType))project.setType(ModuleType.conf);
@@ -78,6 +80,8 @@ public class ProjectParseUtil {
 			if("war".equals(project.getPackaging()))project.setType(ModuleType.War);
 			else if(PomXmlReader.isBizModel(document))project.setType(ModuleType.BizModel);
 			else if(PomXmlReader.isInterface(project))project.setType(ModuleType.Application);
+			else if(PomXmlReader.isFacadeInterface(project))project.setType(ModuleType.Facade);
+			else if(PomXmlReader.isFacadeImpl(document))project.setType(ModuleType.FacadeImpl);
 			else if(PomXmlReader.isImpl(document))project.setType(ModuleType.Impl);
 			else if(PomXmlReader.isEar(document))project.setType(ModuleType.Ear);
 			else project.setType(ModuleType.Infra);

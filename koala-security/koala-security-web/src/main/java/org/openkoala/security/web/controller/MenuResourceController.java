@@ -178,8 +178,7 @@ public class MenuResourceController {
 	@RequestMapping("/pagingQueryNotGrantPermissionsByMenuResourceId")
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,
 			Long menuResourceId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(page,
-				pagesize, menuResourceId);
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(page,pagesize, menuResourceId);
 		return results;
 	}
 }
