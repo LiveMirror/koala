@@ -114,8 +114,4 @@ public abstract class Actor extends SecurityAbstractEntity {
 	public Date getCreateDate() {
 		return createDate;
 	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
 }

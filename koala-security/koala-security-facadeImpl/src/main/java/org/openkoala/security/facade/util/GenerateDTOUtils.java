@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.logicalcobwebs.proxool.Version;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
@@ -33,14 +32,10 @@ public final class GenerateDTOUtils {
 	 * @return
 	 */
 	public static UserDTO generateUserDTOBy(User user) {
-		UserDTO result = new UserDTO();
+		UserDTO result = new UserDTO(user.getUserAccount(),user.getPassword(),user.getCreateDate(),user.getDescription());
 		result.setId(user.getId());
-		result.setCreateDate(user.getCreateDate());
-		result.setDescription(user.getDescription());
-		result.setUserAccount(user.getUserAccount());
 		result.setName(user.getName());
 		result.setEmail(user.getEmail());
-		result.setUserPassword(user.getPassword());
 		result.setTelePhone(user.getTelePhone());
 		result.setLastLoginTime(user.getLastLoginTime());
 		result.setVersion(user.getVersion());

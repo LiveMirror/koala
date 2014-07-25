@@ -44,13 +44,13 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	@Inject
 	private SecurityAccessApplication securityAccessApplication;
 
-	public void saveUserDTO(UserDTO userDTO) {
+	public void saveUser(UserDTO userDTO) {
 		User user = transFromUserBy(userDTO);
 		securityConfigApplication.createActor(user);
 	}
 
 	@Override
-	public void terminateUserDTOs(UserDTO[] userDTOs) {
+	public void terminateUsers(UserDTO[] userDTOs) {
 		for (UserDTO userDTO : userDTOs) {
 			User user = transFromUserBy(userDTO);
 			securityConfigApplication.terminateActor(user);
@@ -58,31 +58,32 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void resetPassword(UserDTO userDTO) {
-		User user = transFromUserBy(userDTO);
+	public void resetPassword(Long userId) {
+		User user = securityAccessApplication.getUserBy(userId);
 		securityConfigApplication.resetPassword(user);
 	}
 
 	@Override
-	public boolean updatePassword(UserDTO userDto, String oldUserPassword) {
+	public boolean updatePassword(String userAccount, String userPassword, String oldUserPassword) {
+		UserDTO userDto = new UserDTO(userAccount, userPassword);
 		User user = transFromUserBy(userDto);
 		return securityAccessApplication.updatePassword(user, oldUserPassword);
 	}
 	
 	@Override
-	public void saveRoleDTO(RoleDTO roleDTO) {
+	public void saveRole(RoleDTO roleDTO) {
 		Role role = transFromRoleBy(roleDTO);
 		securityConfigApplication.createAuthority(role);
 	}
 
 	@Override
-	public void updateRoleDTO(RoleDTO roleDTO) {
+	public void updateRole(RoleDTO roleDTO) {
 		Role role = transFromRoleBy(roleDTO);
 		securityConfigApplication.updateAuthority(role);
 	}
 
 	@Override
-	public void terminateRoleDTOs(RoleDTO[] roleDTOs) {
+	public void terminateRoles(RoleDTO[] roleDTOs) {
 		for (RoleDTO roleDTO : roleDTOs) {
 			Role role = transFromRoleBy(roleDTO);
 			securityConfigApplication.terminateAuthority(role);
@@ -90,25 +91,25 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void updateUserDTO(UserDTO userDTO) {
+	public void updateUser(UserDTO userDTO) {
 		User user = transFromUserBy(userDTO);
 		securityConfigApplication.updateActor(user);
 	}
 
 	@Override
-	public void savePermissionDTO(PermissionDTO permissionDTO) {
+	public void savePermission(PermissionDTO permissionDTO) {
 		Permission permission = transFromPermissionBy(permissionDTO);
 		securityConfigApplication.createAuthority(permission);
 	}
 
 	@Override
-	public void updatePermissionDTO(PermissionDTO permissionDTO) {
+	public void updatePermission(PermissionDTO permissionDTO) {
 		Permission permission = transFromPermissionBy(permissionDTO);
 		securityConfigApplication.updateAuthority(permission);
 	}
 
 	@Override
-	public void terminatePermissionDTOs(PermissionDTO[] permissionDTOs) {
+	public void terminatePermissions(PermissionDTO[] permissionDTOs) {
 		for (PermissionDTO permissionDTO : permissionDTOs) {
 			Permission permission = transFromPermissionBy(permissionDTO);
 			securityConfigApplication.terminateAuthority(permission);
@@ -116,17 +117,17 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void saveMenuResourceDTO(MenuResourceDTO menuResourceDTO) {
+	public void saveMenuResource(MenuResourceDTO menuResourceDTO) {
 		securityConfigApplication.createSecurityResource(transFromMenuResourceBy(menuResourceDTO));
 	}
 
 	@Override
-	public void updateMenuResourceDTO(MenuResourceDTO menuResourceDTO) {
+	public void updateMenuResource(MenuResourceDTO menuResourceDTO) {
 		securityConfigApplication.updateSecurityResource(transFromMenuResourceBy(menuResourceDTO));
 	}
 
 	@Override
-	public void terminateMenuResourceDTOs(MenuResourceDTO[] menuResourceDTOs) {
+	public void terminateMenuResources(MenuResourceDTO[] menuResourceDTOs) {
 		for (MenuResourceDTO menuResourceDTO : menuResourceDTOs) {
 			securityConfigApplication.terminateSecurityResource(transFromMenuResourceBy(menuResourceDTO));
 		}
@@ -138,17 +139,17 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void saveOrganizationDTO(OrganizationScopeDTO organizationScopeDTO) {
+	public void saveOrganization(OrganizationScopeDTO organizationScopeDTO) {
 		securityConfigApplication.createScope(transFromOrganizationScopeBy(organizationScopeDTO));
 	}
 
 	@Override
-	public void updateOrganizationDTO(OrganizationScopeDTO organizationScopeDTO) {
+	public void updateOrganization(OrganizationScopeDTO organizationScopeDTO) {
 		securityConfigApplication.updateScope(transFromOrganizationScopeBy(organizationScopeDTO));
 	}
 
 	@Override
-	public void terminateOrganizationDTOs(OrganizationScopeDTO[] organizationDTOs) {
+	public void terminateOrganizations(OrganizationScopeDTO[] organizationDTOs) {
 		for (OrganizationScopeDTO organizationScopeDTO : organizationDTOs) {
 			securityConfigApplication.terminateScope(transFromOrganizationScopeBy(organizationScopeDTO));
 		}
@@ -160,7 +161,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void grantRoleInScope(Long userId, Long roleId, Long scopeId) {
+	public void grantRoleToUserInScope(Long userId, Long roleId, Long scopeId) {
 		User user = securityAccessApplication.getUserBy(userId);
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		Scope scope = securityAccessApplication.getScope(scopeId);
@@ -168,14 +169,14 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void grantRolesInScope(Long userId, Long[] roleIds, Long scopeId) {
+	public void grantRolesToUserInScope(Long userId, Long[] roleIds, Long scopeId) {
 		for (Long roleId : roleIds) {
-			grantRoleInScope(userId, roleId, scopeId);
+			grantRoleToUserInScope(userId, roleId, scopeId);
 		}
 	}
 
 	@Override
-	public void grantPermissionInScope(Long userId, Long permissionId, Long scopeId) {
+	public void grantPermissionToUserInScope(Long userId, Long permissionId, Long scopeId) {
 		User user = securityAccessApplication.getUserBy(userId);
 		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 		Scope scope = securityAccessApplication.getScope(scopeId);
@@ -183,9 +184,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void grantPermissionsInScope(Long userId, Long[] permissionIds, Long scopeId) {
+	public void grantPermissionsToUserInScope(Long userId, Long[] permissionIds, Long scopeId) {
 		for (Long permissionId : permissionIds) {
-			grantPermissionInScope(userId, permissionId, scopeId);
+			grantPermissionToUserInScope(userId, permissionId, scopeId);
 		}
 	}
 
@@ -244,14 +245,14 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void terminateAuthorizationByRole(Long userId, Long roleId) {
+	public void terminateAuthorizationByUserInRole(Long userId, Long roleId) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		User user = securityAccessApplication.getUserBy(userId);
 		securityConfigApplication.terminateActorFromAuthority(user, role);
 	}
 
 	@Override
-	public void terminateAuthorizationByPermission(Long userId, Long permissionId) {
+	public void terminateAuthorizationByUserInPermission(Long userId, Long permissionId) {
 		User user = securityAccessApplication.getUserBy(userId);
 		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 		securityConfigApplication.terminateActorFromAuthority(user, permission);
@@ -259,7 +260,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	// TODO 待优化。。。
 	@Override
-	public void terminateAuthorizationsByRoles(Long userId, Long[] roleIds) {
+	public void terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds) {
 		User user = securityAccessApplication.getUserBy(userId);
 		for (Long roleId : roleIds) {
 			Role role = securityAccessApplication.getRoleBy(roleId);
@@ -268,9 +269,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds) {
+	public void terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds) {
 		for (Long permissionId : permissionIds) {
-			this.terminateAuthorizationByPermission(userId, permissionId);
+			this.terminateAuthorizationByUserInPermission(userId, permissionId);
 		}
 	}
 
@@ -325,7 +326,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void grantMethodInvocationResourcesToUser(Long roleId, Long[] menuResourceIds) {
+	public void grantMethodInvocationResourcesToRole(Long roleId, Long[] menuResourceIds) {
 		// TODO Auto-generated method stub
 
 	}
@@ -350,19 +351,19 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void saveUrlAccessResourceDTO(UrlAccessResourceDTO urlAccessResourceDTO) {
+	public void saveUrlAccessResource(UrlAccessResourceDTO urlAccessResourceDTO) {
 		UrlAccessResource urlAccessResource = transFromUrlAccessResourceBy(urlAccessResourceDTO);
 		securityConfigApplication.createSecurityResource(urlAccessResource);
 	}
 
 	@Override
-	public void updateUrlAccessResourceDTO(UrlAccessResourceDTO urlAccessResourceDTO) {
+	public void updateUrlAccessResource(UrlAccessResourceDTO urlAccessResourceDTO) {
 		UrlAccessResource urlAccessResource = transFromUrlAccessResourceBy(urlAccessResourceDTO);
 		securityConfigApplication.updateSecurityResource(urlAccessResource);
 	}
 
 	@Override
-	public void terminateUrlAccessResourceDTOs(UrlAccessResourceDTO[] urlAccessResourceDTOs) {
+	public void terminateUrlAccessResources(UrlAccessResourceDTO[] urlAccessResourceDTOs) {
 		for (UrlAccessResourceDTO urlAccessResourceDTO : urlAccessResourceDTOs) {
 			UrlAccessResource urlAccessResource = transFromUrlAccessResourceBy(urlAccessResourceDTO);
 			securityConfigApplication.terminateSecurityResource(urlAccessResource);
@@ -429,19 +430,19 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void savePageElementResourceDTO(PageElementResourceDTO pageElementResourceDTO) {
+	public void savePageElementResource(PageElementResourceDTO pageElementResourceDTO) {
 		PageElementResource pageElementResource = transFromPageElementResourceBy(pageElementResourceDTO);
 		securityConfigApplication.createSecurityResource(pageElementResource);
 	}
 
 	@Override
-	public void updatePageElementResourceDTO(PageElementResourceDTO pageElementResourceDTO) {
+	public void updatePageElementResource(PageElementResourceDTO pageElementResourceDTO) {
 		PageElementResource pageElementResource = transFromPageElementResourceBy(pageElementResourceDTO);
 		securityConfigApplication.updateSecurityResource(pageElementResource);
 	}
 
 	@Override
-	public void terminatePageElementResourceDTOs(PageElementResourceDTO[] pageElementResourceDTOs) {
+	public void terminatePageElementResources(PageElementResourceDTO[] pageElementResourceDTOs) {
 		for (PageElementResourceDTO pageElementResourceDTO : pageElementResourceDTOs) {
 			PageElementResource pageElementResource = transFromPageElementResourceBy(pageElementResourceDTO);
 			securityConfigApplication.terminateSecurityResource(pageElementResource);

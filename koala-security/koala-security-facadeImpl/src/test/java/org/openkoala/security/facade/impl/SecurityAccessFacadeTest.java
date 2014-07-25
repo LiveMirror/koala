@@ -100,41 +100,41 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testGetUserDtoById() {
 		Long userId = user.getId();
 		assertNotNull(userId);
-		UserDTO getUserDTO = securityAccessFacade.getUserDTOBy(userId);
+		UserDTO getUserDTO = securityAccessFacade.getUserBy(userId);
 		assertNotNull(getUserDTO);
 		assertUserDTO(userDTO, getUserDTO);
 	}
 
 	@Test
 	public void testGetUserDtoByUserAccount() {
-		UserDTO getUserDTO = securityAccessFacade.getUserDTOBy(user.getUserAccount());
+		UserDTO getUserDTO = securityAccessFacade.getUserBy(user.getUserAccount());
 		assertNotNull(getUserDTO);
 		assertUserDTO(userDTO, getUserDTO);
 	}
 
 	@Test
 	public void testFindRoleDtosByUserAccount() {
-		List<RoleDTO> roleDTOs = securityAccessFacade.findRoleDTOsBy(user.getUserAccount());
+		List<RoleDTO> roleDTOs = securityAccessFacade.findRolesBy(user.getUserAccount());
 		assertNotNull(roleDTOs);
 		assertTrue(roleDTOs.size() == 1);
 	}
 
 	@Test
 	public void testFindPermissionDtosBy() {
-		Set<PermissionDTO> permissionDTOs =  securityAccessFacade.findPermissionDTOsBy(user.getUserAccount());
+		Set<PermissionDTO> permissionDTOs =  securityAccessFacade.findPermissionsBy(user.getUserAccount());
 		assertTrue(permissionDTOs.isEmpty());
 	}
 
 	@Test
 	public void testFindMenuResourceDtoByUserAccount() {
-		List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceDTOByUserAccount(user.getUserAccount());
+		List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAccount(user.getUserAccount());
 		assertFalse(results.isEmpty());
 		assertTrue(results.size() == 1);
 	}
 
 	@Test
 	public void testFindMenuResourceDTOByUserAccountAsRole() {
-		List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceDTOByUserAccountAsRole(user.getUserAccount(), role.getId());
+		List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(user.getUserAccount(), role.getId());
 		assertFalse(results.isEmpty());
 		System.out.println(results);
 		assertTrue(results.size() == 1);
@@ -163,14 +163,14 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Test
 	public void testFindPermissionDTOsByMenuOrUrl() {
-		Set<PermissionDTO> permissionDTOs = securityAccessFacade.findPermissionDTOsByMenuOrUrl();
+		Set<PermissionDTO> permissionDTOs = securityAccessFacade.findPermissionsByMenuOrUrl();
 		assertNotNull(permissionDTOs);
 		assertTrue(permissionDTOs.size() == 2);
 	}
 
 	@Test
 	public void testFindRoleDTOsByMenuOrUrl() {
-		Set<RoleDTO> roleDTOs = securityAccessFacade.findRoleDTOsByMenuOrUrl();
+		Set<RoleDTO> roleDTOs = securityAccessFacade.findRolesByMenuOrUrl();
 		assertNotNull(roleDTOs);
 		assertTrue(roleDTOs.size() == 2);
 	}
@@ -196,21 +196,21 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Test
 	public void testPagingQueryUsers() {
-		Page<UserDTO> userDTOPages = securityAccessFacade.pagingQueryUserDTOs(currentPage, pageSize, userDTO);
+		Page<UserDTO> userDTOPages = securityAccessFacade.pagingQueryUsers(currentPage, pageSize, userDTO);
 		assertFalse(userDTOPages.getData().isEmpty());
 		assertTrue(userDTOPages.getResultCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryRoles() {
-		Page<RoleDTO> roleDTOPages = securityAccessFacade.pagingQueryRoleDTOs(currentPage, pageSize, roleDTO);
+		Page<RoleDTO> roleDTOPages = securityAccessFacade.pagingQueryRoles(currentPage, pageSize, roleDTO);
 		assertFalse(roleDTOPages.getData().isEmpty());
 		assertTrue(roleDTOPages.getResultCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryPermissions() {
-		Page<PermissionDTO> permissionDTOPages = securityAccessFacade.pagingQueryPermissionDTOs(currentPage, pageSize, permissionDTO);
+		Page<PermissionDTO> permissionDTOPages = securityAccessFacade.pagingQueryPermissions(currentPage, pageSize, permissionDTO);
 		assertFalse(permissionDTOPages.getData().isEmpty());
 		assertTrue(permissionDTOPages.getResultCount() == 1);
 	}

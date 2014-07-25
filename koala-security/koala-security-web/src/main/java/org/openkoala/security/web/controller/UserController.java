@@ -1,8 +1,5 @@
 package org.openkoala.security.web.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,12 +13,16 @@ import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.UserNotExistedException;
+import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.openkoala.security.web.util.AuthUserUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +30,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/***
+/**
+ * 用户控制器。
+ * 
  * @author luzhao
  * 
  */
 @Controller
 @RequestMapping("/auth/user")
 public class UserController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
@@ -44,7 +49,7 @@ public class UserController {
 	private SecurityConfigFacade securityConfigFacade;
 
 	/**
-	 * TODO 修改登陆时间
+	 * TODO 验证码错误不应该在这里处理。 用户登陆，支持多种方式。账号、邮箱、电话等
 	 * 
 	 * @param username
 	 * @param password
@@ -52,128 +57,152 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public Map<String, Object> login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
-		Map<String, Object> results = new HashMap<String, Object>();
-		String exceptionInfo = (String) request.getAttribute("shiroLoginFailure");
-		System.out.println(exceptionInfo);
-		if(!StringUtils.isBlank(exceptionInfo)){
-			results.put("message", "验证码错误");
-			results.put("result", "failure");
-		}else{
+	public JsonResult login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
+		JsonResult jsonResult = new JsonResult();
+		String shiroLoginFailure = (String) request.getAttribute("shiroLoginFailure");
+		if (!StringUtils.isBlank(shiroLoginFailure)) {
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("验证码错误。");
+		} else {
 			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
 			try {
 				SecurityUtils.getSubject().login(usernamePasswordToken);
-				
 				securityConfigFacade.updateUserLastLoginTime(AuthUserUtil.getCurrentUser().getId());
-				
-				results.put("message", "登陆成功");
-				results.put("result", "success");
+				jsonResult.setSuccess(true);
+				jsonResult.setMessage("登陆成功。");
 			} catch (NullArgumentException e) {
-				e.printStackTrace();
-				results.put("message", "用户名或者密码为空");
-				results.put("result", "failure");
+				LOGGER.error(e.getMessage());
+				jsonResult.setSuccess(false);
+				jsonResult.setMessage("用户名或者密码为空。");
 			} catch (UserNotExistedException e) {
-				e.printStackTrace();
-				results.put("message", "用户名或者密码不正确");
-				results.put("result", "failure");
+				LOGGER.error(e.getMessage());
+				jsonResult.setSuccess(false);
+				jsonResult.setMessage("用户名或者密码不正确。");
 			} catch (AuthenticationException e) {
-				e.printStackTrace();
-				results.put("message", "登录失败");
-				results.put("result", "failure");
+				LOGGER.error(e.getMessage());
+				jsonResult.setSuccess(false);
+				jsonResult.setMessage("登录失败。");
 			} catch (Exception e) {
-				e.printStackTrace();
-				results.put("message", "登录失败");
-				results.put("result", "failure");
+				LOGGER.error(e.getMessage());
+				jsonResult.setSuccess(false);
+				jsonResult.setMessage("登录失败。");
 			}
 		}
-		return results;
+		return jsonResult;
 	}
 
 	/**
-	 * 退出
+	 * 用户退出。
 	 * 
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/logout")
-	public Map<String, Object> logout() {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		SecurityUtils.getSubject().logout();
-		dataMap.put("result", "success");
-		dataMap.put("message", "成功退出");
-		return dataMap;
+	public JsonResult logout() {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			SecurityUtils.getSubject().logout();
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("用户退出成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("用户退出失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 添加用户
+	 * 添加用户。
 	 * 
 	 * @param userDTO
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/add")
-	public Map<String, Object> add(UserDTO userDTO) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public JsonResult add(UserDTO userDTO) {
+		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.saveUserDTO(userDTO);
-			dataMap.put("result", "success");
+			securityConfigFacade.saveUser(userDTO);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("添加用户成功。");
 		} catch (UserAccountIsExistedException e) {
-			e.printStackTrace();
-			dataMap.put("result", "账号:" + userDTO.getUserAccount() + "已经存在");
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("用户账号:" + userDTO.getUserAccount() + "已经存在。");
 		} catch (EmailIsExistedException e) {
-			e.printStackTrace();
-			dataMap.put("result", "邮箱：" + userDTO.getEmail() + "已经存在！");
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("用户邮箱：" + userDTO.getEmail() + "已经存在。");
 		} catch (TelePhoneIsExistedException e) {
-			e.printStackTrace();
-			dataMap.put("result", "联系电话：" + userDTO.getTelePhone() + "已经存在！");
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("用户联系电话：" + userDTO.getTelePhone() + "已经存在。");
 		} catch (Exception e) {
-			e.printStackTrace();
-			dataMap.put("result", "保存失败");
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("添加用户失败。");
 		}
-		return dataMap;
+		return jsonResult;
 	}
 
 	/**
-	 * 更新用户
+	 * 更新用户。
 	 * 
 	 * @param userDTO
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public Map<String, Object> update(UserDTO userDTO) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public JsonResult update(UserDTO userDTO) {
+		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.updateUserDTO(userDTO);
-			dataMap.put("result", "success");
+			securityConfigFacade.updateUser(userDTO);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("更新用户成功。");
 		} catch (UserAccountIsExistedException e) {
-			dataMap.put("result", "账户：" + userDTO.getUserAccount() + "已经存在！");
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("账户：" + userDTO.getUserAccount() + "已经存在。");
 		} catch (EmailIsExistedException e) {
-			dataMap.put("result", "邮箱：" + userDTO.getEmail() + "已经存在！");
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("邮箱：" + userDTO.getEmail() + "已经存在。");
 		} catch (TelePhoneIsExistedException e) {
-			dataMap.put("result", "联系电话：" + userDTO.getTelePhone() + "已经存在！");
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("联系电话：" + userDTO.getTelePhone() + "已经存在。");
 		} catch (Exception e) {
-			dataMap.put("result", "更新失败");
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("更新用户失败。");
 		}
-		return dataMap;
+		return jsonResult;
 	}
 
 	/**
-	 * 支持批量删除,待优化。
+	 * 撤销用户。
 	 * 
 	 * @param userDTOs
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public Map<String, Object> terminate(@RequestBody UserDTO[] userDTOs) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateUserDTOs(userDTOs);
-		dataMap.put("result", "success");
-		return dataMap;
+	public JsonResult terminate(@RequestBody UserDTO[] userDTOs) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.terminateUsers(userDTOs);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("撤销更新成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("撤销更新失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 更加条件分页查询用户。
+	 * 根据条件分页查询用户。
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -181,14 +210,14 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingquery")
+	@RequestMapping("/pagingQuery")
 	public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO userDTO) {
-		Page<UserDTO> results = securityAccessFacade.pagingQueryUserDTOs(page, pagesize, userDTO);
+		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pagesize, userDTO);
 		return results;
 	}
 
 	/**
-	 * 更新密码
+	 * 更新用户密码。
 	 * 
 	 * @param oldPassword
 	 * @param userPassword
@@ -196,99 +225,128 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/updatePassword")
-	public Map<String, Object> updatePassword(@RequestParam String oldUserPassword, @RequestParam String userPassword) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		UserDTO userDTO = new UserDTO(AuthUserUtil.getUserAccount(), userPassword);
-		if (securityConfigFacade.updatePassword(userDTO, oldUserPassword)) {
-			dataMap.put("result", "success");
+	public JsonResult updatePassword(@RequestParam String oldUserPassword, @RequestParam String userPassword) {
+		JsonResult jsonResult = new JsonResult();
+		if (securityConfigFacade.updatePassword(AuthUserUtil.getUserAccount(), userPassword, oldUserPassword)) {
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("更新用户密码成功。");
 		} else {
-			dataMap.put("result", "failure");
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("更新用户密码失败。");
 		}
-		return dataMap;
+		return jsonResult;
 	}
 
 	/**
-	 * 重置密码
+	 * 重置用户密码。
 	 * 
 	 * @param userId
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/resetPassword")
-	public Map<String, Object> resetPassword(Long userId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		UserDTO userDTO = new UserDTO();
-		userDTO.setId(userId);
-		securityConfigFacade.resetPassword(userDTO);
-		dataMap.put("result", "success");
-		return dataMap;
+	public JsonResult resetPassword(Long userId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.resetPassword(userId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("重置用户密码成功，密码：888888");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("重置用户密码失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 激活
+	 * 激活用户。
 	 * 
 	 * @param userId
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/activate")
-	public Map<String, Object> activate(Long userId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.activate(userId);
-		dataMap.put("success", true);
-		return dataMap;
+	public JsonResult activate(Long userId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.activate(userId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("激活用户成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("激活用户失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 挂起
+	 * 挂起用户。
 	 * 
 	 * @param userId
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/suspend")
-	public Map<String, Object> suspend(Long userId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	public JsonResult suspend(Long userId) {
+		JsonResult jsonResult = new JsonResult();
 		try {
 			securityConfigFacade.suspend(userId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("激活用户成功。");
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("激活用户失败。");
 		}
-		dataMap.put("success", true);
-		return dataMap;
+		return jsonResult;
 	}
 
 	/**
-	 * 批量激活
+	 * 批量激活用户。
 	 * 
 	 * @param userIds
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/activates")
-	public Map<String, Object> activates(Long[] userIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.activate(userIds);
-		dataMap.put("success", true);
-		return dataMap;
+	public JsonResult activates(Long[] userIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.activate(userIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("批量激活用户成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("批量激活用户失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 批量挂起
+	 * 批量挂起用户。
 	 * 
 	 * @param userIds
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/suspends")
-	public Map<String, Object> suspends(Long[] userIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.suspend(userIds);
-		dataMap.put("success", true);
-		return dataMap;
+	public JsonResult suspends(Long[] userIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.suspend(userIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("批量挂起用户成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("批量挂起用户失败。");
+		}
+		return jsonResult;
 	}
 
-	// ======================添加授权=======================
 	/**
 	 * 为用户授权一个角色。
 	 * 
@@ -297,12 +355,19 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantRole")
-	public Map<String, Object> grantRoleToUser(Long userId, Long roleId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantRoleToUser(userId, roleId);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/grantRoleToUser")
+	public JsonResult grantRoleToUser(Long userId, Long roleId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantRoleToUser(userId, roleId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为用户授权一个角色成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为用户授权一个角色失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
@@ -313,12 +378,19 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantRoles")
-	public Map<String, Object> grantRolesToUser(Long userId, Long[] roleIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantRolesToUser(userId, roleIds);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/grantRolesToUser")
+	public JsonResult grantRolesToUser(Long userId, Long[] roleIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantRolesToUser(userId, roleIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为用户授权多个角色成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为用户授权多个角色失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
@@ -329,12 +401,19 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermission")
-	public Map<String, Object> grantPermissionToUser(Long userId, Long permissionId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermissionToUser(userId, permissionId);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/grantPermissionToUser")
+	public JsonResult grantPermissionToUser(Long userId, Long permissionId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantPermissionToUser(userId, permissionId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为用户授权一个权限成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为用户授权一个权限失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
@@ -345,65 +424,92 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermissions")
-	public Map<String, Object> grantPermissionsToUser(Long userId, Long[] permissionIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermissionsToUser(userId, permissionIds);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/grantPermissionsToUser")
+	public JsonResult grantPermissionsToUser(Long userId, Long[] permissionIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantPermissionsToUser(userId, permissionIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为用户授权多个权限成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为用户授权多个权限失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 撤销用户的一个角色
+	 * 通过角色下的用户撤销一个授权中心{@link Authorization}。
 	 * 
 	 * @param userId
 	 * @param roleId
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminateRoleByUser")
-	public Map<String, Object> terminateAuthorizationByRole(Long userId, Long roleId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateAuthorizationByRole(userId, roleId);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/terminateAuthorizationByUserInRole")
+	public JsonResult terminateAuthorizationByUserInRole(Long userId, Long roleId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.terminateAuthorizationByUserInRole(userId, roleId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("撤销用户的一个角色成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("撤销用户的一个角色失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 撤销用户的一个权限
+	 * 通过权限下的用户撤销一个授权中心{@link Authorization}。
 	 * 
 	 * @param userId
 	 * @param permissionId
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminatePermissionByUser")
-	public Map<String, Object> terminateAuthorizationByPermission(Long userId, Long permissionId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateAuthorizationByPermission(userId, permissionId);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/terminateAuthorizationByUserInPermission")
+	public JsonResult terminateAuthorizationByUserInPermission(Long userId, Long permissionId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.terminateAuthorizationByUserInPermission(userId, permissionId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("撤销用户的一个角色成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("撤销用户的一个角色失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 撤销用户的多个角色。
+	 * 通过角色下的用户撤销多个授权中心{@link Authorization}。
 	 * 
 	 * @param userId
 	 * @param roleIds
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminateRolesByUser")
-	public Map<String, Object> terminateAuthorizationsByRoles(Long userId, Long[] roleIds) {
-		System.out.println(roleIds);
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateAuthorizationsByRoles(userId, roleIds);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/terminateAuthorizationByUserInRoles")
+	public JsonResult terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.terminateAuthorizationByUserInRoles(userId, roleIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("撤销用户的多个角色成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("撤销用户的多个角色失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 批量用户的多个权限。
+	 * 通过权限下的用户撤销多个授权中心{@link Authorization}。。
 	 * 
 	 * @param userId
 	 * @param permissionIds
@@ -411,15 +517,22 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/terminatePermissionsByUser")
-	public Map<String, Object> terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateAuthorizationsByPermissions(userId, permissionIds);
-		dataMap.put("success", true);
-		return dataMap;
+	public JsonResult terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.terminateAuthorizationByUserInPermissions(userId, permissionIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("撤销用户的多个权限成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("撤销用户的多个权限失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 根据用户ID查找所有的已经授权的角色。
+	 * 根据用户ID分页查找已经授权的角色。
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -449,7 +562,7 @@ public class UserController {
 	}
 
 	/**
-	 * 根据条件分页查询没有授权的角色
+	 * 根据条件分页查询还未授权的角色
 	 * 
 	 * @param page
 	 * @param pageSize
@@ -459,12 +572,12 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
 	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, Long userId, RoleDTO queryRoleCondition) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition, userId);
 		return results;
 	}
 
 	/**
-	 * 根据用户ID分页查找没有授权的权限。
+	 * 根据用户ID分页查找还未授权的权限。
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -474,47 +587,106 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissions")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,
-			PermissionDTO queryPermissionCondition, Long userId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(page, pagesize,
-				queryPermissionCondition, userId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize, PermissionDTO queryPermissionCondition, Long userId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(page, pagesize, queryPermissionCondition, userId);
 		return results;
 	}
 
-	// ============== TODO ==Scope=================
+	// ~ 为与组织机构集成准备
+
+	/**
+	 * 在某个范围中为用户授权一个角色。
+	 * 
+	 * @param userId
+	 * @param roleId
+	 * @param scopeId
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("grantRoleInScope")
-	public Map<String, Object> grantRoleInScope(Long userId, Long roleId, Long scopeId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantRoleInScope(userId, roleId, scopeId);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/grantRoleToUserInScope")
+	public JsonResult grantRoleToUserInScope(Long userId, Long roleId, Long scopeId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantRoleToUserInScope(userId, roleId, scopeId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("在某个范围中为用户授权一个角色成功。");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("在某个范围中为用户授权一个角色失败。");
+		}
+		return jsonResult;
 	}
 
+	/**
+	 * 在某个范围中为用户授权多个角色。
+	 * 
+	 * @param userId
+	 * @param roleIds
+	 * @param scopeId
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("grantRolesInScope")
-	public Map<String, Object> grantRolesInScope(Long userId, Long[] roleIds, Long scopeId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantRolesInScope(userId, roleIds, scopeId);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/grantRolesInScope")
+	public JsonResult grantRolesToUserInScope(Long userId, Long[] roleIds, Long scopeId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantRolesToUserInScope(userId, roleIds, scopeId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("在某个范围中为用户授权多个角色成功");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("在某个范围中为用户授权多个角色失败");
+		}
+		return jsonResult;
 	}
 
+	/**
+	 * 在某个范围中为用户授权一个权限。
+	 * 
+	 * @param userId
+	 * @param permissionId
+	 * @param scopeId
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("grantPermissionInScope")
-	public Map<String, Object> grantPermissionInScope(Long userId, Long permissionId, Long scopeId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermissionInScope(userId, permissionId, scopeId);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/grantPermissionsToUserInScope")
+	public JsonResult grantPermissionsToUserInScope(Long userId, Long permissionId, Long scopeId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantPermissionToUserInScope(userId, permissionId, scopeId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("在某个范围中为用户授权一个权限成功。");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("在某个范围中为用户授权一个权限失败。");
+		}
+		return jsonResult;
 	}
 
+	/**
+	 * 在某个范围中为用户授权多个权限。
+	 * 
+	 * @param userId
+	 * @param permissionIds
+	 * @param scopeId
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping("grantPermissionsInScope")
-	public Map<String, Object> grantPermissionsInScope(Long userId, Long[] permissionIds, Long scopeId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermissionsInScope(userId, permissionIds, scopeId);
-		dataMap.put("success", true);
-		return dataMap;
+	@RequestMapping("/grantPermissionToUserInScope")
+	public JsonResult grantPermissionToUserInScope(Long userId, Long[] permissionIds, Long scopeId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantPermissionsToUserInScope(userId, permissionIds, scopeId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("在某个范围中为用户授权多个权限成功。");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("在某个范围中为用户授权多个权限失败。");
+		}
+		return jsonResult;
 	}
 }

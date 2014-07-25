@@ -1,15 +1,15 @@
 package org.openkoala.security.web.controller;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
+import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
@@ -17,15 +17,25 @@ import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.web.shiro.ShiroFilerChainManager;
 import org.openkoala.security.web.util.AuthUserUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * 角色控制器
+ * 
+ * @author luzhao
+ * 
+ */
 @Controller
 @RequestMapping("/auth/role")
 public class RoleController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(RoleController.class);
 
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
@@ -37,20 +47,6 @@ public class RoleController {
 	private ShiroFilerChainManager shiroFilerChainManager;
 
 	/**
-	 * 根据用户名查找所有的角色。
-	 * 
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("/findRolesByUsername")
-	public Map<String, Object> findRoleDtosByUsername() {
-		Map<String, Object> result = new HashMap<String, Object>();
-		List<RoleDTO> roleDtos = securityAccessFacade.findRoleDTOsBy(AuthUserUtil.getUserAccount());
-		result.put("data", roleDtos);
-		return result;
-	}
-
-	/**
 	 * 添加角色
 	 * 
 	 * @param roleDTO
@@ -58,11 +54,22 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/add")
-	public Map<String, Object> add(RoleDTO roleDTO) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.saveRoleDTO(roleDTO);
-		dataMap.put("result", "success");
-		return dataMap;
+	public JsonResult add(RoleDTO roleDTO) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.saveRole(roleDTO);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("添加角色成功。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("添加角色名称：" + roleDTO.getRoleName() + "已经存在。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("添加角色失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
@@ -73,11 +80,22 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public Map<String, Object> update(RoleDTO roleDTO) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.updateRoleDTO(roleDTO);
-		dataMap.put("result", "success");
-		return dataMap;
+	public JsonResult update(RoleDTO roleDTO) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.updateRole(roleDTO);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("更新角色成功。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("更新角色名称：" + roleDTO.getRoleName() + "已经存在。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("更新角色失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
@@ -87,11 +105,18 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public Map<String, Object> terminate(@RequestBody RoleDTO[] roleDTOs) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateRoleDTOs(roleDTOs);
-		dataMap.put("result", "success");
-		return dataMap;
+	public JsonResult terminate(@RequestBody RoleDTO[] roleDTOs) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.terminateRoles(roleDTOs);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("撤销角色成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("撤销角色失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
@@ -103,19 +128,55 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingquery")
+	@RequestMapping("/pagingQuery")
 	public Page<RoleDTO> pagingQuery(int page, int pagesize, RoleDTO roleDTO) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryRoleDTOs(page, pagesize, roleDTO);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryRoles(page, pagesize, roleDTO);
 		return results;
 	}
 
+	/**
+	 * 根据用户名查找所有的角色。
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/findRolesByUsername")
+	public JsonResult findRoleDtosByUsername() {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			List<RoleDTO> results = securityAccessFacade.findRolesBy(AuthUserUtil.getUserAccount());
+			jsonResult.setObject(results);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("根据用户名查找所有的角色成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("根据用户名查找所有的角色失败。");
+		}
+		return jsonResult;
+	}
+
+	/**
+	 * 根据角色ID查询菜单权限资源树带有已经选中项。
+	 * 
+	 * @param roleId
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/findMenuResourceTreeSelectItemByRoleId")
-	public Map<String, Object> findMenuResourceTreeSelectItemByRoleId(Long roleId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		List<MenuResourceDTO> menuResourceDTOs = securityAccessFacade.findMenuResourceTreeSelectItemByRoleId(roleId);
-		dataMap.put("data", menuResourceDTOs);
-		return dataMap;
+	public JsonResult findMenuResourceTreeSelectItemByRoleId(Long roleId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceTreeSelectItemByRoleId(roleId);
+			jsonResult.setObject(results);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("根据角色ID查询菜单权限资源树带有已经选中项成功");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("根据角色ID查询菜单权限资源树带有已经选中项失败");
+		}
+		return jsonResult;
 	}
 
 	/**
@@ -126,50 +187,71 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/grantMenuResources", method = RequestMethod.POST, consumes = "application/json")
-//	@RequestMapping(value = "/grantMenuResources", method = RequestMethod.POST)
-	public Map<String, Object> grantMenuResources(Long roleId,@RequestBody MenuResourceDTO[] menuResourceDTOs) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantMenuResourcesToRole(roleId, Arrays.asList(menuResourceDTOs));
-		dataMap.put("result", "success");
-		return dataMap;
+	@RequestMapping(value = "/grantMenuResourcesToRole", method = RequestMethod.POST, consumes = "application/json")
+	public JsonResult grantMenuResourcesToRole(Long roleId, @RequestBody MenuResourceDTO[] menuResourceDTOs) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantMenuResourcesToRole(roleId, Arrays.asList(menuResourceDTOs));
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为角色授权菜单资源成功");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为角色授权菜单资源失败");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 为角色授权URL资源
+	 * 为角色授权URL访问权限资源
 	 * 
 	 * @param roleId
 	 * @param urlAccessResourceIds
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantUrlAccessResources")
-	public Map<String, Object> grantUrlAccessResources(Long roleId, Long[] urlAccessResourceIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
-		shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
-		dataMap.put("result", "success");
-		return dataMap;
+	@RequestMapping("/grantUrlAccessResourcesToRole")
+	public JsonResult grantUrlAccessResourcesToRole(Long roleId, Long[] urlAccessResourceIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
+			shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为角色授权URL访问权限资源成功");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为角色授权URL访问权限资源失败");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 从角色中撤销Url访问资源。
+	 * 从角色中撤销Url访问权限资源。
 	 * 
 	 * @param roleId
 	 * @param urlAccessResourceIds
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminateUrlAccessResources")
-	public Map<String, Object> terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminateUrlAccessResourcesFromRole(roleId, urlAccessResourceIds);
-		shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
-		return dataMap;
+	@RequestMapping("/terminateUrlAccessResourcesFromRole")
+	public JsonResult terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.terminateUrlAccessResourcesFromRole(roleId, urlAccessResourceIds);
+			shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("从角色中撤销URL访问权限资源成功");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("从角色中撤销URL访问权限资源失败");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 查出已经授权的URL访问资源。
+	 * 查出已经授权的URL访问权限资源。
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -179,13 +261,12 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryGrantUrlAccessResourcesByRoleId")
 	public Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
-		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page,
-				pagesize, roleId);
+		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page, pagesize, roleId);
 		return results;
 	}
 
 	/**
-	 * 查出没有授权的URL访问资源。
+	 * 查出没有授权的URL访问权限资源。
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -195,8 +276,7 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantUrlAccessResourcesByRoleId")
 	public Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
-		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page,
-				pagesize, roleId);
+		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page, pagesize, roleId);
 		return results;
 	}
 
@@ -208,32 +288,46 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermissions")
-	public Map<String, Object> grantPermissions(Long roleId, Long[] permissionIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPermissionsToRole(roleId, permissionIds);
-		dataMap.put("result", "success");
-		return dataMap;
+	@RequestMapping("/grantPermissionsToRole")
+	public JsonResult grantPermissionsToRole(Long roleId, Long[] permissionIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantPermissionsToRole(roleId, permissionIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为角色授权权限成功");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为角色授权权限失败");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 撤销角色的权限
+	 * 从角色中撤销权限
 	 * 
 	 * @param roleId
 	 * @param permssionIds
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminatePermissions")
-	public Map<String, Object> terminatePermissions(Long roleId, Long[] permssionIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminatePermissionsFromRole(roleId, permssionIds);
-		dataMap.put("result", "success");
-		return dataMap;
+	@RequestMapping("/terminatePermissionsFromRole")
+	public JsonResult terminatePermissions(Long roleId, Long[] permssionIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.terminatePermissionsFromRole(roleId, permssionIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("从角色中撤销权限成功");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("从角色中撤销权限失败");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 根据角色ID分页查询权限
+	 * 根据角色ID分页查询已经授权的权限
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -248,7 +342,7 @@ public class RoleController {
 	}
 
 	/**
-	 * 根据角色ID分页查询没有授权的权限
+	 * 根据角色ID分页查询还未授权的权限
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -258,11 +352,12 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissionsByRoleId")
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId) {
-		return securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize, roleId);
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize, roleId);
+		return results;
 	}
 
 	/**
-	 * 授权页面元素资源
+	 * 为角色授权页面元素权限资源
 	 * 
 	 * @param roleId
 	 * @param PageElementResourceIds
@@ -270,15 +365,22 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/grantPageElementResources")
-	public Map<String, Object> grantPageElementResourcesToRole(Long roleId, Long[] PageElementResourceIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantPageElementResourcesToRole(roleId, PageElementResourceIds);
-		dataMap.put("result", "success");
-		return dataMap;
+	public JsonResult grantPageElementResourcesToRole(Long roleId, Long[] PageElementResourceIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantPageElementResourcesToRole(roleId, PageElementResourceIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为角色授权页面元素权限资源成功");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为角色授权页面元素权限资源失败");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 从角色中撤销页面元素资源。
+	 * 从角色中撤销页面元素权限资源。
 	 * 
 	 * @param roleId
 	 * @param PageElementResourceIds
@@ -286,15 +388,22 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/terminatePageElementResources")
-	public Map<String, Object> terminatePageElementResources(Long roleId, Long[] PageElementResourceIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.terminatePageElementResourcesFromRole(roleId, PageElementResourceIds);
-		dataMap.put("result", "success");
-		return dataMap;
+	public JsonResult terminatePageElementResources(Long roleId, Long[] PageElementResourceIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.terminatePageElementResourcesFromRole(roleId, PageElementResourceIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("从角色中撤销页面元素权限资源成功");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("从角色中撤销页面元素权限资源失败");
+		}
+		return jsonResult;
 	}
 
 	/**
-	 * 根据角色ID分页查询没有授权的页面元素
+	 * 根据角色ID分页查询已经授权的页面元素权限资源
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -304,13 +413,12 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryGrantPageElementResourcesByRoleId")
 	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
-		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page, pagesize,
-				roleId);
+		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page, pagesize, roleId);
 		return results;
 	}
 
 	/**
-	 * 根据角色ID分页查询没有授权的页面元素
+	 * 根据角色ID分页查询还未授权的页面元素权限资源
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -324,11 +432,27 @@ public class RoleController {
 	}
 
 	// ==================TODO==================
-	// 分配方法级别资源
-	public Map<String, Object> grantMethodInvocationResources(Long roleId, Long[] menuResourceIds) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		securityConfigFacade.grantMethodInvocationResourcesToUser(roleId, menuResourceIds);
-		dataMap.put("result", "success");
-		return dataMap;
+
+	/** TODO 还未实现
+	 * 为角色授权方法调用权限资源。
+	 * 
+	 * @param roleId
+	 * @param menuResourceIds
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/grantMethodInvocationResourcesToRole")
+	public JsonResult grantMethodInvocationResourcesToRole(Long roleId, Long[] menuResourceIds) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantMethodInvocationResourcesToRole(roleId, menuResourceIds);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为角色授权方法调用权限资源成功");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为角色授权方法调用权限资源失败");
+		}
+		return jsonResult;
 	}
 }

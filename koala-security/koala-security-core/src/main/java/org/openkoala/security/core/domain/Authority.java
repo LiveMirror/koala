@@ -47,7 +47,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 	private static final long serialVersionUID = -5570169700634882013L;
 
 	/**
-	 * 名称[用于判断存储中是否已经存在]
+	 * 名称
 	 */
 	@Column(name = "NAME")
 	protected String name;
