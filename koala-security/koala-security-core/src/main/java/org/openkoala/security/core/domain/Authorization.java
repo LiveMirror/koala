@@ -167,7 +167,7 @@ public class Authorization extends SecurityAbstractEntity {
 
 	@Override
 	public String[] businessKeys() {
-		if (this.getScope() != null) {
+		if (null != this.getScope()) {
 			return new String[] { getActor().toString() + getAuthority().toString() + getScope().toString() };
 		} else {
 			return new String[] { getActor().toString() + getAuthority().toString() };

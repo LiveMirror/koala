@@ -12,18 +12,18 @@ public class JsonResult implements Serializable{
 
 	private static final long serialVersionUID = 2865490206901460730L;
 
-	private Object object = null;
+	private Object data = null;
 	
 	private boolean success = true;
 	
 	private String message = "";
 
-	public Object getObject() {
-		return object;
+	public Object getData() {
+		return data;
 	}
 
-	public void setObject(Object object) {
-		this.object = object;
+	public void setData(Object object) {
+		this.data = object;
 	}
 
 	public boolean isSuccess() {

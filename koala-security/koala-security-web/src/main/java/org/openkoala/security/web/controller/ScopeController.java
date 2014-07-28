@@ -134,7 +134,7 @@ public class ScopeController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			List<OrganizationScopeDTO> results = securityAccessFacade.findAllOrganizationScopesTree();
-			jsonResult.setObject(results);
+			jsonResult.setData(results);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("更新组织机构范围成功。");
 		} catch (Exception e) {

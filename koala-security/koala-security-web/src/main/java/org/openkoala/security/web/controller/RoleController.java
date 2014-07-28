@@ -145,7 +145,7 @@ public class RoleController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			List<RoleDTO> results = securityAccessFacade.findRolesBy(AuthUserUtil.getUserAccount());
-			jsonResult.setObject(results);
+			jsonResult.setData(results);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("根据用户名查找所有的角色成功。");
 		} catch (Exception e) {
@@ -168,7 +168,7 @@ public class RoleController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceTreeSelectItemByRoleId(roleId);
-			jsonResult.setObject(results);
+			jsonResult.setData(results);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("根据角色ID查询菜单权限资源树带有已经选中项成功");
 		} catch (Exception e) {

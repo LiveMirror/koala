@@ -141,7 +141,7 @@ public class MenuResourceController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			List<MenuResourceDTO> results = securityAccessFacade.findAllMenusTree();
-			jsonResult.setObject(results);
+			jsonResult.setData(results);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("查找菜单权限资源树成功。");
 		} catch (Exception e) {
@@ -165,7 +165,7 @@ public class MenuResourceController {
 		try {
 			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(AuthUserUtil.getUserAccount(), roleDTO.getRoleId());
 			AuthUserUtil.setRoleName(roleDTO.getRoleName());
-			jsonResult.setObject(results);
+			jsonResult.setData(results);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("查找" + AuthUserUtil.getUserAccount() + " 在某个角色下得所有菜单权限资源成功。");
 		} catch (Exception e) {
