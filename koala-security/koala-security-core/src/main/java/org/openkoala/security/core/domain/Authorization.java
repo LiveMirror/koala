@@ -157,24 +157,12 @@ public class Authorization extends SecurityAbstractEntity {
 		return actor;
 	}
 
-	public void setActor(Actor actor) {
-		this.actor = actor;
-	}
-
 	public Authority getAuthority() {
 		return authority;
 	}
 
-	public void setAuthority(Authority authority) {
-		this.authority = authority;
-	}
-
 	public Scope getScope() {
 		return scope;
-	}
-
-	public void setScope(Scope scope) {
-		this.scope = scope;
 	}
 
 	@Override

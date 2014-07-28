@@ -17,100 +17,101 @@ public interface SecurityConfigFacade {
 	 * 
 	 * @param userDTO
 	 */
-	void saveUserDTO(UserDTO userDTO);
+	void saveUser(UserDTO userDTO);
 
 	/**
 	 * 撤销用户
 	 * 
 	 * @param userDTOs
 	 */
-	void terminateUserDTOs(UserDTO[] userDTOs);
+	void terminateUsers(UserDTO[] userDTOs);
 
 	/**
 	 * 更新用户
 	 * 
 	 * @param userDTO
 	 */
-	void updateUserDTO(UserDTO userDTO);
+	void updateUser(UserDTO userDTO);
 
 	/**
-	 * 更新密码
+	 * 更新用户密码
 	 * 
-	 * @param userDto
+	 * @param userAccount
+	 * @param userPassword
 	 * @param oldUserPassword
 	 * @return
 	 */
-	boolean updatePassword(UserDTO userDto, String oldUserPassword);
+	boolean updatePassword(String userAccount, String userPassword, String oldUserPassword);
 
 	/**
 	 * 重置用户密码
 	 * 
-	 * @param userDTO
+	 * @param userId
 	 */
-	void resetPassword(UserDTO userDTO);
+	void resetPassword(Long userId);
 
 	/**
 	 * 保存角色
 	 * 
 	 * @param roleDTO
 	 */
-	void saveRoleDTO(RoleDTO roleDTO);
+	void saveRole(RoleDTO roleDTO);
 
 	/**
 	 * 更新角色
 	 * 
 	 * @param roleDTO
 	 */
-	void updateRoleDTO(RoleDTO roleDTO);
+	void updateRole(RoleDTO roleDTO);
 
 	/**
 	 * 批量撤销角色
 	 * 
 	 * @param roleDTOs
 	 */
-	void terminateRoleDTOs(RoleDTO[] roleDTOs);
+	void terminateRoles(RoleDTO[] roleDTOs);
 
 	/**
 	 * 保存权限
 	 * 
 	 * @param permissionDTO
 	 */
-	void savePermissionDTO(PermissionDTO permissionDTO);
+	void savePermission(PermissionDTO permissionDTO);
 
 	/**
 	 * 更新权限
 	 * 
 	 * @param permissionDTO
 	 */
-	void updatePermissionDTO(PermissionDTO permissionDTO);
+	void updatePermission(PermissionDTO permissionDTO);
 
 	/**
 	 * 批量撤销权限
 	 * 
 	 * @param permissionDTOs
 	 */
-	void terminatePermissionDTOs(PermissionDTO[] permissionDTOs);
+	void terminatePermissions(PermissionDTO[] permissionDTOs);
 
 	/**
 	 * 保存菜单资源
 	 * 
 	 * @param menuResourceDTO
 	 */
-	void saveMenuResourceDTO(MenuResourceDTO menuResourceDTO);
+	void saveMenuResource(MenuResourceDTO menuResourceDTO);
 
 	/**
 	 * 更新菜单资源
 	 * 
 	 * @param menuResourceDTO
 	 */
-	void updateMenuResourceDTO(MenuResourceDTO menuResourceDTO);
+	void updateMenuResource(MenuResourceDTO menuResourceDTO);
 
 	/**
 	 * 撤销菜单资源
 	 * 
 	 * @param menuResourceDTOs
 	 */
-	void terminateMenuResourceDTOs(MenuResourceDTO[] menuResourceDTOs);
+	void terminateMenuResources(MenuResourceDTO[] menuResourceDTOs);
 
 	/**
 	 * 添加一个子菜单到父菜单。
@@ -125,31 +126,31 @@ public interface SecurityConfigFacade {
 	 * 
 	 * @param organizationDTO
 	 */
-	void saveOrganizationDTO(OrganizationScopeDTO organizationScopeDTO);
+	void saveOrganization(OrganizationScopeDTO organizationScopeDTO);
 
 	/**
 	 * 更新组织范围
 	 * 
 	 * @param organizationDTO
 	 */
-	void updateOrganizationDTO(OrganizationScopeDTO organizationScopeDTO);
+	void updateOrganization(OrganizationScopeDTO organizationScopeDTO);
 
 	/**
 	 * 批量撤销组织范围
 	 * 
 	 * @param organizationDTOs
 	 */
-	void terminateOrganizationDTOs(OrganizationScopeDTO[] organizationScopeDTOs);
+	void terminateOrganizations(OrganizationScopeDTO[] organizationScopeDTOs);
 
 	void saveChildToParent(OrganizationScopeDTO child, Long parentId);
 
-	void grantRoleInScope(Long userId, Long roleId, Long scopeId);
+	void grantRoleToUserInScope(Long userId, Long roleId, Long scopeId);
 
-	void grantRolesInScope(Long userId, Long[] roleIds, Long scopeId);
+	void grantRolesToUserInScope(Long userId, Long[] roleIds, Long scopeId);
 
-	void grantPermissionInScope(Long userId, Long permissionId, Long scopeId);
+	void grantPermissionToUserInScope(Long userId, Long permissionId, Long scopeId);
 
-	void grantPermissionsInScope(Long userId, Long[] permissionIds, Long scopeId);
+	void grantPermissionsToUserInScope(Long userId, Long[] permissionIds, Long scopeId);
 
 	void grantRoleToUser(Long userId, Long roleId);
 
@@ -167,13 +168,13 @@ public interface SecurityConfigFacade {
 
 	void suspend(Long[] userIds);
 
-	void terminateAuthorizationByRole(Long userId, Long roleId);
+	void terminateAuthorizationByUserInRole(Long userId, Long roleId);
 
-	void terminateAuthorizationByPermission(Long userId, Long permissionId);
+	void terminateAuthorizationByUserInPermission(Long userId, Long permissionId);
 
-	void terminateAuthorizationsByRoles(Long userId, Long[] roleIds);
+	void terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds);
 
-	void terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds);
+	void terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds);
 
 	void grantMenuResourcesToRole(Long roleId, List<MenuResourceDTO> menuResourceDTOs);
 
@@ -181,17 +182,17 @@ public interface SecurityConfigFacade {
 
 	void grantUrlAccessResourcesToRole(Long roleId, Long[] menuResourceIds);
 
-	void grantMethodInvocationResourcesToUser(Long roleId, Long[] menuResourceIds);
+	void grantMethodInvocationResourcesToRole(Long roleId, Long[] menuResourceIds);
 
 	void grantPermissionsToRole(Long roleId, Long[] permissionIds);
 
 	void terminatePermissionsFromRole(Long roleId, Long[] permssionIds);
 
-	void saveUrlAccessResourceDTO(UrlAccessResourceDTO urlAccessResourceDTO);
+	void saveUrlAccessResource(UrlAccessResourceDTO urlAccessResourceDTO);
 
-	void updateUrlAccessResourceDTO(UrlAccessResourceDTO urlAccessResourceDTO);
+	void updateUrlAccessResource(UrlAccessResourceDTO urlAccessResourceDTO);
 
-	void terminateUrlAccessResourceDTOs(UrlAccessResourceDTO[] urlAccessResourceDTOs);
+	void terminateUrlAccessResources(UrlAccessResourceDTO[] urlAccessResourceDTOs);
 
 	void terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds);
 
@@ -207,11 +208,11 @@ public interface SecurityConfigFacade {
 
 	void terminatePermissionsFromMenuResource(Long[] permissionIds, Long menuResourceId);
 
-	void savePageElementResourceDTO(PageElementResourceDTO pageElementResourceDTO);
+	void savePageElementResource(PageElementResourceDTO pageElementResourceDTO);
 
-	void updatePageElementResourceDTO(PageElementResourceDTO pageElementResourceDTO);
+	void updatePageElementResource(PageElementResourceDTO pageElementResourceDTO);
 
-	void terminatePageElementResourceDTOs(PageElementResourceDTO[] pageElementResourceDTOs);
+	void terminatePageElementResources(PageElementResourceDTO[] pageElementResourceDTOs);
 
 	void terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds);
 

@@ -8,7 +8,7 @@ public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 6559662110574697001L;
 
 	private Long id;
-	
+
 	private int version;
 
 	private String name;
@@ -28,21 +28,23 @@ public class UserDTO implements Serializable {
 	private Date lastLoginTime;
 
 	private String telePhone;
-	
+
 	private String createOwner;
-	
+
 	private Date lastModifyTime;
-	
+
 	private String salt;
-	
+
 	/**
-	 * TRUE
-	 * FALSE
-	 * NULL
+	 * TRUE FALSE NULL
 	 */
 	private Boolean disabled;
 
-	public UserDTO() {
+	UserDTO() {
+	}
+
+	public UserDTO(Long id) {
+		this.id = id;
 	}
 
 	public UserDTO(String userAccount, String userPassword) {

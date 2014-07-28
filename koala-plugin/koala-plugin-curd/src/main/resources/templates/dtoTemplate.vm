@@ -36,6 +36,9 @@ public class ${dtoClass.name} implements Serializable {
 			#set($simpleTypeName = "Boolean")
 			#elseif(${entry.value} == "char")
 			#set($simpleTypeName = "Character")
+			#elseif(${entry.value} == "byte")
+			#set($simpleTypeName = "Byte")
+			
 		#end
 	#else
 		#set($index = ${entry.value.lastIndexOf(".")} + 1)
@@ -49,8 +52,7 @@ public class ${dtoClass.name} implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 #end
 	private ${simpleTypeName} ${entry.key};
-#end
-	
+#end	
 #if(${dtoClass.isDateType(${entry.value})} && ${project.mvcType} == "SpringMVC")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 #end
@@ -74,12 +76,15 @@ public class ${dtoClass.name} implements Serializable {
 			#set($simpleTypeName = "Boolean")
 			#elseif(${entry.value} == "char")
 			#set($simpleTypeName = "Character")
+			#elseif(${entry.value} == "byte")
+			#set($simpleTypeName = "Byte")
 		#end
 		#else
 		#set($index = ${entry.value.lastIndexOf(".")} + 1)
 		#set($simpleTypeName = ${entry.value.substring($index)})
 	#end
 	#set($propertyName = ${entry.key.substring(0, 1).toUpperCase()} + ${entry.key.substring(1)})
+
 #if($simpleTypeName.indexOf("Boolean") > 0)
 	public Boolean get${propertyName}() {
 		return ${entry.key};
@@ -87,7 +92,6 @@ public class ${dtoClass.name} implements Serializable {
 	
 	public void set${propertyName}(Boolean ${entry.key}) { 
 		this.${entry.key} = ${entry.key};
-		this.${entry.key}AsString = ${entry.key} ? "1" : "0";
 	}
 	
 #else

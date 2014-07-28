@@ -55,17 +55,17 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return queryChannelService;
 	}
 
-	public UserDTO getUserDTOBy(Long userId) {
+	public UserDTO getUserBy(Long userId) {
 		User user = securityAccessApplication.getUserBy(userId);
 		return generateUserDTOBy(user);
 	}
 
-	public UserDTO getUserDTOBy(String userAccount) {
+	public UserDTO getUserBy(String userAccount) {
 		User user = securityAccessApplication.getUserBy(userAccount);
 		return generateUserDTOBy(user);
 	}
 
-	public List<RoleDTO> findRoleDTOsBy(String userAccount) {
+	public List<RoleDTO> findRolesBy(String userAccount) {
 		List<RoleDTO> results = new ArrayList<RoleDTO>();
 		List<Role> roles = securityAccessApplication.findAllRolesByUserAccount(userAccount);
 		for (Role role : roles) {
@@ -74,7 +74,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return results;
 	}
 
-	public Set<PermissionDTO> findPermissionDTOsBy(String userAccount) {
+	public Set<PermissionDTO> findPermissionsBy(String userAccount) {
 		Set<PermissionDTO> results = new HashSet<PermissionDTO>();
 		List<Permission> permissions = securityAccessApplication.findAllPermissionsByUserAccount(userAccount);
 		for (Permission permission : permissions) {
@@ -85,7 +85,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return results;
 	}
 
-	public List<MenuResourceDTO> findMenuResourceDTOByUserAccount(String userAccount) {
+	public List<MenuResourceDTO> findMenuResourceByUserAccount(String userAccount) {
 
 		List<MenuResourceDTO> results = new ArrayList<MenuResourceDTO>();
 
@@ -107,7 +107,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	 * @return
 	 */
 	@Override
-	public List<MenuResourceDTO> findMenuResourceDTOByUserAccountAsRole(String userAccount, Long roleId) {
+	public List<MenuResourceDTO> findMenuResourceByUserAsRole(String userAccount, Long roleId) {
 
 		Set<Authority> authorities = new HashSet<Authority>();
 		List<MenuResourceDTO> results;
@@ -181,7 +181,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	
 	@Override
-	public Set<PermissionDTO> findPermissionDTOsByMenuOrUrl() {
+	public Set<PermissionDTO> findPermissionsByMenuOrUrl() {
 
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name,_authority.identifier,_authority.description,_securityResource.url) FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE Type(_authority) = Permission AND TYPE(_securityResource) = MenuResource OR TYPE(_securityResource) = UrlAccessResource");
 
@@ -193,7 +193,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	}
 
 	@Override
-	public Set<RoleDTO> findRoleDTOsByMenuOrUrl() {
+	public Set<RoleDTO> findRolesByMenuOrUrl() {
 
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_authority.id, _authority.name,_authority.description, _securityResource.url) FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE Type(_authority) = Role AND (TYPE(_securityResource) = MenuResource OR TYPE(_securityResource) = UrlAccessResource)");
 
@@ -245,7 +245,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	}
 	
 	@Override
-	public Page<UserDTO> pagingQueryUserDTOs(int currentPage, int pageSize, UserDTO queryUserCondition) {
+	public Page<UserDTO> pagingQueryUsers(int currentPage, int pageSize, UserDTO queryUserCondition) {
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 		StringBuilder jpql = new StringBuilder("SELECT _user FROM User _user");
 
@@ -261,7 +261,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	}
 
 	@Override
-	public Page<RoleDTO> pagingQueryRoleDTOs(int currentPage, int pageSize, RoleDTO queryRoleCondition) {
+	public Page<RoleDTO> pagingQueryRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition) {
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 		StringBuilder jpql = new StringBuilder("SELECT _role FROM Role _role");
 		
@@ -277,7 +277,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	}
 
 	@Override
-	public Page<PermissionDTO> pagingQueryPermissionDTOs(int currentPage, int pageSize, PermissionDTO queryPermissionCondition) {
+	public Page<PermissionDTO> pagingQueryPermissions(int currentPage, int pageSize, PermissionDTO queryPermissionCondition) {
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 		StringBuilder jpql = new StringBuilder("SELECT _permission FROM Permission _permission");
 		

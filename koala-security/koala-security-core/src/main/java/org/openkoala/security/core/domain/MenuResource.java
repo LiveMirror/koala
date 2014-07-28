@@ -92,6 +92,9 @@ public class MenuResource extends SecurityResource {
 		child.remove();
 	}
 
+	/**
+	 * TODO 可能删除对象不存在。
+	 */
 	@Override
 	public void remove() {
 		for (MenuResource child : children) {
