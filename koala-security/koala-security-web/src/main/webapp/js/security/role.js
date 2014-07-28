@@ -39,7 +39,7 @@ var roleManager = function(){
 		        'Accept': 'application/json',
 		        'Content-Type': 'application/json' 
 		    },
-		    'type'	: "Post",
+		    'type'	: "POST",
 		    'url'	: baseUrl + 'terminate.koala',
 		    'data'	: JSON.stringify(roles),
 		    'dataType': 'json'
@@ -117,7 +117,7 @@ var roleManager = function(){
 		}
 		
 		$.post(url,getAllData(item)).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dialog.trigger('complete');
 			}else{
 				dialog.find('.modal-content').message({
@@ -143,20 +143,20 @@ var roleManager = function(){
 	 * 获取表单数据
 	 */
 	var getAllData = function(item){
-		var data = {};
+		/*var data = {};
 		data['roleVO.name'] = roleName.val();
 		data['roleVO.roleDesc'] = roleDescript.val();
 		if(item){
 			data['roleVO.id'] = item.id;	
 		}
-		return data;
-		/*var data = {};
+		return data;*/
+		var data = {};
 		data['roleName'] = roleName.val();
 		data['description'] = roleDescript.val();
 		if(item){
 			data['roleId'] = item.roleId;	
 		}
-		return data;*/
+		return data;
 	};
 	var assignRole = function(roleId, name){
 		openTab('/pages/auth/user-list.jsp',
@@ -165,7 +165,7 @@ var roleManager = function(){
 	};
 	/**
 	 * 资源授权
-	 */
+	 */ 
 	var assignResource = function(grid, roleId){
 		$.get(contextPath + '/pages/auth/assign-resource.jsp').done(function(data){
 			var dialog = $(data);
@@ -173,26 +173,27 @@ var roleManager = function(){
             dialog.find('.save').on('click',function(){
 				var treeObj = $(".resourceTree").getTree();
 				var nodes = treeObj.selectedItems();
+				console.log(treeObj);
+				console.log(nodes);
 				/*
 				var data = 'roleId=' + roleId;
 		         console.log(data);
 				for(var i=0,j=nodes.length; i<j; i++){
 					data += ('&menuResourceDTOs['+i+'].id=' + nodes[i].id);
 				}
-				
 				$.post(contextPath + '/auth/role/grantMenuResources.koala',data,function(){
-					
 				});*/
 				
 				
 				var data = {};
 				data['roleVO.id'] = roleId;
+				console.log(data['roleVO.id']);
 				for(var i=0,j=nodes.length; i<j; i++){
 					data['menus['+i+'].id'] = nodes[i].id;
 					data['menus['+i+'].identifier'] = nodes[i].identifier;
 				}
-				$.post(baseUrl + 'grantMenuResources.koala', data).done(function(data){
-					if(data.result == 'success'){
+				$.post(baseUrl + 'grantMenuResourcesToRole.koala', data).done(function(data){
+					if(data.success){
 						grid.message({
 							type: 'success',
 							content: '保存成功'
@@ -262,6 +263,7 @@ var roleManager = function(){
 			});
 		});
 	};
+
 	/*
 	* 加载资源树
 	 */

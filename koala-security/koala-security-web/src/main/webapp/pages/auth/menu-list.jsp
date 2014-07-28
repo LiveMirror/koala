@@ -128,7 +128,7 @@
 	        				type: "POST",
 	        				dataType:"json",
 	        				success:function(data){
-	        					if (data.result == 'success') {
+	        					if (data.success) {
 		        					dialog.trigger('complete');			
 		        				} else {
 		        					dialog.find('.modal-content').message({
@@ -246,7 +246,7 @@
 	            }	          
         		var thiz = $(this);
 				$.get(contextPath + '/pages/auth/menu-template.jsp').done(function(dialog) {
-					initEditDialog(dialog, (data ? data.item : null), thiz, "add");
+					initEditDialog(dialog, (data ? data.data : null), thiz, "add");
 				});
 	            
         	},
@@ -301,7 +301,8 @@
 				}
 				
 				var menu = items[0];
-	
+				console.log(menu);
+	            console.log("menu.id"+menu.id);
 				openTab('/pages/auth/permission-list.jsp', menu.name+'的权限管理', 'roleManager_' + menu.id, menu.id, {menuId : menu.id});
         	},
         	"assignPermission" : function(event, data){
@@ -309,7 +310,6 @@
 				/*
 				获取选中项的信息
 				*/
-				//console.log(grid);
         		$.get(contextPath + '/pages/auth/select-menu.jsp').done(function(data){
         			var dialog = $(data);
         			dialog.find('#save').click(function(){

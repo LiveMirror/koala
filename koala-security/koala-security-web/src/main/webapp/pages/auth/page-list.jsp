@@ -80,10 +80,10 @@
 	        			$.ajax({
 	        				url : url,
 	        				data: data,
-	        				type: "Get",
+	        				type: "POST",
 	        				dataType:"json",
 	        				success:function(data){
-	        					if (data.result == 'success') {
+	        					if (data.success) {
 		        					dialog.trigger('complete');
 		        				} else {
 		        					dialog.find('.modal-content').message({
@@ -111,7 +111,7 @@
 			    'data' 		: JSON.stringify(urls),
 			    'dataType'	: 'json'
 			 }).done(function(data){
-			 	if (data.result == 'success') {
+			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
 						content : '删除成功'
@@ -131,10 +131,9 @@
 			});
 		};
 	
-	    //add here
-	   // var roleId = role.roleId;
-		//end add here
-		
+		var tabData = $('.tab-pane.active').data();
+		var pageId = tabData.pageId;
+		console.log(pageId);
 		
 		var columns = [{
 				title : "页面名称",
@@ -155,26 +154,39 @@
 			}];
 		
 		
-		var buttons = [{
-					content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>',
-					action: 'add'
-				},{
-					content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>',
-					action: 'modify'
-				},{
-					content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
-					action: 'delete'
-				},{
-					content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>授权</button>',
-					action: 'permissionAssign'
-				}];
-	
-
-		
+		var buttons = (function(){
+			 if(pageId){
+				return [{
+					
+							content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为角色分配页面</button>',
+							action : 'assignPageFromRole'
+							},{
+							content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为删除角色分配页面</button>',
+							action : 'removePageFromRole'
+				        }];
+				} else {
+					 return [{
+							content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>',
+							action: 'add'
+						},{
+							content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>',
+							action: 'modify'
+						},{
+							content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
+							action: 'delete'
+						},{
+							content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>授权</button>',
+							action: 'permissionAssignForPage'
+						}];
+			}
+		})();
 		
 		//add here
 		
 	    var url = contextPath + "/auth/page/pagingQuery.koala";
+		if(pageId){
+           var url = contextPath + "/auth/role/pagingQueryGrantPageElementResourcesByRoleId.koala?roleId="+ pageId;		
+		}
 		$("<div/>").appendTo($("#tabContent>div:last-child")).grid({
 			 identity: 'id',
              columns: columns,
@@ -229,7 +241,7 @@
 	            });
 	            
         	},
-        	"permissionAssign" : function(event,data){
+        	"permissionAssignForPage" : function(event,data){
         		var items 	= data.item;
 				var thiz	= $(this);
 				if(items.length == 0){
@@ -241,18 +253,16 @@
 				}
 				
 				var page = items[0];
-                   console.log(page);
-				openTab('/pages/auth/permission-list.jsp', page.name+'的权限管理', 'roleManager_' + page.id, page.id, {pageId : page.pageId});
+                   console.log(page.id);
+				openTab('/pages/auth/permission-list.jsp', page.name+'的权限管理', 'roleManager_' + page.id, page.id, {pageId : page.id});
         	},
-        	"assignPage" : function(event, data){
+        	"assignPageFromRole" : function(event, data){
 				var grid = $(this);
 				/*
 				获取选中项的信息
 				*/
-				//console.log(grid);
         		$.get(contextPath + '/pages/auth/select-page.jsp').done(function(data){
         			var dialog = $(data);
-        			//console.log(dialog);
         			dialog.find('#save').click(function(){
         				var saveBtn = $(this);
         				var items = dialog.find('#selectPageGrid').data('koala.grid').selectedRows();
@@ -266,29 +276,27 @@
         				}
         				
         				saveBtn.attr('disabled', 'disabled');
-        				        	
         				
-        				
-        				var data = "roleId="+roleId;
+        				var data = "roleId="+ pageId;
         				for(var i=0,j=items.length; i<j; i++){
-        					data += "&id=" + items[i].id;
+        					data += "&pageElementResourceIds=" + items[i].id;
         				}
         				
-        				$.get(contextPath + '/auth/page/grantPermisssionsToPageElementResource.koala', data).done(function(data){
-        					if(data.success){
+        				$.post(contextPath + '/auth/role/grantPageElementResourcesToRole.koala', data).done(function(data){
+        					 if(data.success){
         						grid.message({
         							type: 'success',
         							content: '保存成功'
         						});
         						dialog.modal('hide');
         						grid.grid('refresh');
-        					}else{
-        						saveBtn.attr('disabled', 'disabled');	
-        						grid.message({
-        							type: 'error',
-        							content: data.actionError
-        						});
-        					}
+        						}else{
+        							grid.message({
+        								type : 'error',
+        								content : data.actionError
+        							});
+        						}
+        	
         				}).fail(function(data){
         					saveBtn.attr('disabled', 'disabled');	
         					grid.message({
@@ -309,7 +317,7 @@
        							name : "name",
        							width : 150
        						},
-       					 {
+       					  {
        							title : "页面标识",
        							name : "identifier",
        							width : 150
@@ -322,6 +330,13 @@
        							name : "description",
        							width : 200
        						}];
+       					
+       						dialog.find('#selectPageGrid').grid({
+       						 identity: 'id',
+       			             columns: columns,
+       			             querys: [{title: '页面名称', value: 'roleNameForSearch'}],
+       			             url: contextPath + '/auth/role/pagingQueryNotGrantPageElementResourcesByRoleId.koala?roleId='+pageId
+       			           });    
        					  
        					},
        					
@@ -355,12 +370,12 @@
 				grid.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
-						var url = contextPath + '/auth/page/terminate.koala';
-						var params = "roleId="+roleId;
+						var url = contextPath + '/auth/role/terminatePageElementResourcesFromRole.koala';
+						var params = "roleId="+pageId;
 						for (var i = 0, j = data.item.length; i < j; i++) {
-							params += ("&id=" + data.item[i].id);
+							params += ("&pageElementResourceIds=" + data.item[i].id);
 						}
-						
+						console.log(data.item[0].id);
 						$.post(url, params).done(function(data){
 							if(data.success){
 								grid.message({

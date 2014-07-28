@@ -82,7 +82,7 @@
 	        				type: "post",
 	        				dataType:"json",
 	        				success:function(data){
-	        					if (data.result == 'success') {
+	        					if (data.success) {
 		        					dialog.trigger('complete');
 		        				} else {
 		        					dialog.find('.modal-content').message({
@@ -110,7 +110,7 @@
 			    'data': JSON.stringify(urls),
 			    'dataType': 'json'
 			 }).done(function(data){
-			 	if (data.result == 'success') {
+			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
 						content : '删除成功'
@@ -154,7 +154,7 @@
 			name : "disabled",
 			width : 100,
 			render : function(item, name, index) {
-				return item[name] == true ? 
+				return item[name] != true ? 
 						'<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>' : 
 							'<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>';
 			}
@@ -189,7 +189,7 @@
 		if(roleId){
 			url = contextPath + '/auth/role/pagingQueryGrantUrlAccessResourcesByRoleId.koala' + '?roleId=' + roleId;
 		} else {
-			url = contextPath + '/auth/url/pagingquery.koala';
+			url = contextPath + '/auth/url/pagingQuery.koala';
 		}
 		
 		/*解决id冲突的问题*/
@@ -255,9 +255,9 @@
 					return;
 				}
 				
-				var role = items[0];
-				console.log(role);
-				openTab('/pages/auth/permission-list.jsp', role.name+'的权限管理', 'roleManager_' + role.id, role.id, {roleId : role.roleId});
+				var url_list = items[0];
+				console.log(url_list);
+				openTab('/pages/auth/permission-list.jsp', url_list.name+'的权限管理', 'roleManager_' + url_list.id, url_list.id, {url_listId : url_list.id});
         	},
 			"assignUrl" : function(event, data){
 				var grid = $(this);
@@ -278,13 +278,12 @@
         				$saveBtn.attr('disabled', 'disabled');	
         				var data = "roleId="+roleId;
         				
-        				//console.table(items);
         				
         				for(var i=0,j=items.length; i<j; i++){
         					data += "&urlAccessResourceIds="+items[i].id;
         				}
         				
-        				$.post(contextPath + '/auth/role/grantUrlAccessResources.koala', data).done(function(data){
+        				$.post(contextPath + '/auth/role/grantUrlAccessResourcesToRole.koala', data).done(function(data){
        						grid.message({
        							type: 'success',
        							content: '保存成功'
@@ -359,7 +358,7 @@
 				grid.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
-						var url = contextPath + '/auth/role/terminateUrlAccessResources.koala';
+						var url = contextPath + '/auth/role/terminateUrlAccessResourcesFromRole.koala';
 						var params = "roleId="+roleId;
 						for (var i = 0, j = data.item.length; i < j; i++) {
 							params += ("&urlAccessResourceIds=" + data.item[i].id);

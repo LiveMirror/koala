@@ -47,7 +47,7 @@ var userManager = function() {
 		var dataGrid = grid;
 		$.post(baseUrl + 'resetPassword.koala?userId=' + item.id).done(function(data) {
 		    
-			if (data.result == 'success') {				
+			if (data.success) {				
 				dataGrid.message({
 					type : 'success',
 					content : '重置密码成功，初始密码为888888！'
@@ -73,11 +73,12 @@ var userManager = function() {
 		console.log(item.id);
 		$.post(baseUrl + 'activate.koala?userId=' + item.id).done(function(data) {
 		    
-			if (data.result == 'success') {				
+			if (data.success == true) {				
 				dataGrid.message({
 					type : 'success',
 					content : '用户现在可用！'
 				});
+				grid.grid('refresh');
 			} else {
 				dataGrid.message({
 					type : 'error',
@@ -99,11 +100,12 @@ var userManager = function() {
 	    console.log(item.id);
 		$.post(baseUrl + 'suspend.koala?userId=' + item.id).done(function(data) {
 		    
-			if (data.result == 'success') {				
+			if (data.success == true) {				
 				dataGrid.message({
 					type : 'success',
 					content : '用户禁用成功！'
 				});
+				grid.grid('refresh');
 			} else {
 				dataGrid.message({
 					type : 'error',
@@ -132,7 +134,7 @@ var userManager = function() {
 		    'data'	: JSON.stringify(users),
 		    'dataType': 'json'
 		 }).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dataGrid.message({
 					type: 'success',
 					content: '删除成功'
@@ -221,7 +223,7 @@ var userManager = function() {
 			url = baseUrl + 'update.koala';
 		}
 		$.post(url, getAllData(item)).done(function(data) {
-			if (data.result == 'success') {
+			if (data.success) {
 				dialog.trigger('complete');
 			} else {
 				dialog.find('.modal-content').message({
@@ -314,7 +316,7 @@ var userManager = function() {
 					data['users[' + i + '].id'] = indexs[i];
 				}
 				$.post(contextPath + '/auth/Role/assignUsers.koala', data).done(function(data) {
-					if (data.result == 'success') {
+					if (data.success) {
 						grid.message({
 							type : 'success',
 							content : '保存成功'
@@ -406,7 +408,7 @@ var userManager = function() {
 		dataGrid = grid;
 		data.roleId = roleId;
 		$.post(baseUrl + 'removeUserForRole.koala', data).done(function(data) {
-			if (data.result == 'success') {
+			if (data.success) {
 				dataGrid.message({
 					type : 'success',
 					content : '删除成功'
