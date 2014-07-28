@@ -69,11 +69,5 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.openkoala.businesslog</groupId>
-            <artifactId>koala-businesslog-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
     </dependencies>
 </project>
