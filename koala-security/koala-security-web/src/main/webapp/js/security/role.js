@@ -169,7 +169,7 @@ var roleManager = function(){
 				var nodes = treeObj.selectedItems();
 				$.each(nodes,function(index){
 					delete nodes[index].open;
-				})
+				});
 				$.ajax({
 				    headers: { 
 				        'Accept': 'application/json',
@@ -233,7 +233,7 @@ var roleManager = function(){
 				var zNode = {};
                 var menu = {};
                 menu.id = item.id;
-                menu.name = item.name;
+                menu.title = item.name;
                 menu.open = true;//是否打开树
                 menu.checked = item.checked;
                 menu.identifier = item.identifier;
@@ -267,7 +267,7 @@ var roleManager = function(){
             var zNode = {};
             var menu = {};
             menu.id = item.id;
-            menu.name = item.name;
+            menu.title = item.name;
             menu.open = true;
             menu.checked = item.checked;
             menu.identifier = item.identifier;

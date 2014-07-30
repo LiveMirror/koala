@@ -152,7 +152,7 @@
 				//如果还有子节点
 				if (!self.isEmpty(value.children) || value.type == 'parent') {
 					$entity = self.createParent(value.menu.id);
-					$entity.find('.tree-folder-name').html(value.menu.name);//change value.menu.title
+					$entity.find('.tree-folder-name').html(value.menu.title);
 					$entity.find('.tree-folder-header').data(value.menu);
 					$entity.attr("id", value.menu.id);
 					self.populate(value.children, $entity.find(".tree-folder-content:eq(0)"));
@@ -174,7 +174,7 @@
 					}
 				} else {
 					$entity = self.createChildren(value.menu.id);
-					$entity.find('.tree-item-name').html(value.menu.name);//change value.menu.title
+					$entity.find('.tree-item-name').html(value.menu.title);
 					$entity.attr("id", value.menu.id);
 					$entity.data(value.menu);
 					//这里加上检测是否有自定义图标，对于子节点，还有个bug
@@ -406,7 +406,7 @@
 			var menu = data.menu;
 			if (data.type && data.type == 'parent') {
 				$entity = self.createParent();
-				$entity.find('.tree-folder-name').html(menu.name);//change value.menu.title
+				$entity.find('.tree-folder-name').html(menu.title);
 				$entity.find('.tree-folder-header').data(menu);
 				$entity.on('click', {
 					element : $(this)
@@ -415,7 +415,7 @@
 				});
 			} else {
 				$entity = self.createChildren();
-				$entity.find('.tree-item-name').html(menu.name);//change value.menu.title
+				$entity.find('.tree-item-name').html(menu.title);
 				$entity.data(menu);
 				$entity.on('click', {
 					element : $(this)
