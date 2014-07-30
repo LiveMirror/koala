@@ -211,6 +211,7 @@
 					});
 					return;
 				}
+				console.log(items[0].roleId);
 				roleManager().assignResource($this, items[0].roleId);
 			},
 			'pageAssign' : function(event, data) {

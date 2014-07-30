@@ -162,6 +162,12 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		List<MenuResourceDTO> allMenuResources = findAllMenusTree();
 		
 		for (MenuResourceDTO menuResourceDTO : allMenuResources) {
+			if(!menuResourceDTO.getChildren().isEmpty())
+			{
+				for (MenuResourceDTO childMenuResourceDTO : menuResourceDTO.getChildren()) {
+					childMenuResourceDTO.setChecked(allMenResourcesAsRole.contains(childMenuResourceDTO));
+				}
+			}
 			menuResourceDTO.setChecked(allMenResourcesAsRole.contains(menuResourceDTO));
 		}
 		

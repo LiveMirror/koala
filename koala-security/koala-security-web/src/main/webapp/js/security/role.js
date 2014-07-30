@@ -34,6 +34,7 @@ var roleManager = function(){
 			delete roles[i].permissionDTOs;
 		}*/
 		dataGrid = grid;
+		console.log(roles);
 		$.ajax({
 		    headers: { 
 		        'Accept': 'application/json',
@@ -44,7 +45,7 @@ var roleManager = function(){
 		    'data'	: JSON.stringify(roles),
 		    'dataType': 'json'
 		 }).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dataGrid.message({
 					type: 'success',
 					content: '删除成功'
@@ -143,13 +144,6 @@ var roleManager = function(){
 	 * 获取表单数据
 	 */
 	var getAllData = function(item){
-		/*var data = {};
-		data['roleVO.name'] = roleName.val();
-		data['roleVO.roleDesc'] = roleDescript.val();
-		if(item){
-			data['roleVO.id'] = item.id;	
-		}
-		return data;*/
 		var data = {};
 		data['roleName'] = roleName.val();
 		data['description'] = roleDescript.val();
@@ -173,26 +167,19 @@ var roleManager = function(){
             dialog.find('.save').on('click',function(){
 				var treeObj = $(".resourceTree").getTree();
 				var nodes = treeObj.selectedItems();
-				console.log(treeObj);
-				console.log(nodes);
-				/*
-				var data = 'roleId=' + roleId;
-		         console.log(data);
-				for(var i=0,j=nodes.length; i<j; i++){
-					data += ('&menuResourceDTOs['+i+'].id=' + nodes[i].id);
-				}
-				$.post(contextPath + '/auth/role/grantMenuResources.koala',data,function(){
-				});*/
-				
-				
-				var data = {};
-				data['roleVO.id'] = roleId;
-				console.log(data['roleVO.id']);
-				for(var i=0,j=nodes.length; i<j; i++){
-					data['menus['+i+'].id'] = nodes[i].id;
-					data['menus['+i+'].identifier'] = nodes[i].identifier;
-				}
-				$.post(baseUrl + 'grantMenuResourcesToRole.koala', data).done(function(data){
+				$.each(nodes,function(index){
+					delete nodes[index].open;
+				})
+				$.ajax({
+				    headers: { 
+				        'Accept': 'application/json',
+				        'Content-Type': 'application/json' 
+				    },
+				    'type'	: "POST",
+				    'url'	: baseUrl + 'grantMenuResourcesToRole.koala?roleId='+roleId,
+				    'data'	:JSON.stringify(nodes),
+				    'dataType': 'json'
+				 }).done(function(data){
 					if(data.success){
 						grid.message({
 							type: 'success',
@@ -211,40 +198,6 @@ var roleManager = function(){
 							content: '保存失败'
 						});
 					});
-				
-				/*var data = {};
-				var mDTOs = [];
-				data.roleId = roleId;
-				
-		
-				
-				for(var i=0,j=nodes.length; i<j; i++){
-					var dto = {};
-					dto.id = nodes[i].id;
-					mDTOs.push(dto);
-				}
-				data.MenuResourceDTOs = mDTOs;
-				
-				$.post(baseUrl + 'grantMenuResources.koala', data).done(function(data){
-					if(data.result == 'success'){
-						grid.message({
-							type: 'success',
-							content: '保存成功'
-						});
-						dialog.modal('hide');
-					}else{
-						dialog.find('.modal-content').message({
-							type: 'error',
-							content: data.actionError
-						});
-					}
-				}).fail(function(data){
-						dialog.find('.modal-content').message({
-							type: 'error',
-							content: '保存失败'
-						});
-					});*/
-				
 				
 			}).end().modal({
 				keyboard: false
@@ -280,9 +233,9 @@ var roleManager = function(){
 				var zNode = {};
                 var menu = {};
                 menu.id = item.id;
-                menu.title = item.name;
-                menu.open = true;
-                menu.checked = item.ischecked;
+                menu.name = item.name;
+                menu.open = true;//是否打开树
+                menu.checked = item.checked;
                 menu.identifier = item.identifier;
                 zNode.menu = menu;
 				if(item.children && item.children.length > 0){
@@ -314,9 +267,9 @@ var roleManager = function(){
             var zNode = {};
             var menu = {};
             menu.id = item.id;
-            menu.title = item.name;
+            menu.name = item.name;
             menu.open = true;
-            menu.checked = item.ischecked;
+            menu.checked = item.checked;
             menu.identifier = item.identifier;
             zNode.menu = menu;
             if(item.children && item.children.length > 0){

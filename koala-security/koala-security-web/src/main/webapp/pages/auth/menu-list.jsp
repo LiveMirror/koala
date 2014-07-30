@@ -10,13 +10,14 @@
 		var baseUrl 	= contextPath + '/auth/menu/';
 		function initEditDialog(dialog, item, grid, opreate) {
 			dialog = $(dialog);
-			dialog.find('.modal-header').find('.modal-title').html( item ? '修改菜单信息' : '添加菜单');
+			dialog.find('.modal-header').find('.modal-title').html( item && opreate =='modify' ? '修改菜单信息' : '添加菜单');
 			
 			var form = dialog.find(".menu_form");
-			validate(form, dialog, item, opreate);
 			
-			if(item.length == 1){
-				form.find("input[name='parentId']").val(item[0].name);			    	        
+			validate(form, dialog, item, opreate);
+			console.log(item.name);
+			if(item.id == 1){//目前只能在勾选权限权限目录下才能获取父类name在其子类下新建菜单无法获取name
+				form.find("input[name='parentId']").val(item.name);			    	        
 			}
 			
 			if(item && opreate == "modify"){	
@@ -100,13 +101,10 @@
 	            button		: ".save",
 	            rules 		: rules,
 	            onButtonClick:function(result, button, form){
-	            	//console.log(item);
 	            	/**
 	            	 * result是表单验证的结果。
 	            	 * 如果表单的验证结果为true,说明全部校验都通过，你可以通过ajax提交表单参数
 	            	 */
-	            	 
-	            	console.log(inputs);
 	            	
 	            	if(result){
 	            		var data = form.serialize();
@@ -151,12 +149,12 @@
 			        'Accept'		: 'application/json',
 			        'Content-Type'	: 'application/json' 
 			    },
-			    'type'		: "Post",
+			    'type'		: "POST",
 			    'url'		: baseUrl + 'terminate.koala',
 			    'data' 		: JSON.stringify(urls),
 			    'dataType'	: 'json'
 			 }).done(function(data){
-			 	if (data.result == 'success') {
+			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
 						content : '删除成功'
@@ -237,16 +235,18 @@
         }).on({
         	'add': function(event, data){//data change item
         		var indexs = data.data;
+                var grid = $(this);        	  
 	            if(indexs.length > 1){
-	                $this.message({
+	                     grid.message({
 	                    type: 'warning',
 	                    content: '只能选择一条记录'
 	                });
 	                return;
 	            }	          
-        		var thiz = $(this);
+        		console.log(data.data);//获取当前选项的ID
+        		console.log(data.item[0]);
 				$.get(contextPath + '/pages/auth/menu-template.jsp').done(function(dialog) {
-					initEditDialog(dialog, (data ? data.data : null), thiz, "add");
+					initEditDialog(dialog, (data.data?data.item[0]:null), grid, "add");
 				});
 	            
         	},
