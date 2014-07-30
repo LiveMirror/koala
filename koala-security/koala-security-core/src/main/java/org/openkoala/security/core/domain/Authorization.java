@@ -37,8 +37,7 @@ public class Authorization extends SecurityAbstractEntity {
 	@JoinColumn(name = "SCOPE_ID")
 	private Scope scope;
 
-	Authorization() {
-	}
+	protected Authorization() {}
 
 	public Authorization(Actor actor, Authority authority) {
 		this.actor = actor;

@@ -16,8 +16,7 @@ public class PageElementResource extends SecurityResource {
 	 */
 	private String pageElementType;
 
-	PageElementResource() {
-	}
+	protected PageElementResource() {}
 
 	public PageElementResource(String name) {
 		super(name);

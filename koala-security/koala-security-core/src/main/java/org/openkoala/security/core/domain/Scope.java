@@ -34,14 +34,17 @@ public abstract class Scope extends SecurityAbstractEntity {
 	@Transient
 	public abstract Set<? extends Scope> getChildren();
 
-	Scope() {
-	}
+	protected Scope() {}
 
 	public Scope(String name) {
 		this.name = name;
 	}
 
 	public abstract void update();
+	
+	public abstract void addChild(Scope child);
+
+	public abstract void removeChild(Scope child);
 	
 	public static Scope getBy(Long scopeId) {
 		return Scope.get(Scope.class, scopeId);
@@ -84,7 +87,7 @@ public abstract class Scope extends SecurityAbstractEntity {
 		return level;
 	}
 
-	void setLevel(int level) {
+	public void setLevel(int level) {
 		this.level = level;
 	}
 

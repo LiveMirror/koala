@@ -27,7 +27,6 @@ import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
@@ -167,18 +166,6 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		
 		return allMenuResources;
 	}
-	
-	@Override
-	public List<OrganizationScopeDTO> findAllOrganizationScopesTree() {
-		List<OrganizationScopeDTO> results = findTopOrganizationScopes();
-		List<OrganizationScopeDTO> childrenOrganizationScopeDTOs = findChidrenOrganizationScopes();
-		Set<OrganizationScopeDTO> all = new HashSet<OrganizationScopeDTO>();
-		all.addAll(results);
-		all.addAll(childrenOrganizationScopeDTOs);
-		addOrganizationScopeChildrenToParent(all);
-		return results;
-	}
-
 	
 	@Override
 	public Set<PermissionDTO> findPermissionsByMenuOrUrl() {
@@ -750,19 +737,6 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		}
 	}
 
-	private void addOrganizationScopeChildrenToParent(Set<OrganizationScopeDTO> all) {
-		LinkedHashMap<Long, OrganizationScopeDTO> map = new LinkedHashMap<Long, OrganizationScopeDTO>();
-		for (OrganizationScopeDTO organizationScopeDTO : all) {
-			map.put(organizationScopeDTO.getId(), organizationScopeDTO);
-		}
-		for (OrganizationScopeDTO organizationScopeDTO : map.values()) {
-			Long parentId = organizationScopeDTO.getParentId();
-			if (!StringUtils.isBlank(parentId + "") && map.get(parentId) != null) {
-				map.get(parentId).getChildren().add(organizationScopeDTO);
-			}
-		}
-	}
-
 	private List<MenuResourceDTO> findChidrenMenuResource() {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id, _securityResource.identifier, _securityResource.name, _securityResource.url, _securityResource.menuIcon, _securityResource.description,"
@@ -801,43 +775,6 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		List<MenuResourceDTO> results = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.setParameters(map)//
-				.list();
-
-		return results;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private List<OrganizationScopeDTO> findChidrenOrganizationScopes() {
-
-		StringBuilder jpql = new StringBuilder(
-				"SELECT NEW org.openkoala.security.facade.dto.OrganizationScopeDTO(_organizationScope.id, _organizationScope.name, _organizationScope.description, _organizationScope.parent.id) FROM OrganizationScope _organizationScope");
-		jpql.append(" WHERE _organizationScope.level > :level");
-		jpql.append(" GROUP BY _organizationScope.id");
-
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("level", 0);
-
-		List<OrganizationScopeDTO> results = getQueryChannelService()//
-				.createJpqlQuery(jpql.toString())//
-				.setParameters(parameters)//
-				.list();
-
-		return results;
-	}
-
-	private List<OrganizationScopeDTO> findTopOrganizationScopes() {
-		StringBuilder jpql = new StringBuilder(
-				"SELECT NEW org.openkoala.security.facade.dto.OrganizationScopeDTO(_organizationScope.id, _organizationScope.name, _organizationScope.description, _organizationScope.parent.id) FROM OrganizationScope _organizationScope");
-		jpql.append(" WHERE _organizationScope.parent IS NULL");
-		jpql.append(" AND _organizationScope.level = :level");
-		jpql.append(" GROUP BY _organizationScope.id");
-
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("level", 0);
-
-		List<OrganizationScopeDTO> results = getQueryChannelService()//
-				.createJpqlQuery(jpql.toString())//
-				.setParameters(parameters)//
 				.list();
 
 		return results;

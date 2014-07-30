@@ -1,9 +1,11 @@
 package org.openkoala.security.core.domain;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,8 +36,13 @@ public class Role extends Authority {
 	inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID"))
 	private Set<Permission> permissions = new HashSet<Permission>();
 
-	Role() {
-	}
+	/**
+	 * 超级管理员
+	 */
+	@Column(name="SUPERVISOR")
+	private boolean supervisor = false;
+	
+	protected Role() {}
 
 	public Role(String name) {
 		super(name);
@@ -103,14 +110,6 @@ public class Role extends Authority {
 				.singleResult();
 	}
 
-	public Set<Permission> getPermissions() {
-		return permissions;
-	}
-
-	public void setPermissions(Set<Permission> permissions) {
-		this.permissions = permissions;
-	}
-
 	@Override
 	public Authority getAuthorityBy(String name) {
 		return getRepository()//
@@ -124,4 +123,21 @@ public class Role extends Authority {
 		return Role.get(Role.class, id);
 	}
 
+	public Set<Permission> getPermissions() {
+		return Collections.unmodifiableSet(permissions);
+	}
+
+	public void setPermissions(Set<Permission> permissions) {
+		this.permissions = permissions;
+	}
+
+	public boolean isSupervisor() {
+		return supervisor;
+	}
+
+	public void setSupervisor(boolean supervisor) {
+		this.supervisor = supervisor;
+	}
+	
+	
 }

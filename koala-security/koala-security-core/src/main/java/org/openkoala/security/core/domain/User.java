@@ -63,8 +63,7 @@ public class User extends Actor {
 	@Column(name = "SALT")
 	private String salt;
 
-	User() {
-	}
+	protected User() {}
 
 	public User(String userAccount, String password) {
 		this.userAccount = userAccount;

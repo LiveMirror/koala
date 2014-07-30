@@ -33,36 +33,36 @@ public class ActorTest extends AbstractDomainIntegrationTestCase{
 		assertNotNull(authorization);
 	}
 	
-	@Test
-	public void testGrant() throws Exception {
-		User user = initUser();
-		user.save();
-		Role role = initRole();
-		role.save();
-		Scope scope = new OrganizationScope("testscope0000000000");
-		scope.setDescription("testDescription00000");
-		scope.save();
-		user.grant(role, scope);
-		Set<Authority> authorities = Authorization.findAuthoritiesByActorInScope(user, scope);
-		assertNotNull(authorities);
-		assertTrue(authorities.size() == 1);
-	}
+//	@Test
+//	public void testGrant() throws Exception {
+//		User user = initUser();
+//		user.save();
+//		Role role = initRole();
+//		role.save();
+//		Scope scope = new OrganizationScope("testscope0000000000");
+//		scope.setDescription("testDescription00000");
+//		scope.save();
+//		user.grant(role, scope);
+//		Set<Authority> authorities = Authorization.findAuthoritiesByActorInScope(user, scope);
+//		assertNotNull(authorities);
+//		assertTrue(authorities.size() == 1);
+//	}
 	
-	@Test
-	public void testGetPermissions() throws Exception {
-		
-		User user = initUser();
-		user.save();
-		Permission permission = initPermission();
-		permission.save();
-		Scope scope = new OrganizationScope("testscope0000000000");
-		scope.setDescription("testDescription00000");
-		scope.save();
-		user.grant(permission, scope);
-		
-		Set<Permission> permissions = user.getPermissions(scope);
-		assertNotNull(permissions);
-		assertEquals(1, permissions.size());
-	}
+//	@Test
+//	public void testGetPermissions() throws Exception {
+//		
+//		User user = initUser();
+//		user.save();
+//		Permission permission = initPermission();
+//		permission.save();
+//		Scope scope = new OrganizationScope("testscope0000000000");
+//		scope.setDescription("testDescription00000");
+//		scope.save();
+//		user.grant(permission, scope);
+//		
+//		Set<Permission> permissions = user.getPermissions(scope);
+//		assertNotNull(permissions);
+//		assertEquals(1, permissions.size());
+//	}
 	
 }

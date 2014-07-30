@@ -22,7 +22,6 @@ import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
@@ -136,28 +135,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	@Override
 	public void saveChildToParent(MenuResourceDTO child, Long parentId) {
 		securityConfigApplication.createChildToParent(transFromMenuResourceBy(child), parentId);
-	}
-
-	@Override
-	public void saveOrganization(OrganizationScopeDTO organizationScopeDTO) {
-		securityConfigApplication.createScope(transFromOrganizationScopeBy(organizationScopeDTO));
-	}
-
-	@Override
-	public void updateOrganization(OrganizationScopeDTO organizationScopeDTO) {
-		securityConfigApplication.updateScope(transFromOrganizationScopeBy(organizationScopeDTO));
-	}
-
-	@Override
-	public void terminateOrganizations(OrganizationScopeDTO[] organizationDTOs) {
-		for (OrganizationScopeDTO organizationScopeDTO : organizationDTOs) {
-			securityConfigApplication.terminateScope(transFromOrganizationScopeBy(organizationScopeDTO));
-		}
-	}
-
-	@Override
-	public void saveChildToParent(OrganizationScopeDTO child, Long parentId) {
-		securityConfigApplication.createChildToParent(transFromOrganizationScopeBy(child), parentId);
 	}
 
 	@Override

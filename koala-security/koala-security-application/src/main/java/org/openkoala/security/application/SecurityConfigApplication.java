@@ -6,7 +6,6 @@ import java.util.Set;
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
-import org.openkoala.security.core.domain.OrganizationScope;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
@@ -256,7 +255,7 @@ public interface SecurityConfigApplication {
 
 	void terminateScope(Scope scope);
 
-	void createChildToParent(OrganizationScope child, Long parentId);
+	void createChildToParent(Scope child, Long parentId);
 
 	/**
 	 * 为可授权体:Authority授予多个权限资源:SecurityResources。

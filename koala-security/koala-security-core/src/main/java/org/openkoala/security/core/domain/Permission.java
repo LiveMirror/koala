@@ -1,5 +1,6 @@
 package org.openkoala.security.core.domain;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,8 +33,7 @@ public class Permission extends Authority {
 	@ManyToMany(mappedBy = "permissions")
 	private Set<Role> roles = new HashSet<Role>();
 
-	Permission() {
-	}
+	protected Permission() {}
 
 	public Permission(String name, String identifier) {
 		super(name);
@@ -94,7 +94,7 @@ public class Permission extends Authority {
 	}
 	
 	public Set<Role> getRoles() {
-		return roles;
+		return Collections.unmodifiableSet(roles);
 	}
 
 	public void setRoles(Set<Role> roles) {

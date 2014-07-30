@@ -20,7 +20,6 @@ import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
@@ -155,11 +154,11 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		assertTrue(results.size() == 1);
 	}
 
-	@Test
-	public void testFindAllOrganizationScopesTree() {
-		List<OrganizationScopeDTO> organizationScopeDTOs = securityAccessFacade.findAllOrganizationScopesTree();
-		assertTrue(organizationScopeDTOs.isEmpty());
-	}
+//	@Test
+//	public void testFindAllOrganizationScopesTree() {
+//		List<OrganizationScopeDTO> organizationScopeDTOs = securityAccessFacade.findAllOrganizationScopesTree();
+//		assertTrue(organizationScopeDTOs.isEmpty());
+//	}
 
 	@Test
 	public void testFindPermissionDTOsByMenuOrUrl() {

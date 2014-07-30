@@ -5,14 +5,12 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openkoala.security.core.domain.MenuResource;
-import org.openkoala.security.core.domain.OrganizationScope;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
@@ -109,13 +107,4 @@ public final class TransFromDomainUtils {
 		return results;
 	}
 
-	public static OrganizationScope transFromOrganizationScopeBy(OrganizationScopeDTO organizationScopeDTO) {
-		OrganizationScope result = new OrganizationScope(organizationScopeDTO.getName());
-		if (!StringUtils.isBlank(organizationScopeDTO.getId() + "")) {
-			result.setId(organizationScopeDTO.getId());
-		}
-		result.setDescription(organizationScopeDTO.getDescription());
-		result.setVersion(organizationScopeDTO.getVersion());
-		return result;
-	}
 }

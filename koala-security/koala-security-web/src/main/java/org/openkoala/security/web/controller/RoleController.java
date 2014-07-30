@@ -364,7 +364,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPageElementResources")
+	@RequestMapping("/grantPageElementResourcesToRole")
 	public JsonResult grantPageElementResourcesToRole(Long roleId, Long[] PageElementResourceIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -387,8 +387,8 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminatePageElementResources")
-	public JsonResult terminatePageElementResources(Long roleId, Long[] PageElementResourceIds) {
+	@RequestMapping("/terminatePageElementResourcesFromRole")
+	public JsonResult terminatePageElementResourcesFromRole(Long roleId, Long[] PageElementResourceIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			securityConfigFacade.terminatePageElementResourcesFromRole(roleId, PageElementResourceIds);

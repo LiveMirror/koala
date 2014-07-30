@@ -10,7 +10,6 @@ import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.core.domain.MenuResource;
-import org.openkoala.security.core.domain.OrganizationScope;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
@@ -217,8 +216,8 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	@Override
-	public void createChildToParent(OrganizationScope child, Long parentId) {
-		OrganizationScope parent = OrganizationScope.get(OrganizationScope.class, parentId);
+	public void createChildToParent(Scope child, Long parentId) {
+		Scope parent = Scope.get(Scope.class, parentId);
 		parent.addChild(child);
 	}
 

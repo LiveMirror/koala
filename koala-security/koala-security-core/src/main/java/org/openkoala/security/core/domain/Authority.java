@@ -64,8 +64,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 	inverseJoinColumns = @JoinColumn(name = "SECURITYRESOURCE_ID"))
 	private Set<SecurityResource> securityResources = new HashSet<SecurityResource>();
 
-	Authority() {
-	}
+	protected Authority() {}
 
 	public Authority(String name) {
 		this.name = name;

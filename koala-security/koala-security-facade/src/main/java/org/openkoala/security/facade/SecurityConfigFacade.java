@@ -3,7 +3,6 @@ package org.openkoala.security.facade;
 import java.util.List;
 
 import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
@@ -120,29 +119,6 @@ public interface SecurityConfigFacade {
 	 * @param parentId
 	 */
 	void saveChildToParent(MenuResourceDTO child, Long parentId);
-
-	/**
-	 * 保存组织范围
-	 * 
-	 * @param organizationDTO
-	 */
-	void saveOrganization(OrganizationScopeDTO organizationScopeDTO);
-
-	/**
-	 * 更新组织范围
-	 * 
-	 * @param organizationDTO
-	 */
-	void updateOrganization(OrganizationScopeDTO organizationScopeDTO);
-
-	/**
-	 * 批量撤销组织范围
-	 * 
-	 * @param organizationDTOs
-	 */
-	void terminateOrganizations(OrganizationScopeDTO[] organizationScopeDTOs);
-
-	void saveChildToParent(OrganizationScopeDTO child, Long parentId);
 
 	void grantRoleToUserInScope(Long userId, Long roleId, Long scopeId);
 

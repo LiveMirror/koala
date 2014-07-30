@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
@@ -97,8 +96,6 @@ public interface SecurityAccessFacade {
 	List<MenuResourceDTO> findMenuResourceByUserAsRole(String userAccount, Long roleId);
 
 	List<MenuResourceDTO> findAllMenusTree();
-
-	List<OrganizationScopeDTO> findAllOrganizationScopesTree();
 
 	Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition, Long userId);
 

@@ -1,5 +1,6 @@
 package org.openkoala.security.core.domain;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,8 +60,7 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	@ManyToMany(mappedBy = "securityResources", fetch = FetchType.EAGER)
 	private Set<Authority> authorities = new HashSet<Authority>();
 
-	SecurityResource() {
-	}
+	protected SecurityResource() {}
 
 	public SecurityResource(String name) {
 		this.name = name;
@@ -132,7 +132,7 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	}
 
 	public Set<Authority> getAuthorities() {
-		return authorities;
+		return Collections.unmodifiableSet(authorities);
 	}
 
 	public void setAuthorities(Set<Authority> authorities) {

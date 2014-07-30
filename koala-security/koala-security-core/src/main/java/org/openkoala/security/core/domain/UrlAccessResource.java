@@ -15,8 +15,7 @@ public class UrlAccessResource extends SecurityResource {
 
 	private static final long serialVersionUID = -9116913523532845475L;
 
-	UrlAccessResource() {
-	}
+	protected UrlAccessResource() {}
 
 	public UrlAccessResource(String name, String url) {
 		super(name, url);
@@ -96,17 +95,5 @@ public class UrlAccessResource extends SecurityResource {
 				.eq("url", url)//
 				.singleResult();
 	}
-
-	public Set<Authority> getAllAuthorities() {
-		return this.getAuthorities();
-	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

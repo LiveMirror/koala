@@ -152,7 +152,7 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		List<UrlAccessResource> urlAccessResources = UrlAccessResource.findAllUrlAccessResources();
 		System.out.println("---->"+urlAccessResources);
 		for (UrlAccessResource urlAccessResource : urlAccessResources) {
-			Set<Authority> authorities = urlAccessResource.getAllAuthorities();
+			Set<Authority> authorities = urlAccessResource.getAuthorities();
 			for (Authority authority : authorities) {
 				System.out.println("---->" + authority);
 			}
