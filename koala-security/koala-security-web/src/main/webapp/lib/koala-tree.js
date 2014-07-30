@@ -156,7 +156,7 @@
 					$entity.find('.tree-folder-header').data(value.menu);
 					$entity.attr("id", value.menu.id);
 					self.populate(value.children, $entity.find(".tree-folder-content:eq(0)"));
-					if (value.menu.open) {
+				    if (value.menu.open) {
 						$entity.find('.glyphicon-folder-close').removeClass('glyphicon-folder-close').addClass('glyphicon-folder-open');
 						$entity.find(".tree-folder-content:eq(0)").show();
 					} else {
@@ -456,6 +456,7 @@
 		var $set = this.each(function() {
 			var $this = $(this);
 			var data = $this.data('koala.tree');
+			
 			var options = typeof option === 'object' && option;
 
 			if (!data)

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <link rel="stylesheet" href="../lib/validateForm/css/style.css"/>
 <script src="../lib/validateForm/validateForm.js"></script>
 <script>
@@ -76,7 +77,7 @@
 	        				type: "post",
 	        				dataType:"json",
 	        				success:function(data){
-	        					if (data.result == 'success') {
+	        					if (data.success) {
 		        					dialog.trigger('complete');
 		        				} else {
 		        					dialog.find('.modal-content').message({
@@ -104,7 +105,7 @@
 			    'data' 	: JSON.stringify(urls),
 			    'dataType': 'json'
 			 }).done(function(data){
-			 	if (data.result == 'success') {
+			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
 						content : '删除成功'
@@ -128,8 +129,9 @@
 		var userId 	= tabData.userId;
 		var menuId = tabData.menuId;
 		var pageId = tabData.pageId;
-		var urlId = tabData.urlId;
-	    console.log(userId);
+		var urlId = tabData.url_listId;
+		
+		console.log(urlId);
 		
 		var columns = [{
 				title : "权限名称",
@@ -191,7 +193,9 @@
 			}
 		})();
 		
-		var url = contextPath + '/auth/permission/pagingquery.koala';
+		var url = contextPath + '/auth/permission/pagingQuery.koala';
+		
+		
 		if (userId) {
 			url = contextPath + '/auth/user/pagingQueryGrantPermissionByUserId.koala?userId=' + userId;
 		} else if(menuId){
@@ -279,7 +283,7 @@
         					data += "&permissionIds=" + items[i].permissionId;
         				}
         				
-        				$.post(contextPath + '/auth/user/grantPermissions.koala', data).done(function(data){
+        				$.post(contextPath + '/auth/user/grantPermissionsToUser.koala', data).done(function(data){
         					if(data.success){
         						grid.message({
         							type: 'success',
@@ -412,7 +416,10 @@
         					data += "&permissionIds=" + items[i].permissionId;
         				}
         				
-        				$.post(contextPath + '/auth/menu/pagingQueryGrantPermissionsByMenuResourceId.koala', data).done(function(data){
+        				$.post(contextPath + '/auth/menu/grantPermisssionsToMenuResource.koala', data).done(function(data){
+        					
+        					//console.log(data.success);
+        					
         					if(data.success){
         						grid.message({
         							type: 'success',
@@ -424,7 +431,7 @@
         						saveBtn.attr('disabled', 'disabled');	
         						grid.message({
         							type: 'error',
-        							content: data.actionError
+        							content: '保存失败'
         						});
         					}
         				}).fail(function(data){
@@ -456,11 +463,13 @@
        							width : 150
        						}];
        					
+       					
         					dialog.find('.selectPermissionGrid').grid({
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],
-        			             url: contextPath + '/auth/menu/pagingQueryNotGrantPermissionsByMenuResourceId.koala?menuResourceId='+menuId
+        			             //url: contextPath + '/auth/permission/pagingquery.koala?menuResourceId='+menuId
+        			            url:contextPath + '/auth/menu/pagingQueryNotGrantPermissionsByMenuResourceId.koala?menuResourceId=' + menuId
         			        });        						
        					},
        					'complete': function(){
@@ -545,7 +554,7 @@
         					data += "&permissionIds=" + items[i].permissionId;
         				}
         				
-        				$.post(contextPath + '/auth/page/pagingQueryGrantPermissionsByPageElementResourceId.koala', data).done(function(data){
+        				$.post(contextPath + '/auth/page/grantPermisssionsToPageElementResource.koala', data).done(function(data){
         					if(data.success){
         						grid.message({
         							type: 'success',
@@ -678,7 +687,7 @@
         					data += "&permissionIds=" + items[i].permissionId;
         				}
         				
-        				$.post(contextPath + '/auth/url/pagingQueryGrantPermissionsByUrlAccessResourceId.koala', data).done(function(data){
+        				$.post(contextPath + '/auth/url/grantPermisssionsToUrlAccessResource.koala', data).done(function(data){
         					if(data.success){
         						grid.message({
         							type: 'success',
@@ -759,7 +768,7 @@
 				grid.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
-						var url = contextPath + '/auth/url/terminateUrlAccessResources.koala';
+						var url = contextPath + '/auth/url/terminatePermissionsFromUrlAccessResource.koala';
 						var params = "urlAccessResourceId="+urlId;
 						for (var i = 0, j = data.item.length; i < j; i++) {
 							params += ("&permissionIds=" + data.item[i].permissionId);

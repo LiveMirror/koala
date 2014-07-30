@@ -34,17 +34,18 @@ var roleManager = function(){
 			delete roles[i].permissionDTOs;
 		}*/
 		dataGrid = grid;
+		console.log(roles);
 		$.ajax({
 		    headers: { 
 		        'Accept': 'application/json',
 		        'Content-Type': 'application/json' 
 		    },
-		    'type'	: "Post",
+		    'type'	: "POST",
 		    'url'	: baseUrl + 'terminate.koala',
 		    'data'	: JSON.stringify(roles),
 		    'dataType': 'json'
 		 }).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dataGrid.message({
 					type: 'success',
 					content: '删除成功'
@@ -117,7 +118,7 @@ var roleManager = function(){
 		}
 		
 		$.post(url,getAllData(item)).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dialog.trigger('complete');
 			}else{
 				dialog.find('.modal-content').message({
@@ -144,19 +145,12 @@ var roleManager = function(){
 	 */
 	var getAllData = function(item){
 		var data = {};
-		data['roleVO.name'] = roleName.val();
-		data['roleVO.roleDesc'] = roleDescript.val();
-		if(item){
-			data['roleVO.id'] = item.id;	
-		}
-		return data;
-		/*var data = {};
 		data['roleName'] = roleName.val();
 		data['description'] = roleDescript.val();
 		if(item){
 			data['roleId'] = item.roleId;	
 		}
-		return data;*/
+		return data;
 	};
 	var assignRole = function(roleId, name){
 		openTab('/pages/auth/user-list.jsp',
@@ -165,7 +159,7 @@ var roleManager = function(){
 	};
 	/**
 	 * 资源授权
-	 */
+	 */ 
 	var assignResource = function(grid, roleId){
 		$.get(contextPath + '/pages/auth/assign-resource.jsp').done(function(data){
 			var dialog = $(data);
@@ -173,26 +167,20 @@ var roleManager = function(){
             dialog.find('.save').on('click',function(){
 				var treeObj = $(".resourceTree").getTree();
 				var nodes = treeObj.selectedItems();
-				/*
-				var data = 'roleId=' + roleId;
-		         console.log(data);
-				for(var i=0,j=nodes.length; i<j; i++){
-					data += ('&menuResourceDTOs['+i+'].id=' + nodes[i].id);
-				}
-				
-				$.post(contextPath + '/auth/role/grantMenuResources.koala',data,function(){
-					
-				});*/
-				
-				
-				var data = {};
-				data['roleVO.id'] = roleId;
-				for(var i=0,j=nodes.length; i<j; i++){
-					data['menus['+i+'].id'] = nodes[i].id;
-					data['menus['+i+'].identifier'] = nodes[i].identifier;
-				}
-				$.post(baseUrl + 'grantMenuResources.koala', data).done(function(data){
-					if(data.result == 'success'){
+				$.each(nodes,function(index){
+					delete nodes[index].open;
+				})
+				$.ajax({
+				    headers: { 
+				        'Accept': 'application/json',
+				        'Content-Type': 'application/json' 
+				    },
+				    'type'	: "POST",
+				    'url'	: baseUrl + 'grantMenuResourcesToRole.koala?roleId='+roleId,
+				    'data'	:JSON.stringify(nodes),
+				    'dataType': 'json'
+				 }).done(function(data){
+					if(data.success){
 						grid.message({
 							type: 'success',
 							content: '保存成功'
@@ -211,40 +199,6 @@ var roleManager = function(){
 						});
 					});
 				
-				/*var data = {};
-				var mDTOs = [];
-				data.roleId = roleId;
-				
-		
-				
-				for(var i=0,j=nodes.length; i<j; i++){
-					var dto = {};
-					dto.id = nodes[i].id;
-					mDTOs.push(dto);
-				}
-				data.MenuResourceDTOs = mDTOs;
-				
-				$.post(baseUrl + 'grantMenuResources.koala', data).done(function(data){
-					if(data.result == 'success'){
-						grid.message({
-							type: 'success',
-							content: '保存成功'
-						});
-						dialog.modal('hide');
-					}else{
-						dialog.find('.modal-content').message({
-							type: 'error',
-							content: data.actionError
-						});
-					}
-				}).fail(function(data){
-						dialog.find('.modal-content').message({
-							type: 'error',
-							content: '保存失败'
-						});
-					});*/
-				
-				
 			}).end().modal({
 				keyboard: false
 			}).on({
@@ -262,6 +216,7 @@ var roleManager = function(){
 			});
 		});
 	};
+
 	/*
 	* 加载资源树
 	 */
@@ -278,9 +233,9 @@ var roleManager = function(){
 				var zNode = {};
                 var menu = {};
                 menu.id = item.id;
-                menu.title = item.name;
-                menu.open = true;
-                menu.checked = item.ischecked;
+                menu.name = item.name;
+                menu.open = true;//是否打开树
+                menu.checked = item.checked;
                 menu.identifier = item.identifier;
                 zNode.menu = menu;
 				if(item.children && item.children.length > 0){
@@ -312,9 +267,9 @@ var roleManager = function(){
             var zNode = {};
             var menu = {};
             menu.id = item.id;
-            menu.title = item.name;
+            menu.name = item.name;
             menu.open = true;
-            menu.checked = item.ischecked;
+            menu.checked = item.checked;
             menu.identifier = item.identifier;
             zNode.menu = menu;
             if(item.children && item.children.length > 0){

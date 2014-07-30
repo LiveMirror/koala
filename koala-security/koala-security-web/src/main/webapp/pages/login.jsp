@@ -196,7 +196,7 @@ body {
         		data:param,
         		type:"post",
         		success:function(data){
-        			if(data.result == "success"){
+        			if(data.success){
         				$('.login_con_R').message({
         					type: 'success',
         					content:  data.message

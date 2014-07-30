@@ -1,57 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <div data-role="userGrid">
- 
-   <!--<div class = "searchCondition" data-role="userSearch">
-   <div class = "userNameContainer">
-   <label for = "userName_Search" >用户名称:</label>
-   <input type = "text" class = "input-medium form-control userName_Search" name = "userName_Search" value="qq"/></div>
-   <div class = "userStateContainer">
-   <label for = "userState">用户状态：</label>
-   <select class = "stateSelect">
-    <option>请选择</option>
-   <option name = "activate">激活</option>
-   <option name = "suspend">挂起</option>
-   </select></div>
-   <div class ="userTelContainer">
-   <label for = "userTel">电话：</label>
-   <input type="text" class = "input-medium form-control userTel" name = "userTel"/></div>
-   <div class = "userSubmitContainer">
-   <input type ="button" class = "btn submitValue" value="查询" /></div>
-   <style>
-    
-      .searchCondition{width:100%;margin:0 auto;}
-      .userNameContainer,.userStateContainer,.userTelContainer,.userSubmitContainer{float:left;}
-      .userNameContainer label,.userStateContainer label,.userTelContainer label{width:65px;float:left;margin:6px;}
-      .userNameContainer input,.userTelContainer input{width:165px;height:30px;}
-      .userStateContainer,.userTelContainer,.userSubmitContainer{margin-left:5%;}
-      
-   </style>
-</div>-->
+
 </div>
 <script>
-   
-   /* $(function(){
-		   var baseUrl = contextPath + '/auth/user/';
-		   var userName_Search = $('.userName_Search').val();
-		   var userTel = $('.userTel').val();
-		   var stateSelect = $('.stateSelect').val();
-		   if(stateSelect == '激活'){
-			   var stateSelect_ = "activate";	   
-		   }else if(stateSelect == '挂起'){
-			   var stateSelect_ = "suspend";
-		   }
-		// var formData = $('[data-role = "userSearch"]').data();//获取class
-		// var searchId = formData.roleId;
-		 
-		 
-		 
-	 $('.submitValue').click(function(){
-		 
-		   $.post(baseUrl+'pagingquery.koala?userName_Search='+userName_Search+'&stateSelect_='+stateSelect_+'&userTel='+userTel).done(function(data){
-			   $('[data-role="userGrid"]').data("koala.grid").update(data);
-		   });
-    });
-    });*/
+
 
 	$(function() {
 		var tabData = $('[data-role="userGrid"]').closest('.tab-pane.active').data();
@@ -119,15 +71,13 @@
 				}];
 			}
 		};
-		var url = contextPath + '/auth/user/pagingquery.koala?disabled=false';
-	    //	if (roleId) {
-		//	url += '?roleId=' + roleId;
-		//}
+		var url = contextPath + '/auth/user/pagingQuery.koala?disabled=false';
+
 		$('[data-role="userGrid"]').off().grid({
 			identity : 'id',
 			columns : columns,
 			buttons : getButtons(),
-			querys : [{
+			/*querys : [{
 				title : '用户名称',
 				value : 'userNameForSearch'
 			}, {
@@ -136,7 +86,7 @@
 			}, {
 				title : '用户状态',
 				value : 'userState'
-			}],
+			}],*/
 			url : url
 		}).on({
 			'add' : function() {
@@ -289,7 +239,7 @@
 					});
 					return;
 				}
-				console.log(data.item[0]);
+				
 				userManager().forbidden(data.item[0] , $this);
 			}
 		});

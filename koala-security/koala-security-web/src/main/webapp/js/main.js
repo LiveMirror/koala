@@ -87,9 +87,10 @@ $(function(){
 		
 		var logOut = contextPath+"/auth/user/logout.koala";
 		$.post(logOut,function(result){
-			if(result.result == 'success'){
+			if(result.success){
 				window.location.href = contextPath+"/login.koala";
 			}
+			
 		});
 	});
 	

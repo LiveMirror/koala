@@ -29,9 +29,10 @@
 			name : "valid",
 			width : 100,
 			render : function(item, name, index) {
-				return item[name] == true ? '<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>' : '<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>';
+				return item[name] != true ? '<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>' : '<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>';
 			}
 		}];
+		
 		
 		var getButtons = function() {
 			if (roleId) {
@@ -49,7 +50,7 @@
 				}];
 			}
 		};
-		var url = contextPath + '/auth/user/pagingquery.koala?disabled=true';
+		var url = contextPath + '/auth/user/pagingQuery.koala?disabled=true';
 		
 		$('[data-role="userGrid"]').off().grid({
 			identity : 'id',
@@ -74,7 +75,7 @@
 					});
 					return;
 				}
-				console.table(data.item[0]);
+				
 				userManager().available(data.item[0],$this);
 			}
 		});

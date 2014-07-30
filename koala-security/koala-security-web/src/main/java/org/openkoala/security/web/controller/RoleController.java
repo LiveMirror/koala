@@ -365,10 +365,10 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/grantPageElementResourcesToRole")
-	public JsonResult grantPageElementResourcesToRole(Long roleId, Long[] PageElementResourceIds) {
+	public JsonResult grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.grantPageElementResourcesToRole(roleId, PageElementResourceIds);
+			securityConfigFacade.grantPageElementResourcesToRole(roleId, pageElementResourceIds);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为角色授权页面元素权限资源成功");
 		} catch (Exception e) {
@@ -388,10 +388,10 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/terminatePageElementResourcesFromRole")
-	public JsonResult terminatePageElementResourcesFromRole(Long roleId, Long[] PageElementResourceIds) {
+	public JsonResult terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.terminatePageElementResourcesFromRole(roleId, PageElementResourceIds);
+			securityConfigFacade.terminatePageElementResourcesFromRole(roleId, pageElementResourceIds);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("从角色中撤销页面元素权限资源成功");
 		} catch (Exception e) {

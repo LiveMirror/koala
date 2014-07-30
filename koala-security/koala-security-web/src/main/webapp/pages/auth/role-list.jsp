@@ -46,7 +46,7 @@
 			}
 		})();
 		
-		var url = contextPath + '/auth/role/pagingquery.koala';
+		var url = contextPath + '/auth/role/pagingQuery.koala';
 		if (userId) {
 			url = contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId=' + userId;
 		}
@@ -122,7 +122,7 @@
         					data += "&roleIds="+items[i].roleId;
         				}
         				
-        				$.post(contextPath + '/auth/user/grantRoles.koala', data).done(function(data){
+        				$.post(contextPath + '/auth/user/grantRolesToUser.koala', data).done(function(data){
        						grid.message({
        							type: 'success',
        							content: '保存成功'
@@ -211,7 +211,8 @@
 					});
 					return;
 				}
-				roleManager().assignResource($(this), items[0].roleId);
+				console.log(items[0].roleId);
+				roleManager().assignResource($this, items[0].roleId);
 			},
 			'pageAssign' : function(event, data) {
 				var items = data.item;
@@ -230,7 +231,10 @@
 					});
 					return;
 				}
-				roleManager().assignResource($(this), items[0].roleId);
+				//roleManager().pageAssign($(this), items[0].roleId);
+				var page = items[0];
+				console.log(page.roleId);
+				openTab('/pages/auth/page-list.jsp', page.roleName+'的page管理', 'roleManager_' + page.roleId, page.roleId, {pageId : page.roleId});
 			}
 			,
 			'removeRoleForUser' : function(event, data) {
@@ -246,7 +250,7 @@
 				grid.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
-						var url = contextPath + '/auth/user/terminateRolesByUser.koala';
+						var url = contextPath + '/auth/user/terminateAuthorizationByUserInRoles.koala';
 						var params = "userId="+userId;
 						for (var i = 0, j = data.item.length; i < j; i++) {
 							params += ("&roleIds=" + data.item[i].roleId);
@@ -291,6 +295,7 @@
 					});
 					return;
 				}
+				console.log(data.data[0]);
 				roleManager().assignResource($(this), data.data[0]);
 			}
 		});
