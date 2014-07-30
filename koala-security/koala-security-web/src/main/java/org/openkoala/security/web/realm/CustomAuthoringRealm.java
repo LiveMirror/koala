@@ -61,7 +61,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 	private Set<String> getPermissionIdentifiers(String username) {
 		Set<String> results = new HashSet<String>();
 
-		Set<PermissionDTO> permissionDtos = securityAccessFacade.findPermissionDTOsBy(username);
+		Set<PermissionDTO> permissionDtos = securityAccessFacade.findPermissionsBy(username);
 		for (PermissionDTO permissionDto : permissionDtos) {
 			results.add(permissionDto.getIdentifier());
 		}
@@ -98,7 +98,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		userDTO = securityAccessFacade.login(principal, password);		
 		
 		// TODO 以后修改成前后台获取一致。
-		List<RoleDTO> roleDTOs = securityAccessFacade.findRoleDTOsBy(userDTO.getUserAccount());
+		List<RoleDTO> roleDTOs = securityAccessFacade.findRolesBy(userDTO.getUserAccount());
 		String roleName = "";
 		
 		if(roleDTOs.isEmpty()){
