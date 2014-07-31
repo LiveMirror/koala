@@ -109,22 +109,14 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	public List<MenuResourceDTO> findMenuResourceByUserAsRole(String userAccount, Long roleId) {
 
 		Set<Authority> authorities = new HashSet<Authority>();
-		List<MenuResourceDTO> results;
-		List<MenuResourceDTO> childrenMenuResources;
-
 		Role role = securityAccessApplication.getRoleBy(roleId);
-		if (!"admin".equals(role.getName())) {
-			// securityAccessApplication.checkAuthorization(userAccount, role);
-			authorities.add(role);
-			authorities.addAll(role.getPermissions());
-			authorities.addAll(User.findAllPermissionsBy(userAccount));
-			// 1、User 的角色、2、User本身的Permission 3、角色所关联的Permission。
-			results = findTopMenuResourceDTOByUserAccountAsRole(authorities);
-			childrenMenuResources = findAllMenuResourceDTOByUserAccountAsRole(authorities);
-		} else {
-			results = findTopMenuResource();
-			childrenMenuResources = findChidrenMenuResource();
-		}
+//		securityAccessApplication.checkAuthorization(userAccount, role); //TODO 检查
+		authorities.add(role);
+		authorities.addAll(role.getPermissions());
+		authorities.addAll(User.findAllPermissionsBy(userAccount));
+		// 1、User 的角色、2、User本身的Permission 3、角色所关联的Permission。
+		List<MenuResourceDTO> results = findTopMenuResourceDTOByUserAccountAsRole(authorities);
+		List<MenuResourceDTO> childrenMenuResources = findAllMenuResourceDTOByUserAccountAsRole(authorities);
 
 		List<MenuResourceDTO> all = new ArrayList<MenuResourceDTO>();
 		all.addAll(results);

@@ -276,18 +276,14 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		UrlAccessResource userAddUrlAccessResource = new UrlAccessResource("用户管理-添加", "/auth/user/add");
 		UrlAccessResource userUpdateUrlAccessResource = new UrlAccessResource("用户管理-更新", "/auth/user/update");
 		UrlAccessResource userTerminateUrlAccessResource = new UrlAccessResource("用户管理-撤销", "/auth/user/terminate");
-		UrlAccessResource userPagingqueryUrlAccessResource = new UrlAccessResource("用户管理-分页查询",
-				"/auth/user/pagingquery");
-		UrlAccessResource userUpdatePasswordUrlAccessResource = new UrlAccessResource("用户管理-更新密码",
-				"/auth/user/updatePassword");
-		UrlAccessResource userResetPasswordUrlAccessResource = new UrlAccessResource("用户管理-重置密码",
-				"/auth/user/resetPassword");
+		UrlAccessResource userPagingqueryUrlAccessResource = new UrlAccessResource("用户管理-分页查询", "/auth/user/pagingquery");
+		UrlAccessResource userUpdatePasswordUrlAccessResource = new UrlAccessResource("用户管理-更新密码", "/auth/user/updatePassword");
+		UrlAccessResource userResetPasswordUrlAccessResource = new UrlAccessResource("用户管理-重置密码", "/auth/user/resetPassword");
 		UrlAccessResource userActivateUrlAccessResource = new UrlAccessResource("用户管理-激活", "/auth/user/activate");
 		UrlAccessResource userActivatesUrlAccessResource = new UrlAccessResource("用户管理-激动所有", "/auth/user/activates");
 		UrlAccessResource userSuspendsUrlAccessResource = new UrlAccessResource("用户管理-挂起所有", "/auth/user/suspends");
 		UrlAccessResource userGrantRoleUrlAccessResource = new UrlAccessResource("用户管理-授权一个角色", "/auth/user/grantRole");
-		UrlAccessResource userGrantRolesUrlAccessResource = new UrlAccessResource("用户管理-授权多个角色",
-				"/auth/user/grantRoles");
+		UrlAccessResource userGrantRolesUrlAccessResource = new UrlAccessResource("用户管理-授权多个角色", "/auth/user/grantRoles");
 		UrlAccessResource userGrantPermissionUrlAccessResource = new UrlAccessResource("用户管理-授权一个权限",
 				"/auth/user/grantPermission");
 		UrlAccessResource userGrantPermissionsUrlAccessResource = new UrlAccessResource("用户管理-授权多个权限",
@@ -338,14 +334,21 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	private List<MenuResource> initMenuResource() {
 		String menuIcon = "glyphicon  glyphicon-list-alt";
 
-		MenuResource securityMenuResource = new MenuResource("权限");
-		securityMenuResource.setDescription("所有的权限页面");
-		securityMenuResource.setMenuIcon(menuIcon);
-
+		MenuResource actorSecurityMenuResource = new MenuResource("参与者管理");
+		actorSecurityMenuResource.setDescription("用户、用户组等页面管理。");
+		actorSecurityMenuResource.setMenuIcon(menuIcon);
+		createSecurityResource(actorSecurityMenuResource);
+		
 		MenuResource userMenuResource = new MenuResource("用户管理");
 		userMenuResource.setMenuIcon(menuIcon);
 		userMenuResource.setUrl("/pages/auth/user-list.jsp");
-
+		createChildToParent(userMenuResource, actorSecurityMenuResource.getId());
+		
+		MenuResource authoritySecurityMenuResource = new MenuResource("授权体管理");
+		authoritySecurityMenuResource.setDescription("角色、权限等页面管理。");
+		authoritySecurityMenuResource.setMenuIcon(menuIcon);
+		createSecurityResource(authoritySecurityMenuResource);
+		
 		MenuResource roleMenuResource = new MenuResource("角色管理");
 		roleMenuResource.setMenuIcon(menuIcon);
 		roleMenuResource.setUrl("/pages/auth/role-list.jsp");
@@ -353,7 +356,15 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		MenuResource permisisonMenuResource = new MenuResource("权限管理");
 		permisisonMenuResource.setMenuIcon(menuIcon);
 		permisisonMenuResource.setUrl("/pages/auth/permission-list.jsp");
+		
+		createChildToParent(roleMenuResource, authoritySecurityMenuResource.getId());
+		createChildToParent(permisisonMenuResource, authoritySecurityMenuResource.getId());
 
+		MenuResource securityMenuResource = new MenuResource("权限资源管理");
+		securityMenuResource.setDescription("角色、权限等页面管理。");
+		securityMenuResource.setMenuIcon(menuIcon);
+		createSecurityResource(securityMenuResource);
+		
 		MenuResource menuResource = new MenuResource("菜单资源管理");
 		menuResource.setMenuIcon(menuIcon);
 		menuResource.setUrl("/pages/auth/menu-list.jsp");
@@ -366,18 +377,17 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		pageElementResource.setMenuIcon(menuIcon);
 		pageElementResource.setUrl("/pages/auth/page-list.jsp");
 
-		createSecurityResource(securityMenuResource);
-
-		createChildToParent(userMenuResource, securityMenuResource.getId());
-		createChildToParent(roleMenuResource, securityMenuResource.getId());
-		createChildToParent(permisisonMenuResource, securityMenuResource.getId());
 		createChildToParent(menuResource, securityMenuResource.getId());
 		createChildToParent(urlAccessResource, securityMenuResource.getId());
 		createChildToParent(pageElementResource, securityMenuResource.getId());
 
-		LOGGER.info("init menuResource :userMenuResource{},", new Object[] { userMenuResource.getId() });
-		return Lists.newArrayList(securityMenuResource, userMenuResource, roleMenuResource, permisisonMenuResource,
-				menuResource, urlAccessResource, pageElementResource);
+		return Lists.newArrayList(actorSecurityMenuResource, //
+				userMenuResource, //
+				roleMenuResource, //
+				permisisonMenuResource,//
+				menuResource, //
+				urlAccessResource, //
+				pageElementResource);
 	}
 
 	private User initUser() {
@@ -390,7 +400,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	private Role initRole() {
-		Role role = new Role("admin");
+		Role role = new Role("superAdmin");
 		role.setDescription("超级管理员");
 		createAuthority(role);
 		return role;

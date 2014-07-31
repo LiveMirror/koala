@@ -36,12 +36,6 @@ public class Role extends Authority {
 	inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID"))
 	private Set<Permission> permissions = new HashSet<Permission>();
 
-	/**
-	 * 超级管理员
-	 */
-	@Column(name="SUPERVISOR")
-	private boolean supervisor = false;
-	
 	protected Role() {}
 
 	public Role(String name) {
@@ -134,14 +128,5 @@ public class Role extends Authority {
 	public void setPermissions(Set<Permission> permissions) {
 		this.permissions = permissions;
 	}
-
-	public boolean isSupervisor() {
-		return supervisor;
-	}
-
-	public void setSupervisor(boolean supervisor) {
-		this.supervisor = supervisor;
-	}
-	
 	
 }
