@@ -34,7 +34,6 @@ var roleManager = function(){
 			delete roles[i].permissionDTOs;
 		}*/
 		dataGrid = grid;
-		console.log(roles);
 		$.ajax({
 		    headers: { 
 		        'Accept': 'application/json',
@@ -169,7 +168,10 @@ var roleManager = function(){
 				var nodes = treeObj.selectedItems();
 				$.each(nodes,function(index){
 					delete nodes[index].open;
+					nodes[index].name = nodes[index].title;
+					delete nodes[index].title;
 				});
+				
 				$.ajax({
 				    headers: { 
 				        'Accept': 'application/json',
