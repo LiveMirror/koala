@@ -150,11 +150,11 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public List<MenuResourceDTO> findMenuResourceTreeSelectItemByRoleId(Long roleId) {
 		
-		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority WHERE TYPE(_securityResource) = :_securityResourceType AND _authority.id = :authorityId");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_securityResource.id,_securityResource.name) FROM SecurityResource _securityResource JOIN _securityResource.authorities _authority WHERE TYPE(_securityResource) = :securityResourceType AND _authority.id = :authorityId");
 		
 		List<MenuResourceDTO> allMenResourcesAsRole = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
-				.addParameter("_securityResourceType", MenuResource.class)//
+				.addParameter("securityResourceType", MenuResource.class)//
 				.addParameter("authorityId", roleId)//
 				.list();
 		
@@ -188,7 +188,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public Set<RoleDTO> findRolesByMenuOrUrl() {
 
-		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_authority.id, _authority.name,_authority.description, _securityResource.url) FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE Type(_authority) = Role AND (TYPE(_securityResource) = MenuResource OR TYPE(_securityResource) = UrlAccessResource)");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_authority.id, _authority.name,_authority.description, _securityResource.url) FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE TYPE(_authority) = Role AND (TYPE(_securityResource) = MenuResource OR TYPE(_securityResource) = UrlAccessResource)");
 
 		List<RoleDTO> results = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//

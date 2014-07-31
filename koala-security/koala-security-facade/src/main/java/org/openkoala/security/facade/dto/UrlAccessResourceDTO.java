@@ -2,6 +2,10 @@ package org.openkoala.security.facade.dto;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class UrlAccessResourceDTO implements Serializable {
 
 	private static final long serialVersionUID = -2406552978317692278L;
@@ -46,8 +50,7 @@ public class UrlAccessResourceDTO implements Serializable {
 	 */
 	private String permissions;
 	
-	public UrlAccessResourceDTO() {
-	}
+	protected UrlAccessResourceDTO() {}
 
 	public UrlAccessResourceDTO(Long id, String name, boolean disabled, String url, String identifier,
 			String description) {
@@ -137,6 +140,37 @@ public class UrlAccessResourceDTO implements Serializable {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()//
+				.append(name)//
+				.append(url)//
+				.toHashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof UrlAccessResourceDTO)) {
+			return false;
+		}
+		UrlAccessResourceDTO that = (UrlAccessResourceDTO) other;
+		return new EqualsBuilder()//
+				.append(this.getName(), that.getName())//
+				.append(this.getUrl(), that.getUrl())//
+				.isEquals();
+	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)//
+				.append(getId())//
+				.append(getName())//
+				.append(getIdentifier())//
+				.append(getUrl())//
+				.append(getDisabled())//
+				.build();
 	}
 	
 }

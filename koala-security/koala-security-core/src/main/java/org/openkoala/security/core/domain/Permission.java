@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.openkoala.security.core.IdentifierIsExistedException;
 
 /**
@@ -91,6 +92,19 @@ public class Permission extends Authority {
 			throw new IdentifierIsExistedException("permission.identifier.existed");
 		}
 		
+	}
+	
+	public String[] businessKeys() {
+		return new String[] { "name", "identifier" };
+	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)//
+				.append(name)//
+				.append(identifier)//
+				.append(getDescription())//
+				.build();
 	}
 	
 	public Set<Role> getRoles() {

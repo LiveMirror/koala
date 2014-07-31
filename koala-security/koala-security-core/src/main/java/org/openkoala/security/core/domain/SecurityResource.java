@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.core.UrlIsExistedException;
 
@@ -60,7 +61,8 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	@ManyToMany(mappedBy = "securityResources", fetch = FetchType.EAGER)
 	private Set<Authority> authorities = new HashSet<Authority>();
 
-	protected SecurityResource() {}
+	protected SecurityResource() {
+	}
 
 	public SecurityResource(String name) {
 		this.name = name;
@@ -106,6 +108,22 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	private boolean isExistName(String name) {
 		return findByName(name) != null;
 	}
+	
+	@Override
+	public String[] businessKeys() {
+		return new String[] { "name" };
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)//
+				.append(name)//
+				.append(url)//
+				.append(identifier)//
+				.append(disabled)//
+				.append(description)//
+				.build();
+	}
 
 	public boolean isDisabled() {
 		return disabled;
@@ -145,16 +163,6 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
-	}
-
-	@Override
-	public String[] businessKeys() {
-		return new String[] { "name", "description" };
-	}
-
-	@Override
-	public String toString() {
-		return "SecurityResource [name=" + name + ", description=" + description + "]";
 	}
 
 }

@@ -90,7 +90,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void grantActorToAuthority(Actor actor, Authority authority) {
-		new Authorization(actor, authority, null).save();
+		actor.grant(authority, null);
 	}
 
 	public void grantActorToAuthorities(Actor actor, List<Authority> authorities) {
@@ -109,8 +109,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		authority.terminateSecurityResource(securityResource);
 	}
 
-	public void terminateSecurityResourcesFromAuthority(List<? extends SecurityResource> securityResources,
-			Authority authority) {
+	public void terminateSecurityResourcesFromAuthority(List<? extends SecurityResource> securityResources, Authority authority) {
 		authority.terminateSecurityResources(securityResources);
 	}
 
@@ -179,7 +178,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void grantActorToAuthorityInScope(Actor actor, Authority authority, Scope scope) {
-		new Authorization(actor, authority, scope).save();
+		actor.grant(authority, scope);
 	}
 
 	@Override
@@ -189,8 +188,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	@Override
-	public void grantAuthorityToSecurityResources(Authority authority,
-			List<? extends SecurityResource> securityResources) {
+	public void grantAuthorityToSecurityResources(Authority authority, List<? extends SecurityResource> securityResources) {
 		authority.addSecurityResources(securityResources);
 	}
 
@@ -222,8 +220,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	@Override
-	public void grantSecurityResourcesToAuthority(List<? extends SecurityResource> securityResources,
-			Authority authority) {
+	public void grantSecurityResourcesToAuthority(List<? extends SecurityResource> securityResources, Authority authority) {
 		authority.addSecurityResources(securityResources);
 	}
 
@@ -255,7 +252,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 
 	@Override
 	public void grantAuthorityToActor(Authority authority, Actor actor) {
-		new Authorization(actor, authority, null).save();
+		actor.grant(authority, null);
 	}
 
 	// TODO 其他的URL 其他的页面元素资源

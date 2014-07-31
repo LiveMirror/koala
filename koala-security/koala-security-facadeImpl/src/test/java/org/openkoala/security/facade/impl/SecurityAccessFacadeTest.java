@@ -162,16 +162,16 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Test
 	public void testFindPermissionDTOsByMenuOrUrl() {
-		Set<PermissionDTO> permissionDTOs = securityAccessFacade.findPermissionsByMenuOrUrl();
-		assertNotNull(permissionDTOs);
-		assertTrue(permissionDTOs.size() == 2);
+		Set<PermissionDTO> results = securityAccessFacade.findPermissionsByMenuOrUrl();
+		assertNotNull(results);
+		assertTrue(results.size() == 2);
 	}
 
 	@Test
 	public void testFindRoleDTOsByMenuOrUrl() {
-		Set<RoleDTO> roleDTOs = securityAccessFacade.findRolesByMenuOrUrl();
-		assertNotNull(roleDTOs);
-		assertTrue(roleDTOs.size() == 2);
+		Set<RoleDTO> results = securityAccessFacade.findRolesByMenuOrUrl();
+		assertNotNull(results);
+		assertTrue(results.size() == 2);
 	}
 
 	// TODO ...

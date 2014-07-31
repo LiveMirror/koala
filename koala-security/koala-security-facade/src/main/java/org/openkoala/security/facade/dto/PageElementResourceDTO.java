@@ -2,6 +2,10 @@ package org.openkoala.security.facade.dto;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class PageElementResourceDTO implements Serializable{
 	
 	private static final long serialVersionUID = -1461134111548409793L;
@@ -23,11 +27,15 @@ public class PageElementResourceDTO implements Serializable{
 	
 	private String description;
 	
-	public PageElementResourceDTO() {
-	}
+	protected PageElementResourceDTO() {}
 	
-	public PageElementResourceDTO(Long id, int version, String name, boolean disabled, String identifier,
-			String description,String pageElementType) {
+	
+	public PageElementResourceDTO(String name, String description) {
+		this.name = name;
+		this.description = description;
+	}
+
+	public PageElementResourceDTO(Long id, int version, String name, boolean disabled, String identifier, String description,String pageElementType) {
 		this.id = id;
 		this.version = version;
 		this.name = name;
@@ -92,4 +100,34 @@ public class PageElementResourceDTO implements Serializable{
 	public void setPageElementType(String pageElementType) {
 		this.pageElementType = pageElementType;
 	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()//
+				.append(name)//
+				.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof PageElementResourceDTO)) {
+			return false;
+		}
+		PageElementResourceDTO that = (PageElementResourceDTO) other;
+		return new EqualsBuilder()//
+				.append(this.getName(), that.getName())//
+				.isEquals();
+	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)//
+				.append(getId())//
+				.append(getName())//
+				.append(getDescription())//
+				.append(getIdentifier())//
+				.append(getPageElementType())//
+				.build();
+	}
+	
 }

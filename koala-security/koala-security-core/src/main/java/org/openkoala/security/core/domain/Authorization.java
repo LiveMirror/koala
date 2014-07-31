@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.CriteriaQuery;
 import org.openkoala.security.core.AuthorizationIsNotExisted;
 
@@ -152,18 +153,6 @@ public class Authorization extends SecurityAbstractEntity {
 		return results;
 	}
 
-	public Actor getActor() {
-		return actor;
-	}
-
-	public Authority getAuthority() {
-		return authority;
-	}
-
-	public Scope getScope() {
-		return scope;
-	}
-
 	@Override
 	public String[] businessKeys() {
 		if (null != this.getScope()) {
@@ -175,7 +164,22 @@ public class Authorization extends SecurityAbstractEntity {
 
 	@Override
 	public String toString() {
-		return "Authorization [actor=" + actor + ", authority=" + authority + ", scope=" + scope + "]";
+		return new ToStringBuilder(this)//
+				.append(actor)//
+				.append(authority)//
+				.append(scope)//
+				.build();
+	}
+	
+	public Actor getActor() {
+		return actor;
 	}
 
+	public Authority getAuthority() {
+		return authority;
+	}
+
+	public Scope getScope() {
+		return scope;
+	}
 }

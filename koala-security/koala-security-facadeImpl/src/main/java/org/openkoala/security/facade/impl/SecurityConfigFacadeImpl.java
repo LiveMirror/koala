@@ -31,6 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
+
 @Named
 @Transactional
 public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
@@ -68,7 +70,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		User user = transFromUserBy(userDto);
 		return securityAccessApplication.updatePassword(user, oldUserPassword);
 	}
-	
+
 	@Override
 	public void saveRole(RoleDTO roleDTO) {
 		Role role = transFromRoleBy(roleDTO);
@@ -252,43 +254,55 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		}
 	}
 
-	// 树 等待验证
+	/**
+	 * 为角色授权菜单资源。
+	 */
 	@Override
 	public void grantMenuResourcesToRole(Long roleId, List<MenuResourceDTO> menuResourceDTOs) {
-		//
+
 		Role role = securityAccessApplication.getRoleBy(roleId);
 
 		// 现在的
 		List<MenuResource> targetOwnerMenuResources = transFromMenuResourcesBy(menuResourceDTOs);
-		// 原有的
+
+		// 原有的 TODO 可以门面层的查询选中项的方法变成一个。
 		List<MenuResource> originalOwnerMenuResources = securityAccessApplication.findAllMenuResourcesByRole(role);
 
-		List<MenuResource> tmpList = new ArrayList<MenuResource>(originalOwnerMenuResources);
+		List<MenuResource> tmpList = Lists.newArrayList(targetOwnerMenuResources);
+
 		// 待添加的
 		List<MenuResource> waitingAddList = new ArrayList<MenuResource>();
+
 		// 带删除的
 		List<MenuResource> waitingDelList = new ArrayList<MenuResource>();
 
+		// 得到相同的菜单
 		targetOwnerMenuResources.retainAll(originalOwnerMenuResources);
+
+		// 原有菜单删除相同菜单
 		originalOwnerMenuResources.removeAll(targetOwnerMenuResources);
 
+		// 得到待删除的菜单
 		waitingDelList.addAll(originalOwnerMenuResources);
 
+		// 现有菜单删除相同菜单
 		tmpList.removeAll(targetOwnerMenuResources);
 
+		// 得到带添加的菜单
 		waitingAddList.addAll(tmpList);
 
 		securityConfigApplication.terminateSecurityResourcesFromAuthority(waitingDelList, role);
 		securityConfigApplication.grantSecurityResourcesToAuthority(waitingAddList, role);
-
+		
+		LOGGER.info("----> waiting delete menuResource list :{}", waitingDelList);
+		LOGGER.info("----> waiting add menuResource list :{}", waitingAddList);
 	}
 
 	@Override
 	public void grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		for (Long pageElementResourceId : pageElementResourceIds) {
-			PageElementResource pageElementResource = securityAccessApplication
-					.getPageElementResourceBy(pageElementResourceId);
+			PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
 			securityConfigApplication.grantSecurityResourceToAuthority(pageElementResource, role);
 		}
 	}
@@ -474,9 +488,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 		return securityConfigApplication.checkAuthoritiHasPageElementResource(authorities, pageElementResource);
 	}
-	
+
 	@Override
-	public void initSecuritySystem(){
+	public void initSecuritySystem() {
 		securityConfigApplication.initSecuritySystem();
 	}
 

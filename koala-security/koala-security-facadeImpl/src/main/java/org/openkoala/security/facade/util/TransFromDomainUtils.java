@@ -102,7 +102,8 @@ public final class TransFromDomainUtils {
 	public static List<MenuResource> transFromMenuResourcesBy(List<MenuResourceDTO> menuResourceDTOs) {
 		List<MenuResource> results = new ArrayList<MenuResource>();
 		for (MenuResourceDTO menuResourceDTO : menuResourceDTOs) {
-			results.add(transFromMenuResourceBy(menuResourceDTO));
+			MenuResource result = transFromMenuResourceBy(menuResourceDTO);
+			results.add(result);
 		}
 		return results;
 	}

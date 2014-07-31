@@ -11,6 +11,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 @Entity
 @Table(name = "KS_SCOPES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -66,6 +68,19 @@ public abstract class Scope extends SecurityAbstractEntity {
 
 		return contains(scope.getParent());
 	}
+	
+	@Override
+	public String[] businessKeys() {
+		return new String[] { "name"};
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)//
+				.append(name)//
+				.append(description)//
+				.build();
+	}
 
 	public String getName() {
 		return name;
@@ -91,13 +106,4 @@ public abstract class Scope extends SecurityAbstractEntity {
 		this.level = level;
 	}
 
-	@Override
-	public String[] businessKeys() {
-		return new String[] { "name", "description" };
-	}
-
-	@Override
-	public String toString() {
-		return "Scope [name=" + name + ", description=" + description + "]";
-	}
 }

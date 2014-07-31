@@ -3,6 +3,10 @@ package org.openkoala.security.facade.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 6559662110574697001L;
@@ -40,7 +44,7 @@ public class UserDTO implements Serializable {
 	 */
 	private Boolean disabled;
 
-	UserDTO() {
+	protected UserDTO() {
 	}
 
 	public UserDTO(Long id) {
@@ -177,5 +181,40 @@ public class UserDTO implements Serializable {
 
 	public void setDisabled(Boolean disabled) {
 		this.disabled = disabled;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()//
+				.append(userPassword)//
+				.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof UserDTO)) {
+			return false;
+		}
+		UserDTO that = (UserDTO) other;
+		return new EqualsBuilder()//
+				.append(this.getUserAccount(), that.getUserAccount())//
+				.isEquals();
+	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)//
+				.append(getId())//
+				.append(getName())//
+				.append(getUserAccount())//
+				.append(getTelePhone())//
+				.append(getEmail())//
+				.append(getCreateOwner())//
+				.append(getDescription())//
+				.append(getDisabled())//
+				.append(getDisabled())//
+				.append(getLastLoginTime())//
+				.append(getLastModifyTime())//
+				.build();
 	}
 }

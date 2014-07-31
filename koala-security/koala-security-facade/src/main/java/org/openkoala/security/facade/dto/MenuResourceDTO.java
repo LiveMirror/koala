@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class MenuResourceDTO implements Serializable {
 
 	private static final long serialVersionUID = 3329310376086930435L;
@@ -28,19 +32,18 @@ public class MenuResourceDTO implements Serializable {
 	
 	private int level;
 	
-	private boolean isChecked;
+	private boolean checked;
 	
 	private List<MenuResourceDTO> children = new ArrayList<MenuResourceDTO>();
 
-	public MenuResourceDTO() {
-	}
+	protected MenuResourceDTO() {}
 	
-	public MenuResourceDTO(Long id) {
+	public MenuResourceDTO(Long id,String name) {
 		this.id = id;
+		this.name = name;
 	}
 
-	public MenuResourceDTO(Long id, String identifier, String name, String url, String icon, String description,
-			Long parentId, boolean disabled,int level) {
+	public MenuResourceDTO(Long id, String identifier, String name, String url, String icon, String description, Long parentId, boolean disabled,int level) {
 		this.id = id;
 		this.identifier = identifier;
 		this.name = name;
@@ -133,11 +136,11 @@ public class MenuResourceDTO implements Serializable {
 	}
 
 	public boolean isChecked() {
-		return isChecked;
+		return checked;
 	}
 
 	public void setChecked(boolean isChecked) {
-		this.isChecked = isChecked;
+		this.checked = isChecked;
 	}
 
 	public int getVersion() {
@@ -150,33 +153,33 @@ public class MenuResourceDTO implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		return new HashCodeBuilder()//
+				.append(name)//
+				.toHashCode();
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
+	public boolean equals(Object other) {
+		if (!(other instanceof MenuResourceDTO)) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MenuResourceDTO other = (MenuResourceDTO) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+		}
+		MenuResourceDTO that = (MenuResourceDTO) other;
+		return new EqualsBuilder()//
+				.append(this.getName(), that.getName())//
+				.isEquals();
 	}
 
 	@Override
 	public String toString() {
-		return "MenuResourceDTO [id=" + id + ", identifier=" + identifier + ", name=" + name + ", url=" + url
-				+ ", icon=" + icon + ", description=" + description + ", parentId=" + parentId + ", disabled="
-				+ disabled + ", children=" + children + "]";
+		return new ToStringBuilder(this)//
+				.append(getId())//
+				.append(getName())//
+				.append(getDescription())//
+				.append(getIcon())//
+				.append(getIdentifier())//
+				.append(getLevel())//
+				.append(getUrl())//
+				.append(getParentId())//
+				.build();//
 	}
 }

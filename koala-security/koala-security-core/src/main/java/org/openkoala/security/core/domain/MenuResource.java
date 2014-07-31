@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * 菜单权限资源
@@ -53,7 +54,8 @@ public class MenuResource extends SecurityResource {
 	@OneToMany(mappedBy = "parent")
 	private Set<MenuResource> children = new HashSet<MenuResource>();
 
-	protected MenuResource() {}
+	protected MenuResource() {
+	}
 
 	public MenuResource(String name) {
 		super(name);
@@ -115,6 +117,15 @@ public class MenuResource extends SecurityResource {
 				.addParameter("disabled", false)//
 				.singleResult();
 	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)//
+				.append(getId())//
+				.append(getName())//
+				.append(getUrl())//
+				.build();
+	}
 
 	public String getMenuIcon() {
 		return menuIcon;
@@ -155,4 +166,5 @@ public class MenuResource extends SecurityResource {
 	public void setPosition(int position) {
 		this.position = position;
 	}
+
 }

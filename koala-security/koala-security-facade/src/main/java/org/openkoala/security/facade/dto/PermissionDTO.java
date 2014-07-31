@@ -1,5 +1,9 @@
 package org.openkoala.security.facade.dto;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class PermissionDTO {
 
 	private Long permissionId;
@@ -18,8 +22,7 @@ public class PermissionDTO {
 
 	private String url;
 
-	public PermissionDTO() {
-	}
+	protected PermissionDTO() {}
 
 	public PermissionDTO(Long permissionId, String permissionName, String identifier, String description) {
 		this.permissionId = permissionId;
@@ -102,33 +105,31 @@ public class PermissionDTO {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
-		result = prime * result + ((permissionName == null) ? 0 : permissionName.hashCode());
-		return result;
+		return new HashCodeBuilder()//
+				.append(permissionName)//
+				.append(identifier)//
+				.toHashCode();
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
+	public boolean equals(Object other) {
+		if (!(other instanceof PermissionDTO)) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PermissionDTO other = (PermissionDTO) obj;
-		if (identifier == null) {
-			if (other.identifier != null)
-				return false;
-		} else if (!identifier.equals(other.identifier))
-			return false;
-		if (permissionName == null) {
-			if (other.permissionName != null)
-				return false;
-		} else if (!permissionName.equals(other.permissionName))
-			return false;
-		return true;
+		}
+		PermissionDTO that = (PermissionDTO) other;
+		return new EqualsBuilder()//
+				.append(this.getPermissionName(), that.getPermissionName())//
+				.append(this.getIdentifier(), that.getIdentifier())//
+				.isEquals();
 	}
 
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)//
+				.append(getPermissionId())//
+				.append(getPermissionName())//
+				.append(getIdentifier())//
+				.append(getDescription())//
+				.build();
+	}
 }

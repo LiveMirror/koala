@@ -95,5 +95,10 @@ public class UrlAccessResource extends SecurityResource {
 				.eq("url", url)//
 				.singleResult();
 	}
+	
+	@Override
+	public String[] businessKeys() {
+		return new String[] { "name", "url" };
+	}
 
 }

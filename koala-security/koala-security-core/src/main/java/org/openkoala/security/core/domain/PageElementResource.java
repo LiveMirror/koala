@@ -4,6 +4,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
 @DiscriminatorValue("PAGE_ELEMENT_RESOURCE")
@@ -59,6 +60,16 @@ public class PageElementResource extends SecurityResource {
 				.addParameter("name", name)//
 				.addParameter("disabled", false)//
 				.singleResult();
+	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)//
+				.append(name)//
+				.append(getIdentifier())//
+				.append(getDescription())//
+				.append(pageElementType)//
+				.build();
 	}
 
 	public String getPageElementType() {

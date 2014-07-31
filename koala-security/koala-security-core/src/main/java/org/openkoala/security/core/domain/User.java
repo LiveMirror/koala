@@ -10,6 +10,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
@@ -306,6 +307,17 @@ public class User extends Actor {
 	@Override
 	public String[] businessKeys() {
 		return new String[] { "userAccount" };
+	}
+	
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)//
+				.append(getId())//
+				.append(userAccount)//
+				.append(email)//
+				.append(telePhone)//
+				.append(getName())//
+				.build();
 	}
 
 	public Date getLastLoginTime() {

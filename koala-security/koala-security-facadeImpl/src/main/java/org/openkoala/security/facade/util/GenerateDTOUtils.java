@@ -89,24 +89,18 @@ public final class GenerateDTOUtils {
 	 * @return
 	 */
 	public static PermissionDTO generatePermissionDTOBy(Permission permission) {
-		PermissionDTO result = new PermissionDTO();
+		PermissionDTO result = new PermissionDTO(permission.getId(),permission.getName(),permission.getIdentifier(),permission.getDescription());
 		result.setRoleName(null);
-		result.setPermissionId(permission.getId());
 		result.setVersion(permission.getVersion());
-		result.setPermissionName(permission.getName());
-		result.setIdentifier(permission.getIdentifier());
-		result.setDescription(permission.getDescription());
 		return result;
 	}
 
 	public static MenuResourceDTO generateMenuResourceDTOBy(MenuResource menuResource) {
-		MenuResourceDTO result = new MenuResourceDTO();
-		result.setId(menuResource.getId());
+		MenuResourceDTO result = new MenuResourceDTO(menuResource.getId(),menuResource.getName());
 		result.setVersion(menuResource.getVersion());
 		result.setDisabled(menuResource.isDisabled());
 		result.setIcon(menuResource.getMenuIcon());
 		result.setLevel(menuResource.getLevel());
-		result.setName(menuResource.getName());
 		result.setUrl(menuResource.getUrl());
 		result.setDescription(menuResource.getDescription());
 		return result;
@@ -120,12 +114,10 @@ public final class GenerateDTOUtils {
 	}
 	
 	public static PageElementResourceDTO generatePageElementResourceDTOBy(PageElementResource pageElementResource) {
-		PageElementResourceDTO result = new PageElementResourceDTO();
+		PageElementResourceDTO result = new PageElementResourceDTO(pageElementResource.getName(),pageElementResource.getDescription());
 		result.setId(pageElementResource.getId());
 		result.setVersion(pageElementResource.getVersion());
-		result.setName(pageElementResource.getName());
 		result.setIdentifier(pageElementResource.getIdentifier());
-		result.setDescription(pageElementResource.getDescription());
 		result.setPageElementType(pageElementResource.getPageElementType());
 		return result;
 	}

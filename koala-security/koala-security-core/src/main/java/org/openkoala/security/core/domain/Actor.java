@@ -13,9 +13,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 /**
- * 参与者，是User和UserGroup的共同基类，可以对Actor授予角色与权限
- * 
- * TODO 扩展UserGroup
+ * <pre>
+ * 	参与者,抽象概念。
+ * 	是 <code>User<code> 和 <code>UserGroup(未实现)</code> 的共同基类，
+ * 	扩展可以继承该类。
+ * 	可以对 {@link Actor} 授予角色 {@link Role} 与权限 {@link Permission}。
+ * </pre>
  * 
  * @author luzhao
  * 
@@ -28,21 +31,39 @@ public abstract class Actor extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = -6279345771754150467L;
 
+	/**
+	 * 名称
+	 */
 	@Column(name = "NAME")
 	private String name;
 
+	/**
+	 * 最后更新时间
+	 */
 	@Column(name = "LAST_MODIFY_TIME")
 	private Date lastModifyTime;
 
+	/**
+	 * 创建者
+	 */
 	@Column(name = "CREATE_OWNER")
 	private String createOwner;
 
+	/**
+	 * 创建时间
+	 */
 	@Column(name = "CREATE_DATE")
 	private Date createDate = new Date();
 
+	/**
+	 * 描述
+	 */
 	@Column(name = "DESCRIPTION")
 	private String description;
 
+	/**
+	 * 撤销~级联撤销{@link Authorization }
+	 */
 	@Override
 	public void remove() {
 		for (Authorization authorization : Authorization.findByActor(this)) {
@@ -51,6 +72,14 @@ public abstract class Actor extends SecurityAbstractEntity {
 		super.remove();
 	}
 
+	/**
+	 * 在某个范围下{@link Scope}为参与者{@link Actor}授权可授权体{@link Authority}
+	 * 
+	 * @param authority
+	 *            可授权体
+	 * @param scope
+	 *            范围
+	 */
 	public void grant(Authority authority, Scope scope) {
 		if (Authorization.exists(this, authority, scope)) {
 			return;
@@ -58,6 +87,13 @@ public abstract class Actor extends SecurityAbstractEntity {
 		new Authorization(this, authority, scope).save();
 	}
 
+	/**
+	 * 得到在某个范围下{@link Scope}参与者{@link Actor}的所有权限{@link Permission}
+	 * 
+	 * @param scope
+	 *            范围
+	 * @return
+	 */
 	public Set<Permission> getPermissions(Scope scope) {
 		Set<Permission> results = new HashSet<Permission>();
 		for (Authority authority : getAuthorities(scope)) {
@@ -72,13 +108,18 @@ public abstract class Actor extends SecurityAbstractEntity {
 	}
 
 	/*------------- Private helper methods  -----------------*/
-	
+
 	private Set<Authority> getAuthorities(Scope scope) {
 		return Authorization.findAuthoritiesByActorInScope(this, scope);
 	}
 
 	public abstract void update();
-	
+
+	@Override
+	public String[] businessKeys() {
+		return new String[] { name };
+	}
+
 	public String getName() {
 		return name;
 	}
