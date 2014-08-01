@@ -103,7 +103,7 @@ $(function (){
 	                     #foreach( $view in $pageParams.listModel.views)
 	                         #if($view.type.indexOf("oolean") > 0)
 	                         { title: '${view.name}', name: '${view.express}', width: 120, render:function(rowdata, rowindex, value){
-	                             return rowdata.married ? "<span style='color:#47a447' class='glyphicon glyphicon-ok'></span>" : "<span style='color:#d2322d' class='glyphicon glyphicon-remove'></span>";
+	                             return rowdata.'${view.express}' ? "<span style='color:#47a447' class='glyphicon glyphicon-ok'></span>" : "<span style='color:#d2322d' class='glyphicon glyphicon-remove'></span>";
 	                         }},
 	                         #elseif ($view.viewType=="ReadOnlyView")
 	                         { title: '${view.name}', name: '${view.express}', width: width},

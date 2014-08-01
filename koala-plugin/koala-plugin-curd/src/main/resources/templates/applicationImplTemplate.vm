@@ -18,7 +18,6 @@ import ${applicationClass.packageName.replaceAll("impl","")}${applicationClass.n
 import ${entity.className};
 
 @Named
-@Transactional
 public class ${applicationClass.name} implements ${applicationClass.name.replaceAll("Impl","")} {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

@@ -93,7 +93,7 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 	   	StringBuilder jpql = new StringBuilder("${jpql} $!{joinClause} where 1=1 ");
 #foreach($field in ${entity.fields})
 #set($propertyName = ${field.name.substring(0, 1).toUpperCase()} + ${field.name.substring(1)})
-#if(${dtoClass.isPrimitiveType(${field.type})} && ${field.name} != "id" )
+#if(${dtoClass.isPrimitiveType(${field.type})} || ${field.name} != "id" )
 	   	if (queryVo.get${propertyName}() != null) {
 	   		jpql.append(" and _${variableName}.${field.name}=?");
 	   		conditionVals.add(queryVo.get${propertyName}());
