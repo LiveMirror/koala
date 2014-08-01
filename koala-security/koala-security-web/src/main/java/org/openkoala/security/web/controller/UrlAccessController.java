@@ -10,7 +10,7 @@ import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
-import org.openkoala.security.web.shiro.ShiroFilerChainManager;
+import org.openkoala.security.shiro.extend.ShiroFilerChainManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

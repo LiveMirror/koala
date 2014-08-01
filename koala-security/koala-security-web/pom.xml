@@ -35,6 +35,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-taglibs</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-shiro</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-infra</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
@@ -78,14 +88,6 @@
 			<artifactId>dddlib-ioc-spring</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
@@ -100,7 +102,6 @@
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
-			<version>1.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.octo.captcha</groupId>
