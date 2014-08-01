@@ -382,6 +382,8 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 		createChildToParent(pageElementResource, securityMenuResource.getId());
 
 		return Lists.newArrayList(actorSecurityMenuResource, //
+				authoritySecurityMenuResource,//
+				securityMenuResource,//
 				userMenuResource, //
 				roleMenuResource, //
 				permisisonMenuResource,//
