@@ -312,10 +312,10 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/terminatePermissionsFromRole")
-	public JsonResult terminatePermissions(Long roleId, Long[] permssionIds) {
+	public JsonResult terminatePermissions(Long roleId, Long[] permissionIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.terminatePermissionsFromRole(roleId, permssionIds);
+			securityConfigFacade.terminatePermissionsFromRole(roleId, permissionIds);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("从角色中撤销权限成功");
 		} catch (Exception e) {
