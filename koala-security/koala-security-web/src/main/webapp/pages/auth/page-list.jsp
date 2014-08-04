@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ taglib prefix="ks" uri="http://www.openkoala.org/security" %>
+
+<ks:hasSecurityResource name=""> </ks:hasSecurityResource>
 
 
 <link rel="stylesheet" href="../lib/validateForm/css/style.css"/>

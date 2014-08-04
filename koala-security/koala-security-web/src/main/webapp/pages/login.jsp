@@ -188,7 +188,9 @@ body {
 	        if (!Validation.notNull($('body'), passwordElement, password, '密码不能为空')) {
 	            return false;
 	        }
+	  
 	        btnLogin.attr('disabled', 'disabled').html('正在登录...');
+	        
     		var param = form.serialize();
         	$.ajax({
         		url : "auth/user/login.koala",
@@ -203,6 +205,7 @@ body {
         				});
         				window.location.href='${pageContext.request.contextPath}/pages/index.jsp';
         			}else{
+        				btnLogin.removeAttr('disabled').html('登录');
         				$('.login_con_R').message({
         					type: 'error',
         					content: data.message

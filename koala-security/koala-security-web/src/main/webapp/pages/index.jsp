@@ -19,9 +19,7 @@
     		min-width:100px;
     	}
     	
-    	.folder > ul{
-    		padding-left:20px;
-    	}
+    
     	.folder > a{
     		background:#ccc;
     	}
@@ -30,6 +28,9 @@
     	}
     	.menu_name{
     	  font-size:16px;
+    	}
+    	.leaf_node{
+    	 text-align:center;
     	}
     	.leaf_node span{
     	  font-size:14px !important;
@@ -67,16 +68,22 @@
 	            <!-- 账号信息 -->
 	            <div class="btn-group navbar-right">
 	                <label for = "userAccount" class = "user_name yhmc">用户名称  : </label>
-	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	                <span>&nbsp;</span>
+	                <select id="userAccount">
+                     <option selected><koala:user property="name"/></option>
+                    </select>
+	                
+	               <!-- <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 	                    <i class="glyphicon glyphicon-user"></i>
 	                    <span>&nbsp;<koala:user property="name"/></span>
 	                    <span class="caret"></span>
-	                </button>
-	                <!-- <i class = "menu-icon glyphicon  glyphicon-cog menu_icon_change"></i> -->
+	                </button>--> 
+	                
+	                <!-- <i class = "menu-icon glyphicon  glyphicon-cog menu_icon_change"></i> 
 	                <ul class="dropdown-menu" id="userManager">
 	                    <li data-target="modifyPwd"><a href="#">修改密码</a></li>
 	                    <li data-target="loginOut"><a href="#">注销</a></li>
-	                </ul>
+	                </ul>-->
 	            </div>
 	            <div class="btn-group navbar-right">
 	                <label for = "roles" class = "user_name">用户角色 :</label>
@@ -181,7 +188,7 @@
 		    });
 		});
 		
-		$menu.find('li.submenu').on('click', function(){
+		 $menu.find('li.submenu').on('click', function(){
 			var $this = $(this);
 				
 			$('.first-level-menu').find('li').each(function(){
@@ -235,7 +242,17 @@
 				}
 			});
 			return menu;
+			
 		}
+	
+		
+		/*折叠效果*/
+ 	$(function(){
+ 
+ 		$('.nav-stacked li.folder a').eq(0).on('click',function(){
+ 			console.log("aaaa");
+ 		});
+ 	});
 	</script>
 </body>
 </html>
