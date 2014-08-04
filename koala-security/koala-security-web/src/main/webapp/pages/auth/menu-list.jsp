@@ -13,10 +13,9 @@
 			dialog.find('.modal-header').find('.modal-title').html( item && opreate =='modify' ? '修改菜单信息' : '添加菜单');
 			
 			var form = dialog.find(".menu_form");
-			
 			validate(form, dialog, item, opreate);
-			console.log(item.name);
-			if(item.id == 1){//目前只能在勾选权限权限目录下才能获取父类name在其子类下新建菜单无法获取name
+		    //console.log(item[3]);
+		   if(item != null){
 				form.find("input[name='parentId']").val(item.name);			    	        
 			}
 			
@@ -243,8 +242,6 @@
 	                });
 	                return;
 	            }	          
-        		console.log(data.data);//获取当前选项的ID
-        		console.log(data.item[0]);
 				$.get(contextPath + '/pages/auth/menu-template.jsp').done(function(dialog) {
 					initEditDialog(dialog, (data.data?data.item[0]:null), grid, "add");
 				});
@@ -301,8 +298,6 @@
 				}
 				
 				var menu = items[0];
-				console.log(menu);
-	            console.log("menu.id"+menu.id);
 				openTab('/pages/auth/permission-list.jsp', menu.name+'的权限管理', 'roleManager_' + menu.id, menu.id, {menuId : menu.id});
         	},
         	"assignPermission" : function(event, data){

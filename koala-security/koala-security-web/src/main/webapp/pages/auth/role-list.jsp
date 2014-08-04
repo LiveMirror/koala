@@ -42,6 +42,9 @@
 				},{
 					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配page</button>',
 					action : 'pageAssign'
+				},{
+					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配权限</button>',
+					action : 'permissionAssign'
 				}];
 			}
 		})();
@@ -63,7 +66,7 @@
 			'modify' : function(event, data) {
 				var indexs = data.data;
 				var $this = $(this);
-				if (indexs.length == 0) {
+				if (indexs.length == 0) {       
 					$this.message({
 						type : 'warning',
 						content : '请选择一条记录进行修改'
@@ -235,6 +238,28 @@
 				var page = items[0];
 				console.log(page.roleId);
 				openTab('/pages/auth/page-list.jsp', page.roleName+'的page管理', 'roleManager_' + page.roleId, page.roleId, {pageId : page.roleId});
+			},
+			'permissionAssign' : function(event, data) {
+				var items = data.item;
+				var $this = $(this);
+				if (items.length == 0) {
+					$this.message({
+						type : 'warning',
+						content : '请选择一条记录进行操作'
+					});
+					return;
+				}
+				if (items.length > 1) {
+					$this.message({
+						type : 'warning',
+						content : '只能选择一条记录进行操作'
+					});
+					return;
+				}
+				//roleManager().pageAssign($(this), items[0].roleId);
+				var permissions = items[0];
+				console.log(permissions);
+				openTab('/pages/auth/permission-list.jsp', permissions.roleName+'的权限管理', 'roleManager_' + permissions.roleId, permissions.roleId, {permissionsId : permissions.roleId});
 			}
 			,
 			'removeRoleForUser' : function(event, data) {
