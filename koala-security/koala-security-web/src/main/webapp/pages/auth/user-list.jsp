@@ -2,7 +2,6 @@
 <%@ taglib prefix="ks" uri="http://www.openkoala.org/security" %>
 
 <div data-role="userGrid">
-
 </div>
 <script>
 
@@ -50,7 +49,7 @@
 				}];
 			} else {
 				return [{
-					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>',
+					content : '<ks:hasSecurityResource identifier="userManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
 					action : 'add'
 				}, {
 					content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>',

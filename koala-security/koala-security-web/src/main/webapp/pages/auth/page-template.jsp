@@ -14,14 +14,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">添加页面</h4>
             </div>
-            <div class="modal-body" style="padding-left:45px; padding-right:65px; height: 350px;">
+            <div class="modal-body" style="padding-left:45px; padding-right:65px; height: 250px;">
                 <form class="form-horizontal page_form">
-                    <div class="form-group parentName">
-                        <label class="col-lg-3 control-label">父页面名称:</label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control" id="parentName" disabled>
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="name">页面名称:</label>
                         <div class="col-lg-9">
