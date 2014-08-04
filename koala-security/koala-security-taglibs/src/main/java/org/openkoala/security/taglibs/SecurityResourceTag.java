@@ -40,25 +40,32 @@ public class SecurityResourceTag extends AbstractAuthorizationTag {
 	private void initAuthz() {
 		if(authz == null){
 			authz = new AuthzImpl();
-			ServletContext servletContext = this.pageContext.getServletContext();
-			authz.setServletContext(servletContext);
+			initServletContext();
 		}
+		if(authz.getServletContext() == null){
+			initServletContext();
+		}
+	}
+
+	private void initServletContext() {
+		ServletContext servletContext = this.pageContext.getServletContext();
+		authz.setServletContext(servletContext);
 	}
 
 	public String getIdentifier() {
 		return identifier;
 	}
 
-	public void setIdentifier(String name) {
-		this.identifier = name;
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 
 	public boolean isHasTextIdentifier() {
 		return hasTextIdentifier;
 	}
 
-	public void setHasTextIdentifier(boolean hasTextName) {
-		this.hasTextIdentifier = hasTextName;
+	public void setHasTextIdentifier(boolean hasTextIdentifier) {
+		this.hasTextIdentifier = hasTextIdentifier;
 	}
 
 }

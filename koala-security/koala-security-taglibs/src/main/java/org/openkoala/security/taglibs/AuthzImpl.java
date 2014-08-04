@@ -85,7 +85,7 @@ public class AuthzImpl implements Authz {
 		String currentRoleName = shiroUser.getRoleName();
 		
 		if(securityConfigFacade == null){
-			securityConfigFacade = applicationContext.getBean(SecurityConfigFacade.class);
+			securityConfigFacade = getApplicationContext().getBean(SecurityConfigFacade.class);
 		}
 		
 		boolean hasResource = securityConfigFacade.checkUserHasPageElementResource(userAccount, currentRoleName,securityResourceIdentifier);
