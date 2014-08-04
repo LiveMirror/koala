@@ -42,7 +42,7 @@
 		var getButtons = function() {
 			if (roleId) {
 				return [{
-					content : '<ks:hasSecurityResource name="userManagerGrantRole" ><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配用户</button></ks:hasSecurityResource>',
+					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配用户</button>',
 					action : 'assignUserToRole'
 				}, {
 					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
