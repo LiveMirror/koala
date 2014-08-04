@@ -20,11 +20,6 @@ public class PageElementResourceDTO implements Serializable{
 	
 	private String identifier;
 	
-	/**
-	 * 页面元素类型。
-	 */
-	private String pageElementType;
-	
 	private String description;
 	
 	protected PageElementResourceDTO() {}
@@ -35,14 +30,13 @@ public class PageElementResourceDTO implements Serializable{
 		this.description = description;
 	}
 
-	public PageElementResourceDTO(Long id, int version, String name, boolean disabled, String identifier, String description,String pageElementType) {
+	public PageElementResourceDTO(Long id, int version, String name, boolean disabled, String identifier, String description) {
 		this.id = id;
 		this.version = version;
 		this.name = name;
 		this.disabled = disabled;
 		this.identifier = identifier;
 		this.description = description;
-		this.pageElementType = pageElementType;
 	}
 
 	public Long getId() {
@@ -93,14 +87,6 @@ public class PageElementResourceDTO implements Serializable{
 		this.description = description;
 	}
 
-	public String getPageElementType() {
-		return pageElementType;
-	}
-
-	public void setPageElementType(String pageElementType) {
-		this.pageElementType = pageElementType;
-	}
-
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()//
@@ -126,7 +112,6 @@ public class PageElementResourceDTO implements Serializable{
 				.append(getName())//
 				.append(getDescription())//
 				.append(getIdentifier())//
-				.append(getPageElementType())//
 				.build();
 	}
 	

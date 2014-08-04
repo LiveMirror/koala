@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
+import org.openkoala.security.application.SecurityDBInitApplication;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
@@ -44,6 +45,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Inject
 	private SecurityAccessApplication securityAccessApplication;
+	
+	@Inject
+	private SecurityDBInitApplication securityDBInitApplication;
 
 	public void saveUser(UserDTO userDTO) {
 		User user = transFromUserBy(userDTO);
@@ -471,9 +475,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public boolean checkUserHasPageElementResource(String userAccount, String currentRoleName,
-			String securityResourceName) {
-
+	public boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceIdentifier) {
+		
+		if(!securityAccessApplication.hasPageElementResource(securityResourceIdentifier)){
+			return true;
+		}
+		
 		Role role = securityAccessApplication.getRoleBy(currentRoleName);
 		Set<Permission> rolePermissions = role.getPermissions();
 		List<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
@@ -483,15 +490,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		authorities.addAll(userPermissions);
 		authorities.addAll(rolePermissions);
 
-		PageElementResource pageElementResource = securityAccessApplication
-				.getPageElementResourceBy(securityResourceName);
-
-		return securityConfigApplication.checkAuthoritiHasPageElementResource(authorities, pageElementResource);
+		return securityConfigApplication.checkAuthoritiHasPageElementResource(authorities, securityResourceIdentifier);
 	}
 
 	@Override
 	public void initSecuritySystem() {
-		securityConfigApplication.initSecuritySystem();
+		securityDBInitApplication.initSecuritySystem();
 	}
 
 	@Override

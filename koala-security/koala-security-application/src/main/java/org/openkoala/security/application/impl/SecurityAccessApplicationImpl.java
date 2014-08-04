@@ -128,4 +128,9 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	public User login(String principal, String password) {
 		return User.login(principal,password);
 	}
+
+	@Override
+	public boolean hasPageElementResource(String identifier) {
+		return PageElementResource.hasIdentifier(identifier);
+	}
 }

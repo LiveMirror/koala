@@ -88,14 +88,12 @@ public final class TransFromDomainUtils {
 		return result;
 	}
 	public static PageElementResource transFromPageElementResourceBy(PageElementResourceDTO pageElementResourceDTO) {
-		PageElementResource result = new PageElementResource(pageElementResourceDTO.getName());
+		PageElementResource result = new PageElementResource(pageElementResourceDTO.getName(),pageElementResourceDTO.getIdentifier());
 		result.setDescription(pageElementResourceDTO.getDescription());
 		if (!StringUtils.isBlank(pageElementResourceDTO.getId() + "")) {
 			result.setId(pageElementResourceDTO.getId());
 		}
 		result.setVersion(pageElementResourceDTO.getVersion());
-		result.setIdentifier(pageElementResourceDTO.getIdentifier());
-		result.setPageElementType(pageElementResourceDTO.getPageElementType());
 		return result;
 	}
 

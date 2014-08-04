@@ -137,9 +137,8 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		assertFalse(results.isEmpty());
 		System.out.println(results);
 		assertTrue(results.size() == 1);
-		
 	}
-
+	
 	@Test
 	public void testFindAllMenusTree() {
 		List<MenuResourceDTO> results = securityAccessFacade.findAllMenusTree();
@@ -339,7 +338,7 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Test
 	public void testPagingQueryNotGrantPageElementResourcesByRoleId() {
-		PageElementResource pageElementResource = new PageElementResource("testPagingQueryNotGrantPageElementResourcesByRoleId");
+		PageElementResource pageElementResource = new PageElementResource("测试分页查询没有授权的页面元素资源","testPagingQueryNotGrantPageElementResourcesByRoleId");
 		pageElementResource.save();
 		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(currentPage, pageSize, role.getId());
 		assertFalse(results.getData().isEmpty());

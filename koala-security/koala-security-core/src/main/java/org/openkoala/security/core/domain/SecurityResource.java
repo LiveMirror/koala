@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -47,7 +48,7 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	private String url;
 
 	@Column(name = "IDENTIFIER")
-	private String identifier;
+	protected String identifier;
 
 	/**
 	 * 描述
@@ -58,7 +59,7 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	/**
 	 * 查询的时候禁止懒加载。
 	 */
-	@ManyToMany(mappedBy = "securityResources", fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "securityResources", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	private Set<Authority> authorities = new HashSet<Authority>();
 
 	protected SecurityResource() {
@@ -163,6 +164,10 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+
+	public static boolean hasSecurityResource(String identifier) {
+		return false;
 	}
 
 }

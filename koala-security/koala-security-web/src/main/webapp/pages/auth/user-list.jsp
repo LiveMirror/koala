@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ taglib prefix="ks" uri="http://www.openkoala.org/security" %>
+
 <div data-role="userGrid">
 
 </div>
@@ -40,7 +42,7 @@
 		var getButtons = function() {
 			if (roleId) {
 				return [{
-					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配用户</button>',
+					content : '<ks:hasSecurityResource name="userManagerGrantRole" ><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配用户</button></ks:hasSecurityResource>',
 					action : 'assignUserToRole'
 				}, {
 					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',

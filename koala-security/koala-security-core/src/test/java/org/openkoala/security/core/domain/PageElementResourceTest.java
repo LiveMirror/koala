@@ -27,7 +27,7 @@ public class PageElementResourceTest extends AbstractDomainIntegrationTestCase {
 	public void testSaveNameExisted() throws Exception {
 		PageElementResource pageElementResource = initPageElementResource();
 		pageElementResource.save();
-		PageElementResource pageElementResource2 = new PageElementResource("用户添加0000000000");
+		PageElementResource pageElementResource2 = new PageElementResource("用户添加0000000000","aaaa");
 		pageElementResource2.save();
 	}
 
@@ -35,7 +35,7 @@ public class PageElementResourceTest extends AbstractDomainIntegrationTestCase {
 	public void testUpdate() throws Exception {
 		PageElementResource pageElementResource = initPageElementResource();
 		pageElementResource.save();
-		PageElementResource updatePageElementResource = new PageElementResource("update用户添加0000000000");
+		PageElementResource updatePageElementResource = new PageElementResource("update用户添加0000000000","aaaa");
 		updatePageElementResource.setId(pageElementResource.getId());
 		updatePageElementResource.update();
 	}
@@ -43,10 +43,10 @@ public class PageElementResourceTest extends AbstractDomainIntegrationTestCase {
 	@Test(expected = NameIsExistedException.class)
 	public void testUpdateNameExisted() throws Exception {
 		PageElementResource pageElementResource = initPageElementResource();
-		PageElementResource pageElementResource1 = new PageElementResource("update用户添加0000000000");
+		PageElementResource pageElementResource1 = new PageElementResource("update用户添加0000000000","aaaa");
 		pageElementResource1.save();
 		pageElementResource.save();
-		PageElementResource updatePageElementResource = new PageElementResource("update用户添加0000000000");
+		PageElementResource updatePageElementResource = new PageElementResource("update用户添加0000000000","bbbb");
 		updatePageElementResource.setId(pageElementResource.getId());
 		updatePageElementResource.update();
 		PageElementResource loadPageElementResource = PageElementResource.getBy(updatePageElementResource.getId());

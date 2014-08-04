@@ -210,11 +210,6 @@ public interface SecurityConfigApplication {
 	 */
 	boolean isSecurityResourceIdentifierExist(SecurityResource securityResource);
 
-	/**
-	 * 初始化权限数据
-	 */
-	void initSecuritySystem();
-
 	/***
 	 * TODO 1、判断账户是否存在 ； 2、判断邮箱是否存在 ； 3、判断电话是否已经存在 。 添加参与者
 	 * 
@@ -291,7 +286,7 @@ public interface SecurityConfigApplication {
 	 */
 	void grantPermissionsToRole(List<Permission> permissions, Role role);
 
-	boolean checkAuthoritiHasPageElementResource(Set<Authority> authorities, PageElementResource pageElementResource);
+	boolean checkAuthoritiHasPageElementResource(Set<Authority> authorities, String identifier);
 
 	/**
 	 * 为参与者授权授权体

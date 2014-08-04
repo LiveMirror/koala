@@ -51,7 +51,6 @@ public final class EntitiesHelper {
 	public static void assertPageElementResource(PageElementResource expected, PageElementResource actual) {
 		assertEquals(expected.getIdentifier(), actual.getIdentifier());
 		assertEquals(expected.getName(), actual.getName());
-		assertEquals(expected.getPageElementType(), actual.getPageElementType());
 		assertEquals(expected.getUrl(), actual.getUrl());
 		assertEquals(expected.isDisabled(), actual.isDisabled());
 	}
@@ -91,9 +90,7 @@ public final class EntitiesHelper {
 	}
 
 	public static PageElementResource initPageElementResource() {
-		PageElementResource result = new PageElementResource("用户添加0000000000");
-		result.setPageElementType("按钮");
-		result.setIdentifier("userAdd");
+		PageElementResource result = new PageElementResource("用户添加0000000000","userAdd");
 		return result;
 	}
 

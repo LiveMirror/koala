@@ -101,7 +101,7 @@
 	<!--组织子系统的listener-->
 #if ($Module.organization)
 	<listener>
-		<listener-class>${Module.basePackage}.controller.organization.OrganisationListener</listener-class>
+		<listener-class>org.openkoala.organisation.web.controller.OrganisationListener</listener-class>
 	</listener>
 #end
 

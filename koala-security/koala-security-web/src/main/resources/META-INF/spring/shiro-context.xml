@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 	<tx:annotation-driven />
 
-	<bean id="customAuthoringRealm" class="org.openkoala.security.web.realm.CustomAuthoringRealm">
+	<bean id="customAuthoringRealm" class="org.openkoala.security.shiro.realm.CustomAuthoringRealm">
 		<property name="cachingEnabled" value="false" />
 	</bean>
 
@@ -26,24 +26,24 @@
     </bean>
 
 	<bean id="formAuthenticationFilter"
-		class="org.openkoala.security.web.filter.CustomFormAuthenticationFilter">
+		class="org.openkoala.security.shiro.filter.CustomFormAuthenticationFilter">
 		<property name="usernameParam" value="username" />
 		<property name="passwordParam" value="password" />
 		<property name="rememberMeParam" value="rememberMe" />
 		<property name="failureKeyAttribute" value="shiroLoginFailure" />
 		<property name="loginUrl" value="/login.koala"></property>
 	</bean>
-
-	<bean id="anyRoleFilter" class="org.openkoala.security.web.filter.AnyRoleAuthorizationFilter"></bean>
+ 
+	<bean id="anyRoleFilter" class="org.openkoala.security.shiro.filter.AnyRoleAuthorizationFilter"></bean>
  	
-	<bean id="jCaptchaValidateFilter" class="org.openkoala.security.web.Jcaptcha.JCaptchaValidateFilter">
+	<bean id="jCaptchaValidateFilter" class="org.openkoala.security.shiro.Jcaptcha.JCaptchaValidateFilter">
 		<property name="jCaptchaDisabled" value="false" />
 		<property name="jCaptchaCode" value="jCaptchaCode" />
 		<property name="failureKeyAttribute" value="shiroLoginFailure" />
 	</bean>
 	
 	<!-- 自定义过滤器链管理 -->
-	<bean id="filterChainManager" class="org.openkoala.security.web.shiro.CustomDefaultFilterChainManager">
+	<bean id="filterChainManager" class="org.openkoala.security.shiro.extend.CustomDefaultFilterChainManager">
 		<property name="loginUrl" value="/login.koala" />
 		<property name="successUrl" value="/"/>
 		<property name="unauthorizedUrl" value="unauthorized.jsp" />
@@ -70,7 +70,7 @@
 		</property>
 	</bean>
 	
-	<bean id="filterChainResolver" class="org.openkoala.security.web.shiro.CustomPathMatchingFilterChainResolver">
+	<bean id="filterChainResolver" class="org.openkoala.security.shiro.extend.CustomPathMatchingFilterChainResolver">
 		 <property name="customDefaultFilterChainManager" ref="filterChainManager"/>
 	</bean>
 

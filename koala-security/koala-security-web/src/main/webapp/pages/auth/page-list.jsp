@@ -21,7 +21,6 @@
 			if(item){
 				form.find("input[name='name']").val(item.name);
 				form.find("input[name='identifier']").val(item.identifier);
-				form.find("input[name='pageElementType']").val(item.pageElementType);
 			    form.find("input[name='description']").val(item.description);
 			}
 			
@@ -141,10 +140,6 @@
 		var columns = [{
 				title : "页面名称",
 				name : "name",
-				width : 150
-			},{
-				title : "页面类型",
-				name : "pageElementType",
 				width : 150
 			},{
 				title : "页面标识",
@@ -323,10 +318,6 @@
        					  {
        							title : "页面标识",
        							name : "identifier",
-       							width : 150
-       						},{
-       							title : "页面类型",
-       							name : "pageElementType",
        							width : 150
        						}, {
        							title : "页面描述",

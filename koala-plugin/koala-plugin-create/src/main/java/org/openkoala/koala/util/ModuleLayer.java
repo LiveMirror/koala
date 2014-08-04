@@ -6,6 +6,8 @@ public enum ModuleLayer {
 	bizModel("领域层"),
 	applicationInterface("应用层接口"),
 	applicationImpl("应用层实现"),
+	facade("门面层接口"),
+	facadeImpl("门面层实现"),
 	war("视图层");
 	
 	private static String[] descriptions;

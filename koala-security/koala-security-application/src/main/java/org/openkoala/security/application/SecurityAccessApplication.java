@@ -195,5 +195,7 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	User login(String principal, String password);
+
+	boolean hasPageElementResource(String identifier);
 	
 }

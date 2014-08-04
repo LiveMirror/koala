@@ -196,7 +196,7 @@ public interface SecurityConfigFacade {
 
 	void terminatePermissionsFromPageElementResource(Long[] permissionIds, Long pageElementResourceId);
 
-	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceName);
+	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceIdentifier);
 
 	/**
 	 * 初始化系统权限资源。
