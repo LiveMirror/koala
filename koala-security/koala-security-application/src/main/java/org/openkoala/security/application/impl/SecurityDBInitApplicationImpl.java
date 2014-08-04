@@ -182,9 +182,13 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 				"roleManagerGrantMenuResource");
 		roleManagerGrantMenuResource.save();
 
-		PageElementResource roleManagerPageElementResource = new PageElementResource("角色管理-分页页面元素权限资源",
-				"roleManagerPageElementResource");
+		PageElementResource roleManagerPageElementResource = new PageElementResource("角色管理-分配页面元素权限资源",
+				"roleManagerGrantPageElementResource");
 		roleManagerPageElementResource.save();
+		
+		PageElementResource roleManagerPagePermission = new PageElementResource("角色管理-分配权限",
+				"roleManagerGrantPermission");
+		roleManagerPagePermission.save();
 
 		return Lists.newArrayList(//
 				roleManagerAdd,//
@@ -192,7 +196,8 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 				roleManagerTerminate,//
 				roleManagerGrantUrlAccessResource,//
 				roleManagerGrantMenuResource,//
-				roleManagerPageElementResource);
+				roleManagerPageElementResource,//
+				roleManagerPagePermission);
 	}
 	
 	private List<PageElementResource> createPageElementResourcesOfUser() {

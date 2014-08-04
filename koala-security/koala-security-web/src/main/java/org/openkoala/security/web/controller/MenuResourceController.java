@@ -185,10 +185,10 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/grantPermisssionsToMenuResource")
-	public JsonResult grantPermisssionsToMenuResource(Long[] permissionIds, Long menuResourceId) {
+	public JsonResult grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.grantPermisssionsToMenuResource(permissionIds, menuResourceId);
+			securityConfigFacade.grantPermisssionsToMenuResource(permissionId, menuResourceId);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为菜单权限资源授予权限Permission成功");
 		} catch (Exception e) {
@@ -208,10 +208,10 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/terminatePermissionsFromMenuResource")
-	public JsonResult terminatePermissionsFromMenuResource(Long[] permissionIds, Long menuResourceId) {
+	public JsonResult terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.terminatePermissionsFromMenuResource(permissionIds, menuResourceId);
+			securityConfigFacade.terminatePermissionsFromMenuResource(permissionId, menuResourceId);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("从菜单权限资源中撤销权限Permission成功");
 		} catch (Exception e) {

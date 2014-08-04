@@ -54,8 +54,7 @@ public class MenuResource extends SecurityResource {
 	@OneToMany(mappedBy = "parent")
 	private Set<MenuResource> children = new HashSet<MenuResource>();
 
-	protected MenuResource() {
-	}
+	protected MenuResource() {}
 
 	public MenuResource(String name) {
 		super(name);
