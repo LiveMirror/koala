@@ -75,7 +75,7 @@ public class AuthzImpl implements Authz {
 	}
 
 	@Override
-	public boolean hasSecurityResource(String securityResourceName) {
+	public boolean hasSecurityResource(String securityResourceIdentifier) {
 		ShiroUser shiroUser = (ShiroUser) getPrincipal();
 		if (shiroUser == null) {
 			return false;
@@ -88,7 +88,7 @@ public class AuthzImpl implements Authz {
 			securityConfigFacade = applicationContext.getBean(SecurityConfigFacade.class);
 		}
 		
-		boolean hasResource = securityConfigFacade.checkUserHasPageElementResource(userAccount, currentRoleName,securityResourceName);
+		boolean hasResource = securityConfigFacade.checkUserHasPageElementResource(userAccount, currentRoleName,securityResourceIdentifier);
 		
 		return hasResource ? true : false;
 	}

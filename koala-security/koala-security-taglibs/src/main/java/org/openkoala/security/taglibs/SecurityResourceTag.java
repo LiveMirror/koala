@@ -14,23 +14,23 @@ public class SecurityResourceTag extends AbstractAuthorizationTag {
 	/**
 	 * 资源名称
 	 */
-	protected String name;
+	protected String identifier;
 
-	private boolean hasTextName = false;
+	private boolean hasTextIdentifier = false;
 	
 	@Override
 	protected void verifyAttributes() throws JspException {
-		hasTextName = StringUtils.hasText(name);
-		if(!hasTextName){
-			throw new JspException("The 'name' must be set!");
+		hasTextIdentifier = StringUtils.hasText(identifier);
+		if(!hasTextIdentifier){
+			throw new JspException("The 'identifier' must be set!");
 		}
 	}
 
 	@Override
 	public int onDoStartTag() throws JspException {
-		if(hasTextName){
+		if(hasTextIdentifier){
 			initAuthz();
-			if(authz.hasSecurityResource(name)){
+			if(authz.hasSecurityResource(identifier)){
 				return EVAL_BODY_INCLUDE;
 			}
 		}
@@ -45,20 +45,20 @@ public class SecurityResourceTag extends AbstractAuthorizationTag {
 		}
 	}
 
-	public String getName() {
-		return name;
+	public String getIdentifier() {
+		return identifier;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setIdentifier(String name) {
+		this.identifier = name;
 	}
 
-	public boolean isHasTextName() {
-		return hasTextName;
+	public boolean isHasTextIdentifier() {
+		return hasTextIdentifier;
 	}
 
-	public void setHasTextName(boolean hasTextName) {
-		this.hasTextName = hasTextName;
+	public void setHasTextIdentifier(boolean hasTextName) {
+		this.hasTextIdentifier = hasTextName;
 	}
 
 }

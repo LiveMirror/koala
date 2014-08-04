@@ -68,7 +68,7 @@
 		<tag-class>org.openkoala.security.taglibs.SecurityResourceTag</tag-class>
 		<body-content>scriptless</body-content>
 		<attribute>
-			<name>name</name>
+			<name>identifier</name>
 		</attribute>
 	</tag>
 	

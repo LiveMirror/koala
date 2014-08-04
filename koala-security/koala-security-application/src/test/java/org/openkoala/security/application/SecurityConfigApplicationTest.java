@@ -28,21 +28,13 @@ public class SecurityConfigApplicationTest extends AbstractApplicationIntegratio
 	
 	@Test
 	public void testPageElementResource() throws Exception {
-		PageElementResource addPpageElementResource = new PageElementResource("用户添加");
-		addPpageElementResource.setPageElementType("按钮");
-		addPpageElementResource.setIdentifier("userAdd");
+		PageElementResource addPpageElementResource = new PageElementResource("用户添加","userAdd");
 		
-		PageElementResource terminatePageElementResource = new PageElementResource("用户删除");
-		terminatePageElementResource.setPageElementType("按钮");
-		terminatePageElementResource.setIdentifier("userTerminate");
+		PageElementResource terminatePageElementResource = new PageElementResource("用户删除","userTerminate");
 		
-		PageElementResource updatePageElementResource = new PageElementResource("用户修改");
-		updatePageElementResource.setPageElementType("按钮");
-		updatePageElementResource.setIdentifier("userUpdate");
+		PageElementResource updatePageElementResource = new PageElementResource("用户修改","userUpdate");
 		
-		PageElementResource listPageElementResource = new PageElementResource("用户列表");
-		listPageElementResource.setPageElementType("按钮");
-		listPageElementResource.setIdentifier("userList");
+		PageElementResource listPageElementResource = new PageElementResource("用户列表","userList");
 		
 		securityConfigApplication.createSecurityResource(addPpageElementResource);
 		securityConfigApplication.createSecurityResource(terminatePageElementResource);

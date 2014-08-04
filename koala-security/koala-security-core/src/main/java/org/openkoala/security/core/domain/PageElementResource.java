@@ -12,15 +12,11 @@ public class PageElementResource extends SecurityResource {
 
 	private static final long serialVersionUID = 8933589588651981397L;
 
-	/**
-	 * 页面元素类型。
-	 */
-	private String pageElementType;
-
 	protected PageElementResource() {}
 
-	public PageElementResource(String name) {
+	public PageElementResource(String name, String identifier) {
 		super(name);
+		this.identifier = identifier;
 	}
 
 	@Override
@@ -37,7 +33,6 @@ public class PageElementResource extends SecurityResource {
 			pageElementResource.name = this.getName();
 		}
 		pageElementResource.setIdentifier(this.getIdentifier());
-		pageElementResource.setPageElementType(this.getPageElementType());
 		pageElementResource.setDescription(this.getDescription());
 		pageElementResource.setVersion(this.getVersion());
 	}
@@ -68,16 +63,16 @@ public class PageElementResource extends SecurityResource {
 				.append(name)//
 				.append(getIdentifier())//
 				.append(getDescription())//
-				.append(pageElementType)//
 				.build();
 	}
 
-	public String getPageElementType() {
-		return pageElementType;
-	}
-
-	public void setPageElementType(String type) {
-		this.pageElementType = type;
+	public static boolean hasIdentifier(String identifier) {
+		PageElementResource ressult = getRepository()//
+				.createCriteriaQuery(PageElementResource.class)//
+				.eq("identifier", identifier)//
+				.eq("disabled", false)//
+				.singleResult();
+		return ressult == null ? false : true;
 	}
 
 }

@@ -118,7 +118,6 @@ public final class GenerateDTOUtils {
 		result.setId(pageElementResource.getId());
 		result.setVersion(pageElementResource.getVersion());
 		result.setIdentifier(pageElementResource.getIdentifier());
-		result.setPageElementType(pageElementResource.getPageElementType());
 		return result;
 	}
 }

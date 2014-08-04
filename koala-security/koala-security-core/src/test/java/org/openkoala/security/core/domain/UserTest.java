@@ -2,7 +2,6 @@ package org.openkoala.security.core.domain;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -11,7 +10,6 @@ import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
-import org.openkoala.security.core.UserNotExistedException;
 import org.openkoala.security.core.UserNotHasRoleException;
 
 import static org.openkoala.security.core.util.EntitiesHelper.*;

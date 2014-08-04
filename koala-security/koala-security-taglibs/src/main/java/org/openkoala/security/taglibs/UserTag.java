@@ -24,7 +24,7 @@ public class UserTag extends AbstractAuthorizationTag{
     private String type;
 
     /**
-     * The property name to retrieve of the principal, or null if the <tt>toString()</tt> value should be used.
+     * The property identifier to retrieve of the principal, or null if the <tt>toString()</tt> value should be used.
      */
     private String property;
 
@@ -80,7 +80,7 @@ public class UserTag extends AbstractAuthorizationTag{
             principal = AuthUserUtil.getSubject().getPrincipals().oneByType(cls);
         } catch (ClassNotFoundException e) {
             if (log.isErrorEnabled()) {
-                log.error("Unable to find class for name [" + type + "]");
+                log.error("Unable to find class for identifier [" + type + "]");
             }
         }
         return principal;
