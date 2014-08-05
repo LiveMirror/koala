@@ -41,7 +41,7 @@
 		var getButtons = function() {
 			if (roleId) {
 				return [{
-					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配用户</button>',
+					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配</button>',
 					action : 'assignUserToRole'
 				}, {
 					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
@@ -52,22 +52,22 @@
 					content : '<ks:hasSecurityResource identifier="userManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
 					action : 'add'
 				}, {
-					content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>',
+					content : '<ks:hasSecurityResource identifier="userManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
 					action : 'modify'
 				}, {
-					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
+					content : '<ks:hasSecurityResource identifier="userManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
 					action : 'delete'
 				}, {
-					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配角色</button>',
+					content : '<ks:hasSecurityResource identifier="userManagerGrantRole"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配角色</button></ks:hasSecurityResource>',
 					action : 'roleAssign'
 				}, {
-					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配权限</button>',
+					content : '<ks:hasSecurityResource identifier="userManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配权限</button></ks:hasSecurityResource>',
 					action : 'permissionAssign'
 				}, {
-					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;重置密码</button>',
+					content : '<ks:hasSecurityResource identifier="userManagerResetPassword"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;重置密码</button></ks:hasSecurityResource>',
 					action : 'resetPassword'
 				},{
-					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;禁用</button>',
+					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;禁用</button></ks:hasSecurityResource>',
 					action : 'forbidden'
 				}];
 			}

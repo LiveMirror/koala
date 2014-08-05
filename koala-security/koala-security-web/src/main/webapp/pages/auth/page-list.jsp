@@ -2,7 +2,6 @@
 <%@ taglib prefix="ks" uri="http://www.openkoala.org/security" %>
 
 
-
 <link rel="stylesheet" href="../lib/validateForm/css/style.css"/>
 <script src="../lib/validateForm/validateForm.js"></script>
 
@@ -20,6 +19,7 @@
 			if(item){
 				form.find("input[name='name']").val(item.name);
 				form.find("input[name='identifier']").val(item.identifier);
+				form.find("input[name='pageElementType']").val(item.pageElementType);
 			    form.find("input[name='description']").val(item.description);
 			}
 			
@@ -141,6 +141,10 @@
 				name : "name",
 				width : 150
 			},{
+				title : "页面类型",
+				name : "pageElementType",
+				width : 150
+			},{
 				title : "页面标识",
 				name : "identifier",
 				width : 150
@@ -163,16 +167,16 @@
 				        }];
 				} else {
 					 return [{
-							content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>',
+							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
 							action: 'add'
 						},{
-							content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>',
+							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
 							action: 'modify'
 						},{
-							content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
+							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
 							action: 'delete'
 						},{
-							content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>授权</button>',
+							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerGrantPermission"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
 							action: 'permissionAssignForPage'
 						}];
 			}
@@ -317,6 +321,10 @@
        					  {
        							title : "页面标识",
        							name : "identifier",
+       							width : 150
+       						},{
+       							title : "页面类型",
+       							name : "pageElementType",
        							width : 150
        						}, {
        							title : "页面描述",

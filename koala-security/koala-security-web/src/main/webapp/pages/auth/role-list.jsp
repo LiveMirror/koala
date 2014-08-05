@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ taglib prefix="ks" uri="http://www.openkoala.org/security" %>
 <script>
 	$(function() {
 		var tabData 	= $('.tab-pane.active').data();
@@ -25,22 +26,22 @@
 				}];
 			} else {
 				return [{
-					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button>',
+					content : '<ks:hasSecurityResource identifier="roleManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
 					action : 'add'
 				}, {
-					content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button>',
+					content : '<ks:hasSecurityResource identifier="roleManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
 					action : 'modify'
 				}, {
-					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
+					content : '<ks:hasSecurityResource identifier="roleManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
 					action : 'delete'
 				}, {
-					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配url</button>',
+					content : '<ks:hasSecurityResource identifier="roleManagerGrantUrlAccessResource"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配url</button></ks:hasSecurityResource>',
 					action : 'urlAssign'
 				}, {
-					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配menu</button>',
+					content : '<ks:hasSecurityResource identifier="roleManagerGrantMenuResource"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配menu</button></ks:hasSecurityResource>',
 					action : 'menuAssign'
 				},{
-					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配page</button>',
+					content : '<ks:hasSecurityResource identifier="roleManagerPageElementResource"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配page</button></ks:hasSecurityResource>',
 					action : 'pageAssign'
 				},{
 					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配权限</button>',
