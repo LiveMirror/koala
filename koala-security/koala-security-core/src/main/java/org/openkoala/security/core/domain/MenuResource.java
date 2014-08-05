@@ -66,20 +66,6 @@ public class MenuResource extends SecurityResource {
 		super.save();
 	}
 
-	@Override
-	public void update() {
-		MenuResource menuResource = getBy(this.getId());
-		if (!StringUtils.isBlank(this.getName()) && !menuResource.getName().equals(this.getName())) {
-			isNameExisted();
-			menuResource.name = this.getName();
-		}
-		menuResource.setIdentifier(this.getIdentifier());
-		menuResource.setDescription(this.getDescription());
-		menuResource.setMenuIcon(this.getMenuIcon());
-		menuResource.setUrl(this.getUrl());
-		menuResource.setPosition(this.getPosition());
-	}
-
 	public void addChild(MenuResource child) {
 		child.setLevel(level + 1);
 		child.save();

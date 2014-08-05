@@ -1,11 +1,11 @@
 package org.openkoala.security.core.domain;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.openkoala.security.core.NameIsExistedException;
 
-import static org.openkoala.security.core.util.EntitiesHelper.*;
+import static org.junit.Assert.assertNotNull;
+import static org.openkoala.security.core.util.EntitiesHelper.assertPageElementResource;
+import static org.openkoala.security.core.util.EntitiesHelper.initPageElementResource;
 
 /**
  * @author luzhao
@@ -37,7 +37,7 @@ public class PageElementResourceTest extends AbstractDomainIntegrationTestCase {
 		pageElementResource.save();
 		PageElementResource updatePageElementResource = new PageElementResource("update用户添加0000000000","aaaa");
 		updatePageElementResource.setId(pageElementResource.getId());
-		updatePageElementResource.update();
+		updatePageElementResource.save();
 	}
 
 	@Test(expected = NameIsExistedException.class)
@@ -48,7 +48,7 @@ public class PageElementResourceTest extends AbstractDomainIntegrationTestCase {
 		pageElementResource.save();
 		PageElementResource updatePageElementResource = new PageElementResource("update用户添加0000000000","bbbb");
 		updatePageElementResource.setId(pageElementResource.getId());
-		updatePageElementResource.update();
+		updatePageElementResource.save();
 		PageElementResource loadPageElementResource = PageElementResource.getBy(updatePageElementResource.getId());
 		assertNotNull(loadPageElementResource);
 		assertPageElementResource(updatePageElementResource, loadPageElementResource);

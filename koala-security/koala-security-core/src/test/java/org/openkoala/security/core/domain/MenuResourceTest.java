@@ -1,13 +1,13 @@
 package org.openkoala.security.core.domain;
 
-import static org.junit.Assert.*;
-
-import java.util.Set;
-
 import org.junit.Test;
 import org.openkoala.security.core.NameIsExistedException;
 
-import static org.openkoala.security.core.util.EntitiesHelper.*;
+import java.util.Set;
+
+import static org.junit.Assert.*;
+import static org.openkoala.security.core.util.EntitiesHelper.assertMenuResource;
+import static org.openkoala.security.core.util.EntitiesHelper.initMenuResource;
 
 public class MenuResourceTest extends AbstractDomainIntegrationTestCase {
 
@@ -35,7 +35,7 @@ public class MenuResourceTest extends AbstractDomainIntegrationTestCase {
 		securityMenuResource.save();
 		MenuResource updateSecurityMenuResource = new MenuResource("update0000000000");
 		updateSecurityMenuResource.setId(securityMenuResource.getId());
-		updateSecurityMenuResource.update();
+		updateSecurityMenuResource.save();
 		MenuResource loadMenuResource = MenuResource.getBy(updateSecurityMenuResource.getId());
 		assertNotNull(loadMenuResource);
 		assertMenuResource(updateSecurityMenuResource, loadMenuResource);
@@ -49,7 +49,7 @@ public class MenuResourceTest extends AbstractDomainIntegrationTestCase {
 		securityMenuResource.save();
 		MenuResource updateSecurityMenuResource = new MenuResource("update0000000000");
 		updateSecurityMenuResource.setId(securityMenuResource.getId());
-		updateSecurityMenuResource.update();
+		updateSecurityMenuResource.save();
 	}
 	
 	@Test

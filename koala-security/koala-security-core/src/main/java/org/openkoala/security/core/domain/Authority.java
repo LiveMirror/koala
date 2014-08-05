@@ -53,7 +53,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "KS_AS_MAP", //
 	joinColumns = @JoinColumn(name = "AUTHORITY_ID"), //
 	inverseJoinColumns = @JoinColumn(name = "SECURITYRESOURCE_ID"))
@@ -105,13 +105,13 @@ public abstract class Authority extends SecurityAbstractEntity {
 
 	public abstract Authority getAuthorityBy(String name);
 
-	protected void isNameExisted() {
-		if (isExistName(this.name)) {
-			throw new NameIsExistedException("authority.name.exist");
-		}
-	}
-
-	public abstract void update();
+    @Override
+    public void save() {
+        if (isNew() && isExistName(this.name)) {
+            throw new NameIsExistedException("authority.name.exist");
+        }
+        super.save();
+    }
 
 	@Override
 	public void remove() {
@@ -128,7 +128,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 	 */
 	public void addSecurityResource(SecurityResource securityResource) {
 		this.securityResources.add(securityResource);
-		this.update();
+		this.save();
 	}
 
 	/**
@@ -138,7 +138,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 	 */
 	public void addSecurityResources(List<? extends SecurityResource> securityResources) {
 		this.securityResources.addAll(securityResources);
-		this.update();
+		this.save();
 	}
 
 	/**
@@ -148,7 +148,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 	 */
 	public void terminateSecurityResource(SecurityResource securityResource) {
 		this.securityResources.remove(securityResource);
-		this.update();
+		this.save();
 	}
 
 	/**
@@ -158,7 +158,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 	 */
 	public void terminateSecurityResources(List<? extends SecurityResource> securityResources) {
 		this.securityResources.removeAll(securityResources);
-		this.update();
+		this.save();
 	}
 
 	public static boolean checkHasPageElementResource(Set<Authority> authorities, String identifier) {

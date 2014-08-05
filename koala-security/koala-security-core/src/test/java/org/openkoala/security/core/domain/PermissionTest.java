@@ -1,11 +1,13 @@
 package org.openkoala.security.core.domain;
 
-import static org.openkoala.security.core.util.EntitiesHelper.*;
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.openkoala.security.core.IdentifierIsExistedException;
 import org.openkoala.security.core.NameIsExistedException;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.openkoala.security.core.util.EntitiesHelper.assertPermission;
+import static org.openkoala.security.core.util.EntitiesHelper.initPermission;
 
 public class PermissionTest extends AbstractDomainIntegrationTestCase {
 
@@ -39,7 +41,7 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 		permission.save();
 		Permission updatePermission = new Permission("测试权限000003", "testPermission000003");
 		updatePermission.setId(permission.getId());
-		updatePermission.update();
+		updatePermission.save();
 
 		Permission loadPermission = Permission.getBy(updatePermission.getId());
 		assertNotNull(loadPermission);
@@ -56,7 +58,7 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 		permission2.save();
 		Permission updatePermission = new Permission(name, "testPermission000004");
 		updatePermission.setId(permission.getId());
-		updatePermission.update();
+		updatePermission.save();
 	}
 
 	@Test(expected = IdentifierIsExistedException.class)
@@ -69,7 +71,7 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 		permission2.save();
 		Permission updatePermission = new Permission("测试权限000004", identifier);
 		updatePermission.setId(permission.getId());
-		updatePermission.update();
+		updatePermission.save();
 	}
 
 	@Test

@@ -1,15 +1,15 @@
 package org.openkoala.security.core.domain;
 
-import static org.junit.Assert.*;
-import static org.openkoala.security.core.util.EntitiesHelper.*;
+import com.google.common.collect.Lists;
+import org.junit.Test;
+import org.openkoala.security.core.NameIsExistedException;
 
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
-import org.openkoala.security.core.NameIsExistedException;
-
-import com.google.common.collect.Lists;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.openkoala.security.core.util.EntitiesHelper.*;
 
 public class RoleTest extends AbstractDomainIntegrationTestCase {
 
@@ -59,7 +59,7 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		Role updateRole = new Role(name);
 		updateRole.setDescription(description);
 		updateRole.setId(role.getId());
-		updateRole.update();
+		updateRole.save();
 		Role loadRole = Role.getBy(updateRole.getId());
 		assertNotNull(loadRole);
 		System.out.println(loadRole);
@@ -78,7 +78,7 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		Role updateRole = new Role(name);
 		updateRole.setDescription(description);
 		updateRole.setId(role.getId());
-		updateRole.update();
+		updateRole.save();
 		Role loadRole = Role.getBy(updateRole.getId());
 		assertNotNull(loadRole);
 		assertRole(updateRole, loadRole);

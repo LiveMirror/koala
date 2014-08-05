@@ -1,10 +1,9 @@
 package org.openkoala.security.core.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
 @DiscriminatorValue("PAGE_ELEMENT_RESOURCE")
@@ -23,18 +22,6 @@ public class PageElementResource extends SecurityResource {
 	public void save() {
 		isNameExisted();
 		super.save();
-	}
-
-	@Override
-	public void update() {
-		PageElementResource pageElementResource = getBy(this.getId());
-		if (!StringUtils.isBlank(this.getName()) && !pageElementResource.getName().equals(this.getName())) {
-			isNameExisted();
-			pageElementResource.name = this.getName();
-		}
-		pageElementResource.setIdentifier(this.getIdentifier());
-		pageElementResource.setDescription(this.getDescription());
-		pageElementResource.setVersion(this.getVersion());
 	}
 
 	public static PageElementResource getBy(String securityResourceName) {

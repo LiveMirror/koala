@@ -1,16 +1,13 @@
 package org.openkoala.security.core.domain;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Sets;
 import org.junit.Test;
 import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.core.UrlIsExistedException;
 
-import com.google.common.collect.Sets;
+import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.openkoala.security.core.util.EntitiesHelper.*;
 
 public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
@@ -37,40 +34,6 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		urlAccessResource2.save();
 	}
 
-	@Test
-	public void testUpdate() throws Exception {
-		UrlAccessResource urlAccessResource = initUrlAccessResource();
-		urlAccessResource.save();
-		UrlAccessResource updateUrlAccessResource = new UrlAccessResource("测试管理0000000002 update", "/auth/test/**********12");
-		updateUrlAccessResource.setId(urlAccessResource.getId());
-		updateUrlAccessResource.update();
-		UrlAccessResource loadUrlAccessResource = UrlAccessResource.getBy(updateUrlAccessResource.getId());
-		assertNotNull(loadUrlAccessResource);
-		assertUrlAccessResource(updateUrlAccessResource,loadUrlAccessResource);
-	}
-	
-	@Test(expected = NameIsExistedException.class)
-	public void testUpdateNameExisted() throws Exception {
-		UrlAccessResource urlAccessResource = initUrlAccessResource();
-		urlAccessResource.save();
-		UrlAccessResource urlAccessResource2 = new UrlAccessResource("测试管理0000000001", "/auth/test/**********11");
-		urlAccessResource2.save();
-		UrlAccessResource updateUrlAccessResource = new UrlAccessResource("测试管理0000000001", "/auth/test/**********12");
-		updateUrlAccessResource.setId(urlAccessResource.getId());
-		updateUrlAccessResource.update();
-	}
-	
-	@Test(expected = UrlIsExistedException.class)
-	public void testUpdateUrlExisted() throws Exception {
-		UrlAccessResource urlAccessResource = initUrlAccessResource();
-		urlAccessResource.save();
-		UrlAccessResource urlAccessResource2 = new UrlAccessResource("测试管理0000000001", "/auth/test/**********11");
-		urlAccessResource2.save();
-		UrlAccessResource updateUrlAccessResource = new UrlAccessResource("测试管理0000000002", "/auth/test/**********11");
-		updateUrlAccessResource.setId(urlAccessResource.getId());
-		updateUrlAccessResource.update();
-	}
-	
 	@Test
 	public void testFindByName() throws Exception {
 		UrlAccessResource urlAccessResource = initUrlAccessResource();
@@ -150,13 +113,8 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 	public void testFindAll() throws Exception {
 		init();
 		List<UrlAccessResource> urlAccessResources = UrlAccessResource.findAllUrlAccessResources();
-		System.out.println("---->"+urlAccessResources);
-		for (UrlAccessResource urlAccessResource : urlAccessResources) {
-			Set<Authority> authorities = urlAccessResource.getAuthorities();
-			for (Authority authority : authorities) {
-				System.out.println("---->" + authority);
-			}
-		}
+        assertFalse(urlAccessResources.isEmpty());
+        assertEquals("testRole0000000000", urlAccessResources.get(0).getAuthorities().iterator().next().getName());
 	}
 
 	private void init() {

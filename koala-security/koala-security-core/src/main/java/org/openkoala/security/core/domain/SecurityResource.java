@@ -59,7 +59,7 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	/**
 	 * 查询的时候禁止懒加载。
 	 */
-	@ManyToMany(mappedBy = "securityResources", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+	@ManyToMany(mappedBy = "securityResources")
 	private Set<Authority> authorities = new HashSet<Authority>();
 
 	protected SecurityResource() {}
@@ -72,8 +72,6 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 		this.name = name;
 		this.url = url;
 	}
-
-	public abstract void update();
 
 	public abstract SecurityResource findByName(String name);
 

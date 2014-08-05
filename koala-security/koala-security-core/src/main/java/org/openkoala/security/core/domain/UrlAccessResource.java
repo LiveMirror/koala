@@ -1,13 +1,10 @@
 package org.openkoala.security.core.domain;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-
-import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @DiscriminatorValue("URL_ACCESS_RESOURCE")
@@ -26,22 +23,6 @@ public class UrlAccessResource extends SecurityResource {
 		isNameExisted();
 		isUrlExisted();
 		super.save();
-	}
-
-	@Override
-	public void update() {
-		UrlAccessResource urlAccessResource = getBy(this.getId());
-		if(!StringUtils.isBlank(this.getName()) && !urlAccessResource.getName().equals(this.getName())){
-			isNameExisted();
-			urlAccessResource.name = this.getName();
-		}
-		if(!StringUtils.isBlank(this.getUrl()) && !urlAccessResource.getUrl().equals(this.getUrl())){
-			isUrlExisted();
-			urlAccessResource.setUrl(this.getUrl());
-		}
-		urlAccessResource.setIdentifier(this.getIdentifier());
-		urlAccessResource.setDescription(this.getDescription());
-		urlAccessResource.setVersion(this.getVersion());
 	}
 
 	public static UrlAccessResource getBy(Long id) {

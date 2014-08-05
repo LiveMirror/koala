@@ -1,17 +1,15 @@
 package org.openkoala.security.core.domain;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.openkoala.security.core.IdentifierIsExistedException;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.openkoala.security.core.IdentifierIsExistedException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 权限。代表系统的一项操作或功能。
@@ -43,7 +41,6 @@ public class Permission extends Authority {
 
 	@Override
 	public void save() {
-		isNameExisted();
 		isIdentifierExisted(this.identifier);
 		super.save();
 	}
@@ -53,23 +50,6 @@ public class Permission extends Authority {
 				.createCriteriaQuery(Permission.class)//
 				.eq("identifier", identifier)//
 				.singleResult();
-	}
-
-	@Override
-	public void update() {
-		Permission permission = getBy(this.getId());
-		
-		if(!StringUtils.isBlank(this.getName()) && !permission.getName().equals(this.getName())){
-			isNameExisted();
-			permission.name = this.getName();
-		}
-		
-		if(!StringUtils.isBlank(this.getIdentifier()) && !permission.getIdentifier().equals(this.getIdentifier()))
-		{
-			isIdentifierExisted(this.getIdentifier());
-			permission.identifier = this.getIdentifier();
-		}
-		permission.setDescription(this.getDescription());
 	}
 
 	@Override
