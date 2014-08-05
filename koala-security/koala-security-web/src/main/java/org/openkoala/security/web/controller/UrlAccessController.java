@@ -147,10 +147,10 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping("/grantPermisssionsToUrlAccessResource")
-	public JsonResult grantPermisssionsToUrlAccessResource(Long[] permissionIds, Long urlAccessResourceId) {
+	public JsonResult grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.grantPermisssionsToUrlAccessResource(permissionIds, urlAccessResourceId);
+			securityConfigFacade.grantPermisssionsToUrlAccessResource(permissionId, urlAccessResourceId);
 			shiroFilerChainManager.initFilterChain();
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为URL访问权限资源授权权限失败。");
@@ -171,10 +171,10 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping("/terminatePermissionsFromUrlAccessResource")
-	public JsonResult terminatePermissionsFromUrlAccessResource(Long[] permissionIds, Long urlAccessResourceId) {
+	public JsonResult terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.terminatePermissionsFromUrlAccessResource(permissionIds, urlAccessResourceId);
+			securityConfigFacade.terminatePermissionsFromUrlAccessResource(permissionId, urlAccessResourceId);
 			shiroFilerChainManager.initFilterChain();
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为URL访问权限资源授权权限失败。");

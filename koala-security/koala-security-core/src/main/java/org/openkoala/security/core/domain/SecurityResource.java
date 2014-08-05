@@ -62,8 +62,7 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	@ManyToMany(mappedBy = "securityResources", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	private Set<Authority> authorities = new HashSet<Authority>();
 
-	protected SecurityResource() {
-	}
+	protected SecurityResource() {}
 
 	public SecurityResource(String name) {
 		this.name = name;

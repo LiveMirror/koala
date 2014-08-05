@@ -109,10 +109,10 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping("/grantPermisssionsToPageElementResource")
-	public JsonResult grantPermisssionsToPageElementResource(Long[] permissionIds, Long pageElementResourceId) {
+	public JsonResult grantPermisssionsToPageElementResource(Long permissionId, Long pageElementResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.grantPermisssionsToPageElementResource(permissionIds, pageElementResourceId);
+			securityConfigFacade.grantPermisssionsToPageElementResource(permissionId, pageElementResourceId);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为页面元素资源授予权限成功。");
 		} catch (Exception e) {
@@ -132,10 +132,10 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping("/terminatePermissionsFromPageElementResource")
-	public JsonResult terminatePermissionsFromPageElementResource(Long[] permissionIds, Long pageElementResourceId) {
+	public JsonResult terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.terminatePermissionsFromPageElementResource(permissionIds, pageElementResourceId);
+			securityConfigFacade.terminatePermissionsFromPageElementResource(permissionId, pageElementResourceId);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("从页面元素资源中撤销权限。");
 		} catch (Exception e) {

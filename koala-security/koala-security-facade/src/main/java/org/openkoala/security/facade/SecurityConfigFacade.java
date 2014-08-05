@@ -176,13 +176,13 @@ public interface SecurityConfigFacade {
 
 	void terminateUrlAccessResourceFromPermission(Long urlAccessResourceId, Long permissionId);
 
-	void grantPermisssionsToUrlAccessResource(Long[] permissionIds, Long urlAccessResourceId);
+	void grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId);
 
-	void terminatePermissionsFromUrlAccessResource(Long[] permissionIds, Long urlAccessResourceId);
+	void terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId);
 
-	void grantPermisssionsToMenuResource(Long[] permissionIds, Long menuResourceId);
+	void grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId);
 
-	void terminatePermissionsFromMenuResource(Long[] permissionIds, Long menuResourceId);
+	void terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId);
 
 	void savePageElementResource(PageElementResourceDTO pageElementResourceDTO);
 
@@ -192,9 +192,9 @@ public interface SecurityConfigFacade {
 
 	void terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds);
 
-	void grantPermisssionsToPageElementResource(Long[] permissionIds, Long pageElementResourceId);
+	void grantPermisssionsToPageElementResource(Long permissionId, Long pageElementResourceId);
 
-	void terminatePermissionsFromPageElementResource(Long[] permissionIds, Long pageElementResourceId);
+	void terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId);
 
 	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceIdentifier);
 
