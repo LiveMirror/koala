@@ -10,36 +10,93 @@
 		</property>
 	</CopyFiles>
 
-	<XmlAdd>
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/general_query_source_code/application</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-application/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/general_query_source_code/core</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-core/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/general_query_source_code/infra</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-infra/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/general_query_source_code/web/controller</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+	</VelocityDirObject>
+
+	<!-- <XmlAdd>
 		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/pom.xml</property>
 		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
 		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
 		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='org.openkoala.gqc' and xmlns:artifactId='koala-gqc-controller']]]></property>
 		<property name="xmlContent">
          <![CDATA[
-    <?xml version="1.0" encoding="UTF-8"?>
+         <?xml version="1.0" encoding="UTF-8"?>
     <root>
-         <dependency> 
-            <groupId>org.openkoala.gqc</groupId>  
-            <artifactId>koala-gqc-application</artifactId>
-        </dependency>
-    	<dependency> 
-            <groupId>org.openkoala.gqc</groupId>  
-            <artifactId>koala-gqc-controller</artifactId>
+          <dependency>
+			<groupId>commons-dbutils</groupId>
+			<artifactId>commons-dbutils</artifactId>
+			<version>1.5</version>
+		</dependency>
+         <dependency>
+        	<groupId>com.oracle</groupId>
+        	<artifactId>ojdbc14</artifactId>
+        	<version>10.2.0.4.0</version>
         </dependency>
         <dependency> 
-            <groupId>org.openkoala.gqc</groupId>  
-            <artifactId>koala-gqc-applicationImpl</artifactId>
+            <groupId>org.openkoala</groupId>  
+            <artifactId>ttt-infra</artifactId>  
+            <version>${project.parent.version}</version>
+        </dependency> 
+	</root>
+         ]]>
+		</property>
+	</XmlAdd> -->
+
+	<XmlAdd>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.appName}-core/pom.xml</property>
+		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
+		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
+		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='org.openkoala' and xmlns:artifactId='koala-core']]]></property>
+		<property name="xmlContent">
+         <![CDATA[
+    <?xml version="1.0" encoding="UTF-8"?>
+    <root>
+          <dependency>
+			<groupId>commons-dbutils</groupId>
+			<artifactId>commons-dbutils</artifactId>
+			<version>1.5</version>
+		</dependency>
+         <dependency>
+        	<groupId>com.oracle</groupId>
+        	<artifactId>ojdbc14</artifactId>
+        	<version>10.2.0.4.0</version>
         </dependency>
-    	<dependency> 
-            <groupId>org.openkoala.gqc</groupId>  
-            <artifactId>koala-gqc-controller</artifactId>
-        </dependency>
+        <dependency> 
+            <groupId>org.openkoala</groupId>  
+            <artifactId>ttt-infra</artifactId>  
+            <version>${project.parent.version}</version>
+        </dependency> 
+        <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>3.2.6.RELEASE</version>
+          </dependency>
+        <dependency>
+                <groupId>org.dayatang.dddlib</groupId>
+                <artifactId>dddlib-query-channel</artifactId>
+                <version>${dddlib.version}</version>
+            </dependency>
 	</root>
          ]]>
 		</property>
 	</XmlAdd>
-
 	
 	<XmlAdd>
 	    <property name="express">$Project.dbProtocol=='JPA'</property>
