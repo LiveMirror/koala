@@ -93,12 +93,12 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		if (toToken.getCredentials() != null) {
 			password = new String(toToken.getPassword());
 		}
-		UserDTO userDTO = null;
+		UserDTO user = null;
 		
-		userDTO = securityAccessFacade.login(principal, password);		
+		user = securityAccessFacade.login(principal, password);		
 		
 		// TODO 以后修改成前后台获取一致。
-		List<RoleDTO> roleDTOs = securityAccessFacade.findRolesBy(userDTO.getUserAccount());
+		List<RoleDTO> roleDTOs = securityAccessFacade.findRolesBy(user.getUserAccount());
 		String roleName = "";
 		
 		if(roleDTOs.isEmpty()){
@@ -109,14 +109,14 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		
 		ShiroUser shiroUser = null;
 		if (!StringUtils.isBlank(roleName)) {
-			shiroUser = new ShiroUser(userDTO.getId(), userDTO.getUserAccount(), userDTO.getName(), roleName);
+			shiroUser = new ShiroUser(user.getId(), user.getUserAccount(), user.getName(), roleName);
 		} else {
-			shiroUser = new ShiroUser(userDTO.getId(), userDTO.getUserAccount(), userDTO.getName());
+			shiroUser = new ShiroUser(user.getId(), user.getUserAccount(), user.getName());
 		}
 
 		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
 				shiroUser, //
-				userDTO.getUserPassword(),//
+				user.getUserPassword(),//
 				getName());
 
 		return result;

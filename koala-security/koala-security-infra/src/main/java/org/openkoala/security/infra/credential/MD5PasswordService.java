@@ -4,8 +4,6 @@ import javax.inject.Named;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.openkoala.security.core.domain.PasswordService;
-import org.openkoala.security.core.domain.User;
-
 /**
  * Shiro 默认是16进制加密 TODO 盐值加密
  * 
@@ -18,8 +16,8 @@ public class MD5PasswordService implements PasswordService {
 	private static final int hashIterations = 1;
 
 	@Override
-	public String encryptPassword(User user) throws IllegalArgumentException {
-		return new Md5Hash(user.getPassword(), null, hashIterations).toHex();
+	public String encryptPassword(String password,String salt) throws IllegalArgumentException {
+		return new Md5Hash(password, salt, hashIterations).toHex();
 	}
 
 	@Override

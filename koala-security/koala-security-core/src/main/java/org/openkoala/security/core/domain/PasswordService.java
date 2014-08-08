@@ -8,7 +8,7 @@ package org.openkoala.security.core.domain;
  */
 public interface PasswordService {
 
-	String encryptPassword(User user) throws IllegalArgumentException;
+	String encryptPassword(String password,String salt) throws IllegalArgumentException;
 
 	/**
 	 * 获取加密策略 例如： MD5

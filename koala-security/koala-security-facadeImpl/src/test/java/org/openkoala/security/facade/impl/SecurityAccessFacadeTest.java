@@ -1,6 +1,7 @@
 package org.openkoala.security.facade.impl;
 
 import static org.junit.Assert.*;
+import static org.openkoala.security.facade.assembler.GenerateDTOUtils.*;
 import static org.openkoala.security.facade.impl.util.EntitiesHelper.*;
 
 import java.util.List;
@@ -25,8 +26,6 @@ import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UserDTO;
-
-import static org.openkoala.security.facade.util.GenerateDTOUtils.*;
 
 public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 

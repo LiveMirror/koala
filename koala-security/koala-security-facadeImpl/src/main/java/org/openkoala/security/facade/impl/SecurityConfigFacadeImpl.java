@@ -1,6 +1,6 @@
 package org.openkoala.security.facade.impl;
 
-import static org.openkoala.security.facade.util.TransFromDomainUtils.*;
+import static org.openkoala.security.facade.assembler.TransFromDomainUtils.transFromMenuResourcesBy;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +13,12 @@ import javax.inject.Named;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.application.SecurityDBInitApplication;
+import org.openkoala.security.core.CorrelationException;
+import org.openkoala.security.core.IdentifierIsExistedException;
+import org.openkoala.security.core.NameIsExistedException;
+import org.openkoala.security.core.NullArgumentException;
+import org.openkoala.security.core.UrlIsExistedException;
+import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
@@ -22,12 +28,32 @@ import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.assembler.MenuResourceAssembler;
+import org.openkoala.security.facade.assembler.PageElementResourceAssembler;
+import org.openkoala.security.facade.assembler.PermissionAssembler;
+import org.openkoala.security.facade.assembler.RoleAssembler;
+import org.openkoala.security.facade.assembler.UrlAccessResourceAssembler;
+import org.openkoala.security.facade.assembler.UserAssembler;
+import org.openkoala.security.facade.command.ChangeMenuResourcePropsCommand;
+import org.openkoala.security.facade.command.ChangePageElementResourcePropsCommand;
+import org.openkoala.security.facade.command.ChangePermissionPropsCommand;
+import org.openkoala.security.facade.command.ChangeRolePropsCommand;
+import org.openkoala.security.facade.command.ChangeUrlAccessResourcePropsCommand;
+import org.openkoala.security.facade.command.ChangeUserAccountCommand;
+import org.openkoala.security.facade.command.ChangeUserEmailCommand;
+import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
+import org.openkoala.security.facade.command.ChangeUserPropsCommand;
+import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
+import org.openkoala.security.facade.command.CreateChildMenuResourceCommand;
+import org.openkoala.security.facade.command.CreateMenuResourceCommand;
+import org.openkoala.security.facade.command.CreatePageElementResourceCommand;
+import org.openkoala.security.facade.command.CreatePermissionCommand;
+import org.openkoala.security.facade.command.CreateRoleCommand;
+import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
+import org.openkoala.security.facade.command.CreateUserCommand;
+import org.openkoala.security.facade.command.LoginCommand;
+import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.PageElementResourceDTO;
-import org.openkoala.security.facade.dto.PermissionDTO;
-import org.openkoala.security.facade.dto.RoleDTO;
-import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
-import org.openkoala.security.facade.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,102 +71,151 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Inject
 	private SecurityAccessApplication securityAccessApplication;
-	
+
 	@Inject
 	private SecurityDBInitApplication securityDBInitApplication;
 
-	public void saveUser(UserDTO userDTO) {
-		User user = transFromUserBy(userDTO);
-		securityConfigApplication.createActor(user);
+	@Override
+	public JsonResult createUser(CreateUserCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			User user = UserAssembler.toUser(command);
+			securityConfigApplication.createActor(user);
+			result.setSuccess(true);
+			result.setMessage("添加用户成功。");
+		} catch (UserAccountIsExistedException e) {
+			LOGGER.error(e.getMessage());
+			result.setSuccess(false);
+			result.setMessage("用户账号:" + command.getUserAccount() + "已经存在。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			result.setSuccess(false);
+			result.setMessage("添加用户失败。");
+		}
+		return result;
 	}
 
 	@Override
-	public void terminateUsers(UserDTO[] userDTOs) {
-		for (UserDTO userDTO : userDTOs) {
-			User user = transFromUserBy(userDTO);
+	public JsonResult terminateUsers(Long[] userIds) {
+		JsonResult result = null;
+		for (Long userId : userIds) {
+			result = terminateUser(userId);
+			if (!result.isSuccess()) {
+				break;
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult terminateUser(Long userId) {
+		JsonResult result = new JsonResult();
+		User user = null;
+		try {
+			user = securityAccessApplication.getUserBy(userId);
 			securityConfigApplication.terminateActor(user);
+			result.setSuccess(true);
+			result.setMessage("撤销用户：" + user.getUserAccount() + "成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("撤销用户：" + user.getUserAccount() + "失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public void resetPassword(Long userId) {
-		User user = securityAccessApplication.getUserBy(userId);
-		securityConfigApplication.resetPassword(user);
+	public JsonResult resetPassword(Long userId) {
+		JsonResult result = new JsonResult();
+		try {
+			User user = securityAccessApplication.getUserBy(userId);
+			securityConfigApplication.resetPassword(user);
+			result.setSuccess(true);
+			result.setMessage("重置用户密码成功，密码：888888");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			result.setSuccess(false);
+			result.setMessage("重置用户密码失败。");
+		}
+		return result;
 	}
 
 	@Override
-	public boolean updatePassword(String userAccount, String userPassword, String oldUserPassword) {
-		UserDTO userDto = new UserDTO(userAccount, userPassword);
-		User user = transFromUserBy(userDto);
-		return securityAccessApplication.updatePassword(user, oldUserPassword);
+	public JsonResult changeUserPassword(ChangeUserPasswordCommand command) {
+		JsonResult result = new JsonResult();
+		User user = securityAccessApplication.getUserBy(command.getUserAccount());
+		boolean message = securityAccessApplication.updatePassword(user, command.getUserPassword(),
+				command.getOldUserPassword());
+		if (message) {
+			result.setSuccess(true);
+			result.setMessage("更新用户：" + user.getName() + "密码成功。");
+		} else {
+			result.setSuccess(false);
+			result.setMessage("更新用户：" + user.getName() + "密码失败。");
+		}
+		return result;
 	}
 
 	@Override
-	public void saveRole(RoleDTO roleDTO) {
-		Role role = transFromRoleBy(roleDTO);
-		securityConfigApplication.createAuthority(role);
+	public JsonResult terminateRoles(Long[] roleIds) {
+		JsonResult result = null;
+		for (Long roleId : roleIds) {
+			result = terminateRole(roleId);
+			if (!result.isSuccess()) {
+				break;
+			}
+		}
+		return result;
 	}
 
 	@Override
-	public void updateRole(RoleDTO roleDTO) {
-		Role role = transFromRoleBy(roleDTO);
-		securityConfigApplication.updateAuthority(role);
-	}
-
-	@Override
-	public void terminateRoles(RoleDTO[] roleDTOs) {
-		for (RoleDTO roleDTO : roleDTOs) {
-			Role role = transFromRoleBy(roleDTO);
+	public JsonResult terminateRole(Long roleId) {
+		JsonResult result = new JsonResult();
+		Role role = null;
+		try {
+			role = securityAccessApplication.getRoleBy(roleId);
 			securityConfigApplication.terminateAuthority(role);
+			result.setSuccess(true);
+			result.setMessage("撤销角色成功");
+		} catch (CorrelationException e) {
+			result.setSuccess(false);
+			result.setMessage("撤销角色：" + role.getName() + "失败。");
+		} catch (Exception e) {
+			result.setSuccess(false);
+			result.setMessage("撤销角色失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public void updateUser(UserDTO userDTO) {
-		User user = transFromUserBy(userDTO);
-		securityConfigApplication.updateActor(user);
-	}
-
-	@Override
-	public void savePermission(PermissionDTO permissionDTO) {
-		Permission permission = transFromPermissionBy(permissionDTO);
-		securityConfigApplication.createAuthority(permission);
-	}
-
-	@Override
-	public void updatePermission(PermissionDTO permissionDTO) {
-		Permission permission = transFromPermissionBy(permissionDTO);
-		securityConfigApplication.updateAuthority(permission);
-	}
-
-	@Override
-	public void terminatePermissions(PermissionDTO[] permissionDTOs) {
-		for (PermissionDTO permissionDTO : permissionDTOs) {
-			Permission permission = transFromPermissionBy(permissionDTO);
-			securityConfigApplication.terminateAuthority(permission);
+	public JsonResult terminateMenuResources(Long[] menuResourceIds) {
+		JsonResult result = null;
+		for (Long menuResourceId : menuResourceIds) {
+			result = terminateMenuResource(menuResourceId);
+			if (!result.isSuccess()) {
+				break;
+			}
 		}
+		return result;
 	}
 
 	@Override
-	public void saveMenuResource(MenuResourceDTO menuResourceDTO) {
-		securityConfigApplication.createSecurityResource(transFromMenuResourceBy(menuResourceDTO));
-	}
-
-	@Override
-	public void updateMenuResource(MenuResourceDTO menuResourceDTO) {
-		securityConfigApplication.updateSecurityResource(transFromMenuResourceBy(menuResourceDTO));
-	}
-
-	@Override
-	public void terminateMenuResources(MenuResourceDTO[] menuResourceDTOs) {
-		for (MenuResourceDTO menuResourceDTO : menuResourceDTOs) {
-			securityConfigApplication.terminateSecurityResource(transFromMenuResourceBy(menuResourceDTO));
+	public JsonResult terminateMenuResource(Long menuResourceId) {
+		JsonResult result = new JsonResult();
+		try {
+			MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
+			securityConfigApplication.terminateSecurityResource(menuResource);
+			result.setSuccess(true);
+			result.setMessage("撤销菜单全线资源成功。");
+		} catch (CorrelationException e) {
+			result.setSuccess(false);
+			result.setMessage("不能撤销，因为有角色或者权限关联。");
+		} catch (Exception e) {
+			result.setSuccess(false);
+			result.setMessage("撤销菜单全线资源失败。");
 		}
-	}
+		return result;
 
-	@Override
-	public void saveChildToParent(MenuResourceDTO child, Long parentId) {
-		securityConfigApplication.createChildToParent(transFromMenuResourceBy(child), parentId);
 	}
 
 	@Override
@@ -202,29 +277,61 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void activate(Long userId) {
-		User user = securityAccessApplication.getUserBy(userId);
-		securityConfigApplication.activateUser(user);
-	}
-
-	@Override
-	public void suspend(Long userId) {
-		User user = securityAccessApplication.getUserBy(userId);
-		securityConfigApplication.suspendUser(user);
-	}
-
-	@Override
-	public void activate(Long[] userIds) {
-		for (Long userId : userIds) {
-			this.activate(userId);
+	public JsonResult activate(Long userId) {
+		JsonResult result = new JsonResult();
+		User user = null;
+		try {
+			user = securityAccessApplication.getUserBy(userId);
+			securityConfigApplication.activateUser(user);
+			result.setSuccess(true);
+			result.setMessage("激活用户：" + user.getUserAccount() + "成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("激活用户：" + user.getUserAccount() + "失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public void suspend(Long[] userIds) {
-		for (Long userId : userIds) {
-			this.suspend(userId);
+	public JsonResult suspend(Long userId) {
+		JsonResult result = new JsonResult();
+		User user = null;
+		try {
+			user = securityAccessApplication.getUserBy(userId);
+			securityConfigApplication.suspendUser(user);
+			result.setSuccess(true);
+			result.setMessage("挂起用户：" + user.getUserAccount() + "成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("挂起用户：" + user.getUserAccount() + "失败。");
 		}
+		return result;
+	}
+
+	@Override
+	public JsonResult activate(Long[] userIds) {
+		JsonResult result = null;
+		for (Long userId : userIds) {
+			result = this.activate(userId);
+			if (!result.isSuccess()) {
+				break;
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult suspend(Long[] userIds) {
+		JsonResult result = null;
+		for (Long userId : userIds) {
+			result = this.suspend(userId);
+			if (!result.isSuccess()) {
+				break;
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -297,7 +404,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 		securityConfigApplication.terminateSecurityResourcesFromAuthority(waitingDelList, role);
 		securityConfigApplication.grantSecurityResourcesToAuthority(waitingAddList, role);
-		
+
 		LOGGER.info("----> waiting delete menuResource list :{}", waitingDelList);
 		LOGGER.info("----> waiting add menuResource list :{}", waitingAddList);
 	}
@@ -306,7 +413,8 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	public void grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		for (Long pageElementResourceId : pageElementResourceIds) {
-			PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+			PageElementResource pageElementResource = securityAccessApplication
+					.getPageElementResourceBy(pageElementResourceId);
 			securityConfigApplication.grantSecurityResourceToAuthority(pageElementResource, role);
 		}
 	}
@@ -346,23 +454,35 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void saveUrlAccessResource(UrlAccessResourceDTO urlAccessResourceDTO) {
-		UrlAccessResource urlAccessResource = transFromUrlAccessResourceBy(urlAccessResourceDTO);
-		securityConfigApplication.createSecurityResource(urlAccessResource);
-	}
-
-	@Override
-	public void updateUrlAccessResource(UrlAccessResourceDTO urlAccessResourceDTO) {
-		UrlAccessResource urlAccessResource = transFromUrlAccessResourceBy(urlAccessResourceDTO);
-		securityConfigApplication.updateSecurityResource(urlAccessResource);
-	}
-
-	@Override
-	public void terminateUrlAccessResources(UrlAccessResourceDTO[] urlAccessResourceDTOs) {
-		for (UrlAccessResourceDTO urlAccessResourceDTO : urlAccessResourceDTOs) {
-			UrlAccessResource urlAccessResource = transFromUrlAccessResourceBy(urlAccessResourceDTO);
-			securityConfigApplication.terminateSecurityResource(urlAccessResource);
+	public JsonResult terminateUrlAccessResources(Long[] urlAccessResourceIds) {
+		JsonResult result = null;
+		for (Long urlAccessResourceId : urlAccessResourceIds) {
+			result = this.terminateUrlAccessResource(urlAccessResourceId);
+			if (!result.isSuccess()) {
+				break;
+			}
 		}
+		result.setMessage("批量撤销URL访问权限资源成功");
+		return result;
+	}
+
+	public JsonResult terminateUrlAccessResource(Long urlAccessResourceId) {
+		JsonResult result = new JsonResult();
+		try {
+			UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+			securityConfigApplication.terminateSecurityResource(urlAccessResource);
+			result.setSuccess(true);
+			result.setMessage("撤销URL访问权限资源成功");
+		} catch (CorrelationException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("撤销URL访问权限资源失败，有角色或者权限关联。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("撤销URL访问权限资源失败");
+		}
+		return result;
 	}
 
 	@Override
@@ -417,55 +537,71 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void savePageElementResource(PageElementResourceDTO pageElementResourceDTO) {
-		PageElementResource pageElementResource = transFromPageElementResourceBy(pageElementResourceDTO);
-		securityConfigApplication.createSecurityResource(pageElementResource);
-	}
-
-	@Override
-	public void updatePageElementResource(PageElementResourceDTO pageElementResourceDTO) {
-		PageElementResource pageElementResource = transFromPageElementResourceBy(pageElementResourceDTO);
-		securityConfigApplication.updateSecurityResource(pageElementResource);
-	}
-
-	@Override
-	public void terminatePageElementResources(PageElementResourceDTO[] pageElementResourceDTOs) {
-		for (PageElementResourceDTO pageElementResourceDTO : pageElementResourceDTOs) {
-			PageElementResource pageElementResource = transFromPageElementResourceBy(pageElementResourceDTO);
-			securityConfigApplication.terminateSecurityResource(pageElementResource);
+	public JsonResult terminatePageElementResources(Long[] pageElementResourceIds) {
+		JsonResult result = null;
+		for (Long pageElementResourceId : pageElementResourceIds) {
+			result = this.terminatePageElementResource(pageElementResourceId);
+			if (!result.isSuccess()) {
+				break;
+			}
 		}
+		return result;
+	}
+
+	public JsonResult terminatePageElementResource(Long pageElementResourceId) {
+		JsonResult result = new JsonResult();
+		try {
+			PageElementResource pageElementResource = securityAccessApplication
+					.getPageElementResourceBy(pageElementResourceId);
+			securityConfigApplication.terminateSecurityResource(pageElementResource);
+			result.setSuccess(true);
+			result.setMessage("撤销页面元素权限资源成功。");
+		} catch (CorrelationException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(true);
+			result.setMessage("因为有角色或者权限，不能撤销。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(true);
+			result.setMessage("撤销页面元素权限资源失败。");
+		}
+		return result;
 	}
 
 	@Override
 	public void terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		for (Long pageElementResourceId : pageElementResourceIds) {
-			PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+			PageElementResource pageElementResource = securityAccessApplication
+					.getPageElementResourceBy(pageElementResourceId);
 			securityConfigApplication.terminateSecurityResourceFromAuthority(pageElementResource, role);
 		}
 	}
 
 	@Override
 	public void grantPermisssionsToPageElementResource(Long permissionId, Long pageElementResourceId) {
-		PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+		PageElementResource pageElementResource = securityAccessApplication
+				.getPageElementResourceBy(pageElementResourceId);
 		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 		securityConfigApplication.grantAuthorityToSecurityResource(permission, pageElementResource);
 	}
 
 	@Override
 	public void terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId) {
-		PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+		PageElementResource pageElementResource = securityAccessApplication
+				.getPageElementResourceBy(pageElementResourceId);
 		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 		securityConfigApplication.terminateAuthorityFromSecurityResource(permission, pageElementResource);
 	}
 
 	@Override
-	public boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceIdentifier) {
-		
-		if(!securityAccessApplication.hasPageElementResource(securityResourceIdentifier)){
+	public boolean checkUserHasPageElementResource(String userAccount, String currentRoleName,
+			String securityResourceIdentifier) {
+
+		if (!securityAccessApplication.hasPageElementResource(securityResourceIdentifier)) {
 			return true;
 		}
-		
+
 		Role role = securityAccessApplication.getRoleBy(currentRoleName);
 		Set<Permission> rolePermissions = role.getPermissions();
 		List<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
@@ -489,4 +625,408 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		securityConfigApplication.updateUserLastLoginTime(user);
 	}
 
+	@Override
+	public JsonResult dealWithLogin(LoginCommand command) {
+
+		return null;
+	}
+
+	@Override
+	public JsonResult changeUserProps(ChangeUserPropsCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			User user = securityAccessApplication.getUserBy(command.getId());
+			user.setName(command.getName());
+			user.setDescription(command.getDescription());
+			securityConfigApplication.createActor(user);// 显示调用。
+			result.setSuccess(true);
+			result.setMessage("修改用户成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("修改用户失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult changeUserAccount(ChangeUserAccountCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			User user = securityAccessApplication.getUserBy(command.getId());
+			securityConfigApplication.changeUserAccount(user, command.getUserAccount(), command.getUserPassword());// 显示调用。
+			result.setSuccess(true);
+			result.setMessage("修改用户成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("修改用户失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult changeUserEmail(ChangeUserEmailCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			User user = securityAccessApplication.getUserBy(command.getId());
+			securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());// 显示调用。
+			result.setSuccess(true);
+			result.setMessage("修改用户成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("修改用户失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			User user = securityAccessApplication.getUserBy(command.getId());
+			securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());// 显示调用。
+			result.setSuccess(true);
+			result.setMessage("修改用户成功。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("修改用户失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult createUrlAccessResource(CreateUrlAccessResourceCommand command) {
+		JsonResult result = new JsonResult();
+		UrlAccessResource urlAccessResource = null;
+		try {
+			urlAccessResource = UrlAccessResourceAssembler.toUrlAccessResource(command);
+			securityConfigApplication.createSecurityResource(urlAccessResource);
+			result.setSuccess(true);
+			result.setMessage("添加URL访问权限资源成功。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("URL访问权限资源名称：" + urlAccessResource.getName() + "已经存在。");
+		} catch (UrlIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("URL访问权限资源名称：" + urlAccessResource.getUrl() + "已经存在。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("添加URL访问权限资源失败");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult changeUrlAccessResourceProps(ChangeUrlAccessResourcePropsCommand command) {
+		JsonResult result = new JsonResult();
+		UrlAccessResource urlAccessResource = null;
+		try {
+			urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(command.getId());
+			securityConfigApplication.changeNameOfUrlAccessResource(urlAccessResource, command.getName());
+			securityConfigApplication.changeUrlOfUrlAccessResource(urlAccessResource, command.getUrl());
+			urlAccessResource.setDescription(command.getDescription());
+			securityConfigApplication.createSecurityResource(urlAccessResource);
+			result.setSuccess(true);
+			result.setMessage("更新URL访问权限资源成功。");
+		} catch (NullArgumentException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("名称或者URL为空。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("更新URL访问权限资源名称：" + command.getName() + "已经存在。");
+		} catch (UrlIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("更新URL访问权限资源名称：" + command.getUrl() + "已经存在。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("更新URL访问权限资源失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult createRole(CreateRoleCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			Role role = RoleAssembler.toRole(command);
+			securityConfigApplication.createAuthority(role);
+			result.setSuccess(true);
+			result.setMessage("添加角色成功。");
+		} catch (NullArgumentException e) {
+			LOGGER.error(e.getMessage());
+			result.setSuccess(false);
+			result.setMessage("添加角色名称不能为空。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage());
+			result.setSuccess(false);
+			result.setMessage("添加角色名称：" + command.getName() + "已经存在。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			result.setSuccess(false);
+			result.setMessage("添加角色失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult changeRoleProps(ChangeRolePropsCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			Role role = securityAccessApplication.getRoleBy(command.getId());
+			securityConfigApplication.changeNameOfRole(role, command.getName());
+			role.setDescription(command.getDescription());
+			securityConfigApplication.createAuthority(role);
+			result.setSuccess(true);
+			result.setMessage("更新角色成功。");
+		} catch (NullArgumentException e) {
+			LOGGER.error(e.getMessage());
+			result.setSuccess(false);
+			result.setMessage("添加角色名称不能为空。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage());
+			result.setSuccess(false);
+			result.setMessage("更新角色名称：" + command.getName() + "已经存在。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			result.setSuccess(false);
+			result.setMessage("更新角色失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult createPermission(CreatePermissionCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			Permission permission = PermissionAssembler.toPermission(command);
+			securityConfigApplication.createAuthority(permission);
+			result.setSuccess(true);
+			result.setMessage("添加权限成功。");
+		} catch (NullArgumentException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("权限名称或者标识不能为空。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("添加权限失败，权限名称：" + command.getName() + " 已经存在。");
+		} catch (IdentifierIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("添加权限失败，权限标识：" + command.getIdentifier() + " 已经存在。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("更改权限失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult changePermissionProps(ChangePermissionPropsCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			Permission permission = securityAccessApplication.getPermissionBy(command.getId());
+			securityConfigApplication.changeNameOfPermission(permission, command.getName());
+			securityConfigApplication.changeIdentifierOfPermission(permission, command.getIdentifier());
+			permission.setDescription(command.getDescription());
+			result.setSuccess(true);
+			result.setMessage("添加权限成功。");
+		} catch (NullArgumentException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("权限名称或者标识不能为空。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("更改权限失败，权限名称：" + command.getName() + " 已经存在。");
+		} catch (IdentifierIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("更改权限失败，权限标识：" + command.getIdentifier() + " 已经存在。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("更改权限失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult terminatePermissions(Long[] permissionIds) {
+		JsonResult result = null;
+		for (Long permissionId : permissionIds) {
+			result = this.terminatePermission(permissionId);
+			if (!result.isSuccess()) {
+				break;
+			}
+		}
+		return result;
+	}
+
+	public JsonResult terminatePermission(Long permissionId) {
+		JsonResult result = new JsonResult();
+		Permission permission = null;
+		try {
+			permission = securityAccessApplication.getPermissionBy(permissionId);
+			securityConfigApplication.terminateAuthority(permission);
+			result.setSuccess(true);
+			result.setMessage("撤销权限成功。");
+		} catch (CorrelationException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("权限有用户或者角色关联，不能撤销。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("撤销权限失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult createPageElementResource(CreatePageElementResourceCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			PageElementResource pageElementResource = PageElementResourceAssembler.toPageElementResource(command);
+			securityConfigApplication.createSecurityResource(pageElementResource);
+			result.setSuccess(true);
+			result.setMessage("添加页面元素权限资源成功");
+		} catch (NullArgumentException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("名称和标识不能为空。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("页面元素权限资源名称" + command.getName() + "已经存在");
+		} catch (IdentifierIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("页面元素权限资源标识" + command.getIdentifier() + "已经存在");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("添加页面元素权限资源失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult changePageElementResourceProps(ChangePageElementResourcePropsCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(command
+					.getId());
+			securityConfigApplication.changeNameOfPageElementResouce(pageElementResource, command.getName());
+			securityConfigApplication
+					.changeIdentifierOfPageElementResouce(pageElementResource, command.getIdentifier());
+			pageElementResource.setDescription(command.getDescription());
+			securityConfigApplication.createSecurityResource(pageElementResource);
+			result.setSuccess(true);
+			result.setMessage("更改页面元素权限资源成功。");
+		} catch (NullArgumentException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("名称和标识不能为空。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("页面元素权限资源名称" + command.getName() + "已经存在");
+		} catch (IdentifierIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("页面元素权限资源标识" + command.getIdentifier() + "已经存在");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("更改页面元素权限资源失败。");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult createMenuResource(CreateMenuResourceCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			MenuResource menuResource = MenuResourceAssembler.toMenuResource(command);
+			securityConfigApplication.createSecurityResource(menuResource);
+			result.setSuccess(true);
+			result.setMessage("添加菜单权限资源名称成功。");
+		} catch (NullArgumentException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("添加菜单权限资源名称不能为空。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("添加菜单权限资源名称" + command.getName() + "已经存在");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("添加菜单权限资源失败");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult createChildMenuResouceToParent(CreateChildMenuResourceCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			MenuResource menuResource = MenuResourceAssembler.toMenuResource(command);
+			securityConfigApplication.createChildToParent(menuResource, command.getParentId());
+			result.setSuccess(true);
+			result.setMessage("添加子菜单权限资源名称成功。");
+		} catch (NullArgumentException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("菜单权限资源名称不能为空。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("添加子菜单权限资源名称" + command.getName() + "已经存在");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("添加子菜单权限资源失败");
+		}
+		return result;
+	}
+
+	@Override
+	public JsonResult changeMenuResourceProps(ChangeMenuResourcePropsCommand command) {
+		JsonResult result = new JsonResult();
+		try {
+			MenuResource menuResource = securityAccessApplication.getMenuResourceBy(command.getId());
+			securityConfigApplication.changeNameOfMenuResource(menuResource, command.getName());
+			menuResource.setUrl(command.getUrl());
+			menuResource.setMenuIcon(command.getMenuIcon());
+			menuResource.setDescription(command.getDescription());
+			result.setSuccess(true);
+			result.setMessage("更改菜单权限资源成功。");
+		} catch (NullArgumentException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("菜单权限资源名称不能为空。");
+		} catch (NameIsExistedException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("更改菜单权限资源名称" + command.getName() + "已经存在。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("更改菜单权限资源失败。");
+		}
+		return result;
+	}
 }

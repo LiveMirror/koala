@@ -264,6 +264,11 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 		userMenuResource.setMenuIcon(menuIcon);
 		userMenuResource.setUrl("/pages/auth/user-list.jsp");
 		actorSecurityMenuResource.addChild(userMenuResource);
+		
+		MenuResource userDisabledMenuResource = new MenuResource("用户挂起管理");
+		userDisabledMenuResource.setMenuIcon(menuIcon);
+		userDisabledMenuResource.setUrl("/pages/auth/forbidden-list.jsp");
+		actorSecurityMenuResource.addChild(userDisabledMenuResource);
 
 		MenuResource authoritySecurityMenuResource = new MenuResource("授权体管理");
 		authoritySecurityMenuResource.setDescription("角色、权限等页面管理。");
@@ -285,7 +290,7 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 		securityMenuResource.setMenuIcon(menuIcon);
 		securityMenuResource.save();
 
-		MenuResource menuResource = new MenuResource("菜单资源管理");
+		MenuResource menuResource = new MenuResource("菜单管理");
 		menuResource.setMenuIcon(menuIcon);
 		menuResource.setUrl("/pages/auth/menu-list.jsp");
 		securityMenuResource.addChild(menuResource);

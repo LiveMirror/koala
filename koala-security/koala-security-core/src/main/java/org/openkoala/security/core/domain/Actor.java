@@ -61,6 +61,12 @@ public abstract class Actor extends SecurityAbstractEntity {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
+	public Actor() {}
+	
+	public Actor(String name) {
+		this.name = name;
+	}
+
 	/**
 	 * 撤销~级联撤销{@link Authorization }
 	 */
@@ -113,11 +119,9 @@ public abstract class Actor extends SecurityAbstractEntity {
 		return Authorization.findAuthoritiesByActorInScope(this, scope);
 	}
 
-	public abstract void update();
-
 	@Override
 	public String[] businessKeys() {
-		return new String[] { name };
+		return new String[] { "name" };
 	}
 
 	public String getName() {

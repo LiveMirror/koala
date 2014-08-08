@@ -1,11 +1,13 @@
 package org.openkoala.security.core.domain;
 
 import com.google.common.collect.Sets;
+
 import org.junit.Test;
 import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.core.UrlIsExistedException;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.openkoala.security.core.util.EntitiesHelper.*;
@@ -110,11 +112,15 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 	}
 	
 	@Test
-	public void testFindAll() throws Exception {
+	public void testFindAllAndRoles() throws Exception {
 		init();
 		List<UrlAccessResource> urlAccessResources = UrlAccessResource.findAllUrlAccessResources();
         assertFalse(urlAccessResources.isEmpty());
-        assertEquals("testRole0000000000", urlAccessResources.get(0).getAuthorities().iterator().next().getName());
+        Set<Authority> authorities = urlAccessResources.get(0).getAuthorities();
+        assertFalse(authorities.isEmpty());
+        for (Authority authority : authorities) {
+			assertEquals("testRole0000000000", authority.getName());
+		}
 	}
 
 	private void init() {

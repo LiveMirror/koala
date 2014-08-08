@@ -84,7 +84,7 @@ public interface SecurityAccessFacade {
 	 * @param permissionDTO
 	 * @return
 	 */
-	Page<PermissionDTO> pagingQueryPermissions(int currentPage, int pageSize, PermissionDTO permissionDTO);
+	Page<PermissionDTO> pagingQueryPermissions(int currentPage, int pageSize, PermissionDTO queryPermissionCondition);
 
 	/***
 	 * 查询某个角色下用户的菜单资源。

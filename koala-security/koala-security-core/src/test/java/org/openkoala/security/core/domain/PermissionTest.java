@@ -52,10 +52,13 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 	public void testUpdateNameExisted() throws Exception {
 		String name = "测试权限000003";
 		String identifier = "testPermission000003";
+		
 		Permission permission = initPermission();
 		permission.save();
+		
 		Permission permission2 = new Permission(name, identifier);
 		permission2.save();
+		
 		Permission updatePermission = new Permission(name, "testPermission000004");
 		updatePermission.setId(permission.getId());
 		updatePermission.save();
@@ -92,7 +95,7 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 	public void testGetAuthorityBy() throws Exception {
 		Permission permission = initPermission();
 		permission.save();
-		Authority authority = permission.getAuthorityBy(permission.getName());
+		Authority authority = permission.getBy(permission.getName());
 		assertNotNull(authority);
 	}
 	

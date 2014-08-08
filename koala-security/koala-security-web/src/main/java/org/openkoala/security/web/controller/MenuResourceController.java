@@ -5,9 +5,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
-import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.command.ChangeMenuResourcePropsCommand;
+import org.openkoala.security.facade.command.CreateChildMenuResourceCommand;
+import org.openkoala.security.facade.command.CreateMenuResourceCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
@@ -47,23 +49,12 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/add")
-	public JsonResult add(MenuResourceDTO menuResourceDTO) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.saveMenuResource(menuResourceDTO);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("添加菜单权限资源成功。");
-		} catch (NameIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("添加菜单权限资源失败。");
-		}
-		return jsonResult;
+	public JsonResult add(CreateMenuResourceCommand command) {
+		return securityConfigFacade.createMenuResource(command);
 	}
 
 	/**
-	 * 选择父菜单权限资源，
-	 * 为其添加子菜单权限资源。
+	 * 选择父菜单权限资源， 为其添加子菜单权限资源。
 	 * 
 	 * @param child
 	 * @param parentId
@@ -71,18 +62,8 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/addChildToParent")
-	public JsonResult addChildToParent(MenuResourceDTO child, Long parentId) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.saveChildToParent(child, parentId);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("添加子菜单权限资源成功。");
-		} catch (NameIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("添加子菜单权限资源失败。");
-		}
-		return jsonResult;
+	public JsonResult addChildToParent(CreateChildMenuResourceCommand command) {
+		return securityConfigFacade.createChildMenuResouceToParent(command);
 	}
 
 	/**
@@ -93,41 +74,20 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public JsonResult update(MenuResourceDTO menuResourceDTO) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.updateMenuResource(menuResourceDTO);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("更新菜单权限资源失败。");
-		} catch (NameIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("更新菜单权限资源失败。");
-		}
-		return jsonResult;
+	public JsonResult update(ChangeMenuResourcePropsCommand command) {
+		return securityConfigFacade.changeMenuResourceProps(command);
 	}
 
 	/**
-	 * 批量撤销菜单 
-	 * TODO 捕获详细异常。
+	 * 批量撤销菜单 TODO 捕获详细异常。
 	 * 
 	 * @param menuResourceDTOs
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult terminate(@RequestBody MenuResourceDTO[] menuResourceDTOs) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.terminateMenuResources(menuResourceDTOs);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("批量撤销菜单权限资源成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("批量撤销菜单权限资源失败。");
-		}
-		return jsonResult;
+	public JsonResult terminate(@RequestBody Long[] menuResourceIds) {
+		return securityConfigFacade.terminateMenuResources(menuResourceIds);
 	}
 
 	/**
@@ -163,7 +123,8 @@ public class MenuResourceController {
 	public JsonResult findAllMenusByUserAsRole(RoleDTO roleDTO) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(AuthUserUtil.getUserAccount(), roleDTO.getRoleId());
+			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(
+					AuthUserUtil.getUserAccount(), roleDTO.getRoleId());
 			AuthUserUtil.setRoleName(roleDTO.getRoleName());
 			jsonResult.setData(results);
 			jsonResult.setSuccess(true);
@@ -233,7 +194,8 @@ public class MenuResourceController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryGrantPermissionsByMenuResourceId")
 	public Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByMenuResourceId(page, pagesize, menuResourceId);
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByMenuResourceId(page, pagesize,
+				menuResourceId);
 		return results;
 	}
 
@@ -247,8 +209,10 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissionsByMenuResourceId")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(page, pagesize, menuResourceId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,
+			Long menuResourceId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(page,
+				pagesize, menuResourceId);
 		return results;
 	}
 }

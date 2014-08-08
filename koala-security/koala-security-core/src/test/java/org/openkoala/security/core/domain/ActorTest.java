@@ -3,8 +3,6 @@ package org.openkoala.security.core.domain;
 
 import static org.junit.Assert.*;
 
-import java.util.Set;
-
 import org.junit.Test;
 
 import static org.openkoala.security.core.util.EntitiesHelper.*;

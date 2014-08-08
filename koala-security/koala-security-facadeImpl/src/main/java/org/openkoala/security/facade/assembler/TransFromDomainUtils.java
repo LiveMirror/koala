@@ -1,4 +1,4 @@
-package org.openkoala.security.facade.util;
+package org.openkoala.security.facade.assembler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ import org.openkoala.security.facade.dto.UserDTO;
  */
 public final class TransFromDomainUtils {
 
+
 	/**
 	 * UserDto转换成User
 	 * 
@@ -32,21 +33,24 @@ public final class TransFromDomainUtils {
 	 * @return
 	 */
 	public static User transFromUserBy(UserDTO userDTO) {
-		User result = new User(userDTO.getUserAccount(), userDTO.getUserPassword(), userDTO.getEmail(),
-				userDTO.getTelePhone());
+		User result = null;		
 		if (!StringUtils.isBlank(userDTO.getId() + "")) {
 			result.setId(userDTO.getId());
+		}else{
+			result = new User(userDTO.getUserAccount(), userDTO.getUserPassword(), userDTO.getEmail(),userDTO.getTelePhone());
 		}
 		result.setName(userDTO.getName());
 		result.setVersion(userDTO.getVersion());
 		result.setDescription(userDTO.getDescription());
 		return result;
 	}
-
+	
 	public static Role transFromRoleBy(RoleDTO roleDTO) {
-		Role result = new Role(roleDTO.getRoleName());
+		Role result = null;
 		if (!StringUtils.isBlank(roleDTO.getRoleId() + "")) {
 			result.setId(roleDTO.getRoleId());
+		}else{
+			result = new Role(roleDTO.getRoleName());
 		}
 		result.setVersion(roleDTO.getVersion());
 		result.setDescription(roleDTO.getDescription());
@@ -54,9 +58,12 @@ public final class TransFromDomainUtils {
 	}
 
 	public static Permission transFromPermissionBy(PermissionDTO permissionDTO) {
-		Permission result = new Permission(permissionDTO.getPermissionName(), permissionDTO.getIdentifier());
+		Permission result = null;
 		if (!StringUtils.isBlank(permissionDTO.getPermissionId() + "")) {
+			result = Permission.getBy(permissionDTO.getPermissionId());
 			result.setId(permissionDTO.getPermissionId());
+		}else{
+			result  = new Permission(permissionDTO.getPermissionName(), permissionDTO.getIdentifier());
 		}
 		result.setDescription(permissionDTO.getDescription());
 		result.setVersion(permissionDTO.getVersion());
@@ -71,7 +78,6 @@ public final class TransFromDomainUtils {
 		result.setDescription(menuResourceDTO.getDescription());
 		result.setMenuIcon(menuResourceDTO.getIcon());
 		result.setUrl(menuResourceDTO.getUrl());
-		result.setIdentifier(menuResourceDTO.getIdentifier());
 		result.setVersion(menuResourceDTO.getVersion());
 		return result;
 	}
@@ -83,8 +89,6 @@ public final class TransFromDomainUtils {
 			result.setId(urlAccessResourceDTO.getId());
 		}
 		result.setVersion(urlAccessResourceDTO.getVersion());
-		result.setIdentifier(urlAccessResourceDTO.getIdentifier());
-		result.setUrl(urlAccessResourceDTO.getUrl());
 		return result;
 	}
 	public static PageElementResource transFromPageElementResourceBy(PageElementResourceDTO pageElementResourceDTO) {

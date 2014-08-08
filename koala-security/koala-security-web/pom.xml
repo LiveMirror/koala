@@ -20,18 +20,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
-			<artifactId>koala-security-conf</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openkoala.security</groupId>
-			<artifactId>koala-security-core</artifactId>
+			<artifactId>koala-security-facade</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-facadeImpl</artifactId>
 			<version>${project.parent.version}</version>
+			<!-- 
+				<scope>runtime</scope>
+			 -->
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
@@ -43,12 +41,6 @@
 			<artifactId>koala-security-shiro</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.openkoala.security</groupId>
-			<artifactId>koala-security-infra</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>

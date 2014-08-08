@@ -1,6 +1,5 @@
 package org.openkoala.security.core.domain;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -19,9 +18,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.NameIsExistedException;
+import org.openkoala.security.core.NullArgumentException;
 
 /**
  * 可授权实体，代表某种权限（Permission）或权限集合（Role），可被授予Actor。
@@ -44,8 +47,9 @@ public abstract class Authority extends SecurityAbstractEntity {
 	/**
 	 * 名称
 	 */
+	@NotNull
 	@Column(name = "NAME")
-	protected String name;
+	private String name;
 
 	/**
 	 * 描述
@@ -62,11 +66,23 @@ public abstract class Authority extends SecurityAbstractEntity {
 	protected Authority() {}
 
 	public Authority(String name) {
+		checkArgumentIsNull("name", name);
+		isExistedName(name);
 		this.name = name;
 	}
+	
+	@Override
+	public void remove() {
 
-	public void addSecurityResource(SecurityResource... securityResource) {
-		this.securityResources.addAll(Arrays.asList(securityResource));
+		if (!Authorization.findByAuthority(this).isEmpty()) {
+			throw new CorrelationException("authority has actor, so can't remove authority.");
+		}
+
+		if (!this.getSecurityResources().isEmpty()) {
+			terminateSecurityResources(this.getSecurityResources());
+		}
+
+		super.remove();
 	}
 
 	public static Set<MenuResource> findMenuResourceByAuthorities(Set<? extends Authority> authorities) {
@@ -103,31 +119,16 @@ public abstract class Authority extends SecurityAbstractEntity {
 		return new HashSet<MenuResource>(menuResources);
 	}
 
-	public abstract Authority getAuthorityBy(String name);
-
-    @Override
-    public void save() {
-        if (isNew() && isExistName(this.name)) {
-            throw new NameIsExistedException("authority.name.exist");
-        }
-        super.save();
-    }
-
-	@Override
-	public void remove() {
-		for (Authorization authorization : Authorization.findByAuthority(this)) {
-			authorization.remove();
-		}
-		super.remove();
-	}
+	public abstract Authority getBy(String name);
 
 	/**
-	 * 为可授权体添加一个权限资源， 需要显示的调用update方法。
+	 * 维护多对多关联 为可授权体添加一个权限资源， 需要显示的调用update方法。
 	 * 
 	 * @param securityResource
 	 */
 	public void addSecurityResource(SecurityResource securityResource) {
 		this.securityResources.add(securityResource);
+		securityResource.addAuthority(this);
 		this.save();
 	}
 
@@ -138,44 +139,68 @@ public abstract class Authority extends SecurityAbstractEntity {
 	 */
 	public void addSecurityResources(List<? extends SecurityResource> securityResources) {
 		this.securityResources.addAll(securityResources);
+		for (SecurityResource securityResource : securityResources) {
+			securityResource.addAuthority(this);
+		}
 		this.save();
 	}
 
 	/**
-	 * 为可授权体撤销一个权限资源，需要显示的调用update方法。
+	 * 维护多对多关系 为可授权体撤销一个权限资源，需要显示的调用update方法。
 	 * 
 	 * @param securityResource
 	 */
 	public void terminateSecurityResource(SecurityResource securityResource) {
 		this.securityResources.remove(securityResource);
+		securityResource.terminateAuthority(this);
 		this.save();
 	}
 
 	/**
-	 * 为可授权体撤销多个权限资源，显示调用update方法。
+	 * 维护多对多关系 为可授权体撤销多个权限资源，显示调用save方法。
 	 * 
 	 * @param securityResources
 	 */
-	public void terminateSecurityResources(List<? extends SecurityResource> securityResources) {
+	public void terminateSecurityResources(Set<? extends SecurityResource> securityResources) {
 		this.securityResources.removeAll(securityResources);
+		for (SecurityResource securityResource : securityResources) {
+			securityResource.terminateAuthority(this);
+		}
 		this.save();
 	}
 
 	public static boolean checkHasPageElementResource(Set<Authority> authorities, String identifier) {
-		
+
 		List<Authority> results = getRepository()//
 				.createNamedQuery("Authority.checkHasSecurityResource")//
 				.addParameter("authorities", authorities)//
 				.addParameter("securityResourceType", PageElementResource.class)//
 				.addParameter("identifier", identifier)//
 				.list();
-		return results.isEmpty() ? false : true;
+		return results.isEmpty();
 	}
 
+	
+	public void changeName(String name){
+		checkArgumentIsNull("name", name);
+		if(!name.equals(this.getName())){
+			isExistedName(name);
+		}
+		this.name = name;
+	}
+
+	protected static void checkArgumentIsNull(String nullMessage, String argument) {
+		if (StringUtils.isBlank(argument)) {
+			throw new NullArgumentException(nullMessage);
+		}
+	}
+	
 	/*------------- Private helper methods  -----------------*/
 
-	private boolean isExistName(String name) {
-		return getAuthorityBy(name) != null;
+	private void isExistedName(String name) {
+		if (getBy(name) != null) {
+			throw new NameIsExistedException("authority.name.exist");
+		}
 	}
 
 	@Override

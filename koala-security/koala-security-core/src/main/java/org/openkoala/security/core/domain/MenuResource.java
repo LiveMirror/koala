@@ -12,7 +12,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -44,6 +43,9 @@ public class MenuResource extends SecurityResource {
 	 */
 	@Column(name = "POSITION")
 	private int position = 0;
+	
+	@Column(name = "URL")
+	private String url;
 
 	@ManyToOne
 	@JoinTable(name = "KS_MENU_RESOURCE_RELATION", //
@@ -62,7 +64,6 @@ public class MenuResource extends SecurityResource {
 
 	@Override
 	public void save() {
-		isNameExisted();
 		super.save();
 	}
 
@@ -83,10 +84,14 @@ public class MenuResource extends SecurityResource {
 	 */
 	@Override
 	public void remove() {
+		removeChildren();
+		super.remove();
+	}
+
+	private void removeChildren() {
 		for (MenuResource child : children) {
 			child.remove();
 		}
-		super.remove();
 	}
 
 	public static MenuResource getBy(Long id) {
@@ -99,7 +104,6 @@ public class MenuResource extends SecurityResource {
 				.createNamedQuery("SecurityResource.findByName")//
 				.addParameter("securityResourceType", MenuResource.class)//
 				.addParameter("name", name)//
-				.addParameter("disabled", false)//
 				.singleResult();
 	}
 	
@@ -150,6 +154,14 @@ public class MenuResource extends SecurityResource {
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 }

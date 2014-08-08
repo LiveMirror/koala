@@ -75,7 +75,7 @@ public class Role extends Authority {
 	public static List<Role> findAll(){
 		return Role.findAll(Role.class);
 	}
-	public static Role getBy(String name) {
+	public static Role getRoleBy(String name) {
 		return getRepository()//
 				.createCriteriaQuery(Role.class)//
 				.eq("name", name)//
@@ -83,7 +83,7 @@ public class Role extends Authority {
 	}
 
 	@Override
-	public Authority getAuthorityBy(String name) {
+	public Authority getBy(String name) {
 		return getRepository()//
 				.createNamedQuery("Authority.getAuthorityByName")//
 				.addParameter("authorityType", Role.class)//

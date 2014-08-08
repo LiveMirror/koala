@@ -59,8 +59,8 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	}
 
 	@Override
-	public boolean updatePassword(User user, String oldUserPassword) {
-		return user.updatePassword(oldUserPassword);
+	public boolean updatePassword(User user, String userPassword,String oldUserPassword) {
+		return user.updatePassword(userPassword,oldUserPassword);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 
 	@Override
 	public Role getRoleBy(String roleName) {
-		return Role.getBy(roleName);
+		return Role.getRoleBy(roleName);
 	}
 
 	@Override

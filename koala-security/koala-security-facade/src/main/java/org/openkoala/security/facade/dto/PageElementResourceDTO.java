@@ -16,8 +16,6 @@ public class PageElementResourceDTO implements Serializable{
 	
 	private String name;
 	
-	private boolean disabled;
-	
 	private String identifier;
 	
 	private String description;
@@ -30,11 +28,10 @@ public class PageElementResourceDTO implements Serializable{
 		this.description = description;
 	}
 
-	public PageElementResourceDTO(Long id, int version, String name, boolean disabled, String identifier, String description) {
+	public PageElementResourceDTO(Long id, int version, String name, String identifier, String description) {
 		this.id = id;
 		this.version = version;
 		this.name = name;
-		this.disabled = disabled;
 		this.identifier = identifier;
 		this.description = description;
 	}
@@ -61,14 +58,6 @@ public class PageElementResourceDTO implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public boolean isDisabled() {
-		return disabled;
-	}
-
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
 	}
 
 	public String getIdentifier() {

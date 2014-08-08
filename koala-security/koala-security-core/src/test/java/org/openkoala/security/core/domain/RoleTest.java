@@ -7,8 +7,7 @@ import org.openkoala.security.core.NameIsExistedException;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.openkoala.security.core.util.EntitiesHelper.*;
 
 public class RoleTest extends AbstractDomainIntegrationTestCase {
@@ -20,7 +19,7 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		assertNotNull(role.getId());
 		Role loadRole = Role.getBy(role.getName());
 		assertNotNull(loadRole);
-		assertRole(initRole(), loadRole);
+		assertRole(role, loadRole);
 	}
 
 	@Test(expected = NameIsExistedException.class)
@@ -31,14 +30,14 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 	}
 
 	@Test
-	public void testFindAll() throws Exception {
+	public void testFindAllAndSecurityResource() throws Exception {
 		init();
 		List<Role> roles = Role.findAll();
-		for (Role role : roles) {
-			Set<SecurityResource> securityResources = role.getSecurityResources();
-			for (SecurityResource securityResource : securityResources) {
-				System.out.println(securityResource);
-			}
+		assertFalse(roles.isEmpty());
+		Set<SecurityResource> securityResources = roles.get(0).getSecurityResources();
+		assertFalse(securityResources.isEmpty());
+		for (SecurityResource securityResource : securityResources) {
+			assertEquals("测试管理0000000000", securityResource.getName());
 		}
 	}
 
@@ -189,7 +188,7 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 	public void testGetAuthorityBy() throws Exception {
 		Role role = initRole();
 		role.save();
-		Authority authority = role.getAuthorityBy(role.getName());
+		Authority authority = role.getBy(role.getName());
 		assertNotNull(authority);
 	}
 

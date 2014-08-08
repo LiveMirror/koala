@@ -150,7 +150,7 @@ public interface SecurityAccessApplication {
 	 *            旧密码
 	 * @return
 	 */
-	boolean updatePassword(User user, String oldUserPassword);
+	boolean updatePassword(User user, String userPassword, String oldUserPassword);
 
 	/**
 	 * 通过角色下的用户检查Authorization是否存在

@@ -3,9 +3,10 @@ package org.openkoala.security.web.controller;
 import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
-import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.command.ChangePageElementResourcePropsCommand;
+import org.openkoala.security.facade.command.CreatePageElementResourceCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
@@ -42,18 +43,8 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping("/add")
-	public JsonResult add(PageElementResourceDTO pageElementResourceDTO) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.savePageElementResource(pageElementResourceDTO);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("添加页面元素权限资源成功。");
-		} catch (NameIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("添加页面元素权限资源失败。");
-		}
-		return jsonResult;
+	public JsonResult add(CreatePageElementResourceCommand command) {
+		return securityConfigFacade.createPageElementResource(command);
 	}
 
 	/**
@@ -64,18 +55,8 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public JsonResult update(PageElementResourceDTO pageElementResourceDTO) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.updatePageElementResource(pageElementResourceDTO);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("更新页面元素权限资源失败。");
-		} catch (NameIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("更新页面元素权限资源失败。");
-		}
-		return jsonResult;
+	public JsonResult update(ChangePageElementResourcePropsCommand command) {
+		return securityConfigFacade.changePageElementResourceProps(command);
 	}
 
 	/**
@@ -86,18 +67,8 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping("/terminate")
-	public JsonResult terminate(@RequestBody PageElementResourceDTO[] pageElementResourceDTOs) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.terminatePageElementResources(pageElementResourceDTOs);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("撤销页面元素权限资源成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("撤销页面元素权限资源失败。");
-		}
-		return jsonResult;
+	public JsonResult terminate(@RequestBody Long[] pageElementResourceIds) {
+		return securityConfigFacade.terminatePageElementResources(pageElementResourceIds);
 	}
 
 	/**
@@ -145,10 +116,9 @@ public class PageElementController {
 		}
 		return jsonResult;
 	}
-	
+
 	/**
-	 * 分页查询页面元素权限资源，
-	 * 可根据页面元素权限资源{@link PageElementResourceDTO}条件进行查询。
+	 * 分页查询页面元素权限资源， 可根据页面元素权限资源{@link PageElementResourceDTO}条件进行查询。
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -157,8 +127,10 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQuery")
-	public Page<PageElementResourceDTO> pagingQuery(int page, int pagesize, PageElementResourceDTO pageElementResourceDTO) {
-		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryPageElementResources(page, pagesize, pageElementResourceDTO);
+	public Page<PageElementResourceDTO> pagingQuery(int page, int pagesize,
+			PageElementResourceDTO pageElementResourceDTO) {
+		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryPageElementResources(page, pagesize,
+				pageElementResourceDTO);
 		return results;
 	}
 
@@ -172,8 +144,10 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryGrantPermissionsByPageElementResourceId")
-	public Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(page, pagesize, pageElementResourceId);
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize,
+			Long pageElementResourceId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(page,
+				pagesize, pageElementResourceId);
 		return results;
 	}
 
@@ -187,8 +161,10 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissionsByPageElementResourceId")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(page, pagesize, pageElementResourceId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
+			Long pageElementResourceId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(page,
+				pagesize, pageElementResourceId);
 		return results;
 	}
 }

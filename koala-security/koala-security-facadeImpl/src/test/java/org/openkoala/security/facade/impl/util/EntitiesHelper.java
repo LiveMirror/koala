@@ -44,7 +44,6 @@ public final class EntitiesHelper {
 	public static void assertMenuResource(MenuResource expected, MenuResource actual) {
 		assertEquals(expected.getLevel(), actual.getLevel());
 		assertEquals(expected.getMenuIcon(), actual.getMenuIcon());
-		assertEquals(expected.getIdentifier(), actual.getIdentifier());
 		assertEquals(expected.getName(), actual.getName());
 		assertEquals(expected.getDescription(), actual.getDescription());
 		assertEquals(expected.getPosition(), actual.getPosition());
@@ -53,13 +52,10 @@ public final class EntitiesHelper {
 	public static void assertPageElementResource(PageElementResource expected, PageElementResource actual) {
 		assertEquals(expected.getIdentifier(), actual.getIdentifier());
 		assertEquals(expected.getName(), actual.getName());
-		assertEquals(expected.getUrl(), actual.getUrl());
-		assertEquals(expected.isDisabled(), actual.isDisabled());
 	}
 	
 	public static void assertUrlAccessResource(UrlAccessResource expected, UrlAccessResource actual){
 		assertEquals(expected.getName(), actual.getName());
-		assertEquals(expected.getIdentifier(), actual.getIdentifier());
 		assertEquals(expected.getUrl(), actual.getUrl());
 		assertEquals(expected.getDescription(), actual.getDescription());
 	}
@@ -93,7 +89,6 @@ public final class EntitiesHelper {
 
 	public static PageElementResource initPageElementResource() {
 		PageElementResource result = new PageElementResource("用户添加0000000000","aaaa");
-		result.setIdentifier("userAdd");
 		return result;
 	}
 

@@ -1,4 +1,4 @@
-package org.openkoala.security.facade.util;
+package org.openkoala.security.facade.assembler;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -98,7 +98,6 @@ public final class GenerateDTOUtils {
 	public static MenuResourceDTO generateMenuResourceDTOBy(MenuResource menuResource) {
 		MenuResourceDTO result = new MenuResourceDTO(menuResource.getId(),menuResource.getName());
 		result.setVersion(menuResource.getVersion());
-		result.setDisabled(menuResource.isDisabled());
 		result.setIcon(menuResource.getMenuIcon());
 		result.setLevel(menuResource.getLevel());
 		result.setUrl(menuResource.getUrl());
@@ -107,7 +106,7 @@ public final class GenerateDTOUtils {
 	}
 
 	public static UrlAccessResourceDTO generateUrlAccessResourceDTOBy(UrlAccessResource urlAccessResource) {
-		UrlAccessResourceDTO result = new UrlAccessResourceDTO(urlAccessResource.getId(), urlAccessResource.getName(), urlAccessResource.isDisabled(), urlAccessResource.getUrl(), urlAccessResource.getIdentifier());
+		UrlAccessResourceDTO result = new UrlAccessResourceDTO(urlAccessResource.getId(), urlAccessResource.getName(), urlAccessResource.getUrl());
 		result.setVersion(urlAccessResource.getVersion());
 		result.setDescription(urlAccessResource.getDescription());
 		return result;

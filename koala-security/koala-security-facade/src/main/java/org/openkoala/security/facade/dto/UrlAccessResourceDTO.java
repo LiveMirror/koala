@@ -20,19 +20,9 @@ public class UrlAccessResourceDTO implements Serializable {
 	private String name;
 
 	/**
-	 * 是否有效
-	 */
-	private Boolean disabled;
-
-	/**
 	 * URL 路径
 	 */
 	private String url;
-
-	/**
-	 * 标识
-	 */
-	private String identifier;
 
 	/**
 	 * 描述
@@ -52,22 +42,17 @@ public class UrlAccessResourceDTO implements Serializable {
 	
 	protected UrlAccessResourceDTO() {}
 
-	public UrlAccessResourceDTO(Long id, String name, boolean disabled, String url, String identifier,
-			String description) {
+	public UrlAccessResourceDTO(Long id, String name,String url) {
 		this.id = id;
 		this.name = name;
-		this.disabled = disabled;
 		this.url = url;
-		this.identifier = identifier;
-		this.description = description;
 	}
-
-	public UrlAccessResourceDTO(Long id, String name, boolean disabled, String url, String identifier) {
+	
+	public UrlAccessResourceDTO(Long id, String name,String url,String description) {
 		this.id = id;
 		this.name = name;
-		this.disabled = disabled;
 		this.url = url;
-		this.identifier = identifier;
+		this.description = description;
 	}
 
 	public String getName() {
@@ -78,28 +63,12 @@ public class UrlAccessResourceDTO implements Serializable {
 		this.name = name;
 	}
 
-	public Boolean getDisabled() {
-		return disabled;
-	}
-
-	public void setDisabled(Boolean disabled) {
-		this.disabled = disabled;
-	}
-
 	public String getUrl() {
 		return url;
 	}
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
 	}
 
 	public String getDescription() {
@@ -167,9 +136,7 @@ public class UrlAccessResourceDTO implements Serializable {
 		return new ToStringBuilder(this)//
 				.append(getId())//
 				.append(getName())//
-				.append(getIdentifier())//
 				.append(getUrl())//
-				.append(getDisabled())//
 				.build();
 	}
 	
