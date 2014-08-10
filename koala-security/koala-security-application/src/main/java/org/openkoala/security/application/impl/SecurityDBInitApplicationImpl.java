@@ -239,10 +239,9 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 	}
 
 	private User createUser() {
-		User user = new User("zhangsan", "000000", "zhangsan@koala.com", "139*********");
+		User user = new User("张三", "zhangsan");
 		user.setCreateOwner("admin");
 		user.setDescription("普通用户");
-		user.setName("张三");
 		return user;
 	}
 

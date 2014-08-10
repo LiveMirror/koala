@@ -54,21 +54,29 @@ public class Role extends Authority {
 
 	public void addPermission(Permission permission) {
 		this.permissions.add(permission);
+		permission.addRole(this);
 		this.save();
 	}
 
 	public void addPermissions(List<Permission> permissions) {
 		this.permissions.addAll(permissions);
+		for (Permission permission : permissions) {
+			permission.addRole(this);
+		}
 		this.save();
 	}
 
 	public void terminatePermission(Permission permission) {
 		this.permissions.remove(permission);
+		permission.terminateRole(this);
 		this.save();
 	}
 
 	public void terminatePermissions(List<Permission> permissions) {
 		this.permissions.removeAll(permissions);
+		for (Permission permission : permissions) {
+			permission.terminateRole(this);
+		}
 		this.save();
 	}
 

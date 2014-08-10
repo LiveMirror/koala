@@ -1,4 +1,4 @@
-package org.openkoala.security.facade.assembler;
+package org.openkoala.security.facade.impl.assembler;
 
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.facade.command.CreatePermissionCommand;

@@ -3,8 +3,6 @@ package org.openkoala.security.facade.impl.util;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
-
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.Authorization;
@@ -26,7 +24,6 @@ public final class EntitiesHelper {
 		assertEquals(expected.getName(), actual.getName());
 		assertEquals(expected.getTelePhone(), actual.getTelePhone());
 		assertEquals(expected.getUserAccount(), actual.getUserAccount());
-		assertEquals(expected.getLastLoginTime(), actual.getLastLoginTime());
 		assertEquals(expected.getLastModifyTime(), actual.getLastModifyTime());
 	}
 
@@ -61,8 +58,7 @@ public final class EntitiesHelper {
 	}
 
 	public static User initUser() {
-		User result = new User("test000000000000000001", "aaa", "test01@foreveross.com", "18665588990");
-		result.setName("测试01");
+		User result = new User("测试01", "test000000000000000001");
 		result.setCreateOwner("admin");
 		result.setDescription("测试");
 		return result;

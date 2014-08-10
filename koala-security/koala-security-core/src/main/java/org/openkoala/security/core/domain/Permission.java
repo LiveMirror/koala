@@ -52,8 +52,6 @@ public class Permission extends Authority {
 				.singleResult();
 	}
 	
-	
-
 	@Override
 	public Authority getBy(String name) {
 		return getRepository()//
@@ -80,10 +78,30 @@ public class Permission extends Authority {
 		checkArgumentIsNull("identifier", identifier);
 		if(!identifier.equals(this.getIdentifier())){
 			isIdentifierExisted(identifier);
+			this.identifier = identifier;
+			this.save();
 		}
-		this.identifier = identifier;
 	}
 	
+	public void addRole(Role role){
+		this.roles.add(role);
+		this.save();
+	}
+	
+	public void addRoles(Set<Role> roles){
+		this.roles.addAll(roles);
+		this.save();
+	}
+	
+	public void terminateRole(Role role){
+		this.roles.remove(role);
+		this.save();
+	}
+	
+	public void terminateRoles(Set<Role> roles){
+		this.roles.removeAll(roles);
+		this.save();
+	}
 	
 	@Override
 	public void remove() {

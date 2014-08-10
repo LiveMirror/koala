@@ -1,6 +1,5 @@
 package org.openkoala.security.application.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +18,8 @@ import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
 
 @Named
 @Transactional
@@ -86,7 +87,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 
 	@Override
 	public List<MenuResource> findAllMenuResourcesByRole(Role role) {
-		return new ArrayList<MenuResource>(Authority.findMenuResourceByAuthority(role));
+		return Lists.newArrayList(Authority.findMenuResourceByAuthority(role));
 	}
 
 	@Override

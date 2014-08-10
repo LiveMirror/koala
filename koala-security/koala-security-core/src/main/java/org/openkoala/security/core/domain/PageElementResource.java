@@ -29,15 +29,14 @@ public class PageElementResource extends SecurityResource {
 	public void save() {
 		super.save();
 	}
-
-	public static PageElementResource getBy(String securityResourceName) {
-		return getRepository().createCriteriaQuery(PageElementResource.class)//
-				.eq("name", securityResourceName)//
-				.singleResult();
-	}
-
-	public static PageElementResource getBy(Long id) {
-		return PageElementResource.get(PageElementResource.class, id);
+	
+	public void changeIdentifier(String identifier) {
+		checkArgumentIsNull("identifier", identifier);
+		if (!identifier.equals(this.getIdentifier())) {
+			isIdentifierExisted(identifier);
+			this.identifier = identifier;
+			save();
+		}
 	}
 
 	@Override
@@ -48,11 +47,15 @@ public class PageElementResource extends SecurityResource {
 				.addParameter("name", name)//
 				.singleResult();
 	}
+	
+	public static PageElementResource getBy(String securityResourceName) {
+		return getRepository().createCriteriaQuery(PageElementResource.class)//
+				.eq("name", securityResourceName)//
+				.singleResult();
+	}
 
-	private void isIdentifierExisted(String identifier) {
-		if (null != getby(identifier)) {
-			throw new IdentifierIsExistedException("pageElemntResource identifier is existed.");
-		}
+	public static PageElementResource getBy(Long id) {
+		return PageElementResource.get(PageElementResource.class, id);
 	}
 
 	public static boolean hasIdentifier(String identifier) {
@@ -67,12 +70,11 @@ public class PageElementResource extends SecurityResource {
 		return ressult;
 	}
 
-	public void changeIdentifier(String identifier) {
-		checkArgumentIsNull("identifier", identifier);
-		if (!identifier.equals(this.getIdentifier())) {
-			isIdentifierExisted(identifier);
+
+	private void isIdentifierExisted(String identifier) {
+		if (null != getby(identifier)) {
+			throw new IdentifierIsExistedException("pageElemntResource identifier is existed.");
 		}
-		this.identifier = identifier;
 	}
 
 	@Override

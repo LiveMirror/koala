@@ -1,6 +1,5 @@
-package org.openkoala.security.facade.assembler;
+package org.openkoala.security.facade.impl.assembler;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.command.CreateUserCommand;
 import org.openkoala.security.facade.dto.UserDTO;
@@ -34,18 +33,4 @@ public class UserAssembler {
 		return result;
 	}
 
-	public static User toDomain(UserDTO user) {
-		User result = null;
-		if (!StringUtils.isBlank(user.getId() + "")) {
-			result = User.getBy(user.getId());
-		}else{
-			result.setId(user.getId());
-			result = new User(user.getUserAccount(), user.getUserPassword(), user.getEmail(),user.getTelePhone());
-			result.setName(user.getName());
-			result.setVersion(user.getVersion());
-			result.setDescription(user.getDescription());
-			return result;
-		}
-		return result;
-	}
 }

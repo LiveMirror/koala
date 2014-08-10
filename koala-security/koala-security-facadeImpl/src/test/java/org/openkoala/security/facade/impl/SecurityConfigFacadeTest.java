@@ -1,29 +1,55 @@
 package org.openkoala.security.facade.impl;
 
-import static org.openkoala.security.facade.assembler.GenerateDTOUtils.*;
+import static org.junit.Assert.*;
+import static org.openkoala.security.facade.impl.assembler.GenerateDTOUtils.generateMenuResourceDTOBy;
 
 import java.util.Set;
 
 import javax.inject.Inject;
 
-import static org.junit.Assert.*;
-
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.command.CreateUserCommand;
+import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
+
+import static org.openkoala.security.facade.impl.util.CommandHelper.*;
 
 import com.google.common.collect.Lists;
 
-@Ignore
 public class SecurityConfigFacadeTest extends AbstractFacadeIntegrationTestCase {
 
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
+
+	private JsonResult initJsonResult() {
+		JsonResult result = new JsonResult();
+		result.setSuccess(true);
+		result.setMessage("添加用户成功。");
+		return result;
+	}
 	
+	@Test
+	public void testCreateUser() throws Exception {
+		JsonResult expected = initJsonResult();
+		CreateUserCommand command = initCreateUserCommand();
+		JsonResult actual = securityConfigFacade.createUser(command);
+		assertNotNull(actual);
+		assertResult(expected, actual);
+	}
+	
+	private void assertResult(JsonResult expected, JsonResult actual) {
+		assertEquals(expected.getMessage(), actual.getMessage());
+		assertEquals(expected.isSuccess(), actual.isSuccess());
+	}
+
+	// TODO ...
+	@Ignore
 	@Test
 	public void testGrantMenuResourcesToRole() {
 		MenuResource menuResource1 = new MenuResource("menu1");
@@ -44,10 +70,10 @@ public class SecurityConfigFacadeTest extends AbstractFacadeIntegrationTestCase 
 
 		role1.addSecurityResources(Lists.newArrayList(menuResource1, menuResource2));
 
-		securityConfigFacade.grantMenuResourcesToRole(role1.getId(), Lists.newArrayList(menuResourceDTO2, menuResourceDTO3, menuResourceDTO4));
-		
+		securityConfigFacade.grantMenuResourcesToRole(role1.getId(),Lists.newArrayList(menuResourceDTO2, menuResourceDTO3, menuResourceDTO4));
+
 		Set<SecurityResource> securityResources = role1.getSecurityResources();
-		
+
 		assertFalse(securityResources.isEmpty());
 		assertTrue(securityResources.size() == 3);
 

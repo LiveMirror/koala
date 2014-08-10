@@ -12,6 +12,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
+import org.openkoala.security.core.NullArgumentException;
+
 /**
  * <pre>
  * 	参与者,抽象概念。
@@ -61,9 +64,11 @@ public abstract class Actor extends SecurityAbstractEntity {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	public Actor() {}
-	
+	public Actor() {
+	}
+
 	public Actor(String name) {
+		checkArgumentIsNull("name", name);
 		this.name = name;
 	}
 
@@ -94,6 +99,18 @@ public abstract class Actor extends SecurityAbstractEntity {
 	}
 
 	/**
+	 * 为参与者授权可授权体。
+	 * 
+	 * @param authority
+	 */
+	public void grant(Authority authority) {
+		if (Authorization.exists(this, authority)) {
+			return;
+		}
+		new Authorization(this, authority).save();
+	}
+
+	/**
 	 * 得到在某个范围下{@link Scope}参与者{@link Actor}的所有权限{@link Permission}
 	 * 
 	 * @param scope
@@ -111,6 +128,12 @@ public abstract class Actor extends SecurityAbstractEntity {
 			}
 		}
 		return results;
+	}
+
+	protected static void checkArgumentIsNull(String nullMessage, String argument) {
+		if (StringUtils.isBlank(argument)) {
+			throw new NullArgumentException(nullMessage);
+		}
 	}
 
 	/*------------- Private helper methods  -----------------*/

@@ -1,6 +1,6 @@
 package org.openkoala.security.facade.impl;
 
-import static org.openkoala.security.facade.assembler.TransFromDomainUtils.transFromMenuResourcesBy;
+import static org.openkoala.security.facade.impl.assembler.TransFromDomainUtils.transFromMenuResourcesBy;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,12 +28,6 @@ import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityConfigFacade;
-import org.openkoala.security.facade.assembler.MenuResourceAssembler;
-import org.openkoala.security.facade.assembler.PageElementResourceAssembler;
-import org.openkoala.security.facade.assembler.PermissionAssembler;
-import org.openkoala.security.facade.assembler.RoleAssembler;
-import org.openkoala.security.facade.assembler.UrlAccessResourceAssembler;
-import org.openkoala.security.facade.assembler.UserAssembler;
 import org.openkoala.security.facade.command.ChangeMenuResourcePropsCommand;
 import org.openkoala.security.facade.command.ChangePageElementResourcePropsCommand;
 import org.openkoala.security.facade.command.ChangePermissionPropsCommand;
@@ -54,6 +48,12 @@ import org.openkoala.security.facade.command.CreateUserCommand;
 import org.openkoala.security.facade.command.LoginCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.impl.assembler.MenuResourceAssembler;
+import org.openkoala.security.facade.impl.assembler.PageElementResourceAssembler;
+import org.openkoala.security.facade.impl.assembler.PermissionAssembler;
+import org.openkoala.security.facade.impl.assembler.RoleAssembler;
+import org.openkoala.security.facade.impl.assembler.UrlAccessResourceAssembler;
+import org.openkoala.security.facade.impl.assembler.UserAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,7 +88,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 			result.setSuccess(false);
 			result.setMessage("用户账号:" + command.getUserAccount() + "已经存在。");
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getMessage(),e);
 			result.setSuccess(false);
 			result.setMessage("添加用户失败。");
 		}

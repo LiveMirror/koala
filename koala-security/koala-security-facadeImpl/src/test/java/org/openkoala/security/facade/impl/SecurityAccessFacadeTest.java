@@ -1,7 +1,7 @@
 package org.openkoala.security.facade.impl;
 
 import static org.junit.Assert.*;
-import static org.openkoala.security.facade.assembler.GenerateDTOUtils.*;
+import static org.openkoala.security.facade.impl.assembler.GenerateDTOUtils.*;
 import static org.openkoala.security.facade.impl.util.EntitiesHelper.*;
 
 import java.util.List;
@@ -152,11 +152,6 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		assertTrue(results.size() == 1);
 	}
 
-//	@Test
-//	public void testFindAllOrganizationScopesTree() {
-//		List<OrganizationScopeDTO> organizationScopeDTOs = securityAccessFacade.findAllOrganizationScopesTree();
-//		assertTrue(organizationScopeDTOs.isEmpty());
-//	}
 
 	@Test
 	public void testFindPermissionDTOsByMenuOrUrl() {
@@ -172,20 +167,26 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		assertTrue(results.size() == 2);
 	}
 
-	// TODO ...
 	@Test
 	public void testFindAllUrlAccessResources() {
-		List<UrlAccessResourceDTO> urlAccessResourceDTOs = securityAccessFacade.findAllUrlAccessResources();
-//		assertNotNull(urlAccessResourceDTOs);
-//		System.out.println(urlAccessResourceDTOs.size());
-//		assertEquals(urlAccessResourceDTOs.get(0).getRoles(), role.getName());
-//		assertEquals(urlAccessResourceDTOs.get(0).getPermissions(), permission.getIdentifier());
+		List<UrlAccessResourceDTO> result = securityAccessFacade.findAllUrlAccessResources();
+		assertNotNull(result);
+		assertTrue(result.size() == 1);
+		UrlAccessResourceDTO urlAccessResource = result.get(0);
+		String roles = urlAccessResource.getRoles();
+		String permissions = urlAccessResource.getPermissions();
+		assertNotNull(roles);
+		assertNotNull(permissions);
+		roles = roles.substring(1, roles.length()-1);////remove[]
+		permissions = permissions.substring(1, permissions.length()-1);//remove[]
+		assertEquals(role.getName(),roles);
+		assertEquals(permission.getIdentifier(),permissions);
 	}
 
 	// 不能用User中的password,因为已经加密了。
 	@Test
 	public void testLogin() {
-		String password = "aaa";
+		String password = "888888";
 		UserDTO getUserDTO = securityAccessFacade.login(user.getUserAccount(), password);
 		assertNotNull(getUserDTO);
 		assertUserDTO(userDTO, getUserDTO);

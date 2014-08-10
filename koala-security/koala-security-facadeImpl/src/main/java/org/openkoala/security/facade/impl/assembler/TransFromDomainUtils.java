@@ -1,4 +1,4 @@
-package org.openkoala.security.facade.assembler;
+package org.openkoala.security.facade.impl.assembler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,11 @@ import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
-import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
-import org.openkoala.security.facade.dto.UserDTO;
 
 /**
  * 转换领域工具类
@@ -26,24 +24,6 @@ import org.openkoala.security.facade.dto.UserDTO;
 public final class TransFromDomainUtils {
 
 
-	/**
-	 * UserDto转换成User
-	 * 
-	 * @param userDTO
-	 * @return
-	 */
-	public static User transFromUserBy(UserDTO userDTO) {
-		User result = null;		
-		if (!StringUtils.isBlank(userDTO.getId() + "")) {
-			result.setId(userDTO.getId());
-		}else{
-			result = new User(userDTO.getUserAccount(), userDTO.getUserPassword(), userDTO.getEmail(),userDTO.getTelePhone());
-		}
-		result.setName(userDTO.getName());
-		result.setVersion(userDTO.getVersion());
-		result.setDescription(userDTO.getDescription());
-		return result;
-	}
 	
 	public static Role transFromRoleBy(RoleDTO roleDTO) {
 		Role result = null;

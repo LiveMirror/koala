@@ -1,4 +1,4 @@
-package org.openkoala.security.facade.assembler;
+package org.openkoala.security.facade.impl.assembler;
 
 import java.util.ArrayList;
 import java.util.Collection;

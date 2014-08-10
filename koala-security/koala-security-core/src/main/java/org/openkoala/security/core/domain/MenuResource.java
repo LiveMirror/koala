@@ -88,16 +88,6 @@ public class MenuResource extends SecurityResource {
 		super.remove();
 	}
 
-	private void removeChildren() {
-		for (MenuResource child : children) {
-			child.remove();
-		}
-	}
-
-	public static MenuResource getBy(Long id) {
-		return MenuResource.get(MenuResource.class, id);
-	}
-
 	@Override
 	public SecurityResource findByName(String name) {
 		return getRepository()//
@@ -105,6 +95,16 @@ public class MenuResource extends SecurityResource {
 				.addParameter("securityResourceType", MenuResource.class)//
 				.addParameter("name", name)//
 				.singleResult();
+	}
+	
+	public static MenuResource getBy(Long id) {
+		return MenuResource.get(MenuResource.class, id);
+	}
+	
+	private void removeChildren() {
+		for (MenuResource child : children) {
+			child.remove();
+		}
 	}
 	
 	@Override

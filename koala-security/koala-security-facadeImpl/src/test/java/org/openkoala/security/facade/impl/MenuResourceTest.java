@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.Role;
@@ -27,11 +28,12 @@ public class MenuResourceTest extends AbstractFacadeIntegrationTestCase{
 		user.save();
 		Role role = initRole();
 		role.save();
-		user.grant(role, null);
+		user.grant(role);
 		List<MenuResource> menuResources = initTopMenuResource();
 		role.addSecurityResources(menuResources);
 		List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(user.getUserAccount(), role.getId());
-		System.out.println(results);
+		assertFalse(results.isEmpty());
+		assertTrue(results.size() == 3);
 	}
 	
 	private List<MenuResource> initTopMenuResource() {

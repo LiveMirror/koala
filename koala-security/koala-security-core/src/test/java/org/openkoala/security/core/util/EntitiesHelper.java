@@ -57,8 +57,7 @@ public final class EntitiesHelper {
 	}
 
 	public static User initUser() {
-		User result = new User("test000000000000000001", "aaa", "test01@foreveross.com", "18665588990");
-		result.setName("测试01");
+		User result = new User("测试000000000000000001", "test000000000000000001");
 		result.setCreateOwner("admin");
 		result.setDescription("测试");
 		return result;

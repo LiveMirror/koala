@@ -1,6 +1,6 @@
 package org.openkoala.security.facade.impl;
 
-import static org.openkoala.security.facade.assembler.GenerateDTOUtils.*;
+import static org.openkoala.security.facade.impl.assembler.GenerateDTOUtils.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -189,7 +189,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return Sets.newHashSet(results);
 	}
 
-	/**XXX 不能查询出关联的对象
+	/**
 	 * 查询出所有的Url访问资源，并且有Role 和Permission
 	 */
 	@Override

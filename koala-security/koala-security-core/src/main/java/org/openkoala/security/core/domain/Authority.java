@@ -185,8 +185,9 @@ public abstract class Authority extends SecurityAbstractEntity {
 		checkArgumentIsNull("name", name);
 		if(!name.equals(this.getName())){
 			isExistedName(name);
+			this.name = name;
+			this.save();
 		}
-		this.name = name;
 	}
 
 	protected static void checkArgumentIsNull(String nullMessage, String argument) {

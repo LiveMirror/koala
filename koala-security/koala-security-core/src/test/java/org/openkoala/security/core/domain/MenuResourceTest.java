@@ -2,7 +2,9 @@ package org.openkoala.security.core.domain;
 
 import org.junit.Test;
 import org.openkoala.security.core.NameIsExistedException;
+import org.openkoala.security.core.NullArgumentException;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -11,6 +13,19 @@ import static org.openkoala.security.core.util.EntitiesHelper.initMenuResource;
 
 public class MenuResourceTest extends AbstractDomainIntegrationTestCase {
 
+	@Test(expected = NullArgumentException.class)
+	public void testSaveNameIsNull() throws Exception {
+		new MenuResource(null);
+	}
+	
+	@Test(expected = NameIsExistedException.class)
+	public void testSaveNameExisted() throws Exception {
+		MenuResource securityMenuResource = initMenuResource();
+		securityMenuResource.save();
+		MenuResource menuResource = new MenuResource("用户管理00000000000");
+		menuResource.save();
+	}
+	
 	@Test
 	public void testSave() throws Exception {
 		MenuResource securityMenuResource = initMenuResource();
@@ -21,35 +36,31 @@ public class MenuResourceTest extends AbstractDomainIntegrationTestCase {
 		assertMenuResource(securityMenuResource, loadMenuResource);
 	}
 
-	@Test(expected = NameIsExistedException.class)
-	public void testSaveNameExisted() throws Exception {
+	@Test(expected = NullArgumentException.class)
+	public void testChangeNameIsNull() throws Exception {
 		MenuResource securityMenuResource = initMenuResource();
 		securityMenuResource.save();
-		MenuResource menuResource = new MenuResource("用户管理00000000000");
-		menuResource.save();
+		securityMenuResource.changeName(null);
 	}
-
-	@Test
-	public void testUpdate() throws Exception {
+	
+	@Test(expected = NameIsExistedException.class)
+	public void testChangeNameIsExisted() throws Exception {
+		String name = "update0000000000";
 		MenuResource securityMenuResource = initMenuResource();
 		securityMenuResource.save();
-		MenuResource updateSecurityMenuResource = new MenuResource("update0000000000");
-		updateSecurityMenuResource.setId(securityMenuResource.getId());
-		updateSecurityMenuResource.save();
-		MenuResource loadMenuResource = MenuResource.getBy(updateSecurityMenuResource.getId());
-		assertNotNull(loadMenuResource);
-		assertMenuResource(updateSecurityMenuResource, loadMenuResource);
-	}
-
-	@Test(expected = NameIsExistedException.class)
-	public void testUpdateNameExisted() throws Exception {
-		MenuResource securityMenuResource = initMenuResource();
-		MenuResource menuResource2 = new MenuResource("update0000000000");
+		MenuResource menuResource2 = new MenuResource(name);
 		menuResource2.save();
+		securityMenuResource.changeName(name);
+	}
+	
+	@Test
+	public void testChangeName() throws Exception {
+		MenuResource securityMenuResource = initMenuResource();
 		securityMenuResource.save();
-		MenuResource updateSecurityMenuResource = new MenuResource("update0000000000");
-		updateSecurityMenuResource.setId(securityMenuResource.getId());
-		updateSecurityMenuResource.save();
+		securityMenuResource.changeName("update0000000000");
+		MenuResource loadMenuResource = MenuResource.getBy(securityMenuResource.getId());
+		assertNotNull(loadMenuResource);
+		assertMenuResource(securityMenuResource, loadMenuResource);
 	}
 	
 	@Test
@@ -106,6 +117,21 @@ public class MenuResourceTest extends AbstractDomainIntegrationTestCase {
 		assertNull(loadMenuResource1);
 		MenuResource loadMenuResource2 = MenuResource.getBy(childMenuResource2.getId());
 		assertNull(loadMenuResource2);
+		List<MenuResource> allMenuResources = MenuResource.findAll(MenuResource.class);
+		assertTrue(allMenuResources.isEmpty());
+	}
+	
+	@Test
+	public void testRemove() throws Exception {
+		MenuResource securityMenuResource = initMenuResource();
+		MenuResource childMenuResource1 = new MenuResource("child0000000001");
+		MenuResource childMenuResource2 = new MenuResource("child0000000002");
+		securityMenuResource.save();
+		securityMenuResource.addChild(childMenuResource1);
+		childMenuResource1.addChild(childMenuResource2);
+		securityMenuResource.remove();
+		List<MenuResource> allMenuResources = MenuResource.findAll(MenuResource.class);
+		assertTrue(allMenuResources.isEmpty());
 	}
 	
 	@Test

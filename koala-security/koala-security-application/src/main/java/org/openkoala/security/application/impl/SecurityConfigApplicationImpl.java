@@ -251,7 +251,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 
 	@Override
 	public void grantAuthorityToActor(Authority authority, Actor actor) {
-		actor.grant(authority, null);
+		actor.grant(authority);
 	}
 
 	@Override

@@ -22,16 +22,15 @@ import org.openkoala.security.facade.command.CreateUserCommand;
 import org.openkoala.security.facade.command.LoginCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.PageElementResourceDTO;
 
 public interface SecurityConfigFacade {
 
 	/**
 	 * 创建用户
 	 * 
-	 * @param userDTO
+	 * @param command
 	 */
-	JsonResult createUser(CreateUserCommand user);
+	JsonResult createUser(CreateUserCommand command);
 
 	/**
 	 * 创建权限
@@ -331,7 +330,8 @@ public interface SecurityConfigFacade {
 
 	void terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId);
 
-	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceIdentifier);
+	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName,
+			String securityResourceIdentifier);
 
 	/**
 	 * 初始化系统权限资源。

@@ -52,11 +52,10 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	@ManyToMany(mappedBy = "securityResources")
 	private Set<Authority> authorities = new HashSet<Authority>();
 
-	protected SecurityResource() {
-	}
+	protected SecurityResource() {}
 
 	public SecurityResource(String name) {
-		checkArgumentIsNull("name", "name");
+		checkArgumentIsNull("name", name);
 		isNameExisted(name);
 		this.name = name;
 	}
@@ -69,14 +68,20 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 		super.remove();
 	}
 
+	/**
+	 * @param name
+	 *            name of the SecurityResource, can't be null.
+	 * @return
+	 */
 	public abstract SecurityResource findByName(String name);
 
 	public void changeName(String name) {
 		checkArgumentIsNull("name", name);
 		if (!name.equals(this.getName())) {
 			isNameExisted(name);
+			this.name = name;
+			this.save();
 		}
-		this.name = name;
 	}
 
 	public void addAuthority(Authority authority) {
