@@ -47,13 +47,13 @@ public class UrlAccessController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/add")
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public JsonResult add(CreateUrlAccessResourceCommand command) {
 		return securityConfigFacade.createUrlAccessResource(command);
 	}
 
 	@ResponseBody
-	@RequestMapping("/update")
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public JsonResult update(ChangeUrlAccessResourcePropsCommand command) {
 		return securityConfigFacade.changeUrlAccessResourceProps(command);
 	}
@@ -65,8 +65,8 @@ public class UrlAccessController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult terminate(@RequestBody Long[] urlAccessResourceIds) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
+	public JsonResult terminate(Long[] urlAccessResourceIds) {
 		JsonResult result = securityConfigFacade.terminateUrlAccessResources(urlAccessResourceIds);
 		shiroFilerChainManager.initFilterChain();
 		return result;
@@ -81,7 +81,7 @@ public class UrlAccessController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQuery")
+	@RequestMapping(value="/pagingQuery", method = RequestMethod.GET)
 	public Page<UrlAccessResourceDTO> pagingQuery(int page, int pagesize, UrlAccessResourceDTO urlAccessResourceDTO) {
 		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryUrlAccessResources(page, pagesize,
 				urlAccessResourceDTO);
@@ -96,7 +96,7 @@ public class UrlAccessController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermisssionsToUrlAccessResource")
+	@RequestMapping(value = "/grantPermisssionsToUrlAccessResource", method = RequestMethod.POST)
 	public JsonResult grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -120,7 +120,7 @@ public class UrlAccessController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminatePermissionsFromUrlAccessResource")
+	@RequestMapping(value = "/terminatePermissionsFromUrlAccessResource", method = RequestMethod.POST)
 	public JsonResult terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -145,7 +145,7 @@ public class UrlAccessController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryGrantPermissionsByUrlAccessResourceId")
+	@RequestMapping(value="/pagingQueryGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
 			Long urlAccessResourceId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByUrlAccessResourceId(page,
@@ -162,7 +162,7 @@ public class UrlAccessController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryNotGrantPermissionsByUrlAccessResourceId")
+	@RequestMapping(value="/pagingQueryNotGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
 			Long urlAccessResourceId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(page,

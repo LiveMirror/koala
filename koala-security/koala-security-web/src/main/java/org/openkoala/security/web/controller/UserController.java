@@ -50,7 +50,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/add")
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public JsonResult add(CreateUserCommand command) {
 		String createOwner = AuthUserUtil.getUserAccount();
 		command.setCreateOwner(createOwner);
@@ -64,7 +64,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/update")
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public JsonResult changeUserProps(ChangeUserPropsCommand command) {
 		return securityConfigFacade.changeUserProps(command);
 	}
@@ -76,7 +76,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/changeUserAccount")
+	@RequestMapping(value = "/changeUserAccount", method = RequestMethod.POST)
 	public JsonResult changeUserAccount(ChangeUserAccountCommand command) {
 		return securityConfigFacade.changeUserAccount(command);
 	}
@@ -88,7 +88,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/changeUserEmail")
+	@RequestMapping(value = "/changeUserEmail", method = RequestMethod.POST)
 	public JsonResult changeUserEmail(ChangeUserEmailCommand command) {
 		return securityConfigFacade.changeUserEmail(command);
 	}
@@ -100,7 +100,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/changeUserTelePhone")
+	@RequestMapping(value = "/changeUserTelePhone", method = RequestMethod.POST)
 	public JsonResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
 		return securityConfigFacade.changeUserTelePhone(command);
 	}
@@ -111,8 +111,8 @@ public class UserController {
 	 * @param userIds
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult terminate(@RequestBody Long[] userIds) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
+	public JsonResult terminate(Long[] userIds) {
 		return securityConfigFacade.terminateUsers(userIds);
 	}
 
@@ -124,7 +124,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/updatePassword")
+	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
 	public JsonResult changeUserPassword(ChangeUserPasswordCommand command) {
 		command.setUserAccount(AuthUserUtil.getUserAccount());
 		return securityConfigFacade.changeUserPassword(command);
@@ -137,7 +137,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/resetPassword")
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
 	public JsonResult resetPassword(Long userId) {
 		return securityConfigFacade.resetPassword(userId);
 	}
@@ -149,7 +149,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/activate")
+	@RequestMapping(value = "/activate", method = RequestMethod.POST)
 	public JsonResult activate(Long userId) {
 		return securityConfigFacade.activate(userId);
 	}
@@ -161,7 +161,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/suspend")
+	@RequestMapping(value = "/suspend", method = RequestMethod.POST)
 	public JsonResult suspend(Long userId) {
 		return securityConfigFacade.suspend(userId);
 	}
@@ -173,7 +173,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/activates")
+	@RequestMapping(value = "/activates", method = RequestMethod.POST)
 	public JsonResult activates(Long[] userIds) {
 		return securityConfigFacade.activate(userIds);
 	}
@@ -185,7 +185,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/suspends")
+	@RequestMapping(value = "/suspends", method = RequestMethod.POST)
 	public JsonResult suspends(Long[] userIds) {
 		return securityConfigFacade.suspend(userIds);
 	}
@@ -199,7 +199,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantRoleToUser")
+	@RequestMapping(value = "/grantRoleToUser", method = RequestMethod.POST)
 	public JsonResult grantRoleToUser(Long userId, Long roleId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -222,7 +222,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantRolesToUser")
+	@RequestMapping(value = "/grantRolesToUser", method = RequestMethod.POST)
 	public JsonResult grantRolesToUser(Long userId, Long[] roleIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -245,7 +245,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermissionToUser")
+	@RequestMapping(value = "/grantPermissionToUser", method = RequestMethod.POST)
 	public JsonResult grantPermissionToUser(Long userId, Long permissionId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -268,7 +268,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermissionsToUser")
+	@RequestMapping(value = "/grantPermissionsToUser", method = RequestMethod.POST)
 	public JsonResult grantPermissionsToUser(Long userId, Long[] permissionIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -291,7 +291,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminateAuthorizationByUserInRole")
+	@RequestMapping(value = "/terminateAuthorizationByUserInRole", method = RequestMethod.POST)
 	public JsonResult terminateAuthorizationByUserInRole(Long userId, Long roleId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -314,7 +314,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminateAuthorizationByUserInPermission")
+	@RequestMapping(value = "/terminateAuthorizationByUserInPermission", method = RequestMethod.POST)
 	public JsonResult terminateAuthorizationByUserInPermission(Long userId, Long permissionId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -337,7 +337,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminateAuthorizationByUserInRoles")
+	@RequestMapping(value = "/terminateAuthorizationByUserInRoles", method = RequestMethod.POST)
 	public JsonResult terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -360,7 +360,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminatePermissionsByUser")
+	@RequestMapping(value = "/terminatePermissionsByUser", method = RequestMethod.POST)
 	public JsonResult terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -380,13 +380,13 @@ public class UserController {
 	 * 
 	 * @param page
 	 * @param pagesize
-	 * @param userDTO
+	 * @param queryUserCondition
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQuery")
-	public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO userDTO) {
-		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pagesize, userDTO);
+	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
+	public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO queryUserCondition) {
+		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pagesize, queryUserCondition);
 		return results;
 	}
 
@@ -399,7 +399,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryGrantRoleByUserId")
+	@RequestMapping(value = "/pagingQueryGrantRoleByUserId", method = RequestMethod.GET)
 	public Page<RoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
 		Page<RoleDTO> results = securityAccessFacade.pagingQueryGrantRolesByUserId(page, pagesize, userId);
 		return results;
@@ -414,7 +414,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryGrantPermissionByUserId")
+	@RequestMapping(value = "/pagingQueryGrantPermissionByUserId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryGrantPermissionByUserId(int page, int pagesize, Long userId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionByUserId(page, pagesize, userId);
 		return results;
@@ -429,7 +429,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryNotGrantRoles")
+	@RequestMapping(value = "/pagingQueryNotGrantRoles", method = RequestMethod.GET)
 	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, Long userId, RoleDTO queryRoleCondition) {
 		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,
 				userId);
@@ -446,7 +446,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryNotGrantPermissions")
+	@RequestMapping(value = "/pagingQueryNotGrantPermissions", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,
 			PermissionDTO queryPermissionCondition, Long userId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(page, pagesize,
@@ -465,7 +465,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantRoleToUserInScope")
+	@RequestMapping(value = "/grantRoleToUserInScope", method = RequestMethod.POST)
 	public JsonResult grantRoleToUserInScope(Long userId, Long roleId, Long scopeId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -489,7 +489,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantRolesInScope")
+	@RequestMapping(value = "/grantRolesInScope", method = RequestMethod.POST)
 	public JsonResult grantRolesToUserInScope(Long userId, Long[] roleIds, Long scopeId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -504,6 +504,7 @@ public class UserController {
 		return jsonResult;
 	}
 
+	// ~ 组织机构
 	/**
 	 * 在某个范围中为用户授权一个权限。
 	 * 
@@ -513,7 +514,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermissionsToUserInScope")
+	@RequestMapping(value = "/grantPermissionsToUserInScope", method = RequestMethod.POST)
 	public JsonResult grantPermissionsToUserInScope(Long userId, Long permissionId, Long scopeId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -537,7 +538,7 @@ public class UserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermissionToUserInScope")
+	@RequestMapping(value = "/grantPermissionToUserInScope", method = RequestMethod.POST)
 	public JsonResult grantPermissionToUserInScope(Long userId, Long[] permissionIds, Long scopeId) {
 		JsonResult jsonResult = new JsonResult();
 		try {

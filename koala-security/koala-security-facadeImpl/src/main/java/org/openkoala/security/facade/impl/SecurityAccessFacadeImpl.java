@@ -391,13 +391,13 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	@Override
 	public Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize,
-			UrlAccessResourceDTO urlAccessResourceDTO) {
+			UrlAccessResourceDTO queryUrlAccessResourceCondition) {
 
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.UrlAccessResourceDTO(_urlAccessResource.id, _urlAccessResource.name, _urlAccessResource.url,_urlAccessResource.description) FROM UrlAccessResource _urlAccessResource");
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 
-		assembleUrlAccessResourceJpqlAndConditionValues(urlAccessResourceDTO, jpql, "_urlAccessResource", conditionVals);
+		assembleUrlAccessResourceJpqlAndConditionValues(queryUrlAccessResourceCondition, jpql, "_urlAccessResource", conditionVals);
 
 		Page<UrlAccessResourceDTO> results = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//

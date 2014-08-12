@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -42,7 +43,7 @@ public class PageElementController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/add")
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public JsonResult add(CreatePageElementResourceCommand command) {
 		return securityConfigFacade.createPageElementResource(command);
 	}
@@ -54,7 +55,7 @@ public class PageElementController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/update")
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public JsonResult update(ChangePageElementResourcePropsCommand command) {
 		return securityConfigFacade.changePageElementResourceProps(command);
 	}
@@ -66,8 +67,8 @@ public class PageElementController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminate")
-	public JsonResult terminate(@RequestBody Long[] pageElementResourceIds) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
+	public JsonResult terminate(Long[] pageElementResourceIds) {
 		return securityConfigFacade.terminatePageElementResources(pageElementResourceIds);
 	}
 
@@ -79,7 +80,7 @@ public class PageElementController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermisssionsToPageElementResource")
+	@RequestMapping(value = "/grantPermisssionsToPageElementResource", method = RequestMethod.POST)
 	public JsonResult grantPermisssionsToPageElementResource(Long permissionId, Long pageElementResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -102,7 +103,7 @@ public class PageElementController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminatePermissionsFromPageElementResource")
+	@RequestMapping(value = "/terminatePermissionsFromPageElementResource", method = RequestMethod.POST)
 	public JsonResult terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -126,11 +127,9 @@ public class PageElementController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQuery")
-	public Page<PageElementResourceDTO> pagingQuery(int page, int pagesize,
-			PageElementResourceDTO pageElementResourceDTO) {
-		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryPageElementResources(page, pagesize,
-				pageElementResourceDTO);
+	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
+	public Page<PageElementResourceDTO> pagingQuery(int page, int pagesize, PageElementResourceDTO queryPageElementResourceCondition) {
+		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryPageElementResources(page, pagesize, queryPageElementResourceCondition);
 		return results;
 	}
 
@@ -143,7 +142,7 @@ public class PageElementController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryGrantPermissionsByPageElementResourceId")
+	@RequestMapping(value = "/pagingQueryGrantPermissionsByPageElementResourceId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize,
 			Long pageElementResourceId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(page,
@@ -160,7 +159,7 @@ public class PageElementController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryNotGrantPermissionsByPageElementResourceId")
+	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByPageElementResourceId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
 			Long pageElementResourceId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(page,

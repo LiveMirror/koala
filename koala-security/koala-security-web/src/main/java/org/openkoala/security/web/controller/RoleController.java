@@ -54,7 +54,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/add")
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public JsonResult add(CreateRoleCommand command) {
 		return securityConfigFacade.createRole(command);
 	}
@@ -66,7 +66,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/update")
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public JsonResult update(ChangeRolePropsCommand command) {
 		return securityConfigFacade.changeRoleProps(command);
 	}
@@ -77,8 +77,8 @@ public class RoleController {
 	 * @param userDTOs
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult terminate(@RequestBody Long[] roleIds) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
+	public JsonResult terminate(Long[] roleIds) {
 		return securityConfigFacade.terminateRoles(roleIds);
 	}
 
@@ -91,7 +91,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQuery")
+	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
 	public Page<RoleDTO> pagingQuery(int page, int pagesize, RoleDTO roleDTO) {
 		Page<RoleDTO> results = securityAccessFacade.pagingQueryRoles(page, pagesize, roleDTO);
 		return results;
@@ -103,7 +103,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/findRolesByUsername")
+	@RequestMapping(value = "/findRolesByUsername", method = RequestMethod.GET)
 	public JsonResult findRoleDtosByUsername() {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -126,7 +126,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/findMenuResourceTreeSelectItemByRoleId")
+	@RequestMapping(value = "/findMenuResourceTreeSelectItemByRoleId", method = RequestMethod.GET)
 	public JsonResult findMenuResourceTreeSelectItemByRoleId(Long roleId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -173,12 +173,12 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantUrlAccessResourcesToRole")
+	@RequestMapping(value = "/grantUrlAccessResourcesToRole", method = RequestMethod.POST)
 	public JsonResult grantUrlAccessResourcesToRole(Long roleId, Long[] urlAccessResourceIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
-//			shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
+			// shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为角色授权URL访问权限资源成功");
 		} catch (Exception e) {
@@ -197,7 +197,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminateUrlAccessResourcesFromRole")
+	@RequestMapping(value = "/terminateUrlAccessResourcesFromRole", method = RequestMethod.POST)
 	public JsonResult terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -222,7 +222,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryGrantUrlAccessResourcesByRoleId")
+	@RequestMapping(value = "/pagingQueryGrantUrlAccessResourcesByRoleId", method = RequestMethod.GET)
 	public Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
 		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page,
 				pagesize, roleId);
@@ -238,7 +238,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryNotGrantUrlAccessResourcesByRoleId")
+	@RequestMapping(value = "/pagingQueryNotGrantUrlAccessResourcesByRoleId", method = RequestMethod.GET)
 	public Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
 		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page,
 				pagesize, roleId);
@@ -253,7 +253,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermissionsToRole")
+	@RequestMapping(value = "/grantPermissionsToRole", method = RequestMethod.POST)
 	public JsonResult grantPermissionsToRole(Long roleId, Long[] permissionIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -276,7 +276,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminatePermissionsFromRole")
+	@RequestMapping(value = "/terminatePermissionsFromRole", method = RequestMethod.POST)
 	public JsonResult terminatePermissions(Long roleId, Long[] permissionIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -300,7 +300,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryGrantPermissionsByRoleId")
+	@RequestMapping(value = "/pagingQueryGrantPermissionsByRoleId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryPermissionsByRoleId(int page, int pagesize, Long roleId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByRoleId(page, pagesize, roleId);
 		return results;
@@ -315,7 +315,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryNotGrantPermissionsByRoleId")
+	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByRoleId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize,
 				roleId);
@@ -330,7 +330,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPageElementResourcesToRole")
+	@RequestMapping(value = "/grantPageElementResourcesToRole", method = RequestMethod.POST)
 	public JsonResult grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -353,7 +353,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminatePageElementResourcesFromRole")
+	@RequestMapping(value = "/terminatePageElementResourcesFromRole", method = RequestMethod.POST)
 	public JsonResult terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -377,7 +377,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryGrantPageElementResourcesByRoleId")
+	@RequestMapping(value = "/pagingQueryGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
 	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
 		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page,
 				pagesize, roleId);
@@ -393,7 +393,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryNotGrantPageElementResourcesByRoleId")
+	@RequestMapping(value = "/pagingQueryNotGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
 	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize,
 			Long roleId) {
 		return securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(page, pagesize, roleId);
@@ -409,7 +409,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantMethodInvocationResourcesToRole")
+	@RequestMapping(value = "/grantMethodInvocationResourcesToRole", method = RequestMethod.GET)
 	public JsonResult grantMethodInvocationResourcesToRole(Long roleId, Long[] menuResourceIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
