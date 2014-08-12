@@ -2,6 +2,7 @@ package org.openkoala.security.facade.impl;
 
 import static org.openkoala.security.facade.impl.assembler.GenerateDTOUtils.*;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -600,22 +601,22 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		if (!StringUtils.isBlank(queryUserCondition.getName())) {
 			jpql.append(andCondition);
 			jpql.append(".name LIKE :name");
-			conditionVals.put("name", queryUserCondition.getName());
+			conditionVals.put("name", MessageFormat.format("%{0}%", queryUserCondition.getName()));
 		}
 		if (!StringUtils.isBlank(queryUserCondition.getUserAccount())) {
 			jpql.append(andCondition);
 			jpql.append(".userAccount LIKE :userAccount");
-			conditionVals.put("userAccount", queryUserCondition.getUserAccount());
+			conditionVals.put("userAccount", MessageFormat.format("%{0}%", queryUserCondition.getUserAccount()));
 		}
 		if (!StringUtils.isBlank(queryUserCondition.getEmail())) {
 			jpql.append(andCondition);
 			jpql.append(".email LIKE :email");
-			conditionVals.put("email", queryUserCondition.getEmail());
+			conditionVals.put("email", MessageFormat.format("%{0}%", queryUserCondition.getEmail()));
 		}
 		if (!StringUtils.isBlank(queryUserCondition.getTelePhone())) {
 			jpql.append(andCondition);
 			jpql.append(".telePhone LIKE :telePhone");
-			conditionVals.put("telePhone", queryUserCondition.getTelePhone());
+			conditionVals.put("telePhone", MessageFormat.format("%{0}%", queryUserCondition.getTelePhone()));
 		}
 	}
 
@@ -816,6 +817,5 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			jpql.append(" WHERE ");
 		}
 	}
-
 
 }
