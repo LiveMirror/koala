@@ -248,7 +248,8 @@
 				if(items.length == 0){
 					thiz.message({type : 'warning',content : '请选择一条记录进行操作'});
 					return;
-				} else if(items.length > 1){
+				} 
+				if(items.length > 1){
 					thiz.message({type : 'warning',content : '只能选择一条记录进行操作'});
 					return;
 				}

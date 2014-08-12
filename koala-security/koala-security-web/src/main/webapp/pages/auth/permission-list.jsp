@@ -422,13 +422,20 @@
         					});
         					return;
         				}
+        				if(items.length > 1){
+        					dialog.find('.modal-content').message({
+        						type: 'warning',
+        						content: '只能选择一条记录进行操作'
+        					});
+        					return;
+        				}
         				
         				saveBtn.attr('disabled', 'disabled');
         				
         				var data = "menuResourceId="+menuId;
-        				for(var i=0,j=items.length; i<j; i++){
-        					data += "&permissionIds=" + items[i].permissionId;
-        				}
+        				
+        					data += "&permissionId=" + items[0].permissionId;
+        				
         				
         				$.post(contextPath + '/auth/menu/grantPermisssionsToMenuResource.koala', data).done(function(data){
         					
@@ -442,7 +449,7 @@
         						dialog.modal('hide');
         						grid.grid('refresh');
         					}else{
-        						saveBtn.attr('disabled', 'disabled');	
+        						saveBtn.removeAttr('disabled');	
         						grid.message({
         							type: 'error',
         							content: '保存失败'
@@ -513,14 +520,21 @@
 					});
 					return;
 				}
+				if (indexs.length > 1) {
+					grid.message({
+						type : 'warning',
+						content : '只能删除一条记录'
+					});
+					return;
+				}
 				grid.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
 						var url = contextPath + '/auth/menu/terminatePermissionsFromMenuResource.koala';
 						var params = "menuResourceId="+menuId;
-						for (var i = 0, j = data.item.length; i < j; i++) {
-							params += ("&permissionIds=" + data.item[i].permissionId);
-						}
+						
+							params += ("&permissionId=" + data.item[0].permissionId);
+					
 						
 						$.post(url, params).done(function(data){
 							if(data.success){
@@ -560,13 +574,17 @@
         					});
         					return;
         				}
-        				
+        				if(items.length > 1){
+        					dialog.find('.modal-content').message({
+        						type: 'warning',
+        						content: '只能分配一条权限'
+        					});
+        					return;
+        				}
         				saveBtn.attr('disabled', 'disabled');
         				
         				var data = "pageElementResourceId="+pageId;
-        				for(var i=0,j=items.length; i<j; i++){
-        					data += "&permissionIds=" + items[i].permissionId;
-        				}
+        					data += "&permissionId=" + items[0].permissionId;
         				
         				$.post(contextPath + '/auth/page/grantPermisssionsToPageElementResource.koala', data).done(function(data){
         					if(data.success){
@@ -646,14 +664,19 @@
 					});
 					return;
 				}
+				if (indexs.length > 1) {
+					grid.message({
+						type : 'warning',
+						content : '只能删除一条记录'
+					});
+					return;
+				}
 				grid.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
 						var url = contextPath + '/auth/page/terminatePermissionsFromPageElementResource.koala';
 						var params = "pageElementResourceId="+pageId;
-						for (var i = 0, j = data.item.length; i < j; i++) {
-							params += ("&permissionIds=" + data.item[i].permissionId);
-						}
+							params += ("&permissionId=" + data.item[0].permissionId);
 						
 						$.post(url, params).done(function(data){
 							if(data.success){
@@ -693,13 +716,17 @@
         					});
         					return;
         				}
-        				
+        				if(items.length > 1){
+        					dialog.find('.modal-content').message({
+        						type: 'warning',
+        						content: '只能分配一条权限'
+        					});
+        					return;
+        				}
         				saveBtn.attr('disabled', 'disabled');
         				
         				var data = "urlAccessResourceId="+urlId;
-        				for(var i=0,j=items.length; i<j; i++){
-        					data += "&permissionIds=" + items[i].permissionId;
-        				}
+        					data += "&permissionId=" + items[0].permissionId;
         				
         				$.post(contextPath + '/auth/url/grantPermisssionsToUrlAccessResource.koala', data).done(function(data){
         					if(data.success){
@@ -779,14 +806,19 @@
 					});
 					return;
 				}
+				if (indexs.length > 1) {
+					grid.message({
+						type : 'warning',
+						content : '只能删除一条记录'
+					});
+					return;
+				}
 				grid.confirm({
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
 						var url = contextPath + '/auth/url/terminatePermissionsFromUrlAccessResource.koala';
 						var params = "urlAccessResourceId="+urlId;
-						for (var i = 0, j = data.item.length; i < j; i++) {
-							params += ("&permissionIds=" + data.item[i].permissionId);
-						}
+							params += ("&permissionId=" + data.item[0].permissionId);
 						
 						$.post(url, params).done(function(data){
 							if(data.success){
@@ -823,6 +855,13 @@
         					dialog.find('.modal-content').message({
         						type: 'warning',
         						content: '请选择要分配的权限'
+        					});
+        					return;
+        				}
+        				if(items.length > 1){
+        					dialog.find('.modal-content').message({
+        						type: 'warning',
+        						content: '只能分配一条权限'
         					});
         					return;
         				}

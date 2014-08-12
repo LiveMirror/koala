@@ -6,33 +6,33 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title">添加用户</h4>
+				<h4 class="modal-title">添加Url路径</h4>
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
 				<form class="form-horizontal" id="url_form">
 					<div class="form-group">
-						<label class="col-lg-3 control-label">url名称:</label>
+						<label class="col-lg-3 control-label">Url路径名称:</label>
 						<div class="col-lg-9">
 							<span class="required">*</span>
 							<input type="text" class="form-control" name="name">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-3 control-label">url标识:</label>
+						<label class="col-lg-3 control-label">Url路径标识:</label>
 						<div class="col-lg-9">
 							<span class="required">*</span>
 							<input type="text" class="form-control" name="identifier">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-3 control-label">url链接:</label>
+						<label class="col-lg-3 control-label">Url路径链接:</label>
 						<div class="col-lg-9">
 							<span class="required">*</span>
 							<input type="text" class="form-control" name="url">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-3 control-label">描述:</label>
+						<label class="col-lg-3 control-label">Url路径描述:</label>
 						<div class="col-lg-9">
 							<span class="required"> </span>
 							<input type="text" class="form-control" name="description">

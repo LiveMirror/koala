@@ -18,13 +18,18 @@
     		min-height:20px;
     		min-width:100px;
     	}
-    	
-    
+    	.nav-stacked{
+    	 position:relative;
+    	 top:0;
+    	 bottom:0;
+    	 left:0;
+    	 right:0;
+    	}
     	.folder > a{
-    		background:#ccc;
+         background:#ccc;
     	}
     	.leaf_node > a .glyphicon{
-    		display:none;
+    	  display:none;
     	}
     	.menu_name{
     	  font-size:16px;
@@ -49,6 +54,48 @@
     	.menu_icon_change:hover{
     	background-color:transparent !important;
     	}
+    	.m_left{
+    	margin-left:20px;
+    	}
+    	/*
+    	*阶梯效果
+    	*/
+    	.leaf_node:hover{
+    	   -webkit-transform: scale(1.1);
+		  -moz-transform: scale(1.1);
+		  -ms-transform: scale(1.1);
+		  -o-transform: scale(1.1);
+		  transform: scale(1.1);
+		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
+		  z-index: 3;
+		  
+    	}
+    	.nav-stacked a.active-1 {
+		  -webkit-transform: scale(1.1) translateX(24px);
+		  -moz-transform: scale(1.1) translateX(24px);
+		  -ms-transform: scale(1.1) translateX(24px);
+		  -o-transform: scale(1.1) translateX(24px);
+		  transform: scale(1.1) translateX(24px);
+		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
+		  z-index: 3;
+		}
+		.nav-stacked a.active-2 {
+		  -webkit-transform: scale(1.07) translateX(12px);
+		  -moz-transform: scale(1.07) translateX(12px);
+		  -ms-transform: scale(1.07) translateX(12px);
+		  -o-transform: scale(1.07) translateX(12px);
+		  transform: scale(1.07) translateX(12px);
+		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+		  z-index: 2;
+		}
+		.nav-stacked a.active-3 {
+		  -webkit-transform: scale(1.04) translateX(4px);
+		  -moz-transform: scale(1.04) translateX(4px);
+		  -ms-transform: scale(1.04) translateX(4px);
+		  -o-transform: scale(1.04) translateX(4px);
+		  transform: scale(1.04) translateX(4px);
+		  z-index: 1;
+		}
     </style>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
@@ -172,7 +219,7 @@
 	});
 	
 	var renderSubMenu = function(data, $menu){		
-		$menu.find('[data-toggle="collapse"]').each(function(){
+		/*$menu.find('[data-toggle="collapse"]').each(function(){
 		    var $this = $(this);
 		    $menu.find($(this).attr('href')).on({
 		        'shown.bs.collapse': function(e){
@@ -186,7 +233,7 @@
 		            $this.find('i:last').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-right');
 		        }
 		    });
-		});
+		});*/
 		
 		 $menu.find('li.submenu').on('click', function(){
 			var $this = $(this);
@@ -222,16 +269,13 @@
 			
 			$.each(data,function(i,d){
 				if(!d.name) return;
-				
-				
 				node = $('<li class="node"> \
-							<a href="#menuMark"'+ d.id +'"> \
+							<a href="#menuMark'+ d.id +'" class = "asd'+d.id+'" onclick="click_here('+d.id+')"> \
 								<span class="'+d.icon+'"></span> \
 								<span class="menu_name">' + d.name + '</span> \
 								<i class="glyphicon glyphicon-chevron-right pull-right" style="position:relative;right:12px;font-size:12px;"></i> \
 							</a> \
 						</li>');
-				
 				menu.append(node);
 				
 				/*如果children有值，该节点将不会是叶子节点*/
@@ -240,19 +284,53 @@
 				} else {
 					node.addClass("leaf_node").attr("url",d.url);
 				}
+				
 			});
 			return menu;
 			
 		}
-	
-		
-		/*折叠效果*/
- 	$(function(){
- 
- 		$('.nav-stacked li.folder a').eq(0).on('click',function(){
- 			console.log("aaaa");
- 		});
- 	});
+	</script>
+	<script type="text/javascript">
+	    function click_here(data){
+
+	    	$(".asd"+data).next('.nav-stacked').toggle(600);
+	      }
+	    
+	    
+	    (function() {
+
+	    	$.fn.stairwayNav = function(options) {
+
+	    	  var defaults = {
+	    	     stairs: 3
+	    	  };
+	    	
+	    	  this.options = $.extend({}, defaults, options);
+	    	  var stairs = this.options.stairs;
+	    	  var allLinks = this.find('.nav-stacked').find("a");
+	    	  allLinks.mouseenter(function() {
+	    	      $(this).addClass("active-1");
+	    	      var index = $(this).index(), i, bef, aft;
+	    	      for(i = 1; i < stairs; i++) {
+
+	    	        bef = index - i;
+	    	        aft = index + i;
+
+	    	        allLinks.eq(aft).addClass("active-" + (i+1));
+	    	        if (bef > 0) {
+	    	          allLinks.eq(bef).addClass("active-" + (i+1));
+	    	        }
+	    	      }   
+	    	    })
+	    	    .mouseleave(function() {
+	    	      allLinks.removeClass("active-1 active-2 active-3 active-4");
+	    	    });
+	    	  return this;
+	    	};
+	    	$(".nav-stacked").stairwayNav({
+	    	  // Default is 3
+	    	});
+	    	})();
 	</script>
 </body>
 </html>

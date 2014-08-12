@@ -110,16 +110,18 @@
 	            		var data = form.serialize();
 	            		var url = baseUrl + 'add.koala';
 	            		
-	            		if(item.length == 1){
+	            		if(item != null){//problem
+	            			console.log("aaa");
 	            			url = baseUrl + 'addChildToParent.koala';	
-	            			data += ("&parentId=" +item[0].id);
+	            			data += ("&parentId=" +item.id);
+	        			}else{
+	        				var url = baseUrl + 'add.koala';
 	        			}
 	        			if (item&&opreate =='modify') {
 	        				url = baseUrl + 'update.koala';
 	        			    data += ("&id=" + item.id);
 	        				
 	        			}
-	        			
 	        			$.ajax({
 	        				url : url,
 	        				data: data,
@@ -144,6 +146,7 @@
 		};
 		
 		deleteMenu = function(urls, grid) {
+			console.log(urls);
 			$.ajax({
 			    headers: { 
 			        'Accept'		: 'application/json',
@@ -227,7 +230,7 @@
 			 identity: 'id',
              columns: columns,
              buttons: buttons,
-             isShowPages: false,
+             isShowPages: true,
              url: url,
              tree: {
              	column: 'name'

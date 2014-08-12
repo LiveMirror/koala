@@ -35,16 +35,16 @@
 					content : '<ks:hasSecurityResource identifier="roleManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
 					action : 'delete'
 				}, {
-					content : '<ks:hasSecurityResource identifier="roleManagerGrantUrlAccessResource"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配url</button></ks:hasSecurityResource>',
+					content : '<ks:hasSecurityResource identifier="roleManagerGrantUrlAccessResource"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配URL访问资源</button></ks:hasSecurityResource>',
 					action : 'urlAssign'
 				}, {
-					content : '<ks:hasSecurityResource identifier="roleManagerGrantMenuResource"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配menu</button></ks:hasSecurityResource>',
+					content : '<ks:hasSecurityResource identifier="roleManagerGrantMenuResource"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配菜单资源</button></ks:hasSecurityResource>',
 					action : 'menuAssign'
 				},{
-					content : '<ks:hasSecurityResource identifier="roleManagerPageElementResource"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配page</button></ks:hasSecurityResource>',
+					content : '<ks:hasSecurityResource identifier="roleManagerGrantPageElementResource"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配页面元素资源</button></ks:hasSecurityResource>',
 					action : 'pageAssign'
 				},{
-					content : '<button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配权限</button>',
+					content : '<ks:hasSecurityResource identifier="roleManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配权限</button></ks:hasSecurityResource>',
 					action : 'permissionAssign'
 				}];
 			}
