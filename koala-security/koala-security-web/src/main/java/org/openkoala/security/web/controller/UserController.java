@@ -111,8 +111,8 @@ public class UserController {
 	 * @param userIds
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult terminate(@RequestBody Long[] userIds) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
+	public JsonResult terminate(Long[] userIds) {
 		return securityConfigFacade.terminateUsers(userIds);
 	}
 

@@ -123,17 +123,10 @@ var userManager = function() {
 	 删除方法
 	 */
 	var deleteUser = function(users, grid) {
+
+		var userIds = users[0].id;
 		dataGrid = grid;
-		$.ajax({
-		    headers: { 
-		        'Accept': 'application/json',
-		        'Content-Type': 'application/json' 
-		    },
-		    'type'	: "Post",
-		    'url'	: baseUrl + 'terminate.koala',
-		    'data'	: JSON.stringify(users),
-		    'dataType': 'json'
-		 }).done(function(data){
+		$.post(baseUrl + 'terminate.koala',{"userIds" : userIds}).done(function(data){
 			if(data.success){
 				dataGrid.message({
 					type: 'success',
@@ -222,6 +215,7 @@ var userManager = function() {
 		if (item) {
 			url = baseUrl + 'update.koala';
 		}
+		console.log(getAllData(item));
 		$.post(url, getAllData(item)).done(function(data) {
 			if (data.success) {
 				dialog.trigger('complete');
