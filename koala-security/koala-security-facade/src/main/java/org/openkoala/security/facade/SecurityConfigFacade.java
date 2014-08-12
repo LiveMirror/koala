@@ -345,12 +345,4 @@ public interface SecurityConfigFacade {
 	 */
 	void updateUserLastLoginTime(Long userId);
 
-	/**
-	 * 处理登陆。
-	 * 
-	 * @param command
-	 * @return
-	 */
-	JsonResult dealWithLogin(LoginCommand command);
-
 }

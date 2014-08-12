@@ -27,10 +27,10 @@ public final class TransFromDomainUtils {
 	
 	public static Role transFromRoleBy(RoleDTO roleDTO) {
 		Role result = null;
-		if (!StringUtils.isBlank(roleDTO.getRoleId() + "")) {
-			result.setId(roleDTO.getRoleId());
+		if (!StringUtils.isBlank(roleDTO.getId() + "")) {
+			result.setId(roleDTO.getId());
 		}else{
-			result = new Role(roleDTO.getRoleName());
+			result = new Role(roleDTO.getName());
 		}
 		result.setVersion(roleDTO.getVersion());
 		result.setDescription(roleDTO.getDescription());
@@ -39,11 +39,11 @@ public final class TransFromDomainUtils {
 
 	public static Permission transFromPermissionBy(PermissionDTO permissionDTO) {
 		Permission result = null;
-		if (!StringUtils.isBlank(permissionDTO.getPermissionId() + "")) {
-			result = Permission.getBy(permissionDTO.getPermissionId());
-			result.setId(permissionDTO.getPermissionId());
+		if (!StringUtils.isBlank(permissionDTO.getId() + "")) {
+			result = Permission.getBy(permissionDTO.getId());
+			result.setId(permissionDTO.getId());
 		}else{
-			result  = new Permission(permissionDTO.getPermissionName(), permissionDTO.getIdentifier());
+			result  = new Permission(permissionDTO.getName(), permissionDTO.getIdentifier());
 		}
 		result.setDescription(permissionDTO.getDescription());
 		result.setVersion(permissionDTO.getVersion());

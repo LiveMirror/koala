@@ -31,7 +31,7 @@ public class CustomDefaultFilterChainManager extends DefaultFilterChainManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomDefaultFilterChainManager.class);
 
-	private Map<String, String> filterChainDefinitionMap = null;
+	private Map<String, String> filterChainDefinitionMap;
 
 	private String loginUrl;
 

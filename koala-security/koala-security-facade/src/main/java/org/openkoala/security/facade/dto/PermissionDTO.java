@@ -6,15 +6,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class PermissionDTO {
 
-	private Long permissionId;
+	private Long id;
 	
 	private int version;
 
-	private String userName;
-
-	private String roleName;
-
-	private String permissionName;
+	private String name;
+	
+	private String userAccount;
 
 	private String identifier;
 
@@ -24,27 +22,19 @@ public class PermissionDTO {
 
 	protected PermissionDTO() {}
 
-	public PermissionDTO(Long permissionId, String permissionName, String identifier, String description) {
-		this.permissionId = permissionId;
-		this.permissionName = permissionName;
+	public PermissionDTO(Long permissionId, String name, String identifier, String description) {
+		this.id = permissionId;
+		this.name = name;
 		this.identifier = identifier;
 		this.description = description;
 	}
 
-	public PermissionDTO(Long permissionId, String permissionName, String identifier, String description, String url) {
-		this.permissionId = permissionId;
-		this.permissionName = permissionName;
+	public PermissionDTO(Long permissionId, String name, String identifier, String description, String url) {
+		this.id = permissionId;
+		this.name = name;
 		this.identifier = identifier;
 		this.description = description;
 		this.url = url;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public int getVersion() {
@@ -55,28 +45,20 @@ public class PermissionDTO {
 		this.version = version;
 	}
 
-	public String getRoleName() {
-		return roleName;
+	public String getName() {
+		return name;
 	}
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setName(String permissionName) {
+		this.name = permissionName;
 	}
 
-	public String getPermissionName() {
-		return permissionName;
+	public Long getId() {
+		return id;
 	}
 
-	public void setPermissionName(String permissionName) {
-		this.permissionName = permissionName;
-	}
-
-	public Long getPermissionId() {
-		return permissionId;
-	}
-
-	public void setPermissionId(Long permissionId) {
-		this.permissionId = permissionId;
+	public void setId(Long permissionId) {
+		this.id = permissionId;
 	}
 
 	public String getDescription() {
@@ -95,6 +77,14 @@ public class PermissionDTO {
 		this.identifier = identifier;
 	}
 
+	public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String userAccount) {
+		this.userAccount = userAccount;
+	}
+
 	public String getUrl() {
 		return url;
 	}
@@ -106,7 +96,7 @@ public class PermissionDTO {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()//
-				.append(permissionName)//
+				.append(name)//
 				.append(identifier)//
 				.toHashCode();
 	}
@@ -118,7 +108,7 @@ public class PermissionDTO {
 		}
 		PermissionDTO that = (PermissionDTO) other;
 		return new EqualsBuilder()//
-				.append(this.getPermissionName(), that.getPermissionName())//
+				.append(this.getName(), that.getName())//
 				.append(this.getIdentifier(), that.getIdentifier())//
 				.isEquals();
 	}
@@ -126,8 +116,8 @@ public class PermissionDTO {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)//
-				.append(getPermissionId())//
-				.append(getPermissionName())//
+				.append(getId())//
+				.append(getName())//
 				.append(getIdentifier())//
 				.append(getDescription())//
 				.build();

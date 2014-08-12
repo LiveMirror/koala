@@ -31,7 +31,7 @@ public class ActorTest extends AbstractDomainIntegrationTestCase {
 		role.save();
 		user.grant(role);
 		user.remove();
-		User loadUser = User.getBy(user.getId());
+		User loadUser = User.getById(user.getId());
 		assertNull(loadUser);
 	}
 	

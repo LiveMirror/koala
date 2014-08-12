@@ -14,11 +14,11 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public abstract class AbstractDomainIntegrationTestCase extends KoalaBaseSpringTestCase {
 	
-	protected PasswordService passwordService;
+	protected EncryptService passwordEncryptService;
 	
 	@Before
 	public void setUp() {
-		passwordService = Mockito.mock(PasswordService.class);
-		User.setPasswordService(passwordService);
+		passwordEncryptService = Mockito.mock(EncryptService.class);
+		User.setPasswordEncryptService(passwordEncryptService);
 	}
 }

@@ -69,7 +69,8 @@ public class User extends Actor {
 	@Column(name = "SALT")
 	private String salt;
 
-	protected User() {}
+	protected User() {
+	}
 
 	/**
 	 * TODO 验证规则，账号，邮箱，电话。
@@ -118,7 +119,7 @@ public class User extends Actor {
 	 * 修改最后登陆时间。
 	 */
 	public void updateLastLoginTime() {
-		User user = getBy(this.getId());
+		User user = getById(this.getId());
 		changeLastLoginTime(user);
 	}
 
@@ -171,7 +172,7 @@ public class User extends Actor {
 			save();
 		}
 	}
-	
+
 	public static User login(String principal, String password) {
 		checkArgumentIsNull("principal", principal);
 		String loginPassword = encryptPassword(password);
@@ -193,7 +194,7 @@ public class User extends Actor {
 	public static long getCount() {
 		return getRepository().createNamedQuery("User.count").singleResult();
 	}
-	
+
 	/**
 	 * 根据账户查找拥有的所有角色Role
 	 * 
@@ -225,34 +226,69 @@ public class User extends Actor {
 				.addParameter("authorityType", Permission.class)//
 				.list();
 	}
-	
-	public static User getBy(Long userId) {
+
+	public static User getById(Long userId) {
 		return User.get(User.class, userId);
 	}
 
-	public static User getBy(String userAccount) {
-		User result = getRepository().createCriteriaQuery(User.class)//
+	/**
+	 * TODO 校验规则~~正则表达式
+	 * @param userAccount
+	 * @return
+	 */
+	public static User getByUserAccount(String userAccount) {
+		checkArgumentIsNull("userAccount", userAccount);
+		User result = getRepository()//
+				.createCriteriaQuery(User.class)//
 				.eq("userAccount", userAccount) //
 				.singleResult();
 		return result;
 	}
-	
-	protected static PasswordService passwordService;
 
-	protected static void setPasswordService(PasswordService passwordService) {
-		User.passwordService = passwordService;
+	/**
+	 * TODO 校验规则~~正则表达式
+	 * @param email
+	 * @return
+	 */
+	public static User getByEmail(String email) {
+		checkArgumentIsNull("email", email);
+		User result = getRepository()//
+				.createCriteriaQuery(User.class)//
+				.eq("email", email) //
+				.singleResult();
+		return result;
 	}
 
-	protected static PasswordService getPasswordService() {
-		if (passwordService == null) {
-			passwordService = InstanceFactory.getInstance(PasswordService.class, "passwordService");
+	/**
+	 * TODO 校验规则~~正则表达式
+	 * @param telePhone
+	 * @return
+	 */
+	public static User getByTelePhone(String telePhone) {
+		checkArgumentIsNull("telePhone", telePhone);
+		User result = getRepository()//
+				.createCriteriaQuery(User.class)//
+				.eq("telePhone", telePhone) //
+				.singleResult();
+		return result;
+	}
+
+	protected static EncryptService passwordEncryptService;
+
+	protected static EncryptService getPasswordEncryptService() {
+		if (passwordEncryptService == null) {
+			passwordEncryptService = InstanceFactory.getInstance(EncryptService.class,"encryptService");
 		}
-		return passwordService;
+		return passwordEncryptService;
+	}
+	
+	protected static void setPasswordEncryptService(EncryptService passwordEncryptService) {
+		User.passwordEncryptService = passwordEncryptService;
 	}
 
 	protected static String encryptPassword(String password) {
 		checkArgumentIsNull("password", password);
-		return getPasswordService().encryptPassword(password, null);
+		return getPasswordEncryptService().encryptPassword(password, null);
 	}
 
 	/*------------- Private helper methods  -----------------*/
@@ -280,7 +316,7 @@ public class User extends Actor {
 	}
 
 	private void isExistUserAccount(String userAccount) {
-		if (getBy(userAccount) != null) {
+		if (getByUserAccount(userAccount) != null) {
 			throw new UserAccountIsExistedException("user userAccount is existed.");
 		}
 	}
@@ -288,11 +324,11 @@ public class User extends Actor {
 	private void verifyPassword(String userPassword) {
 		checkArgumentIsNull("userPassword", userPassword);
 
-		if (!this.getPassword().equals(encryptPassword(userPassword))) {
+		if (!encryptPassword(userPassword).equals(this.getPassword())) {
 			throw new UserPasswordException("user password is not right.");
 		}
 	}
-	
+
 	/**
 	 * 生成盐值
 	 * 

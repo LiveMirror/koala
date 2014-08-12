@@ -123,9 +123,8 @@ public class MenuResourceController {
 	public JsonResult findAllMenusByUserAsRole(RoleDTO roleDTO) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(
-					AuthUserUtil.getUserAccount(), roleDTO.getRoleId());
-			AuthUserUtil.setRoleName(roleDTO.getRoleName());
+			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(AuthUserUtil.getUserAccount(), roleDTO.getId());
+			AuthUserUtil.setRoleName(roleDTO.getName());
 			jsonResult.setData(results);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("查找" + AuthUserUtil.getUserAccount() + " 在某个角色下得所有菜单权限资源成功。");

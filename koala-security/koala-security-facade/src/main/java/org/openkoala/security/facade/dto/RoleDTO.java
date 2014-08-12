@@ -14,11 +14,11 @@ public class RoleDTO implements Serializable {
 
 	private static final long serialVersionUID = -8008875711416716934L;
 
-	private Long roleId;
+	private Long id;
 
 	private int version;
 
-	private String roleName;
+	private String name;
 
 	private String description;
 
@@ -29,20 +29,20 @@ public class RoleDTO implements Serializable {
 	protected RoleDTO() {
 	}
 
-	public RoleDTO(Long roleId, String roleName) {
-		this.roleId = roleId;
-		this.roleName = roleName;
+	public RoleDTO(Long id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 
-	public RoleDTO(Long roleId, String roleName, String description) {
-		this.roleId = roleId;
-		this.roleName = roleName;
+	public RoleDTO(Long id, String name, String description) {
+		this.id = id;
+		this.name = name;
 		this.description = description;
 	}
 
-	public RoleDTO(Long roleId, String roleName, String description, String url) {
-		this.roleId = roleId;
-		this.roleName = roleName;
+	public RoleDTO(Long id, String name, String description, String url) {
+		this.id = id;
+		this.name = name;
 		this.description = description;
 		this.url = url;
 	}
@@ -55,12 +55,12 @@ public class RoleDTO implements Serializable {
 		this.permissionDTOs.addAll(permissionDTOs);
 	}
 
-	public String getRoleName() {
-		return roleName;
+	public String getName() {
+		return name;
 	}
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getVersion() {
@@ -71,12 +71,12 @@ public class RoleDTO implements Serializable {
 		this.version = version;
 	}
 
-	public Long getRoleId() {
-		return roleId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDescription() {
@@ -109,7 +109,7 @@ public class RoleDTO implements Serializable {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()//
-				.append(roleName)//
+				.append(name)//
 				.append(url).hashCode();
 	}
 
@@ -120,15 +120,15 @@ public class RoleDTO implements Serializable {
 		}
 		RoleDTO that = (RoleDTO) other;
 		return new EqualsBuilder()//
-				.append(this.getRoleName(), that.getRoleName())//
+				.append(this.getName(), that.getName())//
 				.append(this.getUrl(), that.getUrl()).isEquals();
 	}
 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)//
-				.append(getRoleId())//
-				.append(getRoleName())//
+				.append(getId())//
+				.append(getName())//
 				.append(getDescription())//
 				.append(getUrl())//
 				.build();

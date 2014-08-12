@@ -6,7 +6,7 @@ package org.openkoala.security.core.domain;
  * @author luzhao
  * 
  */
-public interface PasswordService {
+public interface EncryptService {
 
 	String encryptPassword(String password,String salt) throws IllegalArgumentException;
 

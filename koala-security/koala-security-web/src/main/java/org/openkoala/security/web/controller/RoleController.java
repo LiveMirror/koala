@@ -178,7 +178,7 @@ public class RoleController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
-			shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
+//			shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为角色授权URL访问权限资源成功");
 		} catch (Exception e) {

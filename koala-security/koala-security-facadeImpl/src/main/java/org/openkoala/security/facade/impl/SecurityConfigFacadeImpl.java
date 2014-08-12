@@ -112,7 +112,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		JsonResult result = new JsonResult();
 		User user = null;
 		try {
-			user = securityAccessApplication.getUserBy(userId);
+			user = securityAccessApplication.getUserById(userId);
 			securityConfigApplication.terminateActor(user);
 			result.setSuccess(true);
 			result.setMessage("撤销用户：" + user.getUserAccount() + "成功。");
@@ -128,7 +128,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	public JsonResult resetPassword(Long userId) {
 		JsonResult result = new JsonResult();
 		try {
-			User user = securityAccessApplication.getUserBy(userId);
+			User user = securityAccessApplication.getUserById(userId);
 			securityConfigApplication.resetPassword(user);
 			result.setSuccess(true);
 			result.setMessage("重置用户密码成功，密码：888888");
@@ -143,7 +143,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	@Override
 	public JsonResult changeUserPassword(ChangeUserPasswordCommand command) {
 		JsonResult result = new JsonResult();
-		User user = securityAccessApplication.getUserBy(command.getUserAccount());
+		User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
 		boolean message = securityAccessApplication.updatePassword(user, command.getUserPassword(),
 				command.getOldUserPassword());
 		if (message) {
@@ -220,7 +220,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void grantRoleToUserInScope(Long userId, Long roleId, Long scopeId) {
-		User user = securityAccessApplication.getUserBy(userId);
+		User user = securityAccessApplication.getUserById(userId);
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		Scope scope = securityAccessApplication.getScope(scopeId);
 		securityConfigApplication.grantActorToAuthorityInScope(user, role, scope);
@@ -235,7 +235,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void grantPermissionToUserInScope(Long userId, Long permissionId, Long scopeId) {
-		User user = securityAccessApplication.getUserBy(userId);
+		User user = securityAccessApplication.getUserById(userId);
 		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 		Scope scope = securityAccessApplication.getScope(scopeId);
 		securityConfigApplication.grantActorToAuthorityInScope(user, permission, scope);
@@ -250,7 +250,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void grantRoleToUser(Long userId, Long roleId) {
-		User user = securityAccessApplication.getUserBy(userId);
+		User user = securityAccessApplication.getUserById(userId);
 		Role role = securityAccessApplication.getRoleBy(roleId);
 		securityConfigApplication.grantAuthorityToActor(role, user);
 	}
@@ -258,13 +258,13 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	@Override
 	public void grantRolesToUser(Long userId, Long[] roleIds) {
 		for (Long roleId : roleIds) {
-			grantRoleToUser(userId, roleId);
+			this.grantRoleToUser(userId, roleId);
 		}
 	}
 
 	@Override
 	public void grantPermissionToUser(Long userId, Long permissionId) {
-		User user = securityAccessApplication.getUserBy(userId);
+		User user = securityAccessApplication.getUserById(userId);
 		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 		securityConfigApplication.grantAuthorityToActor(permission, user);
 	}
@@ -281,7 +281,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		JsonResult result = new JsonResult();
 		User user = null;
 		try {
-			user = securityAccessApplication.getUserBy(userId);
+			user = securityAccessApplication.getUserById(userId);
 			securityConfigApplication.activateUser(user);
 			result.setSuccess(true);
 			result.setMessage("激活用户：" + user.getUserAccount() + "成功。");
@@ -298,7 +298,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		JsonResult result = new JsonResult();
 		User user = null;
 		try {
-			user = securityAccessApplication.getUserBy(userId);
+			user = securityAccessApplication.getUserById(userId);
 			securityConfigApplication.suspendUser(user);
 			result.setSuccess(true);
 			result.setMessage("挂起用户：" + user.getUserAccount() + "成功。");
@@ -337,13 +337,13 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	@Override
 	public void terminateAuthorizationByUserInRole(Long userId, Long roleId) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
-		User user = securityAccessApplication.getUserBy(userId);
+		User user = securityAccessApplication.getUserById(userId);
 		securityConfigApplication.terminateActorFromAuthority(user, role);
 	}
 
 	@Override
 	public void terminateAuthorizationByUserInPermission(Long userId, Long permissionId) {
-		User user = securityAccessApplication.getUserBy(userId);
+		User user = securityAccessApplication.getUserById(userId);
 		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
 		securityConfigApplication.terminateActorFromAuthority(user, permission);
 	}
@@ -351,7 +351,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	// TODO 待优化。。。
 	@Override
 	public void terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds) {
-		User user = securityAccessApplication.getUserBy(userId);
+		User user = securityAccessApplication.getUserById(userId);
 		for (Long roleId : roleIds) {
 			Role role = securityAccessApplication.getRoleBy(roleId);
 			securityConfigApplication.terminateActorFromAuthority(user, role);
@@ -621,21 +621,15 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Override
 	public void updateUserLastLoginTime(Long userId) {
-		User user = securityAccessApplication.getUserBy(userId);
+		User user = securityAccessApplication.getUserById(userId);
 		securityConfigApplication.updateUserLastLoginTime(user);
-	}
-
-	@Override
-	public JsonResult dealWithLogin(LoginCommand command) {
-
-		return null;
 	}
 
 	@Override
 	public JsonResult changeUserProps(ChangeUserPropsCommand command) {
 		JsonResult result = new JsonResult();
 		try {
-			User user = securityAccessApplication.getUserBy(command.getId());
+			User user = securityAccessApplication.getUserById(command.getId());
 			user.setName(command.getName());
 			user.setDescription(command.getDescription());
 			securityConfigApplication.createActor(user);// 显示调用。
@@ -653,7 +647,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	public JsonResult changeUserAccount(ChangeUserAccountCommand command) {
 		JsonResult result = new JsonResult();
 		try {
-			User user = securityAccessApplication.getUserBy(command.getId());
+			User user = securityAccessApplication.getUserById(command.getId());
 			securityConfigApplication.changeUserAccount(user, command.getUserAccount(), command.getUserPassword());// 显示调用。
 			result.setSuccess(true);
 			result.setMessage("修改用户成功。");
@@ -669,7 +663,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	public JsonResult changeUserEmail(ChangeUserEmailCommand command) {
 		JsonResult result = new JsonResult();
 		try {
-			User user = securityAccessApplication.getUserBy(command.getId());
+			User user = securityAccessApplication.getUserById(command.getId());
 			securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());// 显示调用。
 			result.setSuccess(true);
 			result.setMessage("修改用户成功。");
@@ -685,7 +679,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	public JsonResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
 		JsonResult result = new JsonResult();
 		try {
-			User user = securityAccessApplication.getUserBy(command.getId());
+			User user = securityAccessApplication.getUserById(command.getId());
 			securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());// 显示调用。
 			result.setSuccess(true);
 			result.setMessage("修改用户成功。");

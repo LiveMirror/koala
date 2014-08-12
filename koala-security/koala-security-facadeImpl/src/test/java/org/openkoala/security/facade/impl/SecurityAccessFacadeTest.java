@@ -105,7 +105,7 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Test
 	public void testGetUserDtoByUserAccount() {
-		UserDTO getUserDTO = securityAccessFacade.getUserBy(user.getUserAccount());
+		UserDTO getUserDTO = securityAccessFacade.getUserByUserAccount(user.getUserAccount());
 		assertNotNull(getUserDTO);
 		assertUserDTO(userDTO, getUserDTO);
 	}

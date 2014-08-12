@@ -90,7 +90,6 @@ public final class GenerateDTOUtils {
 	 */
 	public static PermissionDTO generatePermissionDTOBy(Permission permission) {
 		PermissionDTO result = new PermissionDTO(permission.getId(),permission.getName(),permission.getIdentifier(),permission.getDescription());
-		result.setRoleName(null);
 		result.setVersion(permission.getVersion());
 		return result;
 	}

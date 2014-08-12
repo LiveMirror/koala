@@ -1,11 +1,7 @@
 package org.openkoala.security.core.domain;
 
 import static org.junit.Assert.*;
-import static org.openkoala.security.core.util.EntitiesHelper.assertUser;
-import static org.openkoala.security.core.util.EntitiesHelper.initPermission;
-import static org.openkoala.security.core.util.EntitiesHelper.initRole;
-import static org.openkoala.security.core.util.EntitiesHelper.initUser;
-
+import static org.openkoala.security.core.util.EntitiesHelper.*;
 import java.util.List;
 
 import org.junit.Ignore;
@@ -28,7 +24,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		User user = initUser();
 		assertFalse(user.existed());
 		user.save();
-		User loadUser = User.getBy(user.getId());
+		User loadUser = User.getById(user.getId());
 		assertTrue(user.existed());
 		assertNotNull(user.getId());
 		assertUser(user, loadUser);
@@ -89,7 +85,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		user.save();
 		assertNotNull(user.getId());
 		user.changeUserAccount(userAccount, password);
-		User loadUser = User.getBy(user.getId());
+		User loadUser = User.getById(user.getId());
 		assertNotNull(loadUser);
 		assertEquals(userAccount, loadUser.getUserAccount());
 	}
@@ -105,7 +101,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		new User("测试000000000000000002", userAccount).save();
 		assertNotNull(user.getId());
 		user.changeUserAccount(userAccount, password);
-		User loadUser = User.getBy(user.getId());
+		User loadUser = User.getById(user.getId());
 		assertNotNull(loadUser);
 		assertEquals(userAccount, loadUser.getUserAccount());
 	}
@@ -130,7 +126,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		user.save();
 		assertNotNull(user.getId());
 		user.changeEmail(email, password);
-		User loadUser = User.getBy(user.getId());
+		User loadUser = User.getById(user.getId());
 		assertNotNull(loadUser);
 		assertEquals(email, loadUser.getEmail());
 	}
@@ -144,7 +140,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		user.save();
 		assertNotNull(user.getId());
 		user.changeEmail(email, password);
-		User loadUser = User.getBy(user.getId());
+		User loadUser = User.getById(user.getId());
 		assertNotNull(loadUser);
 		assertEquals(email, loadUser.getEmail());
 
@@ -174,7 +170,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		user.save();
 		assertNotNull(user.getId());
 		user.changeTelePhone(telePhone, password);
-		User loadUser = User.getBy(user.getId());
+		User loadUser = User.getById(user.getId());
 		assertNotNull(loadUser);
 		assertEquals(telePhone, loadUser.getTelePhone());
 	}
@@ -188,7 +184,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		user.save();
 		assertNotNull(user.getId());
 		user.changeTelePhone(telePhone, password);
-		User loadUser = User.getBy(user.getId());
+		User loadUser = User.getById(user.getId());
 		assertNotNull(loadUser);
 		assertEquals(telePhone, loadUser.getTelePhone());
 
@@ -202,7 +198,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 	public void testGetUserById() throws Exception {
 		User user = initUser();
 		user.save();
-		User getUser = User.getBy(user.getId());
+		User getUser = User.getById(user.getId());
 		assertNotNull(getUser);
 	}
 
@@ -210,10 +206,38 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 	public void testGetByUserAccount() throws Exception {
 		User user = initUser();
 		user.save();
-		User getUser = User.getBy(user.getUserAccount());
+		User getUser = User.getByUserAccount(user.getUserAccount());
 		assertNotNull(getUser);
 	}
 
+	@Test
+	public void testGetByEmail() throws Exception {
+		encryptPassword("888888", "21218cca77804d2ba1922c33e0151105");
+		String email = "test000000000000000001@koala.com";
+		User user = initUser();
+		user.save();
+		assertNotNull(user.getPassword());
+		user.changeEmail(email, "888888");
+		User result = User.getByEmail(email);
+		assertNotNull(result);
+		assertNotNull(result.getId());
+		assertUser(user, result);
+	}
+	
+	@Test
+	public void testGetByTelePhone() throws Exception {
+		encryptPassword("888888", "21218cca77804d2ba1922c33e0151105");
+		String telePhone = "18665589100";
+		User user = initUser();
+		user.save();
+		assertNotNull(user.getPassword());
+		user.changeTelePhone(telePhone, "888888");
+		User result = User.getByTelePhone(telePhone);
+		assertNotNull(result);
+		assertNotNull(result.getId());
+		assertUser(user, result);
+	}
+	
 	@Test(expected = UserNotHasRoleException.class)
 	public void testFindAllRolesByUserAccountNoHasRole() throws Exception {
 		User user = initUser();
@@ -253,7 +277,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		encryptPassword(userPassword, "170b14728ad9902aecba32e22fa4f6bd");
 		User user = initUser();
 		user.save();
-		User loadUser = User.getBy(user.getId());
+		User loadUser = User.getById(user.getId());
 		loadUser.updatePassword(userPassword, null);
 	}
 	
@@ -265,7 +289,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		encryptPassword(userPassword, "170b14728ad9902aecba32e22fa4f6bd");
 		User user = initUser();
 		user.save();
-		User loadUser = User.getBy(user.getId());
+		User loadUser = User.getById(user.getId());
 		boolean result = loadUser.updatePassword(userPassword, oldUserPassword);
 		assertTrue(result);
 	}

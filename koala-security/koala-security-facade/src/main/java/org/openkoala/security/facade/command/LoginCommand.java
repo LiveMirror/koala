@@ -2,18 +2,18 @@ package org.openkoala.security.facade.command;
 
 public class LoginCommand {
 
-	private String principal;
+	private String username;
 	
 	private String password;
 	
 	private String rememberMe;
 	
-	public String getPrincipal() {
-		return principal;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setPrincipal(String principal) {
-		this.principal = principal;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {

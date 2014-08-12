@@ -23,8 +23,10 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 	public void initSecuritySystem() {
 		if(User.getCount() == 0 ){
 			User user = initUser();
+			user.changeEmail("zhangsan@koala.com", "888888");
+			user.changeTelePhone("18665589188", "888888");
 			Role role = initRole();
-			user.grant(role, null);
+			user.grant(role);
 			
 			role.addSecurityResources(initMenuResources());
 //			role.addSecurityResources(initUrlAccessResources());

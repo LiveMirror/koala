@@ -1,10 +1,7 @@
 package org.openkoala.security.web.controller;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.dayatang.querychannel.Page;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.facade.SecurityAccessFacade;
@@ -15,7 +12,6 @@ import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserPropsCommand;
 import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
 import org.openkoala.security.facade.command.CreateUserCommand;
-import org.openkoala.security.facade.command.LoginCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
@@ -46,80 +42,6 @@ public class UserController {
 
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
-
-	/**
-	 * TODO 验证码错误不应该在这里处理。 用户登陆，支持多种方式。账号、邮箱、电话等
-	 * 
-	 * @param username
-	 * @param password
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public JsonResult login(HttpServletRequest request, LoginCommand command) {
-		doCaptcha(request);
-		String shiroLoginFailure = (String) request.getAttribute("shiroLoginFailure");
-		// command.s
-		return securityConfigFacade.dealWithLogin(command);
-		// JsonResult result = new JsonResult();
-		// doCaptcha(request, result);//处理验证码
-		// if(!result.isSuccess()){
-		// return result;
-		// }
-		//
-		// UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(//
-		// command.getPrincipal(),//
-		// command.getPassword(),//
-		// command.getRememberMe());
-		// try {
-		// SecurityUtils.getSubject().login(usernamePasswordToken);
-		// result.setSuccess(true);
-		// result.setMessage("登陆成功。");
-		// } catch (UserNotExistedException e) {
-		// LOGGER.error(e.getMessage());
-		// result.setSuccess(false);
-		// result.setMessage("用户名或者密码不正确。");
-		// } catch (AuthenticationException e) {
-		// LOGGER.error(e.getMessage());
-		// result.setSuccess(false);
-		// result.setMessage("登录失败。");
-		// } catch (Exception e) {
-		// LOGGER.error(e.getMessage());
-		// result.setSuccess(false);
-		// result.setMessage("登录失败。");
-		// }
-		// return result;
-	}
-
-	private void doCaptcha(HttpServletRequest request) {
-		JsonResult jsonResult = new JsonResult();
-		String shiroLoginFailure = (String) request.getAttribute("shiroLoginFailure");
-		if (!StringUtils.isBlank(shiroLoginFailure)) {
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("验证码错误。");
-		}
-	}
-
-	/**
-	 * TODO 用户退出。
-	 * 
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("/logout")
-	public JsonResult logout() {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			SecurityUtils.getSubject().logout();
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("用户退出成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("用户退出失败。");
-		}
-		return jsonResult;
-	}
 
 	/**
 	 * 添加用户。
@@ -509,7 +431,8 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
 	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, Long userId, RoleDTO queryRoleCondition) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,
+				userId);
 		return results;
 	}
 

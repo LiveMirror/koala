@@ -126,19 +126,19 @@
 		$.getJSON(contextPath + '/auth/role/findRolesByUsername.koala', function(data) {
 			var roles = $("#roles").empty();
 			$.each(data.data, function(i,role) {
-				roles.append($("<option/>").attr("value",role.roleId).html(role.roleName));
+				roles.append($("<option/>").attr("value",role.id).html(role.name));
 			});
 			roles.change();
 		});
 		
 		/*根据roleid获取菜单*/
 		$("#roles").change(function(){
-			var roleId = $(this).val(),
-				roleName = $(this).find("option:selected").text(),
+			var id = $(this).val(),
+				name = $(this).find("option:selected").text(),
 				url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
 			$.get(
 				url,
-				{"roleId":roleId,"roleName":roleName},
+				{"id":id,"name":name},
 				function(menuData){
 					var menu = initMenu(menuData.data);
 					$("#roleMenu").empty().append(menu);
