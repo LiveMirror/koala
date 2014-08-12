@@ -2,8 +2,6 @@ package org.openkoala.security.core.util;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
-
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.Authorization;
@@ -42,7 +40,6 @@ public final class EntitiesHelper {
 	public static void assertMenuResource(MenuResource expected, MenuResource actual) {
 		assertEquals(expected.getLevel(), actual.getLevel());
 		assertEquals(expected.getMenuIcon(), actual.getMenuIcon());
-		assertEquals(expected.getIdentifier(), actual.getIdentifier());
 		assertEquals(expected.getName(), actual.getName());
 		assertEquals(expected.getDescription(), actual.getDescription());
 		assertEquals(expected.getPosition(), actual.getPosition());
@@ -51,20 +48,16 @@ public final class EntitiesHelper {
 	public static void assertPageElementResource(PageElementResource expected, PageElementResource actual) {
 		assertEquals(expected.getIdentifier(), actual.getIdentifier());
 		assertEquals(expected.getName(), actual.getName());
-		assertEquals(expected.getUrl(), actual.getUrl());
-		assertEquals(expected.isDisabled(), actual.isDisabled());
 	}
 	
 	public static void assertUrlAccessResource(UrlAccessResource expected, UrlAccessResource actual){
 		assertEquals(expected.getName(), actual.getName());
-		assertEquals(expected.getIdentifier(), actual.getIdentifier());
 		assertEquals(expected.getUrl(), actual.getUrl());
 		assertEquals(expected.getDescription(), actual.getDescription());
 	}
 
 	public static User initUser() {
-		User result = new User("test000000000000000001", "aaa", "test01@foreveross.com", "18665588990");
-		result.setName("测试01");
+		User result = new User("测试000000000000000001", "test000000000000000001");
 		result.setCreateOwner("admin");
 		result.setDescription("测试");
 		return result;

@@ -1,19 +1,10 @@
 package org.openkoala.security.core.domain;
 
+import javax.persistence.*;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 角色。角色是权限的集合。
@@ -42,12 +33,6 @@ public class Role extends Authority {
 		super(name);
 	}
 
-	@Override
-	public void save() {
-		isNameExisted();
-		super.save();
-	}
-
 	public static Set<Role> findByUser(User user) {
 		Set<Role> results = new HashSet<Role>();
 		List<Authorization> authorizations = Authorization.findByActor(user);
@@ -60,17 +45,6 @@ public class Role extends Authority {
 		return results;
 	}
 
-	@Override
-	public void update() {
-		Role role = getBy(this.getId());
-
-		if (!StringUtils.isBlank(this.getName()) && !role.getName().equals(this.getName())) {
-			isNameExisted();
-			role.name = this.getName();
-		}
-		role.setDescription(this.getDescription());
-	}
-
 	public Set<Authority> findAuthoritiesBy() {
 		Set<Authority> results = new HashSet<Authority>();
 		results.add(this);
@@ -80,28 +54,36 @@ public class Role extends Authority {
 
 	public void addPermission(Permission permission) {
 		this.permissions.add(permission);
-		this.update();
+		permission.addRole(this);
+		this.save();
 	}
 
 	public void addPermissions(List<Permission> permissions) {
 		this.permissions.addAll(permissions);
-		this.update();
+		for (Permission permission : permissions) {
+			permission.addRole(this);
+		}
+		this.save();
 	}
 
 	public void terminatePermission(Permission permission) {
 		this.permissions.remove(permission);
-		this.update();
+		permission.terminateRole(this);
+		this.save();
 	}
 
 	public void terminatePermissions(List<Permission> permissions) {
 		this.permissions.removeAll(permissions);
-		this.update();
+		for (Permission permission : permissions) {
+			permission.terminateRole(this);
+		}
+		this.save();
 	}
 
 	public static List<Role> findAll(){
 		return Role.findAll(Role.class);
 	}
-	public static Role getBy(String name) {
+	public static Role getRoleBy(String name) {
 		return getRepository()//
 				.createCriteriaQuery(Role.class)//
 				.eq("name", name)//
@@ -109,7 +91,7 @@ public class Role extends Authority {
 	}
 
 	@Override
-	public Authority getAuthorityBy(String name) {
+	public Authority getBy(String name) {
 		return getRepository()//
 				.createNamedQuery("Authority.getAuthorityByName")//
 				.addParameter("authorityType", Role.class)//

@@ -1,4 +1,4 @@
-package org.openkoala.security.facade.util;
+package org.openkoala.security.facade.impl.assembler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,11 @@ import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
-import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
-import org.openkoala.security.facade.dto.UserDTO;
 
 /**
  * 转换领域工具类
@@ -25,28 +23,14 @@ import org.openkoala.security.facade.dto.UserDTO;
  */
 public final class TransFromDomainUtils {
 
-	/**
-	 * UserDto转换成User
-	 * 
-	 * @param userDTO
-	 * @return
-	 */
-	public static User transFromUserBy(UserDTO userDTO) {
-		User result = new User(userDTO.getUserAccount(), userDTO.getUserPassword(), userDTO.getEmail(),
-				userDTO.getTelePhone());
-		if (!StringUtils.isBlank(userDTO.getId() + "")) {
-			result.setId(userDTO.getId());
-		}
-		result.setName(userDTO.getName());
-		result.setVersion(userDTO.getVersion());
-		result.setDescription(userDTO.getDescription());
-		return result;
-	}
 
+	
 	public static Role transFromRoleBy(RoleDTO roleDTO) {
-		Role result = new Role(roleDTO.getRoleName());
-		if (!StringUtils.isBlank(roleDTO.getRoleId() + "")) {
-			result.setId(roleDTO.getRoleId());
+		Role result = null;
+		if (!StringUtils.isBlank(roleDTO.getId() + "")) {
+			result.setId(roleDTO.getId());
+		}else{
+			result = new Role(roleDTO.getName());
 		}
 		result.setVersion(roleDTO.getVersion());
 		result.setDescription(roleDTO.getDescription());
@@ -54,9 +38,12 @@ public final class TransFromDomainUtils {
 	}
 
 	public static Permission transFromPermissionBy(PermissionDTO permissionDTO) {
-		Permission result = new Permission(permissionDTO.getPermissionName(), permissionDTO.getIdentifier());
-		if (!StringUtils.isBlank(permissionDTO.getPermissionId() + "")) {
-			result.setId(permissionDTO.getPermissionId());
+		Permission result = null;
+		if (!StringUtils.isBlank(permissionDTO.getId() + "")) {
+			result = Permission.getBy(permissionDTO.getId());
+			result.setId(permissionDTO.getId());
+		}else{
+			result  = new Permission(permissionDTO.getName(), permissionDTO.getIdentifier());
 		}
 		result.setDescription(permissionDTO.getDescription());
 		result.setVersion(permissionDTO.getVersion());
@@ -71,7 +58,6 @@ public final class TransFromDomainUtils {
 		result.setDescription(menuResourceDTO.getDescription());
 		result.setMenuIcon(menuResourceDTO.getIcon());
 		result.setUrl(menuResourceDTO.getUrl());
-		result.setIdentifier(menuResourceDTO.getIdentifier());
 		result.setVersion(menuResourceDTO.getVersion());
 		return result;
 	}
@@ -83,8 +69,6 @@ public final class TransFromDomainUtils {
 			result.setId(urlAccessResourceDTO.getId());
 		}
 		result.setVersion(urlAccessResourceDTO.getVersion());
-		result.setIdentifier(urlAccessResourceDTO.getIdentifier());
-		result.setUrl(urlAccessResourceDTO.getUrl());
 		return result;
 	}
 	public static PageElementResource transFromPageElementResourceBy(PageElementResourceDTO pageElementResourceDTO) {

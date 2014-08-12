@@ -1,6 +1,7 @@
 package org.openkoala.security.facade.impl;
 
 import static org.junit.Assert.*;
+import static org.openkoala.security.facade.impl.assembler.GenerateDTOUtils.*;
 import static org.openkoala.security.facade.impl.util.EntitiesHelper.*;
 
 import java.util.List;
@@ -25,8 +26,6 @@ import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UserDTO;
-
-import static org.openkoala.security.facade.util.GenerateDTOUtils.*;
 
 public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
@@ -106,7 +105,7 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Test
 	public void testGetUserDtoByUserAccount() {
-		UserDTO getUserDTO = securityAccessFacade.getUserBy(user.getUserAccount());
+		UserDTO getUserDTO = securityAccessFacade.getUserByUserAccount(user.getUserAccount());
 		assertNotNull(getUserDTO);
 		assertUserDTO(userDTO, getUserDTO);
 	}
@@ -153,11 +152,6 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		assertTrue(results.size() == 1);
 	}
 
-//	@Test
-//	public void testFindAllOrganizationScopesTree() {
-//		List<OrganizationScopeDTO> organizationScopeDTOs = securityAccessFacade.findAllOrganizationScopesTree();
-//		assertTrue(organizationScopeDTOs.isEmpty());
-//	}
 
 	@Test
 	public void testFindPermissionDTOsByMenuOrUrl() {
@@ -173,20 +167,26 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		assertTrue(results.size() == 2);
 	}
 
-	// TODO ...
 	@Test
 	public void testFindAllUrlAccessResources() {
-		List<UrlAccessResourceDTO> urlAccessResourceDTOs = securityAccessFacade.findAllUrlAccessResources();
-//		assertNotNull(urlAccessResourceDTOs);
-//		System.out.println(urlAccessResourceDTOs.size());
-//		assertEquals(urlAccessResourceDTOs.get(0).getRoles(), role.getName());
-//		assertEquals(urlAccessResourceDTOs.get(0).getPermissions(), permission.getIdentifier());
+		List<UrlAccessResourceDTO> result = securityAccessFacade.findAllUrlAccessResources();
+		assertNotNull(result);
+		assertTrue(result.size() == 1);
+		UrlAccessResourceDTO urlAccessResource = result.get(0);
+		String roles = urlAccessResource.getRoles();
+		String permissions = urlAccessResource.getPermissions();
+		assertNotNull(roles);
+		assertNotNull(permissions);
+		roles = roles.substring(1, roles.length()-1);////remove[]
+		permissions = permissions.substring(1, permissions.length()-1);//remove[]
+		assertEquals(role.getName(),roles);
+		assertEquals(permission.getIdentifier(),permissions);
 	}
 
 	// 不能用User中的password,因为已经加密了。
 	@Test
 	public void testLogin() {
-		String password = "aaa";
+		String password = "888888";
 		UserDTO getUserDTO = securityAccessFacade.login(user.getUserAccount(), password);
 		assertNotNull(getUserDTO);
 		assertUserDTO(userDTO, getUserDTO);

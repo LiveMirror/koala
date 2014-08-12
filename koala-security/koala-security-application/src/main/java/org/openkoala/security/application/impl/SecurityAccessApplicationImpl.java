@@ -1,6 +1,5 @@
 package org.openkoala.security.application.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +18,8 @@ import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
 
 @Named
 @Transactional
@@ -43,29 +44,29 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 		return User.findAllPermissionsBy(userAccount);
 	}
 
-	public User getUserBy(Long userId) {
+	public User getUserById(Long userId) {
 		return Actor.get(User.class, userId);
 	}
 
-	public User getUserBy(String userAccount) {
-		return User.getBy(userAccount);
+	public User getUserByUserAccount(String userAccount) {
+		return User.getByUserAccount(userAccount);
 	}
 
 	public Set<MenuResource> findMenuResourceByUserAccount(String userAccount) {
-		User user = getUserBy(userAccount);
+		User user = getUserByUserAccount(userAccount);
 		Set<Authority> authorities = Authorization.findAuthoritiesByActor(user);
 		Set<MenuResource> result = Authority.findMenuResourceByAuthorities(authorities);
 		return result;
 	}
 
 	@Override
-	public boolean updatePassword(User user, String oldUserPassword) {
-		return user.updatePassword(oldUserPassword);
+	public boolean updatePassword(User user, String userPassword,String oldUserPassword) {
+		return user.updatePassword(userPassword,oldUserPassword);
 	}
 
 	@Override
 	public void checkAuthorization(String userAccount, Role role) {
-		User user = getUserBy(userAccount);
+		User user = getUserByUserAccount(userAccount);
 		Authorization.checkAuthorization(user, role);
 	}
 
@@ -86,7 +87,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 
 	@Override
 	public List<MenuResource> findAllMenuResourcesByRole(Role role) {
-		return new ArrayList<MenuResource>(Authority.findMenuResourceByAuthority(role));
+		return Lists.newArrayList(Authority.findMenuResourceByAuthority(role));
 	}
 
 	@Override
@@ -116,7 +117,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 
 	@Override
 	public Role getRoleBy(String roleName) {
-		return Role.getBy(roleName);
+		return Role.getRoleBy(roleName);
 	}
 
 	@Override
@@ -132,5 +133,15 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	@Override
 	public boolean hasPageElementResource(String identifier) {
 		return PageElementResource.hasIdentifier(identifier);
+	}
+
+	@Override
+	public User getUserByEmail(String email) {
+		return User.getByEmail(email);
+	}
+
+	@Override
+	public User getUserByTelePhone(String telePhone) {
+		return User.getByTelePhone(telePhone);
 	}
 }

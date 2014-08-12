@@ -23,14 +23,6 @@ public interface SecurityAccessFacade {
 	UserDTO getUserBy(Long userId);
 
 	/**
-	 * 根据用户名获取用户
-	 * 
-	 * @param userAccount
-	 * @return
-	 */
-	UserDTO getUserBy(String userAccount);
-
-	/**
 	 * 根据用户名查找所有的角色
 	 * 
 	 * @param userAccount
@@ -84,7 +76,7 @@ public interface SecurityAccessFacade {
 	 * @param permissionDTO
 	 * @return
 	 */
-	Page<PermissionDTO> pagingQueryPermissions(int currentPage, int pageSize, PermissionDTO permissionDTO);
+	Page<PermissionDTO> pagingQueryPermissions(int currentPage, int pageSize, PermissionDTO queryPermissionCondition);
 
 	/***
 	 * 查询某个角色下用户的菜单资源。
@@ -198,5 +190,32 @@ public interface SecurityAccessFacade {
 			Long pageElementResourceId);
 
 	UserDTO login(String principal, String password);
+
+	/**
+	 * 通过账户查找用户
+	 * 
+	 * @param userAccount
+	 *            账户
+	 * @return
+	 */
+	UserDTO getUserByUserAccount(String userAccount);
+
+	/**
+	 * 通过邮箱查询用户
+	 * 
+	 * @param email
+	 *            邮箱
+	 * @return
+	 */
+	UserDTO getUserByEmail(String email);
+
+	/**
+	 * 通过联系电话查询用户
+	 * 
+	 * @param telePhone
+	 *            联系电话
+	 * @return
+	 */
+	UserDTO getUserByTelePhone(String telePhone);
 
 }

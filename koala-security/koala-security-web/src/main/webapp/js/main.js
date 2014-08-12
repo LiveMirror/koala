@@ -73,30 +73,19 @@ $(function(){
 			service: contextPath + '/auth/user/updatePassword.koala'
 		});
 	});
-	/*
-	 切换用户
-	*/
-	self.on('switchUser',function(){
-		window.location.href = contextPath+"/auth/user/logout";
-	});
+	
 	/*
 	注销
 	*/
 	self.on('loginOut',function(){
 		//window.location.href 
 		
-		var logOut = contextPath+"/auth/user/logout.koala";
+		var logOut = contextPath+"/auth/loginUser/logout.koala";
 		$.post(logOut,function(result){
 			if(result.success){
 				window.location.href = contextPath+"/login.koala";
 			}
 			
-		});
-	});
-	
-	self.on('switchRole',function(){
-		var switchRole = contextPath +"/auth/menu/findMenuByUser";
-		$.post(switchRole,function(result){
 		});
 	});
 	

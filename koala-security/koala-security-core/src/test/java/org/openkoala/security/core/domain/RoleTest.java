@@ -1,44 +1,103 @@
 package org.openkoala.security.core.domain;
 
-import static org.junit.Assert.*;
-import static org.openkoala.security.core.util.EntitiesHelper.*;
+import com.google.common.collect.Lists;
+
+import org.junit.Test;
+import org.openkoala.security.core.CorrelationException;
+import org.openkoala.security.core.NameIsExistedException;
+import org.openkoala.security.core.NullArgumentException;
 
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
-import org.openkoala.security.core.NameIsExistedException;
-
-import com.google.common.collect.Lists;
+import static org.junit.Assert.*;
+import static org.openkoala.security.core.util.EntitiesHelper.*;
 
 public class RoleTest extends AbstractDomainIntegrationTestCase {
+
+	@Test(expected = NullArgumentException.class)
+	public void testSaveNameIsNull() throws Exception {
+		Role role = new Role(null);
+		role.save();
+	}
+
+	@Test(expected = NameIsExistedException.class)
+	public void testSaveNameExisted() throws Exception {
+		Role role = initRole();
+		role.save();
+		new Role("testRole0000000000");
+	}
 
 	@Test
 	public void testSave() throws Exception {
 		Role role = initRole();
 		role.save();
 		assertNotNull(role.getId());
-		Role loadRole = Role.getBy(role.getName());
+		Role loadRole = Role.getRoleBy(role.getName());
 		assertNotNull(loadRole);
-		assertRole(initRole(), loadRole);
+		assertRole(role, loadRole);
 	}
 
-	@Test(expected = NameIsExistedException.class)
-	public void testSaveNameExisted() throws Exception {
-		testSave();
-		Role role = new Role("testRole0000000000");
+	@Test(expected = CorrelationException.class)
+	public void testRemoveAndHasActor() throws Exception {
+		User user = initUser();
+		user.save();
+		Role role = initRole();
 		role.save();
+		new Authorization(user, role).save();
+
+		UrlAccessResource urlAccessResource = initUrlAccessResource();
+		urlAccessResource.save();
+
+		role.addSecurityResource(urlAccessResource);
+		role.remove();
+	}
+	
+	@Test
+	public void testRemove() throws Exception {
+		Role role = initRole();
+		role.save();
+		UrlAccessResource urlAccessResource = initUrlAccessResource();
+		urlAccessResource.save();
+		role.addSecurityResource(urlAccessResource);
+		role.remove();
 	}
 
+	@Test(expected = NullArgumentException.class)
+	public void testChangeNameIsNull() throws Exception {
+		Role role = initRole();
+		role.save();
+		role.changeName(null);
+	}
+	
+	@Test(expected = NameIsExistedException.class)
+	public void testChangeNameIsExisted() throws Exception {
+		String name = "testRole0000000001";
+		Role role = initRole();
+		role.save();
+		new Role(name).save();
+		role.changeName(name);
+	}
+	
 	@Test
-	public void testFindAll() throws Exception {
+	public void testChangeName() throws Exception {
+		Role expected = initRole();
+		expected.save();
+		expected.changeName("testRole0000000001");
+		Role actual = Role.getBy(expected.getId());
+		assertNotNull(actual);
+		assertRole(expected, actual);
+	}
+	
+	@Test
+	public void testFindAllAndSecurityResource() throws Exception {
 		init();
 		List<Role> roles = Role.findAll();
-		for (Role role : roles) {
-			Set<SecurityResource> securityResources = role.getSecurityResources();
-			for (SecurityResource securityResource : securityResources) {
-				System.out.println(securityResource);
-			}
+		assertFalse(roles.isEmpty());
+		Set<SecurityResource> securityResources = roles.get(0).getSecurityResources();
+		assertFalse(securityResources.isEmpty());
+		for (SecurityResource securityResource : securityResources) {
+			assertEquals("测试管理0000000000", securityResource.getName());
 		}
 	}
 
@@ -48,40 +107,6 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		UrlAccessResource urlAccessResource = initUrlAccessResource();
 		urlAccessResource.save();
 		role.addSecurityResource(urlAccessResource);
-	}
-
-	@Test
-	public void testUpdate() throws Exception {
-		String name = "name update";
-		String description = "description update";
-		Role role = initRole();
-		role.save();
-		Role updateRole = new Role(name);
-		updateRole.setDescription(description);
-		updateRole.setId(role.getId());
-		updateRole.update();
-		Role loadRole = Role.getBy(updateRole.getId());
-		assertNotNull(loadRole);
-		System.out.println(loadRole);
-		assertRole(updateRole, loadRole);
-	}
-
-	@Test(expected = NameIsExistedException.class)
-	public void testUpdateNameIsExisted() throws Exception {
-		String name = "testRole00000000001";
-		String description = "description update";
-		Role role = initRole();
-		Role role2 = new Role(name);
-		role2.setDescription(description);
-		role2.save();
-		role.save();
-		Role updateRole = new Role(name);
-		updateRole.setDescription(description);
-		updateRole.setId(role.getId());
-		updateRole.update();
-		Role loadRole = Role.getBy(updateRole.getId());
-		assertNotNull(loadRole);
-		assertRole(updateRole, loadRole);
 	}
 
 	@Test
@@ -189,7 +214,7 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 	public void testGetAuthorityBy() throws Exception {
 		Role role = initRole();
 		role.save();
-		Authority authority = role.getAuthorityBy(role.getName());
+		Authority authority = role.getBy(role.getName());
 		assertNotNull(authority);
 	}
 

@@ -1,14 +1,40 @@
 package org.openkoala.security.core.domain;
 
-import static org.openkoala.security.core.util.EntitiesHelper.*;
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.IdentifierIsExistedException;
 import org.openkoala.security.core.NameIsExistedException;
+import org.openkoala.security.core.NullArgumentException;
+
+import static org.junit.Assert.*;
+import static org.openkoala.security.core.util.EntitiesHelper.*;
 
 public class PermissionTest extends AbstractDomainIntegrationTestCase {
 
+	@Test(expected = NullArgumentException.class)
+	public void testSaveNameIsNull() throws Exception {
+		new Permission(null, "testPermission000002");
+	}
+	
+	@Test(expected = NameIsExistedException.class)
+	public void testSaveNameExisted() throws Exception {
+		testSave();
+		Permission permission = new Permission("测试权限000001", "testPermission000002");
+		permission.save();
+	}
+	
+	@Test(expected = NullArgumentException.class)
+	public void testSaveIdentifierIsNull() throws Exception {
+		new Permission("测试权限000002", null);
+	}
+	
+	@Test(expected = IdentifierIsExistedException.class)
+	public void testSaveIdentifierExisted() throws Exception {
+		testSave();
+		Permission permission = new Permission("测试权限000002", "testPermission000001");
+		permission.save();
+	}
+	
 	@Test
 	public void testSave() throws Exception {
 		Permission permission = initPermission();
@@ -19,57 +45,83 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 		assertPermission(permission, loadPermission);
 	}
 
-	@Test(expected = NameIsExistedException.class)
-	public void testSaveNameExisted() throws Exception {
-		testSave();
-		Permission permission = new Permission("测试权限000001", "testPermission000002");
-		permission.save();
-	}
-
-	@Test(expected = IdentifierIsExistedException.class)
-	public void testSaveIdentifierExisted() throws Exception {
-		testSave();
-		Permission permission = new Permission("测试权限000002", "testPermission000001");
-		permission.save();
-	}
-
 	@Test
-	public void testUpdate() throws Exception {
+	public void testChangeName() throws Exception {
 		Permission permission = initPermission();
 		permission.save();
-		Permission updatePermission = new Permission("测试权限000003", "testPermission000003");
-		updatePermission.setId(permission.getId());
-		updatePermission.update();
-
-		Permission loadPermission = Permission.getBy(updatePermission.getId());
+		permission.changeName("测试权限000004");
+		Permission loadPermission = Permission.getBy(permission.getId());
 		assertNotNull(loadPermission);
-		assertPermission(updatePermission, loadPermission);
+		assertPermission(permission, loadPermission);
 	}
 
+	@Test(expected = NullArgumentException.class)
+	public void testChangeNameIsNull() throws Exception {
+		Permission permission = initPermission();
+		permission.save();
+		permission.changeName(null);
+	}
+	
 	@Test(expected = NameIsExistedException.class)
-	public void testUpdateNameExisted() throws Exception {
+	public void testChangeNameExisted() throws Exception {
 		String name = "测试权限000003";
 		String identifier = "testPermission000003";
 		Permission permission = initPermission();
 		permission.save();
 		Permission permission2 = new Permission(name, identifier);
 		permission2.save();
-		Permission updatePermission = new Permission(name, "testPermission000004");
-		updatePermission.setId(permission.getId());
-		updatePermission.update();
+		permission.changeName(name);
 	}
 
+	@Test(expected = NullArgumentException.class)
+	public void testChangeIdentifierIsNull() throws Exception {
+		Permission permission = initPermission();
+		permission.save();
+		permission.changeIdentifier(null);
+	}
+	
 	@Test(expected = IdentifierIsExistedException.class)
-	public void testUpdateIdentifierExisted() throws Exception {
+	public void testChangeIdentifierExisted() throws Exception {
 		String name = "测试权限000003";
 		String identifier = "testPermission000003";
 		Permission permission = initPermission();
 		permission.save();
 		Permission permission2 = new Permission(name, identifier);
 		permission2.save();
-		Permission updatePermission = new Permission("测试权限000004", identifier);
-		updatePermission.setId(permission.getId());
-		updatePermission.update();
+		permission.changeIdentifier(identifier);
+	}
+	
+	@Test(expected = CorrelationException.class)
+	public void testRemoveHasRole() throws Exception {
+		Role role = initRole();
+		role.save();
+		Permission permission = initPermission();
+		permission.save();
+		role.addPermission(permission);
+		Permission loadPermission = Permission.getBy(permission.getId());
+		loadPermission.remove();
+	}
+	
+	@Test(expected = CorrelationException.class)
+	public void testRemoveHasActor() throws Exception {
+		User user = initUser();
+		user.save();
+		Permission permission = initPermission();
+		permission.save();
+		UrlAccessResource urlAccessResource = initUrlAccessResource();
+		urlAccessResource.save();
+		new Authorization(user, permission).save();
+		permission.remove();
+	}
+	
+	@Test
+	public void testRemove() throws Exception {
+		Permission permission = initPermission();
+		permission.save();
+		UrlAccessResource urlAccessResource = initUrlAccessResource();
+		urlAccessResource.save();
+		permission.addSecurityResource(urlAccessResource);
+		permission.remove();
 	}
 
 	@Test
@@ -90,7 +142,7 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 	public void testGetAuthorityBy() throws Exception {
 		Permission permission = initPermission();
 		permission.save();
-		Authority authority = permission.getAuthorityBy(permission.getName());
+		Authority authority = permission.getBy(permission.getName());
 		assertNotNull(authority);
 	}
 	

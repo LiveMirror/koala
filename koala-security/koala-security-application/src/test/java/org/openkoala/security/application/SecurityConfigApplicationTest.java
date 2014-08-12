@@ -202,18 +202,16 @@ public class SecurityConfigApplicationTest extends AbstractApplicationIntegratio
 	}
 
 	private User initUser() {
-		User user = new User("zhangsan", "000000", "zhangsan@koala.com", "139*********");
+		User user = new User("张三", "zhangsan");
 		user.setCreateOwner("admin");
 		user.setDescription("普通用户");
-		user.setName("张三");
 		return user;
 	}
 
 	private User adminUser() {
-		User user = new User("lisi", "000000", "root@koala.com", "123*********");
+		User user = new User("李四", "lisi");
 		user.setCreateOwner("admin");
 		user.setDescription("lisi");
-		user.setName("李四");
 		return user;
 	}
 

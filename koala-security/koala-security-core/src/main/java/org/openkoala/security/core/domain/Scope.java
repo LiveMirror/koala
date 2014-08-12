@@ -10,6 +10,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -21,6 +22,7 @@ public abstract class Scope extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = -7219997981491797461L;
 
+	@NotNull
 	@Column(name = "NAME")
 	private String name;
 

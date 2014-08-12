@@ -1,17 +1,18 @@
 package org.openkoala.security.core.domain;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.openkoala.security.core.CorrelationException;
+import org.openkoala.security.core.IdentifierIsExistedException;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.openkoala.security.core.IdentifierIsExistedException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 权限。代表系统的一项操作或功能。
@@ -28,6 +29,7 @@ public class Permission extends Authority {
 	/**
 	 * 权限标识符 例如：user:create
 	 */
+	@NotNull
 	@Column(name = "IDENTIFIER")
 	private String identifier;
 
@@ -38,14 +40,9 @@ public class Permission extends Authority {
 
 	public Permission(String name, String identifier) {
 		super(name);
+		checkArgumentIsNull("identifier", identifier);
+		isIdentifierExisted(identifier);
 		this.identifier = identifier;
-	}
-
-	@Override
-	public void save() {
-		isNameExisted();
-		isIdentifierExisted(this.identifier);
-		super.save();
 	}
 
 	public Permission getPermissionBy(String identifier) {
@@ -54,26 +51,9 @@ public class Permission extends Authority {
 				.eq("identifier", identifier)//
 				.singleResult();
 	}
-
+	
 	@Override
-	public void update() {
-		Permission permission = getBy(this.getId());
-		
-		if(!StringUtils.isBlank(this.getName()) && !permission.getName().equals(this.getName())){
-			isNameExisted();
-			permission.name = this.getName();
-		}
-		
-		if(!StringUtils.isBlank(this.getIdentifier()) && !permission.getIdentifier().equals(this.getIdentifier()))
-		{
-			isIdentifierExisted(this.getIdentifier());
-			permission.identifier = this.getIdentifier();
-		}
-		permission.setDescription(this.getDescription());
-	}
-
-	@Override
-	public Authority getAuthorityBy(String name) {
+	public Authority getBy(String name) {
 		return getRepository()//
 				.createNamedQuery("Authority.getAuthorityByName")//
 				.addParameter("authorityType", Permission.class)//
@@ -81,32 +61,70 @@ public class Permission extends Authority {
 				.singleResult();
 
 	}
-	
-	public static Permission getBy(Long id){
+
+	public static Permission getBy(Long id) {
 		return Permission.get(Permission.class, id);
 	}
-	
+
 	private void isIdentifierExisted(String identifier) {
 		Permission permission = getPermissionBy(identifier);
-		if(permission != null){
+		if (permission != null) {
 			throw new IdentifierIsExistedException("permission.identifier.existed");
 		}
-		
+
+	}
+
+	public void changeIdentifier(String identifier) {
+		checkArgumentIsNull("identifier", identifier);
+		if(!identifier.equals(this.getIdentifier())){
+			isIdentifierExisted(identifier);
+			this.identifier = identifier;
+			this.save();
+		}
 	}
 	
-	public String[] businessKeys() {
-		return new String[] { "name", "identifier" };
+	public void addRole(Role role){
+		this.roles.add(role);
+		this.save();
+	}
+	
+	public void addRoles(Set<Role> roles){
+		this.roles.addAll(roles);
+		this.save();
+	}
+	
+	public void terminateRole(Role role){
+		this.roles.remove(role);
+		this.save();
+	}
+	
+	public void terminateRoles(Set<Role> roles){
+		this.roles.removeAll(roles);
+		this.save();
 	}
 	
 	@Override
+	public void remove() {
+		
+		if(!this.getRoles().isEmpty()){
+			throw new CorrelationException("permission has role, so can't remove it.");
+		}
+		super.remove();
+	}
+
+	public String[] businessKeys() {
+		return new String[] { "name", "identifier" };
+	}
+
+	@Override
 	public String toString() {
 		return new ToStringBuilder(this)//
-				.append(name)//
+				.append(getName())//
 				.append(identifier)//
 				.append(getDescription())//
 				.build();
 	}
-	
+
 	public Set<Role> getRoles() {
 		return Collections.unmodifiableSet(roles);
 	}

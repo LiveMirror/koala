@@ -6,9 +6,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
-import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.command.ChangeRolePropsCommand;
+import org.openkoala.security.facade.command.CreateRoleCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
@@ -54,22 +55,8 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/add")
-	public JsonResult add(RoleDTO roleDTO) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.saveRole(roleDTO);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("添加角色成功。");
-		} catch (NameIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("添加角色名称：" + roleDTO.getRoleName() + "已经存在。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("添加角色失败。");
-		}
-		return jsonResult;
+	public JsonResult add(CreateRoleCommand command) {
+		return securityConfigFacade.createRole(command);
 	}
 
 	/**
@@ -80,22 +67,8 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public JsonResult update(RoleDTO roleDTO) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.updateRole(roleDTO);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("更新角色成功。");
-		} catch (NameIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("更新角色名称：" + roleDTO.getRoleName() + "已经存在。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("更新角色失败。");
-		}
-		return jsonResult;
+	public JsonResult update(ChangeRolePropsCommand command) {
+		return securityConfigFacade.changeRoleProps(command);
 	}
 
 	/**
@@ -105,18 +78,8 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult terminate(@RequestBody RoleDTO[] roleDTOs) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.terminateRoles(roleDTOs);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("撤销角色成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("撤销角色失败。");
-		}
-		return jsonResult;
+	public JsonResult terminate(@RequestBody Long[] roleIds) {
+		return securityConfigFacade.terminateRoles(roleIds);
 	}
 
 	/**
@@ -215,7 +178,7 @@ public class RoleController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
-			shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
+//			shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为角色授权URL访问权限资源成功");
 		} catch (Exception e) {
@@ -261,7 +224,8 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryGrantUrlAccessResourcesByRoleId")
 	public Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
-		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page, pagesize, roleId);
+		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page,
+				pagesize, roleId);
 		return results;
 	}
 
@@ -276,7 +240,8 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantUrlAccessResourcesByRoleId")
 	public Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
-		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page, pagesize, roleId);
+		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page,
+				pagesize, roleId);
 		return results;
 	}
 
@@ -352,7 +317,8 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissionsByRoleId")
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize, roleId);
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize,
+				roleId);
 		return results;
 	}
 
@@ -413,7 +379,8 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryGrantPageElementResourcesByRoleId")
 	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
-		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page, pagesize, roleId);
+		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page,
+				pagesize, roleId);
 		return results;
 	}
 
@@ -427,14 +394,15 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPageElementResourcesByRoleId")
-	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
+	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize,
+			Long roleId) {
 		return securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(page, pagesize, roleId);
 	}
 
 	// ==================TODO==================
 
-	/** TODO 还未实现
-	 * 为角色授权方法调用权限资源。
+	/**
+	 * TODO 还未实现 为角色授权方法调用权限资源。
 	 * 
 	 * @param roleId
 	 * @param menuResourceIds

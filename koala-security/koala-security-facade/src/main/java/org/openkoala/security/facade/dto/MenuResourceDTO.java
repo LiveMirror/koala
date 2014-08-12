@@ -16,8 +16,6 @@ public class MenuResourceDTO implements Serializable {
 	
 	private int version;
 	
-	private String identifier;
-	
 	private String name;
 	
 	private String url;
@@ -27,8 +25,6 @@ public class MenuResourceDTO implements Serializable {
 	private String description;
 	
 	private Long parentId;
-	
-	private boolean disabled;
 	
 	private int level;
 	
@@ -43,15 +39,13 @@ public class MenuResourceDTO implements Serializable {
 		this.name = name;
 	}
 
-	public MenuResourceDTO(Long id, String identifier, String name, String url, String icon, String description, Long parentId, boolean disabled,int level) {
+	public MenuResourceDTO(Long id,String name, String url, String icon, String description, Long parentId,int level) {
 		this.id = id;
-		this.identifier = identifier;
 		this.name = name;
 		this.url = url;
 		this.icon = icon;
 		this.description = description;
 		this.parentId = parentId;
-		this.disabled = disabled;
 		this.level = level;
 	}
 
@@ -95,14 +89,6 @@ public class MenuResourceDTO implements Serializable {
 		this.description = description;
 	}
 
-	public String getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
-
 	public Long getParentId() {
 		return parentId;
 	}
@@ -119,13 +105,6 @@ public class MenuResourceDTO implements Serializable {
 		this.children = children;
 	}
 
-	public boolean isDisabled() {
-		return disabled;
-	}
-
-	public void setDisabled(boolean isValid) {
-		this.disabled = isValid;
-	}
 
 	public int getLevel() {
 		return level;
@@ -176,7 +155,6 @@ public class MenuResourceDTO implements Serializable {
 				.append(getName())//
 				.append(getDescription())//
 				.append(getIcon())//
-				.append(getIdentifier())//
 				.append(getLevel())//
 				.append(getUrl())//
 				.append(getParentId())//

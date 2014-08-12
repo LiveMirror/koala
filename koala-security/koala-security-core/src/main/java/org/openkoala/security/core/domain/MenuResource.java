@@ -12,7 +12,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -44,6 +43,9 @@ public class MenuResource extends SecurityResource {
 	 */
 	@Column(name = "POSITION")
 	private int position = 0;
+	
+	@Column(name = "URL")
+	private String url;
 
 	@ManyToOne
 	@JoinTable(name = "KS_MENU_RESOURCE_RELATION", //
@@ -62,22 +64,7 @@ public class MenuResource extends SecurityResource {
 
 	@Override
 	public void save() {
-		isNameExisted();
 		super.save();
-	}
-
-	@Override
-	public void update() {
-		MenuResource menuResource = getBy(this.getId());
-		if (!StringUtils.isBlank(this.getName()) && !menuResource.getName().equals(this.getName())) {
-			isNameExisted();
-			menuResource.name = this.getName();
-		}
-		menuResource.setIdentifier(this.getIdentifier());
-		menuResource.setDescription(this.getDescription());
-		menuResource.setMenuIcon(this.getMenuIcon());
-		menuResource.setUrl(this.getUrl());
-		menuResource.setPosition(this.getPosition());
 	}
 
 	public void addChild(MenuResource child) {
@@ -97,14 +84,8 @@ public class MenuResource extends SecurityResource {
 	 */
 	@Override
 	public void remove() {
-		for (MenuResource child : children) {
-			child.remove();
-		}
+		removeChildren();
 		super.remove();
-	}
-
-	public static MenuResource getBy(Long id) {
-		return MenuResource.get(MenuResource.class, id);
 	}
 
 	@Override
@@ -113,8 +94,17 @@ public class MenuResource extends SecurityResource {
 				.createNamedQuery("SecurityResource.findByName")//
 				.addParameter("securityResourceType", MenuResource.class)//
 				.addParameter("name", name)//
-				.addParameter("disabled", false)//
 				.singleResult();
+	}
+	
+	public static MenuResource getBy(Long id) {
+		return MenuResource.get(MenuResource.class, id);
+	}
+	
+	private void removeChildren() {
+		for (MenuResource child : children) {
+			child.remove();
+		}
 	}
 	
 	@Override
@@ -164,6 +154,14 @@ public class MenuResource extends SecurityResource {
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 }

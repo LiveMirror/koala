@@ -10,14 +10,18 @@ import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.SecurityResource;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Sets;
 
 @Named
 @Transactional
@@ -46,7 +50,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void updateAuthority(Authority authority) {
-		authority.update();
+		authority.save();
 	}
 
 	public void terminateAuthority(Authority authority) {
@@ -58,7 +62,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void updateSecurityResource(SecurityResource securityResource) {
-		securityResource.update();
+		securityResource.save();
 	}
 
 	public void terminateSecurityResource(SecurityResource securityResource) {
@@ -106,7 +110,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 	}
 
 	public void terminateSecurityResourcesFromAuthority(List<? extends SecurityResource> securityResources, Authority authority) {
-		authority.terminateSecurityResources(securityResources);
+		authority.terminateSecurityResources(Sets.newHashSet(securityResources));
 	}
 
 	public void terminateAuthoritiesFromSecurityResource(List<Authority> authorities, SecurityResource securityResource) {
@@ -242,17 +246,72 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 
 	@Override
 	public void updateActor(Actor actor) {
-		actor.update();
+		actor.save();
 	}
 
 	@Override
 	public void grantAuthorityToActor(Authority authority, Actor actor) {
-		actor.grant(authority, null);
+		actor.grant(authority);
 	}
 
 	@Override
 	public void updateUserLastLoginTime(User user) {
 		user.updateLastLoginTime();
+	}
+
+	@Override
+	public void changeUserAccount(User user, String userAccount, String userPassword) {
+		user.changeUserAccount(userAccount, userPassword);
+	}
+
+	@Override
+	public void changeUserEmail(User user, String email, String userPassword) {
+		user.changeEmail(email, userPassword);
+	}
+
+	@Override
+	public void changeUserTelePhone(User user, String telePhone, String userPassword) {
+		user.changeTelePhone(telePhone, userPassword);
+	}
+
+	@Override
+	public void changeNameOfUrlAccessResource(UrlAccessResource urlAccessResource, String name) {
+		urlAccessResource.changeName(name);
+	}
+
+	@Override
+	public void changeUrlOfUrlAccessResource(UrlAccessResource urlAccessResource, String url) {
+		urlAccessResource.changeUrl(url);
+	}
+
+	@Override
+	public void changeNameOfRole(Role role, String name) {
+		role.changeName(name);
+	}
+
+	@Override
+	public void changeNameOfPermission(Permission permission, String name) {
+		permission.changeName(name);
+	}
+
+	@Override
+	public void changeIdentifierOfPermission(Permission permission, String identifier) {
+		permission.changeIdentifier(identifier);
+	}
+
+	@Override
+	public void changeNameOfPageElementResouce(PageElementResource pageElementResource, String name) {
+		pageElementResource.changeName(name);
+	}
+
+	@Override
+	public void changeIdentifierOfPageElementResouce(PageElementResource pageElementResource, String identifier) {
+		pageElementResource.changeIdentifier(identifier);
+	}
+
+	@Override
+	public void changeNameOfMenuResource(MenuResource menuResource, String name) {
+		menuResource.changeName(name);
 	}
 
 }

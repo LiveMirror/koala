@@ -3,14 +3,12 @@ package org.openkoala.security.web.controller;
 import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
-import org.openkoala.security.core.IdentifierIsExistedException;
-import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.command.ChangePermissionPropsCommand;
+import org.openkoala.security.facade.command.CreatePermissionCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.PermissionDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/auth/permission")
 public class PermissionController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(PermissionController.class);
-
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
 
@@ -43,22 +39,8 @@ public class PermissionController {
 	 */
 	@ResponseBody
 	@RequestMapping("/add")
-	public JsonResult add(PermissionDTO permissionDTO) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.savePermission(permissionDTO);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("添加权限成功。");
-		} catch (NameIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("添加权限失败，权限名称：" + permissionDTO.getPermissionName() + " 已经存在。");
-		} catch (IdentifierIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("添加权限失败，权限名称：" + permissionDTO.getIdentifier() + " 已经存在。");
-		}
-		return jsonResult;
+	public JsonResult add(CreatePermissionCommand command) {
+		return securityConfigFacade.createPermission(command);
 	}
 
 	/**
@@ -69,22 +51,8 @@ public class PermissionController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public JsonResult update(PermissionDTO permissionDTO) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.updatePermission(permissionDTO);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("更新权限成功。");
-		} catch (NameIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("更新权限失败，权限名称：" + permissionDTO.getPermissionName() + " 已经存在。");
-		} catch (IdentifierIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("更新权限失败，权限名称：" + permissionDTO.getIdentifier() + " 已经存在。");
-		}
-		return jsonResult;
+	public JsonResult update(ChangePermissionPropsCommand command) {
+		return securityConfigFacade.changePermissionProps(command);
 	}
 
 	/**
@@ -95,18 +63,8 @@ public class PermissionController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult terminate(@RequestBody PermissionDTO[] permissionDTOs) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.terminatePermissions(permissionDTOs);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("撤销权限成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("撤销权限失败。");
-		}
-		return jsonResult;
+	public JsonResult terminate(@RequestBody Long[] permissionIds) {
+		return securityConfigFacade.terminatePermissions(permissionIds);
 	}
 
 	/**
@@ -114,13 +72,14 @@ public class PermissionController {
 	 * 
 	 * @param page
 	 * @param pagesize
-	 * @param permissionDTO
+	 * @param queryPermissionCondition
+	 *            查询权限条件
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQuery")
-	public Page<PermissionDTO> pagingQuery(int page, int pagesize, PermissionDTO permissionDTO) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissions(page, pagesize, permissionDTO);
+	public Page<PermissionDTO> pagingQuery(int page, int pagesize, PermissionDTO queryPermissionCondition) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissions(page, pagesize, queryPermissionCondition);
 		return results;
 	}
 

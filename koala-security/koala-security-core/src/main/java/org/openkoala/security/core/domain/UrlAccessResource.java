@@ -1,13 +1,14 @@
 package org.openkoala.security.core.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import org.apache.commons.lang3.StringUtils;
+import org.openkoala.security.core.UrlIsExistedException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("URL_ACCESS_RESOURCE")
@@ -15,33 +16,41 @@ public class UrlAccessResource extends SecurityResource {
 
 	private static final long serialVersionUID = -9116913523532845475L;
 
+	@Column(name = "URL")
+	private String url;
+
 	protected UrlAccessResource() {}
 
 	public UrlAccessResource(String name, String url) {
-		super(name, url);
+		super(name);
+		checkArgumentIsNull("url", url);
+		isExistUrl(url);
+		this.url = url;
 	}
 
 	@Override
 	public void save() {
-		isNameExisted();
-		isUrlExisted();
 		super.save();
 	}
 
 	@Override
-	public void update() {
-		UrlAccessResource urlAccessResource = getBy(this.getId());
-		if(!StringUtils.isBlank(this.getName()) && !urlAccessResource.getName().equals(this.getName())){
-			isNameExisted();
-			urlAccessResource.name = this.getName();
+	public SecurityResource findByName(String name) {
+		return getRepository()//
+				.createNamedQuery("SecurityResource.findByName")//
+				.addParameter("securityResourceType", UrlAccessResource.class)//
+				.addParameter("name", name)//
+				.singleResult();
+	}
+
+	public void changeUrl(String url) {
+
+		checkArgumentIsNull("url", url);
+
+		if (!url.equals(this.getUrl())) {
+			isExistUrl(url);
+			this.url = url;
+			this.save();
 		}
-		if(!StringUtils.isBlank(this.getUrl()) && !urlAccessResource.getUrl().equals(this.getUrl())){
-			isUrlExisted();
-			urlAccessResource.setUrl(this.getUrl());
-		}
-		urlAccessResource.setIdentifier(this.getIdentifier());
-		urlAccessResource.setDescription(this.getDescription());
-		urlAccessResource.setVersion(this.getVersion());
 	}
 
 	public static UrlAccessResource getBy(Long id) {
@@ -69,33 +78,36 @@ public class UrlAccessResource extends SecurityResource {
 	}
 
 	public static List<UrlAccessResource> findAllUrlAccessResources() {
-		return UrlAccessResource.findAll(UrlAccessResource.class);
-//		List<UrlAccessResource> results =  getRepository()//
-//				.createNamedQuery("SecurityResource.findAllByType")//
-//				.addParameter("securityResourceType", UrlAccessResource.class)//
-//				.addParameter("disabled", false)//
-//				.list();
-//		return results;
-	}
-
-	@Override
-	public SecurityResource findByName(String name) {
-		return getRepository()//
-				.createNamedQuery("SecurityResource.findByName")//
+		List<UrlAccessResource> results = getRepository()//
+				.createNamedQuery("SecurityResource.findAllByType")//
 				.addParameter("securityResourceType", UrlAccessResource.class)//
-				.addParameter("name", name)//
-				.addParameter("disabled", false)//
-				.singleResult();
+				.list();
+		return results;
 	}
 
-	@Override
-	protected SecurityResource findByUrl(String url) {
+	/**
+	 * 
+	 * @param url url of the UrlAccessResource, can't be null.
+	 * @return
+	 */
+	protected UrlAccessResource findByUrl(String url) {
+		checkArgumentIsNull("url", url);
 		return getRepository()//
 				.createCriteriaQuery(UrlAccessResource.class)//
 				.eq("url", url)//
 				.singleResult();
 	}
-	
+
+	private void isExistUrl(String url) {
+		if (findByUrl(url) != null) {
+			throw new UrlIsExistedException("url is existed.");
+		}
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
 	@Override
 	public String[] businessKeys() {
 		return new String[] { "name", "url" };

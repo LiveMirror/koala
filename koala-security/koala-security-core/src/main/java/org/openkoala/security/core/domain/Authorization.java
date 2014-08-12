@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.CriteriaQuery;
 import org.openkoala.security.core.AuthorizationIsNotExisted;
+import org.openkoala.security.core.NullArgumentException;
 
 /**
  * 授权，在指定范围内将某种权限（Permission）或权限集合（Role）授予Actor
@@ -41,13 +42,21 @@ public class Authorization extends SecurityAbstractEntity {
 	protected Authorization() {}
 
 	public Authorization(Actor actor, Authority authority) {
+		if (actor == null) {
+			throw new NullArgumentException("actor");
+		}
+		if (authority == null) {
+			throw new NullArgumentException("authority");
+		}
 		this.actor = actor;
 		this.authority = authority;
 	}
 
 	public Authorization(Actor actor, Authority authority, Scope scope) {
-		this.actor = actor;
-		this.authority = authority;
+		this(actor, authority);
+		if (scope == null) {
+			throw new NullArgumentException("scope");
+		}
 		this.scope = scope;
 	}
 
@@ -72,11 +81,8 @@ public class Authorization extends SecurityAbstractEntity {
 	}
 
 	public static Set<Authority> findAuthoritiesByActorInScope(Actor actor, Scope scope) {
-
 		Set<Authority> results = new HashSet<Authority>();
-
 		Set<Authorization> authorizations = findAuthorizationsByActor(actor);
-
 		for (Authorization authorization : authorizations) {
 			if (authorization.getScope().contains(scope)) {
 				results.add(authorization.getAuthority());
@@ -85,7 +91,7 @@ public class Authorization extends SecurityAbstractEntity {
 
 		return results;
 	}
-
+	
 	public static Set<Authority> findAuthoritiesByActor(Actor actor) {
 		Set<Authority> results = new HashSet<Authority>();
 		Set<Authorization> authorizations = findAuthorizationsByActor(actor);
@@ -111,7 +117,7 @@ public class Authorization extends SecurityAbstractEntity {
 	}
 
 	public static void checkAuthorization(Actor actor, Authority authority) {
-		if (!exists(actor, authority, null)) {
+		if (!exists(actor, authority)) {
 			throw new AuthorizationIsNotExisted();
 		}
 	}
@@ -141,6 +147,10 @@ public class Authorization extends SecurityAbstractEntity {
 
 		return criteriaQuery.singleResult() != null;
 	}
+	
+	protected static boolean exists(Actor actor, Authority authority) {
+		return exists(actor, authority, null);
+	}
 
 	private static Set<Authorization> findAuthorizationsByActor(Actor actor) {
 		Set<Authorization> results = new HashSet<Authorization>();
@@ -155,11 +165,7 @@ public class Authorization extends SecurityAbstractEntity {
 
 	@Override
 	public String[] businessKeys() {
-		if (null != this.getScope()) {
-			return new String[] { getActor().toString() + getAuthority().toString() + getScope().toString() };
-		} else {
-			return new String[] { getActor().toString() + getAuthority().toString() };
-		}
+		return new String[]{"actor","authority"};
 	}
 
 	@Override

@@ -1,21 +1,17 @@
 package org.openkoala.security.web.controller;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.dayatang.querychannel.Page;
-import org.openkoala.security.core.EmailIsExistedException;
-import org.openkoala.security.core.NullArgumentException;
-import org.openkoala.security.core.TelePhoneIsExistedException;
-import org.openkoala.security.core.UserAccountIsExistedException;
-import org.openkoala.security.core.UserNotExistedException;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.command.ChangeUserAccountCommand;
+import org.openkoala.security.facade.command.ChangeUserEmailCommand;
+import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
+import org.openkoala.security.facade.command.ChangeUserPropsCommand;
+import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
+import org.openkoala.security.facade.command.CreateUserCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
@@ -27,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -49,171 +44,76 @@ public class UserController {
 	private SecurityConfigFacade securityConfigFacade;
 
 	/**
-	 * TODO 验证码错误不应该在这里处理。 用户登陆，支持多种方式。账号、邮箱、电话等
-	 * 
-	 * @param username
-	 * @param password
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public JsonResult login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
-		JsonResult jsonResult = new JsonResult();
-		String shiroLoginFailure = (String) request.getAttribute("shiroLoginFailure");
-		if (!StringUtils.isBlank(shiroLoginFailure)) {
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("验证码错误。");
-		} else {
-			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
-			try {
-				SecurityUtils.getSubject().login(usernamePasswordToken);
-				securityConfigFacade.updateUserLastLoginTime(AuthUserUtil.getCurrentUser().getId());
-				jsonResult.setSuccess(true);
-				jsonResult.setMessage("登陆成功。");
-			} catch (NullArgumentException e) {
-				LOGGER.error(e.getMessage());
-				jsonResult.setSuccess(false);
-				jsonResult.setMessage("用户名或者密码为空。");
-			} catch (UserNotExistedException e) {
-				LOGGER.error(e.getMessage());
-				jsonResult.setSuccess(false);
-				jsonResult.setMessage("用户名或者密码不正确。");
-			} catch (AuthenticationException e) {
-				LOGGER.error(e.getMessage());
-				jsonResult.setSuccess(false);
-				jsonResult.setMessage("登录失败。");
-			} catch (Exception e) {
-				LOGGER.error(e.getMessage());
-				jsonResult.setSuccess(false);
-				jsonResult.setMessage("登录失败。");
-			}
-		}
-		return jsonResult;
-	}
-
-	/**
-	 * 用户退出。
-	 * 
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("/logout")
-	public JsonResult logout() {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			SecurityUtils.getSubject().logout();
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("用户退出成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("用户退出失败。");
-		}
-		return jsonResult;
-	}
-
-	/**
 	 * 添加用户。
 	 * 
-	 * @param userDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/add")
-	public JsonResult add(UserDTO userDTO) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.saveUser(userDTO);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("添加用户成功。");
-		} catch (UserAccountIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("用户账号:" + userDTO.getUserAccount() + "已经存在。");
-		} catch (EmailIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("用户邮箱：" + userDTO.getEmail() + "已经存在。");
-		} catch (TelePhoneIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("用户联系电话：" + userDTO.getTelePhone() + "已经存在。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("添加用户失败。");
-		}
-		return jsonResult;
+	public JsonResult add(CreateUserCommand command) {
+		String createOwner = AuthUserUtil.getUserAccount();
+		command.setCreateOwner(createOwner);
+		return securityConfigFacade.createUser(command);
 	}
 
 	/**
-	 * 更新用户。
+	 * 更改用户。
 	 * 
-	 * @param userDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public JsonResult update(UserDTO userDTO) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.updateUser(userDTO);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("更新用户成功。");
-		} catch (UserAccountIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("账户：" + userDTO.getUserAccount() + "已经存在。");
-		} catch (EmailIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("邮箱：" + userDTO.getEmail() + "已经存在。");
-		} catch (TelePhoneIsExistedException e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("联系电话：" + userDTO.getTelePhone() + "已经存在。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("更新用户失败。");
-		}
-		return jsonResult;
+	public JsonResult changeUserProps(ChangeUserPropsCommand command) {
+		return securityConfigFacade.changeUserProps(command);
+	}
+
+	/**
+	 * 更改用户账号。
+	 * 
+	 * @param command
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/changeUserAccount")
+	public JsonResult changeUserAccount(ChangeUserAccountCommand command) {
+		return securityConfigFacade.changeUserAccount(command);
+	}
+
+	/**
+	 * 更改用户邮箱。
+	 * 
+	 * @param command
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/changeUserEmail")
+	public JsonResult changeUserEmail(ChangeUserEmailCommand command) {
+		return securityConfigFacade.changeUserEmail(command);
+	}
+
+	/**
+	 * 更改用户联系电话。
+	 * 
+	 * @param command
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/changeUserTelePhone")
+	public JsonResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
+		return securityConfigFacade.changeUserTelePhone(command);
 	}
 
 	/**
 	 * 撤销用户。
 	 * 
-	 * @param userDTOs
+	 * @param userIds
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult terminate(@RequestBody UserDTO[] userDTOs) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.terminateUsers(userDTOs);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("撤销更新成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("撤销更新失败。");
-		}
-		return jsonResult;
-	}
-
-	/**
-	 * 根据条件分页查询用户。
-	 * 
-	 * @param page
-	 * @param pagesize
-	 * @param userDTO
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("/pagingQuery")
-	public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO userDTO) {
-		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pagesize, userDTO);
-		return results;
+	public JsonResult terminate(@RequestBody Long[] userIds) {
+		return securityConfigFacade.terminateUsers(userIds);
 	}
 
 	/**
@@ -225,16 +125,9 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/updatePassword")
-	public JsonResult updatePassword(@RequestParam String oldUserPassword, @RequestParam String userPassword) {
-		JsonResult jsonResult = new JsonResult();
-		if (securityConfigFacade.updatePassword(AuthUserUtil.getUserAccount(), userPassword, oldUserPassword)) {
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("更新用户密码成功。");
-		} else {
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("更新用户密码失败。");
-		}
-		return jsonResult;
+	public JsonResult changeUserPassword(ChangeUserPasswordCommand command) {
+		command.setUserAccount(AuthUserUtil.getUserAccount());
+		return securityConfigFacade.changeUserPassword(command);
 	}
 
 	/**
@@ -246,17 +139,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/resetPassword")
 	public JsonResult resetPassword(Long userId) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.resetPassword(userId);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("重置用户密码成功，密码：888888");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("重置用户密码失败。");
-		}
-		return jsonResult;
+		return securityConfigFacade.resetPassword(userId);
 	}
 
 	/**
@@ -268,17 +151,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/activate")
 	public JsonResult activate(Long userId) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.activate(userId);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("激活用户成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("激活用户失败。");
-		}
-		return jsonResult;
+		return securityConfigFacade.activate(userId);
 	}
 
 	/**
@@ -290,17 +163,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/suspend")
 	public JsonResult suspend(Long userId) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.suspend(userId);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("激活用户成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("激活用户失败。");
-		}
-		return jsonResult;
+		return securityConfigFacade.suspend(userId);
 	}
 
 	/**
@@ -312,17 +175,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/activates")
 	public JsonResult activates(Long[] userIds) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.activate(userIds);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("批量激活用户成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("批量激活用户失败。");
-		}
-		return jsonResult;
+		return securityConfigFacade.activate(userIds);
 	}
 
 	/**
@@ -334,19 +187,10 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/suspends")
 	public JsonResult suspends(Long[] userIds) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.suspend(userIds);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("批量挂起用户成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("批量挂起用户失败。");
-		}
-		return jsonResult;
+		return securityConfigFacade.suspend(userIds);
 	}
 
+	// ~ 授权
 	/**
 	 * 为用户授权一个角色。
 	 * 
@@ -532,6 +376,21 @@ public class UserController {
 	}
 
 	/**
+	 * 根据条件分页查询用户。
+	 * 
+	 * @param page
+	 * @param pagesize
+	 * @param userDTO
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/pagingQuery")
+	public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO userDTO) {
+		Page<UserDTO> results = securityAccessFacade.pagingQueryUsers(page, pagesize, userDTO);
+		return results;
+	}
+
+	/**
 	 * 根据用户ID分页查找已经授权的角色。
 	 * 
 	 * @param page
@@ -572,7 +431,8 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantRoles")
 	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, Long userId, RoleDTO queryRoleCondition) {
-		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition, userId);
+		Page<RoleDTO> results = securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,
+				userId);
 		return results;
 	}
 
@@ -587,8 +447,10 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingQueryNotGrantPermissions")
-	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize, PermissionDTO queryPermissionCondition, Long userId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(page, pagesize, queryPermissionCondition, userId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,
+			PermissionDTO queryPermissionCondition, Long userId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(page, pagesize,
+				queryPermissionCondition, userId);
 		return results;
 	}
 

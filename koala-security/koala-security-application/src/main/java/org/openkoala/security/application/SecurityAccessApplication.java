@@ -57,7 +57,7 @@ public interface SecurityAccessApplication {
 	 *            用户ID
 	 * @return
 	 */
-	User getUserBy(Long userId);
+	User getUserById(Long userId);
 
 	/**
 	 * 根据角色ID获取角色
@@ -75,7 +75,7 @@ public interface SecurityAccessApplication {
 	 *            账户
 	 * @return
 	 */
-	User getUserBy(String userAccount);
+	User getUserByUserAccount(String userAccount);
 
 	/**
 	 * 根据权限ID得到权限
@@ -150,7 +150,7 @@ public interface SecurityAccessApplication {
 	 *            旧密码
 	 * @return
 	 */
-	boolean updatePassword(User user, String oldUserPassword);
+	boolean updatePassword(User user, String userPassword, String oldUserPassword);
 
 	/**
 	 * 通过角色下的用户检查Authorization是否存在
@@ -197,5 +197,9 @@ public interface SecurityAccessApplication {
 	User login(String principal, String password);
 
 	boolean hasPageElementResource(String identifier);
+
+	User getUserByEmail(String email);
+
+	User getUserByTelePhone(String telePhone);
 	
 }

@@ -8,16 +8,19 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.InstanceFactory;
+import org.hibernate.validator.constraints.Email;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.UserNotExistedException;
 import org.openkoala.security.core.UserNotHasRoleException;
+import org.openkoala.security.core.UserPasswordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +43,14 @@ public class User extends Actor {
 
 	private static final String INIT_PASSWORD = "888888";
 
+	@NotNull
 	@Column(name = "USER_ACCOUNT")
 	private String userAccount;
 
 	@Column(name = "PASSWORD")
-	private String password;
+	private String password = INIT_PASSWORD;
 
+	@Email
 	@Column(name = "EMAIL")
 	private String email;
 
@@ -64,28 +69,19 @@ public class User extends Actor {
 	@Column(name = "SALT")
 	private String salt;
 
-	protected User() {}
-
-	public User(String userAccount, String password) {
-		this.userAccount = userAccount;
-		this.password = password;
+	protected User() {
 	}
 
 	/**
-	 * XXX 不能在构造方法中检查。因为删除的会报错。
-	 * 
-	 * @param userAccount
-	 * @param password
-	 * @param email
-	 * @param telePhone
+	 * TODO 验证规则，账号，邮箱，电话。
 	 */
-	public User(String userAccount, String password, String email, String telePhone) {
-		// isBlanked(userAccount, password, email, telePhone);
+	public User(String name, String userAccount) {
+		super(name);
+		checkArgumentIsNull("userAccount", userAccount);
+		isExistUserAccount(userAccount);
 		this.userAccount = userAccount;
-		this.password = password;
-		this.email = email;
-		this.telePhone = telePhone;
-		// this.salt = generateSalt();
+		String userPassword = encryptPassword(this.getPassword());
+		this.password = userPassword;
 	}
 
 	// ~ Methods
@@ -99,64 +95,104 @@ public class User extends Actor {
 		disabled = false;
 	}
 
-	/**
-	 * TODO 邮箱、电话可能为空。 保存用户 TODO 验证规则，账号，邮箱，电话。
-	 */
 	@Override
 	public void save() {
-		isExisted();
-		String password = encryptPassword(this);
-		this.setPassword(password);
-		this.setLastModifyTime(new Date());
 		super.save();
 	}
 
+	public boolean updatePassword(String userPassword, String oldUserPassword) {
+		String encryptOldUserPassword = encryptPassword(oldUserPassword);
+		if (this.getPassword().equals(encryptOldUserPassword)) {
+			this.password = encryptPassword(userPassword);
+			return true;
+		}
+		return false;
+	}
+
+	public void resetPassword() {
+		User user = User.get(User.class, this.getId());
+		String userPassword = encryptPassword(INIT_PASSWORD);
+		user.password = userPassword;
+	}
+
 	/**
-	 * 更新用户
+	 * 修改最后登陆时间。
 	 */
-	@Override
-	public void update() {
-		User user = getBy(this.getId());
-		if (user == null) {
-			throw new NullArgumentException("user");
-		}
-
-		if (!StringUtils.isBlank(this.getEmail()) && !this.getEmail().equals(user.getEmail())) {
-			isExistEmail(this.getEmail());
-			user.setEmail(this.getEmail());
-		}
-
-		if (!StringUtils.isBlank(this.getTelePhone()) && !this.getTelePhone().equals(user.getTelePhone())) {
-			isExistTelePhone(this.getTelePhone());
-			user.setTelePhone(this.getTelePhone());
-		}
-
-		// 每次修改自动插入修改时间。
-		user.setLastModifyTime(new Date());
-
-		if (!StringUtils.isBlank(this.getCreateOwner())) {
-			user.setCreateOwner(this.getCreateOwner());
-		}
-
-		user.setName(this.getName());
-		user.setDescription(this.getDescription());
+	public void updateLastLoginTime() {
+		User user = getById(this.getId());
+		changeLastLoginTime(user);
 	}
 
-	public static User getBy(Long userId) {
-		if (StringUtils.isBlank(userId + "")) {
-			throw new NullArgumentException("user.id");
+	/**
+	 * 更改账户 TODO 更加严格的验证
+	 * 
+	 * @param userAccount
+	 */
+	public void changeUserAccount(String userAccount, String userPassword) {
+
+		verifyPassword(userPassword);
+
+		if (!this.getUserAccount().equals(userAccount)) {
+			isExistUserAccount(userAccount);
+			this.userAccount = userAccount;
+			save();
 		}
-		return User.get(User.class, userId);
 	}
 
-	public static User getBy(String userAccount) {
-		if (StringUtils.isBlank(userAccount)) {
-			throw new NullArgumentException("user.userAccount");
+	/**
+	 * 更改邮箱
+	 * 
+	 * @param email
+	 */
+	public void changeEmail(String email, String userPassword) {
+
+		verifyPassword(userPassword);
+
+		// TODO 邮箱验证规则。
+		if (!email.equals(this.getEmail())) {
+			isExistEmail(email);
+			this.email = email;
+			save();
 		}
-		User user = getRepository().createCriteriaQuery(User.class)//
-				.eq("userAccount", userAccount) //
+	}
+
+	/**
+	 * 更改联系电话
+	 * 
+	 * @param telePhone
+	 */
+	public void changeTelePhone(String telePhone, String userPassword) {
+
+		verifyPassword(userPassword);
+
+		// TODO 联系电话验证
+		if (!telePhone.equals(this.getTelePhone())) {
+			isExistTelePhone(telePhone);
+			this.telePhone = telePhone;
+			save();
+		}
+	}
+
+	public static User login(String principal, String password) {
+		checkArgumentIsNull("principal", principal);
+		String loginPassword = encryptPassword(password);
+		User user = getRepository()//
+				.createNamedQuery("User.loginByUserAccount")//
+				.addParameter("userAccount", principal)//
+				.addParameter("password", loginPassword)//
 				.singleResult();
-		return user == null ? null : user;
+
+		if (user == null) {
+			throw new UserNotExistedException("userAccount or password is error");
+		} else {
+			changeLastLoginTime(user);
+		}
+
+		return user;
+	}
+
+	public static long getCount() {
+		return getRepository().createNamedQuery("User.count").singleResult();
 	}
 
 	/**
@@ -191,92 +227,106 @@ public class User extends Actor {
 				.list();
 	}
 
-	public boolean updatePassword(String oldUserPassword) {
-		User user = getBy(this.getUserAccount());
-		String encryptOldUserPassword = encryptPassword(new User(user.getUserAccount(), oldUserPassword));
-		if (user.getPassword().equals(encryptOldUserPassword)) {
-			String password = passwordService.encryptPassword(this);
-			user.setPassword(password);
-			return true;
-		}
-		return false;
-	}
-
-	public void resetPassword() {
-		User user = User.get(User.class, this.getId());
-		String password = encryptPassword(new User(user.getUserAccount(), INIT_PASSWORD));
-		user.setPassword(password);
-	}
-
-	public static User login(String principal, String password) {
-		if (StringUtils.isBlank(principal) || StringUtils.isBlank(password)) {
-			throw new NullArgumentException("userAccount or password is empty ");
-		}
-		User user = getRepository()//
-				.createNamedQuery("User.loginByUserAccount")//
-				.addParameter("userAccount", principal)//
-				.addParameter("password", encryptPassword(new User(principal, password)))//
-				.singleResult();
-
-		if (user == null) {
-			throw new UserNotExistedException("userAccount or password is error");
-		}
-		return user;
-	}
-
-	public static long getCount() {
-		return getRepository().createNamedQuery("User.count").singleResult();
+	public static User getById(Long userId) {
+		return User.get(User.class, userId);
 	}
 
 	/**
-	 * 修改最后登陆时间。
+	 * TODO 校验规则~~正则表达式
+	 * @param userAccount
+	 * @return
 	 */
-	public void updateLastLoginTime() {
-		User user = getBy(this.getId());
-		user.lastLoginTime = new Date();
+	public static User getByUserAccount(String userAccount) {
+		checkArgumentIsNull("userAccount", userAccount);
+		User result = getRepository()//
+				.createCriteriaQuery(User.class)//
+				.eq("userAccount", userAccount) //
+				.singleResult();
+		return result;
 	}
 
-	protected static PasswordService passwordService;
-
-	protected static void setPasswordService(PasswordService passwordService) {
-		User.passwordService = passwordService;
+	/**
+	 * TODO 校验规则~~正则表达式
+	 * @param email
+	 * @return
+	 */
+	public static User getByEmail(String email) {
+		checkArgumentIsNull("email", email);
+		User result = getRepository()//
+				.createCriteriaQuery(User.class)//
+				.eq("email", email) //
+				.singleResult();
+		return result;
 	}
 
-	protected static PasswordService getPasswordService() {
-		if (passwordService == null) {
-			passwordService = InstanceFactory.getInstance(PasswordService.class, "passwordService");
+	/**
+	 * TODO 校验规则~~正则表达式
+	 * @param telePhone
+	 * @return
+	 */
+	public static User getByTelePhone(String telePhone) {
+		checkArgumentIsNull("telePhone", telePhone);
+		User result = getRepository()//
+				.createCriteriaQuery(User.class)//
+				.eq("telePhone", telePhone) //
+				.singleResult();
+		return result;
+	}
+
+	protected static EncryptService passwordEncryptService;
+
+	protected static EncryptService getPasswordEncryptService() {
+		if (passwordEncryptService == null) {
+			passwordEncryptService = InstanceFactory.getInstance(EncryptService.class,"encryptService");
 		}
-		return passwordService;
+		return passwordEncryptService;
+	}
+	
+	protected static void setPasswordEncryptService(EncryptService passwordEncryptService) {
+		User.passwordEncryptService = passwordEncryptService;
 	}
 
-	protected static String encryptPassword(User user) {
-		return getPasswordService().encryptPassword(user);
+	protected static String encryptPassword(String password) {
+		checkArgumentIsNull("password", password);
+		return getPasswordEncryptService().encryptPassword(password, null);
 	}
 
 	/*------------- Private helper methods  -----------------*/
 
-	private boolean isExistTelePhone(String telePhone) {
-		if (StringUtils.isBlank(telePhone)) {
-			throw new NullArgumentException("user.telePhone");
-		}
+	private static void changeLastLoginTime(User user) {
+		user.lastLoginTime = new Date();
+	}
+
+	private void isExistTelePhone(String telePhone) {
 		User user = getRepository().createCriteriaQuery(User.class)//
 				.eq("telePhone", telePhone)//
 				.singleResult();
-		return user != null;
+		if (user != null) {
+			throw new TelePhoneIsExistedException("user telePhone is existed.");
+		}
 	}
 
-	private boolean isExistEmail(String email) {
-		if (StringUtils.isBlank(email)) {
-			throw new NullArgumentException("user.email");
-		}
+	private void isExistEmail(String email) {
 		User user = getRepository().createCriteriaQuery(User.class)//
 				.eq("email", email)//
 				.singleResult();
-		return user != null;
+		if (user != null) {
+			throw new EmailIsExistedException("user email is existed.");
+		}
 	}
 
-	private boolean isExistUserAccount(String userAccount) {
-		return getBy(userAccount) != null;
+	private void isExistUserAccount(String userAccount) {
+		if (getByUserAccount(userAccount) != null) {
+			throw new UserAccountIsExistedException("user userAccount is existed.");
+		}
+	}
+
+	private void verifyPassword(String userPassword) {
+		checkArgumentIsNull("userPassword", userPassword);
+
+		if (!encryptPassword(userPassword).equals(this.getPassword())) {
+			throw new UserPasswordException("user password is not right.");
+		}
 	}
 
 	/**
@@ -290,25 +340,11 @@ public class User extends Actor {
 	 * throw new RuntimeException(e); } }
 	 */
 
-	private void isExisted() {
-		if (isExistUserAccount(this.getUserAccount())) {
-			throw new UserAccountIsExistedException("user.userAccount.existed");
-		}
-
-		if (isExistEmail(this.getEmail())) {
-			throw new EmailIsExistedException("user.email.existed");
-		}
-
-		if (isExistTelePhone(this.getTelePhone())) {
-			throw new TelePhoneIsExistedException("user.telePhone.existed");
-		}
-	}
-
 	@Override
 	public String[] businessKeys() {
 		return new String[] { "userAccount" };
 	}
-	
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)//
@@ -332,16 +368,8 @@ public class User extends Actor {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getEmail() {
 		return email;
-	}
-
-	protected void setEmail(String email) {
-		this.email = email;
 	}
 
 	public boolean isDisabled() {
@@ -350,10 +378,6 @@ public class User extends Actor {
 
 	public String getTelePhone() {
 		return telePhone;
-	}
-
-	protected void setTelePhone(String telePhone) {
-		this.telePhone = telePhone;
 	}
 
 	public String getSalt() {
