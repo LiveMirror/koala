@@ -48,7 +48,7 @@ public class MenuResourceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/add")
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public JsonResult add(CreateMenuResourceCommand command) {
 		return securityConfigFacade.createMenuResource(command);
 	}
@@ -61,7 +61,7 @@ public class MenuResourceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/addChildToParent")
+	@RequestMapping(value = "/addChildToParent", method = RequestMethod.POST)
 	public JsonResult addChildToParent(CreateChildMenuResourceCommand command) {
 		return securityConfigFacade.createChildMenuResouceToParent(command);
 	}
@@ -73,7 +73,7 @@ public class MenuResourceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/update")
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public JsonResult update(ChangeMenuResourcePropsCommand command) {
 		return securityConfigFacade.changeMenuResourceProps(command);
 	}
@@ -85,8 +85,8 @@ public class MenuResourceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult terminate(@RequestBody Long[] menuResourceIds) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
+	public JsonResult terminate(Long[] menuResourceIds) {
 		return securityConfigFacade.terminateMenuResources(menuResourceIds);
 	}
 
@@ -96,7 +96,7 @@ public class MenuResourceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/findAllMenusTree")
+	@RequestMapping(value = "/findAllMenusTree", method = RequestMethod.GET)
 	public JsonResult findAllMenusTree() {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -115,16 +115,17 @@ public class MenuResourceController {
 	/**
 	 * 查找用户在某个角色下得所有菜单权限资源。
 	 * 
-	 * @param roleDTO
+	 * @param role
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/findAllMenusByUserAsRole", method = RequestMethod.GET)
-	public JsonResult findAllMenusByUserAsRole(RoleDTO roleDTO) {
+	public JsonResult findAllMenusByUserAsRole(RoleDTO role) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(AuthUserUtil.getUserAccount(), roleDTO.getId());
-			AuthUserUtil.setRoleName(roleDTO.getName());
+			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(
+					AuthUserUtil.getUserAccount(), role.getId());
+			AuthUserUtil.setRoleName(role.getName());
 			jsonResult.setData(results);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("查找" + AuthUserUtil.getUserAccount() + " 在某个角色下得所有菜单权限资源成功。");
@@ -144,7 +145,7 @@ public class MenuResourceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/grantPermisssionsToMenuResource")
+	@RequestMapping(value = "/grantPermisssionsToMenuResource", method = RequestMethod.POST)
 	public JsonResult grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -167,7 +168,7 @@ public class MenuResourceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminatePermissionsFromMenuResource")
+	@RequestMapping(value = "/terminatePermissionsFromMenuResource", method = RequestMethod.POST)
 	public JsonResult terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId) {
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -191,7 +192,7 @@ public class MenuResourceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryGrantPermissionsByMenuResourceId")
+	@RequestMapping(value = "/pagingQueryGrantPermissionsByMenuResourceId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByMenuResourceId(page, pagesize,
 				menuResourceId);
@@ -207,7 +208,7 @@ public class MenuResourceController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQueryNotGrantPermissionsByMenuResourceId")
+	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByMenuResourceId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,
 			Long menuResourceId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(page,

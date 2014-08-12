@@ -77,7 +77,7 @@ public class LoginUserController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/logout")
+	@RequestMapping(value="/logout", method = RequestMethod.POST)
 	public JsonResult logout() {
 		JsonResult jsonResult = new JsonResult();
 		try {

@@ -38,7 +38,7 @@ public class PermissionController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/add")
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public JsonResult add(CreatePermissionCommand command) {
 		return securityConfigFacade.createPermission(command);
 	}
@@ -50,7 +50,7 @@ public class PermissionController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/update")
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public JsonResult update(ChangePermissionPropsCommand command) {
 		return securityConfigFacade.changePermissionProps(command);
 	}
@@ -62,8 +62,8 @@ public class PermissionController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/terminate", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult terminate(@RequestBody Long[] permissionIds) {
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
+	public JsonResult terminate(Long[] permissionIds) {
 		return securityConfigFacade.terminatePermissions(permissionIds);
 	}
 
@@ -77,9 +77,10 @@ public class PermissionController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/pagingQuery")
+	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQuery(int page, int pagesize, PermissionDTO queryPermissionCondition) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissions(page, pagesize, queryPermissionCondition);
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissions(page, pagesize,
+				queryPermissionCondition);
 		return results;
 	}
 

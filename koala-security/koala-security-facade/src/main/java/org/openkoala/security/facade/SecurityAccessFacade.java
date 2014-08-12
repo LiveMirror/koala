@@ -53,20 +53,20 @@ public interface SecurityAccessFacade {
 	 * 
 	 * @param currentPage
 	 * @param pageSize
-	 * @param userDTO
+	 * @param queryUserCondition
 	 * @return
 	 */
-	Page<UserDTO> pagingQueryUsers(int currentPage, int pageSize, UserDTO userDTO);
+	Page<UserDTO> pagingQueryUsers(int currentPage, int pageSize, UserDTO queryUserCondition);
 
 	/**
 	 * 分页查询角色信息
 	 * 
 	 * @param currentPage
 	 * @param pageSize
-	 * @param roleDTO
+	 * @param queryRoleCondition
 	 * @return
 	 */
-	Page<RoleDTO> pagingQueryRoles(int currentPage, int pageSize, RoleDTO roleDTO);
+	Page<RoleDTO> pagingQueryRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition);
 
 	/**
 	 * 分页查询权限信息
@@ -99,8 +99,7 @@ public interface SecurityAccessFacade {
 
 	Page<PermissionDTO> pagingQueryGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId);
 
-	Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize,
-			UrlAccessResourceDTO urlAccessResourceDTO);
+	Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize, UrlAccessResourceDTO queryUrlAccessResourceCondition);
 
 	/**
 	 * 根据URL或者菜单类型查找所有的权限
@@ -146,8 +145,7 @@ public interface SecurityAccessFacade {
 	 * @param urlAccessResourceId
 	 * @return
 	 */
-	Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
-			Long urlAccessResourceId);
+	Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize, Long urlAccessResourceId);
 
 	/**
 	 * 根据URL访问资源分页查询没有授权的权限。
@@ -157,8 +155,7 @@ public interface SecurityAccessFacade {
 	 * @param urlAccessResourceId
 	 * @return
 	 */
-	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
-			Long urlAccessResourceId);
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize, Long urlAccessResourceId);
 
 	/**
 	 * 根据角色ID查询菜单树（已经选择的有选择标识）。
@@ -173,21 +170,17 @@ public interface SecurityAccessFacade {
 
 	Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId);
 
-	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUserId(int page, int pagesize,
-			PermissionDTO queryPermissionCondition, Long userId);
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUserId(int page, int pagesize, PermissionDTO queryPermissionCondition, Long userId);
 
-	Page<PageElementResourceDTO> pagingQueryPageElementResources(int page, int pagesize,
-			PageElementResourceDTO pageElementResourceDTO);
+	Page<PageElementResourceDTO> pagingQueryPageElementResources(int page, int pagesize, PageElementResourceDTO queryPageElementResourceCondition);
 
 	Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId);
 
 	Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId);
 
-	Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize,
-			Long pageElementResourceId);
+	Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId);
 
-	Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
-			Long pageElementResourceId);
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId);
 
 	UserDTO login(String principal, String password);
 
