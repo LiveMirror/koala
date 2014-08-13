@@ -27,9 +27,32 @@ var userManager = function() {
 	var add = function(grid) {
 		dataGrid = grid;
 		$.get(contextPath + '/pages/auth/user-template.jsp').done(function(data) {
-			init(data);
+			addInit(data);
 		});
 	};
+	function addInit(data){
+		dialog = $(data);
+		userName = dialog.find('#userName');
+		userAccount = dialog.find('#userAccount');
+		description = dialog.find('#description');
+		dialog.find('#save').on('click', function() {
+			save();
+		}).end().modal({
+			keyboard : false
+		}).on({
+			'hidden.bs.modal' : function() {
+				$(this).remove();
+			},
+			'complete' : function() {
+				dataGrid.message({
+					type : 'success',
+					content : '保存成功'
+				});
+				$(this).modal('hide');
+				dataGrid.grid('refresh');
+			}
+		});
+	}
 	/*
 	 * 修改
 	 */
@@ -70,7 +93,6 @@ var userManager = function() {
 	 */
 	var available = function(item, grid) {
 		var dataGrid = grid;
-		console.log(item.id);
 		$.post(baseUrl + 'activate.koala?userId=' + item.id).done(function(data) {
 		    
 			if (data.success == true) {				
@@ -154,10 +176,10 @@ var userManager = function() {
 		dialog.find('.modal-header').find('.modal-title').html( item ? '修改用户信息' : '添加用户');
 		userName = dialog.find('#userName');
 		userAccount = dialog.find('#userAccount');
-		email = dialog.find('#email');
-		userPassword = dialog.find('#userPassword');
+		//email = dialog.find('#email');
+		//userPassword = dialog.find('#userPassword');
 		description = dialog.find('#description');
-		telePhone = dialog.find('#telePhone');
+		//telePhone = dialog.find('#telePhone');
 		isEnable = dialog.find('[name="isEnable"]');
 		isEnable.on('click', function() {
 			isEnable.each(function() {
@@ -166,7 +188,6 @@ var userManager = function() {
 			$(this).parent().addClass('checked');
 		});
 		dialog.find('#save').on('click', function() {
-			$(this).attr('disabled', 'disabled');
 			save(item);
 		}).end().modal({
 			keyboard : false
@@ -191,10 +212,10 @@ var userManager = function() {
 	var setData = function(item) {
 		userName.val(item.name);
 		userAccount.val(item.userAccount).attr('disabled', 'disabled');
-		email.val(item.email).attr('disabled', 'disabled');
-		userPassword.closest('.form-group').hide();
-		description.val(item.userDesc);
-		telePhone.val(item.telePhone);
+		//email.val(item.email).attr('disabled', 'disabled');
+		//userPassword.closest('.form-group').hide();
+		description.val(item.description);
+		//telePhone.val(item.telePhone);
 		if (!item.valid) {
 			dialog.find('[name="isEnable"][value="true"]').removeAttr('checked', 'checked').parent().removeClass('checked');
 			dialog.find('[name="isEnable"][value="false"]').attr('checked', 'checked').parent().addClass('checked');
@@ -209,13 +230,10 @@ var userManager = function() {
 			return false;
 		}
 		var url = baseUrl + 'add.koala';
-		
-		
-		
 		if (item) {
 			url = baseUrl + 'update.koala';
 		}
-		console.log(getAllData(item));
+		
 		$.post(url, getAllData(item)).done(function(data) {
 			if (data.success) {
 				dialog.trigger('complete');
@@ -242,22 +260,22 @@ var userManager = function() {
 		if (!Validation.checkByRegExp(dialog, userAccount, '^[0-9a-zA-Z]*$', userAccount.val(), '用户帐号只能输入字母及数字')) {
 			return false;
 		}
-		if (!Validation.notNull(dialog, email, email.val(), '请输入用户邮箱')) {
+		/*if (!Validation.notNull(dialog, email, email.val(), '请输入用户邮箱')) {
 			return false;
 		}
 		if (!Validation.email(dialog, email, email.val(), '邮箱不合法')) {
 			return false;
 		}
-		if (!item && !Validation.notNull(dialog, userPassword, userPassword.val(), '请输入用户密码')) {
+		if (!item && !Validation.notNull(dialog, userPassword, userPassword.value, '请输入用户密码')) {
 			return false;
 		}
-		if (!item && !Validation.checkByRegExp(dialog, userPassword, '^[0-9a-zA-Z]*$', userPassword.val(), '只能输入字母及数字')) {
+		if (!item && !Validation.checkByRegExp(dialog, userPassword, '^[0-9a-zA-Z]*$', userPassword.value, '只能输入字母及数字')) {
 			return false;
 		}
 		if(!item && (userPassword.val().length < 6 || userPassword.val().length > 10)){
 			showErrorMessage(dialog, userPassword, '请输入6-10位数字或者字母');
 			return false;
-		}
+		}*/
 		return true;
 	};
 	/*
@@ -267,10 +285,10 @@ var userManager = function() {
 		var data = {};
 		data['name'] = userName.val();
 		data['userAccount'] = userAccount.val();
-		data['email'] = email.val();
-		data['userPassword'] = userPassword.val();
+		//data['email'] = email.val();
+		//data['userPassword'] = userPassword.val();
 		data['description'] = description.val();
-		data['telePhone'] = telePhone.val();
+		//data['telePhone'] = telePhone.val();
 		if (item) {
 			data['id'] = item.id;
 		}
@@ -280,7 +298,6 @@ var userManager = function() {
 	 * 分配角色
 	 */
 	var assignRole = function(userId, userAccount) {
-		console.log(userId+"wewewe"+userAccount);
 		openTab('/pages/auth/role-list.jsp', userAccount + '的角色管理', 'roleManager_' + userId, userId, {
 			userId : userId,
 			userAccount : userAccount

@@ -3,11 +3,10 @@
 <script>
 	$(function() {
 		var tabData 	= $('.tab-pane.active').data();
-
 		var userId 		= tabData.userId;
 		var columns = [{
 			title : "角色名称",
-			name : "roleName",
+			name : "name",
 			width : 250
 		}, {
 			title : "角色描述",
@@ -105,7 +104,6 @@
 				//console.log(grid);
         		$.get(contextPath + '/pages/auth/select-role.jsp').done(function(data){
         			var dialog = $(data);
-        			console.log();
         			dialog.find('#save').click(function(){
         				var saveBtn = $(this);
         				var items = dialog.find('.selectRoleGrid').data('koala.grid').selectedRows();
@@ -119,11 +117,8 @@
         				
         				saveBtn.attr('disabled', 'disabled');	
         				var data = "userId="+userId;
-        				
-        				console.log(items);
-        				
         				for(var i=0,j=items.length; i<j; i++){
-        					data += "&roleIds="+items[i].roleId;
+        					data += "&roleIds="+items[i].id;
         				}
         				
         				$.post(contextPath + '/auth/user/grantRolesToUser.koala', data).done(function(data){
@@ -196,7 +191,7 @@
 				
 				var role = items[0];
 				/*打开url表格*/
-				openTab('/pages/auth/url-list.jsp', role.roleName+'的url管理', 'roleManager_' + role.id, role.id, {roleId : role.roleId});
+				openTab('/pages/auth/url-list.jsp', role.name+'的url管理', 'roleManager_' + role.id, role.id, {roleId : role.id});
 			},
 			"menuAssign" : function(event, data) {
 				var items = data.item;
@@ -215,8 +210,7 @@
 					});
 					return;
 				}
-				console.log(items[0].roleId);
-				roleManager().assignResource($this, items[0].roleId);
+				roleManager().assignResource($this, items[0].id);
 			},
 			'pageAssign' : function(event, data) {
 				var items = data.item;
@@ -237,8 +231,7 @@
 				}
 				//roleManager().pageAssign($(this), items[0].roleId);
 				var page = items[0];
-				console.log(page.roleId);
-				openTab('/pages/auth/page-list.jsp', page.roleName+'的page管理', 'roleManager_' + page.roleId, page.roleId, {pageId : page.roleId});
+				openTab('/pages/auth/page-list.jsp', page.name+'的page管理', 'roleManager_' + page.id, page.id, {pageId : page.id});
 			},
 			'permissionAssign' : function(event, data) {
 				var items = data.item;
@@ -259,8 +252,7 @@
 				}
 				//roleManager().pageAssign($(this), items[0].roleId);
 				var permissions = items[0];
-				console.log(permissions);
-				openTab('/pages/auth/permission-list.jsp', permissions.roleName+'的权限管理', 'roleManager_' + permissions.roleId, permissions.roleId, {permissionsId : permissions.roleId});
+				openTab('/pages/auth/permission-list.jsp', permissions.name+'的权限管理', 'roleManager_' + permissions.id, permissions.id, {permissionsId : permissions.id});
 			}
 			,
 			'removeRoleForUser' : function(event, data) {
@@ -279,7 +271,7 @@
 						var url = contextPath + '/auth/user/terminateAuthorizationByUserInRoles.koala';
 						var params = "userId="+userId;
 						for (var i = 0, j = data.item.length; i < j; i++) {
-							params += ("&roleIds=" + data.item[i].roleId);
+							params += ("&roleIds=" + data.item[i].id);
 						}
 						
 						$.post(url, params).done(function(data){

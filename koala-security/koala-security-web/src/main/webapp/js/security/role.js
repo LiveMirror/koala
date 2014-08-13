@@ -1,8 +1,8 @@
 var roleManager = function(){
 	var baseUrl 	= contextPath + '/auth/role/';
 	var dialog 		= null;    		//对话框
-	var roleName 	= null;  		//角色名称
-	var roleDescript = null;    	//角色描述
+	var name 	= null;  		//角色名称
+	var description = null;    	//角色描述
 	var dataGrid 	= null; 		//Grid对象
 	
 	/*
@@ -11,9 +11,48 @@ var roleManager = function(){
 	var add = function(grid) {
 		dataGrid = grid;
 		$.get(contextPath + '/pages/auth/role-template.jsp').done(function(data){
-			init(data);
+			addInit(data);
 		});
 	};
+	function addInit(data){
+		dialog = $(data);
+		dialog.find('#save').on('click',function(){
+			$(this).attr('disabled', 'disabled');
+			name 	= dialog.find('#roleName');
+			description = dialog.find('#roleDescript');
+			addSave();
+		}).end().modal({
+			keyboard: false
+		}).on({
+			'hidden.bs.modal': function(){
+				$(this).remove();
+			},
+			'complete': function(){
+				dataGrid.message({
+					type: 'success',
+					content: '保存成功'
+				});
+				$(this).modal('hide');
+				dataGrid.grid('refresh');
+			}
+		});
+	}
+	
+	function addSave(){
+				var url = baseUrl + 'add.koala';
+                console.log(url);
+				$.post(url,getAllData()).done(function(data){
+					if(data.success){
+						dialog.trigger('complete');
+					}else{
+						dialog.find('.modal-content').message({
+							type: 'error',
+							content: data.actionError
+						});
+					}
+					dialog.find('#save').removeAttr('disabled');
+				});
+	}
 	
 	/*
 	 * 修改
@@ -34,16 +73,8 @@ var roleManager = function(){
 			delete roles[i].permissionDTOs;
 		}*/
 		dataGrid = grid;
-		$.ajax({
-		    headers: { 
-		        'Accept': 'application/json',
-		        'Content-Type': 'application/json' 
-		    },
-		    'type'	: "POST",
-		    'url'	: baseUrl + 'terminate.koala',
-		    'data'	: JSON.stringify(roles),
-		    'dataType': 'json'
-		 }).done(function(data){
+		var url = baseUrl + 'terminate.koala';
+		$.post(url,{"roleIds":roles[0].id}).done(function(data){
 			if(data.success){
 				dataGrid.message({
 					type: 'success',
@@ -71,8 +102,8 @@ var roleManager = function(){
 		dialog = $(data);
 		dialog.find('.modal-header').find('.modal-title').html(item ? '修改角色':'添加角色');
 		
-		roleName 	= dialog.find('#roleName');
-		roleDescript = dialog.find('#roleDescript');
+		name 	= dialog.find('#roleName');
+		description = dialog.find('#roleDescript');
 		
 		dialog.find('#save').on('click',function(){
 			$(this).attr('disabled', 'disabled');
@@ -99,23 +130,19 @@ var roleManager = function(){
 	 */
 	var setData = function(item){
 		console.log(JSON.stringify(item));
-		roleName.val(item.roleName);
-		roleDescript.val(item.description);
+		name.val(item.name);
+		description.val(item.description);
 	};
 		
 	/*
 	*   保存数据 id存在则为修改 否则为新增
 	 */
 	var save = function(item){
-		if(!validate(item)){
+	/*	if(!validate(item)){
 			dialog.find('#save').removeAttr('disabled');
 			return false;
-		}
-		var url = baseUrl + 'add.koala';
-		if(item){
-			url = baseUrl + 'update.koala';
-		}
-		
+		}*/
+		var url = baseUrl + 'update.koala';
 		$.post(url,getAllData(item)).done(function(data){
 			if(data.success){
 				dialog.trigger('complete');
@@ -144,10 +171,10 @@ var roleManager = function(){
 	 */
 	var getAllData = function(item){
 		var data = {};
-		data['roleName'] = roleName.val();
-		data['description'] = roleDescript.val();
+		data['name'] = name.val();
+		data['description'] = description.val();
 		if(item){
-			data['roleId'] = item.roleId;	
+			data['id'] = item.id;	
 		}
 		return data;
 	};
@@ -159,10 +186,10 @@ var roleManager = function(){
 	/**
 	 * 资源授权
 	 */ 
-	var assignResource = function(grid, roleId){
+	var assignResource = function(grid, id){
 		$.get(contextPath + '/pages/auth/assign-resource.jsp').done(function(data){
 			var dialog = $(data);
-            initResourceTree(dialog, roleId);
+            initResourceTree(dialog, id);
             dialog.find('.save').on('click',function(){
 				var treeObj = $(".resourceTree").getTree();
 				var nodes = treeObj.selectedItems();
@@ -171,17 +198,11 @@ var roleManager = function(){
 					nodes[index].name = nodes[index].title;
 					delete nodes[index].title;
 				});
-				
-				$.ajax({
-				    headers: { 
-				        'Accept': 'application/json',
-				        'Content-Type': 'application/json' 
-				    },
-				    'type'	: "POST",
-				    'url'	: baseUrl + 'grantMenuResourcesToRole.koala?roleId='+roleId,
-				    'data'	:JSON.stringify(nodes),
-				    'dataType': 'json'
-				 }).done(function(data){
+				var url =baseUrl + 'grantMenuResourcesToRole.koala?roleId='roleId;
+				for(var i=0,j=nodes.length; i<j; i++){
+					data += "&menuResourceIds="+nodes[i].id;
+				}
+				$.post(url,).done(function(data){
 					if(data.success){
 						grid.message({
 							type: 'success',
@@ -226,6 +247,7 @@ var roleManager = function(){
 		$.get(contextPath + '/auth/role/findMenuResourceTreeSelectItemByRoleId.koala?time='+new Date().getTime()+'&roleId='+roleId).done(function(result){
 			var zNodes = new Array();
 			var items = result.data;
+			console.log(items);
 			if(!items){
 				return;
 			}

@@ -135,7 +135,6 @@
 		        						type : 'error',
 		        						content : data.actionError
 		        					});
-		        					refreshToken(dialog.find('input[name="koala.token"]'));
 		        				}
 		        				dialog.find('#save').removeAttr('disabled');
 	        				}

@@ -13,14 +13,14 @@
 					<div class="form-group">
 						<label class="col-lg-3 control-label">角色名称:</label>
 						<div class="col-lg-9">
-							<input type="text" class="form-control" id="roleName">
+							<input type="text" class="form-control" id="roleName" name = "name">
 							<span class="required">*</span>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-3 control-label">角色描述:</label>
 						<div class="col-lg-9">
-							<input type="text" class="form-control" id="roleDescript">
+							<input type="text" class="form-control" id="roleDescript" name ="description">
 						</div>
 					</div>
 				</form>
