@@ -12,9 +12,9 @@
 			dialog.find('.modal-header').find('.modal-title').html( item ? '修改权限信息' : '添加权限');		
 			var form = dialog.find(".permisstion_form");
 			validate(form, dialog, item);
-			
+			console.log(item);
 			if(item){
-				form.find("input[name='permissionName']").val(item.permissionName);
+				form.find("input[name='name']").val(item.name);
 				form.find("input[name='identifier']").val(item.identifier);
 				form.find("input[name='description']").val(item.description);
 			}
@@ -47,7 +47,7 @@
 			};
 			
 			var inputs = [{ 
-					name:"permissionName",	
+					name:"name",	
 					rules:["notnull"],
 					focusMsg:'必填',	
 					rightMsg:"正确"
@@ -66,16 +66,17 @@
 	            	 */
 	            	if(result){
 	            		var data = form.serialize();
+	            		console.log(data);
 	            		var url = baseUrl + 'add.koala';
 	        			if (item) {
 	        				url = baseUrl + 'update.koala';
-	        				data += ("&permissionId=" + item.permissionId);
+	        				data += ("&id=" + item.id);
 	        			}
 	        			
 	        			$.ajax({
 	        				url : url,
 	        				data: data,
-	        				type: "post",
+	        				type: "POST",
 	        				dataType:"json",
 	        				success:function(data){
 	        					if (data.success) {
@@ -85,7 +86,6 @@
 		        						type : 'error',
 		        						content : data.actionError
 		        					});
-		        					refreshToken(dialog.find('input[name="koala.token"]'));
 		        				}
 		        				dialog.find('#save').removeAttr('disabled');
 	        				}
@@ -96,16 +96,9 @@
 		};
 		
 		deletePermission = function(urls, grid) {
-			$.ajax({
-			    headers: { 
-			        'Accept': 'application/json',
-			        'Content-Type': 'application/json' 
-			    },
-			    'type'	: "Post",
-			    'url'	: baseUrl + 'terminate.koala',
-			    'data' 	: JSON.stringify(urls),
-			    'dataType': 'json'
-			 }).done(function(data){
+			var url = baseUrl + 'terminate.koala';
+			console.log(urls[0].id);
+			$.post(url,{"permissionIds":urls[0].id}).done(function(data){
 			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
@@ -137,7 +130,7 @@
 	     
 		var columns = [{
 				title : "权限名称",
-				name : "permissionName",
+				name : "name",
 				width : 150
 			},{
 				title : "菜单标识",
@@ -294,7 +287,7 @@
         				
         				var data = "userId="+userId;
         				for(var i=0,j=items.length; i<j; i++){
-        					data += "&permissionIds=" + items[i].permissionId;
+        					data += "&permissionIds=" + items[i].id;
         				}
         				
         				$.post(contextPath + '/auth/user/grantPermissionsToUser.koala', data).done(function(data){
@@ -870,7 +863,7 @@
         				
         				var data = "roleId="+roleId;
         				for(var i=0,j=items.length; i<j; i++){
-        					data += "&permissionIds=" + items[i].permissionId;
+        					data += "&permissionIds=" + items[i].id;
         				}
         				
         				$.post(contextPath + '/auth/role/grantPermissionsToRole.koala', data).done(function(data){

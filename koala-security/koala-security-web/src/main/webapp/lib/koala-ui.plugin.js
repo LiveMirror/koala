@@ -332,7 +332,6 @@
 				return;
 			}
 			
-			console.log(params);
 			$.ajax({
 				type : this.options.method,
 				url : this.options.url,

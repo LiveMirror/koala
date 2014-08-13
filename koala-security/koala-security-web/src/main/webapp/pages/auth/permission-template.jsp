@@ -13,7 +13,7 @@
 					<div class="form-group">
 						<label class="col-lg-3 control-label">权限名称:</label>
 						<div class="col-lg-9">
-							<input type="text" class="form-control" name="permissionName"/>
+							<input type="text" class="form-control" name="name"/>
 							<span class="required">*</span>
 						</div>
 					</div>
