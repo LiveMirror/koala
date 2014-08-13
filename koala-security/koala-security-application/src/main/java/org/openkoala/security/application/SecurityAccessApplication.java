@@ -201,5 +201,7 @@ public interface SecurityAccessApplication {
 	User getUserByEmail(String email);
 
 	User getUserByTelePhone(String telePhone);
-	
+
+	List<MenuResource> findAllMenuResourcesByIds(Long[] menuResourceIds);
+
 }

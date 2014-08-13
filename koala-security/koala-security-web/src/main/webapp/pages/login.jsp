@@ -197,7 +197,7 @@ body {
         		url : "auth/loginUser/login.koala",
         		dataType:"json",
         		data:param,
-        		type:"post",
+        		type:"POST",
         		success:function(data){
         			if(data.success){
         				$('.login_con_R').message({

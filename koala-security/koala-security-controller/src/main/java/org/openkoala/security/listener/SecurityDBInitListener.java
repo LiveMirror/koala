@@ -1,4 +1,4 @@
-package org.openkoala.security.shiro.listener;
+package org.openkoala.security.listener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -26,10 +26,6 @@ public class SecurityDBInitListener implements ServletContextListener{
 		securityConfigFacade.initSecuritySystem();
 		LOGGER.info("init Security db.");
 	}
-
 	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
-		
-	}
-
+	public void contextDestroyed(ServletContextEvent sce) {}
 }

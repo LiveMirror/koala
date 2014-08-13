@@ -1,4 +1,4 @@
-package org.openkoala.security.web.controller;
+package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
@@ -10,7 +10,6 @@ import org.openkoala.security.facade.command.CreatePermissionCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;

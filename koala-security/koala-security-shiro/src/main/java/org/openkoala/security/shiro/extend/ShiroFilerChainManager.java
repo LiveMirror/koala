@@ -1,6 +1,5 @@
 package org.openkoala.security.shiro.extend;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +36,9 @@ public class ShiroFilerChainManager {
 
 	// @PostConstruct
 	public void initFilterChain() {
-		// List<UrlAccessResourceDTO> urlAccessResources = securityAccessFacade.findAllUrlAccessResources();
-		initFilterChains(Collections.<UrlAccessResourceDTO> emptyList());
+		List<UrlAccessResourceDTO> results = securityAccessFacade.findAllUrlAccessResources();
+		LOGGER.info("initFilterChain:{}", results);
+		initFilterChains(results);
 	}
 
 	public void initFilterChains(List<UrlAccessResourceDTO> urlAccessResources) {
@@ -47,11 +47,12 @@ public class ShiroFilerChainManager {
 		if (defaultFilterChains != null) {
 			filterChainManager.getFilterChains().putAll(defaultFilterChains);
 		}
-
+		
 		if (!urlAccessResources.isEmpty()) {
 			// 2、循环URL Filter 注册filter chain
 			for (UrlAccessResourceDTO urlAccessResource : urlAccessResources) {
 				String url = urlAccessResource.getUrl();
+				LOGGER.info("roles:{},permissions:{}",urlAccessResource.getRoles(),urlAccessResource.getPermissions());
 				if (!org.apache.commons.lang3.StringUtils.isBlank(url)) {
 					// 注册roles filter
 					if (!StringUtils.isEmpty(urlAccessResource.getRoles())) {
@@ -64,6 +65,8 @@ public class ShiroFilerChainManager {
 				}
 			}
 		}
+		filterChainManager.addToChain("/**", "authc");
+		
 		LOGGER.info("filterChain:{}", filterChainManager.getFilterChains());
 	}
 

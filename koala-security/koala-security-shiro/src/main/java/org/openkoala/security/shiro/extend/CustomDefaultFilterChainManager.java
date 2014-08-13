@@ -31,7 +31,7 @@ public class CustomDefaultFilterChainManager extends DefaultFilterChainManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomDefaultFilterChainManager.class);
 
-	private Map<String, String> filterChainDefinitionMap;
+	private Map<String, String> filterChainDefinitionMap = null;
 
 	private String loginUrl;
 
@@ -56,7 +56,7 @@ public class CustomDefaultFilterChainManager extends DefaultFilterChainManager {
 	public void setCustomFilters(Map<String, Filter> customFilters) {
 		for (Map.Entry<String, Filter> entry : customFilters.entrySet()) {
 			addFilter(entry.getKey(), entry.getValue(), false);
-			LOGGER.info("filter name:{},value:{}",entry.getKey(),entry.getValue());
+			LOGGER.info("filter name:{},value:{}", entry.getKey(), entry.getValue());
 		}
 	}
 
@@ -119,6 +119,7 @@ public class CustomDefaultFilterChainManager extends DefaultFilterChainManager {
 	public FilterChain proxy(FilterChain original, List<String> chainNames) {
 		NamedFilterList configured = new SimpleNamedFilterList(chainNames.toString());
 		for (String chainName : chainNames) {
+			LOGGER.info("chain:{}", getChain(chainName));
 			configured.addAll(getChain(chainName));
 		}
 		return configured.proxy(original);

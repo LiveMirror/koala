@@ -4,4 +4,4 @@
  * @author luzhao
  *
  */
-package org.openkoala.security.web.controller;
+package org.openkoala.security.controller;

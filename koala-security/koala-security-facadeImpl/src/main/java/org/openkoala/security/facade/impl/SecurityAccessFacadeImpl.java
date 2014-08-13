@@ -229,14 +229,15 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 			List<String> roles = UrlAccessResource.getRoleNames(authorities);
 			List<String> permissions = UrlAccessResource.getPermissionIdentifiers(authorities);
-
 			UrlAccessResourceDTO urlAccessResourceDTO = generateUrlAccessResourceDTOBy(urlAccessResource);
 			if (!roles.isEmpty()) {
-				urlAccessResourceDTO.setRoles(roles.toString());
+				String result = list2String(roles);
+				urlAccessResourceDTO.setRoles(result);
 			}
 
 			if (!permissions.isEmpty()) {
-				urlAccessResourceDTO.setPermissions(permissions.toString());
+				String result = list2String(permissions);
+				urlAccessResourceDTO.setPermissions(result);
 			}
 
 			if (!roles.isEmpty() || !permissions.isEmpty()) {
@@ -397,7 +398,8 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				"SELECT NEW org.openkoala.security.facade.dto.UrlAccessResourceDTO(_urlAccessResource.id, _urlAccessResource.name, _urlAccessResource.url,_urlAccessResource.description) FROM UrlAccessResource _urlAccessResource");
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 
-		assembleUrlAccessResourceJpqlAndConditionValues(queryUrlAccessResourceCondition, jpql, "_urlAccessResource", conditionVals);
+		assembleUrlAccessResourceJpqlAndConditionValues(queryUrlAccessResourceCondition, jpql, "_urlAccessResource",
+				conditionVals);
 
 		Page<UrlAccessResourceDTO> results = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
@@ -816,6 +818,14 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		} else {
 			jpql.append(" WHERE ");
 		}
+	}
+
+	private String list2String(List<String> elements) {
+		StringBuilder allRoles = new StringBuilder();
+		for (String element : elements) {
+			allRoles.append(element).append(",");
+		}
+		return allRoles.substring(0, allRoles.length() - 1);
 	}
 
 }

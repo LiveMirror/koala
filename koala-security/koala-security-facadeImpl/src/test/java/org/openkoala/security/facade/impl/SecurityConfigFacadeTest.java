@@ -48,8 +48,6 @@ public class SecurityConfigFacadeTest extends AbstractFacadeIntegrationTestCase 
 		assertEquals(expected.isSuccess(), actual.isSuccess());
 	}
 
-	// TODO ...
-	@Ignore
 	@Test
 	public void testGrantMenuResourcesToRole() {
 		MenuResource menuResource1 = new MenuResource("menu1");
@@ -70,7 +68,7 @@ public class SecurityConfigFacadeTest extends AbstractFacadeIntegrationTestCase 
 
 		role1.addSecurityResources(Lists.newArrayList(menuResource1, menuResource2));
 
-		securityConfigFacade.grantMenuResourcesToRole(role1.getId(),Lists.newArrayList(menuResourceDTO2, menuResourceDTO3, menuResourceDTO4));
+		securityConfigFacade.grantMenuResourcesToRole(role1.getId(),new Long[]{menuResourceDTO2.getId(), menuResourceDTO3.getId(), menuResourceDTO4.getId()});
 
 		Set<SecurityResource> securityResources = role1.getSecurityResources();
 

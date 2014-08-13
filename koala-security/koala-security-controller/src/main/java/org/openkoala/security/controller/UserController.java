@@ -1,4 +1,4 @@
-package org.openkoala.security.web.controller;
+package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
@@ -20,7 +20,6 @@ import org.openkoala.security.shiro.util.AuthUserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -452,104 +451,5 @@ public class UserController {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(page, pagesize,
 				queryPermissionCondition, userId);
 		return results;
-	}
-
-	// ~ 为与组织机构集成准备
-
-	/**
-	 * 在某个范围中为用户授权一个角色。
-	 * 
-	 * @param userId
-	 * @param roleId
-	 * @param scopeId
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/grantRoleToUserInScope", method = RequestMethod.POST)
-	public JsonResult grantRoleToUserInScope(Long userId, Long roleId, Long scopeId) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.grantRoleToUserInScope(userId, roleId, scopeId);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("在某个范围中为用户授权一个角色成功。");
-		} catch (Exception e) {
-			LOGGER.info(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("在某个范围中为用户授权一个角色失败。");
-		}
-		return jsonResult;
-	}
-
-	/**
-	 * 在某个范围中为用户授权多个角色。
-	 * 
-	 * @param userId
-	 * @param roleIds
-	 * @param scopeId
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/grantRolesInScope", method = RequestMethod.POST)
-	public JsonResult grantRolesToUserInScope(Long userId, Long[] roleIds, Long scopeId) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.grantRolesToUserInScope(userId, roleIds, scopeId);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("在某个范围中为用户授权多个角色成功");
-		} catch (Exception e) {
-			LOGGER.info(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("在某个范围中为用户授权多个角色失败");
-		}
-		return jsonResult;
-	}
-
-	// ~ 组织机构
-	/**
-	 * 在某个范围中为用户授权一个权限。
-	 * 
-	 * @param userId
-	 * @param permissionId
-	 * @param scopeId
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/grantPermissionsToUserInScope", method = RequestMethod.POST)
-	public JsonResult grantPermissionsToUserInScope(Long userId, Long permissionId, Long scopeId) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.grantPermissionToUserInScope(userId, permissionId, scopeId);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("在某个范围中为用户授权一个权限成功。");
-		} catch (Exception e) {
-			LOGGER.info(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("在某个范围中为用户授权一个权限失败。");
-		}
-		return jsonResult;
-	}
-
-	/**
-	 * 在某个范围中为用户授权多个权限。
-	 * 
-	 * @param userId
-	 * @param permissionIds
-	 * @param scopeId
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/grantPermissionToUserInScope", method = RequestMethod.POST)
-	public JsonResult grantPermissionToUserInScope(Long userId, Long[] permissionIds, Long scopeId) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.grantPermissionsToUserInScope(userId, permissionIds, scopeId);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("在某个范围中为用户授权多个权限成功。");
-		} catch (Exception e) {
-			LOGGER.info(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("在某个范围中为用户授权多个权限失败。");
-		}
-		return jsonResult;
 	}
 }

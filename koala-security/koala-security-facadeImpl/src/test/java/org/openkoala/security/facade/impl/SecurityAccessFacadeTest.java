@@ -177,8 +177,6 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		String permissions = urlAccessResource.getPermissions();
 		assertNotNull(roles);
 		assertNotNull(permissions);
-		roles = roles.substring(1, roles.length()-1);////remove[]
-		permissions = permissions.substring(1, permissions.length()-1);//remove[]
 		assertEquals(role.getName(),roles);
 		assertEquals(permission.getIdentifier(),permissions);
 	}

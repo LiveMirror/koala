@@ -13,18 +13,19 @@
 	<name>koala-security</name>
 	<description />
 	<modules>
-		<module>koala-security-core</module>
-		<module>koala-security-application</module>
 		<module>koala-security-conf</module>
+		<module>koala-security-core</module>
+		<module>koala-security-infra</module>
+		<module>koala-security-application</module>
 		<module>koala-security-facade</module>
 		<module>koala-security-facadeImpl</module>
-		<module>koala-security-web</module>
-		<module>koala-security-infra</module>
-		<module>koala-security-taglibs</module>
 		<module>koala-security-shiro</module>
+		<module>koala-security-taglibs</module>
+		<module>koala-security-controller</module>
+		<module>koala-security-web</module>
 	</modules>
 	<properties>
-	<!--  
+		<!-- 
 		<db.groupId>mysql</db.groupId>
 		<db.artifactId>mysql-connector-java</db.artifactId>
 		<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
@@ -36,7 +37,7 @@
 		<db.password>root</db.password>
 		<db.Type>MYSQL</db.Type>
 		<generateDdl>true</generateDdl>
-		-->
+		 -->
 		<shiro.version>1.2.3</shiro.version>
 		<guava.version>17.0</guava.version>
 		<hamcrest.version>1.3</hamcrest.version>

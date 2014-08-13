@@ -1,4 +1,4 @@
-package org.openkoala.security.web.controller;
+package org.openkoala.security.controller;
 
 import java.util.Arrays;
 import java.util.List;
@@ -150,11 +150,11 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/grantMenuResourcesToRole", method = RequestMethod.POST, consumes = "application/json")
-	public JsonResult grantMenuResourcesToRole(Long roleId, @RequestBody MenuResourceDTO[] menuResourceDTOs) {
+	@RequestMapping(value = "/grantMenuResourcesToRole", method = RequestMethod.POST)
+	public JsonResult grantMenuResourcesToRole(Long roleId, Long[] menuResourceIds) {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			securityConfigFacade.grantMenuResourcesToRole(roleId, Arrays.asList(menuResourceDTOs));
+			securityConfigFacade.grantMenuResourcesToRole(roleId, menuResourceIds);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为角色授权菜单资源成功");
 		} catch (Exception e) {

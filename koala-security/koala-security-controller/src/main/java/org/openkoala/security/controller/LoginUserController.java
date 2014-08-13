@@ -1,4 +1,4 @@
-package org.openkoala.security.web.controller;
+package org.openkoala.security.controller;
 
 import javax.servlet.http.HttpServletRequest;
 

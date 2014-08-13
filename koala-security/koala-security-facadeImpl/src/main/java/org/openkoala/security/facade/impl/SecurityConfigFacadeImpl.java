@@ -47,7 +47,6 @@ import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
 import org.openkoala.security.facade.command.CreateUserCommand;
 import org.openkoala.security.facade.command.LoginCommand;
 import org.openkoala.security.facade.dto.JsonResult;
-import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.impl.assembler.MenuResourceAssembler;
 import org.openkoala.security.facade.impl.assembler.PageElementResourceAssembler;
 import org.openkoala.security.facade.impl.assembler.PermissionAssembler;
@@ -369,12 +368,16 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	 * 为角色授权菜单资源。
 	 */
 	@Override
-	public void grantMenuResourcesToRole(Long roleId, List<MenuResourceDTO> menuResourceDTOs) {
+	public void grantMenuResourcesToRole(Long roleId, Long[] menuResourceIds) {
 
 		Role role = securityAccessApplication.getRoleBy(roleId);
 
 		// 现在的
-		List<MenuResource> targetOwnerMenuResources = transFromMenuResourcesBy(menuResourceDTOs);
+		
+		List<MenuResource> targetOwnerMenuResources = securityAccessApplication.findAllMenuResourcesByIds(menuResourceIds);
+		
+//		List<MenuResource> targetOwnerMenuResources = transFromMenuResourcesBy(menuResourceIds);
+		
 
 		// 原有的 TODO 可以门面层的查询选中项的方法变成一个。
 		List<MenuResource> originalOwnerMenuResources = securityAccessApplication.findAllMenuResourcesByRole(role);

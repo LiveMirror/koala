@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
@@ -49,7 +50,7 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 	/**
 	 * 查询的时候禁止懒加载。
 	 */
-	@ManyToMany(mappedBy = "securityResources")
+	@ManyToMany(mappedBy = "securityResources", fetch = FetchType.EAGER)
 	private Set<Authority> authorities = new HashSet<Authority>();
 
 	protected SecurityResource() {}

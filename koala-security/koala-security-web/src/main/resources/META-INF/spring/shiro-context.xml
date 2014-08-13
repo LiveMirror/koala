@@ -46,7 +46,7 @@
 	<bean id="filterChainManager" class="org.openkoala.security.shiro.extend.CustomDefaultFilterChainManager">
 		<property name="loginUrl" value="/login.koala" />
 		<property name="successUrl" value="/"/>
-		<property name="unauthorizedUrl" value="unauthorized.jsp" />
+		<property name="unauthorizedUrl" value="/unauthorized.koala" />
 		<property name="customFilters">
 			<util:map>
 				<!-- 定义自己的过滤器注册到shiro过滤器链中 -->
@@ -63,9 +63,8 @@
 				/lib/** = anon
 				/jcaptcha.jpg = anon
 				/login.koala = jCaptchaValidate
-				/auth/user/login.koala = jCaptchaValidate
-				/unauthorized.jsp = authc
-				/** = authc
+				/auth/loginUser/login.koala = jCaptchaValidate
+				/unauthorized.koala = authc
 			</value>
 		</property>
 	</bean>
