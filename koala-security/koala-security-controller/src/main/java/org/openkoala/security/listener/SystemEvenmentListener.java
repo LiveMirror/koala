@@ -17,8 +17,8 @@ public class SystemEvenmentListener implements ServletContextListener{
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
-		CustomDefaultFilterChainManager filterChainManager = (CustomDefaultFilterChainManager) applicationContext.getBean("filterChainManager");
-		ShiroFilterChainManager shiroFilterChainManager = (ShiroFilterChainManager) applicationContext.getBean("shiroFilerChainManager");
+		CustomDefaultFilterChainManager filterChainManager = applicationContext.getBean(CustomDefaultFilterChainManager.class);
+		ShiroFilterChainManager shiroFilterChainManager = applicationContext.getBean(ShiroFilterChainManager.class);
 		filterChainManager.init();
 		shiroFilterChainManager.init();
 		shiroFilterChainManager.initFilterChain();

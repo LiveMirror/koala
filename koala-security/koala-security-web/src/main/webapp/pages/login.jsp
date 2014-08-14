@@ -194,7 +194,7 @@ body {
 	        
     		var param = form.serialize();
         	$.ajax({
-        		url : "auth/loginUser/login.koala",
+        		url : "/login.koala",
         		dataType:"json",
         		data:param,
         		type:"POST",

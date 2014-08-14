@@ -27,7 +27,6 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
-import org.openkoala.security.shiro.util.AuthUserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,13 +46,16 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
 	@Inject
 	protected EncryptService passwordEncryptService;
-
+	
 	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+	public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
 		SimpleAuthorizationInfo result = new SimpleAuthorizationInfo();
-		result.setRoles(getRoles(shiroUser.getRoleName()));
-		result.setStringPermissions(getPermissionIdentifiers(shiroUser.getUserAccount()));
+		Set<String> roles = getRoles(shiroUser.getRoleName());
+		Set<String> permissions = getPermissions(shiroUser.getUserAccount(), shiroUser.getRoleName());
+		result.setRoles(roles);
+		result.setStringPermissions(permissions);
+		LOGGER.info("---->role:{},permission:{}", roles, permissions);
 		return result;
 	}
 
@@ -72,6 +74,8 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		// TODO 以后修改成前后台获取一致。
 		String roleName = getRoleName(user);
 		ShiroUser shiroUser = new ShiroUser(user.getId(), user.getUserAccount(), user.getName(), roleName);
+
+		// permission 还需要role 的permission
 
 		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
 				shiroUser, //
@@ -179,7 +183,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 	 * @return
 	 */
 	private String getRoleName(UserDTO user) {
-		List<RoleDTO> roles = securityAccessFacade.findRolesBy(user.getUserAccount());
+		List<RoleDTO> roles = securityAccessFacade.findRolesByUserAccount(user.getUserAccount());
 		if (!roles.isEmpty()) {
 			return roles.get(0).getName();
 		}
@@ -199,18 +203,18 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		return null;
 	}
 
-	private Set<String> getRoles(String roleName) {
-		Set<String> roles = new HashSet<String>();
-		roles.add(AuthUserUtil.getRoleName());
-		return roles;
+	public Set<String> getRoles(String roleName) {
+		Set<String> results = new HashSet<String>();
+		results.add(roleName);
+		return results;
 	}
 
-	private Set<String> getPermissionIdentifiers(String username) {
+	private Set<String> getPermissions(String username, String roleName) {
 		Set<String> results = new HashSet<String>();
-
-		Set<PermissionDTO> permissionDtos = securityAccessFacade.findPermissionsBy(username);
-		for (PermissionDTO permissionDto : permissionDtos) {
-			results.add(permissionDto.getIdentifier());
+		Set<PermissionDTO> permissions = securityAccessFacade.findPermissionsByUserAccountAndRoleName(username,
+				roleName);
+		for (PermissionDTO permission : permissions) {
+			results.add(permission.getIdentifier());
 		}
 		return results;
 	}
@@ -226,10 +230,6 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		private String name;
 
 		private String roleName;
-
-		private AuthenticationInfo authenticationInfo;
-
-		private AuthorizationInfo authorizationInfo;
 
 		ShiroUser() {
 		}

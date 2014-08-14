@@ -15,8 +15,8 @@ import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
+import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
-import org.openkoala.security.shiro.util.AuthUserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -105,7 +105,7 @@ public class RoleController {
 	public JsonResult findRoleDtosByUsername() {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			List<RoleDTO> results = securityAccessFacade.findRolesBy(AuthUserUtil.getUserAccount());
+			List<RoleDTO> results = securityAccessFacade.findRolesByUserAccount(CurrentUser.getUserAccount());
 			jsonResult.setData(results);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("根据用户名查找所有的角色成功。");

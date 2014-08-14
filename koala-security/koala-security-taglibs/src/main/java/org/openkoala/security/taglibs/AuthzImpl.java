@@ -5,8 +5,8 @@ import java.util.Collection;
 import javax.servlet.ServletContext;
 
 import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.realm.CustomAuthoringRealm.ShiroUser;
-import org.openkoala.security.shiro.util.AuthUserUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -31,18 +31,18 @@ public class AuthzImpl implements Authz {
 
 	@Override
 	public Object getPrincipal() {
-		return AuthUserUtil.getCurrentUser();
+		return CurrentUser.getPrincipal();
 	}
 
 	@Override
 	public boolean ifAllRole(Collection<String> roles) {
-		return AuthUserUtil.getSubject().hasAllRoles(roles);
+		return CurrentUser.getSubject().hasAllRoles(roles);
 	}
 
 	@Override
 	public boolean ifAnyRole(Collection<String> roles) {
 		for (String role : roles) {
-			if (AuthUserUtil.getSubject().hasRole(role)) {
+			if (CurrentUser.getSubject().hasRole(role)) {
 				return true;
 			}
 		}
@@ -56,13 +56,13 @@ public class AuthzImpl implements Authz {
 
 	@Override
 	public boolean ifAllPermission(Collection<String> permissions) {
-		return AuthUserUtil.getSubject().isPermittedAll(permissions.toString());
+		return CurrentUser.getSubject().isPermittedAll(permissions.toString());
 	}
 
 	@Override
 	public boolean ifAnyPermission(Collection<String> permissions) {
 		for (String permission : permissions) {
-			if (AuthUserUtil.getSubject().isPermitted(permission)) {
+			if (CurrentUser.getSubject().isPermitted(permission)) {
 				return true;
 			}
 		}

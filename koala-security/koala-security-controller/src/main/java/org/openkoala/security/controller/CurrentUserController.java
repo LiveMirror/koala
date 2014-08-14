@@ -1,0 +1,80 @@
+package org.openkoala.security.controller;
+
+import javax.inject.Inject;
+
+import org.openkoala.security.facade.SecurityConfigFacade;
+import org.openkoala.security.facade.command.ChangeUserAccountCommand;
+import org.openkoala.security.facade.command.ChangeUserEmailCommand;
+import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
+import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
+import org.openkoala.security.facade.dto.JsonResult;
+import org.openkoala.security.shiro.CurrentUser;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+/**
+ * 当前用户的一些操作
+ * 
+ * @author luzhao
+ * 
+ */
+@Controller
+@RequestMapping("/auth/currentUser")
+public class CurrentUserController {
+
+	@Inject
+	private SecurityConfigFacade securityConfigFacade;
+	
+	/**
+	 * 更改用户账号。
+	 * 
+	 * @param command
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/changeUserAccount", method = RequestMethod.POST)
+	public JsonResult changeUserAccount(ChangeUserAccountCommand command) {
+		return securityConfigFacade.changeUserAccount(command);
+	}
+
+	/**
+	 * 更改用户邮箱。
+	 * 
+	 * @param command
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/changeUserEmail", method = RequestMethod.POST)
+	public JsonResult changeUserEmail(ChangeUserEmailCommand command) {
+		return securityConfigFacade.changeUserEmail(command);
+	}
+
+	/**
+	 * 更改用户联系电话。
+	 * 
+	 * @param command
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/changeUserTelePhone", method = RequestMethod.POST)
+	public JsonResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
+		return securityConfigFacade.changeUserTelePhone(command);
+	}
+	
+	/**
+	 * 更新用户密码。
+	 * 
+	 * @param oldPassword
+	 * @param userPassword
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+	public JsonResult changeUserPassword(ChangeUserPasswordCommand command) {
+		command.setUserAccount(CurrentUser.getUserAccount());
+		return securityConfigFacade.changeUserPassword(command);
+	}
+
+}
