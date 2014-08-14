@@ -65,7 +65,7 @@
 				/login.koala = jCaptchaValidate
 				/auth/user/login.koala = jCaptchaValidate
 				/unauthorized.jsp = authc
-				/** = authc
+				/** = anon
 			</value>
 		</property>
 	</bean>
