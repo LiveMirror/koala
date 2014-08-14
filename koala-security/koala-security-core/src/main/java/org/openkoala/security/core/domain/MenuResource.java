@@ -2,6 +2,7 @@ package org.openkoala.security.core.domain;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -43,7 +44,7 @@ public class MenuResource extends SecurityResource {
 	 */
 	@Column(name = "POSITION")
 	private int position = 0;
-	
+
 	@Column(name = "URL")
 	private String url;
 
@@ -56,7 +57,8 @@ public class MenuResource extends SecurityResource {
 	@OneToMany(mappedBy = "parent")
 	private Set<MenuResource> children = new HashSet<MenuResource>();
 
-	protected MenuResource() {}
+	protected MenuResource() {
+	}
 
 	public MenuResource(String name) {
 		super(name);
@@ -96,17 +98,24 @@ public class MenuResource extends SecurityResource {
 				.addParameter("name", name)//
 				.singleResult();
 	}
-	
+
 	public static MenuResource getBy(Long id) {
 		return MenuResource.get(MenuResource.class, id);
 	}
 	
+	public static List<MenuResource> findAllByIds(Long[] menuResourceIds) {
+		return getRepository()//
+				.createCriteriaQuery(MenuResource.class)//
+				.in("id", menuResourceIds)//
+				.list();
+	}
+
 	private void removeChildren() {
 		for (MenuResource child : children) {
 			child.remove();
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)//

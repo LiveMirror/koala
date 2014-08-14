@@ -1,7 +1,5 @@
 package org.openkoala.security.facade;
 
-import java.util.List;
-
 import org.openkoala.security.facade.command.ChangeMenuResourcePropsCommand;
 import org.openkoala.security.facade.command.ChangePageElementResourcePropsCommand;
 import org.openkoala.security.facade.command.ChangePermissionPropsCommand;
@@ -19,9 +17,7 @@ import org.openkoala.security.facade.command.CreatePermissionCommand;
 import org.openkoala.security.facade.command.CreateRoleCommand;
 import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
 import org.openkoala.security.facade.command.CreateUserCommand;
-import org.openkoala.security.facade.command.LoginCommand;
 import org.openkoala.security.facade.dto.JsonResult;
-import org.openkoala.security.facade.dto.MenuResourceDTO;
 
 public interface SecurityConfigFacade {
 
@@ -298,7 +294,7 @@ public interface SecurityConfigFacade {
 
 	void terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds);
 
-	void grantMenuResourcesToRole(Long roleId, List<MenuResourceDTO> menuResourceDTOs);
+	void grantMenuResourcesToRole(Long roleId, Long[] menuResourceIds);
 
 	void grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds);
 
@@ -330,8 +326,7 @@ public interface SecurityConfigFacade {
 
 	void terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId);
 
-	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName,
-			String securityResourceIdentifier);
+	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceIdentifier);
 
 	/**
 	 * 初始化系统权限资源。

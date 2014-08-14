@@ -54,7 +54,6 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		SimpleAuthorizationInfo result = new SimpleAuthorizationInfo();
 		result.setRoles(getRoles(shiroUser.getRoleName()));
 		result.setStringPermissions(getPermissionIdentifiers(shiroUser.getUserAccount()));
-		shiroUser.setAuthorizationInfo(result);
 		return result;
 	}
 
@@ -232,7 +231,8 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
 		private AuthorizationInfo authorizationInfo;
 
-		ShiroUser() {}
+		ShiroUser() {
+		}
 
 		public ShiroUser(Long id, String userAccount, String name) {
 			this.id = id;
@@ -280,26 +280,9 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 			this.roleName = roleName;
 		}
 
-		public AuthenticationInfo getAuthenticationInfo() {
-			return authenticationInfo;
-		}
-
-		public void setAuthenticationInfo(AuthenticationInfo authenticationInfo) {
-			this.authenticationInfo = authenticationInfo;
-		}
-
-		public AuthorizationInfo getAuthorizationInfo() {
-			return authorizationInfo;
-		}
-
-		public void setAuthorizationInfo(AuthorizationInfo authorizationInfo) {
-			this.authorizationInfo = authorizationInfo;
-		}
-
 		@Override
 		public String toString() {
-			return "ShiroUser [id=" + id + ", userAccount=" + userAccount + ", name=" + name + ", roleName=" + roleName
-					+ ", authenticationInfo=" + authenticationInfo + ", authorizationInfo=" + authorizationInfo + "]";
+			return "ShiroUser [id=" + id + ", userAccount=" + userAccount + ", name=" + name + ", roleName=" + roleName + "]";
 		}
 
 	}

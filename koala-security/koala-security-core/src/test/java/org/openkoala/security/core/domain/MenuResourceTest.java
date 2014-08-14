@@ -150,8 +150,26 @@ public class MenuResourceTest extends AbstractDomainIntegrationTestCase {
 		assertMenuResource(securityMenuResource, loadMenuResource);
 	}
 	
-	
-	
-	
+	@Test
+	public void testFindAllByIds() throws Exception {
+		MenuResource actorSecurityMenuResource = new MenuResource("参与者管理");
+		actorSecurityMenuResource.setDescription("用户、用户组等页面管理。");
+		actorSecurityMenuResource.save();
+		
+		MenuResource userMenuResource = new MenuResource("用户管理");
+		userMenuResource.setUrl("/pages/auth/user-list.jsp");
+		actorSecurityMenuResource.addChild(userMenuResource);
+		
+		Long[] menuResourceIds = new Long[]{actorSecurityMenuResource.getId(),userMenuResource.getId()};
+		List<MenuResource> menuResources = MenuResource.findAllByIds(menuResourceIds);
+		assertFalse(menuResources.isEmpty());
+		assertTrue(menuResources.size() == 2);
+	}
 	
 }
+
+
+
+
+
+

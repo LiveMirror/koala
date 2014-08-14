@@ -144,4 +144,9 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	public User getUserByTelePhone(String telePhone) {
 		return User.getByTelePhone(telePhone);
 	}
+
+	@Override
+	public List<MenuResource> findAllMenuResourcesByIds(Long[] menuResourceIds) {
+		return MenuResource.findAllByIds(menuResourceIds);
+	}
 }

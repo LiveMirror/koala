@@ -137,6 +137,8 @@ public class UrlAccessResourceDTO implements Serializable {
 				.append(getId())//
 				.append(getName())//
 				.append(getUrl())//
+				.append(getRoles())//
+				.append(getPermissions())//
 				.build();
 	}
 	

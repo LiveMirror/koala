@@ -21,15 +21,25 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 
 	@Override
 	public void initSecuritySystem() {
-		if(User.getCount() == 0 ){
+		if (User.getCount() == 0) {
 			User user = initUser();
+			User user1 = new User("李四", "lisi");
+			user1.save();
+			
+			Role role1 = new Role("test");
+			role1.save();
+			user1.grant(role1);
+			List<MenuResource> menuResources = initMenuResources();
+			role1.addSecurityResources(menuResources);
+			
 			user.changeEmail("zhangsan@koala.com", "888888");
 			user.changeTelePhone("18665589188", "888888");
 			Role role = initRole();
 			user.grant(role);
 			
-			role.addSecurityResources(initMenuResources());
-//			role.addSecurityResources(initUrlAccessResources());
+
+			role.addSecurityResources(menuResources);
+			role.addSecurityResources(initUrlAccessResources());
 			role.addSecurityResources(initPageElementResources());
 		}
 	}
@@ -46,7 +56,7 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 		return result;
 	}
 
-	// TODO 初始化permission 
+	// TODO 初始化permission
 	public void initPermissions() {
 
 	}
@@ -57,7 +67,7 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 	}
 
 	public List<UrlAccessResource> initUrlAccessResources() {
-		List<UrlAccessResource> results = createUrlAccessResources();
+		List<UrlAccessResource> results = createUserUrlAccessResources();
 		return results;
 	}
 
@@ -80,7 +90,8 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 	}
 
 	private List<PageElementResource> createPageElementResourcesOfPageElementResource() {
-		PageElementResource pageElementResourceManagerAdd = new PageElementResource("页面元素资源管理-添加","pageElementResourceManagerAdd");
+		PageElementResource pageElementResourceManagerAdd = new PageElementResource("页面元素资源管理-添加",
+				"pageElementResourceManagerAdd");
 		pageElementResourceManagerAdd.save();
 
 		PageElementResource pageElementResourceManagerUpdate = new PageElementResource("页面元素资源管理-修改",
@@ -187,7 +198,7 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 		PageElementResource roleManagerPageElementResource = new PageElementResource("角色管理-分配页面元素权限资源",
 				"roleManagerGrantPageElementResource");
 		roleManagerPageElementResource.save();
-		
+
 		PageElementResource roleManagerPagePermission = new PageElementResource("角色管理-分配权限",
 				"roleManagerGrantPermission");
 		roleManagerPagePermission.save();
@@ -201,7 +212,7 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 				roleManagerPageElementResource,//
 				roleManagerPagePermission);
 	}
-	
+
 	private List<PageElementResource> createPageElementResourcesOfUser() {
 		PageElementResource userManagerAdd = new PageElementResource("用户管理-添加", "userManagerAdd");
 		userManagerAdd.save();
@@ -265,7 +276,7 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 		userMenuResource.setMenuIcon(menuIcon);
 		userMenuResource.setUrl("/pages/auth/user-list.jsp");
 		actorSecurityMenuResource.addChild(userMenuResource);
-		
+
 		MenuResource userDisabledMenuResource = new MenuResource("用户挂起管理");
 		userDisabledMenuResource.setMenuIcon(menuIcon);
 		userDisabledMenuResource.setUrl("/pages/auth/forbidden-list.jsp");
@@ -317,72 +328,83 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 				pageElementResource);
 	}
 
-	
-
-	private List<UrlAccessResource> createUrlAccessResources() {
-		UrlAccessResource usersUrlAccessResource = new UrlAccessResource("用户管理", "/auth/user/**");
-		UrlAccessResource userLoginUrlAccessResource = new UrlAccessResource("用户管理-登陆", "/auth/user/login");
-		UrlAccessResource userLogoutUrlAccessResource = new UrlAccessResource("用户管理-退出", "/auth/user/logout");
-		UrlAccessResource userAddUrlAccessResource = new UrlAccessResource("用户管理-添加", "/auth/user/add");
-		UrlAccessResource userUpdateUrlAccessResource = new UrlAccessResource("用户管理-更新", "/auth/user/update");
-		UrlAccessResource userTerminateUrlAccessResource = new UrlAccessResource("用户管理-撤销", "/auth/user/terminate");
-		UrlAccessResource userPagingqueryUrlAccessResource = new UrlAccessResource("用户管理-分页查询",
-				"/auth/user/pagingquery");
-		UrlAccessResource userUpdatePasswordUrlAccessResource = new UrlAccessResource("用户管理-更新密码",
-				"/auth/user/updatePassword");
-		UrlAccessResource userResetPasswordUrlAccessResource = new UrlAccessResource("用户管理-重置密码",
-				"/auth/user/resetPassword");
-		UrlAccessResource userActivateUrlAccessResource = new UrlAccessResource("用户管理-激活", "/auth/user/activate");
-		UrlAccessResource userActivatesUrlAccessResource = new UrlAccessResource("用户管理-激动所有", "/auth/user/activates");
-		UrlAccessResource userSuspendsUrlAccessResource = new UrlAccessResource("用户管理-挂起所有", "/auth/user/suspends");
-		UrlAccessResource userGrantRoleUrlAccessResource = new UrlAccessResource("用户管理-授权一个角色", "/auth/user/grantRole");
-		UrlAccessResource userGrantRolesUrlAccessResource = new UrlAccessResource("用户管理-授权多个角色",
-				"/auth/user/grantRoles");
-		UrlAccessResource userGrantPermissionUrlAccessResource = new UrlAccessResource("用户管理-授权一个权限",
-				"/auth/user/grantPermission");
-		UrlAccessResource userGrantPermissionsUrlAccessResource = new UrlAccessResource("用户管理-授权多个权限",
-				"/auth/user/grantPermissions");
-		UrlAccessResource userTerminateRoleByUserUrlAccessResource = new UrlAccessResource("用户管理-撤销一个角色",
+	private List<UrlAccessResource> createUserUrlAccessResources() {
+		UrlAccessResource usersUrl = new UrlAccessResource("用户管理", "/auth/user/**");
+		UrlAccessResource usersUrlList = new UrlAccessResource("用户管理", "/pages/auth/user-list.jsp");
+		UrlAccessResource userAddUrl = new UrlAccessResource("用户管理-添加", "/auth/user/add**");
+		UrlAccessResource userUpdateUrl = new UrlAccessResource("用户管理-更新", "/auth/user/update");
+		UrlAccessResource userTerminateUrl = new UrlAccessResource("用户管理-撤销", "/auth/user/terminate");
+		UrlAccessResource userPagingqueryUrl = new UrlAccessResource("用户管理-分页查询", "/auth/user/pagingQuery**");
+		UrlAccessResource userUpdatePasswordUrl = new UrlAccessResource("用户管理-更新密码", "/auth/user/updatePassword");
+		UrlAccessResource userResetPasswordUrl = new UrlAccessResource("用户管理-重置密码", "/auth/user/resetPassword");
+		UrlAccessResource userActivateUrl = new UrlAccessResource("用户管理-激活", "/auth/user/activate");
+		UrlAccessResource userActivatesUrl = new UrlAccessResource("用户管理-激动所有", "/auth/user/activates");
+		UrlAccessResource userSuspendsUrl = new UrlAccessResource("用户管理-挂起所有", "/auth/user/suspends");
+		UrlAccessResource userGrantRoleUrl = new UrlAccessResource("用户管理-授权一个角色", "/auth/user/grantRole");
+		UrlAccessResource userGrantRolesUrl = new UrlAccessResource("用户管理-授权多个角色", "/auth/user/grantRoles");
+		UrlAccessResource userGrantPermissionUrl = new UrlAccessResource("用户管理-授权一个权限", "/auth/user/grantPermission");
+		UrlAccessResource userGrantPermissionsUrl = new UrlAccessResource("用户管理-授权多个权限", "/auth/user/grantPermissions");
+		UrlAccessResource userTerminateRoleByUserUrl = new UrlAccessResource("用户管理-撤销一个角色",
 				"/auth/user/terminateRoleByUser");
-		UrlAccessResource userTerminatePermissionByUserUrlAccessResource = new UrlAccessResource("用户管理-撤销一个权限",
+		UrlAccessResource userTerminatePermissionByUserUrl = new UrlAccessResource("用户管理-撤销一个权限",
 				"/auth/user/terminatePermissionByUser");
-		UrlAccessResource userTerminateRolesByUserUrlAccessResource = new UrlAccessResource("用户管理-撤销多个角色",
+		UrlAccessResource userTerminateRolesByUserUrl = new UrlAccessResource("用户管理-撤销多个角色",
 				"/auth/user/suspend/terminateRolesByUser");
-		UrlAccessResource userTerminatePermissionsByUserUrlAccessResource = new UrlAccessResource("用户管理-撤销多个权限",
+		UrlAccessResource userTerminatePermissionsByUser = new UrlAccessResource("用户管理-撤销多个权限",
 				"/auth/user/terminatePermissionsByUser");
-		UrlAccessResource userPagingQueryGrantRoleByUserIdUrlAccessResource = new UrlAccessResource("用户管理-查找授权的角色",
+		UrlAccessResource userPagingQueryGrantRoleByUserIdUrl = new UrlAccessResource("用户管理-查找授权的角色",
 				"/auth/user/pagingQueryGrantRoleByUserId");
-		UrlAccessResource userPagingQueryGrantPermissionByUserIdUrlAccessResource = new UrlAccessResource(
-				"用户管理-查找授权的权限", "/auth/user/pagingQueryGrantPermissionByUserId");
-		UrlAccessResource userPagingQueryNotGrantRolesUrlAccessResource = new UrlAccessResource("用户管理-查找没有授权的角色",
+		UrlAccessResource userPagingQueryGrantPermissionByUserIdUrl = new UrlAccessResource("用户管理-查找授权的权限",
+				"/auth/user/pagingQueryGrantPermissionByUserId");
+		UrlAccessResource userPagingQueryNotGrantRolesUrl = new UrlAccessResource("用户管理-查找没有授权的角色",
 				"/auth/user/pagingQueryNotGrantRoles");
-		UrlAccessResource userPagingQueryNotGrantPermissionsUrlAccessResource = new UrlAccessResource("用户管理-查找没有授权的权限",
+		UrlAccessResource userPagingQueryNotGrantPermissionsUrl = new UrlAccessResource("用户管理-查找没有授权的权限",
 				"/auth/user/pagingQueryNotGrantPermissions");
-		usersUrlAccessResource.save();
-		userLoginUrlAccessResource.save();
-		userLogoutUrlAccessResource.save();
-		userAddUrlAccessResource.save();
-		userUpdateUrlAccessResource.save();
-		userTerminateUrlAccessResource.save();
-		userPagingqueryUrlAccessResource.save();
-		userUpdatePasswordUrlAccessResource.save();
-		userResetPasswordUrlAccessResource.save();
-		userActivateUrlAccessResource.save();
-		userActivatesUrlAccessResource.save();
-		userSuspendsUrlAccessResource.save();
-		userGrantRoleUrlAccessResource.save();
-		userGrantRolesUrlAccessResource.save();
-		userGrantPermissionUrlAccessResource.save();
-		userGrantPermissionsUrlAccessResource.save();
-		userTerminateRoleByUserUrlAccessResource.save();
-		userTerminatePermissionByUserUrlAccessResource.save();
-		userTerminateRolesByUserUrlAccessResource.save();
-		userTerminatePermissionsByUserUrlAccessResource.save();
-		userPagingQueryGrantRoleByUserIdUrlAccessResource.save();
-		userPagingQueryGrantPermissionByUserIdUrlAccessResource.save();
-		userPagingQueryNotGrantRolesUrlAccessResource.save();
-		userPagingQueryNotGrantPermissionsUrlAccessResource.save();
-		return null;
+		usersUrl.save();
+		usersUrlList.save();
+		userAddUrl.save();
+		userUpdateUrl.save();
+		userTerminateUrl.save();
+		userPagingqueryUrl.save();
+		userUpdatePasswordUrl.save();
+		userResetPasswordUrl.save();
+		userActivateUrl.save();
+		userActivatesUrl.save();
+		userSuspendsUrl.save();
+		userGrantRoleUrl.save();
+		userGrantRolesUrl.save();
+		userGrantPermissionUrl.save();
+		userGrantPermissionsUrl.save();
+		userTerminateRoleByUserUrl.save();
+		userTerminatePermissionByUserUrl.save();
+		userTerminateRolesByUserUrl.save();
+		userTerminatePermissionsByUser.save();
+		userPagingQueryGrantRoleByUserIdUrl.save();
+		userPagingQueryGrantPermissionByUserIdUrl.save();
+		userPagingQueryNotGrantRolesUrl.save();
+		userPagingQueryNotGrantPermissionsUrl.save();
+
+		return Lists.newArrayList(usersUrl,//
+				userAddUrl,//
+				usersUrlList,//
+				userUpdateUrl,//
+				userTerminateUrl,//
+				userPagingqueryUrl,//
+				userUpdatePasswordUrl,//
+				userTerminateUrl,//
+				userPagingqueryUrl,//
+				userResetPasswordUrl,//
+				userGrantRolesUrl,//
+				userActivateUrl,//
+				userActivatesUrl,//
+				userSuspendsUrl,//
+				userGrantRoleUrl,//
+				userGrantPermissionUrl,//
+				userTerminatePermissionByUserUrl,//
+				userPagingQueryGrantRoleByUserIdUrl,//
+				userPagingQueryGrantPermissionByUserIdUrl,//
+				userPagingQueryNotGrantRolesUrl,//
+				userPagingQueryNotGrantPermissionsUrl);
 	}
 
 }
