@@ -198,11 +198,19 @@ var roleManager = function(){
 					nodes[index].name = nodes[index].title;
 					delete nodes[index].title;
 				});
+<<<<<<< HEAD
 				var url =baseUrl + 'grantMenuResourcesToRole.koala?roleId='+roleId;
 				for(var i=0,j=nodes.length; i<j; i++){
 					data += "&menuResourceIds="+nodes[i].id;
 				}
 				$.post(url,data).done(function(data){
+=======
+				var url =baseUrl + 'grantMenuResourcesToRole.koala?roleId=' + roleId;
+				for(var i=0,j=nodes.length; i<j; i++){
+					data += "&menuResourceIds="+nodes[i].id;
+				}
+				$.post(url, data).done(function(data){
+>>>>>>> eaab056fc834a0c8e79ad586a9b51896681e0615
 					if(data.success){
 						grid.message({
 							type: 'success',

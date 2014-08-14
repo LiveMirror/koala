@@ -1,7 +1,5 @@
 package org.openkoala.security.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 登陆用户控制器
@@ -32,8 +32,8 @@ public class LoginUserController {
 	/**
 	 * 用户登陆
 	 * 
-	 * @param username
-	 * @param password
+	 * @param request
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody

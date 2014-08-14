@@ -42,7 +42,7 @@ public class UrlAccessController {
 	/**
 	 * 添加URL访问权限资源。
 	 * 
-	 * @param urlAccessResourceDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
