@@ -62,7 +62,7 @@ public class PageElementController {
 	/**
 	 * 撤销页面元素权限资源。
 	 * 
-	 * @param pageElementResourceDTOs
+	 * @param pageElementResourceIds
 	 * @return
 	 */
 	@ResponseBody

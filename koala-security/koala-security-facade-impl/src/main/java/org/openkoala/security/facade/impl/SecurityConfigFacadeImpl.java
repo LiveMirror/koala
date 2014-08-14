@@ -45,7 +45,6 @@ import org.openkoala.security.facade.command.CreatePermissionCommand;
 import org.openkoala.security.facade.command.CreateRoleCommand;
 import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
 import org.openkoala.security.facade.command.CreateUserCommand;
-import org.openkoala.security.facade.command.LoginCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.impl.assembler.MenuResourceAssembler;
 import org.openkoala.security.facade.impl.assembler.PageElementResourceAssembler;
@@ -73,7 +72,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	@Inject
 	private SecurityDBInitApplication securityDBInitApplication;
-
+	
 	@Override
 	public JsonResult createUser(CreateUserCommand command) {
 		JsonResult result = new JsonResult();

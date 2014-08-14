@@ -27,7 +27,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
-			<artifactId>koala-security-facadeImpl</artifactId>
+			<artifactId>koala-security-facade-impl</artifactId>
 			<version>${project.parent.version}</version>
 			<!-- <scope>runtime</scope> -->
 		</dependency>

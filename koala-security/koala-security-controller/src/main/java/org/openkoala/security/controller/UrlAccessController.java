@@ -10,7 +10,7 @@ import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
-import org.openkoala.security.shiro.extend.ShiroFilerChainManager;
+import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -37,7 +37,7 @@ public class UrlAccessController {
 	private SecurityAccessFacade securityAccessFacade;
 
 	@Inject
-	private ShiroFilerChainManager shiroFilerChainManager;
+	private ShiroFilterChainManager shiroFilterChainManager;
 
 	/**
 	 * 添加URL访问权限资源。
@@ -67,7 +67,7 @@ public class UrlAccessController {
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
 	public JsonResult terminate(Long[] urlAccessResourceIds) {
 		JsonResult result = securityConfigFacade.terminateUrlAccessResources(urlAccessResourceIds);
-		shiroFilerChainManager.initFilterChain();
+		shiroFilterChainManager.initFilterChain();
 		return result;
 	}
 
@@ -100,7 +100,7 @@ public class UrlAccessController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			securityConfigFacade.grantPermisssionsToUrlAccessResource(permissionId, urlAccessResourceId);
-			shiroFilerChainManager.initFilterChain();
+			shiroFilterChainManager.initFilterChain();
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为URL访问权限资源授权权限失败。");
 		} catch (Exception e) {
@@ -124,7 +124,7 @@ public class UrlAccessController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			securityConfigFacade.terminatePermissionsFromUrlAccessResource(permissionId, urlAccessResourceId);
-			shiroFilerChainManager.initFilterChain();
+			shiroFilterChainManager.initFilterChain();
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为URL访问权限资源授权权限失败。");
 		} catch (Exception e) {

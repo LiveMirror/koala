@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 @Named
-public class ShiroFilerChainManager {
+public class ShiroFilterChainManager {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ShiroFilerChainManager.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShiroFilterChainManager.class);
 
 	@Inject
 	private DefaultFilterChainManager filterChainManager;

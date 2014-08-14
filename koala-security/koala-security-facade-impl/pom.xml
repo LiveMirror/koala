@@ -8,7 +8,7 @@
 		<artifactId>koala-security</artifactId>
 		<version>4.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>koala-security-facadeImpl</artifactId>
+	<artifactId>koala-security-facade-impl</artifactId>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

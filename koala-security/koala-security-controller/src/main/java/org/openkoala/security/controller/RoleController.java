@@ -1,6 +1,5 @@
 package org.openkoala.security.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,12 +15,11 @@ import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
-import org.openkoala.security.shiro.extend.ShiroFilerChainManager;
+import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
 import org.openkoala.security.shiro.util.AuthUserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,9 +41,9 @@ public class RoleController {
 
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
-
+	
 	@Inject
-	private ShiroFilerChainManager shiroFilerChainManager;
+	private ShiroFilterChainManager shiroFilterChainManager;
 
 	/**
 	 * 添加角色
@@ -178,7 +176,7 @@ public class RoleController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
-			// shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
+			shiroFilterChainManager.initFilterChain();
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("为角色授权URL访问权限资源成功");
 		} catch (Exception e) {
@@ -202,7 +200,7 @@ public class RoleController {
 		JsonResult jsonResult = new JsonResult();
 		try {
 			securityConfigFacade.terminateUrlAccessResourcesFromRole(roleId, urlAccessResourceIds);
-			shiroFilerChainManager.initFilterChain();// 更新shiro拦截器链。
+			shiroFilterChainManager.initFilterChain();
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("从角色中撤销URL访问权限资源成功");
 		} catch (Exception e) {
