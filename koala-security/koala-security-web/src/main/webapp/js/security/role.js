@@ -198,11 +198,11 @@ var roleManager = function(){
 					nodes[index].name = nodes[index].title;
 					delete nodes[index].title;
 				});
-				var url =baseUrl + 'grantMenuResourcesToRole.koala?roleId='roleId;
+				var url =baseUrl + 'grantMenuResourcesToRole.koala?roleId=' + roleId;
 				for(var i=0,j=nodes.length; i<j; i++){
 					data += "&menuResourceIds="+nodes[i].id;
 				}
-				$.post(url,).done(function(data){
+				$.post(url, data).done(function(data){
 					if(data.success){
 						grid.message({
 							type: 'success',
