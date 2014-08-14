@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 
-import org.openkoala.security.shiro.util.AuthUserUtil;
+import org.openkoala.security.shiro.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,13 +37,13 @@ public class UserTag extends AbstractAuthorizationTag{
     public int onDoStartTag() throws JspException {
         String strValue = null;
 
-        if (AuthUserUtil.getSubject() != null) {
+        if (CurrentUser.getSubject() != null) {
 
             // Get the principal to print out
             Object principal;
 
             if (type == null) {
-                principal = AuthUserUtil.getSubject().getPrincipal();
+                principal = CurrentUser.getSubject().getPrincipal();
             } else {
                 principal = getPrincipalFromClassName();
             }
@@ -77,7 +77,7 @@ public class UserTag extends AbstractAuthorizationTag{
 
         try {
             Class<?> cls = Class.forName(type);
-            principal = AuthUserUtil.getSubject().getPrincipals().oneByType(cls);
+            principal = CurrentUser.getSubject().getPrincipals().oneByType(cls);
         } catch (ClassNotFoundException e) {
             if (log.isErrorEnabled()) {
                 log.error("Unable to find class for identifier [" + type + "]");

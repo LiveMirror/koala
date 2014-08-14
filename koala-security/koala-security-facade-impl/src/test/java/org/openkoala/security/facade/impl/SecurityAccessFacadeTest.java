@@ -19,7 +19,6 @@ import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityAccessFacade;
-import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 import org.openkoala.security.facade.dto.PermissionDTO;
@@ -29,9 +28,6 @@ import org.openkoala.security.facade.dto.UserDTO;
 
 public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
-	@Inject
-	private SecurityConfigFacade securityConfigFacade;
-	
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
 	
@@ -65,7 +61,7 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		role.save();
 		roleDTO = generateRoleDTOBy(role);
 		
-		securityConfigFacade.grantRoleToUser(user.getId(), role.getId());
+		user.grant(role);
 		
 		permission = initPermission();
 		permission.save();
@@ -98,7 +94,7 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testGetUserDtoById() {
 		Long userId = user.getId();
 		assertNotNull(userId);
-		UserDTO getUserDTO = securityAccessFacade.getUserBy(userId);
+		UserDTO getUserDTO = securityAccessFacade.getUserById(userId);
 		assertNotNull(getUserDTO);
 		assertUserDTO(userDTO, getUserDTO);
 	}
@@ -112,15 +108,16 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Test
 	public void testFindRoleDtosByUserAccount() {
-		List<RoleDTO> roleDTOs = securityAccessFacade.findRolesBy(user.getUserAccount());
+		List<RoleDTO> roleDTOs = securityAccessFacade.findRolesByUserAccount(user.getUserAccount());
 		assertNotNull(roleDTOs);
 		assertTrue(roleDTOs.size() == 1);
 	}
 
 	@Test
-	public void testFindPermissionDtosBy() {
-		Set<PermissionDTO> permissionDTOs =  securityAccessFacade.findPermissionsBy(user.getUserAccount());
-		assertTrue(permissionDTOs.isEmpty());
+	public void testFindPermissionsByUserAccountAndRoleName() {
+		Set<PermissionDTO> results =  securityAccessFacade.findPermissionsByUserAccountAndRoleName(user.getUserAccount(), role.getName());
+		assertFalse(results.isEmpty());
+		assertTrue(results.size() == 1);
 	}
 
 	@Test

@@ -6,17 +6,14 @@ import org.dayatang.querychannel.Page;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
-import org.openkoala.security.facade.command.ChangeUserAccountCommand;
-import org.openkoala.security.facade.command.ChangeUserEmailCommand;
 import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserPropsCommand;
-import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
 import org.openkoala.security.facade.command.CreateUserCommand;
 import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
-import org.openkoala.security.shiro.util.AuthUserUtil;
+import org.openkoala.security.shiro.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -51,7 +48,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public JsonResult add(CreateUserCommand command) {
-		String createOwner = AuthUserUtil.getUserAccount();
+		String createOwner = CurrentUser.getUserAccount();
 		command.setCreateOwner(createOwner);
 		return securityConfigFacade.createUser(command);
 	}
@@ -69,42 +66,6 @@ public class UserController {
 	}
 
 	/**
-	 * 更改用户账号。
-	 * 
-	 * @param command
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/changeUserAccount", method = RequestMethod.POST)
-	public JsonResult changeUserAccount(ChangeUserAccountCommand command) {
-		return securityConfigFacade.changeUserAccount(command);
-	}
-
-	/**
-	 * 更改用户邮箱。
-	 * 
-	 * @param command
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/changeUserEmail", method = RequestMethod.POST)
-	public JsonResult changeUserEmail(ChangeUserEmailCommand command) {
-		return securityConfigFacade.changeUserEmail(command);
-	}
-
-	/**
-	 * 更改用户联系电话。
-	 * 
-	 * @param command
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/changeUserTelePhone", method = RequestMethod.POST)
-	public JsonResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
-		return securityConfigFacade.changeUserTelePhone(command);
-	}
-
-	/**
 	 * 撤销用户。
 	 * 
 	 * @param userIds
@@ -113,20 +74,6 @@ public class UserController {
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
 	public JsonResult terminate(Long[] userIds) {
 		return securityConfigFacade.terminateUsers(userIds);
-	}
-
-	/**
-	 * 更新用户密码。
-	 * 
-	 * @param oldPassword
-	 * @param userPassword
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-	public JsonResult changeUserPassword(ChangeUserPasswordCommand command) {
-		command.setUserAccount(AuthUserUtil.getUserAccount());
-		return securityConfigFacade.changeUserPassword(command);
 	}
 
 	/**

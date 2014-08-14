@@ -10,12 +10,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.InstanceFactory;
 import org.hibernate.validator.constraints.Email;
 import org.openkoala.security.core.EmailIsExistedException;
-import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.UserNotExistedException;

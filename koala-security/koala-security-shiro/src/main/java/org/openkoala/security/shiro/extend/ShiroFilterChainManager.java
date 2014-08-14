@@ -65,8 +65,6 @@ public class ShiroFilterChainManager {
 				}
 			}
 		}
-		filterChainManager.addToChain("/**", "authc");
-		
 		LOGGER.info("filterChain:{}", filterChainManager.getFilterChains());
 	}
 

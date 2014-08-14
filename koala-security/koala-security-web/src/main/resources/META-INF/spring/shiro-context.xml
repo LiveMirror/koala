@@ -63,8 +63,8 @@
 				/lib/** = anon
 				/jcaptcha.jpg = anon
 				/login.koala = jCaptchaValidate
-				/auth/loginUser/login.koala = jCaptchaValidate
 				/unauthorized.koala = authc
+				/** = authc
 			</value>
 		</property>
 	</bean>

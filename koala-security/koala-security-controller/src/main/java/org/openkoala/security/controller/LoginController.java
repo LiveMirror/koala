@@ -24,11 +24,17 @@ import javax.servlet.http.HttpServletRequest;
  * 
  */
 @Controller
-@RequestMapping("/auth/loginUser")
-public class LoginUserController {
+@RequestMapping
+public class LoginController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(LoginUserController.class);
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login() {
+		LOGGER.info("into login page.");
+		return "login";
+	}
+
 	/**
 	 * 用户登陆
 	 * 
@@ -71,27 +77,6 @@ public class LoginUserController {
 		return result;
 	}
 
-	/**
-	 * TODO 用户退出。
-	 * 
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value="/logout", method = RequestMethod.POST)
-	public JsonResult logout() {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			SecurityUtils.getSubject().logout();
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("用户退出成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("用户退出失败。");
-		}
-		return jsonResult;
-	}
-	
 	/**
 	 * 处理验证码
 	 * 

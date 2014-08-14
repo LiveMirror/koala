@@ -20,7 +20,7 @@ public interface SecurityAccessFacade {
 	 *            用户ID
 	 * @return
 	 */
-	UserDTO getUserBy(Long userId);
+	UserDTO getUserById(Long userId);
 
 	/**
 	 * 根据用户名查找所有的角色
@@ -29,16 +29,7 @@ public interface SecurityAccessFacade {
 	 *            用户名
 	 * @return
 	 */
-	List<RoleDTO> findRolesBy(String userAccount);
-
-	/**
-	 * 根据用户名查找其拥有的所有权限
-	 * 
-	 * @param userAccount
-	 *            用户名
-	 * @return
-	 */
-	Set<PermissionDTO> findPermissionsBy(String userAccount);
+	List<RoleDTO> findRolesByUserAccount(String userAccount);
 
 	/**
 	 * 根据用户名查找该
@@ -99,7 +90,8 @@ public interface SecurityAccessFacade {
 
 	Page<PermissionDTO> pagingQueryGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId);
 
-	Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize, UrlAccessResourceDTO queryUrlAccessResourceCondition);
+	Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize,
+			UrlAccessResourceDTO queryUrlAccessResourceCondition);
 
 	/**
 	 * 根据URL或者菜单类型查找所有的权限
@@ -145,7 +137,8 @@ public interface SecurityAccessFacade {
 	 * @param urlAccessResourceId
 	 * @return
 	 */
-	Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize, Long urlAccessResourceId);
+	Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
+			Long urlAccessResourceId);
 
 	/**
 	 * 根据URL访问资源分页查询没有授权的权限。
@@ -155,7 +148,8 @@ public interface SecurityAccessFacade {
 	 * @param urlAccessResourceId
 	 * @return
 	 */
-	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize, Long urlAccessResourceId);
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
+			Long urlAccessResourceId);
 
 	/**
 	 * 根据角色ID查询菜单树（已经选择的有选择标识）。
@@ -170,17 +164,21 @@ public interface SecurityAccessFacade {
 
 	Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId);
 
-	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUserId(int page, int pagesize, PermissionDTO queryPermissionCondition, Long userId);
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByUserId(int page, int pagesize,
+			PermissionDTO queryPermissionCondition, Long userId);
 
-	Page<PageElementResourceDTO> pagingQueryPageElementResources(int page, int pagesize, PageElementResourceDTO queryPageElementResourceCondition);
+	Page<PageElementResourceDTO> pagingQueryPageElementResources(int page, int pagesize,
+			PageElementResourceDTO queryPageElementResourceCondition);
 
 	Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId);
 
 	Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId);
 
-	Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId);
+	Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize,
+			Long pageElementResourceId);
 
-	Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId);
+	Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
+			Long pageElementResourceId);
 
 	UserDTO login(String principal, String password);
 
@@ -210,5 +208,14 @@ public interface SecurityAccessFacade {
 	 * @return
 	 */
 	UserDTO getUserByTelePhone(String telePhone);
+
+	/**
+	 * 根据账户和角色名称查找所有权限
+	 * 
+	 * @param userAccount
+	 * @param roleName
+	 * @return
+	 */
+	Set<PermissionDTO> findPermissionsByUserAccountAndRoleName(String userAccount, String roleName);
 
 }
