@@ -18,13 +18,6 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-3 control-label">Url路径标识:</label>
-						<div class="col-lg-9">
-							<span class="required">*</span>
-							<input type="text" class="form-control" name="identifier">
-						</div>
-					</div>
-					<div class="form-group">
 						<label class="col-lg-3 control-label">Url路径链接:</label>
 						<div class="col-lg-9">
 							<span class="required">*</span>

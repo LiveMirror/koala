@@ -145,7 +145,7 @@
        					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化url选择表格
        						var columns = [{
        							title : "角色名称",
-       							name : "roleName",
+       							name : "name",
        							width : 250
        						}, {
        							title : "角色描述",

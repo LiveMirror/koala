@@ -145,17 +145,9 @@
 		};
 		
 		deleteMenu = function(urls, grid) {
-			console.log(urls);
-			$.ajax({
-			    headers: { 
-			        'Accept'		: 'application/json',
-			        'Content-Type'	: 'application/json' 
-			    },
-			    'type'		: "POST",
-			    'url'		: baseUrl + 'terminate.koala',
-			    'data' 		: JSON.stringify(urls),
-			    'dataType'	: 'json'
-			 }).done(function(data){
+			var id = urls[0].id;
+			var url = baseUrl + 'terminate.koala';
+			$.post(url,{"menuResourceIds":id}).done(function(data){
 			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
@@ -192,10 +184,6 @@
 			},{
 				title : "菜单url",
 				name : "url",
-				width : 150
-			},{
-				title : "菜单标识",
-				name : "identifier",
 				width : 150
 			},{
 				title : "菜单描述",
@@ -384,7 +372,7 @@
         					dialog.find('.selectMenuGrid').grid({
 								identity: 'id',
 								columns: columns,
-								querys: [{title: 'url名称', value: 'roleNameForSearch'}],
+								querys: [{title: '菜单名称', value: 'menuNameForSearch'}],
 								url: contextPath + '/auth/role/findMenuResourceTreeSelectItemByRoleId.koala?roleId='+roleId
 								/*tree: {
 									column: 'name',

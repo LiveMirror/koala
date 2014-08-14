@@ -22,10 +22,17 @@
             <div style="margin-left:15px;float:left;">
             <input name="userAccount" class="form-control" type="text" style="width:180px;" id="descID"  />
         </div>
-              <label class="control-label" style="width:100px;float:left;">用户描述:&nbsp;</label>
+            </div>
+            <div class ="form-group">
+             <label class="control-label" style="width:100px;float:left;">用户描述:&nbsp;</label>
             <div style="margin-left:15px;float:left;">
             <input name="description" class="form-control" type="text" style="width:180px;"  />
         </div>
+           <label class="control-label" style="width:100px;float:left;">用户状态:&nbsp;</label>
+           <select style = "width:180px;margin-left:15px;float:left;">
+             <option>可用</option>
+             <option>挂起</option>
+           </select>
             </div>
             </td>
        <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button></td>
@@ -172,6 +179,8 @@
 							});
 							return;
 						}
+						console.log(data.data[0]);
+						console.log(data.item[0].userAccount);
 						userManager().assignRole(data.data[0], data.item[0].userAccount);
 					},
 					"permissionAssign":function(event,data) {

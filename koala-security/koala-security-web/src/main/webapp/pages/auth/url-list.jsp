@@ -142,15 +142,11 @@
 			title 	: "url路径",
 			name 	: "url",
 			width 	: 150
-		}, {
-			title 	: "url标识",
-			name 	: "identifier",
-			width 	: 150
-		}, {
+		},{
 			title 	: "url描述",
 			name 	: "description",
 			width 	: 200
-		}, {
+		},{
 			title : "是否有效",
 			name : "disabled",
 			width : 100,
@@ -267,7 +263,6 @@
         			dialog.find('#save').click(function(){
         				var $saveBtn = $(this);
         				var items = dialog.find('#selectUrlGrid').data('koala.grid').selectedRows();
-        				
         				if(items.length == 0){
         					dialog.find('#selectUrlGrid').message({
         						type: 'warning',
@@ -306,15 +301,16 @@
        					},
        					
        					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化url选择表格
-       						var columns = [{
+       						var columns = [
+       						{
+       							title : "url名称",
+       							name : "name",
+       							width : 150
+       						},{
        							title : "url路径",
        							name : "url",
        							width : 150
-       						}, {
-       							title : "url标识",
-       							name : "identifier",
-       							width : 150
-       						}, {
+       						},{
        							title : "url描述",
        							name : "description",
        							width : 200

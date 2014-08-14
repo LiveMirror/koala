@@ -220,7 +220,7 @@
 			 identity: 'id',
              columns: columns,
              buttons: buttons,
-             isShowPages: false,
+             isShowPages: true,
              url:url
         }).on({
         	'add' : function(event, item) {
@@ -322,7 +322,7 @@
        					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化权限选择表格
        						var columns = [{
        							title : "权限名称",
-       							name : "permissionName",
+       							name : "name",
        							width : 150
        						},{
        							title : "菜单标识",
@@ -374,7 +374,7 @@
 						var url = contextPath + '/auth/user/terminatePermissionsByUser.koala';
 						var params = "userId="+userId;
 						for (var i = 0, j = data.item.length; i < j; i++) {
-							params += ("&permissionIds=" + data.item[i].permissionId);
+							params += ("&permissionIds=" + data.item[i].id);
 						}
 						
 						$.post(url, params).done(function(data){
@@ -465,7 +465,7 @@
        					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化权限选择表格
        						var columns = [{
        							title : "权限名称",
-       							name : "permissionName",
+       							name : "name",
        							width : 150
        						},{
        							title : "菜单标识",
@@ -481,7 +481,7 @@
         					dialog.find('.selectPermissionGrid').grid({
         						 identity: 'id',
         			             columns: columns,
-        			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],
+        			             querys: [{title: '权限名称', value: 'permissionNameForSearch'}],
         			             //url: contextPath + '/auth/permission/pagingquery.koala?menuResourceId='+menuId
         			            url:contextPath + '/auth/menu/pagingQueryNotGrantPermissionsByMenuResourceId.koala?menuResourceId=' + menuId
         			        });        						
@@ -611,7 +611,7 @@
        					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化权限选择表格
        						var columns = [{
        							title : "权限名称",
-       							name : "permissionName",
+       							name : "name",
        							width : 150
        						},{
        							title : "菜单标识",
@@ -753,7 +753,7 @@
        					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化权限选择表格
        						var columns = [{
        							title : "权限名称",
-       							name : "permissionName",
+       							name : "name",
        							width : 150
        						},{
        							title : "菜单标识",
@@ -898,7 +898,7 @@
        					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化权限选择表格
        						var columns = [{
        							title : "权限名称",
-       							name : "permissionName",
+       							name : "name",
        							width : 150
        						},{
        							title : "菜单标识",
@@ -950,7 +950,7 @@
 						var url = contextPath + '/auth/role/terminatePermissionsFromRole.koala';
 						var params = "roleId="+roleId;
 						for (var i = 0, j = data.item.length; i < j; i++) {
-							params += ("&permissionIds=" + data.item[i].permissionId);
+							params += ("&permissionIds=" + data.item[i].id);
 						}
 						
 						$.post(url, params).done(function(data){

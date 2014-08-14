@@ -186,10 +186,10 @@ var roleManager = function(){
 	/**
 	 * 资源授权
 	 */ 
-	var assignResource = function(grid, id){
+	var assignResource = function(grid, roleId){
 		$.get(contextPath + '/pages/auth/assign-resource.jsp').done(function(data){
 			var dialog = $(data);
-            initResourceTree(dialog, id);
+            initResourceTree(dialog, roleId);
             dialog.find('.save').on('click',function(){
 				var treeObj = $(".resourceTree").getTree();
 				var nodes = treeObj.selectedItems();
@@ -198,11 +198,13 @@ var roleManager = function(){
 					nodes[index].name = nodes[index].title;
 					delete nodes[index].title;
 				});
-				var url =baseUrl + 'grantMenuResourcesToRole.koala?roleId='roleId;
+				var url =baseUrl + 'grantMenuResourcesToRole.koala';
+				var data = "roleId="+roleId;
 				for(var i=0,j=nodes.length; i<j; i++){
-					data += "&menuResourceIds="+nodes[i].id;
+					data += "&menuResourceDTOs="+nodes[i].id;
 				}
-				$.post(url,).done(function(data){
+				console.table(data);
+				$.post(url,data).done(function(data){
 					if(data.success){
 						grid.message({
 							type: 'success',
@@ -247,7 +249,6 @@ var roleManager = function(){
 		$.get(contextPath + '/auth/role/findMenuResourceTreeSelectItemByRoleId.koala?time='+new Date().getTime()+'&roleId='+roleId).done(function(result){
 			var zNodes = new Array();
 			var items = result.data;
-			console.log(items);
 			if(!items){
 				return;
 			}
