@@ -35,7 +35,7 @@ var userManager = function() {
 		userName = dialog.find('#userName');
 		userAccount = dialog.find('#userAccount');
 		description = dialog.find('#description');
-		dialog.find('#save').on('click', function() {
+		dialog.find('#save').on('click', function(){
 			save();
 		}).end().modal({
 			keyboard : false
@@ -68,6 +68,7 @@ var userManager = function() {
 	 */
 	var resetPassword = function(item, grid) {
 		var dataGrid = grid;
+		console.log(item.id);
 		$.post(baseUrl + 'resetPassword.koala?userId=' + item.id).done(function(data) {
 		    
 			if (data.success) {				

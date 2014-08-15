@@ -124,7 +124,8 @@ body {
     line-height: 2.14286;
 }
 </style>
-<script type="text/javascript">
+<script type = "text/javascript">
+        var contextPath = '${pageContext.request.contextPath}';
 </script>
 </head>
 <body>
@@ -194,7 +195,7 @@ body {
 	        
     		var param = form.serialize();
         	$.ajax({
-        		url : "/login.koala",
+        		url :contextPath+"/login.koala",
         		dataType:"json",
         		data:param,
         		type:"POST",
@@ -204,7 +205,7 @@ body {
         					type: 'success',
         					content:  data.message
         				});
-        				window.location.href='${pageContext.request.contextPath}/pages/index.jsp';
+        				window.location.href=contextPath+"/pages/index.jsp";
         			}else{
         				btnLogin.removeAttr('disabled').html('登录');
         				$('.login_con_R').message({

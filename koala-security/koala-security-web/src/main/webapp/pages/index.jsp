@@ -47,13 +47,6 @@
     	padding-top:10px;
     	float:left;
     	}
-    	.menu_icon_change{
-    	background-color:#428baa !important;
-    	margin : 0 !important;
-    	}
-    	.menu_icon_change:hover{
-    	background-color:transparent !important;
-    	}
     	.m_left{
     	margin-left:20px;
     	}
@@ -99,6 +92,7 @@
     </style>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
+        console.log(contextPath);
     </script>
 </head>
 
@@ -120,17 +114,18 @@
                      <option selected><koala:user property="name"/></option>
                     </select>
 	                
-	               <!-- <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-	                    <i class="glyphicon glyphicon-user"></i>
-	                    <span>&nbsp;<koala:user property="name"/></span>
-	                    <span class="caret"></span>
-	                </button>--> 
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 	                
-	                <!-- <i class = "menu-icon glyphicon  glyphicon-cog menu_icon_change"></i> 
+	                </button>
+	                
+	              <!--  <i class = "menu-icon glyphicon  glyphicon-cog"></i>--> 
 	                <ul class="dropdown-menu" id="userManager">
 	                    <li data-target="modifyPwd"><a href="#">修改密码</a></li>
 	                    <li data-target="loginOut"><a href="#">注销</a></li>
-	                </ul>-->
+	                    <li data-toggle="modal" data-target="userDetial"><a href="#">用户详细</a></li>
+	                    <li data-target="completeMsg"><a href="#">完善信息</a></li>
+	                    <li data-target="emailCheck"><a href="#">邮箱验证</a></li>
+	                </ul>
 	            </div>
 	            <div class="btn-group navbar-right">
 	                <label for = "roles" class = "user_name">用户角色 :</label>
@@ -292,45 +287,22 @@
 	</script>
 	<script type="text/javascript">
 	    function click_here(data){
-
 	    	$(".asd"+data).next('.nav-stacked').toggle(600);
 	      }
-	    
-	    
-	    (function() {
-
-	    	$.fn.stairwayNav = function(options) {
-
-	    	  var defaults = {
-	    	     stairs: 3
-	    	  };
-	    	
-	    	  this.options = $.extend({}, defaults, options);
-	    	  var stairs = this.options.stairs;
-	    	  var allLinks = this.find('.nav-stacked').find("a");
-	    	  allLinks.mouseenter(function() {
-	    	      $(this).addClass("active-1");
-	    	      var index = $(this).index(), i, bef, aft;
-	    	      for(i = 1; i < stairs; i++) {
-
-	    	        bef = index - i;
-	    	        aft = index + i;
-
-	    	        allLinks.eq(aft).addClass("active-" + (i+1));
-	    	        if (bef > 0) {
-	    	          allLinks.eq(bef).addClass("active-" + (i+1));
-	    	        }
-	    	      }   
-	    	    })
-	    	    .mouseleave(function() {
-	    	      allLinks.removeClass("active-1 active-2 active-3 active-4");
-	    	    });
-	    	  return this;
-	    	};
-	    	$(".nav-stacked").stairwayNav({
-	    	  // Default is 3
+	    $(function(){
+	    	$("#userManager").find('li').on("click",function(){
+	    		var indexs = $(this).index();
+	    		//console.log("aasaa"+indexs);
+	    		if(indexs == 2){
+	    			$.get(contextPath + '/pages/auth/userDetial.jsp').done(function() {
+	    				userDetial();
+	    			});
+	    			function userDetial(){
+	    				console.log("2222");
+	    			}
+	    			}
 	    	});
-	    	})();
+	    });
 	</script>
 </body>
 </html>

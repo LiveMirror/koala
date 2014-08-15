@@ -577,7 +577,7 @@
         				saveBtn.attr('disabled', 'disabled');
         				
         				var data = "pageElementResourceId="+pageId;
-        					data += "&permissionId=" + items[0].permissionId;
+        					data += "&permissionId=" + items[0].id;
         				
         				$.post(contextPath + '/auth/page/grantPermisssionsToPageElementResource.koala', data).done(function(data){
         					if(data.success){
@@ -669,7 +669,7 @@
 					callBack : function() {
 						var url = contextPath + '/auth/page/terminatePermissionsFromPageElementResource.koala';
 						var params = "pageElementResourceId="+pageId;
-							params += ("&permissionId=" + data.item[0].permissionId);
+							params += ("&permissionId=" + data.item[0].id);
 						
 						$.post(url, params).done(function(data){
 							if(data.success){
@@ -719,7 +719,7 @@
         				saveBtn.attr('disabled', 'disabled');
         				
         				var data = "urlAccessResourceId="+urlId;
-        					data += "&permissionId=" + items[0].permissionId;
+        					data += "&permissionId=" + items[0].id;
         				
         				$.post(contextPath + '/auth/url/grantPermisssionsToUrlAccessResource.koala', data).done(function(data){
         					if(data.success){
@@ -811,7 +811,7 @@
 					callBack : function() {
 						var url = contextPath + '/auth/url/terminatePermissionsFromUrlAccessResource.koala';
 						var params = "urlAccessResourceId="+urlId;
-							params += ("&permissionId=" + data.item[0].permissionId);
+							params += ("&permissionId=" + data.item[0].id);
 						
 						$.post(url, params).done(function(data){
 							if(data.success){

@@ -19,7 +19,6 @@
 			if(item){
 				form.find("input[name='name']").val(item.name);
 				form.find("input[name='identifier']").val(item.identifier);
-				form.find("input[name='pageElementType']").val(item.pageElementType);
 			    form.find("input[name='description']").val(item.description);
 			}
 			
@@ -84,7 +83,7 @@
 	        				type: "POST",
 	        				dataType:"json",
 	        				success:function(data){
-	        					if (data.success) {
+	        					if (data) {
 		        					dialog.trigger('complete');
 		        				} else {
 		        					dialog.find('.modal-content').message({
@@ -100,17 +99,10 @@
 	       	});
 		};
 		
-		deletePage = function(urls, grid) {
-			$.ajax({
-			    headers: { 
-			        'Accept'		: 'application/json',
-			        'Content-Type'	: 'application/json' 
-			    },
-			    'type'		: "Post",
-			    'url'		: baseUrl + 'terminate.koala',
-			    'data' 		: JSON.stringify(urls),
-			    'dataType'	: 'json'
-			 }).done(function(data){
+		deletePage = function(urls, grid) { 
+			var url = baseUrl + 'terminate.koala';
+			var pageElementResourceIds =urls[0].id;
+			$.post(url,{"pageElementResourceIds":pageElementResourceIds}).done(function(data){
 			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
@@ -138,10 +130,6 @@
 		var columns = [{
 				title : "页面名称",
 				name : "name",
-				width : 150
-			},{
-				title : "页面类型",
-				name : "pageElementType",
 				width : 150
 			},{
 				title : "页面标识",

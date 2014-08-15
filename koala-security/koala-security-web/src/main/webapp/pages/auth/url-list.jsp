@@ -101,16 +101,9 @@
 		}
 		
 		deleteUrl = function(urls, grid) {
-			$.ajax({
-			    headers: { 
-			        'Accept': 'application/json',
-			        'Content-Type': 'application/json' 
-			    },
-			    'type'	: "Post",
-			    'url'	: baseUrl + 'terminate.koala',
-			    'data': JSON.stringify(urls),
-			    'dataType': 'json'
-			 }).done(function(data){
+			var urlAccessResourceIds = urls[0].id;
+			var url = baseUrl + 'terminate.koala';
+			$.post(url,{"urlAccessResourceIds":urlAccessResourceIds}).done(function(data){
 			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
