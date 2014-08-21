@@ -10,16 +10,17 @@
 	<artifactId>koala-gqc</artifactId>
 	<packaging>pom</packaging>
 	<name>koala-gqc</name>
-	<description />
+	<description/>
 	<modules>
 		<module>koala-gqc-conf</module>
 		<module>koala-gqc-infra</module>
 		<module>koala-gqc-core</module>
 		<module>koala-gqc-application</module>
-		<module>koala-gqc-applicationImpl</module>
 		<module>koala-gqc-controller</module>
 		<module>koala-gqc-web</module>
-	</modules>
+	    <module>koala-gqc-facade</module>
+	    <module>koala-gqc-facade-impl</module>
+  </modules>
 	
 	<dependencies>
 		<dependency>

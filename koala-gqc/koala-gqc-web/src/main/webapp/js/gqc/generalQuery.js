@@ -18,7 +18,7 @@ var generalQuery = function(){
 		dataGrid = grid;
 		$.get(contextPath + '/pages/gqc/generalQueryTemplate.jsp').done(function(data){
 			init(data);
-		})
+		});
 	};
 	/*
 	 修改方法
@@ -28,7 +28,7 @@ var generalQuery = function(){
 		$.get(contextPath + '/pages/gqc/generalQueryTemplate.jsp').done(function(data){
 			init(data, id);
 			setData(id);
-		})
+		});
 	};
 	/*
 	 删除方法
@@ -46,14 +46,14 @@ var generalQuery = function(){
 				 dataGrid.message({
 					 type: 'error',
 					 content: '删除失败'
-				 })
+				 });
 			 }
 		}).fail(function(data){
 			dataGrid.message({
 				type: 'error',
 				content: '删除失败'
-			})
-		})
+			});
+		});
 	};
 	/**
 	 * 初始化
@@ -86,14 +86,14 @@ var generalQuery = function(){
 					dataGrid.message({
 						type: 'success',
 						content: '保存成功'
-					})
+					});
 					$(this).modal('hide');
 					dataGrid.grid('refresh');
 				}
 		});
 		dialog.find('.grid').find('.grid-table-body').on('scroll', function(){
 			$(this).closest('.grid-body').find('.grid-table-head').css('left', -$(this).scrollLeft());
-		})
+		});
 	};
 	var initLayout = function(){
 		var width = $(window).width() * 0.73;
@@ -104,7 +104,7 @@ var generalQuery = function(){
 			$this.closest('td').css('width', leftWidth).next('td').css('width', width * 0.73);
 			$this.find('.grid-table-body').css('width', leftWidth-padding).find('table').css('width',leftWidth);
 			$this.find('.grid-table-head').find('table').css('width',leftWidth);
-		})
+		});
 
 		dialog.find('.staticQuerySelected, .dynamicQuerySelected, .showColumnSelected').each(function(){
 			var rightWidth = width * 0.73;
@@ -112,7 +112,7 @@ var generalQuery = function(){
 			var padding = width>1150 ? 0 : 8*1150/width;
 			$this.find('.grid-table-body').css('width', rightWidth-padding).find('table').css('width', rightWidth);
 			$this.find('.grid-table-head').find('table').css('width', rightWidth);
-		})
+		});
 	};
 	/**
 	 * 填充选择框
@@ -148,12 +148,12 @@ var generalQuery = function(){
 						}
 						tableSelect.setSelectItems(contents);
 						if(id){
-							dialog.trigger('dataSourceSelectComplete.koala')
+							dialog.trigger('dataSourceSelectComplete.koala');
 						}else{
 							tableSelect.setValue(tableList[0]);							
 						}
-					})
-			})
+					});
+			});
 		});
 		tableSelect.select({
 			title: '选择表'
@@ -163,8 +163,8 @@ var generalQuery = function(){
 				var url = baseUrl + 'findAllColumn.koala?id='+id+'&tableName='+tableName;
 				$.get(url).done(function(data){
 					clearSelectedItem();
-					fillLeftTable(data.tableMap, data.tableMap)
-					dialog.trigger('tableSelectComplete.koala')
+					fillLeftTable(data.tableMap, data.tableMap);
+					dialog.trigger('tableSelectComplete.koala');
 				});
 		});
 	};
@@ -180,7 +180,7 @@ var generalQuery = function(){
 					tableSelect.setValue(generalQueryObject.tableName).find('button').off().addClass('disabled');
 					var queryConditionColumns = data.queryConditionColumns;
 					var showColumns = data.showColumns;
-				})
+				});
 				dialog.on('tableSelectComplete.koala', $.proxy(fillRightTable, this));
 				dialog.find('#generalQuery_queryName').val(generalQueryObject.queryName);
 				dialog.find('#generalQuery_description').val(generalQueryObject.description);
@@ -188,8 +188,8 @@ var generalQuery = function(){
 				dialog.find('.modal-content').message({
 					type: 'error',
 					content: '获取信息失败, 可能数据源连接不通'
-				})
-			})
+				});
+			});
 	};
 	//清楚右边表格填充内容
 	var clearSelectedItem = function(){
