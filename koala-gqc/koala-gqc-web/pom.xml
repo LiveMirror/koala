@@ -30,7 +30,7 @@
 
 		<dependency>
 			<groupId>org.openkoala.gqc</groupId>
-			<artifactId>koala-gqc-applicationImpl</artifactId>
+			<artifactId>koala-gqc-facade-impl</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>

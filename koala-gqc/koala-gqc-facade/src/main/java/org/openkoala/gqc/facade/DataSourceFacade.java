@@ -1,44 +1,46 @@
 
-package org.openkoala.gqc.application;
+package org.openkoala.gqc.facade;
 
 import java.util.List;
 import java.util.Map;
 
 import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.core.domain.DataSource;
+import org.openkoala.gqc.facade.dto.DataSourceDTO;
 
 /**
  * 数据源应用层接口，处理数据源的增删改查
  *
  */
-public interface DataSourceApplication {
+
+public interface DataSourceFacade {
 
 	/**
 	 * 查询数据源
 	 * @param id 主键id
 	 * @return
 	 */
-	public DataSource getDataSourceById(Long id);
+	public DataSourceDTO getDataSourceDTOById(Long id);
 	
 	/**
 	 * 查询数据源
 	 * @param dataSourceId 数据源id
 	 * @return
 	 */
-	public DataSource getDataSourceByDataSourceId(String dataSourceId);
+	public DataSourceDTO getDataSourceDTOByDataSourceId(String dataSourceId);
 	
 	/**
 	 * 保存数据源
 	 * @param dataSource 待保存的数据源
 	 * @return
 	 */
-	public String saveDataSource(DataSource dataSource);
+	public String saveDataSource(DataSourceDTO dataSource);
 	
 	/**
 	 * 更新数据源
 	 * @param dataSource 待更新的数据源
 	 */
-	public void updateDataSource(DataSource dataSource);
+	public void updateDataSource(DataSourceDTO dataSource);
 	
 	/**
 	 * 删除数据源
@@ -56,7 +58,7 @@ public interface DataSourceApplication {
 	 * 查询所有数据源
 	 * @return
 	 */
-	public List<DataSource> findAllDataSource();
+	public List<DataSourceDTO> findAllDataSource();
 	
 	/**
 	 * 查询所有表
@@ -79,9 +81,9 @@ public interface DataSourceApplication {
 	 * @param currentPage 当前页
 	 * @param pageSize 页面大小
 	 * @return
-	 *//*
-	public Page<DataSourceVO> pageQueryDataSource(DataSourceVO dataSource, int currentPage, int pageSize);
-	*/
+	 */
+	public Page<DataSourceDTO> pageQueryDataSource(DataSourceDTO dataSource, int currentPage, int pageSize);
+	
 	/**
 	 * 检测数据源是否可用
 	 * @param dataSource

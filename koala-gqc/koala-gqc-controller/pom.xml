@@ -28,11 +28,16 @@
 			<artifactId>koala-gqc-core</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.openkoala.gqc</groupId>
-			<artifactId>koala-gqc-application</artifactId>
+			<artifactId>koala-gqc-facade</artifactId>
 			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.gqc</groupId>
+			<artifactId>koala-gqc-facade-impl</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
