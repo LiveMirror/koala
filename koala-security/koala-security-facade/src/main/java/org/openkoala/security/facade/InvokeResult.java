@@ -1,49 +1,50 @@
 package org.openkoala.security.facade;
 
 /**
- * Created by yyang on 14-8-14.
+ * Created by yyang on 14-8-14. 
+ * 去掉了泛型。
  */
-public class InvokeResult<T> {
+public class InvokeResult {
 
-    private T data;
+	private Object data;
 
-    private String errorMessage;
+	private String errorMessage;
 
-    private boolean hasErrors;
+	private boolean hasErrors;
 
-    public static <T> InvokeResult<T> success(T data) {
-        InvokeResult<T> result = new InvokeResult<T>();
-        result.data = data;
-        result.hasErrors = false;
-        return result;
-    }
+	public static InvokeResult success(Object data) {
+		InvokeResult result = new InvokeResult();
+		result.data = data;
+		result.hasErrors = false;
+		return result;
+	}
 
-    public static <T> InvokeResult<T> success() {
-        InvokeResult<T> result = new InvokeResult<T>();
-        result.hasErrors = false;
-        return result;
-    }
+	public static InvokeResult success() {
+		InvokeResult result = new InvokeResult();
+		result.hasErrors = false;
+		return result;
+	}
 
-    public static <T> InvokeResult<T> failure(String message) {
-        InvokeResult<T> result = new InvokeResult<T>();
-        result.hasErrors = true;
-        result.errorMessage = message;
-        return result;
-    }
+	public static InvokeResult failure(String message) {
+		InvokeResult result = new InvokeResult();
+		result.hasErrors = true;
+		result.errorMessage = message;
+		return result;
+	}
 
-    public T getData() {
-        return data;
-    }
+	public Object getData() {
+		return data;
+	}
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
+	public String getErrorMessage() {
+		return errorMessage;
+	}
 
-    public boolean isHasErrors() {
-        return hasErrors;
-    }
+	public boolean isHasErrors() {
+		return hasErrors;
+	}
 
-    public boolean isSuccess() {
-        return !hasErrors;
-    }
+	public boolean isSuccess() {
+		return !hasErrors;
+	}
 }

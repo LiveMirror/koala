@@ -48,7 +48,7 @@ public class RoleController {
 	/**
 	 * 添加角色
 	 * 
-	 * @param roleDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
@@ -60,7 +60,7 @@ public class RoleController {
 	/**
 	 * 更新角色
 	 * 
-	 * @param roleDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
@@ -72,7 +72,7 @@ public class RoleController {
 	/**
 	 * TODO 支持批量撤销,待优化。
 	 * 
-	 * @param userDTOs
+	 * @param roleIds
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)

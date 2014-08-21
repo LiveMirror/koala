@@ -3,6 +3,7 @@ package org.openkoala.security.facade.impl;
 import static org.junit.Assert.*;
 import static org.openkoala.security.facade.impl.assembler.GenerateDTOUtils.generateMenuResourceDTOBy;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -70,7 +71,7 @@ public class SecurityConfigFacadeTest extends AbstractFacadeIntegrationTestCase 
 
 		securityConfigFacade.grantMenuResourcesToRole(role1.getId(),new Long[]{menuResourceDTO2.getId(), menuResourceDTO3.getId(), menuResourceDTO4.getId()});
 
-		Set<SecurityResource> securityResources = role1.getSecurityResources();
+		List<MenuResource> securityResources = role1.findMenuResourceByAuthority();
 
 		assertFalse(securityResources.isEmpty());
 		assertTrue(securityResources.size() == 3);

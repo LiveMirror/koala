@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
@@ -19,12 +20,7 @@ import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityAccessFacade;
-import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.PageElementResourceDTO;
-import org.openkoala.security.facade.dto.PermissionDTO;
-import org.openkoala.security.facade.dto.RoleDTO;
-import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
-import org.openkoala.security.facade.dto.UserDTO;
+import org.openkoala.security.facade.dto.*;
 
 public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
@@ -166,16 +162,20 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Test
 	public void testFindAllUrlAccessResources() {
-		List<UrlAccessResourceDTO> result = securityAccessFacade.findAllUrlAccessResources();
+		List<UrlAuthorityDTO> result = securityAccessFacade.findAllUrlAccessResources();
 		assertNotNull(result);
 		assertTrue(result.size() == 1);
-		UrlAccessResourceDTO urlAccessResource = result.get(0);
-		String roles = urlAccessResource.getRoles();
-		String permissions = urlAccessResource.getPermissions();
+        UrlAuthorityDTO urlAuthority = result.get(0);
+		Set<String> roles = urlAuthority.getRoles();
+		Set<String> permissions = urlAuthority.getPermissions();
 		assertNotNull(roles);
 		assertNotNull(permissions);
-		assertEquals(role.getName(),roles);
-		assertEquals(permission.getIdentifier(),permissions);
+        assertFalse(roles.isEmpty());
+        assertFalse(permissions.isEmpty());
+        assertTrue(roles.size() == 1);
+        assertTrue(permissions.size() == 1);
+        assertTrue(roles.contains(role.getName()));
+        assertTrue(permissions.contains(permission.getIdentifier()));
 	}
 
 	// 不能用User中的password,因为已经加密了。

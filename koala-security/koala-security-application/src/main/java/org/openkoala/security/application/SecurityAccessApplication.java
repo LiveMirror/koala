@@ -139,7 +139,7 @@ public interface SecurityAccessApplication {
 	 *            账户
 	 * @return
 	 */
-	Set<MenuResource> findMenuResourceByUserAccount(String userAccount);
+	List<MenuResource> findMenuResourceByUserAccount(String userAccount);
 
 	/**
 	 * 更新用户密码
@@ -184,6 +184,13 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	List<UrlAccessResource> findAllUrlAccessResources();
+
+    /**
+     * 查找所有的菜单资源
+     * @return
+     */
+    List<MenuResource> findAllMenuResorces();
+
 
 	/**
 	 * 用户登录

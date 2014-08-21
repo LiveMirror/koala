@@ -1,7 +1,5 @@
 package org.openkoala.security.facade.impl;
 
-import static org.openkoala.security.facade.impl.assembler.TransFromDomainUtils.transFromMenuResourcesBy;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

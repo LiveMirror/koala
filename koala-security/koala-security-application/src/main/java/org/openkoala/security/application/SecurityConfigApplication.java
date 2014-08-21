@@ -17,7 +17,6 @@ import org.openkoala.security.core.domain.User;
 public interface SecurityConfigApplication {
 
 	/**
-	 * 
 	 * @param actor
 	 */
 	void terminateActor(Actor actor);

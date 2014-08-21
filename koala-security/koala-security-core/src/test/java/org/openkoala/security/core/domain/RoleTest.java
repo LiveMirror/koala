@@ -90,14 +90,16 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 	}
 	
 	@Test
-	public void testFindAllAndSecurityResource() throws Exception {
+	public void testFindAllUrlAccessResources() throws Exception {
 		init();
 		List<Role> roles = Role.findAll();
 		assertFalse(roles.isEmpty());
-		Set<SecurityResource> securityResources = roles.get(0).getSecurityResources();
-		assertFalse(securityResources.isEmpty());
-		for (SecurityResource securityResource : securityResources) {
-			assertEquals("测试管理0000000000", securityResource.getName());
+        Role role = roles.get(0);
+        assertNotNull(role);
+        List<UrlAccessResource> urlAccessResources = Role.findUrlAccessResourceByAuthority(role);
+		assertFalse(urlAccessResources.isEmpty());
+		for (UrlAccessResource urlAccessResource : urlAccessResources) {
+			assertEquals("测试管理0000000000", urlAccessResource.getName());
 		}
 	}
 

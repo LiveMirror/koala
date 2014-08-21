@@ -38,7 +38,7 @@ public class PageElementController {
 	/**
 	 * 添加页面元素权限资源。
 	 * 
-	 * @param pageElementResourceDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
@@ -50,7 +50,7 @@ public class PageElementController {
 	/**
 	 * 更新页面元素权限资源。
 	 * 
-	 * @param pageElementResourceDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
@@ -122,7 +122,7 @@ public class PageElementController {
 	 * 
 	 * @param page
 	 * @param pagesize
-	 * @param pageElementResourceDTO
+	 * @param queryPageElementResourceCondition
 	 * @return
 	 */
 	@ResponseBody

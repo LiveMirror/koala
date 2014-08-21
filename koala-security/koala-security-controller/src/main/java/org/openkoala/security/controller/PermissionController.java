@@ -33,7 +33,7 @@ public class PermissionController {
 	/**
 	 * 添加权限。
 	 * 
-	 * @param permissionDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
@@ -45,7 +45,7 @@ public class PermissionController {
 	/**
 	 * 更新权限
 	 * 
-	 * @param permissionDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
@@ -57,7 +57,7 @@ public class PermissionController {
 	/**
 	 * 撤销权限
 	 * 
-	 * @param permissionDTOs
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody

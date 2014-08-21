@@ -57,26 +57,6 @@ public class UrlAccessResource extends SecurityResource {
 		return UrlAccessResource.get(UrlAccessResource.class, id);
 	}
 
-	public static List<String> getRoleNames(Set<Authority> authorities) {
-		List<String> results = new ArrayList<String>();
-		for (Authority authority : authorities) {
-			if (authority instanceof Role) {
-				results.add(((Role) authority).getName().trim());
-			}
-		}
-		return results;
-	}
-
-	public static List<String> getPermissionIdentifiers(Set<Authority> authorities) {
-		List<String> results = new ArrayList<String>();
-		for (Authority authority : authorities) {
-			if (authority instanceof Permission) {
-				results.add(((Permission) authority).getIdentifier().trim());
-			}
-		}
-		return results;
-	}
-
 	public static List<UrlAccessResource> findAllUrlAccessResources() {
 		List<UrlAccessResource> results = getRepository()//
 				.createNamedQuery("SecurityResource.findAllByType")//
@@ -84,6 +64,14 @@ public class UrlAccessResource extends SecurityResource {
 				.list();
 		return results;
 	}
+
+   public static List<Role> findRoleBySecurityResource(UrlAccessResource resource){
+        return ResourceAssignment.findRoleBySecurityResource(resource);
+   }
+
+   public static List<Permission> findPermissionBySecurityResource(UrlAccessResource resource){
+        return ResourceAssignment.findPermissionBySecurityResource(resource);
+   }
 
 	/**
 	 * 

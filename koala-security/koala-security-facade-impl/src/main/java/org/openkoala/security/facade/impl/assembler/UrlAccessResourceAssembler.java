@@ -10,4 +10,6 @@ public class UrlAccessResourceAssembler {
 		result.setDescription(command.getDescription());
 		return result;
 	}
+	
+	
 }

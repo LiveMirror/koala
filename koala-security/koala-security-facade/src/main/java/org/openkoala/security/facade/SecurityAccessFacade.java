@@ -4,12 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.dayatang.querychannel.Page;
-import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.PageElementResourceDTO;
-import org.openkoala.security.facade.dto.PermissionDTO;
-import org.openkoala.security.facade.dto.RoleDTO;
-import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
-import org.openkoala.security.facade.dto.UserDTO;
+import org.openkoala.security.facade.dto.*;
 
 public interface SecurityAccessFacade {
 
@@ -107,7 +102,13 @@ public interface SecurityAccessFacade {
 	 */
 	Set<RoleDTO> findRolesByMenuOrUrl();
 
-	List<UrlAccessResourceDTO> findAllUrlAccessResources();
+	List<UrlAuthorityDTO> findAllUrlAccessResources();
+
+    /**
+     * 查找所有的菜单资源。
+     * @return
+     */
+    List<MenuResourceDTO> findAllMenuResources();
 
 	/**
 	 * 根据角色ID查找所有的URL访问资源。

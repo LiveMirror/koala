@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
@@ -40,14 +41,14 @@ public class MenuResourceController {
 
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
-	
+
 	@Inject
 	private CustomAuthoringRealm customAuthoringRealm;
 
 	/**
 	 * 添加菜单权限资源。
 	 * 
-	 * @param menuResourceDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
@@ -59,8 +60,7 @@ public class MenuResourceController {
 	/**
 	 * 选择父菜单权限资源， 为其添加子菜单权限资源。
 	 * 
-	 * @param child
-	 * @param parentId
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
@@ -72,7 +72,7 @@ public class MenuResourceController {
 	/**
 	 * 更新菜单权限资源。
 	 * 
-	 * @param menuResourceDTO
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody
@@ -84,7 +84,7 @@ public class MenuResourceController {
 	/**
 	 * 批量撤销菜单 TODO 捕获详细异常。
 	 * 
-	 * @param menuResourceDTOs
+	 * @param menuResourceIds
 	 * @return
 	 */
 	@ResponseBody
@@ -130,13 +130,15 @@ public class MenuResourceController {
 			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(
 					CurrentUser.getUserAccount(), role.getId());
 			CurrentUser.setRoleName(roleName);
-//			PrincipalCollection principals = new SimplePrincipalCollection(CurrentUser.getPrincipal(), customAuthoringRealm.getName());
-//			customAuthoringRealm.doGetAuthorizationInfo(principals);
+//            CustomAuthoringRealm.ShiroUser shiroUser = CurrentUser.getPrincipal();
+//            SimpleAuthorizationInfo simpleAuthorizationInfo =  (SimpleAuthorizationInfo)shiroUser.getAuthorizationInfo();
+//            simpleAuthorizationInfo.setRoles(customAuthoringRealm.getRoles(roleName));
+//            simpleAuthorizationInfo.setStringPermissions(customAuthoringRealm.getPermissions(CurrentUser.getUserAccount(),roleName));
 			jsonResult.setData(results);
 			jsonResult.setSuccess(true);
 			jsonResult.setMessage("查找" + CurrentUser.getUserAccount() + " 在某个角色下得所有菜单权限资源成功。");
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage(),e);
+			LOGGER.error(e.getMessage(), e);
 			jsonResult.setSuccess(false);
 			jsonResult.setMessage("查找" + CurrentUser.getUserAccount() + " 在某个角色下得所有菜单权限资源失败。");
 		}

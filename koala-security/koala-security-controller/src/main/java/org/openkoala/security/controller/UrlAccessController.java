@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * URL访问权限资源。 XXX 当删除资源的时候需要确保没有关联关系。
+ * URL访问权限资源。
  * 
  * @author luzhao
  * 
@@ -51,6 +51,12 @@ public class UrlAccessController {
 		return securityConfigFacade.createUrlAccessResource(command);
 	}
 
+	/**
+	 * 更新URL访问权限资源。
+	 * 
+	 * @param command
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public JsonResult update(ChangeUrlAccessResourcePropsCommand command) {
@@ -60,7 +66,7 @@ public class UrlAccessController {
 	/**
 	 * 撤销URL访问权限资源。
 	 * 
-	 * @param urlAccessResourceDTOs
+	 * @param urlAccessResourceIds
 	 * @return
 	 */
 	@ResponseBody
@@ -76,21 +82,23 @@ public class UrlAccessController {
 	 * 
 	 * @param page
 	 * @param pagesize
-	 * @param urlAccessResourceDTO
+	 * @param queryUrlAccessResourceCondition
+	 *            查询URL访问资源条件
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/pagingQuery", method = RequestMethod.GET)
-	public Page<UrlAccessResourceDTO> pagingQuery(int page, int pagesize, UrlAccessResourceDTO urlAccessResourceDTO) {
+	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
+	public Page<UrlAccessResourceDTO> pagingQuery(int page, int pagesize,
+			UrlAccessResourceDTO queryUrlAccessResourceCondition) {
 		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryUrlAccessResources(page, pagesize,
-				urlAccessResourceDTO);
+				queryUrlAccessResourceCondition);
 		return results;
 	}
 
 	/**
 	 * 为URL访问权限资源授权权限Permission
 	 * 
-	 * @param permissionIds
+	 * @param permissionId
 	 * @param urlAccessResourceId
 	 * @return
 	 */
@@ -114,7 +122,7 @@ public class UrlAccessController {
 	/**
 	 * 从URL访问权限资源中撤销权限Permission
 	 * 
-	 * @param permissionIds
+	 * @param permissionId
 	 * @param urlAccessResourceId
 	 * @return
 	 */
@@ -144,7 +152,7 @@ public class UrlAccessController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/pagingQueryGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
+	@RequestMapping(value = "/pagingQueryGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
 			Long urlAccessResourceId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByUrlAccessResourceId(page,
@@ -161,7 +169,7 @@ public class UrlAccessController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/pagingQueryNotGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
+	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
 			Long urlAccessResourceId) {
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(page,

@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -56,6 +57,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		result.setRoles(roles);
 		result.setStringPermissions(permissions);
 		LOGGER.info("---->role:{},permission:{}", roles, permissions);
+        shiroUser.setAuthorizationInfo(result);
 		return result;
 	}
 
@@ -81,7 +83,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 				shiroUser, //
 				user.getUserPassword(),//
 				getName());
-
+        shiroUser.setAuthenticationInfo(result);
 		return result;
 	}
 
@@ -204,12 +206,10 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 	}
 
 	public Set<String> getRoles(String roleName) {
-		Set<String> results = new HashSet<String>();
-		results.add(roleName);
-		return results;
+        return Sets.newHashSet(roleName);
 	}
 
-	private Set<String> getPermissions(String username, String roleName) {
+	public Set<String> getPermissions(String username, String roleName) {
 		Set<String> results = new HashSet<String>();
 		Set<PermissionDTO> permissions = securityAccessFacade.findPermissionsByUserAccountAndRoleName(username,
 				roleName);
@@ -231,8 +231,11 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
 		private String roleName;
 
-		ShiroUser() {
-		}
+        private AuthenticationInfo authenticationInfo;
+
+        private AuthorizationInfo authorizationInfo;
+
+		ShiroUser() {}
 
 		public ShiroUser(Long id, String userAccount, String name) {
 			this.id = id;
@@ -280,7 +283,23 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 			this.roleName = roleName;
 		}
 
-		@Override
+        public AuthenticationInfo getAuthenticationInfo() {
+            return authenticationInfo;
+        }
+
+        public void setAuthenticationInfo(AuthenticationInfo authenticationInfo) {
+            this.authenticationInfo = authenticationInfo;
+        }
+
+        public AuthorizationInfo getAuthorizationInfo() {
+            return authorizationInfo;
+        }
+
+        public void setAuthorizationInfo(AuthorizationInfo authorizationInfo) {
+            this.authorizationInfo = authorizationInfo;
+        }
+
+        @Override
 		public String toString() {
 			return "ShiroUser [id=" + id + ", userAccount=" + userAccount + ", name=" + name + ", roleName=" + roleName + "]";
 		}

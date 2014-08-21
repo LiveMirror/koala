@@ -1,10 +1,7 @@
 package org.openkoala.security.core.domain;
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 角色。角色是权限的集合。
@@ -32,6 +29,16 @@ public class Role extends Authority {
 	public Role(String name) {
 		super(name);
 	}
+
+    public static List<String> getNames(Set<Authority> authorities) {
+        List<String> results = new ArrayList<String>();
+        for (Authority authority : authorities) {
+            if (authority instanceof Role) {
+                results.add(((Role) authority).getName().trim());
+            }
+        }
+        return results;
+    }
 
 	public static Set<Role> findByUser(User user) {
 		Set<Role> results = new HashSet<Role>();

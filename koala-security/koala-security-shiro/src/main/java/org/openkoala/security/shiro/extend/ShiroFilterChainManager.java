@@ -1,5 +1,6 @@
 package org.openkoala.security.shiro.extend;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.NamedFilterList;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
+import org.openkoala.security.facade.dto.UrlAuthorityDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -36,12 +38,12 @@ public class ShiroFilterChainManager {
 
 	// @PostConstruct
 	public void initFilterChain() {
-		List<UrlAccessResourceDTO> results = securityAccessFacade.findAllUrlAccessResources();
+		List<UrlAuthorityDTO> results = securityAccessFacade.findAllUrlAccessResources();
 		LOGGER.info("initFilterChain:{}", results);
 		initFilterChains(results);
 	}
 
-	public void initFilterChains(List<UrlAccessResourceDTO> urlAccessResources) {
+	public void initFilterChains(List<UrlAuthorityDTO> urlAccessResources) {
 		// 1、首先删除以前老的filter chain并注册默认的
 		filterChainManager.getFilterChains().clear();
 		if (defaultFilterChains != null) {
@@ -50,22 +52,32 @@ public class ShiroFilterChainManager {
 		
 		if (!urlAccessResources.isEmpty()) {
 			// 2、循环URL Filter 注册filter chain
-			for (UrlAccessResourceDTO urlAccessResource : urlAccessResources) {
-				String url = urlAccessResource.getUrl();
-				LOGGER.info("roles:{},permissions:{}",urlAccessResource.getRoles(),urlAccessResource.getPermissions());
-				if (!org.apache.commons.lang3.StringUtils.isBlank(url)) {
+			for (UrlAuthorityDTO urlAuthority : urlAccessResources) {
+				String url = urlAuthority.getUrl();
+				LOGGER.info("roles:{},permissions:{}",urlAuthority.getRoles(),urlAuthority.getPermissions());
+				if (StringUtils.hasText(url)) {
 					// 注册roles filter
-					if (!StringUtils.isEmpty(urlAccessResource.getRoles())) {
-						filterChainManager.addToChain(url, "anyRole", urlAccessResource.getRoles());
+					if (!urlAuthority.getRoles().isEmpty()) {
+                        listToString(urlAuthority.getRoles());
+						filterChainManager.addToChain(url, "anyRole", listToString(urlAuthority.getRoles()));
 					}
 					// 注册perms filter
-					if (!StringUtils.isEmpty(urlAccessResource.getPermissions())) {
-						filterChainManager.addToChain(url, "perms", urlAccessResource.getPermissions());
+					if (!urlAuthority.getPermissions().isEmpty()) {
+						filterChainManager.addToChain(url, "perms", listToString(urlAuthority.getPermissions()));
 					}
 				}
 			}
 		}
+		filterChainManager.addToChain("/**", "authc");
 		LOGGER.info("filterChain:{}", filterChainManager.getFilterChains());
 	}
+
+    private String listToString(Collection<String> elements) {
+        StringBuilder allRoles = new StringBuilder();
+        for (String element : elements) {
+            allRoles.append(element).append(",");
+        }
+        return allRoles.substring(0, allRoles.length() - 1);
+    }
 
 }

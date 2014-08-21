@@ -10,9 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 权限。代表系统的一项操作或功能。
@@ -51,8 +49,19 @@ public class Permission extends Authority {
 				.eq("identifier", identifier)//
 				.singleResult();
 	}
-	
-	@Override
+
+    public static List<String> getIdentifiers(Set<Authority> authorities) {
+        List<String> results = new ArrayList<String>();
+        for (Authority authority : authorities) {
+            if (authority instanceof Permission) {
+                results.add(((Permission) authority).getIdentifier().trim());
+            }
+        }
+        return results;
+    }
+
+
+    @Override
 	public Authority getBy(String name) {
 		return getRepository()//
 				.createNamedQuery("Authority.getAuthorityByName")//

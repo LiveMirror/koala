@@ -1,20 +1,13 @@
 package org.openkoala.security.core.domain;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -28,9 +21,9 @@ import org.openkoala.security.core.NullArgumentException;
 
 /**
  * 可授权实体，代表某种权限（Permission）或权限集合（Role），可被授予Actor。
- * 
+ *
  * @author luzhao
- * 
+ *
  */
 @Entity
 @Table(name = "KS_AUTHORITIES")
@@ -38,7 +31,7 @@ import org.openkoala.security.core.NullArgumentException;
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({
 		@NamedQuery(name = "Authority.findAllAuthoritiesByUserAccount", query = "SELECT _authority FROM Authorization _authorization JOIN  _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND TYPE(_authority) = :authorityType GROUP BY _authority.id"),
-		@NamedQuery(name = "Authority.checkHasSecurityResource", query = "SELECT _authority FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _authority IN (:authorities) AND TYPE(_securityResource) = :securityResourceType  AND _securityResource.identifier = :identifier"),
+		//@NamedQuery(name = "Authority.checkHasSecurityResource", query = "SELECT _authority FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _authority IN (:authorities) AND TYPE(_securityResource) = :securityResourceType  AND _securityResource.identifier = :identifier"),
 		@NamedQuery(name = "Authority.getAuthorityByName", query = "SELECT _authority FROM Authority _authority WHERE TYPE(_authority) = :authorityType AND _authority.name = :name") })
 public abstract class Authority extends SecurityAbstractEntity {
 
@@ -57,12 +50,6 @@ public abstract class Authority extends SecurityAbstractEntity {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "KS_AS_MAP", //
-	joinColumns = @JoinColumn(name = "AUTHORITY_ID"), //
-	inverseJoinColumns = @JoinColumn(name = "SECURITYRESOURCE_ID"))
-	private Set<SecurityResource> securityResources = new HashSet<SecurityResource>();
-
 	protected Authority() {}
 
 	public Authority(String name) {
@@ -70,106 +57,75 @@ public abstract class Authority extends SecurityAbstractEntity {
 		isExistedName(name);
 		this.name = name;
 	}
-	
+
 	@Override
 	public void remove() {
 
+        // authority cannot remove it
 		if (!Authorization.findByAuthority(this).isEmpty()) {
 			throw new CorrelationException("authority has actor, so can't remove authority.");
 		}
 
-		if (!this.getSecurityResources().isEmpty()) {
-			terminateSecurityResources(this.getSecurityResources());
-		}
-
+        //authority can remove it.
+        for(ResourceAssignment resourceAssignment : ResourceAssignment.findByAuthority(this))
+        {
+            resourceAssignment.remove();
+        }
 		super.remove();
 	}
 
-	public static Set<MenuResource> findMenuResourceByAuthorities(Set<? extends Authority> authorities) {
-		Set<MenuResource> results = new HashSet<MenuResource>();
-
-		for (Authority authority : authorities) {
-			results.addAll(findMenuResourceByAuthority(authority));
-		}
-
-		return results;
-	}
-
-	public static Set<MenuResource> findMenuResourceByAuthority(Authority authority) {
-		Set<MenuResource> results = new HashSet<MenuResource>();
-		if (authority instanceof Role) {
-			Role role = (Role) authority;
-			Set<Permission> permissions = role.getPermissions();
-			results.addAll(findMenuResourceByAuthorities(permissions));
-		}
-		Set<SecurityResource> securityResources = authority.getSecurityResources();
-		for (SecurityResource securityResource : securityResources) {
-			if (securityResource instanceof MenuResource) {
-				results.add((MenuResource) securityResource);
-			}
-		}
-		return results;
-	}
-
-	public static Set<MenuResource> findTopMenuResourceByAuthority(Authority authority) {
+	/*public static Set<MenuResource> findTopMenuResourceByAuthority(Authority authority) {
 		List<MenuResource> menuResources = getRepository().createNamedQuery("findTopMenuResourceByAuthority")//
 				.addParameter("authorityId", authority.getId())//
 				.list();
 
 		return new HashSet<MenuResource>(menuResources);
-	}
+	}*/
 
 	public abstract Authority getBy(String name);
 
 	/**
 	 * 维护多对多关联 为可授权体添加一个权限资源， 需要显示的调用update方法。
-	 * 
+	 *
 	 * @param securityResource
 	 */
 	public void addSecurityResource(SecurityResource securityResource) {
-		this.securityResources.add(securityResource);
-		securityResource.addAuthority(this);
-		this.save();
+        new ResourceAssignment(this,securityResource).save();
 	}
 
 	/**
 	 * 为可授权体添加多个权限资源，需要显示的调用update方法。
-	 * 
+	 *
 	 * @param securityResources
 	 */
 	public void addSecurityResources(List<? extends SecurityResource> securityResources) {
-		this.securityResources.addAll(securityResources);
 		for (SecurityResource securityResource : securityResources) {
-			securityResource.addAuthority(this);
+            this.addSecurityResource(securityResource);
 		}
-		this.save();
 	}
 
 	/**
-	 * 维护多对多关系 为可授权体撤销一个权限资源，需要显示的调用update方法。
-	 * 
-	 * @param securityResource
-	 */
-	public void terminateSecurityResource(SecurityResource securityResource) {
-		this.securityResources.remove(securityResource);
-		securityResource.terminateAuthority(this);
-		this.save();
-	}
+     * @param securityResource
+     */
+    public void terminateSecurityResource(SecurityResource securityResource) {
+        ResourceAssignment resourceAssignment = ResourceAssignment.findByResourceInAuthority(this, securityResource);
+        if (resourceAssignment != null) {
+            resourceAssignment.remove();
+        }
+    }
 
 	/**
 	 * 维护多对多关系 为可授权体撤销多个权限资源，显示调用save方法。
-	 * 
-	 * @param securityResources
+	 *
+	 * @param
 	 */
 	public void terminateSecurityResources(Set<? extends SecurityResource> securityResources) {
-		this.securityResources.removeAll(securityResources);
-		for (SecurityResource securityResource : securityResources) {
-			securityResource.terminateAuthority(this);
-		}
-		this.save();
+		for(SecurityResource securityResource : securityResources){
+            this.terminateSecurityResource(securityResource);
+        }
 	}
 
-	public static boolean checkHasPageElementResource(Set<Authority> authorities, String identifier) {
+    public static boolean checkHasPageElementResource(Set<Authority> authorities, String identifier) {
 
 		List<Authority> results = getRepository()//
 				.createNamedQuery("Authority.checkHasSecurityResource")//
@@ -180,7 +136,7 @@ public abstract class Authority extends SecurityAbstractEntity {
 		return results.isEmpty();
 	}
 
-	
+
 	public void changeName(String name){
 		checkArgumentIsNull("name", name);
 		if(!name.equals(this.getName())){
@@ -229,11 +185,15 @@ public abstract class Authority extends SecurityAbstractEntity {
 		this.description = description;
 	}
 
-	public Set<SecurityResource> getSecurityResources() {
-		return Collections.unmodifiableSet(securityResources);
-	}
+    public List<MenuResource> findMenuResourceByAuthority() {
+        return ResourceAssignment.findMenuResourceByAuthority(this);
+    }
 
-	public void setSecurityResources(Set<SecurityResource> securityResources) {
-		this.securityResources = securityResources;
-	}
+    public static List<UrlAccessResource> findUrlAccessResourceByAuthority(Authority authority){
+        return ResourceAssignment.findUrlAccessResourcesByAuthority(authority);
+    }
+
+    public static List<MenuResource> findMenuResourceByAuthorities(Set<Authority> authorities) {
+        return ResourceAssignment.findMenuResourceByAuthorities(authorities);
+    }
 }

@@ -1,5 +1,6 @@
 package org.openkoala.security.core.domain;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -35,15 +36,15 @@ public class AuthorityTest extends AbstractDomainIntegrationTestCase{
 		permission.addSecurityResource(menuResource5);
 		permission2.addSecurityResource(menuResource3);
 		
-		Set<MenuResource> permission1MenuResources = Authority.findMenuResourceByAuthority(permission);
+		List<MenuResource> permission1MenuResources = permission.findMenuResourceByAuthority();
 		assertFalse(permission1MenuResources.isEmpty());
 		assertTrue(permission1MenuResources.size() == 2);
 		
-		Set<MenuResource> permission2MenuResources = Authority.findMenuResourceByAuthority(permission2);
+		List<MenuResource> permission2MenuResources = permission2.findMenuResourceByAuthority();
 		assertFalse(permission2MenuResources.isEmpty());
 		assertTrue(permission2MenuResources.size() == 1);
 		
-		Set<MenuResource> roleMenuResources = Authority.findMenuResourceByAuthority(role);
+		List<MenuResource> roleMenuResources = role.findMenuResourceByAuthority();
 		assertFalse(roleMenuResources.isEmpty());
 		assertTrue(roleMenuResources.size() == 4);
 		

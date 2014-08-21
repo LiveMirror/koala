@@ -110,6 +110,11 @@ public abstract class Actor extends SecurityAbstractEntity {
 		new Authorization(this, authority).save();
 	}
 
+	public void terminate(Authority authority) {
+		Authorization authorization = Authorization.findByActorInAuthority(this, authority);
+		authorization.remove();
+	}
+	
 	/**
 	 * 得到在某个范围下{@link Scope}参与者{@link Actor}的所有权限{@link Permission}
 	 * 
@@ -182,4 +187,5 @@ public abstract class Actor extends SecurityAbstractEntity {
 	public Date getCreateDate() {
 		return createDate;
 	}
+
 }

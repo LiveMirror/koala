@@ -127,6 +127,7 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		UrlAccessResource urlAccessResource = initUrlAccessResource();
 		urlAccessResource.save();
 		Role role = initRole();
+        role.save();
 		role.addSecurityResource(urlAccessResource);
 		urlAccessResource.remove();
 	}
@@ -185,10 +186,11 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		role1.save();
 		role1.addSecurityResource(urlAccessResource);
 
-		assertNotNull(urlAccessResource.getAuthorities());
-		List<String> names = UrlAccessResource.getRoleNames(Sets.newHashSet(role, role1));
-		assertNotNull(names);
-		assertTrue(names.size() == 2);
+        List<Role> roles = UrlAccessResource.findRoleBySecurityResource(urlAccessResource);
+
+		assertFalse(roles.isEmpty());
+        assertTrue(roles.size() == 2);
+
 	}
 
 	@Test
@@ -202,12 +204,11 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 
 		permission1.addSecurityResource(urlAccessResource);
 		permission2.addSecurityResource(urlAccessResource);
-		assertNotNull(urlAccessResource.getAuthorities());
+        List<Permission> permissions = UrlAccessResource.findPermissionBySecurityResource(urlAccessResource);
 
-		List<String> identifiers = UrlAccessResource
-				.getPermissionIdentifiers(Sets.newHashSet(permission1, permission2));
-		assertNotNull(identifiers);
-		assertTrue(identifiers.size() == 2);
+        assertFalse(permissions.isEmpty());
+
+		assertTrue(permissions.size() == 2);
 	}
 
 	@Test
@@ -224,23 +225,4 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		assertTrue(urlAccessResources.size() == 2);
 	}
 
-	@Test
-	public void testFindAllAndRoles() throws Exception {
-		init();
-		List<UrlAccessResource> urlAccessResources = UrlAccessResource.findAllUrlAccessResources();
-		assertFalse(urlAccessResources.isEmpty());
-		Set<Authority> authorities = urlAccessResources.get(0).getAuthorities();
-		assertFalse(authorities.isEmpty());
-		for (Authority authority : authorities) {
-			assertEquals("testRole0000000000", authority.getName());
-		}
-	}
-
-	private void init() {
-		Role role = initRole();
-		role.save();
-		UrlAccessResource urlAccessResource = initUrlAccessResource();
-		urlAccessResource.save();
-		role.addSecurityResource(urlAccessResource);
-	}
 }

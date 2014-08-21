@@ -2,6 +2,7 @@ package org.openkoala.security.core.domain;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -28,126 +29,102 @@ import org.openkoala.security.core.NullArgumentException;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({
-		@NamedQuery(name = "SecurityResource.findAllByType", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType"),
-		@NamedQuery(name = "SecurityResource.findByName", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType AND _securityResource.name = :name") })
+        @NamedQuery(name = "SecurityResource.findAllByType", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType"),
+        @NamedQuery(name = "SecurityResource.findByName", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType AND _securityResource.name = :name")})
 public abstract class SecurityResource extends SecurityAbstractEntity {
 
-	private static final long serialVersionUID = 6064565786784560656L;
+    private static final long serialVersionUID = 6064565786784560656L;
 
-	/**
-	 * 名称
-	 */
-	@NotNull
-	@Column(name = "NAME")
-	private String name;
+    /**
+     * 名称
+     */
+    @NotNull
+    @Column(name = "NAME")
+    private String name;
 
-	/**
-	 * 描述
-	 */
-	@Column(name = "DESCRIPTION")
-	private String description;
+    /**
+     * 描述
+     */
+    @Column(name = "DESCRIPTION")
+    private String description;
 
-	/**
-	 * 查询的时候禁止懒加载。
-	 */
-	@ManyToMany(mappedBy = "securityResources", fetch = FetchType.EAGER)
-	private Set<Authority> authorities = new HashSet<Authority>();
+    protected SecurityResource() {}
 
-	protected SecurityResource() {}
+    public SecurityResource(String name) {
+        checkArgumentIsNull("name", name);
+        isNameExisted(name);
+        this.name = name;
+    }
 
-	public SecurityResource(String name) {
-		checkArgumentIsNull("name", name);
-		isNameExisted(name);
-		this.name = name;
-	}
+    @Override
+    public void remove() {
+        if (!ResourceAssignment.findByResource(this).isEmpty()) {
+            throw new CorrelationException("securityResource has authority, cannot remove it.");
+        }
+        super.remove();
+    }
 
-	@Override
-	public void remove() {
-		if (!this.getAuthorities().isEmpty()) {
-			throw new CorrelationException("securityResource has authority, can't remove it.");
-		}
-		super.remove();
-	}
+    /**
+     * 批量保存。
+     *
+     * @param securityResources
+     */
+    public static void batchSave(List<? extends SecurityResource> securityResources) {
+        for (SecurityResource securityResource : securityResources) {
+            securityResource.save();
+        }
+    }
 
-	/**
-	 * @param name
-	 *            name of the SecurityResource, can't be null.
-	 * @return
-	 */
-	public abstract SecurityResource findByName(String name);
+    /**
+     * @param name name of the SecurityResource, can't be null.
+     * @return
+     */
+    public abstract SecurityResource findByName(String name);
 
-	public void changeName(String name) {
-		checkArgumentIsNull("name", name);
-		if (!name.equals(this.getName())) {
-			isNameExisted(name);
-			this.name = name;
-			this.save();
-		}
-	}
+    public void changeName(String name) {
+        checkArgumentIsNull("name", name);
+        if (!name.equals(this.getName())) {
+            isNameExisted(name);
+            this.name = name;
+            this.save();
+        }
+    }
 
-	public void addAuthority(Authority authority) {
-		this.authorities.add(authority);
-		this.save();
-	}
+    protected static void checkArgumentIsNull(String nullMessage, String argument) {
+        if (StringUtils.isBlank(argument)) {
+            throw new NullArgumentException(nullMessage);
+        }
+    }
 
-	public void addAuthorities(Set<Authority> authorities) {
-		this.authorities.addAll(authorities);
-		this.save();
-	}
+    protected void isNameExisted(String name) {
+        if (findByName(name) != null) {
+            throw new NameIsExistedException("securityResource.name.exist");
+        }
+    }
 
-	public void terminateAuthority(Authority authority) {
-		this.authorities.remove(authority);
-		this.save();
-	}
+    @Override
+    public String[] businessKeys() {
+        return new String[]{"name"};
+    }
 
-	public void terminateAuthorities(Set<Authority> authorities) {
-		this.authorities.removeAll(authorities);
-		this.save();
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)//
+                .append(name)//
+                .append(description)//
+                .build();
+    }
 
-	protected static void checkArgumentIsNull(String nullMessage, String argument) {
-		if (StringUtils.isBlank(argument)) {
-			throw new NullArgumentException(nullMessage);
-		}
-	}
+    public String getName() {
+        return name;
+    }
 
-	protected void isNameExisted(String name) {
-		if (findByName(name) != null) {
-			throw new NameIsExistedException("securityResource.name.exist");
-		}
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	@Override
-	public String[] businessKeys() {
-		return new String[] { "name" };
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this)//
-				.append(name)//
-				.append(description)//
-				.build();
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Set<Authority> getAuthorities() {
-		return Collections.unmodifiableSet(authorities);
-	}
-
-	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 }

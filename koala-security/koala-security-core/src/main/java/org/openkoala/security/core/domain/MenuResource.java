@@ -102,7 +102,15 @@ public class MenuResource extends SecurityResource {
 	public static MenuResource getBy(Long id) {
 		return MenuResource.get(MenuResource.class, id);
 	}
-	
+
+    public static List<MenuResource> findAllMenuResources() {
+        List<MenuResource> results = getRepository()//
+                .createNamedQuery("SecurityResource.findAllByType")//
+                .addParameter("securityResourceType", MenuResource.class)//
+                .list();
+        return results;
+    }
+
 	public static List<MenuResource> findAllByIds(Long[] menuResourceIds) {
 		return getRepository()//
 				.createCriteriaQuery(MenuResource.class)//
@@ -172,5 +180,4 @@ public class MenuResource extends SecurityResource {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
 }

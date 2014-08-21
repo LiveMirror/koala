@@ -96,6 +96,10 @@ public class Authorization extends SecurityAbstractEntity {
 		Set<Authority> results = new HashSet<Authority>();
 		Set<Authorization> authorizations = findAuthorizationsByActor(actor);
 		for (Authorization authorization : authorizations) {
+            if(authorization.getAuthority() instanceof Role){
+                Role role = (Role)authorization.getAuthority();
+                results.addAll(role.getPermissions());
+            }
 			results.add(authorization.getAuthority());
 		}
 		return results;
@@ -107,13 +111,13 @@ public class Authorization extends SecurityAbstractEntity {
 	 * @return
 	 */
 	public static Authorization findByActorInAuthority(Actor actor, Authority authority) {
-		Authorization authorization = getRepository()//
+		Authorization result = getRepository()//
 				.createCriteriaQuery(Authorization.class)//
 				.eq("actor", actor)//
 				.eq("authority", authority)//
 				.singleResult();
 
-		return authorization;
+		return result;
 	}
 
 	public static void checkAuthorization(Actor actor, Authority authority) {

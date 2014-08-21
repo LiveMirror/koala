@@ -29,6 +29,10 @@ public class MenuResourceDTO implements Serializable {
 	private int level;
 	
 	private boolean checked;
+
+    private String roles;
+
+    private String permissions;
 	
 	private List<MenuResourceDTO> children = new ArrayList<MenuResourceDTO>();
 
@@ -130,7 +134,23 @@ public class MenuResourceDTO implements Serializable {
 		this.version = version;
 	}
 
-	@Override
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
+    }
+
+    @Override
 	public int hashCode() {
 		return new HashCodeBuilder()//
 				.append(name)//
