@@ -87,6 +87,17 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		assertEquals(expected, actual);
 	}
 
+    @Test
+	public void testChangeUrlIsEqual() throws Exception {
+		UrlAccessResource expected = initUrlAccessResource();
+		expected.save();
+		assertNotNull(expected.getId());
+		expected.changeUrl("/auth/test/**********");
+        // not do something.
+	}
+
+
+
 	@Test(expected = NullArgumentException.class)
 	public void testChangeNameIsNull() throws Exception {
 		UrlAccessResource expected = initUrlAccessResource();

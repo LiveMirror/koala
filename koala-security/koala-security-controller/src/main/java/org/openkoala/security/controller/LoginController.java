@@ -35,7 +35,7 @@ public class LoginController {
 		return "login";
 	}
 
-	/**
+	/** 如果登陆了 就不用再次到登陆页面，直接就可以进入。
 	 * 用户登陆
 	 * 
 	 * @param request

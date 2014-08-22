@@ -59,7 +59,7 @@ public interface SecurityAccessFacade {
 	 * 
 	 * @param currentPage
 	 * @param pageSize
-	 * @param permissionDTO
+	 * @param queryPermissionCondition
 	 * @return
 	 */
 	Page<PermissionDTO> pagingQueryPermissions(int currentPage, int pageSize, PermissionDTO queryPermissionCondition);
@@ -67,8 +67,8 @@ public interface SecurityAccessFacade {
 	/***
 	 * 查询某个角色下用户的菜单资源。
 	 * 
-	 * @param username
-	 * @param roleDTO
+	 * @param userAccount
+	 * @param roleId
 	 * @return
 	 */
 	List<MenuResourceDTO> findMenuResourceByUserAsRole(String userAccount, Long roleId);
@@ -103,12 +103,6 @@ public interface SecurityAccessFacade {
 	Set<RoleDTO> findRolesByMenuOrUrl();
 
 	List<UrlAuthorityDTO> findAllUrlAccessResources();
-
-    /**
-     * 查找所有的菜单资源。
-     * @return
-     */
-    List<MenuResourceDTO> findAllMenuResources();
 
 	/**
 	 * 根据角色ID查找所有的URL访问资源。

@@ -66,8 +66,7 @@ public class CurrentUserController {
 	/**
 	 * 更新用户密码。
 	 * 
-	 * @param oldPassword
-	 * @param userPassword
+	 * @param command
 	 * @return
 	 */
 	@ResponseBody

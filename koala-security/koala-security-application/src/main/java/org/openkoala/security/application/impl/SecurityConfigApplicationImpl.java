@@ -150,12 +150,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
         }
     }
 
-    // TODO
-    public void updateMenuResources(List<MenuResource> menuResources) {
-        // TODO Auto-generated method stub
-
-    }
-
     public boolean isSecurityResourceEmpty() {
         // TODO Auto-generated method stub
         return false;

@@ -74,7 +74,7 @@ public class PageElementController {
 	/**
 	 * 为页面元素资源授予权限Permission
 	 * 
-	 * @param permissionIds
+	 * @param permissionId
 	 * @param pageElementResourceId
 	 * @return
 	 */
@@ -97,7 +97,7 @@ public class PageElementController {
 	/**
 	 * 从页面元素资源中撤销权限Permission
 	 * 
-	 * @param permissionIds
+	 * @param permissionId
 	 * @param pageElementResourceId
 	 * @return
 	 */

@@ -144,7 +144,7 @@ public class RoleController {
 	 * 为角色授权菜单资源。
 	 * 
 	 * @param roleId
-	 * @param menuResourceDTOs
+	 * @param menuResourceIds
 	 * @return
 	 */
 	@ResponseBody
@@ -270,7 +270,7 @@ public class RoleController {
 	 * 从角色中撤销权限
 	 * 
 	 * @param roleId
-	 * @param permssionIds
+	 * @param permissionIds
 	 * @return
 	 */
 	@ResponseBody
@@ -324,7 +324,7 @@ public class RoleController {
 	 * 为角色授权页面元素权限资源
 	 * 
 	 * @param roleId
-	 * @param PageElementResourceIds
+	 * @param pageElementResourceIds
 	 * @return
 	 */
 	@ResponseBody

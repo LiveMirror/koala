@@ -148,8 +148,8 @@ public class MenuResourceController {
 	/**
 	 * 为菜单权限资源资源授予权限Permission。
 	 * 
-	 * @param PermissionIds
-	 * @param urlAccessResourceId
+	 * @param permissionId
+	 * @param menuResourceId
 	 * @return
 	 */
 	@ResponseBody
@@ -171,8 +171,8 @@ public class MenuResourceController {
 	/**
 	 * 从菜单权限资源中撤销权限Permission。
 	 * 
-	 * @param permissionIds
-	 * @param urlAccessResourceId
+	 * @param permissionId
+	 * @param menuResourceId
 	 * @return
 	 */
 	@ResponseBody
@@ -196,7 +196,7 @@ public class MenuResourceController {
 	 * 
 	 * @param page
 	 * @param pagesize
-	 * @param UrlAccessResourceId
+	 * @param menuResourceId
 	 * @return
 	 */
 	@ResponseBody

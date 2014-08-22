@@ -109,9 +109,7 @@ public abstract class Authority extends SecurityAbstractEntity {
      */
     public void terminateSecurityResource(SecurityResource securityResource) {
         ResourceAssignment resourceAssignment = ResourceAssignment.findByResourceInAuthority(this, securityResource);
-        if (resourceAssignment != null) {
-            resourceAssignment.remove();
-        }
+        resourceAssignment.remove();
     }
 
 	/**
@@ -189,8 +187,8 @@ public abstract class Authority extends SecurityAbstractEntity {
         return ResourceAssignment.findMenuResourceByAuthority(this);
     }
 
-    public static List<UrlAccessResource> findUrlAccessResourceByAuthority(Authority authority){
-        return ResourceAssignment.findUrlAccessResourcesByAuthority(authority);
+    public List<UrlAccessResource> findUrlAccessResourceByAuthority(){
+        return ResourceAssignment.findUrlAccessResourcesByAuthority(this);
     }
 
     public static List<MenuResource> findMenuResourceByAuthorities(Set<Authority> authorities) {

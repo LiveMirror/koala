@@ -96,7 +96,7 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		assertFalse(roles.isEmpty());
         Role role = roles.get(0);
         assertNotNull(role);
-        List<UrlAccessResource> urlAccessResources = Role.findUrlAccessResourceByAuthority(role);
+        List<UrlAccessResource> urlAccessResources = role.findUrlAccessResourceByAuthority();
 		assertFalse(urlAccessResources.isEmpty());
 		for (UrlAccessResource urlAccessResource : urlAccessResources) {
 			assertEquals("测试管理0000000000", urlAccessResource.getName());

@@ -277,33 +277,6 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
     }
 
-    // TODO 待实现
-    @Override
-    public List<MenuResourceDTO> findAllMenuResources() {
-       List<MenuResource> menuResources =  securityAccessApplication.findAllMenuResorces();
-        List<MenuResourceDTO> results = new ArrayList<MenuResourceDTO>();
-       /* for(MenuResource menuResource : menuResources){
-            if(!StringUtils.isBlank(menuResource.getUrl())){
-                Set<Authority> authorities = menuResource.getAuthorities();
-                List<String> roles = Role.getNames(authorities);
-                List<String> permissions = Permission.getIdentifiers(authorities);
-                if(!roles.isEmpty()){
-                    String result = listToString(roles);
-//                    menuResourceDTO.setRoles(result);
-                }
-                if(!permissions.isEmpty()){
-                    String result = listToString(permissions);
-//                    menuResourceDTO.setPermissions(result);
-                }
-                if (!roles.isEmpty() || !permissions.isEmpty()) {
-//                    results.add(menuResourceDTO);
-                }
-            }
-        }*/
-       return results;
-    }
-
-
     @Override
 	public UserDTO login(String principal, String password) {
 		User user = securityAccessApplication.login(principal, password);

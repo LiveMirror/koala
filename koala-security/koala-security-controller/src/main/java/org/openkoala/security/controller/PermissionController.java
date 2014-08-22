@@ -57,7 +57,7 @@ public class PermissionController {
 	/**
 	 * 撤销权限
 	 * 
-	 * @param command
+	 * @param permissionIds
 	 * @return
 	 */
 	@ResponseBody

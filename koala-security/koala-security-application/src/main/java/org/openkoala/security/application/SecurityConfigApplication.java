@@ -150,7 +150,7 @@ public interface SecurityConfigApplication {
 
 	/**
 	 * 
-	 * @param authorities
+	 * @param authority
 	 * @param securityResource
 	 */
 	void terminateAuthorityFromSecurityResource(Authority authority, SecurityResource securityResource);
@@ -189,12 +189,6 @@ public interface SecurityConfigApplication {
 	 * @param actor
 	 */
 	void terminateAuthoritiesFromActor(List<Authority> authorities, Actor actor);
-
-	/**
-	 * 
-	 * @param menuResources
-	 */
-	void updateMenuResources(List<MenuResource> menuResources);
 
 	boolean isSecurityResourceEmpty();
 
@@ -282,7 +276,7 @@ public interface SecurityConfigApplication {
 	 * 为角色授权多个权限Permission
 	 * 
 	 * @param permissions
-	 * @param adminRole
+	 * @param role
 	 */
 	void grantPermissionsToRole(List<Permission> permissions, Role role);
 

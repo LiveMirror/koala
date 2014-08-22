@@ -1,5 +1,6 @@
 package org.openkoala.security.core.domain;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.openkoala.security.core.NullArgumentException;
 
@@ -15,8 +16,8 @@ import java.util.Set;
 @Entity
 @Table(name = "KS_RESOURCEASSIGNMENTS")
 @NamedQueries({
-        @NamedQuery(name="ResourceAssignment.findSecurityResourcesByAuthorities",query = "SELECT _resource FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority in (:authorities) AND TYPE(_resource)= :resourceType GROUP BY _resource.id"),
-        @NamedQuery(name="ResourceAssignment.findAuthoritiesBySecurityResource",query = "SELECT _authority FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource = :resource AND TYPE(_authority)= :authorityType GROUP BY _authority.id")
+        @NamedQuery(name="ResourceAssignment.findSecurityResourcesByAuthorities",query = "SELECT _resource FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority in (:authorities) AND TYPE(_resource)= :resourceType GROUP BY _resource.id ORDER BY _resource.id"),
+        @NamedQuery(name="ResourceAssignment.findAuthoritiesBySecurityResource",query = "SELECT _authority FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource = :resource AND TYPE(_authority)= :authorityType GROUP BY _authority.id ORDER BY _authority.id")
 })
 public class ResourceAssignment extends SecurityAbstractEntity {
 
@@ -45,7 +46,7 @@ public class ResourceAssignment extends SecurityAbstractEntity {
 
     @Override
     public void save() {
-        if(exists(authority,resource)){
+        if(existed(authority,resource)){
             return;
         }
         super.save();
@@ -57,26 +58,32 @@ public class ResourceAssignment extends SecurityAbstractEntity {
     }
 
     public static ResourceAssignment findByResourceInAuthority(Authority authority, SecurityResource resource) {
-        ResourceAssignment result =  getRepository()//
+        return getRepository()//
                 .createCriteriaQuery(ResourceAssignment.class)//
                 .eq("authority", authority)//
                 .eq("resource", resource)//
                 .singleResult();
-        return result;
     }
 
     public static List<ResourceAssignment> findByAuthority(Authority authority) {
+        Set<Authority> authorities = getAuthoritiesByAuthority(authority);
         return getRepository()//
                 .createCriteriaQuery(ResourceAssignment.class)//
-                .eq("authority", authority)//
+                .in("authority",authorities)//
+                .asc("id")//
                 .list();
-
     }
 
+    /**
+     * TODO 很奇怪~ 排序规则是变化的，所以强制使用id升序返回。
+     * @param resource
+     * @return
+     */
     public static List<ResourceAssignment> findByResource(SecurityResource resource) {
         return getRepository()//
                 .createCriteriaQuery(ResourceAssignment.class)//
                 .eq("resource", resource)//
+                .asc("id")//
                 .list();
     }
 
@@ -100,7 +107,7 @@ public class ResourceAssignment extends SecurityAbstractEntity {
         return findUrlAccessResourcesByAuthorities(authorities);
     }
 
-    public static List<UrlAccessResource> findUrlAccessResourcesByAuthorities(Set<Authority> authorities) {
+    public static List<UrlAccessResource> findUrlAccessResourcesByAuthorities(Set<? extends Authority> authorities) {
         return getRepository()//
                 .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthorities")//
                 .addParameter("authorities", authorities)//
@@ -122,9 +129,16 @@ public class ResourceAssignment extends SecurityAbstractEntity {
                 .list();
     }
 
-    // TODO ...
-    public static List<ResourceAssignment> findAll(){
-        return getRepository().createJpqlQuery("SELECT _resource FROM ResourceAssignment resourceAssignment JOIN r.resource _resource GROUP BY _resource").list();
+    /**
+     *
+     * @param resourceAssignmentId id for ResourceAssignment cannot null.
+     * @return
+     */
+    public static ResourceAssignment getById(Long resourceAssignmentId) {
+        if(resourceAssignmentId == null || resourceAssignmentId < 0){
+            throw new NullArgumentException("resourceAssignmentId");
+        }
+        return ResourceAssignment.get(ResourceAssignment.class,resourceAssignmentId);
     }
 
     private static Set<Authority> getAuthoritiesByAuthority(Authority authority) {
@@ -137,7 +151,7 @@ public class ResourceAssignment extends SecurityAbstractEntity {
         return results;
     }
 
-    private boolean exists(Authority authority,SecurityResource resource){
+    private boolean existed(Authority authority,SecurityResource resource){
        return findByResourceInAuthority(authority, resource) != null;
     }
 

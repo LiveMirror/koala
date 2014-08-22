@@ -369,7 +369,7 @@ public class UserController {
 	 * 根据条件分页查询还未授权的角色
 	 * 
 	 * @param page
-	 * @param pageSize
+	 * @param pagesize
 	 * @param queryRoleCondition
 	 * @return
 	 */
