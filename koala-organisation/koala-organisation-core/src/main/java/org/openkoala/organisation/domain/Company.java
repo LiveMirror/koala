@@ -41,12 +41,13 @@ public class Company extends Organization {
 		}
 		Company that = (Company) other;
 		return new EqualsBuilder().append(this.getName(), that.getName())
+				.append(this.getSn(), that.getSn())
 				.isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(getName()).toHashCode();
+		return new HashCodeBuilder().append(getName()).append(getSn()).toHashCode();
 	}
 
 	@Override

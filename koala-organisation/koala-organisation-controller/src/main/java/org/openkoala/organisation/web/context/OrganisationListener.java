@@ -4,18 +4,18 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.dayatang.domain.InstanceFactory;
-import org.openkoala.organisation.application.OrganizationApplication;
-import org.openkoala.organisation.domain.Company;
+import org.openkoala.organisation.facade.OrganizationFacade;
+import org.openkoala.organisation.facade.dto.OrganizationDTO;
 
 public class OrganisationListener implements ServletContextListener {
 
-private OrganizationApplication organizationApplication;
+private OrganizationFacade organizationFacade;
 	
-	private OrganizationApplication getOrganizationApplication(){
-		if(organizationApplication==null){
-			organizationApplication = InstanceFactory.getInstance(OrganizationApplication.class);
+	private OrganizationFacade getOrganizationFacade(){
+		if(organizationFacade==null){
+			organizationFacade = InstanceFactory.getInstance(OrganizationFacade.class);
 		}
-		return organizationApplication;
+		return organizationFacade;
 	}
 	 
 	public void contextInitialized(ServletContextEvent event) {
@@ -23,15 +23,15 @@ private OrganizationApplication organizationApplication;
 	}
 	
 	private void initTopOrganizationIfNecessary(ServletContextEvent event) {
-		
-		if (!getOrganizationApplication().isTopOrganizationExists()) {
-			getOrganizationApplication().createAsTopOrganization(newTopOrganization());
+		if (!getOrganizationFacade().isTopOrganizationExists()) {
+			getOrganizationFacade().createAsTopOrganization(newTopOrganization());
 		}
-		
 	}
 	
-	private Company newTopOrganization() {
-		return new Company("总公司", "COM-001","总公司：所有机构的根");
+	private OrganizationDTO newTopOrganization() {
+		OrganizationDTO organizationDTO = new OrganizationDTO("总公司", "COM-001","总公司：所有机构的根");
+		organizationDTO.setOrganizationType(OrganizationDTO.COMPANY);
+		return organizationDTO;
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {

@@ -1,23 +1,14 @@
 package org.openkoala.organisation.web.controller;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.openkoala.organisation.NameExistException;
-import org.openkoala.organisation.SnIsExistException;
-import org.openkoala.organisation.TerminateNotEmptyOrganizationException;
-import org.openkoala.organisation.TerminateRootOrganizationException;
-import org.openkoala.organisation.application.OrganizationApplication;
-import org.openkoala.organisation.application.dto.EmployeeDTO;
-import org.openkoala.organisation.application.dto.OrganizationDTO;
-import org.openkoala.organisation.domain.Company;
-import org.openkoala.organisation.domain.Department;
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.facade.OrganizationFacade;
+import org.openkoala.organisation.facade.dto.EmployeeDTO;
+import org.openkoala.organisation.facade.dto.InvokeResult;
+import org.openkoala.organisation.facade.dto.OrganizationDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +27,7 @@ public class OrganizationController extends BaseController {
      * 组织机构应用接口
      */
     @Inject
-    private OrganizationApplication organizationApplication;
+    private OrganizationFacade organizationFacade;
     
     /**
      * 在某个公司下创建一个分公司
@@ -46,22 +37,12 @@ public class OrganizationController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/create-company")
-    public Map<String, Object> createCompany(Long parentId, Company company) {
+    public Map<String, Object> createCompany(Long parentId, OrganizationDTO companyDto) {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
-		Company parent = getBaseApplication().getEntity(Company.class, parentId);
-    	try {
-    		company = organizationApplication.createCompany(parent, company);
-        	dataMap.put("result", "success");
-        	dataMap.put("id", company.getId());
-    	} catch (SnIsExistException exception) {
-    		dataMap.put("result", "机构编码: " + company.getSn() + " 已被使用！");
-    	} catch (NameExistException exception) {
-    		dataMap.put("result", parent.getName() + "下已经存在名称为: " + company.getName() + "的机构！");
-    	} catch (Exception exception) {
-    		dataMap.put("result", "创建公司失败！");
-    		exception.printStackTrace();
-    	}
-    	
+		companyDto.setOrganizationType(OrganizationDTO.COMPANY);
+		InvokeResult invokeResult = organizationFacade.createCompany(parentId, companyDto);
+    	dataMap.put("result", invokeResult.getMessage());
+    	dataMap.put("id", invokeResult.getData());
     	return dataMap;
     }
     
@@ -74,21 +55,12 @@ public class OrganizationController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/create-department")
-    public Map<String, Object> createDepartment(Long parentId, String parentType, Department department) {
+    public Map<String, Object> createDepartment(Long parentId, OrganizationDTO departmentDto) {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
-		Organization parent = getBaseApplication().getEntity(Organization.class, parentId);
-    	try {
-    		department = organizationApplication.createDepartment(parent, department);
-        	dataMap.put("result", "success");
-        	dataMap.put("id", department.getId());
-    	} catch (SnIsExistException exception) {
-    		dataMap.put("result", "机构编码: " + department.getSn() + " 已被使用！");
-    	} catch (NameExistException exception) {
-    		dataMap.put("result", parent.getName() + "下已经存在名称为: " + department.getName() + "的机构！");
-    	} catch (Exception exception) {
-    		dataMap.put("result", "创建部门失败！");
-    	}
-    	
+    	departmentDto.setOrganizationType(OrganizationDTO.DEPARTMENT);
+		InvokeResult invokeResult = organizationFacade.createDepartment(parentId, departmentDto);
+    	dataMap.put("result", invokeResult.getMessage());
+    	dataMap.put("id", invokeResult.getData());
     	return dataMap;
     }
     
@@ -99,20 +71,10 @@ public class OrganizationController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/update-company")
-    public Map<String, Object> updateCompany(Company company) {
+    public Map<String, Object> updateCompany(OrganizationDTO companyDto) {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
-    	try {
-    		organizationApplication.updateOrganization(company);
-        	dataMap.put("result", "success");
-    	} catch (SnIsExistException exception) {
-    		dataMap.put("result", "机构编码: " + company.getSn() + " 已被使用！");
-    	} catch (NameExistException exception) {
-    		dataMap.put("result", "同级机构下已经存在名称为: " + company.getName() + "的机构！");
-    	} catch (Exception exception) {
-    		dataMap.put("result", "修改公司信息失败！");
-    		exception.printStackTrace();
-    	}
-    	
+		companyDto.setOrganizationType(OrganizationDTO.COMPANY);
+    	dataMap.put("result", organizationFacade.updateOrganization(companyDto));
     	return dataMap;
     }
     
@@ -123,19 +85,10 @@ public class OrganizationController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/update-department")
-    public Map<String, Object> updateDepartment(Department department) {
+    public Map<String, Object> updateDepartment(OrganizationDTO departmentDto) {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
-    	try {
-    		organizationApplication.updateOrganization(department);
-        	dataMap.put("result", "success");
-    	} catch (SnIsExistException exception) {
-    		dataMap.put("result", "机构编码: " + department.getSn() + " 已被使用！");
-    	} catch (NameExistException exception) {
-    		dataMap.put("result", "同级机构下已经存在名称为: " + department.getName() + "的机构！");
-    	} catch (Exception exception) {
-    		dataMap.put("result", "修改部门信息失败！");
-    	}
-    	
+		departmentDto.setOrganizationType(OrganizationDTO.DEPARTMENT);
+    	dataMap.put("result", organizationFacade.updateOrganization(departmentDto));
     	return dataMap;
     }
    
@@ -147,7 +100,7 @@ public class OrganizationController extends BaseController {
     @RequestMapping("/orgTree")
     public Map<String, Object> getOrgTree() {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
-    	dataMap.put("orgTree", organizationApplication.getOrganizationTree());
+    	dataMap.put("orgTree", organizationFacade.getOrganizationTree());
     	return dataMap;
     }
     
@@ -160,7 +113,7 @@ public class OrganizationController extends BaseController {
     @RequestMapping("/getOrg")
     public Map<String, Object> getOrganization(long id) {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
-    	OrganizationDTO organizationDTO = organizationApplication.getOrganizationById(id);
+    	OrganizationDTO organizationDTO = organizationFacade.getOrganizationById(id);
     	dataMap.put("org", organizationDTO);
     	return dataMap;
     }
@@ -175,14 +128,7 @@ public class OrganizationController extends BaseController {
     @RequestMapping(value = "/terminate_eoRelations", method = RequestMethod.POST, consumes = "application/json")
 	public Map<String, Object> terminateEmployeeOrganizationRelation(@RequestBody EmployeeDTO[] employeeDtos, Long organizationId) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		Organization organization = getBaseApplication().getEntity(Organization.class, organizationId);
-		
-		Set<Employee> employees = new HashSet<Employee>();
-		for (EmployeeDTO employeeDTO : employeeDtos) {
-			employees.add(employeeDTO.transFormToEmployee());
-		}
-		
-		organizationApplication.terminateEmployeeOrganizationRelation(organization, employees);
+		organizationFacade.terminateEmployeeOrganizationRelation(organizationId, employeeDtos);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -194,16 +140,10 @@ public class OrganizationController extends BaseController {
 	 */
 	@ResponseBody
     @RequestMapping("/terminate-company")
-	public Map<String, Object> terminateCompany(Company company) {
+	public Map<String, Object> terminateCompany(OrganizationDTO companyDto) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		try {
-			getBaseApplication().terminateParty(company);
-			dataMap.put("result", "success");
-		} catch (TerminateRootOrganizationException exception) {
-			dataMap.put("result", "不能撤销根机构！");
-		} catch (TerminateNotEmptyOrganizationException exception) {
-			dataMap.put("result", "该机构下还有员工，不能撤销！");
-		}
+		companyDto.setOrganizationType(OrganizationDTO.COMPANY);
+		dataMap.put("result", organizationFacade.terminateOrganization(companyDto).getMessage());
 		return dataMap;
 	}
 
@@ -214,15 +154,10 @@ public class OrganizationController extends BaseController {
 	 */
 	@ResponseBody
     @RequestMapping("/terminate-department")
-	public Map<String, Object> terminateDepartment(Department department) {
+	public Map<String, Object> terminateDepartment(OrganizationDTO departmentDto) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		try {
-			getBaseApplication().terminateParty(department);
-			dataMap.put("result", "success");
-		} catch (TerminateNotEmptyOrganizationException exception) {
-			dataMap.put("result", "该机构下还有员工，不能撤销！");
-		}
-		
+		departmentDto.setOrganizationType(OrganizationDTO.DEPARTMENT);
+		dataMap.put("result", organizationFacade.terminateOrganization(departmentDto));
 		return dataMap;
 	}
 
