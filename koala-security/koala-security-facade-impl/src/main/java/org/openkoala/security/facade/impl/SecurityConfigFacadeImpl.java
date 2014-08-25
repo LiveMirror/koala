@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.application.SecurityDBInitApplication;
@@ -338,10 +339,16 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void terminateAuthorizationByUserInPermission(Long userId, Long permissionId) {
-		User user = securityAccessApplication.getUserById(userId);
-		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-		securityConfigApplication.terminateActorFromAuthority(user, permission);
+	public InvokeResult terminateAuthorizationByUserInPermission(Long userId, Long permissionId) {
+        try {
+            User user = securityAccessApplication.getUserById(userId);
+		    Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		    securityConfigApplication.terminateActorFromAuthority(user, permission);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return InvokeResult.failure("撤销用户的多个权限失败。");
+        }
+        return InvokeResult.success();
 	}
 
 	// TODO 待优化。。。
@@ -355,10 +362,14 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public void terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds) {
-		for (Long permissionId : permissionIds) {
-			this.terminateAuthorizationByUserInPermission(userId, permissionId);
+	public InvokeResult terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds) {
+        for (Long permissionId : permissionIds) {
+			InvokeResult invokeResult = this.terminateAuthorizationByUserInPermission(userId, permissionId);
+            if(!invokeResult.isSuccess()){
+                break;
+            }
 		}
+        return InvokeResult.success();
 	}
 
 	/**
@@ -625,7 +636,14 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		securityConfigApplication.updateUserLastLoginTime(user);
 	}
 
-	@Override
+    @Override
+    public InvokeResult changeRoleOfUser(Long roleId, String userAccount) {
+
+
+        return null;
+    }
+
+    @Override
 	public JsonResult changeUserProps(ChangeUserPropsCommand command) {
 		JsonResult result = new JsonResult();
 		try {

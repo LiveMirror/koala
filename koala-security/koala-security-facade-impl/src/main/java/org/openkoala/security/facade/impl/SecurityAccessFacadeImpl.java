@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
@@ -316,7 +317,6 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
         return new Page<RoleDTO>(rolePage.getStart(), rolePage.getResultCount(), pageSize,
                 generateRoleDTOsBy(rolePage.getData()));
     }
-
 
     // TODO 都直接变成返回DTO 省略转换过程。
     @Override
@@ -835,5 +835,15 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return results;
 	}
 
-}
+    @Override
+    public InvokeResult pagingQueryRolesOfUser(int pageIndex, int pageSize, String userAccount) {
+       Page<RoleDTO> results =  getQueryChannelService()//
+               .createJpqlQuery("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_authority.id, _authority.name, _authority.description) _authority FROM Authorization _authorization JOIN  _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND TYPE(_authority) = :authorityType GROUP BY _authority.id")
+                .addParameter("authorityType", Role.class)//
+                .addParameter("userAccount", userAccount)//
+                .setPage(pageIndex, pageSize)//
+                .pagedList();
+       return InvokeResult.success(results);
+    }
 
+}
