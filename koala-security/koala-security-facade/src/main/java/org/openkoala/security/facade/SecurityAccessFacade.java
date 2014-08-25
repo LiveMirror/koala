@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.dayatang.querychannel.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.dto.*;
 
 public interface SecurityAccessFacade {
@@ -213,4 +214,5 @@ public interface SecurityAccessFacade {
 	 */
 	Set<PermissionDTO> findPermissionsByUserAccountAndRoleName(String userAccount, String roleName);
 
+    InvokeResult pagingQueryRolesOfUser(int pageIndex, int pageSize, String userAccount);
 }

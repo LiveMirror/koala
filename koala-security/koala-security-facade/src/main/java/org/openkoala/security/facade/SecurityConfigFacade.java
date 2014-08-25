@@ -1,5 +1,6 @@
 package org.openkoala.security.facade;
 
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.command.ChangeMenuResourcePropsCommand;
 import org.openkoala.security.facade.command.ChangePageElementResourcePropsCommand;
 import org.openkoala.security.facade.command.ChangePermissionPropsCommand;
@@ -288,11 +289,11 @@ public interface SecurityConfigFacade {
 
 	void terminateAuthorizationByUserInRole(Long userId, Long roleId);
 
-	void terminateAuthorizationByUserInPermission(Long userId, Long permissionId);
+    InvokeResult terminateAuthorizationByUserInPermission(Long userId, Long permissionId);
 
 	void terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds);
 
-	void terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds);
+    InvokeResult terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds);
 
 	void grantMenuResourcesToRole(Long roleId, Long[] menuResourceIds);
 
@@ -340,4 +341,5 @@ public interface SecurityConfigFacade {
 	 */
 	void updateUserLastLoginTime(Long userId);
 
+    InvokeResult changeRoleOfUser(Long roleId, String userAccount);
 }
