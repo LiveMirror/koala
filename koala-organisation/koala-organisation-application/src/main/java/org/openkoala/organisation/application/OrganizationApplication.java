@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.openkoala.organisation.application.dto.OrganizationDTO;
 import org.openkoala.organisation.domain.Company;
 import org.openkoala.organisation.domain.Department;
 import org.openkoala.organisation.domain.Employee;
@@ -68,12 +67,6 @@ public interface OrganizationApplication {
 	List<Organization> findChildrenOfOrganization(Organization organization, Date date);
 	
 	/**
-	 * 获取机构树
-	 * @return
-	 */
-	OrganizationDTO getOrganizationTree();
-	
-	/**
 	 * 撤销某个机构与一批员工的责任关系
 	 * @param organization
 	 * @param employees
@@ -85,7 +78,7 @@ public interface OrganizationApplication {
 	 * @param id
 	 * @return
 	 */
-	OrganizationDTO getOrganizationById(Long id);
+	Organization getOrganizationById(Long id);
 	
 	/**
 	 * 修改某个组织机构信息

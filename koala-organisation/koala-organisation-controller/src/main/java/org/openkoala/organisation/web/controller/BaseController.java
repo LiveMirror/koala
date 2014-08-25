@@ -2,14 +2,7 @@ package org.openkoala.organisation.web.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import javax.inject.Inject;
-
-import org.openkoala.organisation.application.BaseApplication;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -21,13 +14,6 @@ import org.springframework.web.bind.annotation.InitBinder;
  */
 public class BaseController {
 
-	@Inject
-	private BaseApplication baseApplication;
-
-	BaseApplication getBaseApplication() {
-		return baseApplication;
-	}
-	
 	//数据绑定  
     @InitBinder    
     public void initBinder(WebDataBinder binder) {  

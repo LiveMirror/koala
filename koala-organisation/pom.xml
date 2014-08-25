@@ -17,7 +17,8 @@
 		<module>koala-organisation-conf</module>
 		<module>koala-organisation-core</module>
 		<module>koala-organisation-application</module>
-		<module>koala-organisation-applicationImpl</module>
+		<module>koala-organisation-facade</module>
+		<module>koala-organisation-facade-impl</module>
 		<module>koala-organisation-controller</module>
 		<module>koala-organisation-web</module>
 	</modules>

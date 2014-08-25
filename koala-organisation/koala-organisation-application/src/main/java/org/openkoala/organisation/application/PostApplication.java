@@ -1,10 +1,7 @@
 package org.openkoala.organisation.application;
 
 import java.util.Set;
-
-import org.dayatang.querychannel.Page;
-import org.openkoala.organisation.application.dto.PostDTO;
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.domain.Post;
 
 /**
  * 岗位应用接口
@@ -14,35 +11,9 @@ import org.openkoala.organisation.domain.Organization;
 public interface PostApplication {
 
 	/**
-	 * 分页查询岗位
-	 * @param example
-	 * @param currentPage
-	 * @param pagesize
-	 * @return
-	 */
-	Page<PostDTO> pagingQueryPosts(PostDTO example, int currentPage, int pagesize);
-	
-	/**
-	 * 分页查询某个机构下的岗位
-	 * @param organization
-	 * @param example
-	 * @param currentPage
-	 * @param pagesize
-	 * @return
-	 */
-	Page<PostDTO> pagingQueryPostsOfOrganizatoin(Organization organization, PostDTO example, int currentPage, int pagesize);
-	
-	/**
-	 * 根据id获取岗位
-	 * @param id
-	 * @return
-	 */
-	PostDTO getPostById(Long id);
-	
-	/**
 	 * 根据机构id获取该机构下的岗位
 	 * @param organizationId
 	 * @return
 	 */
-	Set<PostDTO> findPostsByOrganizationId(Long organizationId);
+	Set<Post> findPostsByOrganizationId(Long organizationId);
 }

@@ -1,18 +1,13 @@
 package org.openkoala.organisation.web.controller;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
-import org.openkoala.organisation.NameExistException;
-import org.openkoala.organisation.SnIsExistException;
-import org.openkoala.organisation.TheJobHasPostAccountabilityException;
-import org.openkoala.organisation.application.JobApplication;
-import org.openkoala.organisation.domain.Job;
+import org.openkoala.organisation.facade.JobFacade;
+import org.openkoala.organisation.facade.dto.JobDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class JobController extends BaseController {
 
 	@Inject
-	private JobApplication jobApplication;
+	private JobFacade jobFacade;
 
 	/**
 	 * 分页查询职务
@@ -43,10 +38,8 @@ public class JobController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Page pagingQuery(int page, int pagesize, Job job) {
-		Page<Job> jobs = jobApplication.pagingQueryJobs(job, page, pagesize);
-
-		return jobs;
+	public Page pagingQuery(int page, int pagesize, JobDTO jobDto) {
+		return jobFacade.pagingQueryJobs(jobDto, page, pagesize);
 	}
 
 	/**
@@ -58,7 +51,7 @@ public class JobController extends BaseController {
 	@RequestMapping("/query-all")
 	public Map<String, Object> queryAllJobs() {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("data", getBaseApplication().findAll(Job.class));
+		dataMap.put("data", jobFacade.findAllJobs());
 		return dataMap;
 	}
 
@@ -70,18 +63,9 @@ public class JobController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/create")
-	public Map<String, Object> createJob(Job job) {
+	public Map<String, Object> createJob(JobDTO jobDto) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		try {
-			getBaseApplication().saveParty(job);
-			dataMap.put("result", "success");
-		} catch (SnIsExistException exception) {
-			dataMap.put("result", "职务编码: " + job.getSn() + " 已被使用！");
-		} catch (NameExistException exception) {
-			dataMap.put("result", "职务名称: " + job.getName() + " 已经存在！");
-		} catch (Exception e) {
-			dataMap.put("result", "保存失败！");
-		}
+		dataMap.put("result", jobFacade.createJob(jobDto).getMessage());
 		return dataMap;
 	}
 
@@ -93,18 +77,9 @@ public class JobController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public Map<String, Object> updateJob(Job job) {
+	public Map<String, Object> updateJob(JobDTO jobDTO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		try {
-			getBaseApplication().updateParty(job);
-			dataMap.put("result", "success");
-		} catch (SnIsExistException exception) {
-			dataMap.put("result", "职务编码: " + job.getSn() + " 已被使用！");
-		} catch (NameExistException exception) {
-			dataMap.put("result", "职务名称: " + job.getName() + " 已经存在！");
-		} catch (Exception e) {
-			dataMap.put("result", "修改失败！");
-		}
+		dataMap.put("result", jobFacade.updateJobInfo(jobDTO).getMessage());
 		return dataMap;
 	}
 
@@ -118,26 +93,21 @@ public class JobController extends BaseController {
 	@RequestMapping("/get/{id}")
 	public Map<String, Object> get(@PathVariable("id") Long id) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("data", getBaseApplication().getEntity(Job.class, id));
+		dataMap.put("data", jobFacade.getJobById(id));
 		return dataMap;
 	}
 
 	/**
 	 * 撤销某个职务
 	 * 
-	 * @param job
+	 * @param jobDTO
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/terminate")
-	public Map<String, Object> terminateJob(Job job) {
+	public Map<String, Object> terminateJob(JobDTO jobDTO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		try {
-			getBaseApplication().terminateParty(job);
-			dataMap.put("result", "success");
-		} catch (TheJobHasPostAccountabilityException exception) {
-			dataMap.put("result", "职务：" + job.getName() + "已经被相关关联岗位，不能被撤销！");
-		}
+		dataMap.put("result", jobFacade.terminateJob(jobDTO).getMessage());
 		return dataMap;
 	}
 
@@ -149,15 +119,9 @@ public class JobController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminateJobs", method = RequestMethod.POST, consumes = "application/json")
-	public Map<String, Object> terminateJobs(@RequestBody Job[] jobs) {
+	public Map<String, Object> terminateJobs(@RequestBody JobDTO[] jobDtos) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		try {
-			getBaseApplication().terminateParties(new HashSet<Job>(Arrays.asList(jobs)));
-			dataMap.put("result", "success");
-		} catch (TheJobHasPostAccountabilityException exception) {
-			dataMap.put("result", "该职务已经被相关关联岗位，不能被撤销！");
-		}
-
+		dataMap.put("result", jobFacade.terminateJobs(jobDtos).getMessage());
 		return dataMap;
 	}
 

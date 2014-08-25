@@ -1,12 +1,8 @@
 package org.openkoala.organisation.application;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import org.dayatang.querychannel.Page;
-import org.openkoala.organisation.application.dto.EmployeeDTO;
-import org.openkoala.organisation.application.dto.ResponsiblePostDTO;
 import org.openkoala.organisation.domain.Employee;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
@@ -26,44 +22,6 @@ public interface EmployeeApplication {
 	Organization getOrganizationOfEmployee(Employee employee, Date date);
 
 	/**
-	 * 分页查询员工
-	 * @param example
-	 * @param currentPage
-	 * @param pagesize
-	 * @return
-	 */
-	Page<EmployeeDTO> pagingQueryEmployees(EmployeeDTO example, int currentPage, int pagesize);
-
-	/**
-	 * 分页查询某个机构的直属员工
-	 * @param example
-	 * @param organization
-	 * @param currentPage
-	 * @param pagesize
-	 * @return
-	 */
-	Page<EmployeeDTO> pagingQueryEmployeesByOrganization(EmployeeDTO example, Organization organization, int currentPage, int pagesize);
-
-	/**
-	 * 分页查询某个机构及其下属机构的员工
-	 * @param example
-	 * @param organization
-	 * @param currentPage
-	 * @param pagesize
-	 * @return
-	 */
-	Page<EmployeeDTO> pagingQueryEmployeesByOrganizationAndChildren(EmployeeDTO example, Organization organization, int currentPage, int pagesize);
-	
-	/**
-	 * 分页查询没有所属机构的员工
-	 * @param example
-	 * @param currentPage
-	 * @param pagesize
-	 * @return
-	 */
-	Page<EmployeeDTO> pagingQueryEmployeesWhoNoPost(EmployeeDTO example, int currentPage, int pagesize);
-	
-	/**
 	 * 创建员工的任职责任信息
 	 * @param employee
 	 * @param post
@@ -75,19 +33,13 @@ public interface EmployeeApplication {
 	 * @param employee
 	 * @param dtos
 	 */
-	void transformPost(Employee employee, Set<ResponsiblePostDTO> dtos);
+	void transformPost(Employee employee, Map<Post, Boolean> responsiblePosts);
 	
 	/**
 	 * 获得某个员工的任职职务信息
 	 * @param employee
 	 * @return
 	 */
-	List<ResponsiblePostDTO> getPostsByEmployee(Employee employee);
+	Map<Post, Boolean> getPostsByEmployee(Employee employee);
 	
-	/**
-	 * 根据id获得员工信息
-	 * @param id
-	 * @return
-	 */
-	EmployeeDTO getEmployeeById(Long id);
 }
