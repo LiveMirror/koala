@@ -19,5 +19,5 @@ public class PostApplicationImpl implements PostApplication {
 		Organization organization = Organization.get(Organization.class, organizationId);
 		return organization.getPosts(new Date());
 	}
-
+	
 }

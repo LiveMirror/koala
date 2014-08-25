@@ -92,4 +92,5 @@ public class BaseApplicationImplTest {
 		PowerMockito.when(Party.findAll(any(Class.class), any(Date.class))).thenReturn(organizations);
 		assertEquals(organizations, baseApplication.findAll(Organization.class));
 	}
+	
 }

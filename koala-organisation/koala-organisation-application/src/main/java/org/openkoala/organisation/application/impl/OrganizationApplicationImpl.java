@@ -73,5 +73,5 @@ public class OrganizationApplicationImpl implements OrganizationApplication {
 	public void updateOrganization(Organization organization) {
 		organization.update();
 	}
-
+	
 }

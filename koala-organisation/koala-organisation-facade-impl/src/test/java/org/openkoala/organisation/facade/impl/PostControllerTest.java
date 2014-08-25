@@ -204,5 +204,5 @@ public class PostControllerTest {
 		doThrow(new RuntimeException()).when(baseApplication).terminateParties(posts);
 		assertEquals("撤销员工岗位失败！", postFacadeImpl.terminatePosts(postDtos).getMessage());
 	}
-	
+
 }

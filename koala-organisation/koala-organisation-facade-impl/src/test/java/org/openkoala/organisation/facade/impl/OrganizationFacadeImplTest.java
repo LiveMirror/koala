@@ -188,5 +188,5 @@ public class OrganizationFacadeImplTest {
 		assertEquals("该机构下还有员工，不能撤销！",
 				organizationFacadeImpl.terminateOrganization(departmentDTO).getMessage());
 	}
-	
+
 }

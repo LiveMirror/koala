@@ -49,5 +49,5 @@ public class BaseApplicationImpl implements BaseApplication {
 	public <T extends Party> List<T> findAll(Class<T> clazz) {
 		return T.findAll(clazz, new Date());
 	}
-
+	
 }

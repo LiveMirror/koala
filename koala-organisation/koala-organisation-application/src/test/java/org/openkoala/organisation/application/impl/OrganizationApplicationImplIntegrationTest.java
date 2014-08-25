@@ -80,7 +80,7 @@ public class OrganizationApplicationImplIntegrationTest extends AbstractIntegrat
 //			assertEquals(company2DTO, childOfTop);
 //			assertEquals(company2DTO.getChildren(), childOfTop.getChildren());
 //			assertEquals(departmentDTO, childOfTop.getChildren().iterator().next());
-//		}
+//		} 
 //	}
 
 }

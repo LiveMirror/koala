@@ -120,7 +120,7 @@ public class OrganizationApplicationImplTest {
 //		
 //		organizationApplication.assignChildOrganization(parent, child, now);
 //		PowerMockito.verifyNew(OrganizationLineManagement.class).withArguments(parent, child, now);
-//		verify(organizationLineManagement, only()).save();
+//		verify(organizationLineManagement, only()).save(); 
 //	}
 	
 }

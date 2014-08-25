@@ -14,5 +14,5 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
         defaultRollback = true)
 @ContextConfiguration(locations = {"classpath*:META-INF/spring/organisation-root.xml"})
 public abstract class AbstractIntegrationTest extends KoalaBaseSpringTestCase {
-	
+
 }

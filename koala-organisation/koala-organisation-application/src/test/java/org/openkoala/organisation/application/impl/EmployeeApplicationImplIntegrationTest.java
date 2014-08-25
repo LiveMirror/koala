@@ -147,5 +147,5 @@ public class EmployeeApplicationImplIntegrationTest extends AbstractIntegrationT
 		assertTrue(posts.containsKey(post2));
 		assertTrue(posts.get(post2));
 	}
-	
+
 }

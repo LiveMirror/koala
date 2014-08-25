@@ -71,6 +71,6 @@ public class PostApplicationImplIntegrationTest extends AbstractIntegrationTest 
 //		assertEquals(2, postDTOs2.size());
 //		assertTrue(postDTOs2.contains(PostDTO.generateDtoBy(post1)));
 //		assertTrue(postDTOs2.contains(PostDTO.generateDtoBy(post3)));
-//	}
+//	} 
 //	
 }
