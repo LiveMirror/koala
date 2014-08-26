@@ -18,7 +18,6 @@ import org.openkoala.security.facade.command.CreatePermissionCommand;
 import org.openkoala.security.facade.command.CreateRoleCommand;
 import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
 import org.openkoala.security.facade.command.CreateUserCommand;
-import org.openkoala.security.facade.dto.JsonResult;
 
 public interface SecurityConfigFacade {
 
@@ -27,7 +26,7 @@ public interface SecurityConfigFacade {
 	 * 
 	 * @param command
 	 */
-	JsonResult createUser(CreateUserCommand command);
+	InvokeResult createUser(CreateUserCommand command);
 
 	/**
 	 * 创建权限
@@ -35,7 +34,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult createPermission(CreatePermissionCommand command);
+	InvokeResult createPermission(CreatePermissionCommand command);
 
 	/**
 	 * 创建角色
@@ -43,7 +42,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult createRole(CreateRoleCommand command);
+	InvokeResult createRole(CreateRoleCommand command);
 
 	/**
 	 * 创建菜单权限资源
@@ -51,7 +50,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult createMenuResource(CreateMenuResourceCommand command);
+	InvokeResult createMenuResource(CreateMenuResourceCommand command);
 
 	/**
 	 * 创建子菜单权限资源
@@ -59,7 +58,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult createChildMenuResouceToParent(CreateChildMenuResourceCommand command);
+	InvokeResult createChildMenuResouceToParent(CreateChildMenuResourceCommand command);
 
 	/**
 	 * 创建页面元素
@@ -67,7 +66,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult createPageElementResource(CreatePageElementResourceCommand command);
+	InvokeResult createPageElementResource(CreatePageElementResourceCommand command);
 
 	/**
 	 * 创建URL访问资源
@@ -75,7 +74,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult createUrlAccessResource(CreateUrlAccessResourceCommand command);
+	InvokeResult createUrlAccessResource(CreateUrlAccessResourceCommand command);
 
 	/**
 	 * 更改用户的一些属性。
@@ -83,7 +82,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult changeUserProps(ChangeUserPropsCommand command);
+	InvokeResult changeUserProps(ChangeUserPropsCommand command);
 
 	/**
 	 * 更改用户账号
@@ -91,7 +90,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult changeUserAccount(ChangeUserAccountCommand command);
+	InvokeResult changeUserAccount(ChangeUserAccountCommand command);
 
 	/**
 	 * 更改用户邮箱
@@ -99,7 +98,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult changeUserEmail(ChangeUserEmailCommand command);
+	InvokeResult changeUserEmail(ChangeUserEmailCommand command);
 
 	/**
 	 * 更改用户联系电话
@@ -107,7 +106,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult changeUserTelePhone(ChangeUserTelePhoneCommand command);
+	InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command);
 
 	/**
 	 * 更改URL访问资源
@@ -115,7 +114,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult changeUrlAccessResourceProps(ChangeUrlAccessResourcePropsCommand command);
+	InvokeResult changeUrlAccessResourceProps(ChangeUrlAccessResourcePropsCommand command);
 
 	/**
 	 * 更改角色的一些属性
@@ -123,7 +122,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult changeRoleProps(ChangeRolePropsCommand command);
+	InvokeResult changeRoleProps(ChangeRolePropsCommand command);
 
 	/**
 	 * 更改权限的一些属性
@@ -131,7 +130,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult changePermissionProps(ChangePermissionPropsCommand command);
+	InvokeResult changePermissionProps(ChangePermissionPropsCommand command);
 
 	/**
 	 * 更改页面元素的一些属性
@@ -139,7 +138,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult changePageElementResourceProps(ChangePageElementResourcePropsCommand command);
+	InvokeResult changePageElementResourceProps(ChangePageElementResourcePropsCommand command);
 
 	/**
 	 * 更改菜单的一些属性。
@@ -147,7 +146,7 @@ public interface SecurityConfigFacade {
 	 * @param command
 	 * @return
 	 */
-	JsonResult changeMenuResourceProps(ChangeMenuResourcePropsCommand command);
+	InvokeResult changeMenuResourceProps(ChangeMenuResourcePropsCommand command);
 
 	/**
 	 * 更新用户密码
@@ -157,7 +156,7 @@ public interface SecurityConfigFacade {
 	 * 
 	 * @return
 	 */
-	JsonResult changeUserPassword(ChangeUserPasswordCommand command);
+	InvokeResult changeUserPassword(ChangeUserPasswordCommand command);
 
 	/**
 	 * 重置用户密码
@@ -165,7 +164,7 @@ public interface SecurityConfigFacade {
 	 * @param userId
 	 * @return
 	 */
-	JsonResult resetPassword(Long userId);
+	InvokeResult resetPassword(Long userId);
 
 	/**
 	 * 撤销用户
@@ -173,7 +172,7 @@ public interface SecurityConfigFacade {
 	 * @param userId
 	 * @return
 	 */
-	JsonResult terminateUser(Long userId);
+	InvokeResult terminateUser(Long userId);
 
 	/**
 	 * 批量撤销用户
@@ -181,7 +180,7 @@ public interface SecurityConfigFacade {
 	 * @param userIds
 	 * @return
 	 */
-	JsonResult terminateUsers(Long[] userIds);
+	InvokeResult terminateUsers(Long[] userIds);
 
 	/**
 	 * 撤销角色
@@ -189,7 +188,7 @@ public interface SecurityConfigFacade {
 	 * @param roleId
 	 * @return
 	 */
-	JsonResult terminateRole(Long roleId);
+	InvokeResult terminateRole(Long roleId);
 
 	/**
 	 * 批量撤销角色
@@ -197,7 +196,7 @@ public interface SecurityConfigFacade {
 	 * @param roleIds
 	 * @return
 	 */
-	JsonResult terminateRoles(Long[] roleIds);
+	InvokeResult terminateRoles(Long[] roleIds);
 
 	/**
 	 * 撤销权限
@@ -205,7 +204,7 @@ public interface SecurityConfigFacade {
 	 * @param permissionId
 	 * @return
 	 */
-	JsonResult terminatePermission(Long permissionId);
+	InvokeResult terminatePermission(Long permissionId);
 
 	/**
 	 * 批量撤销权限
@@ -213,7 +212,7 @@ public interface SecurityConfigFacade {
 	 * @param permissionIds
 	 * @return
 	 */
-	JsonResult terminatePermissions(Long[] permissionIds);
+	InvokeResult terminatePermissions(Long[] permissionIds);
 
 	/**
 	 * 撤销菜单权限资源
@@ -221,7 +220,7 @@ public interface SecurityConfigFacade {
 	 * @param menuResourceId
 	 * @return
 	 */
-	JsonResult terminateMenuResource(Long menuResourceId);
+	InvokeResult terminateMenuResource(Long menuResourceId);
 
 	/**
 	 * 批量撤销菜单权限资源
@@ -229,7 +228,7 @@ public interface SecurityConfigFacade {
 	 * @param menuResourceIds
 	 * @return
 	 */
-	JsonResult terminateMenuResources(Long[] menuResourceIds);
+	InvokeResult terminateMenuResources(Long[] menuResourceIds);
 
 	/**
 	 * 撤销URL访问权限资源
@@ -237,7 +236,7 @@ public interface SecurityConfigFacade {
 	 * @param urlAccessResourceId
 	 * @return
 	 */
-	JsonResult terminateUrlAccessResource(Long urlAccessResourceId);
+	InvokeResult terminateUrlAccessResource(Long urlAccessResourceId);
 
 	/**
 	 * 批量撤销URL访问权限资源
@@ -245,7 +244,7 @@ public interface SecurityConfigFacade {
 	 * @param urlAccessResourceIds
 	 * @return
 	 */
-	JsonResult terminateUrlAccessResources(Long[] urlAccessResourceIds);
+	InvokeResult terminateUrlAccessResources(Long[] urlAccessResourceIds);
 
 	/**
 	 * 撤销页面元素权限资源。
@@ -253,7 +252,7 @@ public interface SecurityConfigFacade {
 	 * @param pageElementResourceId
 	 * @return
 	 */
-	JsonResult terminatePageElementResource(Long pageElementResourceId);
+	InvokeResult terminatePageElementResource(Long pageElementResourceId);
 
 	/**
 	 * 批量撤销页面元素权限资源。
@@ -261,7 +260,7 @@ public interface SecurityConfigFacade {
 	 * @param pageElementResourceIds
 	 * @return
 	 */
-	JsonResult terminatePageElementResources(Long[] pageElementResourceIds);
+	InvokeResult terminatePageElementResources(Long[] pageElementResourceIds);
 
 	void grantRoleToUserInScope(Long userId, Long roleId, Long scopeId);
 
@@ -271,61 +270,61 @@ public interface SecurityConfigFacade {
 
 	void grantPermissionsToUserInScope(Long userId, Long[] permissionIds, Long scopeId);
 
-	void grantRoleToUser(Long userId, Long roleId);
+	InvokeResult grantRoleToUser(Long userId, Long roleId);
 
-	void grantRolesToUser(Long userId, Long[] roleIds);
+	InvokeResult grantRolesToUser(Long userId, Long[] roleIds);
 
-	void grantPermissionToUser(Long userId, Long permissionId);
+	InvokeResult grantPermissionToUser(Long userId, Long permissionId);
 
-	void grantPermissionsToUser(Long userId, Long[] permissionIds);
+	InvokeResult grantPermissionsToUser(Long userId, Long[] permissionIds);
 
-	JsonResult activate(Long userId);
+	InvokeResult activate(Long userId);
 
-	JsonResult suspend(Long userId);
+	InvokeResult suspend(Long userId);
 
-	JsonResult activate(Long[] userIds);
+	InvokeResult activate(Long[] userIds);
 
-	JsonResult suspend(Long[] userIds);
+	InvokeResult suspend(Long[] userIds);
 
-	void terminateAuthorizationByUserInRole(Long userId, Long roleId);
+	InvokeResult terminateAuthorizationByUserInRole(Long userId, Long roleId);
 
     InvokeResult terminateAuthorizationByUserInPermission(Long userId, Long permissionId);
 
-	void terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds);
+	InvokeResult terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds);
 
     InvokeResult terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds);
 
-	void grantMenuResourcesToRole(Long roleId, Long[] menuResourceIds);
+	InvokeResult grantMenuResourcesToRole(Long roleId, Long[] menuResourceIds);
 
-	void grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds);
+	InvokeResult grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds);
 
-	void grantUrlAccessResourcesToRole(Long roleId, Long[] menuResourceIds);
+	InvokeResult grantUrlAccessResourcesToRole(Long roleId, Long[] menuResourceIds);
 
 	void grantMethodInvocationResourcesToRole(Long roleId, Long[] menuResourceIds);
 
-	void grantPermissionsToRole(Long roleId, Long[] permissionIds);
+	InvokeResult grantPermissionsToRole(Long roleId, Long[] permissionIds);
 
-	void terminatePermissionsFromRole(Long roleId, Long[] permssionIds);
+	InvokeResult terminatePermissionsFromRole(Long roleId, Long[] permssionIds);
 
-	void terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds);
+	InvokeResult terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds);
 
 	void grantUrlAccessResourceToPermission(Long urlAccessResourceId, Long permissionId);
 
 	void terminateUrlAccessResourceFromPermission(Long urlAccessResourceId, Long permissionId);
 
-	void grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId);
+	InvokeResult grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId);
 
-	void terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId);
+	InvokeResult terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId);
 
-	void grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId);
+	InvokeResult grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId);
 
-	void terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId);
+	InvokeResult terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId);
 
-	void terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds);
+	InvokeResult terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds);
 
-	void grantPermisssionsToPageElementResource(Long permissionId, Long pageElementResourceId);
+	InvokeResult grantPermisssionsToPageElementResource(Long permissionId, Long pageElementResourceId);
 
-	void terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId);
+	InvokeResult terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId);
 
 	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceIdentifier);
 

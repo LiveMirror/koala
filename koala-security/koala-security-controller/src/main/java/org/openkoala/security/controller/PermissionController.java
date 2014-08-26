@@ -3,6 +3,7 @@ package org.openkoala.security.controller;
 import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangePermissionPropsCommand;
@@ -38,7 +39,7 @@ public class PermissionController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public JsonResult add(CreatePermissionCommand command) {
+	public InvokeResult add(CreatePermissionCommand command) {
 		return securityConfigFacade.createPermission(command);
 	}
 
@@ -50,7 +51,7 @@ public class PermissionController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public JsonResult update(ChangePermissionPropsCommand command) {
+	public InvokeResult update(ChangePermissionPropsCommand command) {
 		return securityConfigFacade.changePermissionProps(command);
 	}
 
@@ -62,7 +63,7 @@ public class PermissionController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
-	public JsonResult terminate(Long[] permissionIds) {
+	public InvokeResult terminate(Long[] permissionIds) {
 		return securityConfigFacade.terminatePermissions(permissionIds);
 	}
 
@@ -77,10 +78,8 @@ public class PermissionController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
-	public Page<PermissionDTO> pagingQuery(int page, int pagesize, PermissionDTO queryPermissionCondition) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryPermissions(page, pagesize,
-				queryPermissionCondition);
-		return results;
+	public InvokeResult pagingQuery(int page, int pagesize, PermissionDTO queryPermissionCondition) {
+		return securityAccessFacade.pagingQueryPermissions(page, pagesize,queryPermissionCondition);
 	}
 
 }
