@@ -9,6 +9,7 @@ import org.openkoala.security.facade.command.ChangeUserAccountCommand;
 import org.openkoala.security.facade.command.ChangeUserEmailCommand;
 import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
+import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.shiro.CurrentUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class CurrentUserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/changeUserAccount", method = RequestMethod.POST)
-	public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
+	public JsonResult changeUserAccount(ChangeUserAccountCommand command) {
 		return securityConfigFacade.changeUserAccount(command);
 	}
 
@@ -51,7 +52,7 @@ public class CurrentUserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/changeUserEmail", method = RequestMethod.POST)
-	public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
+	public JsonResult changeUserEmail(ChangeUserEmailCommand command) {
 		return securityConfigFacade.changeUserEmail(command);
 	}
 
@@ -63,7 +64,7 @@ public class CurrentUserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/changeUserTelePhone", method = RequestMethod.POST)
-	public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
+	public JsonResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
 		return securityConfigFacade.changeUserTelePhone(command);
 	}
 	
@@ -75,7 +76,7 @@ public class CurrentUserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-	public InvokeResult changeUserPassword(ChangeUserPasswordCommand command) {
+	public JsonResult changeUserPassword(ChangeUserPasswordCommand command) {
 		command.setUserAccount(CurrentUser.getUserAccount());
 		return securityConfigFacade.changeUserPassword(command);
 	}
@@ -88,7 +89,7 @@ public class CurrentUserController {
      */
     public InvokeResult pagingQueryRolesOfUser(int page,int pagesize){
         String userAccount = CurrentUser.getUserAccount();
-        return securityAccessFacade.pagingQueryRolesOfUser(page,pagesize,userAccount);
+        return securityAccessFacade.pagingQueryRolesOfUser(page, pagesize, userAccount);
     }
 
     /**TODO
@@ -102,5 +103,4 @@ public class CurrentUserController {
         String userAccount = CurrentUser.getUserAccount();
         return InvokeResult.success();
     }
-
 }

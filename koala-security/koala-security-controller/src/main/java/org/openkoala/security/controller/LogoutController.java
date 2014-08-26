@@ -28,4 +28,5 @@ public class LogoutController {
             return InvokeResult.success("用户退出成功。");
         }
     }
+
 }

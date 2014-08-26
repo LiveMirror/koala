@@ -73,72 +73,89 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	private SecurityDBInitApplication securityDBInitApplication;
 	
 	@Override
-	public InvokeResult createUser(CreateUserCommand command) {
+	public JsonResult createUser(CreateUserCommand command) {
+		JsonResult result = new JsonResult();
 		try {
 			User user = UserAssembler.toUser(command);
 			securityConfigApplication.createActor(user);
-			return InvokeResult.success("添加用户成功。");
+			result.setSuccess(true);
+			result.setMessage("添加用户成功。");
 		} catch (UserAccountIsExistedException e) {
 			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("用户账号:" + command.getUserAccount() + "已经存在。");
+			result.setSuccess(false);
+			result.setMessage("用户账号:" + command.getUserAccount() + "已经存在。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(),e);
-			return InvokeResult.failure("添加用户失败。");
+			result.setSuccess(false);
+			result.setMessage("添加用户失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult terminateUsers(Long[] userIds) {
-		InvokeResult result = null;
+	public JsonResult terminateUsers(Long[] userIds) {
+		JsonResult result = null;
 		for (Long userId : userIds) {
 			result = terminateUser(userId);
 			if (!result.isSuccess()) {
 				break;
 			}
 		}
-		return InvokeResult.success(result);
+		return result;
 	}
 
 	@Override
-	public InvokeResult terminateUser(Long userId) {
+	public JsonResult terminateUser(Long userId) {
+		JsonResult result = new JsonResult();
 		User user = null;
 		try {
 			user = securityAccessApplication.getUserById(userId);
 			securityConfigApplication.terminateActor(user);
-			return InvokeResult.success("撤销用户：" + user.getUserAccount() + "成功。");
+			result.setSuccess(true);
+			result.setMessage("撤销用户：" + user.getUserAccount() + "成功。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("撤销用户：" + user.getUserAccount() + "失败。");
+			result.setSuccess(false);
+			result.setMessage("撤销用户：" + user.getUserAccount() + "失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult resetPassword(Long userId) {
+	public JsonResult resetPassword(Long userId) {
+		JsonResult result = new JsonResult();
 		try {
 			User user = securityAccessApplication.getUserById(userId);
 			securityConfigApplication.resetPassword(user);
-			return InvokeResult.success("重置用户密码成功，密码：888888");
+			result.setSuccess(true);
+			result.setMessage("重置用户密码成功，密码：888888");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("重置用户密码失败。");
+			result.setSuccess(false);
+			result.setMessage("重置用户密码失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult changeUserPassword(ChangeUserPasswordCommand command) {
+	public JsonResult changeUserPassword(ChangeUserPasswordCommand command) {
+		JsonResult result = new JsonResult();
 		User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
 		boolean message = securityAccessApplication.updatePassword(user, command.getUserPassword(),
 				command.getOldUserPassword());
 		if (message) {
-			return InvokeResult.success("更新用户：" + user.getName() + "密码成功。");
+			result.setSuccess(true);
+			result.setMessage("更新用户：" + user.getName() + "密码成功。");
 		} else {
-			return InvokeResult.failure("更新用户：" + user.getName() + "密码失败。");
+			result.setSuccess(false);
+			result.setMessage("更新用户：" + user.getName() + "密码失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult terminateRoles(Long[] roleIds) {
-		InvokeResult result = null;
+	public JsonResult terminateRoles(Long[] roleIds) {
+		JsonResult result = null;
 		for (Long roleId : roleIds) {
 			result = terminateRole(roleId);
 			if (!result.isSuccess()) {
@@ -149,22 +166,27 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public InvokeResult terminateRole(Long roleId) {
+	public JsonResult terminateRole(Long roleId) {
+		JsonResult result = new JsonResult();
 		Role role = null;
 		try {
 			role = securityAccessApplication.getRoleBy(roleId);
 			securityConfigApplication.terminateAuthority(role);
-			return InvokeResult.success("撤销角色成功");
+			result.setSuccess(true);
+			result.setMessage("撤销角色成功");
 		} catch (CorrelationException e) {
-			return InvokeResult.failure("撤销角色：" + role.getName() + "失败。");
+			result.setSuccess(false);
+			result.setMessage("撤销角色：" + role.getName() + "失败。");
 		} catch (Exception e) {
-			return InvokeResult.failure("撤销角色失败");
+			result.setSuccess(false);
+			result.setMessage("撤销角色失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult terminateMenuResources(Long[] menuResourceIds) {
-		InvokeResult result = null;
+	public JsonResult terminateMenuResources(Long[] menuResourceIds) {
+		JsonResult result = null;
 		for (Long menuResourceId : menuResourceIds) {
 			result = terminateMenuResource(menuResourceId);
 			if (!result.isSuccess()) {
@@ -175,16 +197,22 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public InvokeResult terminateMenuResource(Long menuResourceId) {
+	public JsonResult terminateMenuResource(Long menuResourceId) {
+		JsonResult result = new JsonResult();
 		try {
 			MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
 			securityConfigApplication.terminateSecurityResource(menuResource);
-			return InvokeResult.success("撤销菜单全线资源成功。");
+			result.setSuccess(true);
+			result.setMessage("撤销菜单全线资源成功。");
 		} catch (CorrelationException e) {
-			return InvokeResult.failure("不能撤销，因为有角色或者权限关联。");
+			result.setSuccess(false);
+			result.setMessage("不能撤销，因为有角色或者权限关联。");
 		} catch (Exception e) {
-			return InvokeResult.failure("撤销菜单全线资源失败。");
+			result.setSuccess(false);
+			result.setMessage("撤销菜单全线资源失败。");
 		}
+		return result;
+
 	}
 
 	@Override
@@ -218,87 +246,70 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public InvokeResult grantRoleToUser(Long userId, Long roleId) {
-		try {
-			User user = securityAccessApplication.getUserById(userId);
-			Role role = securityAccessApplication.getRoleBy(roleId);
-			securityConfigApplication.grantAuthorityToActor(role, user);
-			return InvokeResult.success("为用户授权一个角色成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("为用户授权一个角色失败。");
+	public void grantRoleToUser(Long userId, Long roleId) {
+		User user = securityAccessApplication.getUserById(userId);
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		securityConfigApplication.grantAuthorityToActor(role, user);
+	}
+
+	@Override
+	public void grantRolesToUser(Long userId, Long[] roleIds) {
+		for (Long roleId : roleIds) {
+			this.grantRoleToUser(userId, roleId);
 		}
 	}
 
 	@Override
-	public InvokeResult grantRolesToUser(Long userId, Long[] roleIds) {
-		try {
-			for (Long roleId : roleIds) {
-				this.grantRoleToUser(userId, roleId);
-			}
-			return InvokeResult.success("为用户授权多个角色成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return  InvokeResult.failure("为用户授权多个角色失败。");
+	public void grantPermissionToUser(Long userId, Long permissionId) {
+		User user = securityAccessApplication.getUserById(userId);
+		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		securityConfigApplication.grantAuthorityToActor(permission, user);
+	}
+
+	@Override
+	public void grantPermissionsToUser(Long userId, Long[] permissionIds) {
+		for (Long permissionId : permissionIds) {
+			grantPermissionToUser(userId, permissionId);
 		}
 	}
 
 	@Override
-	public InvokeResult grantPermissionToUser(Long userId, Long permissionId) {
-		try {
-			User user = securityAccessApplication.getUserById(userId);
-			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-			securityConfigApplication.grantAuthorityToActor(permission, user);			
-			return InvokeResult.success("为用户授权一个权限成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("为用户授权一个权限失败。");
-		}
-	}
-
-	@Override
-	public InvokeResult grantPermissionsToUser(Long userId, Long[] permissionIds) {
-		try {
-			for (Long permissionId : permissionIds) {
-				grantPermissionToUser(userId, permissionId);
-			}
-			return InvokeResult.success("为用户授权多个权限成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("为用户授权多个权限失败。");
-		}
-	}
-
-	@Override
-	public InvokeResult activate(Long userId) {
+	public JsonResult activate(Long userId) {
+		JsonResult result = new JsonResult();
 		User user = null;
 		try {
 			user = securityAccessApplication.getUserById(userId);
 			securityConfigApplication.activateUser(user);
-			return InvokeResult.success("激活用户：" + user.getUserAccount() + "成功。");
+			result.setSuccess(true);
+			result.setMessage("激活用户：" + user.getUserAccount() + "成功。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("激活用户：" + user.getUserAccount() + "失败。");
+			result.setSuccess(false);
+			result.setMessage("激活用户：" + user.getUserAccount() + "失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult suspend(Long userId) {
+	public JsonResult suspend(Long userId) {
+		JsonResult result = new JsonResult();
 		User user = null;
 		try {
 			user = securityAccessApplication.getUserById(userId);
 			securityConfigApplication.suspendUser(user);
-			return InvokeResult.success("挂起用户：" + user.getUserAccount() + "成功。");
+			result.setSuccess(true);
+			result.setMessage("挂起用户：" + user.getUserAccount() + "成功。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("挂起用户：" + user.getUserAccount() + "失败。");
+			result.setSuccess(false);
+			result.setMessage("挂起用户：" + user.getUserAccount() + "失败。");
 		}
-
+		return result;
 	}
 
 	@Override
-	public InvokeResult activate(Long[] userIds) {
-		InvokeResult result = null;
+	public JsonResult activate(Long[] userIds) {
+		JsonResult result = null;
 		for (Long userId : userIds) {
 			result = this.activate(userId);
 			if (!result.isSuccess()) {
@@ -309,8 +320,8 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public InvokeResult suspend(Long[] userIds) {
-		InvokeResult result = null;
+	public JsonResult suspend(Long[] userIds) {
+		JsonResult result = null;
 		for (Long userId : userIds) {
 			result = this.suspend(userId);
 			if (!result.isSuccess()) {
@@ -321,17 +332,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public InvokeResult terminateAuthorizationByUserInRole(Long userId, Long roleId) {
-		try {
-			Role role = securityAccessApplication.getRoleBy(roleId);
-			User user = securityAccessApplication.getUserById(userId);
-			securityConfigApplication.terminateActorFromAuthority(user, role);
-			
-			return InvokeResult.success("撤销用户的一个角色成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("撤销用户的一个角色失败。");
-		}
+	public void terminateAuthorizationByUserInRole(Long userId, Long roleId) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		User user = securityAccessApplication.getUserById(userId);
+		securityConfigApplication.terminateActorFromAuthority(user, role);
 	}
 
 	@Override
@@ -349,43 +353,31 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 	// TODO 待优化。。。
 	@Override
-	public InvokeResult terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds) {
-		try {
-			User user = securityAccessApplication.getUserById(userId);
-			for (Long roleId : roleIds) {
-				Role role = securityAccessApplication.getRoleBy(roleId);
-				securityConfigApplication.terminateActorFromAuthority(user, role);
-			}
-			return InvokeResult.success("撤销用户的多个角色成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("撤销用户的多个角色失败。");
+	public void terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds) {
+		User user = securityAccessApplication.getUserById(userId);
+		for (Long roleId : roleIds) {
+			Role role = securityAccessApplication.getRoleBy(roleId);
+			securityConfigApplication.terminateActorFromAuthority(user, role);
 		}
 	}
 
 	@Override
 	public InvokeResult terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds) {
-        try {
-        	 for (Long permissionId : permissionIds) {
-     			InvokeResult invokeResult = this.terminateAuthorizationByUserInPermission(userId, permissionId);
-                 if(!invokeResult.isSuccess()){
-                     break;
-                 }
-     		}
-        	return InvokeResult.success("撤销用户的多个权限成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("撤销用户的多个权限失败。");
+        for (Long permissionId : permissionIds) {
+			InvokeResult invokeResult = this.terminateAuthorizationByUserInPermission(userId, permissionId);
+            if(!invokeResult.isSuccess()){
+                break;
+            }
 		}
-
-}
+        return InvokeResult.success();
+	}
 
 	/**
 	 * 为角色授权菜单资源。
 	 */
 	@Override
-	public InvokeResult grantMenuResourcesToRole(Long roleId, Long[] menuResourceIds) {
-		try {
+	public void grantMenuResourcesToRole(Long roleId, Long[] menuResourceIds) {
+
 		Role role = securityAccessApplication.getRoleBy(roleId);
 
 		// 现在的
@@ -426,40 +418,24 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
 		LOGGER.info("----> waiting delete menuResource list :{}", waitingDelList);
 		LOGGER.info("----> waiting add menuResource list :{}", waitingAddList);
-		return InvokeResult.success("为角色授权菜单资源成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		return	InvokeResult.failure("为角色授权菜单资源失败");
-		}
 	}
 
 	@Override
-	public InvokeResult grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds) {
+	public void grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
-		try {
-			for (Long pageElementResourceId : pageElementResourceIds) {
-				PageElementResource pageElementResource = securityAccessApplication
-						.getPageElementResourceBy(pageElementResourceId);
-				securityConfigApplication.grantSecurityResourceToAuthority(pageElementResource, role);
-			}
-			return InvokeResult.success("为角色授权页面元素权限资源成功");
-		} catch (Exception e) {
-			return InvokeResult.failure("为角色授权页面元素权限资源失败");
+		for (Long pageElementResourceId : pageElementResourceIds) {
+			PageElementResource pageElementResource = securityAccessApplication
+					.getPageElementResourceBy(pageElementResourceId);
+			securityConfigApplication.grantSecurityResourceToAuthority(pageElementResource, role);
 		}
 	}
 
 	@Override
-	public InvokeResult grantUrlAccessResourcesToRole(Long roleId, Long[] urlAccessResourceIds) {
-		try {
-			Role role = securityAccessApplication.getRoleBy(roleId);
-			for (Long urlAccessResourceId : urlAccessResourceIds) {
-				UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
-				securityConfigApplication.grantSecurityResourceToAuthority(urlAccessResource, role);
-			}
-			return InvokeResult.success("为角色授权URL访问权限资源成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("为角色授权URL访问权限资源失败");
+	public void grantUrlAccessResourcesToRole(Long roleId, Long[] urlAccessResourceIds) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long urlAccessResourceId : urlAccessResourceIds) {
+			UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+			securityConfigApplication.grantSecurityResourceToAuthority(urlAccessResource, role);
 		}
 	}
 
@@ -470,74 +446,62 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public InvokeResult grantPermissionsToRole(Long roleId, Long[] permissionIds) {
-		try {
-			Role role = securityAccessApplication.getRoleBy(roleId);
-			for (Long permissionId : permissionIds) {
-				Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-				securityConfigApplication.grantRoleToPermission(role, permission);
-				securityConfigApplication.grantPermissionToRole(permission, role);
-			}
-		return	InvokeResult.success("为角色授权权限成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return	InvokeResult.failure("为角色授权权限失败");
+	public void grantPermissionsToRole(Long roleId, Long[] permissionIds) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long permissionId : permissionIds) {
+			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+			securityConfigApplication.grantRoleToPermission(role, permission);
+			securityConfigApplication.grantPermissionToRole(permission, role);
 		}
 	}
 
 	@Override
-	public InvokeResult terminatePermissionsFromRole(Long roleId, Long[] permssionIds) {
-		try {
-			Role role = securityAccessApplication.getRoleBy(roleId);
-			for (Long permissionId : permssionIds) {
-				Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-				securityConfigApplication.terminatePermissionFromRole(permission, role);						
-			}
-			return InvokeResult.success("从角色中撤销权限成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("从角色中撤销权限失败");
+	public void terminatePermissionsFromRole(Long roleId, Long[] permssionIds) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long permissionId : permssionIds) {
+			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+			securityConfigApplication.terminatePermissionFromRole(permission, role);
 		}
 	}
 
 	@Override
-	public InvokeResult terminateUrlAccessResources(Long[] urlAccessResourceIds) {
-		InvokeResult result = null;
+	public JsonResult terminateUrlAccessResources(Long[] urlAccessResourceIds) {
+		JsonResult result = null;
 		for (Long urlAccessResourceId : urlAccessResourceIds) {
 			result = this.terminateUrlAccessResource(urlAccessResourceId);
 			if (!result.isSuccess()) {
 				break;
 			}
 		}
-		return InvokeResult.success("批量撤销URL访问权限资源成功");
+		result.setMessage("批量撤销URL访问权限资源成功");
+		return result;
 	}
 
-	public InvokeResult terminateUrlAccessResource(Long urlAccessResourceId) {
+	public JsonResult terminateUrlAccessResource(Long urlAccessResourceId) {
+		JsonResult result = new JsonResult();
 		try {
 			UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
 			securityConfigApplication.terminateSecurityResource(urlAccessResource);
-			return InvokeResult.success("撤销URL访问权限资源成功");
+			result.setSuccess(true);
+			result.setMessage("撤销URL访问权限资源成功");
 		} catch (CorrelationException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("撤销URL访问权限资源失败，有角色或者权限关联。");
+			result.setSuccess(false);
+			result.setMessage("撤销URL访问权限资源失败，有角色或者权限关联。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("撤销URL访问权限资源失败");
+			result.setSuccess(false);
+			result.setMessage("撤销URL访问权限资源失败");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds) {
-		try {
-			Role role = securityAccessApplication.getRoleBy(roleId);
-			for (Long urlAccessResourceId : urlAccessResourceIds) {
-				UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
-				securityConfigApplication.terminateSecurityResourceFromAuthority(urlAccessResource, role);
-			}
-			return InvokeResult.success("从角色中撤销URL访问权限资源成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		return InvokeResult.failure("从角色中撤销URL访问权限资源失败");
+	public void terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds) {
+		Role role = securityAccessApplication.getRoleBy(roleId);
+		for (Long urlAccessResourceId : urlAccessResourceIds) {
+			UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+			securityConfigApplication.terminateSecurityResourceFromAuthority(urlAccessResource, role);
 		}
 	}
 
@@ -556,62 +520,36 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
 	@Override
-	public InvokeResult grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
-		try {
-			UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
-			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-			securityConfigApplication.grantAuthorityToSecurityResource(permission, urlAccessResource);
-			return 	InvokeResult.success("为URL访问权限资源授权权限失败。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		return 	InvokeResult.failure("为URL访问权限资源授权权限失败。");
-		}
+	public void grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
+		UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		securityConfigApplication.grantAuthorityToSecurityResource(permission, urlAccessResource);
 	}
 
 	@Override
-	public InvokeResult terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
-		try {
-			UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
-			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-			securityConfigApplication.terminateAuthorityFromSecurityResource(permission, urlAccessResource);
-			return InvokeResult.success("为URL访问权限资源授权权限失败。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("为URL访问权限资源授权权限失败。");
-		}
+	public void terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
+		UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		securityConfigApplication.terminateAuthorityFromSecurityResource(permission, urlAccessResource);
 	}
 
 	@Override
-	public InvokeResult grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId) {
-		try {
-			MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
-			Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
-			securityConfigApplication.grantAuthorityToSecurityResource(permssion, menuResource);
-			return InvokeResult.success("为菜单权限资源授予权限Permission成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("为菜单权限资源授予权限Permission失败");
-		}
-		
+	public void grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId) {
+		MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
+		Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
+		securityConfigApplication.grantAuthorityToSecurityResource(permssion, menuResource);
 	}
 
 	@Override
-	public InvokeResult terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId) {
-		try {
-			MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
-			Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
-			securityConfigApplication.terminateAuthorityFromSecurityResource(permssion, menuResource);
-			return 	InvokeResult.success("从菜单权限资源中撤销权限Permission成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return	InvokeResult.failure("从菜单权限资源中撤销权限Permission失败");
-		}
-		
+	public void terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId) {
+		MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
+		Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
+		securityConfigApplication.terminateAuthorityFromSecurityResource(permssion, menuResource);
 	}
 
 	@Override
-	public InvokeResult terminatePageElementResources(Long[] pageElementResourceIds) {
-		InvokeResult result = null;
+	public JsonResult terminatePageElementResources(Long[] pageElementResourceIds) {
+		JsonResult result = null;
 		for (Long pageElementResourceId : pageElementResourceIds) {
 			result = this.terminatePageElementResource(pageElementResourceId);
 			if (!result.isSuccess()) {
@@ -621,64 +559,50 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		return result;
 	}
 
-	public InvokeResult terminatePageElementResource(Long pageElementResourceId) {
+	public JsonResult terminatePageElementResource(Long pageElementResourceId) {
+		JsonResult result = new JsonResult();
 		try {
 			PageElementResource pageElementResource = securityAccessApplication
 					.getPageElementResourceBy(pageElementResourceId);
 			securityConfigApplication.terminateSecurityResource(pageElementResource);
-			return InvokeResult.success("撤销页面元素权限资源成功。");
+			result.setSuccess(true);
+			result.setMessage("撤销页面元素权限资源成功。");
 		} catch (CorrelationException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("因为有角色或者权限，不能撤销。");
+			result.setSuccess(true);
+			result.setMessage("因为有角色或者权限，不能撤销。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("撤销页面元素权限资源失败。");
+			result.setSuccess(true);
+			result.setMessage("撤销页面元素权限资源失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds) {
+	public void terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds) {
 		Role role = securityAccessApplication.getRoleBy(roleId);
-		
-		try {
-			for (Long pageElementResourceId : pageElementResourceIds) {
-				PageElementResource pageElementResource = securityAccessApplication
-						.getPageElementResourceBy(pageElementResourceId);
-				securityConfigApplication.terminateSecurityResourceFromAuthority(pageElementResource, role);
-			}
-			return InvokeResult.success("从角色中撤销页面元素权限资源成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("从角色中撤销页面元素权限资源失败");
+		for (Long pageElementResourceId : pageElementResourceIds) {
+			PageElementResource pageElementResource = securityAccessApplication
+					.getPageElementResourceBy(pageElementResourceId);
+			securityConfigApplication.terminateSecurityResourceFromAuthority(pageElementResource, role);
 		}
 	}
 
 	@Override
-	public InvokeResult grantPermisssionsToPageElementResource(Long permissionId, Long pageElementResourceId) {
-		try {
-			PageElementResource pageElementResource = securityAccessApplication
-					.getPageElementResourceBy(pageElementResourceId);
-			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-			securityConfigApplication.grantAuthorityToSecurityResource(permission, pageElementResource);
-			return InvokeResult.success("为页面元素资源授予权限成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("为页面元素资源授予权限失败。");
-		}
+	public void grantPermisssionsToPageElementResource(Long permissionId, Long pageElementResourceId) {
+		PageElementResource pageElementResource = securityAccessApplication
+				.getPageElementResourceBy(pageElementResourceId);
+		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		securityConfigApplication.grantAuthorityToSecurityResource(permission, pageElementResource);
 	}
 
 	@Override
-	public InvokeResult terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId) {
-		try {
-			PageElementResource pageElementResource = securityAccessApplication
-					.getPageElementResourceBy(pageElementResourceId);
-			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-			securityConfigApplication.terminateAuthorityFromSecurityResource(permission, pageElementResource);
-			return InvokeResult.success("从页面元素资源中撤销权限。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("从页面元素资源中撤销权限。");
-		}
+	public void terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId) {
+		PageElementResource pageElementResource = securityAccessApplication
+				.getPageElementResourceBy(pageElementResourceId);
+		Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+		securityConfigApplication.terminateAuthorityFromSecurityResource(permission, pageElementResource);
 	}
 
 	@Override
@@ -713,76 +637,106 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
     @Override
-	public InvokeResult changeUserProps(ChangeUserPropsCommand command) {
+    public InvokeResult changeRoleOfUser(Long roleId, String userAccount) {
+
+
+        return null;
+    }
+
+    @Override
+	public JsonResult changeUserProps(ChangeUserPropsCommand command) {
+		JsonResult result = new JsonResult();
 		try {
 			User user = securityAccessApplication.getUserById(command.getId());
 			user.setName(command.getName());
 			user.setDescription(command.getDescription());
 			securityConfigApplication.createActor(user);// 显示调用。
-			return InvokeResult.success("修改用户成功。");
+			result.setSuccess(true);
+			result.setMessage("修改用户成功。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("修改用户失败。");
+			result.setSuccess(false);
+			result.setMessage("修改用户失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
+	public JsonResult changeUserAccount(ChangeUserAccountCommand command) {
+		JsonResult result = new JsonResult();
 		try {
 			User user = securityAccessApplication.getUserById(command.getId());
 			securityConfigApplication.changeUserAccount(user, command.getUserAccount(), command.getUserPassword());// 显示调用。
-			return InvokeResult.success("修改用户成功。");
+			result.setSuccess(true);
+			result.setMessage("修改用户成功。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return	InvokeResult.failure("修改用户失败。");
+			result.setSuccess(false);
+			result.setMessage("修改用户失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
+	public JsonResult changeUserEmail(ChangeUserEmailCommand command) {
+		JsonResult result = new JsonResult();
 		try {
 			User user = securityAccessApplication.getUserById(command.getId());
 			securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());// 显示调用。
-			return InvokeResult.success("修改用户成功。");
+			result.setSuccess(true);
+			result.setMessage("修改用户成功。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return	InvokeResult.failure("修改用户失败。");
+			result.setSuccess(false);
+			result.setMessage("修改用户失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
-	try {
+	public JsonResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
+		JsonResult result = new JsonResult();
+		try {
 			User user = securityAccessApplication.getUserById(command.getId());
 			securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());// 显示调用。
-			return InvokeResult.success("修改用户成功。");
+			result.setSuccess(true);
+			result.setMessage("修改用户成功。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return	InvokeResult.failure("修改用户失败。");
+			result.setSuccess(false);
+			result.setMessage("修改用户失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult createUrlAccessResource(CreateUrlAccessResourceCommand command) {
+	public JsonResult createUrlAccessResource(CreateUrlAccessResourceCommand command) {
+		JsonResult result = new JsonResult();
 		UrlAccessResource urlAccessResource = null;
 		try {
 			urlAccessResource = UrlAccessResourceAssembler.toUrlAccessResource(command);
 			securityConfigApplication.createSecurityResource(urlAccessResource);
-			return InvokeResult.success("添加URL访问权限资源成功。");
+			result.setSuccess(true);
+			result.setMessage("添加URL访问权限资源成功。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("URL访问权限资源名称：" + urlAccessResource.getName() + "已经存在。");
+			result.setSuccess(false);
+			result.setMessage("URL访问权限资源名称：" + urlAccessResource.getName() + "已经存在。");
 		} catch (UrlIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("URL访问权限资源名称：" + urlAccessResource.getUrl() + "已经存在。");
+			result.setSuccess(false);
+			result.setMessage("URL访问权限资源名称：" + urlAccessResource.getUrl() + "已经存在。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加URL访问权限资源失败");
+			result.setSuccess(false);
+			result.setMessage("添加URL访问权限资源失败");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult changeUrlAccessResourceProps(ChangeUrlAccessResourcePropsCommand command) {
+	public JsonResult changeUrlAccessResourceProps(ChangeUrlAccessResourcePropsCommand command) {
+		JsonResult result = new JsonResult();
 		UrlAccessResource urlAccessResource = null;
 		try {
 			urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(command.getId());
@@ -790,109 +744,139 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 			securityConfigApplication.changeUrlOfUrlAccessResource(urlAccessResource, command.getUrl());
 			urlAccessResource.setDescription(command.getDescription());
 			securityConfigApplication.createSecurityResource(urlAccessResource);
-			return InvokeResult.success("更新URL访问权限资源成功。");
+			result.setSuccess(true);
+			result.setMessage("更新URL访问权限资源成功。");
 		} catch (NullArgumentException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("名称或者URL为空。");
+			result.setSuccess(false);
+			result.setMessage("名称或者URL为空。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("更新URL访问权限资源名称：" + command.getName() + "已经存在。");
+			result.setSuccess(false);
+			result.setMessage("更新URL访问权限资源名称：" + command.getName() + "已经存在。");
 		} catch (UrlIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("更新URL访问权限资源名称：" + command.getUrl() + "已经存在。");
+			result.setSuccess(false);
+			result.setMessage("更新URL访问权限资源名称：" + command.getUrl() + "已经存在。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("更新URL访问权限资源失败。");
+			result.setSuccess(false);
+			result.setMessage("更新URL访问权限资源失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult createRole(CreateRoleCommand command) {
+	public JsonResult createRole(CreateRoleCommand command) {
 		JsonResult result = new JsonResult();
 		try {
 			Role role = RoleAssembler.toRole(command);
 			securityConfigApplication.createAuthority(role);
-			return	InvokeResult.success("添加角色成功。");
+			result.setSuccess(true);
+			result.setMessage("添加角色成功。");
 		} catch (NullArgumentException e) {
 			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("添加角色名称不能为空。");
+			result.setSuccess(false);
+			result.setMessage("添加角色名称不能为空。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("添加角色名称：" + command.getName() + "已经存在。");
+			result.setSuccess(false);
+			result.setMessage("添加角色名称：" + command.getName() + "已经存在。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("添加角色失败。");
+			result.setSuccess(false);
+			result.setMessage("添加角色失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult changeRoleProps(ChangeRolePropsCommand command) {
+	public JsonResult changeRoleProps(ChangeRolePropsCommand command) {
+		JsonResult result = new JsonResult();
 		try {
 			Role role = securityAccessApplication.getRoleBy(command.getId());
 			securityConfigApplication.changeNameOfRole(role, command.getName());
 			role.setDescription(command.getDescription());
 			securityConfigApplication.createAuthority(role);
-			return	InvokeResult.success("更改角色成功。");
+			result.setSuccess(true);
+			result.setMessage("更新角色成功。");
 		} catch (NullArgumentException e) {
 			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("更改角色名称不能为空。");
+			result.setSuccess(false);
+			result.setMessage("添加角色名称不能为空。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("更改角色名称：" + command.getName() + "已经存在。");
+			result.setSuccess(false);
+			result.setMessage("更新角色名称：" + command.getName() + "已经存在。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			return InvokeResult.failure("更改角色失败。");
+			result.setSuccess(false);
+			result.setMessage("更新角色失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult createPermission(CreatePermissionCommand command) {
-			try {
+	public JsonResult createPermission(CreatePermissionCommand command) {
+		JsonResult result = new JsonResult();
+		try {
 			Permission permission = PermissionAssembler.toPermission(command);
 			securityConfigApplication.createAuthority(permission);
-			return InvokeResult.success("添加权限成功。");
+			result.setSuccess(true);
+			result.setMessage("添加权限成功。");
 		} catch (NullArgumentException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("权限名称或者标识不能为空。");
+			result.setSuccess(false);
+			result.setMessage("权限名称或者标识不能为空。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加权限失败，权限名称：" + command.getName() + " 已经存在。");
+			result.setSuccess(false);
+			result.setMessage("添加权限失败，权限名称：" + command.getName() + " 已经存在。");
 		} catch (IdentifierIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加权限失败，权限标识：" + command.getIdentifier() + " 已经存在。");
+			result.setSuccess(false);
+			result.setMessage("添加权限失败，权限标识：" + command.getIdentifier() + " 已经存在。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("更改权限失败。");
+			result.setSuccess(false);
+			result.setMessage("更改权限失败。");
 		}
-	
+		return result;
 	}
 
 	@Override
-	public InvokeResult changePermissionProps(ChangePermissionPropsCommand command) {
+	public JsonResult changePermissionProps(ChangePermissionPropsCommand command) {
+		JsonResult result = new JsonResult();
 		try {
 			Permission permission = securityAccessApplication.getPermissionBy(command.getId());
 			securityConfigApplication.changeNameOfPermission(permission, command.getName());
 			securityConfigApplication.changeIdentifierOfPermission(permission, command.getIdentifier());
 			permission.setDescription(command.getDescription());
-			return InvokeResult.success("添加权限成功。");
+			result.setSuccess(true);
+			result.setMessage("添加权限成功。");
 		} catch (NullArgumentException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("权限名称或者标识不能为空。");
+			result.setSuccess(false);
+			result.setMessage("权限名称或者标识不能为空。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加权限失败，权限名称：" + command.getName() + " 已经存在。");
+			result.setSuccess(false);
+			result.setMessage("更改权限失败，权限名称：" + command.getName() + " 已经存在。");
 		} catch (IdentifierIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加权限失败，权限标识：" + command.getIdentifier() + " 已经存在。");
+			result.setSuccess(false);
+			result.setMessage("更改权限失败，权限标识：" + command.getIdentifier() + " 已经存在。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("更改权限失败。");
+			result.setSuccess(false);
+			result.setMessage("更改权限失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult terminatePermissions(Long[] permissionIds) {
-		InvokeResult result = null;
+	public JsonResult terminatePermissions(Long[] permissionIds) {
+		JsonResult result = null;
 		for (Long permissionId : permissionIds) {
 			result = this.terminatePermission(permissionId);
 			if (!result.isSuccess()) {
@@ -902,120 +886,159 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 		return result;
 	}
 
-	public InvokeResult terminatePermission(Long permissionId) {
+	public JsonResult terminatePermission(Long permissionId) {
+		JsonResult result = new JsonResult();
 		Permission permission = null;
 		try {
 			permission = securityAccessApplication.getPermissionBy(permissionId);
 			securityConfigApplication.terminateAuthority(permission);
-			return InvokeResult.success("撤销权限成功。");
+			result.setSuccess(true);
+			result.setMessage("撤销权限成功。");
 		} catch (CorrelationException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("权限有用户或者角色关联，不能撤销。");
+			result.setSuccess(false);
+			result.setMessage("权限有用户或者角色关联，不能撤销。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("撤销权限失败。");
+			result.setSuccess(false);
+			result.setMessage("撤销权限失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult createPageElementResource(CreatePageElementResourceCommand command) {
+	public JsonResult createPageElementResource(CreatePageElementResourceCommand command) {
+		JsonResult result = new JsonResult();
 		try {
 			PageElementResource pageElementResource = PageElementResourceAssembler.toPageElementResource(command);
 			securityConfigApplication.createSecurityResource(pageElementResource);
-			return InvokeResult.success("添加页面元素权限资源成功");
+			result.setSuccess(true);
+			result.setMessage("添加页面元素权限资源成功");
 		} catch (NullArgumentException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("名称和标识不能为空。");
+			result.setSuccess(false);
+			result.setMessage("名称和标识不能为空。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("页面元素权限资源名称" + command.getName() + "已经存在");
+			result.setSuccess(false);
+			result.setMessage("页面元素权限资源名称" + command.getName() + "已经存在");
 		} catch (IdentifierIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("页面元素权限资源标识" + command.getIdentifier() + "已经存在");
+			result.setSuccess(false);
+			result.setMessage("页面元素权限资源标识" + command.getIdentifier() + "已经存在");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加页面元素权限资源失败。");
+			result.setSuccess(false);
+			result.setMessage("添加页面元素权限资源失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult changePageElementResourceProps(ChangePageElementResourcePropsCommand command) {
+	public JsonResult changePageElementResourceProps(ChangePageElementResourcePropsCommand command) {
+		JsonResult result = new JsonResult();
 		try {
-			PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(command.getId());
+			PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(command
+					.getId());
 			securityConfigApplication.changeNameOfPageElementResouce(pageElementResource, command.getName());
-			securityConfigApplication.changeIdentifierOfPageElementResouce(pageElementResource, command.getIdentifier());
+			securityConfigApplication
+					.changeIdentifierOfPageElementResouce(pageElementResource, command.getIdentifier());
 			pageElementResource.setDescription(command.getDescription());
 			securityConfigApplication.createSecurityResource(pageElementResource);
-			return InvokeResult.success("更改页面元素权限资源成功。");
+			result.setSuccess(true);
+			result.setMessage("更改页面元素权限资源成功。");
 		} catch (NullArgumentException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("名称和标识不能为空。");
+			result.setSuccess(false);
+			result.setMessage("名称和标识不能为空。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("页面元素权限资源名称" + command.getName() + "已经存在");
+			result.setSuccess(false);
+			result.setMessage("页面元素权限资源名称" + command.getName() + "已经存在");
 		} catch (IdentifierIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("页面元素权限资源标识" + command.getIdentifier() + "已经存在");
+			result.setSuccess(false);
+			result.setMessage("页面元素权限资源标识" + command.getIdentifier() + "已经存在");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("更改页面元素权限资源失败。");
+			result.setSuccess(false);
+			result.setMessage("更改页面元素权限资源失败。");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult createMenuResource(CreateMenuResourceCommand command) {
+	public JsonResult createMenuResource(CreateMenuResourceCommand command) {
+		JsonResult result = new JsonResult();
 		try {
 			MenuResource menuResource = MenuResourceAssembler.toMenuResource(command);
 			securityConfigApplication.createSecurityResource(menuResource);
-			return InvokeResult.success("添加菜单权限资源名称成功。");
+			result.setSuccess(true);
+			result.setMessage("添加菜单权限资源名称成功。");
 		} catch (NullArgumentException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加菜单权限资源名称不能为空。");
+			result.setSuccess(false);
+			result.setMessage("添加菜单权限资源名称不能为空。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加菜单权限资源名称" + command.getName() + "已经存在");
+			result.setSuccess(false);
+			result.setMessage("添加菜单权限资源名称" + command.getName() + "已经存在");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加菜单权限资源名称" + command.getName() + "已经存在");
+			result.setSuccess(false);
+			result.setMessage("添加菜单权限资源失败");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult createChildMenuResouceToParent(CreateChildMenuResourceCommand command) {
+	public JsonResult createChildMenuResouceToParent(CreateChildMenuResourceCommand command) {
+		JsonResult result = new JsonResult();
 		try {
 			MenuResource menuResource = MenuResourceAssembler.toMenuResource(command);
 			securityConfigApplication.createChildToParent(menuResource, command.getParentId());
-			return InvokeResult.success("添加菜单权限资源名称成功。");
+			result.setSuccess(true);
+			result.setMessage("添加子菜单权限资源名称成功。");
 		} catch (NullArgumentException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加菜单权限资源名称不能为空。");
+			result.setSuccess(false);
+			result.setMessage("菜单权限资源名称不能为空。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加菜单权限资源名称" + command.getName() + "已经存在");
+			result.setSuccess(false);
+			result.setMessage("添加子菜单权限资源名称" + command.getName() + "已经存在");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加子菜单权限资源失败");
+			result.setSuccess(false);
+			result.setMessage("添加子菜单权限资源失败");
 		}
+		return result;
 	}
 
 	@Override
-	public InvokeResult changeMenuResourceProps(ChangeMenuResourcePropsCommand command) {
+	public JsonResult changeMenuResourceProps(ChangeMenuResourcePropsCommand command) {
+		JsonResult result = new JsonResult();
 		try {
 			MenuResource menuResource = securityAccessApplication.getMenuResourceBy(command.getId());
 			securityConfigApplication.changeNameOfMenuResource(menuResource, command.getName());
 			menuResource.setUrl(command.getUrl());
 			menuResource.setMenuIcon(command.getMenuIcon());
 			menuResource.setDescription(command.getDescription());
-			return InvokeResult.success("更改菜单权限资源成功。");
+			result.setSuccess(true);
+			result.setMessage("更改菜单权限资源成功。");
 		} catch (NullArgumentException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("菜单权限资源名称不能为空。");
+			result.setSuccess(false);
+			result.setMessage("菜单权限资源名称不能为空。");
 		} catch (NameIsExistedException e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("更改菜单权限资源名称" + command.getName() + "已经存在。");
+			result.setSuccess(false);
+			result.setMessage("更改菜单权限资源名称" + command.getName() + "已经存在。");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("更改菜单权限资源失败。");
+			result.setSuccess(false);
+			result.setMessage("更改菜单权限资源失败。");
 		}
+		return result;
 	}
 }

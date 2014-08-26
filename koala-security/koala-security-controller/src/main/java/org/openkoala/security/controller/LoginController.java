@@ -6,8 +6,8 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.command.LoginCommand;
+import org.openkoala.security.facade.dto.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -44,32 +44,37 @@ public class LoginController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public InvokeResult login(HttpServletRequest request, LoginCommand command) {
-		InvokeResult invokeResult =	 doCaptcha(request);// 处理验证码
-		if(invokeResult.isSuccess()){
-			return invokeResult;
-		}else{
-			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(//
-					command.getUsername(),//
-					command.getPassword(),//
-					command.getRememberMe());
-			try {
-				SecurityUtils.getSubject().login(usernamePasswordToken);
-				return InvokeResult.failure("该账号已经挂起，请联系管理员。");			
-			} catch (UnknownAccountException e) {
-				LOGGER.error(e.getMessage(), e);
-				return InvokeResult.failure("账号或者密码不存在。");			
-			} catch (LockedAccountException e) {
-				LOGGER.error(e.getMessage(), e);
-				return InvokeResult.failure("该账号已经挂起，请联系管理员。");			
-			} catch (AuthenticationException e) {
-				LOGGER.error(e.getMessage(), e);
-				return InvokeResult.failure("账号或者密码不正确。");
-			} catch (Exception e) {
-				LOGGER.error(e.getMessage(), e);
-				return InvokeResult.failure("登录失败。");
-			}
+	public JsonResult login(HttpServletRequest request, LoginCommand command) {
+		JsonResult result = doCaptcha(request);// 处理验证码
+		if (!result.isSuccess()) {
+			return result;
 		}
+		UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(//
+				command.getUsername(),//
+				command.getPassword(),//
+				command.getRememberMe());
+		try {
+			SecurityUtils.getSubject().login(usernamePasswordToken);
+			result.setSuccess(true);
+			result.setMessage("登陆成功。");
+		} catch (UnknownAccountException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("账号或者密码不存在。");
+		} catch (LockedAccountException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("该账号已经挂起，请联系管理员。");
+		} catch (AuthenticationException e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("账号或者密码不正确。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			result.setSuccess(false);
+			result.setMessage("登录失败。");
+		}
+		return result;
 	}
 
 	/**
@@ -78,11 +83,13 @@ public class LoginController {
 	 * @param request
 	 * @return
 	 */
-	private InvokeResult doCaptcha(HttpServletRequest request) {
+	private JsonResult doCaptcha(HttpServletRequest request) {
+		JsonResult result = new JsonResult();
 		String shiroLoginFailure = (String) request.getAttribute("shiroLoginFailure");
 		if (!StringUtils.isBlank(shiroLoginFailure)) {
-			return	InvokeResult.failure("验证码错误。");
+			result.setSuccess(false);
+			result.setMessage("验证码错误。");
 		}
-		return InvokeResult.success();
+		return result;
 	}
 }

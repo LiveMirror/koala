@@ -8,6 +8,7 @@ import java.util.*;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.google.common.collect.Iterables;
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.Page;
@@ -73,18 +74,13 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return null;
 	}
 
-	public InvokeResult findRolesByUserAccount(String userAccount) {
-		try {
-			List<RoleDTO> results = new ArrayList<RoleDTO>();
-			List<Role> roles = securityAccessApplication.findAllRolesByUserAccount(userAccount);
-			for (Role role : roles) {
-				results.add(generateRoleDTOBy(role));
-			}
-			return InvokeResult.success(results);
-		} catch (Exception e) {
-			return	InvokeResult.failure("根据用户名查找所有的角色失败。");
+	public List<RoleDTO> findRolesByUserAccount(String userAccount) {
+		List<RoleDTO> results = new ArrayList<RoleDTO>();
+		List<Role> roles = securityAccessApplication.findAllRolesByUserAccount(userAccount);
+		for (Role role : roles) {
+			results.add(generateRoleDTOBy(role));
 		}
-
+		return results;
 	}
 
 	public List<MenuResourceDTO> findMenuResourceByUserAccount(String userAccount) {
@@ -109,7 +105,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	 * @return
 	 */
 	@Override
-	public InvokeResult findMenuResourceByUserAsRole(String userAccount, Long roleId) {
+	public List<MenuResourceDTO> findMenuResourceByUserAsRole(String userAccount, Long roleId) {
 
 		Set<Authority> authorities = new HashSet<Authority>();
 		Role role = securityAccessApplication.getRoleBy(roleId);
@@ -127,24 +123,24 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 		addMenuChildrenToParent(all);
 
-		return InvokeResult.success(all);
+		return results;
 
 	}
 
 	@Override
-	public InvokeResult findAllMenusTree() {
+	public List<MenuResourceDTO> findAllMenusTree() {
 		List<MenuResourceDTO> results = findTopMenuResource();
 		List<MenuResourceDTO> childrenMenuResources = findChidrenMenuResource();
 		List<MenuResourceDTO> all = new ArrayList<MenuResourceDTO>();
 		all.addAll(results);
 		all.addAll(childrenMenuResources);
 		addMenuChildrenToParent(all);
-		return InvokeResult.success(all);
+		return results;
 	}
 
 	@Override
-	public InvokeResult findMenuResourceTreeSelectItemByRoleId(Long roleId) {
-		try {
+	public List<MenuResourceDTO> findMenuResourceTreeSelectItemByRoleId(Long roleId) {
+
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id,_resource.name) FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN  _resourceAssignment.resource _resource WHERE TYPE(_resource) = :resourceType AND _authority.id = :authorityId");
 
 		List<MenuResourceDTO> allMenResourcesAsRole = getQueryChannelService()//
@@ -153,24 +149,18 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.addParameter("authorityId", roleId)//
 				.list();
 
-		InvokeResult menuResult = findAllMenusTree();
-		List<MenuResourceDTO> allMenuResources = (List<MenuResourceDTO>) menuResult	.getData();
+		List<MenuResourceDTO> allMenuResources = findAllMenusTree();
 
 		for (MenuResourceDTO menuResourceDTO : allMenuResources) {
 			if (!menuResourceDTO.getChildren().isEmpty()) {
-				for (MenuResourceDTO childMenuResourceDTO : menuResourceDTO
-						.getChildren()) {
-					childMenuResourceDTO.setChecked(allMenResourcesAsRole
-							.contains(childMenuResourceDTO));
+				for (MenuResourceDTO childMenuResourceDTO : menuResourceDTO.getChildren()) {
+					childMenuResourceDTO.setChecked(allMenResourcesAsRole.contains(childMenuResourceDTO));
 				}
 			}
-			menuResourceDTO.setChecked(allMenResourcesAsRole
-					.contains(menuResourceDTO));
+			menuResourceDTO.setChecked(allMenResourcesAsRole.contains(menuResourceDTO));
 		}
-		return InvokeResult.success(allMenuResources);
-		} catch (Exception e) {
-		return InvokeResult.failure("根据角色ID查询菜单权限资源树带有已经选中项失败");
-		}
+
+		return allMenuResources;
 	}
 
     // TODO 待测试，感觉有问题。
@@ -296,7 +286,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
     // TODO 都直接变成返回DTO 省略转换过程。
 	@Override
-	public InvokeResult pagingQueryUsers(int currentPage, int pageSize, UserDTO queryUserCondition) {
+	public Page<UserDTO> pagingQueryUsers(int currentPage, int pageSize, UserDTO queryUserCondition) {
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 		StringBuilder jpql = new StringBuilder("SELECT _user FROM User _user");
 
@@ -307,13 +297,13 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.setPage(currentPage, pageSize)//
 				.pagedList();
 
-		return InvokeResult.success(new Page<UserDTO>(userPage.getStart(), userPage.getResultCount(), pageSize,
-				generateUserDTOsBy(userPage.getData())));
+		return new Page<UserDTO>(userPage.getStart(), userPage.getResultCount(), pageSize,
+				generateUserDTOsBy(userPage.getData()));
 	}
 
     // TODO 都直接变成返回DTO 省略转换过程。
     @Override
-    public InvokeResult pagingQueryRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition) {
+    public Page<RoleDTO> pagingQueryRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
         StringBuilder jpql = new StringBuilder("SELECT _role FROM Role _role");
 
@@ -324,13 +314,13 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
                 .setPage(currentPage, pageSize)//
                 .pagedList();
 
-        return InvokeResult.success(new Page<RoleDTO>(rolePage.getStart(), rolePage.getResultCount(), pageSize,
-                generateRoleDTOsBy(rolePage.getData())));
+        return new Page<RoleDTO>(rolePage.getStart(), rolePage.getResultCount(), pageSize,
+                generateRoleDTOsBy(rolePage.getData()));
     }
 
     // TODO 都直接变成返回DTO 省略转换过程。
     @Override
-    public InvokeResult pagingQueryPermissions(int currentPage, int pageSize,
+    public Page<PermissionDTO> pagingQueryPermissions(int currentPage, int pageSize,
                                                       PermissionDTO queryPermissionCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
         StringBuilder jpql = new StringBuilder("SELECT _permission FROM Permission _permission");
@@ -342,13 +332,12 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
                 .setPage(currentPage, pageSize)//
                 .pagedList();
 
-        return InvokeResult.success(new Page<PermissionDTO>(permissionPage.getStart(), permissionPage.getResultCount(), pageSize,
-                generatePermissionDTOsBy(permissionPage.getData())));
-         
+        return new Page<PermissionDTO>(permissionPage.getStart(), permissionPage.getResultCount(), pageSize,
+                generatePermissionDTOsBy(permissionPage.getData()));
     }
 
 	@Override
-	public InvokeResult pagingQueryNotGrantRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition, Long userId) {
+	public Page<RoleDTO> pagingQueryNotGrantRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition, Long userId) {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description)  FROM Role _role");
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
@@ -360,17 +349,16 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		jpql.append(" _role.id NOT IN(SELECT _authority.id FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.id= :userId)");
 
 		conditionVals.put("userId", userId);
-		 Page<RoleDTO> results  = getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.setParameters(conditionVals)//
 				.setPage(currentPage, pageSize)//
 				.pagedList();
 
-		 return InvokeResult.success(results);
 	}
 
 	@Override
-	public InvokeResult pagingQueryGrantPermissionByUserId(int currentPage, int pageSize, Long userId) {
+	public Page<PermissionDTO> pagingQueryGrantPermissionByUserId(int currentPage, int pageSize, Long userId) {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.identifier ,_authority.description)");
 		jpql.append(" FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority");
@@ -385,11 +373,11 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.setParameters(parameters)//
 				.setPage(currentPage, pageSize)//
 				.pagedList();
-		return InvokeResult.success(results);
+		return results;
 	}
 
 	@Override
-	public InvokeResult pagingQueryGrantRolesByUserId(int currentPage, int pageSize, Long userId) {
+	public Page<RoleDTO> pagingQueryGrantRolesByUserId(int currentPage, int pageSize, Long userId) {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_authority.id, _authority.name, _authority.description)");
 		jpql.append(" FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority");
@@ -403,11 +391,11 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.setParameters(parameters)//
 				.setPage(currentPage, pageSize)//
 				.pagedList();
-		return InvokeResult.success(results);
+		return results;
 	}
 
 	@Override
-	public InvokeResult pagingQueryNotGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId) {
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId) {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name,_permission.identifier, _permission.description)");
 		jpql.append(" FROM Permission _permission WHERE _permission.id NOT IN(SELECT _permission.id FROM Permission _permission JOIN _permission.roles _role WHERE _role.id = :roleId)");
@@ -418,11 +406,11 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.setParameters(parameters)//
 				.setPage(currentPage, pageSize)//
 				.pagedList();
-		return InvokeResult.success(results);
+		return results;
 	}
 
 	@Override
-	public InvokeResult pagingQueryGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId) {
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId) {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name,_permission.identifier, _permission.description) FROM Permission _permission JOIN _permission.roles _role WHERE _role.id = :roleId");
 		Map<String, Object> parameters = new HashMap<String, Object>();
@@ -432,11 +420,11 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.setParameters(parameters)//
 				.setPage(currentPage, pageSize)//
 				.pagedList();
-		return InvokeResult.success(results);
+		return results;
 	}
 
 	@Override
-	public InvokeResult pagingQueryUrlAccessResources(int currentPage, int pageSize,
+	public Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int currentPage, int pageSize,
 			UrlAccessResourceDTO queryUrlAccessResourceCondition) {
 
 		StringBuilder jpql = new StringBuilder(
@@ -452,7 +440,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.setPage(currentPage, pageSize)//
 				.pagedList();
 
-		return InvokeResult.success(results);
+		return results;
 	}
 
     /**
@@ -463,7 +451,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
      * @return
      */
 	@Override
-	public InvokeResult pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
+	public Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UrlAccessResourceDTO(_resource.id, _resource.name, _resource.url,_resource.description) FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE TYPE(_resource) = :resourceType AND _authority.id = :authorityId");
 		Page<UrlAccessResourceDTO> results = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
@@ -471,77 +459,72 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 				.addParameter("authorityId", roleId)//
 				.setPage(page, pagesize)//
 				.pagedList();
-		return InvokeResult.success(results);
+		return results;
 	}
 
 	@Override
-	public InvokeResult pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
+	public Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UrlAccessResourceDTO(_securityResource.id, _securityResource.name, _securityResource.url,_securityResource.description) FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :resourceType AND _securityResource.id NOT IN (SELECT _resource.id FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE TYPE(_resource) = :resourceType AND _authority.id = :authorityId)");
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("resourceType", UrlAccessResource.class);
 		parameters.put("authorityId", roleId);
 
-		Page<UrlAccessResourceDTO> results = getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.setParameters(parameters)//
 				.setPage(page, pagesize)//
 				.pagedList();
-		return InvokeResult.success(results);
 	}
 
 	@Override
-	public InvokeResult pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
 			Long urlAccessResourceId) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name,_authority.identifier, _authority.description) FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE TYPE(_authority) = :authorityType AND _resource.id = :resourceId");
-		Page<PermissionDTO> results =getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.addParameter("authorityType", Permission.class)//
 				.addParameter("resourceId", urlAccessResourceId)//
 				.setPage(page, pagesize)//
 				.pagedList();
-		return InvokeResult.success(results);
 	}
 
 	@Override
-	public InvokeResult pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
 			Long urlAccessResourceId) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.identifier,_authority.description) FROM Authority _authority WHERE _authority.id NOT IN(SELECT _authority.id FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource.id = :resourceId AND TYPE(_authority) = :authorityType) AND TYPE(_authority) = :authorityType");
-		Page<PermissionDTO> results = getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.addParameter("resourceId", urlAccessResourceId)//
 				.addParameter("authorityType", Permission.class)//
 				.setPage(page, pagesize)//
 				.pagedList();
-		return InvokeResult.success(results);
 	}
 
 	@Override
-	public InvokeResult pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name, _authority.identifier,_authority.description) FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource.id = :resourceId AND TYPE(_authority) = :authorityType");
-		 Page<PermissionDTO> results=  getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.addParameter("resourceId", menuResourceId)//
 				.addParameter("authorityType", Permission.class)//
 				.setPage(page, pagesize)//
 				.pagedList();
-	return	InvokeResult.success(results);
 	}
 
 	@Override
-	public InvokeResult pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,
 			Long menuResourceId) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name,_authority.identifier, _authority.description) FROM Authority _authority WHERE _authority.id NOT IN(SELECT _authority.id FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource.id = :resourceId AND TYPE(_authority) = :authorityType)  AND TYPE(_authority) = :authorityType");
-		Page<PermissionDTO> results = getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.addParameter("authorityType", Permission.class)//
 				.addParameter("resourceId", menuResourceId)//
 				.setPage(page, pagesize)//
 				.pagedList();
-		return InvokeResult.success(results);
 	}
 
 	@Override
-	public InvokeResult pagingQueryNotGrantPermissionsByUserId(int page, int pagesize,
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUserId(int page, int pagesize,
 			PermissionDTO queryPermissionCondition, Long userId) {
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 
@@ -556,78 +539,71 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		conditionVals.put("authorityType", Permission.class);
 		conditionVals.put("userId", userId);
 
-		return InvokeResult.success(getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.setParameters(conditionVals)//
 				.setPage(page, pagesize)//
-				.pagedList());
+				.pagedList();
 	}
 
 	@Override
-	public InvokeResult pagingQueryPageElementResources(int page, int pagesize, PageElementResourceDTO queryPageElementCondition) {
+	public Page<PageElementResourceDTO> pagingQueryPageElementResources(int page, int pagesize, PageElementResourceDTO queryPageElementCondition) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PageElementResourceDTO(_resource.id,_resource.version, _resource.name,_resource.identifier, _resource.description) FROM PageElementResource _resource");
 
         Map<String, Object> conditionVals = new HashMap<String, Object>();
 		assemblePageElementResourceJpqlAndConditionValues(queryPageElementCondition, jpql, "_resource",conditionVals);
 
-		Page<PageElementResourceDTO> results =  getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.setParameters(conditionVals)//
 				.setPage(page, pagesize)//
 				.pagedList();
-		return InvokeResult.success(results);
-		
 	}
 
 	@Override
-	public InvokeResult pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
+	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PageElementResourceDTO(_resource.id,_resource.version, _resource.name,_resource.identifier, _resource.description) FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE TYPE(_resource) = :resourceType AND TYPE(_authority) = :authorityType AND _authority.id = :authorityId");
-		Page<PageElementResourceDTO> results = getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
                 .addParameter("resourceType",PageElementResource.class)//
 				.addParameter("authorityType", Role.class)//
 				.addParameter("authorityId", roleId)//
 				.setPage(page, pagesize)//
 				.pagedList();
-		return InvokeResult.success(results);
 	}
 
 	@Override
-	public InvokeResult pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
+	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PageElementResourceDTO(_pageElementResource.id,_pageElementResource.version, _pageElementResource.name, _pageElementResource.identifier, _pageElementResource.description) FROM PageElementResource _pageElementResource WHERE _pageElementResource.id NOT IN(SELECT _resource.id FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE TYPE(_resource) = :resourceType AND _authority.id = :authorityId ) ");
-		Page<PageElementResourceDTO> results =  getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.addParameter("resourceType", PageElementResource.class)//
 				.addParameter("authorityId", roleId)//
 				.setPage(page, pagesize)//
 				.pagedList();
-		
-		return InvokeResult.success(results);
 	}
 
 	@Override
-	public InvokeResult pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId) {
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_resource.id, _resource.name,_resource.identifier, _resource.description) FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource.id = :resourceId AND TYPE(_authority) = :authorityType");
-		Page<PermissionDTO> results = getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.addParameter("resourceId", pageElementResourceId)//
 				.addParameter("authorityType", Permission.class)//
 				.setPage(page, pagesize)//
 				.pagedList();
-		return InvokeResult.success(results);
 	}
 
 	@Override
-	public InvokeResult pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
 			Long pageElementResourceId) {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name,_permission.identifier, _permission.description) FROM Permission _permission WHERE _permission.id NOT IN(SELECT _authority.id FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource.id = :resourceId AND TYPE(_authority) = :authorityType)");
-		Page<PermissionDTO> results =  getQueryChannelService()//
+		return getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.addParameter("resourceId", pageElementResourceId)//
 				.addParameter("authorityType", Permission.class)//
 				.setPage(page, pagesize)//
 				.pagedList();
-		return InvokeResult.success(results);
 	}
 
 	/*------------- Private helper methods  -----------------*/
