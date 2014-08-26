@@ -40,14 +40,14 @@ public class SecurityConfigFacadeMockTest {
 	
 	private SecurityConfigFacade securityConfigFacade = new SecurityConfigFacadeImpl();
 
-	@Test
+	/*@Test
 	public void testCreateUser() throws Exception {
 		CreateUserCommand command = initCreateUserCommand();
 		User user = new User("张三", "zhangsan");
 		when(UserAssembler.toUser(command)).thenReturn(user);
-//		Mockito.doThrow(new UserAccountIsExistedException()).when(UserAssembler.toUser(command));
+		Mockito.doThrow(new UserAccountIsExistedException()).when(UserAssembler.toUser(command));
 		Assert.assertEquals("用户账号:" + command.getUserAccount() + "已经存在。",securityConfigFacade.createUser(command).getMessage());
-	}
+	}*/
 }
 
 

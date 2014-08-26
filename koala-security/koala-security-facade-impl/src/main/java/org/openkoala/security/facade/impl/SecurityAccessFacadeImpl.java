@@ -25,9 +25,13 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.*;
 
 import com.google.common.collect.Sets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named
 public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityAccessFacadeImpl.class);
 
 	@Inject
 	private SecurityAccessApplication securityAccessApplication;
@@ -82,6 +86,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			}
 			return InvokeResult.success(results);
 		} catch (Exception e) {
+            LOGGER.error(e.getMessage(),e);
 			return	InvokeResult.failure("根据用户名查找所有的角色失败。");
 		}
 
@@ -127,7 +132,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 		addMenuChildrenToParent(all);
 
-		return InvokeResult.success(all);
+		return InvokeResult.success(results);
 
 	}
 
@@ -142,43 +147,42 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return InvokeResult.success(all);
 	}
 
-	@Override
-	public InvokeResult findMenuResourceTreeSelectItemByRoleId(Long roleId) {
-		try {
-		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id,_resource.name) FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN  _resourceAssignment.resource _resource WHERE TYPE(_resource) = :resourceType AND _authority.id = :authorityId");
+    @Override
+    public InvokeResult findMenuResourceTreeSelectItemByRoleId(Long roleId) {
+        try {
+            StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id,_resource.name) FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN  _resourceAssignment.resource _resource WHERE TYPE(_resource) = :resourceType AND _authority.id = :authorityId");
 
-		List<MenuResourceDTO> allMenResourcesAsRole = getQueryChannelService()//
-				.createJpqlQuery(jpql.toString())//
-				.addParameter("resourceType", MenuResource.class)//
-				.addParameter("authorityId", roleId)//
-				.list();
+            List<MenuResourceDTO> allMenResourcesAsRole = getQueryChannelService()//
+                    .createJpqlQuery(jpql.toString())//
+                    .addParameter("resourceType", MenuResource.class)//
+                    .addParameter("authorityId", roleId)//
+                    .list();
 
-		InvokeResult menuResult = findAllMenusTree();
-		List<MenuResourceDTO> allMenuResources = (List<MenuResourceDTO>) menuResult	.getData();
+            InvokeResult menuResult = findAllMenusTree();
+            List<MenuResourceDTO> allMenuResources = (List<MenuResourceDTO>) menuResult.getData();
 
-		for (MenuResourceDTO menuResourceDTO : allMenuResources) {
-			if (!menuResourceDTO.getChildren().isEmpty()) {
-				for (MenuResourceDTO childMenuResourceDTO : menuResourceDTO
-						.getChildren()) {
-					childMenuResourceDTO.setChecked(allMenResourcesAsRole
-							.contains(childMenuResourceDTO));
-				}
-			}
-			menuResourceDTO.setChecked(allMenResourcesAsRole
-					.contains(menuResourceDTO));
-		}
-		return InvokeResult.success(allMenuResources);
-		} catch (Exception e) {
-		return InvokeResult.failure("根据角色ID查询菜单权限资源树带有已经选中项失败");
-		}
-	}
+            for (MenuResourceDTO menuResourceDTO : allMenuResources) {
+                if (!menuResourceDTO.getChildren().isEmpty()) {
+                    for (MenuResourceDTO childMenuResourceDTO : menuResourceDTO
+                            .getChildren()) {
+                        childMenuResourceDTO.setChecked(allMenResourcesAsRole
+                                .contains(childMenuResourceDTO));
+                    }
+                }
+                menuResourceDTO.setChecked(allMenResourcesAsRole.contains(menuResourceDTO));
+            }
+            return InvokeResult.success(allMenuResources);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(),e);
+            return InvokeResult.failure("根据角色ID查询菜单权限资源树带有已经选中项失败");
+        }
+    }
 
     // TODO 待测试，感觉有问题。
 	@Override
 	public Set<PermissionDTO> findPermissionsByMenuOrUrl() {
 
-		StringBuilder jpql = new StringBuilder(
-				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name,_authority.identifier,_authority.description,_resource.url) FROM ResourceAssignment _resourceAssignment  JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE Type(_authority) = Permission AND TYPE(_resource) = MenuResource OR TYPE(_resource) = UrlAccessResource");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_authority.id, _authority.name,_authority.identifier,_authority.description,_resource.url) FROM ResourceAssignment _resourceAssignment  JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE Type(_authority) = Permission AND TYPE(_resource) = MenuResource OR TYPE(_resource) = UrlAccessResource");
 
 		List<PermissionDTO> results = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
@@ -230,13 +234,13 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
      * 去除重复的URL
      * @return
      */
-    private List<UrlAuthorityDTO> findAllUrls(){
+    private List<UrlAuthorityDTO> findAllUrls() {
         StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UrlAuthorityDTO(_resource.url)");
         jpql = fromResourceAssigment(jpql);
         jpql.append(" GROUP BY _resource.url");
         return getQueryChannelService().createJpqlQuery(jpql.toString())//
-        .addParameter("resourceType",UrlAccessResource.class)//
-        .list();
+                .addParameter("resourceType", UrlAccessResource.class)//
+                .list();
 
     }
 
@@ -423,8 +427,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	@Override
 	public InvokeResult pagingQueryGrantPermissionsByRoleId(int currentPage, int pageSize, Long roleId) {
-		StringBuilder jpql = new StringBuilder(
-				"SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name,_permission.identifier, _permission.description) FROM Permission _permission JOIN _permission.roles _role WHERE _role.id = :roleId");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name,_permission.identifier, _permission.description) FROM Permission _permission JOIN _permission.roles _role WHERE _role.id = :roleId");
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("roleId", roleId);
 		Page<PermissionDTO> results = getQueryChannelService()//
@@ -436,15 +439,12 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	}
 
 	@Override
-	public InvokeResult pagingQueryUrlAccessResources(int currentPage, int pageSize,
-			UrlAccessResourceDTO queryUrlAccessResourceCondition) {
+	public InvokeResult pagingQueryUrlAccessResources(int currentPage, int pageSize,UrlAccessResourceDTO queryUrlAccessResourceCondition) {
 
-		StringBuilder jpql = new StringBuilder(
-				"SELECT NEW org.openkoala.security.facade.dto.UrlAccessResourceDTO(_urlAccessResource.id, _urlAccessResource.name, _urlAccessResource.url,_urlAccessResource.description) FROM UrlAccessResource _urlAccessResource");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UrlAccessResourceDTO(_urlAccessResource.id, _urlAccessResource.name, _urlAccessResource.url,_urlAccessResource.description) FROM UrlAccessResource _urlAccessResource");
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 
-		assembleUrlAccessResourceJpqlAndConditionValues(queryUrlAccessResourceCondition, jpql, "_urlAccessResource",
-				conditionVals);
+		assembleUrlAccessResourceJpqlAndConditionValues(queryUrlAccessResourceCondition, jpql, "_urlAccessResource",conditionVals);
 
 		Page<UrlAccessResourceDTO> results = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
