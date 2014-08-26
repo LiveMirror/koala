@@ -3,6 +3,7 @@ package org.openkoala.security.controller;
 import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
@@ -22,9 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 用户控制器。
- * 
+ *
  * @author luzhao
- * 
+ *
  */
 @Controller
 @RequestMapping("/auth/user")
@@ -40,7 +41,7 @@ public class UserController {
 
 	/**
 	 * 添加用户。
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -54,7 +55,7 @@ public class UserController {
 
 	/**
 	 * 更改用户。
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -66,7 +67,7 @@ public class UserController {
 
 	/**
 	 * 撤销用户。
-	 * 
+	 *
 	 * @param userIds
 	 */
 	@ResponseBody
@@ -77,7 +78,7 @@ public class UserController {
 
 	/**
 	 * 重置用户密码。
-	 * 
+	 *
 	 * @param userId
 	 * @return
 	 */
@@ -89,7 +90,7 @@ public class UserController {
 
 	/**
 	 * 激活用户。
-	 * 
+	 *
 	 * @param userId
 	 * @return
 	 */
@@ -101,7 +102,7 @@ public class UserController {
 
 	/**
 	 * 挂起用户。
-	 * 
+	 *
 	 * @param userId
 	 * @return
 	 */
@@ -113,7 +114,7 @@ public class UserController {
 
 	/**
 	 * 批量激活用户。
-	 * 
+	 *
 	 * @param userIds
 	 * @return
 	 */
@@ -125,7 +126,7 @@ public class UserController {
 
 	/**
 	 * 批量挂起用户。
-	 * 
+	 *
 	 * @param userIds
 	 * @return
 	 */
@@ -138,7 +139,7 @@ public class UserController {
 	// ~ 授权
 	/**
 	 * 为用户授权一个角色。
-	 * 
+	 *
 	 * @param userId
 	 * @param roleId
 	 * @return
@@ -161,7 +162,7 @@ public class UserController {
 
 	/**
 	 * 为用户授权多个角色。
-	 * 
+	 *
 	 * @param userId
 	 * @param roleIds
 	 * @return
@@ -184,7 +185,7 @@ public class UserController {
 
 	/**
 	 * 为用户授权一个权限。
-	 * 
+	 *
 	 * @param userId
 	 * @param permissionId
 	 * @return
@@ -207,7 +208,7 @@ public class UserController {
 
 	/**
 	 * 为用户授权多个权限。
-	 * 
+	 *
 	 * @param userId
 	 * @param permissionIds
 	 * @return
@@ -230,7 +231,7 @@ public class UserController {
 
 	/**
 	 * 通过角色下的用户撤销一个授权中心{@link Authorization}。
-	 * 
+	 *
 	 * @param userId
 	 * @param roleId
 	 * @return
@@ -253,7 +254,7 @@ public class UserController {
 
 	/**
 	 * 通过权限下的用户撤销一个授权中心{@link Authorization}。
-	 * 
+	 *
 	 * @param userId
 	 * @param permissionId
 	 * @return
@@ -276,7 +277,7 @@ public class UserController {
 
 	/**
 	 * 通过角色下的用户撤销多个授权中心{@link Authorization}。
-	 * 
+	 *
 	 * @param userId
 	 * @param roleIds
 	 * @return
@@ -299,30 +300,20 @@ public class UserController {
 
 	/**
 	 * 通过权限下的用户撤销多个授权中心{@link Authorization}。。
-	 * 
+	 *
 	 * @param userId
 	 * @param permissionIds
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminatePermissionsByUser", method = RequestMethod.POST)
-	public JsonResult terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.terminateAuthorizationByUserInPermissions(userId, permissionIds);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("撤销用户的多个权限成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("撤销用户的多个权限失败。");
-		}
-		return jsonResult;
+	public InvokeResult terminateAuthorizationsByPermissions(Long userId, Long[] permissionIds) {
+		return	securityConfigFacade.terminateAuthorizationByUserInPermissions(userId, permissionIds);
 	}
 
 	/**
 	 * 根据条件分页查询用户。
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param queryUserCondition
@@ -337,7 +328,7 @@ public class UserController {
 
 	/**
 	 * 根据用户ID分页查找已经授权的角色。
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param userId
@@ -352,7 +343,7 @@ public class UserController {
 
 	/**
 	 * 根据用户ID分页查询已经授权的权限
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param userId
@@ -367,7 +358,7 @@ public class UserController {
 
 	/**
 	 * 根据条件分页查询还未授权的角色
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param queryRoleCondition
@@ -383,7 +374,7 @@ public class UserController {
 
 	/**
 	 * 根据用户ID分页查找还未授权的权限。
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param queryPermissionCondition
@@ -398,4 +389,29 @@ public class UserController {
 				queryPermissionCondition, userId);
 		return results;
 	}
+
+    /**分页查询用户的角色
+     *
+     * @param page 当前页
+     * @param pagesize
+     * @return
+     */
+    public InvokeResult pagingQueryRolesOfUser(int page,int pagesize){
+        String userAccount = CurrentUser.getUserAccount();
+        return securityAccessFacade.pagingQueryRolesOfUser(page,pagesize,userAccount);
+    }
+
+    /**
+     * 切换角色
+     * @param roleId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/changeRoleOfUser")
+    public InvokeResult changeRoleOfUser(Long roleId){
+        String userAccount = CurrentUser.getUserAccount();
+
+
+        return InvokeResult.success();
+    }
 }

@@ -637,13 +637,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 	}
 
     @Override
-    public InvokeResult changeRoleOfUser(Long roleId, String userAccount) {
-
-
-        return null;
-    }
-
-    @Override
 	public JsonResult changeUserProps(ChangeUserPropsCommand command) {
 		JsonResult result = new JsonResult();
 		try {

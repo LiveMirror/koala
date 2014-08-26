@@ -341,5 +341,4 @@ public interface SecurityConfigFacade {
 	 */
 	void updateUserLastLoginTime(Long userId);
 
-    InvokeResult changeRoleOfUser(Long roleId, String userAccount);
 }
