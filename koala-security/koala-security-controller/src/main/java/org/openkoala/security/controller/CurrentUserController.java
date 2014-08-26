@@ -100,7 +100,6 @@ public class CurrentUserController {
     @RequestMapping(value = "/changeRoleOfUser")
     public InvokeResult changeRoleOfUser(Long roleId){
         String userAccount = CurrentUser.getUserAccount();
-
         return InvokeResult.success();
     }
 
