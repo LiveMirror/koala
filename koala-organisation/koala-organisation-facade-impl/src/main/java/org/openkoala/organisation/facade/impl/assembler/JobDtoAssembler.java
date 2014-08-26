@@ -17,10 +17,16 @@ public class JobDtoAssembler {
 	public static Job assemEntity(JobDTO jobDTO) {
 		Job result = new Job(jobDTO.getName(), jobDTO.getName());
 		result.setId(jobDTO.getId());
-		result.setCreateDate(jobDTO.getCreateDate());
 		result.setDescription(jobDTO.getDescription());
-		result.setTerminateDate(jobDTO.getTerminateDate());
 		result.setVersion(jobDTO.getVersion());
+		
+		if (jobDTO.getCreateDate() != null) {
+			result.setCreateDate(jobDTO.getCreateDate());
+		}
+		if (jobDTO.getTerminateDate() != null) {
+			result.setTerminateDate(jobDTO.getTerminateDate());
+		}
+		
 		return result;
 	}
 

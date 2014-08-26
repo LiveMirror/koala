@@ -281,7 +281,7 @@ var position = function(){
 			delete positionDto.organizationId;
 			positionDto.sn = positionSn.val();
 			positionDto.name = positionName.val();
-			positionDto['job.id'] = positionJob.getValue();
+			positionDto.jobId = positionJob.getValue();
 			positionDto.description = positionDescription.val();
 			organizationPrincipals.each(function(){
 				if(this.checked){
@@ -293,7 +293,7 @@ var position = function(){
 		}else{
 			var data = {};
 			data.name = positionName.val();
-			data['job.id'] = positionJob.getValue();
+			data.jobId = positionJob.getValue();
 			data.description = positionDescription.val();
 			data.sn = positionSn.val();
 			organizationPrincipals.each(function(){

@@ -12,11 +12,17 @@ public class PostDtoAssembler {
 	public static Post assemEntity(PostDTO postDTO) {
 		Post result = new Post(postDTO.getName());
 		result.setId(postDTO.getId());
-		result.setCreateDate(postDTO.getCreateDate());
+		
+		if (postDTO.getCreateDate() != null) {
+			result.setCreateDate(postDTO.getCreateDate());
+		}
+		if (postDTO.getTerminateDate() != null) {
+			result.setTerminateDate(postDTO.getTerminateDate());
+		}
+		
 		result.setSn(postDTO.getSn());
 		result.setDescription(postDTO.getDescription());
 		result.setOrganizationPrincipal(postDTO.isOrganizationPrincipal());
-		result.setTerminateDate(postDTO.getTerminateDate());
 		result.setVersion(postDTO.getVersion());
 		
 		Job job = Job.get(Job.class, postDTO.getJobId());
