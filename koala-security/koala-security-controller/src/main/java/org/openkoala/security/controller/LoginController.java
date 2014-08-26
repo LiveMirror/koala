@@ -46,7 +46,7 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public InvokeResult login(HttpServletRequest request, LoginCommand command) {
 		InvokeResult invokeResult =	 doCaptcha(request);// 处理验证码
-		if(invokeResult.isSuccess()){
+		if(!invokeResult.isSuccess()){
 			return invokeResult;
 		}else{
 			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(//

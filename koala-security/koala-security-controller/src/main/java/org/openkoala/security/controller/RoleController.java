@@ -7,7 +7,6 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeRolePropsCommand;
 import org.openkoala.security.facade.command.CreateRoleCommand;
-import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
@@ -298,7 +297,7 @@ public class RoleController {
 	 * @param menuResourceIds
 	 * @return
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "/grantMethodInvocationResourcesToRole", method = RequestMethod.GET)
 	public JsonResult grantMethodInvocationResourcesToRole(Long roleId, Long[] menuResourceIds) {
 		JsonResult jsonResult = new JsonResult();
@@ -312,5 +311,5 @@ public class RoleController {
 			jsonResult.setMessage("为角色授权方法调用权限资源失败");
 		}
 		return jsonResult;
-	}
+	}*/
 }

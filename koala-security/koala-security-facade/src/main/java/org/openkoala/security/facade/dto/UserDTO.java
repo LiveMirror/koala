@@ -63,7 +63,20 @@ public class UserDTO implements Serializable {
 		this.description = description;
 	}
 
-	public Long getId() {
+    public UserDTO(Long id, int version, String name, String userAccount, Date createDate, String description, Date lastLoginTime, String createOwner, Date lastModifyTime, Boolean disabled) {
+        this.id = id;
+        this.version = version;
+        this.name = name;
+        this.userAccount = userAccount;
+        this.createDate = createDate;
+        this.description = description;
+        this.lastLoginTime = lastLoginTime;
+        this.createOwner = createOwner;
+        this.lastModifyTime = lastModifyTime;
+        this.disabled = disabled;
+    }
+
+    public Long getId() {
 		return id;
 	}
 

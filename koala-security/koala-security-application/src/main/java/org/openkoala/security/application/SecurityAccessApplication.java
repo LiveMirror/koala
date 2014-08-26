@@ -192,17 +192,6 @@ public interface SecurityAccessApplication {
     List<MenuResource> findAllMenuResorces();
 
 
-	/**
-	 * 用户登录
-	 * 
-	 * @param principal
-	 *            当事人 可能是用户名、邮箱、电话 目前只实现用户名,
-	 * @param password
-	 *            密码
-	 * @return
-	 */
-	User login(String principal, String password);
-
 	boolean hasPageElementResource(String identifier);
 
 	User getUserByEmail(String email);

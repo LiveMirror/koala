@@ -1,7 +1,6 @@
 package org.openkoala.security.facade.impl;
 
 import static org.junit.Assert.*;
-import static org.openkoala.security.facade.impl.assembler.GenerateDTOUtils.generateMenuResourceDTOBy;
 
 import java.util.List;
 import java.util.Set;
@@ -17,12 +16,12 @@ import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.CreateUserCommand;
-import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.MenuResourceDTO;
 
 import static org.openkoala.security.facade.impl.util.CommandHelper.*;
 
 import com.google.common.collect.Lists;
+import org.openkoala.security.facade.impl.assembler.MenuResourceAssembler;
 
 public class SecurityConfigFacadeTest extends AbstractFacadeIntegrationTestCase {
 
@@ -59,9 +58,9 @@ public class SecurityConfigFacadeTest extends AbstractFacadeIntegrationTestCase 
 		menuResource3.save();
 		menuResource4.save();
 
-		MenuResourceDTO menuResourceDTO2 = generateMenuResourceDTOBy(menuResource2);
-		MenuResourceDTO menuResourceDTO3 = generateMenuResourceDTOBy(menuResource3);
-		MenuResourceDTO menuResourceDTO4 = generateMenuResourceDTOBy(menuResource4);
+		MenuResourceDTO menuResourceDTO2 = MenuResourceAssembler.toMenuResourceDTO(menuResource2);
+		MenuResourceDTO menuResourceDTO3 = MenuResourceAssembler.toMenuResourceDTO(menuResource3);
+		MenuResourceDTO menuResourceDTO4 = MenuResourceAssembler.toMenuResourceDTO(menuResource4);
 
 		Role role1 = new Role("role1");
 		role1.save();

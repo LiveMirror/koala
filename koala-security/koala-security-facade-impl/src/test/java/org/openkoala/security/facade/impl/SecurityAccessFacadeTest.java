@@ -1,7 +1,6 @@
 package org.openkoala.security.facade.impl;
 
 import static org.junit.Assert.*;
-import static org.openkoala.security.facade.impl.assembler.GenerateDTOUtils.*;
 import static org.openkoala.security.facade.impl.util.EntitiesHelper.*;
 
 import java.util.List;
@@ -21,6 +20,7 @@ import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.*;
+import org.openkoala.security.facade.impl.assembler.*;
 
 /**
  * 先忽略测试。
@@ -55,17 +55,17 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void setUp(){
 		user = initUser();
 		user.save();
-		userDTO = generateUserDTOBy(user);
+		userDTO = UserAssembler.toUserDTO(user);
 		
 		role = initRole();
 		role.save();
-		roleDTO = generateRoleDTOBy(role);
+		roleDTO = RoleAssembler.toRoleDTO(role);
 		
 		user.grant(role);
 		
 		permission = initPermission();
 		permission.save();
-		permissionDTO = generatePermissionDTOBy(permission);
+		permissionDTO = PermissionAssembler.toPermissionDTO(permission);
 		
 		menuResource = initMenuResource();
 		menuResource.save();
@@ -75,11 +75,11 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		
 		urlAccessResource = initUrlAccessResource();
 		urlAccessResource.save();
-		urlAccessResourceDTO = generateUrlAccessResourceDTOBy(urlAccessResource);
+		urlAccessResourceDTO = UrlAccessResourceAssembler.toUrlAccessResourceDTO(urlAccessResource);
 		
 		pageElementResource = initPageElementResource();
 		pageElementResource.save();
-		pageElementResourceDTO = generatePageElementResourceDTOBy(pageElementResource);
+		pageElementResourceDTO = PageElementResourceAssembler.toPageElementResourceDTO(pageElementResource);
 		
 		role.addSecurityResource(urlAccessResource);
 		permission.addSecurityResource(urlAccessResource);
@@ -182,15 +182,6 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
         assertTrue(permissions.contains(permission.getIdentifier()));
 	}
 
-	// 不能用User中的password,因为已经加密了。
-	@Test
-	public void testLogin() {
-		String password = "888888";
-		UserDTO getUserDTO = securityAccessFacade.login(user.getUserAccount(), password);
-		assertNotNull(getUserDTO);
-		assertUserDTO(userDTO, getUserDTO);
-	}
-
 	@Test
 	public void testPagingQueryUsers() {
 		Page<UserDTO> userDTOPages = (Page<UserDTO>) securityAccessFacade.pagingQueryUsers(currentPage, pageSize, userDTO).getData();
@@ -225,7 +216,7 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testPagingQueryNotGrantRoles() {
 		Role role = new Role("PagingQueryNotGrantRolesIntIntPermissionDTOLong");
 		role.save();
-		Page<RoleDTO> roleDTOPages = (Page<RoleDTO>) securityAccessFacade.pagingQueryNotGrantRoles(currentPage, pageSize, generateRoleDTOBy(role), user.getId()).getData();
+		Page<RoleDTO> roleDTOPages = (Page<RoleDTO>) securityAccessFacade.pagingQueryNotGrantRoles(currentPage, pageSize, RoleAssembler.toRoleDTO(role), user.getId()).getData();
 		assertFalse(roleDTOPages.getData().isEmpty());
 		assertTrue(roleDTOPages.getPageCount() == 1);
 	}

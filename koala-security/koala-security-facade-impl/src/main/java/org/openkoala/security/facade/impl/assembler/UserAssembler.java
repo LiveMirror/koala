@@ -19,7 +19,7 @@ public class UserAssembler {
 		return result;
 	}
 	
-	public static UserDTO toDTO(User user) {
+	public static UserDTO toUserDTO(User user) {
 		UserDTO result = new UserDTO(user.getUserAccount(), user.getPassword(), user.getCreateDate(),user.getDescription());
 		result.setId(user.getId());
 		result.setName(user.getName());

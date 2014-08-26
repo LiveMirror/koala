@@ -22,15 +22,15 @@ public class PermissionDTO {
 
 	protected PermissionDTO() {}
 
-	public PermissionDTO(Long permissionId, String name, String identifier, String description) {
-		this.id = permissionId;
+	public PermissionDTO(Long id, String name, String identifier, String description) {
+		this.id = id;
 		this.name = name;
 		this.identifier = identifier;
 		this.description = description;
 	}
 
-	public PermissionDTO(Long permissionId, String name, String identifier, String description, String url) {
-		this.id = permissionId;
+	public PermissionDTO(Long id, String name, String identifier, String description, String url) {
+		this.id = id;
 		this.name = name;
 		this.identifier = identifier;
 		this.description = description;

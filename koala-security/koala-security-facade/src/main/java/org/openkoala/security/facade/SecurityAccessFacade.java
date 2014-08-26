@@ -175,9 +175,6 @@ public interface SecurityAccessFacade {
 
 	InvokeResult pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
                                                                        Long pageElementResourceId);
-
-	UserDTO login(String principal, String password);
-
 	/**
 	 * 通过账户查找用户
 	 * 
