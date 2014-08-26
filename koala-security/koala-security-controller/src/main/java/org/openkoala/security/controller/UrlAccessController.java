@@ -2,13 +2,17 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
-import org.openkoala.koala.commons.InvokeResult;
+import org.dayatang.querychannel.Page;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeUrlAccessResourcePropsCommand;
 import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
+import org.openkoala.security.facade.dto.JsonResult;
+import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/auth/url")
 public class UrlAccessController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(UrlAccessController.class);
 
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
@@ -41,7 +47,7 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public InvokeResult add(CreateUrlAccessResourceCommand command) {
+	public JsonResult add(CreateUrlAccessResourceCommand command) {
 		return securityConfigFacade.createUrlAccessResource(command);
 	}
 
@@ -53,7 +59,7 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public InvokeResult update(ChangeUrlAccessResourcePropsCommand command) {
+	public JsonResult update(ChangeUrlAccessResourcePropsCommand command) {
 		return securityConfigFacade.changeUrlAccessResourceProps(command);
 	}
 
@@ -65,9 +71,10 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
-	public InvokeResult terminate(Long[] urlAccessResourceIds) {
+	public JsonResult terminate(Long[] urlAccessResourceIds) {
+		JsonResult result = securityConfigFacade.terminateUrlAccessResources(urlAccessResourceIds);
 		shiroFilterChainManager.initFilterChain();
-		return  securityConfigFacade.terminateUrlAccessResources(urlAccessResourceIds);
+		return result;
 	}
 
 	/**
@@ -81,9 +88,11 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
-	public InvokeResult pagingQuery(int page, int pagesize,
+	public Page<UrlAccessResourceDTO> pagingQuery(int page, int pagesize,
 			UrlAccessResourceDTO queryUrlAccessResourceCondition) {
-		return  securityAccessFacade.pagingQueryUrlAccessResources(page, pagesize,queryUrlAccessResourceCondition);
+		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryUrlAccessResources(page, pagesize,
+				queryUrlAccessResourceCondition);
+		return results;
 	}
 
 	/**
@@ -95,9 +104,19 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/grantPermisssionsToUrlAccessResource", method = RequestMethod.POST)
-	public InvokeResult grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
-		shiroFilterChainManager.initFilterChain();
-		return securityConfigFacade.grantPermisssionsToUrlAccessResource(permissionId, urlAccessResourceId);
+	public JsonResult grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.grantPermisssionsToUrlAccessResource(permissionId, urlAccessResourceId);
+			shiroFilterChainManager.initFilterChain();
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为URL访问权限资源授权权限失败。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为URL访问权限资源授权权限失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
@@ -109,9 +128,19 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminatePermissionsFromUrlAccessResource", method = RequestMethod.POST)
-	public InvokeResult terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
+	public JsonResult terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
+		JsonResult jsonResult = new JsonResult();
+		try {
+			securityConfigFacade.terminatePermissionsFromUrlAccessResource(permissionId, urlAccessResourceId);
 			shiroFilterChainManager.initFilterChain();
-			return securityConfigFacade.terminatePermissionsFromUrlAccessResource(permissionId, urlAccessResourceId);
+			jsonResult.setSuccess(true);
+			jsonResult.setMessage("为URL访问权限资源授权权限失败。");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			jsonResult.setSuccess(false);
+			jsonResult.setMessage("为URL访问权限资源授权权限失败。");
+		}
+		return jsonResult;
 	}
 
 	/**
@@ -124,10 +153,11 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
 			Long urlAccessResourceId) {
-		 return securityAccessFacade.pagingQueryGrantPermissionsByUrlAccessResourceId(page,
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByUrlAccessResourceId(page,
 				pagesize, urlAccessResourceId);
+		return results;
 	}
 
 	/**
@@ -140,8 +170,11 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,Long urlAccessResourceId) {
-		return securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(page,pagesize, urlAccessResourceId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
+			Long urlAccessResourceId) {
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(page,
+				pagesize, urlAccessResourceId);
+		return results;
 	}
 
 }
