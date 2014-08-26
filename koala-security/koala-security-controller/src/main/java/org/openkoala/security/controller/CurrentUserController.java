@@ -2,12 +2,12 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeUserAccountCommand;
 import org.openkoala.security.facade.command.ChangeUserEmailCommand;
 import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
-import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.shiro.CurrentUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +35,7 @@ public class CurrentUserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/changeUserAccount", method = RequestMethod.POST)
-	public JsonResult changeUserAccount(ChangeUserAccountCommand command) {
+	public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
 		return securityConfigFacade.changeUserAccount(command);
 	}
 
@@ -47,7 +47,7 @@ public class CurrentUserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/changeUserEmail", method = RequestMethod.POST)
-	public JsonResult changeUserEmail(ChangeUserEmailCommand command) {
+	public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
 		return securityConfigFacade.changeUserEmail(command);
 	}
 
@@ -59,7 +59,7 @@ public class CurrentUserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/changeUserTelePhone", method = RequestMethod.POST)
-	public JsonResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
+	public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
 		return securityConfigFacade.changeUserTelePhone(command);
 	}
 	
@@ -71,7 +71,7 @@ public class CurrentUserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-	public JsonResult changeUserPassword(ChangeUserPasswordCommand command) {
+	public InvokeResult changeUserPassword(ChangeUserPasswordCommand command) {
 		command.setUserAccount(CurrentUser.getUserAccount());
 		return securityConfigFacade.changeUserPassword(command);
 	}

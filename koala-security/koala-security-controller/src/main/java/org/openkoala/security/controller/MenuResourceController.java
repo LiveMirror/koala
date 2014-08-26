@@ -1,19 +1,14 @@
 package org.openkoala.security.controller;
 
-import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.dayatang.querychannel.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeMenuResourcePropsCommand;
 import org.openkoala.security.facade.command.CreateChildMenuResourceCommand;
 import org.openkoala.security.facade.command.CreateMenuResourceCommand;
-import org.openkoala.security.facade.dto.JsonResult;
-import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.realm.CustomAuthoringRealm;
@@ -53,7 +48,7 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public JsonResult add(CreateMenuResourceCommand command) {
+	public InvokeResult add(CreateMenuResourceCommand command) {
 		return securityConfigFacade.createMenuResource(command);
 	}
 
@@ -65,7 +60,7 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/addChildToParent", method = RequestMethod.POST)
-	public JsonResult addChildToParent(CreateChildMenuResourceCommand command) {
+	public InvokeResult addChildToParent(CreateChildMenuResourceCommand command) {
 		return securityConfigFacade.createChildMenuResouceToParent(command);
 	}
 
@@ -77,7 +72,7 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public JsonResult update(ChangeMenuResourcePropsCommand command) {
+	public InvokeResult update(ChangeMenuResourcePropsCommand command) {
 		return securityConfigFacade.changeMenuResourceProps(command);
 	}
 
@@ -89,7 +84,7 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
-	public JsonResult terminate(Long[] menuResourceIds) {
+	public InvokeResult terminate(Long[] menuResourceIds) {
 		return securityConfigFacade.terminateMenuResources(menuResourceIds);
 	}
 
@@ -100,19 +95,8 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/findAllMenusTree", method = RequestMethod.GET)
-	public JsonResult findAllMenusTree() {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			List<MenuResourceDTO> results = securityAccessFacade.findAllMenusTree();
-			jsonResult.setData(results);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("查找菜单权限资源树成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("查找菜单权限资源树失败。");
-		}
-		return jsonResult;
+	public InvokeResult findAllMenusTree() {
+			return securityAccessFacade.findAllMenusTree();
 	}
 
 	/**
@@ -123,26 +107,17 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/findAllMenusByUserAsRole", method = RequestMethod.GET)
-	public JsonResult findAllMenusByUserAsRole(RoleDTO role) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			String roleName = role.getName();
-			List<MenuResourceDTO> results = securityAccessFacade.findMenuResourceByUserAsRole(
-					CurrentUser.getUserAccount(), role.getId());
-			CurrentUser.setRoleName(roleName);
+	public InvokeResult findAllMenusByUserAsRole(RoleDTO role) {
+		//	String roleName = role.getName();
+			return  securityAccessFacade.findMenuResourceByUserAsRole(CurrentUser.getUserAccount(), role.getId());
+			//CurrentUser.setRoleName(roleName);
 //            CustomAuthoringRealm.ShiroUser shiroUser = CurrentUser.getPrincipal();
 //            SimpleAuthorizationInfo simpleAuthorizationInfo =  (SimpleAuthorizationInfo)shiroUser.getAuthorizationInfo();
 //            simpleAuthorizationInfo.setRoles(customAuthoringRealm.getRoles(roleName));
 //            simpleAuthorizationInfo.setStringPermissions(customAuthoringRealm.getPermissions(CurrentUser.getUserAccount(),roleName));
-			jsonResult.setData(results);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("查找" + CurrentUser.getUserAccount() + " 在某个角色下得所有菜单权限资源成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("查找" + CurrentUser.getUserAccount() + " 在某个角色下得所有菜单权限资源失败。");
-		}
-		return jsonResult;
+
+			//jsonResult.setMessage("查找" + CurrentUser.getUserAccount() + " 在某个角色下得所有菜单权限资源成功。");
+			//jsonResult.setMessage("查找" + CurrentUser.getUserAccount() + " 在某个角色下得所有菜单权限资源失败。");
 	}
 
 	/**
@@ -154,18 +129,8 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/grantPermisssionsToMenuResource", method = RequestMethod.POST)
-	public JsonResult grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.grantPermisssionsToMenuResource(permissionId, menuResourceId);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("为菜单权限资源授予权限Permission成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("为菜单权限资源授予权限Permission失败");
-		}
-		return jsonResult;
+	public InvokeResult grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId) {
+		return	securityConfigFacade.grantPermisssionsToMenuResource(permissionId, menuResourceId);
 	}
 
 	/**
@@ -177,18 +142,8 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminatePermissionsFromMenuResource", method = RequestMethod.POST)
-	public JsonResult terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.terminatePermissionsFromMenuResource(permissionId, menuResourceId);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("从菜单权限资源中撤销权限Permission成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("从菜单权限资源中撤销权限Permission失败");
-		}
-		return jsonResult;
+	public InvokeResult terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId) {		
+		return	securityConfigFacade.terminatePermissionsFromMenuResource(permissionId, menuResourceId);
 	}
 
 	/**
@@ -201,10 +156,8 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPermissionsByMenuResourceId", method = RequestMethod.GET)
-	public Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByMenuResourceId(page, pagesize,
-				menuResourceId);
-		return results;
+	public InvokeResult pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
+		return  securityAccessFacade.pagingQueryGrantPermissionsByMenuResourceId(page, pagesize,menuResourceId);
 	}
 
 	/**
@@ -217,10 +170,7 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByMenuResourceId", method = RequestMethod.GET)
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,
-			Long menuResourceId) {
-		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(page,
-				pagesize, menuResourceId);
-		return results;
+	public InvokeResult pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,	Long menuResourceId) {
+		return securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(page,pagesize, menuResourceId);
 	}
 }
