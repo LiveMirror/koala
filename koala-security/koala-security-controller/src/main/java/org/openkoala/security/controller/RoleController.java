@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeRolePropsCommand;
@@ -347,7 +348,7 @@ public class RoleController {
 	 * 从角色中撤销页面元素权限资源。
 	 * 
 	 * @param roleId
-	 * @param PageElementResourceIds
+	 * @param pageElementResourceIds
 	 * @return
 	 */
 	@ResponseBody
@@ -377,8 +378,7 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
 	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
-		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page,
-				pagesize, roleId);
+		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page, pagesize, roleId);
 		return results;
 	}
 
@@ -392,8 +392,7 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
-	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize,
-			Long roleId) {
+	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
 		return securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(page, pagesize, roleId);
 	}
 
@@ -421,4 +420,5 @@ public class RoleController {
 		}
 		return jsonResult;
 	}
+
 }

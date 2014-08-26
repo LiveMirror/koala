@@ -82,7 +82,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<build>
+    <build>
         <plugins>
             <!--
             <plugin>
@@ -90,6 +90,6 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
             </plugin>
             -->
-		</plugins>
+        </plugins>
 	</build>
 </project>
