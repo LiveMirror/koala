@@ -137,7 +137,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		all.addAll(results);
 		all.addAll(childrenMenuResources);
 		addMenuChildrenToParent(all);
-		return InvokeResult.success(all);
+		return InvokeResult.success(results);
 	}
 
     @Override
