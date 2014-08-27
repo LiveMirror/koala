@@ -108,7 +108,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	 * @return
 	 */
 	@Override
-	public InvokeResult findMenuResourceByUserAsRole(String userAccount, Long roleName) {
+	public InvokeResult findMenuResourceByUserAsRole(String userAccount, String roleName) {
 
 		Set<Authority> authorities = new HashSet<Authority>();
 		Role role = securityAccessApplication.getRoleBy(roleName);

@@ -72,7 +72,7 @@ public interface SecurityAccessFacade {
 	 * @param roleName
 	 * @return
 	 */
-	InvokeResult findMenuResourceByUserAsRole(String userAccount, Long roleName);
+	InvokeResult findMenuResourceByUserAsRole(String userAccount, String roleName);
 
 	InvokeResult findAllMenusTree();
 
