@@ -129,7 +129,7 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Test
 	public void testFindMenuResourceDTOByUserAccountAsRole() {
-		List<MenuResourceDTO> results = (List<MenuResourceDTO>) securityAccessFacade.findMenuResourceByUserAsRole(user.getUserAccount(), role.getId()).getData();
+		List<MenuResourceDTO> results = (List<MenuResourceDTO>) securityAccessFacade.findMenuResourceByUserAsRole(user.getUserAccount(), role.getName()).getData();
 		assertFalse(results.isEmpty());
 		System.out.println(results);
 		assertTrue(results.size() == 1);

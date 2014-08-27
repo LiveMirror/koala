@@ -31,7 +31,7 @@ public class MenuResourceTest extends AbstractFacadeIntegrationTestCase{
 		user.grant(role);
 		List<MenuResource> menuResources = initTopMenuResource();
 		role.addSecurityResources(menuResources);
-		List<MenuResourceDTO> results = (List<MenuResourceDTO>) securityAccessFacade.findMenuResourceByUserAsRole(user.getUserAccount(), role.getId()).getData();
+		List<MenuResourceDTO> results = (List<MenuResourceDTO>) securityAccessFacade.findMenuResourceByUserAsRole(user.getUserAccount(), role.getName()).getData();
 		assertFalse(results.isEmpty());
 		assertTrue(results.size() == 3);
 	}

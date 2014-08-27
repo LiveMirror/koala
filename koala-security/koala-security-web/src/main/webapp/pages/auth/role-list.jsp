@@ -58,6 +58,9 @@
 			identity : 'id',
 			columns : columns,
 			buttons : buttons,
+			dataFilter:function(result){
+                return result.data;
+            },
 			url 	: url
 		}).on({
 			'add' 	: function() {

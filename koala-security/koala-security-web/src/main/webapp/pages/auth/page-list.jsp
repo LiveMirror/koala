@@ -180,6 +180,9 @@
              columns: columns,
              buttons: buttons,
              isShowPages: true,
+             dataFilter:function(result){
+                return result.data;
+             },
              url: url
         }).on({
         	'add': function(evnet, item){

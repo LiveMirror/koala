@@ -2,6 +2,7 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
+import org.apache.shiro.web.subject.support.WebDelegatingSubject;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
@@ -11,6 +12,7 @@ import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
+import org.openkoala.security.shiro.realm.CustomAuthoringRealm;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
