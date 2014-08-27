@@ -612,6 +612,34 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return InvokeResult.success(results);
 	}
 
+    @Override
+    public Set<PermissionDTO> findPermissionsByUserAccountAndRoleName(String userAccount, String roleName) {
+        Role role = Role.getRoleBy(roleName);
+        Set<Permission> rolePermissions = role.getPermissions();// TODO 待检测性能。
+        List<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
+        Set<Permission> permissions = new HashSet<Permission>();
+        permissions.addAll(userPermissions);
+        permissions.addAll(rolePermissions);
+
+        Set<PermissionDTO> results = new HashSet<PermissionDTO>();
+        for (Permission permission : permissions) {
+            PermissionDTO result = PermissionAssembler.toPermissionDTO(permission);
+            results.add(result);
+        }
+        return results;
+    }
+
+    @Override
+    public InvokeResult pagingQueryRolesOfUser(int pageIndex, int pageSize, String userAccount) {
+        Page<RoleDTO> results =  getQueryChannelService()//
+                .createJpqlQuery("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_authority.id, _authority.name, _authority.description) _authority FROM Authorization _authorization JOIN  _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND TYPE(_authority) = :authorityType GROUP BY _authority.id")
+                .addParameter("authorityType", Role.class)//
+                .addParameter("userAccount", userAccount)//
+                .setPage(pageIndex, pageSize)//
+                .pagedList();
+        return InvokeResult.success(results);
+    }
+
 	/*------------- Private helper methods  -----------------*/
 
 	private void assembleUserJpqlAndConditionValues(UserDTO queryUserCondition, StringBuilder jpql,
@@ -824,33 +852,5 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			jpql.append(" WHERE ");
 		}
 	}
-
-	@Override
-	public Set<PermissionDTO> findPermissionsByUserAccountAndRoleName(String userAccount, String roleName) {
-		Role role = Role.getRoleBy(roleName);
-		Set<Permission> rolePermissions = role.getPermissions();// TODO 待检测性能。
-		List<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
-		Set<Permission> permissions = new HashSet<Permission>();
-		permissions.addAll(userPermissions);
-		permissions.addAll(rolePermissions);
-
-		Set<PermissionDTO> results = new HashSet<PermissionDTO>();
-		for (Permission permission : permissions) {
-            PermissionDTO result = PermissionAssembler.toPermissionDTO(permission);
-			results.add(result);
-		}
-		return results;
-	}
-
-    @Override
-    public InvokeResult pagingQueryRolesOfUser(int pageIndex, int pageSize, String userAccount) {
-       Page<RoleDTO> results =  getQueryChannelService()//
-               .createJpqlQuery("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_authority.id, _authority.name, _authority.description) _authority FROM Authorization _authorization JOIN  _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND TYPE(_authority) = :authorityType GROUP BY _authority.id")
-                .addParameter("authorityType", Role.class)//
-                .addParameter("userAccount", userAccount)//
-                .setPage(pageIndex, pageSize)//
-                .pagedList();
-       return InvokeResult.success(results);
-    }
 
 }
