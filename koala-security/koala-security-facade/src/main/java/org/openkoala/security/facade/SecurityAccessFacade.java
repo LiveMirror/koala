@@ -69,10 +69,10 @@ public interface SecurityAccessFacade {
 	 * 查询某个角色下用户的菜单资源。
 	 * 
 	 * @param userAccount
-	 * @param roleId
+	 * @param roleName
 	 * @return
 	 */
-	InvokeResult findMenuResourceByUserAsRole(String userAccount, Long roleId);
+	InvokeResult findMenuResourceByUserAsRole(String userAccount, String roleName);
 
 	InvokeResult findAllMenusTree();
 

@@ -104,14 +104,14 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	 * 所有菜单不包含顶级菜单
 	 * 
 	 * @param userAccount
-	 * @param roleId
+	 * @param roleName
 	 * @return
 	 */
 	@Override
-	public InvokeResult findMenuResourceByUserAsRole(String userAccount, Long roleId) {
+	public InvokeResult findMenuResourceByUserAsRole(String userAccount, String roleName) {
 
 		Set<Authority> authorities = new HashSet<Authority>();
-		Role role = securityAccessApplication.getRoleBy(roleId);
+		Role role = securityAccessApplication.getRoleBy(roleName);
 		// securityAccessApplication.checkAuthorization(userAccount, role); //TODO 检查
 		authorities.add(role);
 		authorities.addAll(role.getPermissions());
