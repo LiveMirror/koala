@@ -55,7 +55,7 @@ public class LoginController {
 					command.getRememberMe());
 			try {
 				SecurityUtils.getSubject().login(usernamePasswordToken);
-				return InvokeResult.failure("该账号已经挂起，请联系管理员。");			
+				return InvokeResult.success("登陆成功!");
 			} catch (UnknownAccountException e) {
 				LOGGER.error(e.getMessage(), e);
 				return InvokeResult.failure("账号或者密码不存在。");			
