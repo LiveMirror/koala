@@ -47,11 +47,16 @@ public class OrganizationDtoAssembler {
 		}
 
 		result.setId(organizationDTO.getId());
-		result.setCreateDate(organizationDTO.getCreateDate());
 		result.setSn(organizationDTO.getSn());
 		result.setDescription(organizationDTO.getDescription());
-		result.setTerminateDate(organizationDTO.getTerminateDate());
 		result.setVersion(organizationDTO.getVersion());
+		
+		if (organizationDTO.getCreateDate() != null) {
+			result.setCreateDate(organizationDTO.getCreateDate());
+		}
+		if (organizationDTO.getTerminateDate() != null) {
+			result.setTerminateDate(organizationDTO.getTerminateDate());
+		}
 
 		return result;
 	}

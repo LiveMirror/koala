@@ -26,10 +26,15 @@ public class EmployeeDtoAssembler {
 		
 		Employee result = new Employee(person, employeeDTO.getEntryDate());
 		result.setId(employeeDTO.getId());
-		result.setCreateDate(employeeDTO.getCreateDate());
 		result.setSn(employeeDTO.getSn());
-		result.setTerminateDate(employeeDTO.getTerminateDate());
 		result.setVersion(employeeDTO.getVersion());
+		
+		if (employeeDTO.getCreateDate() != null) {
+			result.setCreateDate(employeeDTO.getCreateDate());
+		}
+		if (employeeDTO.getTerminateDate() != null) {
+			result.setTerminateDate(employeeDTO.getTerminateDate());
+		}
 		
 		return result;
 	}

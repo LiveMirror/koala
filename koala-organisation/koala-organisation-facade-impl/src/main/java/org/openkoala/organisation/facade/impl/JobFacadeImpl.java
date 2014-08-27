@@ -48,7 +48,9 @@ public class JobFacadeImpl implements JobFacade {
 	public Page<JobDTO> pagingQueryJobs(JobDTO jobSearchExample, int currentPage, int pageSize) {
 		List<Object> conditionVals = new ArrayList<Object>();
 
-		StringBuilder jpql = new StringBuilder("select _job from Job _job where _job.createDate <= ? and _job.terminateDate > ?");
+		StringBuilder jpql = new StringBuilder("select NEW org.openkoala.organisation.facade.dto.JobDTO"
+				+ "(_job.id, _job.name, _job.createDate, _job.terminateDate, _job.sn, _job.version, _job.description)"
+				+ " from Job _job where _job.createDate <= ? and _job.terminateDate > ?");
 		Date now = new Date();
 		conditionVals.add(now);
 		conditionVals.add(now);

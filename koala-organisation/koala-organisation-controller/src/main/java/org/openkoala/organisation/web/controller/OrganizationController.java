@@ -74,7 +74,7 @@ public class OrganizationController extends BaseController {
     public Map<String, Object> updateCompany(OrganizationDTO companyDto) {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
 		companyDto.setOrganizationType(OrganizationDTO.COMPANY);
-    	dataMap.put("result", organizationFacade.updateOrganization(companyDto));
+    	dataMap.put("result", organizationFacade.updateOrganization(companyDto).getMessage());
     	return dataMap;
     }
     
@@ -88,7 +88,7 @@ public class OrganizationController extends BaseController {
     public Map<String, Object> updateDepartment(OrganizationDTO departmentDto) {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
 		departmentDto.setOrganizationType(OrganizationDTO.DEPARTMENT);
-    	dataMap.put("result", organizationFacade.updateOrganization(departmentDto));
+    	dataMap.put("result", organizationFacade.updateOrganization(departmentDto).getMessage());
     	return dataMap;
     }
    
