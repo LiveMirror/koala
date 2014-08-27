@@ -100,9 +100,8 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return results;
 	}
 
-	/**
-	 * 所有菜单不包含顶级菜单
-	 * 
+	/**TODO
+	 *
 	 * @param userAccount
 	 * @param roleName
 	 * @return
@@ -304,7 +303,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
     @Override
     public InvokeResult pagingQueryRoles(int currentPage, int pageSize, RoleDTO queryRoleCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
-        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description, _role.url) FROM Role _role");
+        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description) FROM Role _role");
 
         assembleRoleJpqlAndConditionValues(queryRoleCondition, jpql, "_role", conditionVals);
 

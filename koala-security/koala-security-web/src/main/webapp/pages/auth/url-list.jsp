@@ -187,6 +187,9 @@
 			identity : 'id',
 			columns : columns,
 			buttons : getButtons(),
+			dataFilter:function(result){
+                return result.data;
+            },
 			url : url
 		}).on({
 			'add' : function(event, item) {
