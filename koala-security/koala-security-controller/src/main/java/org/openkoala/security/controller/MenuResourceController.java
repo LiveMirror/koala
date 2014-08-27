@@ -107,9 +107,8 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/findAllMenusByUserAsRole", method = RequestMethod.GET)
-	public InvokeResult findAllMenusByUserAsRole(RoleDTO role) {
-		//	String roleName = role.getName();
-			return  securityAccessFacade.findMenuResourceByUserAsRole(CurrentUser.getUserAccount(), role.getId());
+	public InvokeResult findAllMenusByUserAsRole(String roleName) {
+			return  securityAccessFacade.findMenuResourceByUserAsRole(CurrentUser.getUserAccount(), roleName);
 			//CurrentUser.setRoleName(roleName);
 //            CustomAuthoringRealm.ShiroUser shiroUser = CurrentUser.getPrincipal();
 //            SimpleAuthorizationInfo simpleAuthorizationInfo =  (SimpleAuthorizationInfo)shiroUser.getAuthorizationInfo();
