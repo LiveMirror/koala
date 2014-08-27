@@ -9,6 +9,7 @@ import org.openkoala.security.facade.command.ChangeUserAccountCommand;
 import org.openkoala.security.facade.command.ChangeUserEmailCommand;
 import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
+import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,13 +94,14 @@ public class CurrentUserController {
 
     /**TODO
      * 切换角色
-     * @param roleId
+     * @param role
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/changeRoleOfUser")
-    public InvokeResult changeRoleOfUser(Long roleId){
+    public InvokeResult changeRoleOfUser(RoleDTO role){
         String userAccount = CurrentUser.getUserAccount();
+        CurrentUser.setRoleName(role.getName());
         return InvokeResult.success();
     }
 
