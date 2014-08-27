@@ -149,6 +149,8 @@ div.btn-group > span {
 	                <label for = "userAccount" class = "user_name yhmc">用户  : </label>
 	               
                    	<span><koala:user property="name"/></span>
+                   	
+                   	
                    
 	                <img class=" dropdown-toggle" data-toggle="dropdown" id='btn1'  src="../images/setMenu.png"  >
 	                
@@ -164,11 +166,13 @@ div.btn-group > span {
 	                    
 	                </ul>
 	                
+	             
+	                
 	            </div>
 	            <div class="btn-group navbar-right">
 	                <label for = "roles" class = "user_name">角色 :</label>
 	            	<span id="roles">
-	            	
+	            		<koala:user property="roleName"/>
 	                </span>
 	                
 	                &nbsp;
@@ -205,7 +209,56 @@ div.btn-group > span {
          <h4 class="modal-title" id="myModalLabel">切换角色</h4>
       </div>
       <div class="modal-body">
-       <h4>角色列表：</h4>
+      
+    <div class='grid-body' style='width:100%;min-width:300px;border:0.5px #d0d0d0 groove;'>
+      
+     <div class='grid-table-head'>
+      
+      <table class='table table-bordered'>
+    
+       <thead>
+         
+         <tr>
+            <th style='width:100px;'>角色名称</th>
+            <th style='width:auto'>描述</th>
+        </tr>
+      
+         
+      
+       </thead>
+      </div>
+      <div class='grid-table-body'></div>
+      <tbody>
+         <tr>
+            <td>superAdmin</td>
+            <td></td>
+         </tr>
+         
+         <tr>
+            <td>test</td>
+            <td></td>
+         </tr>
+         
+          
+         <tr>
+            <td>test</td>
+            <td></td>
+         </tr>
+         
+          
+         <tr>
+            <td>test</td>
+            <td></td>
+         </tr>
+         </tbody>
+     </table>
+     
+     
+    
+   </div>
+      
+      
+       
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
@@ -230,21 +283,19 @@ div.btn-group > span {
 	$(function(){
 		/*获取用户的角色*/
 		$.getJSON(contextPath + '/auth/role/findRolesByUsername.koala', function(data) {
-			var roles = $("#roles").empty();
-			$.each(data.data, function(i,role) {
-				roles.attr("name",role.id).html(role.name);
-			});
+			var roles = $("#roles");
 			roles.change();
 		});
 		
 		/*根据roleid获取菜单*/
 		$("#roles").change(function(){
-			var id = $(this).attr('name'),
-				name = $(this).html(),
+			var roleName = '<koala:user property="roleName"/>';
+			console.log(roleName);
+				
 				url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
 			$.get(
 				url,
-				{"id":id,"name":name},
+				{'roleName':roleName},
 				function(menuData){
 					var menu = initMenu(menuData.data);
 					
