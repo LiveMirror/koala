@@ -40,6 +40,8 @@ public class OrganizationDTO implements Serializable {
 
 	private Long pid;
 
+	public OrganizationDTO() {}
+	
 	public OrganizationDTO(Long id, String name) {
 		this.id = id;
 		this.name = name;
@@ -49,6 +51,17 @@ public class OrganizationDTO implements Serializable {
 		this.name = name;
 		this.sn = sn;
 		this.description = description;
+	}
+	
+	public OrganizationDTO(Long id, Long pid, String name, String sn, Date createDate, String description, String organizationType, int version) {
+		this.setId(id);
+		this.setPid(pid);
+		this.setName(name);
+		this.setSn(sn);
+		this.setCreateDate(createDate);
+		this.setDescription(description);
+		this.setOrganizationType(organizationType);
+		this.setVersion(version);
 	}
 	
 	public Long getId() {
