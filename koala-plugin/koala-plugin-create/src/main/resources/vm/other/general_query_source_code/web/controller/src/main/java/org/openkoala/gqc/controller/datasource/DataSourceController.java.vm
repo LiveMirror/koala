@@ -3,10 +3,12 @@ package org.openkoala.gqc.controller.datasource;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.dayatang.querychannel.Page;
-import org.openkoala.gqc.application.DataSourceApplication;
 import org.openkoala.gqc.core.domain.DataSource;
-import org.openkoala.gqc.vo.DataSourceVO;
+import org.openkoala.gqc.facade.DataSourceFacade;
+import org.openkoala.gqc.facade.dto.DataSourceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +27,8 @@ public class DataSourceController {
 	/**
 	 * 数据源应用层接口实例
 	 */
-	@Autowired
-	private DataSourceApplication dataSourceApplication;
+	@Inject
+	private DataSourceFacade dataSourceFacade;
 
 	/**
 	 * 增加数据源
@@ -36,11 +38,11 @@ public class DataSourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/add")
-	public Map<String, Object> add(DataSourceVO dataSourceVO) {
+	public Map<String, Object> add(DataSourceDTO dataSourceVO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 
 		try {
-			String errorMsg = dataSourceApplication.saveDataSource(dataSourceVO);
+			String errorMsg = dataSourceFacade.saveDataSource(dataSourceVO);
 			if (errorMsg == null) {
 				dataMap.put("result", "success");
 			} else {
@@ -62,13 +64,13 @@ public class DataSourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public Map<String, Object> update(DataSourceVO dataSourceVO) {
+	public Map<String, Object> update(DataSourceDTO dataSourceVO) {
 		// Json对象
 		Map<String, Object> dataMap = null;
 		try {
 			dataMap = new HashMap<String, Object>();
 
-			dataSourceApplication.updateDataSource(dataSourceVO);
+			dataSourceFacade.updateDataSource(dataSourceVO);
 
 			dataMap.put("result", "success");
 		} catch (Exception e) {
@@ -90,7 +92,7 @@ public class DataSourceController {
 	@RequestMapping("/pageJson")
 	public Page pageJson(int page, int pagesize) {
 		// Json对象
-		return dataSourceApplication.pageQueryDataSource(new DataSourceVO(), page, pagesize);
+		return dataSourceFacade.pageQueryDataSource(new DataSourceDTO(), page, pagesize);
 	}
 
 	/**
@@ -110,7 +112,7 @@ public class DataSourceController {
 				for (int i = 0; i < idArrs.length; i++) {
 					idsLong[i] = Long.parseLong(idArrs[i]);
 				}
-				dataSourceApplication.removeDataSources(idsLong);
+				dataSourceFacade.removeDataSources(idsLong);
 			}
 
 			dataMap.put("result", "success");
@@ -137,7 +139,7 @@ public class DataSourceController {
 		try {
 			dataMap = new HashMap<String, Object>();
 
-			dataMap.put("data", dataSourceApplication.getDataSourceVoById(id));
+			dataMap.put("data", dataSourceFacade.getDataSourceDTOById(id));
 		} catch (Exception e) {
 			if (dataMap != null) {
 				dataMap.put("error", "查询指定数据源失败！");
@@ -160,7 +162,7 @@ public class DataSourceController {
 		try {
 			dataMap = new HashMap<String, Object>();
 
-			boolean result = dataSourceApplication.testConnection(id);
+			boolean result = dataSourceFacade.testConnection(id);
 			if (result) {
 				dataMap.put("result", "该数据源可用");
 			} else {
@@ -188,7 +190,7 @@ public class DataSourceController {
 		try {
 			dataMap = new HashMap<String, Object>();
 
-			boolean result = dataSourceApplication.checkDataSourceCanConnect(dataSource);
+			boolean result = dataSourceFacade.checkDataSourceCanConnect(dataSource);
 			if (result) {
 				dataMap.put("result", "该数据源可用");
 			} else {

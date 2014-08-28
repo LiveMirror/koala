@@ -1,0 +1,33 @@
+package org.openkoala.example.facade.impl.assembler;
+
+import org.openkoala.example.domain.PersonInfo;
+import org.openkoala.example.facade.dto.PersonInfoDTO;
+
+public class PersonsInfoAssembler {
+
+	public static PersonInfoDTO entityToDTO(PersonInfo personInfo){
+		PersonInfoDTO result = new PersonInfoDTO();
+		result.setBirthday(personInfo.getBirthday());
+		result.setId(personInfo.getId());
+		result.setIdentityCardNumber(personInfo.getIdentityCardNumber());
+		result.setMarried(personInfo.getMarried());
+		result.setName(personInfo.getName());
+		result.setProceeds(personInfo.getProceeds());
+		result.setSex(personInfo.getSex());		
+		return result;
+	}
+	
+    public static PersonInfo dtoToEntity(PersonInfoDTO personInfoDTO){
+		PersonInfo result = new PersonInfo();
+		result.setBirthday(personInfoDTO.getBirthday());
+		result.setId(personInfoDTO.getId());
+		result.setIdentityCardNumber(personInfoDTO.getIdentityCardNumber());
+		result.setMarried(personInfoDTO.getMarried());
+		result.setName(personInfoDTO.getName());
+		result.setProceeds(personInfoDTO.getProceeds());
+		result.setSex(personInfoDTO.getSex());		
+		return result;
+	}		
+
+	
+}

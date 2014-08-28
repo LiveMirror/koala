@@ -1,0 +1,27 @@
+#set($package = ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})})
+package ${facadeImplClass.packageName}.assembler;
+
+import ${dtoClass.packageName}.*;
+import ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})}.*;
+
+public class ${entity.name}Assembler {
+	
+public static ${dtoClass.name}  EntityToDto(${entity.name}  ${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}){
+    	${dtoClass.name} result  = new ${dtoClass.name}();
+#foreach($field in  ${entity.fields} )
+#set($propertyName = ${field.name.substring(0, 1).toUpperCase()} + ${field.name.substring(1)})
+        result.set${propertyName} (${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}.get${propertyName}());
+ #end
+	    return result;
+	 }
+	
+	 public static ${entity.name}  DtoToEntity(${dtoClass.name}  ${dtoClass.name.substring(0, 1).toLowerCase()}${dtoClass.name.substring(1)}){
+	 	${entity.name} result  = new ${entity.name}();
+#foreach($field in  ${entity.fields} )
+#set($propertyName = ${field.name.substring(0, 1).toUpperCase()} + ${field.name.substring(1)})
+        result.set${propertyName} (${dtoClass.name.substring(0, 1).toLowerCase()}${dtoClass.name.substring(1)}.get${propertyName}());
+ #end
+	  	return result;
+	 }
+
+}

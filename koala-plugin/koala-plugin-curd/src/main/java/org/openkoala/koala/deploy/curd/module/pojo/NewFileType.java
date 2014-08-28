@@ -56,6 +56,12 @@ public enum NewFileType {
             return "facadeImpl";
         }
     },
+    /*Assembler 实体dto相互转换包*/
+    Assembler {
+        public String toString() {
+            return "Assembler";
+        }
+    },
     /*APPLICATIO接口*/
     APPLICATION {
         public String toString() {

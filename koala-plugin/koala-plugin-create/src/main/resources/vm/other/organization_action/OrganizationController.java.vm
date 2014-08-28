@@ -1,4 +1,4 @@
-package ${Module.basePackage}.controller.organization;
+package org.openkoala.organisation.web.controller;
 
 import java.util.HashMap;
 import java.util.HashSet;

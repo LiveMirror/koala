@@ -166,7 +166,18 @@
 		<url-pattern>/dbinit</url-pattern>
 	</servlet-mapping>
  #end
- 
+ <servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.woff</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.ttf</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.svg</url-pattern>
+	</servlet-mapping>
  #if ($Module.businessLog)
      <filter>
         <filter-name>LogFilter</filter-name>

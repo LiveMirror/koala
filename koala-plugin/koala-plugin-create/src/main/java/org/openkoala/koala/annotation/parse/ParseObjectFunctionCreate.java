@@ -17,8 +17,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author     lingen.liu  <a href=mailto:lingen.liu@gmail.com">lingen.liu@gmail.com</a>
  */
-public class ParseObjectFunctionCreate implements
-		Parse {
+public class ParseObjectFunctionCreate implements Parse {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ParseObjectFunctionCreate.class);
@@ -34,6 +33,7 @@ public class ParseObjectFunctionCreate implements
 
 	public void process() throws Exception {
 		logger.info("解析类对象【" + name + "】");
+		System.out.println(name);
 		String xmlPath = "xml/ObjectFunctionCreate/" + name + ".xml";
 		XmlParseUtil.parseXml(xmlPath, params);
 		logger.info("类对象【" + name + "】解析成功");

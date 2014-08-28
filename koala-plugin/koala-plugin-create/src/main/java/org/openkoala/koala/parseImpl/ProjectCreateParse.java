@@ -62,8 +62,7 @@ public class ProjectCreateParse {
 			field.setAccessible(true);
 			String type = field.getType().getSimpleName().toLowerCase();
 			Object filedVal = field.get(obj);
-			if (type.equals("string")
-					|| baseType.contains(type)) {
+			if (type.equals("string") || baseType.contains(type)) {
 				String name = field.getName();
 				dealWithAnnotations(field.getAnnotations(), name,obj,filedVal);
 			} else if (field.getType().equals(List.class)) {

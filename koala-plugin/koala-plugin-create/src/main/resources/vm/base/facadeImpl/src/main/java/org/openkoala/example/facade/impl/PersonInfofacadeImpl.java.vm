@@ -17,6 +17,7 @@ import org.openkoala.example.facade.PersonInfoFacade;
 import org.openkoala.example.facade.dto.PersonInfoDTO;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.openkoala.example.facade.impl.assembler.PersonsInfoAssembler;
 
 @Named
 @Transactional
@@ -37,12 +38,11 @@ public class PersonInfofacadeImpl implements PersonInfoFacade {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersonInfoDTO getPersonInfo(Long id) {
 		PersonInfo personInfo = personInfoApplication.getPersonInfo(id);
-		PersonInfoDTO dto = new PersonInfoDTO();
-		return dto.personInfoEntityToDTO(personInfo);
+		return PersonsInfoAssembler.entityToDTO(personInfo);
 	}
 	
 	public PersonInfoDTO savePersonInfo(PersonInfoDTO personInfoDTO) {
-		PersonInfo personInfo = personInfoDTO.personInfoDTOToEntity(personInfoDTO);
+		PersonInfo personInfo = PersonsInfoAssembler.dtoToEntity(personInfoDTO);
 		personInfo.save();
 		personInfoDTO.setId((java.lang.Long)personInfo.getId());
 		return personInfoDTO;
@@ -50,7 +50,7 @@ public class PersonInfofacadeImpl implements PersonInfoFacade {
 	
 	public void updatePersonInfo(PersonInfoDTO personInfoDTO) {
 		//PersonInfo personInfo = PersonInfo.get(PersonInfo.class, personInfoDTO.getId());
-		PersonInfo personInfo = personInfoDTO.personInfoDTOToEntity(personInfoDTO);
+		PersonInfo personInfo = PersonsInfoAssembler.dtoToEntity(personInfoDTO);
 		personInfoApplication.updatePersonInfo(personInfo);
 	}
 	
@@ -69,8 +69,7 @@ public class PersonInfofacadeImpl implements PersonInfoFacade {
 		List<PersonInfoDTO> list = new ArrayList<PersonInfoDTO>();		
 		List<PersonInfo> all = personInfoApplication.findAllPersonInfo();
 		for (PersonInfo personInfo : all) {
-			PersonInfoDTO dto = new PersonInfoDTO();
-			list.add(dto.personInfoEntityToDTO(personInfo));
+			list.add(PersonsInfoAssembler.entityToDTO(personInfo));
 		}
 		return list;
 	}
@@ -111,17 +110,8 @@ public class PersonInfofacadeImpl implements PersonInfoFacade {
 	
         Page<PersonInfo> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
         for (PersonInfo personInfo : pages.getData()) {
-            PersonInfoDTO personInfoDTO = new PersonInfoDTO();
-            
-             // 将domain转成VO
-            /*try {
-            	personInfoDTO.personInfoEntityToDTO(personInfo);
-            	BeanUtils.copyProperties(personInfoDTO, personInfo);
-            } catch (Exception e) {
-            	e.printStackTrace();
-            } */
-            
-              result.add(personInfoDTO.personInfoEntityToDTO(personInfo));
+                      
+              result.add(PersonsInfoAssembler.entityToDTO(personInfo));
         }
         return new Page<PersonInfoDTO>(pages.getPageIndex(), pages.getResultCount(), pageSize, result);
 	}	

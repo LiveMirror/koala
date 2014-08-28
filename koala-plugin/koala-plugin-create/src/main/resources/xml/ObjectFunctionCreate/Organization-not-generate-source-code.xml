@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<XmlParse>
+
+	<property name="description">Koala-Organization-not-generate-source-code</property>
+
+
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_action</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/java/org/openkoala/organisation/web/controller
+		</property>
+	</VelocityDirObject>
+
+	<XmlAdd>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/pom.xml</property>
+		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
+		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
+		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='org.openkoala.organisation' and xmlns:artifactId='koala-organisation-core']]]></property>
+		<property name="xmlContent">
+         <![CDATA[
+    <?xml version="1.0" encoding="UTF-8"?>
+    <root>
+    	<dependency>
+			<groupId>org.openkoala.organisation</groupId>
+			<artifactId>koala-organisation-core</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.organisation</groupId>
+			<artifactId>koala-organisation-application</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.organisation</groupId>
+			<artifactId>koala-organisation-applicationImpl</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+	</root>
+         ]]>
+		</property>
+	</XmlAdd>
+
+</XmlParse>
