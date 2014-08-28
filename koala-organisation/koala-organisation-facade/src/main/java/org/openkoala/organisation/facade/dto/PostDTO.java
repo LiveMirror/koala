@@ -37,6 +37,8 @@ public class PostDTO implements Serializable {
 	
 	private Long jobId;
 	
+	public PostDTO() {}
+	
 	public Long getId() {
 		return id;
 	}

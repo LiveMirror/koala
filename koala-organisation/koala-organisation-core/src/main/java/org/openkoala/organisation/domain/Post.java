@@ -41,7 +41,7 @@ public class Post extends Party {
 
 	private String description;
 
-	
+
 	private boolean organizationPrincipal;
 	
 	public Post() {

@@ -12,11 +12,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.openkoala.koalacommons</groupId>
-			<artifactId>koala-commons-support</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.openkoala.organisation</groupId>
 			<artifactId>koala-organisation-conf</artifactId>
 			<version>${project.parent.version}</version>
@@ -31,6 +26,12 @@
 			<artifactId>koala-organisation-facade-impl</artifactId>
 			<version>${project.parent.version}</version>
 			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-support</artifactId>
+			<version>${project.parent.version}</version>
 		</dependency>
 
 		<dependency>

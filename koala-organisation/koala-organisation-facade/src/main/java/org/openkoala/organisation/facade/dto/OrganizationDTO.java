@@ -53,12 +53,13 @@ public class OrganizationDTO implements Serializable {
 		this.description = description;
 	}
 	
-	public OrganizationDTO(Long id, Long pid, String name, String sn, Date createDate, String description, String organizationType, int version) {
+	public OrganizationDTO(Long id, Long pid, String name, String sn, Date createDate, Date terminateDate, String description, String organizationType, int version) {
 		this.setId(id);
 		this.setPid(pid);
 		this.setName(name);
 		this.setSn(sn);
 		this.setCreateDate(createDate);
+		this.setTerminateDate(terminateDate);
 		this.setDescription(description);
 		this.setOrganizationType(organizationType);
 		this.setVersion(version);

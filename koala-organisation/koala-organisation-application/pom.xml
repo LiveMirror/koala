@@ -46,12 +46,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.openkoala.koalacommons</groupId>
-            <artifactId>koala-commons-support</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
         </dependency>
@@ -73,7 +67,14 @@
             <artifactId>powermock-module-junit4</artifactId>
             <scope>test</scope>
         </dependency>
-
+		
+		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-support</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
         <dependency>
             <groupId>org.openkoala.koalacommons</groupId>
             <artifactId>koala-commons-test-support</artifactId>
