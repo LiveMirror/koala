@@ -192,4 +192,13 @@ public class Authorization extends SecurityAbstractEntity {
 	public Scope getScope() {
 		return scope;
 	}
+
+    public static Authorization findByActorOfAuthorityInScope(Actor actor, Authority authority, Scope scope) {
+        return getRepository()//
+                .createCriteriaQuery(Authorization.class)//
+                .eq("actor", actor)//
+                .eq("authority", authority)//
+                .eq("scope", scope)//
+                .singleResult();
+    }
 }

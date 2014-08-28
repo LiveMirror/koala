@@ -188,4 +188,8 @@ public abstract class Actor extends SecurityAbstractEntity {
 		return createDate;
 	}
 
+    public void terminateAuthorityInScope(Authority authority, Scope scope) {
+        Authorization authorization = Authorization.findByActorOfAuthorityInScope(this,authority,scope);
+        authorization.remove();
+    }
 }

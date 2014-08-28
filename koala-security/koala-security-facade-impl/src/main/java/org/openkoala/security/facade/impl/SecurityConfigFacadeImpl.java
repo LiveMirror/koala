@@ -57,7 +57,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 
 @Named
-@Transactional
 public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfigFacadeImpl.class);

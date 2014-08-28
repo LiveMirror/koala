@@ -196,19 +196,8 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
     }
 
     @Override
-    public void updateScope(Scope scope) {
-        scope.update();
-    }
-
-    @Override
     public void terminateScope(Scope scope) {
         scope.remove();
-    }
-
-    @Override
-    public void createChildToParent(Scope child, Long parentId) {
-        Scope parent = Scope.get(Scope.class, parentId);
-        parent.addChild(child);
     }
 
     @Override
@@ -304,6 +293,11 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
     @Override
     public void changeNameOfMenuResource(MenuResource menuResource, String name) {
         menuResource.changeName(name);
+    }
+
+    @Override
+    public void terminateActorFromAuthorityInScope(Actor actor, Authority authority, Scope scope) {
+        actor.terminateAuthorityInScope(authority,scope);
     }
 
 }

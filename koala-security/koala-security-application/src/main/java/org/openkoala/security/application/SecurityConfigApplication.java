@@ -240,11 +240,7 @@ public interface SecurityConfigApplication {
 	 */
 	void createChildToParent(MenuResource child, Long parentId);
 
-	void updateScope(Scope scope);
-
 	void terminateScope(Scope scope);
-
-	void createChildToParent(Scope child, Long parentId);
 
 	/**
 	 * 为可授权体:Authority授予多个权限资源:SecurityResources。
@@ -341,4 +337,5 @@ public interface SecurityConfigApplication {
 
 	void changeNameOfMenuResource(MenuResource menuResource, String name);
 
+    void terminateActorFromAuthorityInScope(Actor actor, Authority authority, Scope scope);
 }

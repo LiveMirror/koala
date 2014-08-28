@@ -22,16 +22,6 @@ public abstract class Scope extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = -7219997981491797461L;
 
-	@NotNull
-	@Column(name = "NAME")
-	private String name;
-
-	@Column(name = "DESCRIPTION")
-	private String description;
-
-	@Column(name = "LEVEL")
-	private int level = 0;
-
 	@Transient
 	public abstract Scope getParent();
 
@@ -40,16 +30,6 @@ public abstract class Scope extends SecurityAbstractEntity {
 
 	protected Scope() {}
 
-	public Scope(String name) {
-		this.name = name;
-	}
-
-	public abstract void update();
-	
-	public abstract void addChild(Scope child);
-
-	public abstract void removeChild(Scope child);
-	
 	public static Scope getBy(Long scopeId) {
 		return Scope.get(Scope.class, scopeId);
 	}
@@ -69,43 +49,6 @@ public abstract class Scope extends SecurityAbstractEntity {
 		}
 
 		return contains(scope.getParent());
-	}
-	
-	@Override
-	public String[] businessKeys() {
-		return new String[] { "name"};
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this)//
-				.append(name)//
-				.append(description)//
-				.build();
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
 	}
 
 }

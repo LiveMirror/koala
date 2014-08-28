@@ -6,7 +6,9 @@ import java.util.Set;
 import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.dto.*;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public interface SecurityAccessFacade {
 
 	/**

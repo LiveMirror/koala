@@ -89,6 +89,8 @@ public class CurrentUserController {
      * @param pagesize
      * @return
      */
+    @ResponseBody
+    @RequestMapping(value = "/pagingQueryRolesOfUser", method = RequestMethod.GET)
     public InvokeResult pagingQueryRolesOfUser(int page,int pagesize){
         String userAccount = CurrentUser.getUserAccount();
         return securityAccessFacade.pagingQueryRolesOfUser(page,pagesize,userAccount);
