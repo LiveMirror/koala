@@ -316,6 +316,9 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: 'url名称', value: 'roleNameForSearch'}],
+        			             dataFilter:function(result){
+                                    return result.data;
+                                 },
         			             url: contextPath + '/auth/role/pagingQueryNotGrantUrlAccessResourcesByRoleId.koala?roleId='+roleId
         			        });
        					},

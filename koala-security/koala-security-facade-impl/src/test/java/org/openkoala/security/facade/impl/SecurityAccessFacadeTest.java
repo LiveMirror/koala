@@ -22,10 +22,10 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.*;
 import org.openkoala.security.facade.impl.assembler.*;
 
+
 /**
- * 先忽略测试。
+ * 完善测试 对其测试结果进行断言。
  */
-@Ignore
 public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Inject
@@ -340,6 +340,13 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(currentPage, pageSize,pageElementResource.getId()).getData();
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
+        PermissionDTO actualPermission = results.getData().get(0);
+        assertNotNull(actualPermission);
+        assertNotNull(actualPermission.getId());
+        assertEquals(permission.getId(),actualPermission.getId());
+        assertEquals(permission.getIdentifier(),actualPermission.getIdentifier());
+        assertEquals(permission.getName(),actualPermission.getName());
+        assertEquals(permission.getDescription(),actualPermission.getDescription());
 	}
 
 	@Test
