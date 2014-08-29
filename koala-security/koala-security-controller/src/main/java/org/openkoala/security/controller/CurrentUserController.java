@@ -109,4 +109,11 @@ public class CurrentUserController {
         return InvokeResult.success();
     }
 
+    @ResponseBody
+    @RequestMapping(value="/getUserDetail", method = RequestMethod.GET)
+    public InvokeResult getUserDetail(){
+        String userAccount = CurrentUser.getUserAccount();
+        return securityAccessFacade.getuserDetail(userAccount);
+    }
+
 }

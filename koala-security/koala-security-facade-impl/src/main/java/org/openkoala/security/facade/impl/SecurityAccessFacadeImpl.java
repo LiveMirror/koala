@@ -637,6 +637,13 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
         return InvokeResult.success(results);
     }
 
+    @Override
+    public InvokeResult getuserDetail(String userAccount) {
+        User user = securityAccessApplication.getUserByUserAccount(userAccount);
+        UserDTO result = UserAssembler.toUserDTO(user);
+        return InvokeResult.success(result);
+    }
+
 	/*------------- Private helper methods  -----------------*/
 
 	private void assembleUserJpqlAndConditionValues(UserDTO queryUserCondition, StringBuilder jpql,
