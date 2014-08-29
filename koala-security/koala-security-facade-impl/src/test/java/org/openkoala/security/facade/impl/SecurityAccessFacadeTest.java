@@ -12,6 +12,7 @@ import org.dayatang.querychannel.Page;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
@@ -357,5 +358,13 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
+
+    @Test
+    public void testPagingQueryRolesOfUser(){
+        InvokeResult invokeResult = securityAccessFacade.pagingQueryRolesOfUser(0, 10, user.getUserAccount());
+        Page<Role> roles = (Page<Role>) invokeResult.getData();
+        assertFalse(roles.getData().isEmpty());
+        assertTrue(roles.getPageCount() == 1);
+    }
 
 }
