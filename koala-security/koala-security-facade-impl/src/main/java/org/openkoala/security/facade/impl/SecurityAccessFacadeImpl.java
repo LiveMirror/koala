@@ -42,7 +42,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	public QueryChannelService getQueryChannelService() {
 		if (queryChannelService == null) {
-			queryChannelService = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel");
+			queryChannelService = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel_security");
 		}
 		return queryChannelService;
 	}

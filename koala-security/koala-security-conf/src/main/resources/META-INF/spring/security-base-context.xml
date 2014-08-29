@@ -8,8 +8,11 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
                 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
-    
-    <!--请将所有文件库据配置放于此，使用WAR+EJB部署时，root.xml会删除对此文件的引用-->
-	<import resource="classpath:META-INF/spring/persistence-context.xml" />
+
+	<context:annotation-config />
+	<context:component-scan base-package="org.openkoala" >
+	   <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<context:property-placeholder location="classpath*:META-INF/props/*.properties" ignore-unresolvable="true"/>
 	
 </beans>

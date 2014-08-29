@@ -13,12 +13,13 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.dayatang.domain.AbstractEntity;
 
 @Entity
 @Table(name = "KS_SCOPES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
-public abstract class Scope extends SecurityAbstractEntity {
+public abstract class Scope extends AbstractEntity {
 
 	private static final long serialVersionUID = -7219997981491797461L;
 
