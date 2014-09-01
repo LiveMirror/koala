@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.dayatang.domain.AbstractEntity;
 import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
@@ -31,7 +32,7 @@ import org.openkoala.security.core.NullArgumentException;
 @NamedQueries({
         @NamedQuery(name = "SecurityResource.findAllByType", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType"),
         @NamedQuery(name = "SecurityResource.findByName", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType AND _securityResource.name = :name")})
-public abstract class SecurityResource extends SecurityAbstractEntity {
+public abstract class SecurityResource extends AbstractEntity {
 
     private static final long serialVersionUID = 6064565786784560656L;
 

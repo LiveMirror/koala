@@ -89,6 +89,8 @@ public class CurrentUserController {
      * @param pagesize
      * @return
      */
+    @ResponseBody
+    @RequestMapping(value = "/pagingQueryRolesOfUser", method = RequestMethod.GET)
     public InvokeResult pagingQueryRolesOfUser(int page,int pagesize){
         String userAccount = CurrentUser.getUserAccount();
         return securityAccessFacade.pagingQueryRolesOfUser(page,pagesize,userAccount);
@@ -105,6 +107,13 @@ public class CurrentUserController {
         String userAccount = CurrentUser.getUserAccount();
         CurrentUser.setRoleName(role.getName());
         return InvokeResult.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/getUserDetail", method = RequestMethod.GET)
+    public InvokeResult getUserDetail(){
+        String userAccount = CurrentUser.getUserAccount();
+        return securityAccessFacade.getuserDetail(userAccount);
     }
 
 }

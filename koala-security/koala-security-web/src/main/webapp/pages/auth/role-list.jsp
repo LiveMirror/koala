@@ -160,6 +160,9 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: 'roleId', value: 'roleId'}],
+        			             dataFilter:function(result){
+                                    return result.data;
+                                 },
         			             url: contextPath + '/auth/user/pagingQueryNotGrantRoles.koala?userId='+userId
         			        });
        					},

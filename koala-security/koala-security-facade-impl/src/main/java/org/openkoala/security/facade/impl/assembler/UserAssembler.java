@@ -20,7 +20,7 @@ public class UserAssembler {
 	}
 	
 	public static UserDTO toUserDTO(User user) {
-		UserDTO result = new UserDTO(user.getUserAccount(), user.getPassword(), user.getCreateDate(),user.getDescription());
+		UserDTO result = new UserDTO(user.getUserAccount(),user.getPassword(),user.getCreateDate(),user.getDescription());
 		result.setId(user.getId());
 		result.setName(user.getName());
 		result.setEmail(user.getEmail());
@@ -32,5 +32,21 @@ public class UserAssembler {
 		result.setDisabled(user.isDisabled());
 		return result;
 	}
+
+    public static UserDTO toUserDTONotPassword(User user) {
+		UserDTO result = new UserDTO(user.getUserAccount(),user.getCreateDate(),user.getDescription());
+		result.setId(user.getId());
+		result.setName(user.getName());
+		result.setEmail(user.getEmail());
+		result.setTelePhone(user.getTelePhone());
+		result.setLastLoginTime(user.getLastLoginTime());
+		result.setVersion(user.getVersion());
+		result.setCreateOwner(user.getCreateOwner());
+		result.setLastModifyTime(user.getLastModifyTime());
+		result.setDisabled(user.isDisabled());
+		return result;
+	}
+
+
 
 }

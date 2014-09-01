@@ -12,6 +12,7 @@ import org.dayatang.querychannel.Page;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
@@ -22,10 +23,10 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.*;
 import org.openkoala.security.facade.impl.assembler.*;
 
+
 /**
- * 先忽略测试。
+ * 完善测试 对其测试结果进行断言。
  */
-@Ignore
 public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Inject
@@ -340,6 +341,13 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(currentPage, pageSize,pageElementResource.getId()).getData();
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
+        PermissionDTO actualPermission = results.getData().get(0);
+        assertNotNull(actualPermission);
+        assertNotNull(actualPermission.getId());
+        assertEquals(permission.getId(),actualPermission.getId());
+        assertEquals(permission.getIdentifier(),actualPermission.getIdentifier());
+        assertEquals(permission.getName(),actualPermission.getName());
+        assertEquals(permission.getDescription(),actualPermission.getDescription());
 	}
 
 	@Test
@@ -350,5 +358,13 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
+
+    @Test
+    public void testPagingQueryRolesOfUser(){
+        InvokeResult invokeResult = securityAccessFacade.pagingQueryRolesOfUser(0, 10, user.getUserAccount());
+        Page<Role> roles = (Page<Role>) invokeResult.getData();
+        assertFalse(roles.getData().isEmpty());
+        assertTrue(roles.getPageCount() == 1);
+    }
 
 }

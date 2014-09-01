@@ -57,7 +57,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 
 @Named
-@Transactional
 public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfigFacadeImpl.class);
@@ -595,8 +594,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Override
     public InvokeResult terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId) {
-        PageElementResource pageElementResource = securityAccessApplication
-                .getPageElementResourceBy(pageElementResourceId);
+        PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
         Permission permission = securityAccessApplication.getPermissionBy(permissionId);
         securityConfigApplication.terminateAuthorityFromSecurityResource(permission, pageElementResource);
         return InvokeResult.success();

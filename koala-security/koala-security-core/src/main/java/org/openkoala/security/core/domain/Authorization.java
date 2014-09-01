@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.dayatang.domain.AbstractEntity;
 import org.dayatang.domain.CriteriaQuery;
 import org.openkoala.security.core.AuthorizationIsNotExisted;
 import org.openkoala.security.core.NullArgumentException;
@@ -23,7 +24,7 @@ import org.openkoala.security.core.NullArgumentException;
  */
 @Entity
 @Table(name = "KS_AUTHORIZATIONS")
-public class Authorization extends SecurityAbstractEntity {
+public class Authorization extends AbstractEntity {
 
 	private static final long serialVersionUID = -7604610067031217444L;
 
@@ -192,4 +193,13 @@ public class Authorization extends SecurityAbstractEntity {
 	public Scope getScope() {
 		return scope;
 	}
+
+    public static Authorization findByActorOfAuthorityInScope(Actor actor, Authority authority, Scope scope) {
+        return getRepository()//
+                .createCriteriaQuery(Authorization.class)//
+                .eq("actor", actor)//
+                .eq("authority", authority)//
+                .eq("scope", scope)//
+                .singleResult();
+    }
 }

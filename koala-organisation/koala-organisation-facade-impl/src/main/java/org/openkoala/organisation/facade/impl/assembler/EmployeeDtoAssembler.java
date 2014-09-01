@@ -35,7 +35,6 @@ public class EmployeeDtoAssembler {
 		if (employeeDTO.getTerminateDate() != null) {
 			result.setTerminateDate(employeeDTO.getTerminateDate());
 		}
-		
 		return result;
 	}
 	
