@@ -119,7 +119,6 @@ public class GqcFacadeImpl implements GqcFacade {
 
 	@Override
 	public void saveGeneralQuery(GeneralQueryDTO generalQuery) {
-		System.out.println(GqcAssembler.getEntity(generalQuery ).getDataSource().getDataSourceId());
 		gqcApplication.saveGeneralQuery(GqcAssembler.getEntity(generalQuery ));
 	}
 	

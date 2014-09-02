@@ -8,7 +8,7 @@ public class GqcAssembler {
 	public static GeneralQueryDTO getDTO(GeneralQuery gq){
 		GeneralQueryDTO result = new GeneralQueryDTO();
 		result.setCreateDate(gq.getCreateDate());
-		result.setDescription(gq.getDataSource().getDataSourceDescription());
+		result.setDescription(gq.getDescription());
 		result.setDynamicQueryConditions(gq.getDynamicQueryConditions());
 		result.setFieldDetails(gq.getFieldDetails());
 		result.setId(gq.getId());

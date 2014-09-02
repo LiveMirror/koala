@@ -39,16 +39,19 @@ public class MethodDetails extends BaseMonitorDetails {
 	private static final long serialVersionUID = -337605838333057656L;
 	
 	
+	@Column(name="METHOD")
 	private String method;
 	
 	
+	@Column(name = "IS_SUCCESSED")
 	private boolean successed;
 	
 	
+	@Lob
+	@Column(name = "STACK_DETAILS")
 	protected String stackTracesDetails;
 
 	
-	@Column(name="METHOD")
 	public String getMethod() {
 		return method;
 	}
@@ -57,7 +60,6 @@ public class MethodDetails extends BaseMonitorDetails {
 		this.method = method;
 	}
 
-	@Column(name = "IS_SUCCESSED")
 	public boolean isSuccessed() {
 		return successed;
 	}
@@ -66,8 +68,6 @@ public class MethodDetails extends BaseMonitorDetails {
 		this.successed = successed;
 	}
 
-	@Lob
-	@Column(name = "STACK_DETAILS")
 	public String getStackTracesDetails() {
 		return stackTracesDetails;
 	}

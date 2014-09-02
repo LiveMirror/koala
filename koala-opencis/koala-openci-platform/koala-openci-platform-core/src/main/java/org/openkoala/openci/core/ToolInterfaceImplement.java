@@ -25,18 +25,25 @@ public class ToolInterfaceImplement extends AbstractEntity {
 	private static final long serialVersionUID = -8821892076942681689L;
 
 	
+	@ManyToOne
+	@JoinColumn(name = "tool_id")
 	private Tool tool;
 
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tool_interface")
 	private ToolInterface toolInterface;
 
 	
+	@Column(name = "is_success")
 	private boolean success;
 
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "execute_date")
 	private Date executeDate;
 
-	
+	@Lob
 	private String record;
 
 	public ToolInterfaceImplement(Tool tool, ToolInterface toolInterface, boolean isSuccess, String record) {
@@ -50,30 +57,23 @@ public class ToolInterfaceImplement extends AbstractEntity {
 	public ToolInterfaceImplement() {
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "tool_id")
 	protected Tool getTool() {
 		return tool;
 	}
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "tool_interface")
 	public ToolInterface getToolInterface() {
 		return toolInterface;
 	}
 
-	@Column(name = "is_success")
 	public boolean isSuccess() {
 		return success;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "execute_date")
 	public Date getExecuteDate() {
 		return executeDate;
 	}
 
-	@Lob
+
 	public String getRecord() {
 		return record;
 	}

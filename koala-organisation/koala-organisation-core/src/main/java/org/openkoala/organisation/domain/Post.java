@@ -33,15 +33,21 @@ public class Post extends Party {
 	private static final long serialVersionUID = -2205967098970951498L;
 
 	
+	@ManyToOne
+	@JoinColumn(name = "org_id")
 	private Organization organization;
 
 
+	@ManyToOne
+	@JoinColumn(name = "job_id")
 	private Job job;
 
 
+	@Column(name = "description")
 	private String description;
 
 	
+	@Column(name = "org_principal")
 	private boolean organizationPrincipal;
 	
 	public Post() {
@@ -62,8 +68,6 @@ public class Post extends Party {
 		this.organization = organization;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "org_id")
 	public Organization getOrganization() {
 		return organization;
 	}
@@ -72,8 +76,6 @@ public class Post extends Party {
 		this.organization = organization;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "job_id")
 	public Job getJob() {
 		return job;
 	}
@@ -82,7 +84,6 @@ public class Post extends Party {
 		this.job = job;
 	}
 
-	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -91,7 +92,6 @@ public class Post extends Party {
 		this.description = description;
 	}
 
-	@Column(name = "org_principal")
 	public boolean isOrganizationPrincipal() {
 		return organizationPrincipal;
 	}

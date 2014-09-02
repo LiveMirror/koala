@@ -5,15 +5,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-
-
-import org.dayatang.domain.CriteriaQuery;
 import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.core.domain.DynamicQueryCondition;
 import org.openkoala.gqc.core.domain.FieldDetail;
-import org.openkoala.gqc.core.domain.GeneralQuery;
-import org.openkoala.gqc.core.domain.GeneralQueryEntity;
 import org.openkoala.gqc.core.domain.PreQueryCondition;
 import org.openkoala.gqc.core.domain.QueryCondition;
 import org.openkoala.gqc.core.domain.utils.PagingQuerier;

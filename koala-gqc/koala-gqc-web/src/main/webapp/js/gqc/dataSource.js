@@ -140,7 +140,7 @@ var dataSource = function(){
 			dialog.find('#dataSourceSave').removeAttr('disabled');
 			return false;
 		}
-		var url = baseUrl + 'add.koala';
+		var url = baseUrl + 'add.koala?';
 		if(id){
 			url =  baseUrl + 'update.koala?id='+id;
 		}

@@ -327,20 +327,20 @@ var employee = function(){
 	 */
 	var getAllData = function(){
 		var data = {};
-		data['person.name'] = name.val();
-		data['person.gender'] = gender.getValue();
+		data.name = name.val();
+		data.gender= gender.getValue();
 		
 		if (checkNotNull(idNumber.val())) {
-			data['person.idNumber'] = $.trim(idNumber.val());
+			data.idNumber = $.trim(idNumber.val());
 		}
 		if (checkNotNull(mobilePhone.val())) {
-			data['person.mobilePhone'] = $.trim(mobilePhone.val());
+			data.mobilePhone = $.trim(mobilePhone.val());
 		}
 		if (checkNotNull(familyPhone.val())) {
-			data['person.familyPhone'] = $.trim(familyPhone.val());
+			data.familyPhone = $.trim(familyPhone.val());
 		}
 		if (checkNotNull(email.val())) {
-			data['person.email'] = $.trim(email.val());
+			data.email = $.trim(email.val());
 		}
 		
 		data.name = name.val();
@@ -350,10 +350,10 @@ var employee = function(){
 			data.id = employeeId;
 		}
 		if (personId != null) {
-			data['person.id'] = personId;
+			data.personId = personId;
 		}
 		if (personVersion != null) {
-			data['person.version'] = personVersion;
+			data.personVersion = personVersion;
 		}
 		if (version != null) {
 			data.version = version;

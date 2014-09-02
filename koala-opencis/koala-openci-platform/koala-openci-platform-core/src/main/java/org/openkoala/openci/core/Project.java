@@ -31,18 +31,27 @@ public class Project extends AbstractEntity {
 	private String name;
 
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "project_detail_id")
 	private ProjectDetail projectDetail;
 
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "project_status")
 	private ProjectStatus projectStatus;
 
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
 	private Set<ProjectDeveloper> developers = new HashSet<ProjectDeveloper>();
 
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
 	private Set<Tool> tools = new HashSet<Tool>();
 
 	
+	@SuppressWarnings("deprecation")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "create_date")
 	private Date createDate = new Date();
 
 	public Project() {
@@ -86,25 +95,18 @@ public class Project extends AbstractEntity {
 		this.tools = tools;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
 	public Set<ProjectDeveloper> getDevelopers() {
 		return developers;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
 	public Set<Tool> getTools() {
 		return tools;
 	}
 
-	@SuppressWarnings("deprecation")
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "create_date")
 	public Date getCreateDate() {
 		return createDate;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "project_detail_id")
 	public ProjectDetail getProjectDetail() {
 		return projectDetail;
 	}
@@ -113,8 +115,6 @@ public class Project extends AbstractEntity {
 		this.projectDetail = projectDetail;
 	}
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "project_status")
 	public ProjectStatus getProjectStatus() {
 		return projectStatus;
 	}

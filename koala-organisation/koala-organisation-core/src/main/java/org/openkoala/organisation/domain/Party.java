@@ -20,21 +20,28 @@ public abstract class Party extends OrganizationAbstractEntity {
 
 	// 编码
 
+	@Column(name = "sn", length = 50)
 	private String sn;
 
 	// 名称
 
+	@Column(name = "name", length = 30, nullable = false)
 	private String name;
 
 	// 创建日期
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "create_date")
 	private Date createDate = new Date();
 
 	// 终结日期
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "terminate_date")
 	private Date terminateDate = DateUtils.MAX_DATE;
 
 	// 类别
+	@Column(name = "CATEGORY", insertable = false, updatable = false)
 	private String category;
 
 	Party() {
@@ -49,7 +56,6 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.sn = sn.trim();
 	}
 
-	@Column(name = "sn", length = 50)
 	public String getSn() {
 		return sn;
 	}
@@ -58,7 +64,6 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.sn = sn.trim();
 	}
 
-	@Column(name = "name", length = 30, nullable = false)
 	public String getName() {
 		return name;
 	}
@@ -67,8 +72,6 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.name = name.trim();
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "create_date")
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -77,8 +80,6 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.createDate = createDate;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "terminate_date")
 	public Date getTerminateDate() {
 		return terminateDate;
 	}
@@ -87,7 +88,6 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.terminateDate = terminateDate;
 	}
 
-	@Column(name = "CATEGORY", insertable = false, updatable = false)
 	public String getCategory() {
 		return category;
 	}

@@ -6,11 +6,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.dayatang.domain.Entity;
 import org.dayatang.domain.NamedParameters;
-import org.dayatang.utils.BeanUtils;
+
 
 /**
  * 一种抽象实体类，提供ID和版本属性，以及基本的持久化方法
@@ -23,8 +21,13 @@ public abstract class KoalaAbstractEntity extends KoalaBaseEntity {
 
     private static final long serialVersionUID = 8882145540383345037L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private Long id;
 
+    @Version
+    @Column(name = "VERSION")
     private int version;
 
     /**
@@ -32,9 +35,7 @@ public abstract class KoalaAbstractEntity extends KoalaBaseEntity {
      *
      * @return 实体的标识
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+   
     @Override
     public Long getId() {
         return id;
@@ -54,8 +55,7 @@ public abstract class KoalaAbstractEntity extends KoalaBaseEntity {
      *
      * @return 实体的版本号
      */
-    @Version
-    @Column(name = "VERSION")
+    
     public int getVersion() {
         return version;
     }

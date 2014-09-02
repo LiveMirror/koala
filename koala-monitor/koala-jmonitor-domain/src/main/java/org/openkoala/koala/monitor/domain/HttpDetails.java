@@ -39,21 +39,26 @@ public class HttpDetails extends BaseMonitorDetails {
 	private static final long serialVersionUID = 4866520755447864208L;
 
 	
+	@Column(name = "IP")
 	private String ip;
 
 	
+	@Column(name = "URI")
 	private String uri;
 	
 	
+	@Column(name = "REFERER")
 	private String referer;
 
 	
+	@Column(name = "PRINCIPAL")
 	private String principal;//
 
 	
+	@Lob
+	@Column(name = "PARAMETERS")
 	private String parameters;
 
-	@Column(name = "PRINCIPAL")
 	public String getPrincipal() {
 		return principal;
 	}
@@ -62,7 +67,6 @@ public class HttpDetails extends BaseMonitorDetails {
 		this.principal = principal;
 	}
 	
-	@Column(name = "REFERER")
 	public String getReferer() {
 		return referer;
 	}
@@ -71,7 +75,6 @@ public class HttpDetails extends BaseMonitorDetails {
 		this.referer = referer;
 	}
 	
-	@Column(name = "IP")
 	public String getIp() {
 		return ip;
 	}
@@ -80,7 +83,6 @@ public class HttpDetails extends BaseMonitorDetails {
 		this.ip = ip;
 	}
 
-	@Column(name = "URI")
 	public String getUri() {
 		return uri;
 	}
@@ -89,8 +91,6 @@ public class HttpDetails extends BaseMonitorDetails {
 		this.uri = uri;
 	}
 
-	@Lob
-	@Column(name = "PARAMETERS")
 	public String getParameters() {
 		return parameters;
 	}

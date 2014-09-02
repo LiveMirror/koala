@@ -28,12 +28,13 @@ public class KoalaJbpmVariable extends KoalaAbstractEntity {
 	 * 流程变量，在流程中定义
 	 * 变量的范围
 	 */
+	@Column(name = "var_key")
 	private String key;
 	
 	/**
 	 * 变量值 
 	 */
-	
+	@Column(name = "var_value")
 	private String value;
 	
 	/**
@@ -45,14 +46,16 @@ public class KoalaJbpmVariable extends KoalaAbstractEntity {
 	 * 
 	 */
 	
+	@Column(name = "var_type")
 	private String type;
 	
 
 	
+	@Column(name = "var_scope")
 	private String scope;
 	
 	
-	@Column(name = "var_key")
+	
 	public String getKey() {
 		return key;
 	}
@@ -61,7 +64,7 @@ public class KoalaJbpmVariable extends KoalaAbstractEntity {
 		this.key = key;
 	}
 
-	@Column(name = "var_value")
+	
 	public String getValue() {
 		return value;
 	}
@@ -70,7 +73,6 @@ public class KoalaJbpmVariable extends KoalaAbstractEntity {
 		this.value = value;
 	}
 
-	@Column(name = "var_type")
 	public String getType() {
 		return type;
 	}
@@ -79,7 +81,6 @@ public class KoalaJbpmVariable extends KoalaAbstractEntity {
 		this.type = type;
 	}
 
-	@Column(name = "var_scope")
 	public String getScope() {
 		return scope;
 	}

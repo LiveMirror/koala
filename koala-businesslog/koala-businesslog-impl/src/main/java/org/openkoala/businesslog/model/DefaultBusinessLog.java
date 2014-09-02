@@ -25,10 +25,13 @@ public class DefaultBusinessLog extends AbstractBusinessLog {
 	 */
 	private static final long serialVersionUID = -6898675233659096041L;
 
+	@Column(name = "USERNAME")
 	private String user;
 
+	@Column(name = "IP")
     private String ip;
 
+	@Temporal(TemporalType.TIMESTAMP)
     private Date time;
 
     
@@ -93,7 +96,7 @@ public class DefaultBusinessLog extends AbstractBusinessLog {
                 '}';
     }
 
-    @Column(name = "USERNAME")
+    
     public String getUser() {
         return user;
     }
@@ -102,7 +105,7 @@ public class DefaultBusinessLog extends AbstractBusinessLog {
         this.user = user;
     }
 
-    @Column(name = "IP")
+   
     public String getIp() {
         return ip;
     }
@@ -111,7 +114,7 @@ public class DefaultBusinessLog extends AbstractBusinessLog {
         this.ip = ip;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    
     public Date getTime() {
         return time;
     }

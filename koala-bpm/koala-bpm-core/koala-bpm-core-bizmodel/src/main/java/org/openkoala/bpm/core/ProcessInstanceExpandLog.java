@@ -21,6 +21,7 @@ public class ProcessInstanceExpandLog extends KoalaAbstractEntity{
 	private String processName;//步骤名称
 	
 	
+	@Lob
 	private String processData;//流程级参数
 	
 	private int state;
@@ -45,7 +46,6 @@ public class ProcessInstanceExpandLog extends KoalaAbstractEntity{
 		this.processName = processName;
 	}
 	
-	@Lob
 	public String getProcessData() {
 		return processData;
 	}

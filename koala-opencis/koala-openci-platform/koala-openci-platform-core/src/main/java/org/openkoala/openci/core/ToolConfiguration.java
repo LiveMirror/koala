@@ -23,9 +23,11 @@ public abstract class ToolConfiguration extends AbstractEntity {
 	private static final long serialVersionUID = -7992490907551882249L;
 
 	
+	@Column(nullable = false, unique = true)
 	private String name;
 	
 	
+	@Column(name = "service_url")
 	private String serviceUrl;
 	
 	private String username;
@@ -62,12 +64,10 @@ public abstract class ToolConfiguration extends AbstractEntity {
 		save();
 	}
 
-	@Column(nullable = false, unique = true)
 	public String getName() {
 		return name;
 	}
 	
-	@Column(name = "service_url")
 	public String getServiceUrl() {
 		return serviceUrl;
 	}

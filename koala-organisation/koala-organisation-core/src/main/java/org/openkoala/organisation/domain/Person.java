@@ -29,15 +29,19 @@ public class Person extends OrganizationAbstractEntity {
 	private String name;
 
 	
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
 	
+	@Column(name = "id_number", unique = true)
 	private String idNumber;
 	
 	
+	@Column(name = "mobile_phone")
 	private String mobilePhone;
 	
 	
+	@Column(name = "family_phone")
 	private String familyPhone;
 	
 	private String email;
@@ -57,7 +61,6 @@ public class Person extends OrganizationAbstractEntity {
 		this.name = name;
 	}
 
-	@Column(name = "id_number", unique = true)
 	public String getIdNumber() {
 		return idNumber;
 	}
@@ -66,7 +69,6 @@ public class Person extends OrganizationAbstractEntity {
 		this.idNumber = idNumber;
 	}
 
-	@Enumerated(EnumType.STRING)
 	public Gender getGender() {
 		return gender;
 	}
@@ -75,7 +77,6 @@ public class Person extends OrganizationAbstractEntity {
 		this.gender = gender;
 	}
 
-	@Column(name = "mobile_phone")
 	public String getMobilePhone() {
 		return mobilePhone;
 	}
@@ -84,7 +85,6 @@ public class Person extends OrganizationAbstractEntity {
 		this.mobilePhone = mobilePhone;
 	}
 
-	@Column(name = "family_phone")
 	public String getFamilyPhone() {
 		return familyPhone;
 	}

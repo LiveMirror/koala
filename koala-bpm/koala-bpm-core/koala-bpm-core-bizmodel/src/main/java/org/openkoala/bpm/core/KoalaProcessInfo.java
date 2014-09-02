@@ -57,12 +57,15 @@ public class KoalaProcessInfo extends KoalaAbstractEntity{
 	 * 流程定义XML 的二进制存储
 	 */
 	
+	@Lob
+	@Column(length=2147483647)
 	private byte[] data;
 	
 	/**
 	 * 图片的二进制存储
 	 */
-	
+	@Lob
+	@Column(length=2147483647)
 	private byte[] png;
 	
 	public KoalaProcessInfo() {
@@ -101,8 +104,6 @@ public class KoalaProcessInfo extends KoalaAbstractEntity{
 		this.versionNum = versionNum;
 	}
 
-	@Lob
-	@Column(length=2147483647)
 	public byte[] getData() {
 		return data;
 	}
@@ -176,8 +177,6 @@ public class KoalaProcessInfo extends KoalaAbstractEntity{
 				+ Arrays.toString(data) + "]";
 	}
 
-	@Lob
-	@Column(length=2147483647)
 	public byte[] getPng() {
 		return png;
 	}

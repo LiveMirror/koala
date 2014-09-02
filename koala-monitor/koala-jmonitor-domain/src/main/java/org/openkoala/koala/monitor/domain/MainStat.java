@@ -40,28 +40,40 @@ public class MainStat extends KmBaseLegacyEntity {
     private static final long serialVersionUID = -4332257257969974945L;
 
 
-    protected String threadKey;
+    @Id
+    @Column(name = "THREAD_KEY")
+     protected String threadKey;
 
 
-    private MonitorNode belongNode;
+    @ManyToOne(targetEntity = MonitorNode.class)
+    @JoinColumn(name = "FK_NODE_ID")
+   private MonitorNode belongNode;
 
 
-    private Date beginTime;
+    @Column(name = "BEGIN_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
+     private Date beginTime;
 
 
-    private Date endTime;
+    @Column(name = "END_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
+     private Date endTime;
 
 
-    private int year;
+    @Column(name = "YEAR")
+     private int year;
 
 
+    @Column(name = "MONTH")
     private int month;
 
 
-    private int day;
+    @Column(name = "DAY")
+     private int day;
 
 
-    private int hour;
+    @Column(name = "HOUR")
+     private int hour;
 
 
     public MainStat() {
@@ -81,8 +93,6 @@ public class MainStat extends KmBaseLegacyEntity {
 
 
 
-    @Id
-    @Column(name = "THREAD_KEY")
     public String getThreadKey() {
         return threadKey;
     }
@@ -96,9 +106,7 @@ public class MainStat extends KmBaseLegacyEntity {
         return getThreadKey();
     }
 
-    @ManyToOne(targetEntity = MonitorNode.class)
-    @JoinColumn(name = "FK_NODE_ID")
-    public MonitorNode getBelongNode() {
+     public MonitorNode getBelongNode() {
         return belongNode;
     }
 
@@ -106,9 +114,7 @@ public class MainStat extends KmBaseLegacyEntity {
         this.belongNode = belongNode;
     }
 
-    @Column(name = "BEGIN_TIME")
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getBeginTime() {
+   public Date getBeginTime() {
         return beginTime;
     }
 
@@ -116,8 +122,6 @@ public class MainStat extends KmBaseLegacyEntity {
         this.beginTime = beginTime;
     }
 
-    @Column(name = "END_TIME")
-    @Temporal(TemporalType.TIMESTAMP)
     public Date getEndTime() {
         return endTime;
     }
@@ -126,7 +130,6 @@ public class MainStat extends KmBaseLegacyEntity {
         this.endTime = endTime;
     }
 
-    @Column(name = "YEAR")
     public int getYear() {
         return year;
     }
@@ -135,7 +138,6 @@ public class MainStat extends KmBaseLegacyEntity {
         this.year = year;
     }
 
-    @Column(name = "MONTH")
     public int getMonth() {
         return month;
     }
@@ -144,8 +146,7 @@ public class MainStat extends KmBaseLegacyEntity {
         this.month = month;
     }
 
-    @Column(name = "DAY")
-    public int getDay() {
+   public int getDay() {
         return day;
     }
 
@@ -153,7 +154,6 @@ public class MainStat extends KmBaseLegacyEntity {
         this.day = day;
     }
 
-    @Column(name = "HOUR")
     public int getHour() {
         return hour;
     }

@@ -51,7 +51,7 @@ var position = function(){
 		    'data': JSON.stringify(objects),
 		    'dataType': 'json'
 		 }).done(function(data){
-			if(data.result == 'success'){
+			if(data.result == "success"){
 				dataGrid.message({
 					type: 'success',
 					content: '撤销成功'

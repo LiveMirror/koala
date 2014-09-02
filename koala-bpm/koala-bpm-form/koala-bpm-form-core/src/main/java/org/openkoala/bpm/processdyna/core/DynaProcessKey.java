@@ -26,60 +26,61 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 	 */
 	private static final long serialVersionUID = 8632362177641945740L;
 
-	
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
+	@JoinColumn(name = "DYNA_ID")
 	private DynaProcessForm dynaTable;
 
-	
+	@Column(name = "KEY_ID")
 	private String keyId;
 
-	
+	@Column(name = "KEY_NAME")
 	private String keyName;
 
-	
+	@Column(name = "KEY_TYPE")
 	private String keyType;
 	
 	//值输出类型
-	
+	@Column(name = "VAL_OUTPUT_TYPE")
 	private String valOutputType = "String";
 
 	// 可选值
-	
+	@Column(name = "KEY_OPTS")
 	private String keyOptions;
 
 	/**
 	 * 字段是否必填
 	 */
-	
+	@Column(name = "REQUIRED")
 	private boolean required;
 
 	// 是否变量
-	
+	@Column(name = "IS_VARIABLE")
 	private boolean innerVariable;
 
 	/**
 	 * 字段的检验类型
 	 */
-	
+	@Column(name = "VALIDATION_TYPE")
 	private String validationType;
 
 	/**
 	 * 字段的检验表达式
 	 */
-	
+	@Column(name = "VALIDATION_EXPR")
 	private String validationExpr;
 
 	// 显示顺序
-	
+	@Column(name = "SHOW_ORDER")
 	private int showOrder;
 
 	// 是否显示在待办事项列表
-	
+	@Column(name = "IS_OUTPUT_VAR")
 	private boolean outputVar;
 
-	
+	@Transient
 	private String keyValueForShow = "";
 	
-	
+	@Transient
 	private String security = "W";
 
 	public DynaProcessKey(String keyId, String keyName, String keyType) {
@@ -93,7 +94,7 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		super();
 	}
 
-	@Transient
+	
 	public String getSecurity() {
 		return security;
 	}
@@ -102,8 +103,6 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.security = security;
 	}
 
-	@ManyToOne(optional = true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "DYNA_ID")
 	public DynaProcessForm getDynaTable() {
 		return dynaTable;
 	}
@@ -112,7 +111,7 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.dynaTable = dynaTable;
 	}
 
-	@Column(name = "KEY_ID")
+	
 	public String getKeyId() {
 		return keyId;
 	}
@@ -121,7 +120,7 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.keyId = keyId;
 	}
 
-	@Column(name = "KEY_NAME")
+	
 	public String getKeyName() {
 		return keyName;
 	}
@@ -130,7 +129,7 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.keyName = keyName;
 	}
 
-	@Column(name = "KEY_TYPE")
+	
 	public String getKeyType() {
 		return keyType;
 	}
@@ -139,7 +138,7 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.keyType = keyType;
 	}
 
-	@Column(name = "KEY_OPTS")
+	
 	public String getKeyOptions() {
 		if(keyOptions != null)return keyOptions.replaceAll("\"", "'");
 		return "";
@@ -149,7 +148,7 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.keyOptions = keyOptions;
 	}
 
-	@Column(name = "REQUIRED")
+	
 	public boolean isRequired() {
 		return required;
 	}
@@ -158,7 +157,7 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.required = required;
 	}
 
-	@Column(name = "VALIDATION_TYPE")
+	
 	public String getValidationType() {
 		return StringUtils.trimToEmpty(validationType);
 	}
@@ -167,7 +166,6 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.validationType = validationType;
 	}
 
-	@Column(name = "VALIDATION_EXPR")
 	public String getValidationExpr() {
 		return StringUtils.trimToEmpty(validationExpr);
 	}
@@ -176,7 +174,7 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.validationExpr = validationExpr;
 	}
 
-	@Column(name = "IS_VARIABLE")
+
 	public boolean isInnerVariable() {
 		return innerVariable;
 	}
@@ -185,7 +183,6 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.innerVariable = innerVariable;
 	}
 
-	@Column(name = "SHOW_ORDER")
 	public int getShowOrder() {
 		return showOrder;
 	}
@@ -194,7 +191,7 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.showOrder = showOrder;
 	}
 
-	@Column(name = "IS_OUTPUT_VAR")
+
 	public boolean isOutputVar() {
 		return outputVar;
 	}
@@ -203,7 +200,6 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.outputVar = outputVar;
 	}
 
-	@Transient
 	public String getKeyValueForShow() {
 		return keyValueForShow;
 	}
@@ -212,7 +208,6 @@ public class DynaProcessKey extends BpmFormEntity implements Comparable<DynaProc
 		this.keyValueForShow = keyValueForShow;
 	}
 	
-	@Column(name = "VAL_OUTPUT_TYPE")
 	public String getValOutputType() {
 		return valOutputType;
 	}

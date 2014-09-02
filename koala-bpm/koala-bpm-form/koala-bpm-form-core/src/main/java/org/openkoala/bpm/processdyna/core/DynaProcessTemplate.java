@@ -33,18 +33,22 @@ public class DynaProcessTemplate extends BpmFormEntity {
 	 * 模板名称
 	 */
 
+	@Column(name = "TEMPLATE_NAME")
 	private String templateName;
 
 	/**
 	 * 模板的描述
 	 */
 	
+	@Column(name = "TEMPLATE_DESCRIPTION")
 	private String templateDescription;
 
 	/**
 	 * 模板的内容
 	 */
 	
+	@Lob
+	@Column(name = "TEMPLATE_DATA")
 	private String templateData;
 
 	public DynaProcessTemplate(String templateName, String templateData) {
@@ -65,7 +69,6 @@ public class DynaProcessTemplate extends BpmFormEntity {
 		super();
 	}
 
-	@Column(name = "TEMPLATE_NAME")
 	public String getTemplateName() {
 		return templateName;
 	}
@@ -74,7 +77,6 @@ public class DynaProcessTemplate extends BpmFormEntity {
 		this.templateName = templateName;
 	}
 
-	@Column(name = "TEMPLATE_DESCRIPTION")
 	public String getTemplateDescription() {
 		return templateDescription;
 	}
@@ -83,8 +85,6 @@ public class DynaProcessTemplate extends BpmFormEntity {
 		this.templateDescription = templateDescription;
 	}
 
-	@Lob
-	@Column(name = "TEMPLATE_DATA")
 	public String getTemplateData() {
 		return templateData;
 	}
