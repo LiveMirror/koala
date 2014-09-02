@@ -221,6 +221,9 @@
              columns: columns,
              buttons: buttons,
              isShowPages: true,
+             dataFilter:function(result){
+                return result.data;
+             },
              url:url
         }).on({
         	'add' : function(event, item) {
@@ -338,6 +341,9 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],
+        			             dataFilter:function(result){
+                                    return result.data;
+                                 },
         			             url: contextPath + '/auth/user/pagingQueryNotGrantPermissions.koala?userId='+userId
         			        });        						
        					},
@@ -627,6 +633,9 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],
+                                 dataFilter:function(result){
+                                     return result.data;
+                                 },
         			             url: contextPath + '/auth/page/pagingQueryNotGrantPermissionsByPageElementResourceId.koala?pageElementResourceId='+pageId
         			        });        						
        					},
@@ -668,9 +677,10 @@
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
 						var url = contextPath + '/auth/page/terminatePermissionsFromPageElementResource.koala';
-						var params = "pageElementResourceId="+pageId;
-							params += ("&permissionId=" + data.item[0].id);
-						
+						console.info(data.item[0]);
+						var params = "permissionId=" + data.item[0].id;
+                        params += ("&pageElementResourceId="+pageId);
+						console.info(params);
 						$.post(url, params).done(function(data){
 							if(data.success){
 								grid.message({
@@ -769,6 +779,9 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],
+        			             dataFilter:function(result){
+                                   return result.data;
+                                 },
         			             url: contextPath + '/auth/url/pagingQueryNotGrantPermissionsByUrlAccessResourceId.koala?urlAccessResourceId='+urlId
         			        });        						
        					},
@@ -810,6 +823,7 @@
 					content : '确定要删除所选记录吗?',
 					callBack : function() {
 						var url = contextPath + '/auth/url/terminatePermissionsFromUrlAccessResource.koala';
+						console.info(data.item[0]);
 						var params = "urlAccessResourceId="+urlId;
 							params += ("&permissionId=" + data.item[0].id);
 						
@@ -914,6 +928,9 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],
+        			             dataFilter:function(result){
+                                    return result.data;
+                                 },
         			             url: contextPath + '/auth/role/pagingQueryNotGrantPermissionsByRoleId.koala?roleId='+roleId
         			        });        						
        					},

@@ -2,13 +2,17 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
+import org.apache.shiro.web.subject.support.WebDelegatingSubject;
 import org.openkoala.koala.commons.InvokeResult;
+import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeUserAccountCommand;
 import org.openkoala.security.facade.command.ChangeUserEmailCommand;
 import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
+import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
+import org.openkoala.security.shiro.realm.CustomAuthoringRealm;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +30,9 @@ public class CurrentUserController {
 
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
+
+    @Inject
+    private SecurityAccessFacade securityAccessFacade;
 	
 	/**
 	 * 更改用户账号。
@@ -75,5 +82,38 @@ public class CurrentUserController {
 		command.setUserAccount(CurrentUser.getUserAccount());
 		return securityConfigFacade.changeUserPassword(command);
 	}
+
+    /**分页查询用户的角色
+     *
+     * @param page 当前页
+     * @param pagesize
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/pagingQueryRolesOfUser", method = RequestMethod.GET)
+    public InvokeResult pagingQueryRolesOfUser(int page,int pagesize){
+        String userAccount = CurrentUser.getUserAccount();
+        return securityAccessFacade.pagingQueryRolesOfUser(page,pagesize,userAccount);
+    }
+
+    /**TODO
+     * 切换角色
+     * @param role
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/changeRoleOfUser")
+    public InvokeResult changeRoleOfUser(RoleDTO role){
+        String userAccount = CurrentUser.getUserAccount();
+        CurrentUser.setRoleName(role.getName());
+        return InvokeResult.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/getUserDetail", method = RequestMethod.GET)
+    public InvokeResult getUserDetail(){
+        String userAccount = CurrentUser.getUserAccount();
+        return securityAccessFacade.getuserDetail(userAccount);
+    }
 
 }

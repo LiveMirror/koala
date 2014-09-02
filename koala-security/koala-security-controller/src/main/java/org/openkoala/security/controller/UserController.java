@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/auth/user")
 public class UserController {
 
-	//private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-
 	@Inject
 	private SecurityAccessFacade securityAccessFacade;
 
@@ -186,7 +184,7 @@ public class UserController {
 	}
 
 	/**
-	 * 通过角色下的用户撤销一个授权中心{@link Authorization}。
+	 * 通过角色下的用户撤销一个授权中心{@link org.openkoala.security.core.domain.Authorization}。
 	 * 
 	 * @param userId
 	 * @param roleId
@@ -199,7 +197,7 @@ public class UserController {
 	}
 
 	/**
-	 * 通过权限下的用户撤销一个授权中心{@link Authorization}。
+	 * 通过权限下的用户撤销一个授权中心{@link org.openkoala.security.core.domain.Authorization}。
 	 * 
 	 * @param userId
 	 * @param permissionId
@@ -212,7 +210,7 @@ public class UserController {
 	}
 
 	/**
-	 * 通过角色下的用户撤销多个授权中心{@link Authorization}。
+	 * 通过角色下的用户撤销多个授权中心{@link org.openkoala.security.core.domain.Authorization}。
 	 * 
 	 * @param userId
 	 * @param roleIds
@@ -225,7 +223,7 @@ public class UserController {
 		}
 
 	/**
-	 * 通过权限下的用户撤销多个授权中心{@link Authorization}。。
+	 * 通过权限下的用户撤销多个授权中心{@link org.openkoala.security.core.domain.Authorization}。。
 	 * 
 	 * @param userId
 	 * @param permissionIds

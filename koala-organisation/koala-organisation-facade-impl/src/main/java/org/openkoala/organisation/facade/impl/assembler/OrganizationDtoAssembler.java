@@ -57,7 +57,6 @@ public class OrganizationDtoAssembler {
 		if (organizationDTO.getTerminateDate() != null) {
 			result.setTerminateDate(organizationDTO.getTerminateDate());
 		}
-		
 		return result;
 	}
 

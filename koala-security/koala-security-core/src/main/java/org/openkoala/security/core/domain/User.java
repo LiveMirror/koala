@@ -170,24 +170,6 @@ public class User extends Actor {
         }
     }
 
-    public static User login(String principal, String password) {
-        checkArgumentIsNull("principal", principal);
-        String loginPassword = encryptPassword(password);
-        User user = getRepository()//
-                .createNamedQuery("User.loginByUserAccount")//
-                .addParameter("userAccount", principal)//
-                .addParameter("password", loginPassword)//
-                .singleResult();
-
-        if (user == null) {
-            throw new UserNotExistedException("userAccount or password is error");
-        } else {
-            changeLastLoginTime(user);
-        }
-
-        return user;
-    }
-
     public static Long getCount() {
         return getRepository()//
                 .createNamedQuery("User.count")//

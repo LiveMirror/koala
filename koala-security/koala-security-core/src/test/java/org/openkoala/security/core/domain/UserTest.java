@@ -317,30 +317,6 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 		assertTrue(size > 0);
 	}
 
-	/**
-	 * TODO 登陆 放在infor层测试。
-	 * 
-	 * @throws Exception
-	 */
-	@Ignore
-	@Test
-	public void testLogin() throws Exception {
-		User user = initUser();
-		encryptPassword(user.getPassword(), "aaaaaaaaa");
-		user.save();
-		assertNotNull(user.getPassword());
-		User loginUser = User.login(user.getUserAccount(), user.getPassword());
-		assertNotNull(loginUser);
-	}
-
-	@Test(expected = NullArgumentException.class)
-	public void testLoginUserAccountOrPasswordIsNull() throws Exception {
-		User user = initUser();
-		encryptPassword("aaaaaa", "aaaaaaaaa");
-		user.save();
-		User.login("", user.getPassword());
-	}
-
 	/*------------- Private helper methods  -----------------*/
 
 	private void encryptPassword(String password, String returnPassword) {

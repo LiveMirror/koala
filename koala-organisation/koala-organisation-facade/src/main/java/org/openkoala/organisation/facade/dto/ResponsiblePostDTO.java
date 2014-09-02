@@ -19,6 +19,8 @@ public class ResponsiblePostDTO implements Serializable {
 	
 	private boolean principal;
 
+	public ResponsiblePostDTO() {}
+	
 	public Long getPostId() {
 		return postId;
 	}

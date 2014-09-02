@@ -3,6 +3,7 @@ package org.openkoala.security.core.domain;
 import org.junit.Before;
 import org.mockito.Mockito;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
  * @author luzhao
  * 
  */
+@ContextConfiguration(locations = {"classpath*:META-INF/spring/security-root.xml"})
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public abstract class AbstractDomainIntegrationTestCase extends KoalaBaseSpringTestCase {
 	

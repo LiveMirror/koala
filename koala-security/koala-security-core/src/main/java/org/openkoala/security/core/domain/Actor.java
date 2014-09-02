@@ -13,6 +13,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dayatang.domain.AbstractEntity;
 import org.openkoala.security.core.NullArgumentException;
 
 /**
@@ -30,7 +31,7 @@ import org.openkoala.security.core.NullArgumentException;
 @Table(name = "KS_ACTORS")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
-public abstract class Actor extends SecurityAbstractEntity {
+public abstract class Actor extends AbstractEntity {
 
 	private static final long serialVersionUID = -6279345771754150467L;
 
@@ -188,4 +189,8 @@ public abstract class Actor extends SecurityAbstractEntity {
 		return createDate;
 	}
 
+    public void terminateAuthorityInScope(Authority authority, Scope scope) {
+        Authorization authorization = Authorization.findByActorOfAuthorityInScope(this,authority,scope);
+        authorization.remove();
+    }
 }

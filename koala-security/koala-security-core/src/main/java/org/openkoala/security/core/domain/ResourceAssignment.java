@@ -2,6 +2,7 @@ package org.openkoala.security.core.domain;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.dayatang.domain.AbstractEntity;
 import org.openkoala.security.core.NullArgumentException;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ import java.util.Set;
         @NamedQuery(name="ResourceAssignment.findSecurityResourcesByAuthorities",query = "SELECT _resource FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority in (:authorities) AND TYPE(_resource)= :resourceType GROUP BY _resource.id ORDER BY _resource.id"),
         @NamedQuery(name="ResourceAssignment.findAuthoritiesBySecurityResource",query = "SELECT _authority FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource = :resource AND TYPE(_authority)= :authorityType GROUP BY _authority.id ORDER BY _authority.id")
 })
-public class ResourceAssignment extends SecurityAbstractEntity {
+public class ResourceAssignment extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "AUTHORITY_ID")

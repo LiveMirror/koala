@@ -48,6 +48,11 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
         return Actor.get(User.class, userId);
     }
 
+    @Override
+    public <T extends Actor> T getActorById(Long actorId) {
+        return (T) Actor.get(Actor.class,actorId);
+    }
+
     public User getUserByUserAccount(String userAccount) {
         return User.getByUserAccount(userAccount);
     }
@@ -126,13 +131,8 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     }
 
     @Override
-    public Scope getScope(Long scopeId) {
-        return Scope.getBy(scopeId);
-    }
-
-    @Override
-    public User login(String principal, String password) {
-        return User.login(principal, password);
+    public <T extends Scope> T getScope(Long scopeId) {
+        return (T)Scope.getBy(scopeId);
     }
 
     @Override

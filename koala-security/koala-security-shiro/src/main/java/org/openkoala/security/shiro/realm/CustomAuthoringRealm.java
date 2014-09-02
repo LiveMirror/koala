@@ -23,6 +23,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.EncryptService;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
@@ -177,7 +178,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		}
 	}
 
-	/**
+	/**TODO 需要重构。 可能不存在角色。。。
 	 * 查找出用户的第一个角色,因为需要角色切换
 	 * 
 	 * @param user
@@ -185,10 +186,13 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 	 * @return
 	 */
 	private String getRoleName(UserDTO user) {
-		List<RoleDTO> roles = securityAccessFacade.findRolesByUserAccount(user.getUserAccount());
-		if (!roles.isEmpty()) {
-			return roles.get(0).getName();
-		}
+		InvokeResult result =  securityAccessFacade.findRolesByUserAccount(user.getUserAccount());
+        if(result.isSuccess()){
+          List<RoleDTO> roles = (List<RoleDTO>) result.getData();
+            if (!roles.isEmpty()) {
+                return roles.get(0).getName();
+            }
+        }
 		return null;
 	}
 

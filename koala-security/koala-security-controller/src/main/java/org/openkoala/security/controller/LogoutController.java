@@ -17,15 +17,15 @@ public class LogoutController {
 	 * 
 	 * @return
 	 */
-	@ResponseBody
-	@RequestMapping(value = "/logout", method = RequestMethod.POST)
-	public InvokeResult logout() {
-	try {
-			SecurityUtils.getSubject().logout();
-		return 	InvokeResult.success("用户退出成功。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			return	InvokeResult.success("用户退出成功。");
-		}
-	}
+    @ResponseBody
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public InvokeResult logout() {
+        try {
+            SecurityUtils.getSubject().logout();
+            return InvokeResult.success("用户退出成功。");
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return InvokeResult.success("用户退出成功。");
+        }
+    }
 }

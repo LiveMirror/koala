@@ -89,6 +89,44 @@
 		  transform: scale(1.04) translateX(4px);
 		  z-index: 1;
 		}
+
+
+#btn1{
+
+     
+        cursor: pointer;
+        height: 45px;
+        width: 45px;
+        position: relative;
+        float:right;
+        top: -3px;
+        left:5px;
+}
+
+
+label{
+
+     padding-right:3px;
+}
+
+
+div.btn-group > span {
+        
+        font-size: 15px;
+        line-height: 39px;
+        padding:0 2px 0px 3px;
+        
+        
+        background:#fff;
+     
+      
+       
+}      
+
+
+
+	
+	
     </style>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
@@ -108,28 +146,37 @@
 	        <div class="collapse navbar-collapse navbar-ex1-collapse">
 	            <!-- 账号信息 -->
 	            <div class="btn-group navbar-right">
-	                <label for = "userAccount" class = "user_name yhmc">用户名称  : </label>
-	                <span>&nbsp;</span>
-	                <select id="userAccount">
-                     <option selected><koala:user property="name"/></option>
-                    </select>
+	                <label for = "userAccount" class = "user_name yhmc">用户  : </label>
+	               
+                   	<span><koala:user property="name"/></span>
+                   	
+                   	
+                   
+	                <img class=" dropdown-toggle" data-toggle="dropdown" id='btn1'  src="../images/setMenu.png"  >
 	                
-	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 	                
-	                </button>
+	             
 	                
 	              <!--  <i class = "menu-icon glyphicon  glyphicon-cog"></i>--> 
-	                <ul class="dropdown-menu" id="userManager">
-	                    <li data-target="modifyPwd"><a href="#">修改密码</a></li>
+	                <ul class="dropdown-menu" id="userManager" >
 	                    <li data-target="loginOut"><a href="#">注销</a></li>
-	                    <li data-toggle="modal" data-target="userDetial"><a href="#">用户详细</a></li>
-	                    <li data-target="completeMsg"><a href="#">完善信息</a></li>
-	                    <li data-target="emailCheck"><a href="#">邮箱验证</a></li>
+	                    <li data-toggle="modal" data-target="#userDetial"><a href="#">用户详细</a></li>
+	                    <li data-toggle='modal' data-target="#rolesToggle"><a href="#">角色切换</a></li>
+	                    
+	                    
 	                </ul>
+	                
+	             
+	                
 	            </div>
 	            <div class="btn-group navbar-right">
-	                <label for = "roles" class = "user_name">用户角色 :</label>
-	            	<select id="roles"></select>
+	                <label for = "roles" class = "user_name">角色 :</label>
+	            	<span id="roles">
+	            		<koala:user property="roleName"/>
+	                </span>
+	                
+	                &nbsp;
+	                
 	                <ul class="dropdown-menu" id="allRolesId"></ul>
 	            </div>
 	        </div>
@@ -150,6 +197,76 @@
 	    </div>
 	</div>
 	<div id="footer" class="g-foot"><span>Copyright © 2011-2013 Koala</span></div>
+	
+  <!-- 切换角色模态框 -->
+	
+<div class="modal fade" id="rolesToggle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+     
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+         <h4 class="modal-title" id="myModalLabel">切换角色</h4>
+      </div>
+      <div class="modal-body">
+      
+    <div class='grid-body' style='width:100%;min-width:300px;border:0.5px #d0d0d0 groove;'>
+      
+     <div class='grid-table-head'>
+      
+      <table class='table table-bordered'>
+    
+       <thead>
+         
+         <tr>
+            <th style='width:100px;'>角色名称</th>
+            <th style='width:auto'>描述</th>
+        </tr>
+      
+         
+      
+       </thead>
+      </div>
+      <div class='grid-table-body'></div>
+      <tbody>
+         <tr>
+            <td>superAdmin</td>
+            <td></td>
+         </tr>
+         
+         <tr>
+            <td>test</td>
+            <td></td>
+         </tr>
+         
+          
+         <tr>
+            <td>test</td>
+            <td></td>
+         </tr>
+         
+          
+         <tr>
+            <td>test</td>
+            <td></td>
+         </tr>
+         </tbody>
+     </table>
+     
+     
+    
+   </div>
+      
+      
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+        <button type="button" class="btn btn-success">取消</button>
+      </div>
+    </div>
+ </div>
+  
 	<script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="../lib/respond.min.js"></script>
 	<script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
@@ -166,23 +283,22 @@
 	$(function(){
 		/*获取用户的角色*/
 		$.getJSON(contextPath + '/auth/role/findRolesByUsername.koala', function(data) {
-			var roles = $("#roles").empty();
-			$.each(data.data, function(i,role) {
-				roles.append($("<option/>").attr("value",role.id).html(role.name));
-			});
+			var roles = $("#roles");
 			roles.change();
 		});
 		
 		/*根据roleid获取菜单*/
 		$("#roles").change(function(){
-			var id = $(this).val(),
-				name = $(this).find("option:selected").text(),
+			var roleName = '<koala:user property="roleName"/>';
+			console.log(roleName);
+				
 				url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
 			$.get(
 				url,
-				{"id":id,"name":name},
+				{'roleName':roleName},
 				function(menuData){
 					var menu = initMenu(menuData.data);
+					
 					$("#roleMenu").empty().append(menu);
 					
 					/*删除上一个角色打开的tab*/
@@ -306,3 +422,4 @@
 	</script>
 </body>
 </html>
+>>>>>>> origin/master

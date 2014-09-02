@@ -8,7 +8,6 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangePermissionPropsCommand;
 import org.openkoala.security.facade.command.CreatePermissionCommand;
-import org.openkoala.security.facade.dto.JsonResult;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

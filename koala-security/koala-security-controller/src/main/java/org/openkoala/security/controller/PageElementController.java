@@ -78,7 +78,7 @@ public class PageElementController {
 		return	securityConfigFacade.grantPermisssionsToPageElementResource(permissionId, pageElementResourceId);			
 	}
 
-	/**
+	/**TODO 删除有问题。。。
 	 * 从页面元素资源中撤销权限Permission
 	 * 
 	 * @param permissionId
@@ -92,7 +92,7 @@ public class PageElementController {
 	}
 
 	/**
-	 * 分页查询页面元素权限资源， 可根据页面元素权限资源{@link PageElementResourceDTO}条件进行查询。
+	 * 分页查询页面元素权限资源， 可根据页面元素权限资源{@link org.openkoala.security.facade.dto.PageElementResourceDTO}条件进行查询。
 	 * 
 	 * @param page
 	 * @param pagesize
@@ -115,10 +115,8 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPermissionsByPageElementResourceId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize,
-			Long pageElementResourceId) {
-		return securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(page,
-				pagesize, pageElementResourceId);
+	public InvokeResult pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId) {
+		return securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(page, pagesize, pageElementResourceId);
 	}
 
 	/**

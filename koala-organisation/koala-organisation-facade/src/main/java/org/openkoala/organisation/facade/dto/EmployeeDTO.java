@@ -45,6 +45,8 @@ public class EmployeeDTO implements Serializable {
 	
 	private Date terminateDate;
 	
+	public EmployeeDTO() {}
+	
 	public Long getId() {
 		return id;
 	}

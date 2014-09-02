@@ -3,6 +3,7 @@ package org.openkoala.security.facade.impl.assembler;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.facade.command.CreateChildMenuResourceCommand;
 import org.openkoala.security.facade.command.CreateMenuResourceCommand;
+import org.openkoala.security.facade.dto.MenuResourceDTO;
 
 public class MenuResourceAssembler {
 
@@ -21,5 +22,14 @@ public class MenuResourceAssembler {
 		result.setDescription(command.getDescription());
 		return result;
 	}
-	
+
+    public static MenuResourceDTO toMenuResourceDTO(MenuResource menuResource) {
+        MenuResourceDTO result = new MenuResourceDTO(menuResource.getId(),menuResource.getName());
+        result.setVersion(menuResource.getVersion());
+        result.setIcon(menuResource.getMenuIcon());
+        result.setLevel(menuResource.getLevel());
+        result.setUrl(menuResource.getUrl());
+        result.setDescription(menuResource.getDescription());
+        return result;
+    }
 }

@@ -100,8 +100,10 @@
 		                identity:"id",
 		                buttons: getButtons(),
 		                url:url,
-		                columns: [
-						{
+		                dataFilter:function(result){
+		                    return result.data;
+		                },
+		                columns: [{
 							title : "用户名称",
 							name : "name",
 							width : 150

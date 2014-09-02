@@ -187,6 +187,9 @@
 			identity : 'id',
 			columns : columns,
 			buttons : getButtons(),
+			dataFilter:function(result){
+                return result.data;
+            },
 			url : url
 		}).on({
 			'add' : function(event, item) {
@@ -313,6 +316,9 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: 'url名称', value: 'roleNameForSearch'}],
+        			             dataFilter:function(result){
+                                    return result.data;
+                                 },
         			             url: contextPath + '/auth/role/pagingQueryNotGrantUrlAccessResourcesByRoleId.koala?roleId='+roleId
         			        });
        					},

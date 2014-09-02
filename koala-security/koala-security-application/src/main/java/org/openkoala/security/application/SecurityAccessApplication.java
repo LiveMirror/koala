@@ -3,14 +3,7 @@ package org.openkoala.security.application;
 import java.util.List;
 import java.util.Set;
 
-import org.openkoala.security.core.domain.MenuResource;
-import org.openkoala.security.core.domain.PageElementResource;
-import org.openkoala.security.core.domain.Permission;
-import org.openkoala.security.core.domain.Role;
-import org.openkoala.security.core.domain.Scope;
-import org.openkoala.security.core.domain.SecurityResource;
-import org.openkoala.security.core.domain.UrlAccessResource;
-import org.openkoala.security.core.domain.User;
+import org.openkoala.security.core.domain.*;
 
 public interface SecurityAccessApplication {
 
@@ -58,6 +51,8 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	User getUserById(Long userId);
+
+    <T extends Actor> T getActorById(Long actorId);
 
 	/**
 	 * 根据角色ID获取角色
@@ -130,7 +125,7 @@ public interface SecurityAccessApplication {
 	 */
 	Role getRoleBy(String roleName);
 
-	Scope getScope(Long scopeId);
+	<T extends Scope> T getScope(Long scopeId);
 
 	/**
 	 * 根据账户查找拥有的菜单资源
@@ -191,17 +186,6 @@ public interface SecurityAccessApplication {
      */
     List<MenuResource> findAllMenuResorces();
 
-
-	/**
-	 * 用户登录
-	 * 
-	 * @param principal
-	 *            当事人 可能是用户名、邮箱、电话 目前只实现用户名,
-	 * @param password
-	 *            密码
-	 * @return
-	 */
-	User login(String principal, String password);
 
 	boolean hasPageElementResource(String identifier);
 

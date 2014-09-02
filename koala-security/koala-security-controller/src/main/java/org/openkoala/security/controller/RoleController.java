@@ -1,21 +1,13 @@
 package org.openkoala.security.controller;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
-import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeRolePropsCommand;
 import org.openkoala.security.facade.command.CreateRoleCommand;
-import org.openkoala.security.facade.dto.JsonResult;
-import org.openkoala.security.facade.dto.MenuResourceDTO;
-import org.openkoala.security.facade.dto.PageElementResourceDTO;
-import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
-import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
 import org.slf4j.Logger;
@@ -27,9 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 角色控制器
- * 
+ *
  * @author luzhao
- * 
+ *
  */
 @Controller
 @RequestMapping("/auth/role")
@@ -42,13 +34,13 @@ public class RoleController {
 
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
-	
+
 	@Inject
 	private ShiroFilterChainManager shiroFilterChainManager;
 
 	/**
 	 * 添加角色
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -60,7 +52,7 @@ public class RoleController {
 
 	/**
 	 * 更新角色
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -72,7 +64,7 @@ public class RoleController {
 
 	/**
 	 * TODO 支持批量撤销,待优化。
-	 * 
+	 *
 	 * @param roleIds
 	 */
 	@ResponseBody
@@ -83,7 +75,7 @@ public class RoleController {
 
 	/**
 	 * 根据条件分页查询所有的角色
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param roleDTO
@@ -97,7 +89,7 @@ public class RoleController {
 
 	/**
 	 * 根据用户名查找所有的角色。
-	 * 
+	 *
 	 * @return
 	 */
 	@ResponseBody
@@ -108,7 +100,7 @@ public class RoleController {
 
 	/**
 	 * 根据角色ID查询菜单权限资源树带有已经选中项。
-	 * 
+	 *
 	 * @param roleId
 	 * @return
 	 */
@@ -120,7 +112,7 @@ public class RoleController {
 
 	/**
 	 * 为角色授权菜单资源。
-	 * 
+	 *
 	 * @param roleId
 	 * @param menuResourceIds
 	 * @return
@@ -133,7 +125,7 @@ public class RoleController {
 
 	/**
 	 * 为角色授权URL访问权限资源
-	 * 
+	 *
 	 * @param roleId
 	 * @param urlAccessResourceIds
 	 * @return
@@ -145,9 +137,9 @@ public class RoleController {
 		return	securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
 	}
 
-	/** 
+	/**
 	 * 从角色中撤销Url访问权限资源。
-	 * 
+	 *
 	 * @param roleId
 	 * @param urlAccessResourceIds
 	 * @return
@@ -161,7 +153,7 @@ public class RoleController {
 
 	/**
 	 * 查出已经授权的URL访问权限资源。
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param roleId
@@ -175,7 +167,7 @@ public class RoleController {
 
 	/**
 	 * 查出没有授权的URL访问权限资源。
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param roleId
@@ -189,7 +181,7 @@ public class RoleController {
 
 	/**
 	 * 为角色授权权限
-	 * 
+	 *
 	 * @param roleId
 	 * @param permissionIds
 	 * @return
@@ -202,7 +194,7 @@ public class RoleController {
 
 	/**
 	 * 从角色中撤销权限
-	 * 
+	 *
 	 * @param roleId
 	 * @param permissionIds
 	 * @return
@@ -215,7 +207,7 @@ public class RoleController {
 
 	/**
 	 * 根据角色ID分页查询已经授权的权限
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param roleId
@@ -229,7 +221,7 @@ public class RoleController {
 
 	/**
 	 * 根据角色ID分页查询还未授权的权限
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param roleId
@@ -243,7 +235,7 @@ public class RoleController {
 
 	/**
 	 * 为角色授权页面元素权限资源
-	 * 
+	 *
 	 * @param roleId
 	 * @param pageElementResourceIds
 	 * @return
@@ -256,20 +248,20 @@ public class RoleController {
 
 	/**
 	 * 从角色中撤销页面元素权限资源。
-	 * 
+	 *
 	 * @param roleId
-	 * @param PageElementResourceIds
+	 * @param pageElementResourceIds
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminatePageElementResourcesFromRole", method = RequestMethod.POST)
-	public InvokeResult terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds) {	
+	public InvokeResult terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds) {
 		return	securityConfigFacade.terminatePageElementResourcesFromRole(roleId, pageElementResourceIds);
 	}
 
 	/**
 	 * 根据角色ID分页查询已经授权的页面元素权限资源
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param roleId
@@ -283,7 +275,7 @@ public class RoleController {
 
 	/**
 	 * 根据角色ID分页查询还未授权的页面元素权限资源
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param roleId
@@ -300,12 +292,12 @@ public class RoleController {
 
 	/**
 	 * TODO 还未实现 为角色授权方法调用权限资源。
-	 * 
+	 *
 	 * @param roleId
 	 * @param menuResourceIds
 	 * @return
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "/grantMethodInvocationResourcesToRole", method = RequestMethod.GET)
 	public JsonResult grantMethodInvocationResourcesToRole(Long roleId, Long[] menuResourceIds) {
 		JsonResult jsonResult = new JsonResult();
@@ -319,5 +311,5 @@ public class RoleController {
 			jsonResult.setMessage("为角色授权方法调用权限资源失败");
 		}
 		return jsonResult;
-	}
+	}*/
 }

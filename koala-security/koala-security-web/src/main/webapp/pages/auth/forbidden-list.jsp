@@ -56,6 +56,9 @@
 			identity : 'id',
 			columns : columns,
 			buttons : getButtons(),
+			dataFilter:function(result){
+                return result.data;
+            },
 			url : url
 		}).on({
 			'available' : function(event, data) {

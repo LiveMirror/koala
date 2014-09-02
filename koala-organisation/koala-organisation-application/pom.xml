@@ -39,16 +39,10 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
- 
+
         <dependency>
             <groupId>javax.ejb</groupId>
             <artifactId>ejb-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.openkoala.koalacommons</groupId>
-            <artifactId>koala-commons-support</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
@@ -73,7 +67,14 @@
             <artifactId>powermock-module-junit4</artifactId>
             <scope>test</scope>
         </dependency>
-
+		
+		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-support</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
         <dependency>
             <groupId>org.openkoala.koalacommons</groupId>
             <artifactId>koala-commons-test-support</artifactId>
