@@ -123,10 +123,6 @@ div.btn-group > span {
        
 }      
 
-
-
-	
-	
     </style>
     <script>
         var contextPath = '${pageContext.request.contextPath}';

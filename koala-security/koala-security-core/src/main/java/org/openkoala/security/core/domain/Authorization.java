@@ -24,7 +24,7 @@ import org.openkoala.security.core.NullArgumentException;
  */
 @Entity
 @Table(name = "KS_AUTHORIZATIONS")
-public class Authorization extends AbstractEntity {
+public class Authorization extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = -7604610067031217444L;
 

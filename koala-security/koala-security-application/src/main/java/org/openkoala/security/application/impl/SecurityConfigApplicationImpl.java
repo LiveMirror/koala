@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Sets;
 
 @Named
-@Transactional
 public class SecurityConfigApplicationImpl implements SecurityConfigApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfigApplicationImpl.class);

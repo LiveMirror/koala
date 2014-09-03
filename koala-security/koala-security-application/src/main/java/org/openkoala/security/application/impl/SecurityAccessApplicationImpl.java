@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 
 @Named
-@Transactional
 public class SecurityAccessApplicationImpl implements SecurityAccessApplication {
 
     @Override

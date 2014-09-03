@@ -43,7 +43,8 @@ public class CurrentUserController {
 	@ResponseBody
 	@RequestMapping(value = "/changeUserAccount", method = RequestMethod.POST)
 	public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
-		return securityConfigFacade.changeUserAccount(command);
+		return  securityConfigFacade.changeUserAccount(command);
+
 	}
 
 	/**
@@ -55,6 +56,7 @@ public class CurrentUserController {
 	@ResponseBody
 	@RequestMapping(value = "/changeUserEmail", method = RequestMethod.POST)
 	public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
+
 		return securityConfigFacade.changeUserEmail(command);
 	}
 

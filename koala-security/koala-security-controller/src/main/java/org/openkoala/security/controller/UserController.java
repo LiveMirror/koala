@@ -2,6 +2,7 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
+import org.openkoala.framework.i18n.I18NManager;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.facade.SecurityAccessFacade;
@@ -12,10 +13,15 @@ import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.openkoala.security.shiro.CurrentUser;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContext;
+
+import java.util.Locale;
 
 /**
  * 用户控制器。

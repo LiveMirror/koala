@@ -78,6 +78,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             return InvokeResult.success();
         } catch (UserAccountIsExistedException e) {
             LOGGER.error(e.getMessage());
+//            return InvokeResult.msgKey(e.getMessage());
             return InvokeResult.failure("用户账号:" + command.getUserAccount() + "已经存在。");
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -642,9 +643,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Override
     public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
-        User user = securityAccessApplication.getUserById(command.getId());
-        securityConfigApplication.changeUserAccount(user, command.getUserAccount(), command.getUserPassword());// 显示调用。
-        return InvokeResult.success();
+            User user = securityAccessApplication.getUserById(command.getId());
+            securityConfigApplication.changeUserAccount(user, command.getUserAccount(), command.getUserPassword());
+            return InvokeResult.success();
     }
 
     @Override

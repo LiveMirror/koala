@@ -32,7 +32,7 @@ import org.openkoala.security.core.NullArgumentException;
 @NamedQueries({
         @NamedQuery(name = "SecurityResource.findAllByType", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType"),
         @NamedQuery(name = "SecurityResource.findByName", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType AND _securityResource.name = :name")})
-public abstract class SecurityResource extends AbstractEntity {
+public abstract class SecurityResource extends SecurityAbstractEntity {
 
     private static final long serialVersionUID = 6064565786784560656L;
 

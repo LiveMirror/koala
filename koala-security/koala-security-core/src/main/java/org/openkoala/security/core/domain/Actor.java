@@ -31,7 +31,7 @@ import org.openkoala.security.core.NullArgumentException;
 @Table(name = "KS_ACTORS")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
-public abstract class Actor extends AbstractEntity {
+public abstract class Actor extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = -6279345771754150467L;
 
