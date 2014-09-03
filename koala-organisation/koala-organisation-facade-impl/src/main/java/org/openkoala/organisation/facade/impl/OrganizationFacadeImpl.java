@@ -137,14 +137,14 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 
 	public OrganizationDTO _getOrganizationTree() {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.organisation.facade.dto.OrganizationDTO"
-				+ "(r.id, olm.commissioner.id, r.name, r.sn,r.createDate, r.description, r.category, r.version) "
+				+ "(r.id, olm.commissioner.id, r.name, r.sn,r.createDate, r.terminateDate,r.description, r.category, r.version) "
 				+ "FROM OrganizationLineManagement olm LEFT JOIN olm.responsible r "
 				+ "WHERE olm.commissioner is null AND olm.toDate > :queryDate AND olm.fromDate <= :queryDate ORDER BY r.id ASC");
 		QueryChannelService queryChannel = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel_org");
 		OrganizationDTO top = (OrganizationDTO) queryChannel.createJpqlQuery(jpql.toString()).addParameter("queryDate", new Date()).singleResult();
 
 		jpql = new StringBuilder("SELECT NEW org.openkoala.organisation.facade.dto.OrganizationDTO"
-				+ "(r.id,olm.commissioner.id, r.name, r.sn,r.createDate, r.description, r.category, r.version) "
+				+ "(r.id,olm.commissioner.id, r.name, r.sn,r.createDate,r.terminateDate, r.description, r.category, r.version) "
 				+ "FROM OrganizationLineManagement olm LEFT JOIN olm.responsible r "
 				+ "WHERE olm.commissioner is not null AND  olm.toDate > :queryDate AND olm.fromDate <= :queryDate ORDER BY r.id ASC");
 		@SuppressWarnings("unchecked")

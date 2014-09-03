@@ -11,6 +11,7 @@ import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.OrganizationDTO;
 import org.openkoala.organisation.facade.dto.ResponsiblePostDTO;
 
+
 /**
  * 员工门面层接口
  *

@@ -33,7 +33,6 @@ import org.openkoala.organisation.facade.dto.ResponsiblePostDTO;
 import org.openkoala.organisation.facade.impl.assembler.EmployeeDtoAssembler;
 import org.openkoala.organisation.facade.impl.assembler.OrganizationDtoAssembler;
 import org.openkoala.organisation.facade.impl.assembler.ResponsiblePostDtoAssembler;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 员工应用实现层类

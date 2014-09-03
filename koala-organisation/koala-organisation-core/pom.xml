@@ -25,7 +25,6 @@
             <artifactId>koala-commons-domain</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-		
 		<!-- Test -->
 		<dependency>
 			<groupId>org.openkoala.organisation</groupId>
