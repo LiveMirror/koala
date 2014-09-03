@@ -2,7 +2,6 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
-import org.openkoala.framework.i18n.I18NManager;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.facade.SecurityAccessFacade;
@@ -13,21 +12,16 @@ import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.openkoala.security.shiro.CurrentUser;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.support.RequestContext;
-
-import java.util.Locale;
 
 /**
  * 用户控制器。
- * 
+ *
  * @author luzhao
- * 
+ *
  */
 @Controller
 @RequestMapping("/auth/user")
@@ -41,7 +35,7 @@ public class UserController {
 
 	/**
 	 * 添加用户。
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -55,7 +49,7 @@ public class UserController {
 
 	/**
 	 * 更改用户。
-	 * 
+	 *
 	 * @param command
 	 * @return
 	 */
@@ -67,7 +61,7 @@ public class UserController {
 
 	/**
 	 * 撤销用户。
-	 * 
+	 *
 	 * @param userIds
 	 */
 	@ResponseBody
@@ -78,7 +72,7 @@ public class UserController {
 
 	/**
 	 * 重置用户密码。
-	 * 
+	 *
 	 * @param userId
 	 * @return
 	 */
@@ -90,7 +84,7 @@ public class UserController {
 
 	/**
 	 * 激活用户。
-	 * 
+	 *
 	 * @param userId
 	 * @return
 	 */
@@ -102,7 +96,7 @@ public class UserController {
 
 	/**
 	 * 挂起用户。
-	 * 
+	 *
 	 * @param userId
 	 * @return
 	 */
@@ -114,7 +108,7 @@ public class UserController {
 
 	/**
 	 * 批量激活用户。
-	 * 
+	 *
 	 * @param userIds
 	 * @return
 	 */
@@ -126,7 +120,7 @@ public class UserController {
 
 	/**
 	 * 批量挂起用户。
-	 * 
+	 *
 	 * @param userIds
 	 * @return
 	 */
@@ -139,7 +133,7 @@ public class UserController {
 	// ~ 授权
 	/**
 	 * 为用户授权一个角色。
-	 * 
+	 *
 	 * @param userId
 	 * @param roleId
 	 * @return
@@ -152,7 +146,7 @@ public class UserController {
 
 	/**
 	 * 为用户授权多个角色。
-	 * 
+	 *
 	 * @param userId
 	 * @param roleIds
 	 * @return
@@ -165,7 +159,7 @@ public class UserController {
 
 	/**
 	 * 为用户授权一个权限。
-	 * 
+	 *
 	 * @param userId
 	 * @param permissionId
 	 * @return
@@ -173,12 +167,12 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/grantPermissionToUser", method = RequestMethod.POST)
 	public InvokeResult grantPermissionToUser(Long userId, Long permissionId) {
-		return	securityConfigFacade.grantPermissionToUser(userId, permissionId);			
+		return	securityConfigFacade.grantPermissionToUser(userId, permissionId);
 	}
 
 	/**
 	 * 为用户授权多个权限。
-	 * 
+	 *
 	 * @param userId
 	 * @param permissionIds
 	 * @return
@@ -191,7 +185,7 @@ public class UserController {
 
 	/**
 	 * 通过角色下的用户撤销一个授权中心{@link org.openkoala.security.core.domain.Authorization}。
-	 * 
+	 *
 	 * @param userId
 	 * @param roleId
 	 * @return
@@ -204,7 +198,7 @@ public class UserController {
 
 	/**
 	 * 通过权限下的用户撤销一个授权中心{@link org.openkoala.security.core.domain.Authorization}。
-	 * 
+	 *
 	 * @param userId
 	 * @param permissionId
 	 * @return
@@ -217,7 +211,7 @@ public class UserController {
 
 	/**
 	 * 通过角色下的用户撤销多个授权中心{@link org.openkoala.security.core.domain.Authorization}。
-	 * 
+	 *
 	 * @param userId
 	 * @param roleIds
 	 * @return
@@ -230,7 +224,7 @@ public class UserController {
 
 	/**
 	 * 通过权限下的用户撤销多个授权中心{@link org.openkoala.security.core.domain.Authorization}。。
-	 * 
+	 *
 	 * @param userId
 	 * @param permissionIds
 	 * @return
@@ -243,7 +237,7 @@ public class UserController {
 
 	/**
 	 * 根据条件分页查询用户。
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param queryUserCondition
@@ -257,7 +251,7 @@ public class UserController {
 
 	/**
 	 * 根据用户ID分页查找已经授权的角色。
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param userId
@@ -271,7 +265,7 @@ public class UserController {
 
 	/**
 	 * 根据用户ID分页查询已经授权的权限
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param userId
@@ -285,7 +279,7 @@ public class UserController {
 
 	/**
 	 * 根据条件分页查询还未授权的角色
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param queryRoleCondition
@@ -299,7 +293,7 @@ public class UserController {
 
 	/**
 	 * 根据用户ID分页查找还未授权的权限。
-	 * 
+	 *
 	 * @param page
 	 * @param pagesize
 	 * @param queryPermissionCondition

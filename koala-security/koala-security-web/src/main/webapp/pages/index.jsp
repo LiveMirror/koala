@@ -418,3 +418,4 @@ div.btn-group > span {
 	</script>
 </body>
 </html>
+>>>>>>> origin/master
