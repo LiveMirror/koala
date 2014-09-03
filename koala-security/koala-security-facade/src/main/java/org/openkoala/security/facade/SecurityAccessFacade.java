@@ -208,4 +208,6 @@ public interface SecurityAccessFacade {
      * @return
      */
     InvokeResult getuserDetail(String userAccount);
+    
+    boolean checkRoleName(String roleName);
 }

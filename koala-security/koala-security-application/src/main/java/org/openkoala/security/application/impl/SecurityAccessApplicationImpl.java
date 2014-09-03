@@ -153,4 +153,9 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     public List<MenuResource> findAllMenuResourcesByIds(Long[] menuResourceIds) {
         return MenuResource.findAllByIds(menuResourceIds);
     }
+
+	@Override
+	public boolean checkRoleName(String roleName) {
+		return Role.checkName(roleName);
+	}
 }

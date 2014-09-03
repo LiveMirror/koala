@@ -52,7 +52,7 @@ public interface SecurityAccessApplication {
 	 */
 	User getUserById(Long userId);
 
-    <T extends Actor> T getActorById(Long actorId);
+	<T extends Actor> T getActorById(Long actorId);
 
 	/**
 	 * 根据角色ID获取角色
@@ -180,12 +180,12 @@ public interface SecurityAccessApplication {
 	 */
 	List<UrlAccessResource> findAllUrlAccessResources();
 
-    /**
-     * 查找所有的菜单资源
-     * @return
-     */
-    List<MenuResource> findAllMenuResorces();
-
+	/**
+	 * 查找所有的菜单资源
+	 * 
+	 * @return
+	 */
+	List<MenuResource> findAllMenuResorces();
 
 	boolean hasPageElementResource(String identifier);
 
@@ -194,5 +194,13 @@ public interface SecurityAccessApplication {
 	User getUserByTelePhone(String telePhone);
 
 	List<MenuResource> findAllMenuResourcesByIds(Long[] menuResourceIds);
+
+	/**
+	 * 检测角色名是否存在
+	 * 
+	 * @param roleName
+	 * @return
+	 */
+	boolean checkRoleName(String roleName);
 
 }

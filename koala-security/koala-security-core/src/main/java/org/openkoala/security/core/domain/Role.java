@@ -29,6 +29,10 @@ public class Role extends Authority {
 	public Role(String name) {
 		super(name);
 	}
+	
+	public static boolean checkName(String roleName) {
+		return getRoleBy(roleName) != null;
+	}
 
     public static List<String> getNames(Set<Authority> authorities) {
         List<String> results = new ArrayList<String>();

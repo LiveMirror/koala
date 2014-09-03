@@ -23,6 +23,7 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.*;
 
 import com.google.common.collect.Sets;
+
 import org.openkoala.security.facade.impl.assembler.MenuResourceAssembler;
 import org.openkoala.security.facade.impl.assembler.PermissionAssembler;
 import org.openkoala.security.facade.impl.assembler.RoleAssembler;
@@ -855,6 +856,11 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		} else {
 			jpql.append(" WHERE ");
 		}
+	}
+
+	@Override
+	public boolean checkRoleName(String roleName) {
+		return securityAccessApplication.checkRoleName(roleName);
 	}
 
 }
