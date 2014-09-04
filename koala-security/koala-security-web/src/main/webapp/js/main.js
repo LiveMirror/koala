@@ -77,15 +77,12 @@ $(function(){
 	/*
 	注销
 	*/
-	self.on('loginOut',function(){
-		//window.location.href 
-		
-		var logOut = contextPath+"/auth/loginUser/logout.koala";
-		$.post(logOut,function(result){
-			if(result.success){
+	self.on('loginOut', function(){
+		var logOut = contextPath+"/logout.koala";
+		$.post(logOut,function(data){
+			if(data.success){
 				window.location.href = contextPath+"/login.koala";
 			}
-			
 		});
 	});
 	

@@ -1,6 +1,7 @@
 package org.openkoala.security.shiro;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.openkoala.security.shiro.realm.CustomAuthoringRealm.ShiroUser;
 
@@ -18,16 +19,16 @@ public final class CurrentUser {
 		return getPrincipal().getRoleName();
 	}
 
-	public static void setRoleName(String roleName) {
-		getPrincipal().setRoleName(roleName);
-	}
-
 	public static Subject getSubject() {
 		return SecurityUtils.getSubject();
 	}
 
+    public static PrincipalCollection getPrincipals(){
+        return getSubject().getPrincipals();
+    }
+
 	public static org.apache.shiro.mgt.SecurityManager getSecurityManager() {
-		return SecurityUtils.getSecurityManager();
+       return SecurityUtils.getSecurityManager();
 	}
 	
 }

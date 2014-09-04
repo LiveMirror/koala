@@ -11,6 +11,7 @@ import javax.inject.Named;
 
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -29,6 +30,7 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
+import org.openkoala.security.shiro.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,6 +64,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		return result;
 	}
 
+    // TODO 角色切换适配器 切换角色之后下一次登录的角色？目前好像不控制也没有问题。
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		UsernamePasswordToken toToken = null;
@@ -73,12 +76,8 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		UserDTO user = findUser(username);
 		checkUserStatus(user);
 		checkUserPassword(userPassword, user);
-		// TODO 角色切换适配器
-		// TODO 以后修改成前后台获取一致。
 		String roleName = getRoleName(user);
 		ShiroUser shiroUser = new ShiroUser(user.getId(), user.getUserAccount(), user.getName(), roleName);
-
-		// permission 还需要role 的permission
 
 		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
 				shiroUser, //
@@ -223,7 +222,32 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		return results;
 	}
 
-	public static class ShiroUser implements Serializable {
+    /**
+     * 切换角色
+     * @param roleName 角色名称
+     * @return
+     */
+    public InvokeResult switchOverRoleOfUser(String roleName) {
+
+        if (StringUtils.isBlank(roleName)) {
+            return InvokeResult.failure("角色名为空。");
+        }
+        // 角色名相同 不做任何处理
+        if (CurrentUser.getRoleName().equals(roleName)) {
+            return InvokeResult.success();
+        }
+        if (!securityAccessFacade.checkRoleName(roleName)) {
+            return InvokeResult.failure("角色名不存在。");
+        }
+        PrincipalCollection principalCollection = CurrentUser.getPrincipals();
+        ShiroUser shiroUser = (ShiroUser) principalCollection.getPrimaryPrincipal();
+        shiroUser.setRoleName(roleName);
+        this.doGetAuthorizationInfo(principalCollection);
+        return InvokeResult.success();
+    }
+
+
+    public static class ShiroUser implements Serializable {
 
 		private static final long serialVersionUID = 5876323074602221444L;
 

@@ -33,6 +33,9 @@ public class CurrentUserController {
 
     @Inject
     private SecurityAccessFacade securityAccessFacade;
+
+    @Inject
+    private CustomAuthoringRealm customAuthoringRealm;
 	
 	/**
 	 * 更改用户账号。
@@ -98,17 +101,15 @@ public class CurrentUserController {
         return securityAccessFacade.pagingQueryRolesOfUser(page,pagesize,userAccount);
     }
 
-    /**TODO
+    /**
      * 切换角色
-     * @param role
+     * @param roleName
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/changeRoleOfUser")
-    public InvokeResult changeRoleOfUser(RoleDTO role){
-        String userAccount = CurrentUser.getUserAccount();
-        CurrentUser.setRoleName(role.getName());
-        return InvokeResult.success();
+    @RequestMapping(value = "/switchOverRoleOfUser", method = RequestMethod.POST)
+    public InvokeResult switchOverRoleOfUser(String roleName){
+        return customAuthoringRealm.switchOverRoleOfUser(roleName);
     }
 
     @ResponseBody
