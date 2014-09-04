@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<XmlParse>
+
+	<property name="description">Koala-Organization-generate-source-code</property>
+
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/controller</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/confxml</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-conf/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/webxml</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+	</VelocityDirObject>	
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/application</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-application/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/facade</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/facadeImpl</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facadeImpl/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/core</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-core/</property>
+	</VelocityDirObject>
+	
+	
+	
+	
+	
+</XmlParse>
