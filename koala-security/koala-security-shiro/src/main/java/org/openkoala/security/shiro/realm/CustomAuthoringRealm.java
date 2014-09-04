@@ -60,7 +60,6 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		result.setRoles(roles);
 		result.setStringPermissions(permissions);
 		LOGGER.info("---->role:{},permission:{}", roles, permissions);
-        shiroUser.setAuthorizationInfo(result);
 		return result;
 	}
 
@@ -78,12 +77,11 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		checkUserPassword(userPassword, user);
 		String roleName = getRoleName(user);
 		ShiroUser shiroUser = new ShiroUser(user.getId(), user.getUserAccount(), user.getName(), roleName);
-
+        shiroUser.setEmail(user.getEmail());
 		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
 				shiroUser, //
 				user.getUserPassword(),//
 				getName());
-        shiroUser.setAuthenticationInfo(result);
 		return result;
 	}
 
@@ -259,9 +257,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
 		private String roleName;
 
-        private AuthenticationInfo authenticationInfo;
-
-        private AuthorizationInfo authorizationInfo;
+        private String email;
 
 		ShiroUser() {}
 
@@ -283,24 +279,12 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 			return id;
 		}
 
-		public void setId(Long id) {
-			this.id = id;
-		}
-
 		public String getUserAccount() {
 			return userAccount;
 		}
 
-		public void setUserAccount(String userAccount) {
-			this.userAccount = userAccount;
-		}
-
 		public String getName() {
 			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
 		}
 
 		public String getRoleName() {
@@ -311,20 +295,12 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 			this.roleName = roleName;
 		}
 
-        public AuthenticationInfo getAuthenticationInfo() {
-            return authenticationInfo;
+        public String getEmail() {
+            return email;
         }
 
-        public void setAuthenticationInfo(AuthenticationInfo authenticationInfo) {
-            this.authenticationInfo = authenticationInfo;
-        }
-
-        public AuthorizationInfo getAuthorizationInfo() {
-            return authorizationInfo;
-        }
-
-        public void setAuthorizationInfo(AuthorizationInfo authorizationInfo) {
-            this.authorizationInfo = authorizationInfo;
+        public void setEmail(String email) {
+            this.email = email;
         }
 
         @Override

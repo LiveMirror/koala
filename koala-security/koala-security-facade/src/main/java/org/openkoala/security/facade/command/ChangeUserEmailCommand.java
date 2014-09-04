@@ -8,6 +8,8 @@ package org.openkoala.security.facade.command;
 public class ChangeUserEmailCommand {
 
 	private Long id;
+
+    private String userAccount;
 	
 	private String email;
 	
@@ -37,4 +39,11 @@ public class ChangeUserEmailCommand {
 		this.userPassword = userPassword;
 	}
 
+    public String getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
+    }
 }

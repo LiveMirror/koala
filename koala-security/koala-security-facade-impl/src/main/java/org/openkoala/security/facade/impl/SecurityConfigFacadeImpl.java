@@ -650,8 +650,8 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Override
     public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
-        User user = securityAccessApplication.getUserById(command.getId());
-        securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());// 显示调用。
+        User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
+        securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
         return InvokeResult.success();
     }
 

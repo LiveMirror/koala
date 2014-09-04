@@ -59,7 +59,7 @@ public class CurrentUserController {
 	@ResponseBody
 	@RequestMapping(value = "/changeUserEmail", method = RequestMethod.POST)
 	public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
-
+        command.setUserAccount(CurrentUser.getUserAccount());
 		return securityConfigFacade.changeUserEmail(command);
 	}
 
