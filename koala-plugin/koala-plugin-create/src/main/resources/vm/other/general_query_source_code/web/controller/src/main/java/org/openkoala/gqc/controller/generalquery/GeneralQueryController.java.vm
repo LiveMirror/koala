@@ -10,15 +10,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.dayatang.querychannel.Page;
-import org.openkoala.gqc.application.DataSourceApplication;
-import org.openkoala.gqc.application.GqcApplication;
 import org.openkoala.gqc.core.domain.DynamicQueryCondition;
 import org.openkoala.gqc.core.domain.FieldDetail;
 import org.openkoala.gqc.core.domain.GeneralQuery;
 import org.openkoala.gqc.core.domain.PreQueryCondition;
-import org.openkoala.gqc.vo.DataSourceVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.openkoala.gqc.facade.DataSourceFacade;
+import org.openkoala.gqc.facade.GqcFacade;
+import org.openkoala.gqc.facade.assembler.GqcAssembler;
+import org.openkoala.gqc.facade.dto.DataSourceDTO;
+import org.openkoala.gqc.facade.dto.GeneralQueryDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,14 +38,14 @@ public class GeneralQueryController {
 	/**
 	 * 数据源应用层接口实例
 	 */
-    @Autowired
-    private DataSourceApplication dataSourceApplication;
+    @Inject
+    private DataSourceFacade dataSourceFacade;
     
     /**
      * 查询通道应用层接口实例
      */
-    @Autowired
-    private GqcApplication gqcApplication;
+    @Inject
+    private GqcFacade gqcFacade;
     
 	/**
 	 * 分页查询通用查询列表
@@ -56,16 +59,14 @@ public class GeneralQueryController {
 		//Json对象
         Page<GeneralQuery> all = null;
         if (queryName != null && !queryName.isEmpty()) {
-        	all = gqcApplication.pagingQueryGeneralQueriesByQueryName(queryName, page, pagesize);
+        	all = gqcFacade.pagingQueryGeneralQueriesByQueryName(queryName, page, pagesize);
         } else {
-        	all = gqcApplication.pagingQueryGeneralQueries(page, pagesize);
+        	all = gqcFacade.pagingQueryGeneralQueries(page, pagesize);
         }
         
-        List<GeneralQueryVo> generalQueryVos = new ArrayList<GeneralQueryController.GeneralQueryVo>();
+        List<GeneralQueryDTO> generalQueryVos = new ArrayList<GeneralQueryDTO>();
         for (GeneralQuery generalQuery : all.getData()) {
-        	generalQueryVos.add(new GeneralQueryVo(generalQuery.getId(), generalQuery.getDataSource().getDataSourceId(), 
-        			generalQuery.getDataSource().getId(), generalQuery.getQueryName(), 
-        			generalQuery.getTableName(), generalQuery.getDescription(), generalQuery.getCreateDate()));
+        	generalQueryVos.add(GqcAssembler.getDTO(generalQuery));
         }
 		return new Page(all.getStart(), all.getResultCount(), all.getPageSize(), generalQueryVos);
 	}
@@ -77,14 +78,15 @@ public class GeneralQueryController {
 	 */
     @ResponseBody
     @RequestMapping("/add")
-    public Map<String,Object> add(GeneralQuery generalQuery) {
-	    Map<String, Object> dataMap = new HashMap<String, Object>();
+    public Map<String,Object> add(GeneralQueryDTO generalQuery) {
+    	 Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             generalQuery.setCreateDate(new Date());
-            gqcApplication.saveGeneralQuery(generalQuery);
+            gqcFacade.saveGeneralQuery(generalQuery);
             dataMap.put("result", "success");
         } catch (RuntimeException e) {
             dataMap.put("result", e.getMessage());
+            e.printStackTrace();
         } catch (Exception e) {
             dataMap.put("result", "保存失败！");
             e.printStackTrace();
@@ -104,10 +106,10 @@ public class GeneralQueryController {
     public Map<String, Object> getById(Long id) {
     	System.out.println(id);
         //查询出该实体
-    	GeneralQuery generalQuery = gqcApplication.getById(id);
+    	GeneralQuery generalQuery = GqcAssembler.getEntity(gqcFacade.getById(id));
 
         //表中所有列，供查询条件选择
-        Map<String, Integer> queryConditionColumns = dataSourceApplication.findAllColumn(
+        Map<String, Integer> queryConditionColumns = dataSourceFacade.findAllColumn(
                     generalQuery.getDataSource().getId(), generalQuery.getTableName());
             
         //表中所有列，供显示列选择
@@ -130,11 +132,11 @@ public class GeneralQueryController {
      */
     @ResponseBody
     @RequestMapping("/update")
-    public Map<String,Object> update(GeneralQuery generalQuery) {
+    public Map<String,Object> update(GeneralQueryDTO generalQuery) {
 	    Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             generalQuery.setCreateDate(new Date());
-            gqcApplication.saveGeneralQuery(generalQuery);
+            gqcFacade.saveGeneralQuery(generalQuery);
             dataMap.put("result", "success");
         } catch (RuntimeException e) {
             dataMap.put("result", e.getMessage());
@@ -157,7 +159,7 @@ public class GeneralQueryController {
         try {
         	dataMap = new HashMap<String, Object>();
             
-            List<DataSourceVO> list = dataSourceApplication.findAllDataSource();
+            List<DataSourceDTO> list = dataSourceFacade.findAllDataSource();
             dataMap.put("dataSourceList", list);
         } catch (Exception e) {
         	if(dataMap != null){
@@ -178,16 +180,7 @@ public class GeneralQueryController {
 	public Map<String,Object> delete(String ids) {
     	//Json对象
 	    Map<String, Object> dataMap = new HashMap<String, Object>();
-        
-        if(ids != null){
-            String[] idArrs = ids.split(",");
-            Set<GeneralQuery> generalQueries = new HashSet<GeneralQuery>();
-            for (int i = 0; i < idArrs.length; i ++) {
-            	generalQueries.add(GeneralQuery.get(GeneralQuery.class, Long.parseLong(idArrs[i])));
-            }
-            gqcApplication.removeEntities(generalQueries);
-        }
-        
+	    gqcFacade.removeEntity(ids);
 		dataMap.put("result", "success");
 		return dataMap;
 	}
@@ -204,7 +197,7 @@ public class GeneralQueryController {
         try {
         	dataMap = new HashMap<String, Object>();
             
-            List<String> tableList = dataSourceApplication.findAllTable(id);
+            List<String> tableList = dataSourceFacade.findAllTable(id);
             Collections.sort(tableList);
             dataMap.put("tableList", tableList);
         } catch (Exception e) {
@@ -230,7 +223,7 @@ public class GeneralQueryController {
         try {
         	dataMap = new HashMap<String, Object>();
             
-            Map<String, Integer> tableMap = dataSourceApplication.findAllColumn(id, tableName);
+            Map<String, Integer> tableMap = dataSourceFacade.findAllColumn(id, tableName);
             dataMap.put("tableMap", tableMap);
         } catch (Exception e) {
         	if(dataMap != null){
@@ -283,162 +276,6 @@ public class GeneralQueryController {
         }
     }
 	
-	/**
-	 * 封装GeneralQueryVo实例
-	 * @author lambo
-	 *
-	 */
-	class GeneralQueryVo {
-		
-		/**
-		 * 主键id
-		 */
-		private Long id;
-		
-		/**
-		 * 数据源业务id
-		 */
-		private String dataSourceId;
-		
-		/**
-		 * 数据源主键id
-		 */
-		private Long dsId;
-
-		/**
-		 * 查询器名称
-		 */
-		private String queryName;
-
-		/**
-		 * 表名
-		 */
-		private String tableName;
-
-		/**
-		 * 描述
-		 */
-		private String description;
-
-		/**
-		 * 创建时间
-		 */
-		private Date createDate;
-
-		/**
-		 * 静态查询条件
-		 */
-		private List<PreQueryCondition> preQueryConditions = new ArrayList<PreQueryCondition>();
-
-		/**
-		 * 动态查询条件
-		 */
-		private List<DynamicQueryCondition> dynamicQueryConditions = new ArrayList<DynamicQueryCondition>();
-
-		/**
-		 * 显示列
-		 */
-		private List<FieldDetail> fieldDetails = new ArrayList<FieldDetail>();
-
-		GeneralQueryVo(Long id, String dataSourceId, Long dsId, String queryName, String tableName, String description, Date createDate) {
-			this.id = id;
-			this.dataSourceId = dataSourceId;
-			this.dsId = dsId;
-			this.queryName = queryName;
-			this.tableName = tableName;
-			this.description = description;
-			this.createDate = createDate;
-		}
-
-		public Long getId() {
-			return id;
-		}
-
-		public void setId(Long id) {
-			this.id = id;
-		}
-
-		public String getDataSourceId() {
-
-			return dataSourceId;
-		}
-
-		public void setDataSourceId(String dataSourceId) {
-			this.dataSourceId = dataSourceId;
-		}
-
-		public Long getDsId() {
-			return dsId;
-		}
-
-		public void setDsId(Long dsId) {
-			this.dsId = dsId;
-		}
-
-		public String getQueryName() {
-			return queryName;
-		}
-
-		public void setQueryName(String queryName) {
-			this.queryName = queryName;
-		}
-
-		public String getTableName() {
-			return tableName;
-		}
-
-		public void setTableName(String tableName) {
-			this.tableName = tableName;
-		}
-
-		public String getDescription() {
-			return description;
-		}
-
-		public void setDescription(String description) {
-			this.description = description;
-		}
-
-		public Date getCreateDate() {
-			return createDate;
-		}
-
-		public void setCreateDate(Date createDate) {
-			this.createDate = createDate;
-		}
-
-
-		public List<PreQueryCondition> getPreQueryConditions() {
-			return preQueryConditions;
-		}
-
-
-		public void setPreQueryConditions(List<PreQueryCondition> preQueryConditions) {
-			this.preQueryConditions = preQueryConditions;
-		}
-
-
-		public List<DynamicQueryCondition> getDynamicQueryConditions() {
-			return dynamicQueryConditions;
-		}
-
-
-		public void setDynamicQueryConditions(
-				List<DynamicQueryCondition> dynamicQueryConditions) {
-			this.dynamicQueryConditions = dynamicQueryConditions;
-		}
-
-
-		public List<FieldDetail> getFieldDetails() {
-			return fieldDetails;
-		}
-
-
-		public void setFieldDetails(List<FieldDetail> fieldDetails) {
-			this.fieldDetails = fieldDetails;
-		}
-		
-	}
 	
 	/**
 	 * 克隆

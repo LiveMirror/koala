@@ -23,26 +23,32 @@ public class DynamicQueryCondition extends QueryCondition {
 	/**
 	 * 显示名称
 	 */
+	@Column(name = "LABEL")
 	private String label;
 	
 	/**
 	 * 控件类型
 	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name = "WIDGET_TYPE")
 	private WidgetType widgetType;
 
 	/**
 	 * 查询值
 	 */
+	@Transient
 	private String value;
 	
 	/**
 	 * 查询开始值，用于区间查询
 	 */
+	@Transient
 	private String startValue;
 	
 	/**
 	 * 查询值结束值，用于区间查询
 	 */
+	@Transient
 	private String endValue;
 	
 	public DynamicQueryCondition() {
@@ -53,7 +59,7 @@ public class DynamicQueryCondition extends QueryCondition {
 		this.setFieldName(fieldName);
 	}
 	
-	@Column(name = "LABEL")
+	
 	public String getLabel() {
 		return label;
 	}
@@ -62,8 +68,7 @@ public class DynamicQueryCondition extends QueryCondition {
 		this.label = label;
 	}
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "WIDGET_TYPE")
+	
 	public WidgetType getWidgetType() {
 		return widgetType;
 	}
@@ -72,7 +77,7 @@ public class DynamicQueryCondition extends QueryCondition {
 		this.widgetType = widgetType;
 	}
 
-	@Transient
+	
 	public String getValue() {
 		return value;
 	}
@@ -81,7 +86,7 @@ public class DynamicQueryCondition extends QueryCondition {
 		this.value = value;
 	}
 
-	@Transient
+	
 	public String getStartValue() {
 		return startValue;
 	}
@@ -90,7 +95,7 @@ public class DynamicQueryCondition extends QueryCondition {
 		this.startValue = startValue;
 	}
 
-	@Transient
+	
 	public String getEndValue() {
 		return endValue;
 	}

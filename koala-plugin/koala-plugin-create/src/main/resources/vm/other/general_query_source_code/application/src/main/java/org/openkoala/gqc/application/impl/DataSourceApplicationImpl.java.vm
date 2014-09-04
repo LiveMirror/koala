@@ -2,26 +2,23 @@ package org.openkoala.gqc.application.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
+
+
+
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.gqc.application.DataSourceApplication;
 import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.core.domain.DataSourceType;
 import org.openkoala.gqc.core.domain.GeneralQuery;
 import org.openkoala.gqc.infra.util.DatabaseUtils;
-import org.openkoala.gqc.vo.DataSourceVO;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -64,57 +61,38 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 		DataSourceApplicationImpl.queryChannel = queryChannel;
 	}
 
-	public DataSourceVO getDataSourceVoById(Long id) {
+	public DataSource getDataSourceById(Long id) {
 		try {
-//			String jpql = " select _dataSource from DataSource _dataSource  where _dataSource.id = ? ";
-//			DataSource dataSource = (DataSource) getQueryChannelService().querySingleResult(jpql,
-//					new Object[] { id });
 			DataSource dataSource = DataSource.get(DataSource.class, id);
-			DataSourceVO dataSourceVO = new DataSourceVO();
-			// 将domain转成VO
-			try {
-				BeanUtils.copyProperties(dataSourceVO, dataSource);
-				dataSourceVO.setDataSourceTypeDesc(dataSourceVO.getDataSourceType().getDescription());
-			} catch (Exception e) {
-			}
-			return dataSourceVO;
+			return dataSource;
 		} catch (Exception e) {
 			throw new RuntimeException("查询数据源失败！", e);
 		}
 	}
 
-	public DataSourceVO getDataSourceVoByDataSourceId(String dataSourceId) {
+	public DataSource getDataSourceByDataSourceId(String dataSourceId) {
 		String jpql = " select _dataSource from DataSource _dataSource  where _dataSource.dataSourceId = :dataSourceId ";
 		try {
 			DataSource dataSource = (DataSource) getQueryChannelService().createJpqlQuery(jpql).addParameter("dataSourceId", dataSourceId).singleResult();
-			if (dataSource != null) {
-				DataSourceVO dataSourceVO = new DataSourceVO();
-				BeanUtils.copyProperties(dataSourceVO, dataSource);
-				dataSourceVO.setDataSourceTypeDesc(dataSourceVO.getDataSourceType()
-						.getDescription());
-				return dataSourceVO;
-			}else{
-				return null;
-			}
+				return dataSource;
 		} catch (Exception e) {
 			throw new RuntimeException("查询指定数据源失败！", e);
 		}
 	}
 
-	public String saveDataSource(DataSourceVO dataSourceVO) {
+	public String saveDataSource(DataSource dataSource) {
+		System.out.println(dataSource.getDataSourceId());
 		try {
-			DataSourceVO checkExist = this.getDataSourceVoByDataSourceId(dataSourceVO
-					.getDataSourceId());
+			DataSource checkExist = this.getDataSourceByDataSourceId(dataSource.getDataSourceId());
 			if (checkExist != null) {
 				return "该数据源ID已存在";
 			}
 
-			DataSource dataSource = new DataSource();
 			// 系统数据源
-			if (DataSourceType.SYSTEM_DATA_SOURCE.equals(dataSourceVO.getDataSourceType())) {
+			if (DataSourceType.SYSTEM_DATA_SOURCE.equals(dataSource.getDataSourceType())) {
 				try {
 					// 若未抛异常，表明该系统数据源存在
-					dataSource = DataSource.getSystemDataSource(dataSourceVO.getDataSourceId());
+					dataSource = DataSource.getSystemDataSource(dataSource.getDataSourceId());
 					dataSource.setConnectUrl(dataSource.getConnectUrl().split(";")[0]);
 				} catch (Exception e) {
 					return e.getMessage();
@@ -129,7 +107,6 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
                 }
 			}
 
-			BeanUtils.copyProperties(dataSource, dataSourceVO);
 			dataSource.setId(null);
 			dataSource.save();
 			
@@ -140,11 +117,11 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 		}
 	}
 
-	public void updateDataSource(DataSourceVO dataSourceVO) {
-		DataSource dataSource = DataSource.get(DataSource.class, dataSourceVO.getId());
+public void updateDataSource(DataSource dataSource) {
+		DataSource source = DataSource.get(DataSource.class, dataSource.getId());
 		// 设置要更新的值
 		try {
-			BeanUtils.copyProperties(dataSource, dataSourceVO);
+			BeanUtils.copyProperties(source, dataSource);
 		} catch (Exception e) {
 			throw new RuntimeException("更新数据源失败！", e);
 		}
@@ -168,18 +145,13 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 		}
 	}
 
-	public List<DataSourceVO> findAllDataSource() {
+	public List<DataSource> findAllDataSource() {
 		try {
-			List<DataSourceVO> list = new ArrayList<DataSourceVO>();
+			List<DataSource> list = new ArrayList<DataSource>();
 			List<DataSource> all = DataSource.findAll(DataSource.class);
 			for (DataSource dataSource : all) {
-				DataSourceVO dataSourceVO = new DataSourceVO();
-				// 将domain转成VO
-				try {
-					BeanUtils.copyProperties(dataSourceVO, dataSource);
-				} catch (Exception e) {
-				}
-				list.add(dataSourceVO);
+				
+				list.add(dataSource);
 			}
 			return list;
 		} catch (Exception e) {
@@ -231,7 +203,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 		}
 	}
 	
-	public Page<DataSourceVO> pageQueryDataSource(DataSourceVO queryVo, int currentPage,
+	/*public Page<DataSourceVO> pageQueryDataSource(DataSourceVO queryVo, int currentPage,
 			int pageSize) {
 		try {
 			List<DataSourceVO> result = new ArrayList<DataSourceVO>();
@@ -295,7 +267,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 		} catch (Exception e) {
 			throw new RuntimeException("查询数据源列表失败！", e);
 		}
-	}
+	}*/
 	
 	public boolean checkDataSourceCanConnect(DataSource dataSource) {
 		try {
@@ -316,16 +288,8 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 	 * @return
 	 */
 	public boolean testConnection(Long id) {
-		DataSourceVO dataSourceVO = this.getDataSourceVoById(id);
-		// 将domain转成VO
-		try {
-			DataSource dataSource = new DataSource();
-			BeanUtils.copyProperties(dataSource, dataSourceVO);
-			return dataSource.testConnection();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+		DataSource dataSource = this.getDataSourceById(id);
+		return dataSource.testConnection();
 	}
 	
 	/**
@@ -339,5 +303,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 			conn.close();
 		}
 	}
+
+
 
 }

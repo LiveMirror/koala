@@ -195,6 +195,7 @@ public class Project implements Serializable {
 		bizModel.setModuleName("core");
 		bizModel.setProjectName(appName);
 		bizModel.setBasePackage(getGroupId() + "." + getPackageName() + ".core.domain");
+		bizModel.getDependencies().add("infra");
 		getModule().add(bizModel);
 
 		// 初始化一个接口层

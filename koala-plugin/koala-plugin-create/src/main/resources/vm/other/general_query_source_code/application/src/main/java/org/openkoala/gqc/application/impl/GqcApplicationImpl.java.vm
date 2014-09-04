@@ -1,14 +1,10 @@
 package org.openkoala.gqc.application.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Map;
 import java.util.Set;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.dayatang.domain.AbstractEntity;
 import org.dayatang.domain.InstanceFactory;
@@ -69,6 +65,19 @@ public class GqcApplicationImpl implements GqcApplication {
 	    }
 	}
 
+	public void removeEntity(String ids){
+		
+		  if(ids != null){
+	            String[] idArrs = ids.split(",");
+	            for (int i = 0; i < idArrs.length; i ++) {
+	            	GeneralQuery generalQuerie  =  GeneralQuery.get(GeneralQuery.class, Long.parseLong(idArrs[i]));
+	            	generalQuerie.remove();
+	            }
+	            
+	        }
+	        
+	}
+	
 	public void removeEntity(GeneralQueryEntity entity) {
 		try {
 			entity.remove();
@@ -77,17 +86,17 @@ public class GqcApplicationImpl implements GqcApplication {
 		}
 	}
 
-	public Page<GeneralQuery> pagingQueryGeneralQueries(int currentPage, int pagesize) {
+	/*public Page<GeneralQuery> pagingQueryGeneralQueries(int currentPage, int pagesize) {
 	   	StringBuilder jpql = null;
 		List<Object> conditionVals = null;
 		try {
 			jpql = new StringBuilder("select _generalQuery from GeneralQuery _generalQuery");
 			conditionVals = new ArrayList<Object>();
-			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage,pagesize).pagedList();
+			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
 		} catch (Exception e) {
 			throw new RuntimeException("查询失败！", e);
 		}
-	}
+	}*/
 	
 	public GeneralQuery getById(Long id){
 	    try {
@@ -108,7 +117,7 @@ public class GqcApplicationImpl implements GqcApplication {
 		}
 	}
 
-	public Page<GeneralQuery> pagingQueryGeneralQueriesByQueryName(String queryName, int currentPage, int pagesize) {
+	/*public Page<GeneralQuery> pagingQueryGeneralQueriesByQueryName(String queryName, int currentPage, int pagesize) {
 	   	StringBuilder jpql = null;
 		List<Object> conditionVals = null;
 		try {
@@ -124,14 +133,12 @@ public class GqcApplicationImpl implements GqcApplication {
 			e.printStackTrace();
 			throw new RuntimeException("查询失败！", e);
 		}
-	}
+	}*/
 
-	
 	public Page<Map<String, Object>> pagingQuery(GeneralQuery generalQuery, int currentPage, int pagesize) {
 		return generalQuery.pagingQueryPage(currentPage, pagesize);
 	}
 
-	
 	public void saveGeneralQuery(GeneralQuery generalQuery) {
 		generalQuery.save();
 	}

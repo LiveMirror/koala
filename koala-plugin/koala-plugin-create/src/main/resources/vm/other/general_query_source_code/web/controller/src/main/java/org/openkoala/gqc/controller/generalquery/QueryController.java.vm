@@ -1,18 +1,18 @@
 package org.openkoala.gqc.controller.generalquery;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.dayatang.querychannel.Page;
-import org.openkoala.gqc.application.GqcApplication;
 import org.openkoala.gqc.core.domain.DynamicQueryCondition;
-import org.openkoala.gqc.core.domain.GeneralQuery;
+import org.openkoala.gqc.facade.GqcFacade;
+import org.openkoala.gqc.facade.assembler.GqcAssembler;
+import org.openkoala.gqc.facade.dto.GeneralQueryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,8 +40,8 @@ public class QueryController {
 	/**
 	 * 查询通道应用层接口实例
 	 */
-    @Autowired
-	private GqcApplication gqcApplication;
+    @Inject
+	private GqcFacade gqcFacade;
 	
 	/**
 	 * 生成查询页面
@@ -52,7 +52,7 @@ public class QueryController {
 	 */
 	@RequestMapping("/query/{id}")
 	public String queryPage(@PathVariable Long id, ModelMap modelMap) {
-		GeneralQuery generalQuery = gqcApplication.getById(id);
+		GeneralQueryDTO generalQuery = gqcFacade.getById(id);
 		modelMap.addAttribute("gq", generalQuery);
 		modelMap.addAttribute("gqId", id);
 		return "query";
@@ -69,7 +69,7 @@ public class QueryController {
 	@RequestMapping("/preview/{id}")
 	public Map<String, Object> preview(@PathVariable Long id) {
     	Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("generalQuery", gqcApplication.getById(id));
+		dataMap.put("generalQuery", gqcFacade.getById(id));
 		return dataMap;
 	}
 
@@ -87,7 +87,7 @@ public class QueryController {
 	@RequestMapping("/search/{id}")
 	public Page search(@PathVariable Long id, @RequestParam int page,
 			@RequestParam int pagesize, HttpServletRequest request) {
-		GeneralQuery generalQuery = gqcApplication.getById(id);
+		GeneralQueryDTO generalQuery = gqcFacade.getById(id);
 		Map<String, Object[]> params = request.getParameterMap();
 		String startValueTag = "Start@";
 		String endValueTag = "End@";
@@ -99,7 +99,7 @@ public class QueryController {
 				DynamicQueryCondition dqc = null;
 				if (key.endsWith(startValueTag)) {
 					String fieldName = key.replace(startValueTag, "");
-					dqc = generalQuery.getDynamicQueryConditionByFieldName(fieldName);
+					dqc = GqcAssembler.getEntity(generalQuery).getDynamicQueryConditionByFieldName(fieldName);
 					if (dqc != null) {
 						dqc.setStartValue((String) keyValue.getValue()[0]);
 					}
@@ -108,21 +108,21 @@ public class QueryController {
 				
 				if (key.endsWith(endValueTag)) {
 					String fieldName = key.replace(endValueTag, "");
-					dqc = generalQuery.getDynamicQueryConditionByFieldName(fieldName);
+					dqc = GqcAssembler.getEntity(generalQuery).getDynamicQueryConditionByFieldName(fieldName);
 					if (dqc != null) {
 						dqc.setEndValue((String) keyValue.getValue()[0]);
 					}
 					continue;
 				}
 				
-				dqc = generalQuery.getDynamicQueryConditionByFieldName(key);
+				dqc = GqcAssembler.getEntity(generalQuery).getDynamicQueryConditionByFieldName(key);
 				if (dqc != null) {
 					dqc.setValue((String) keyValue.getValue()[0]);
 				}
 			}
 		}
 		
-		Page<Map<String, Object>> data = gqcApplication.pagingQuery(generalQuery, page, pagesize);
+		Page<Map<String, Object>> data = gqcFacade.pagingQuery(generalQuery, page, pagesize);
 
 		return data;
 	}

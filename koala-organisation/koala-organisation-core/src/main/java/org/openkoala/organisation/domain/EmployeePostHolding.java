@@ -38,6 +38,7 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	private static final long serialVersionUID = 7390804525640459582L;
 
 	
+	@Column(name = "is_principal")
 	private boolean principal = true;
 
 	EmployeePostHolding() {
@@ -52,7 +53,6 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 		setPrincipal(isPrincipal);
 	}
 
-	@Column(name = "is_principal")
 	public boolean isPrincipal() {
 		return principal;
 	}

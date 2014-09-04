@@ -61,7 +61,11 @@
             <groupId>org.openkoala.koalacommons</groupId>  
             <artifactId>koala-commons-domain</artifactId>  
         </dependency>  
-				  
+		 <dependency>
+			  	<groupId>$Project.groupId</groupId>
+				<artifactId>${Project.artifactId}-infra</artifactId>
+				<version>${project.parent.version}</version>
+			 </dependency>
   <!-- 加入CONF依赖 -->
   <dependency>
   	<groupId>$Project.groupId</groupId>

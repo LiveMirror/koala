@@ -33,12 +33,16 @@ public class Employee extends Party {
 	/*
 	 * 作为员工的人
 	 */
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "person_id")
 	private Person person;
 
 	/*
 	 * 入职日期
 	 */
 	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "entry_date")
 	private Date entryDate;
 	
 	Employee() {
@@ -57,8 +61,6 @@ public class Employee extends Party {
 		setSn(sn);
 	}
 
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "person_id")
 	public Person getPerson() {
 		return person;
 	}
@@ -75,8 +77,6 @@ public class Employee extends Party {
 		}
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "entry_date")
 	public Date getEntryDate() {
 		return entryDate;
 	}
