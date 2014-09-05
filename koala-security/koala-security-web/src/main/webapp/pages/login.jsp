@@ -190,27 +190,25 @@ body {
 	        if (!Validation.notNull($('body'), passwordElement, password, '密码不能为空')) {
 	            return false;
 	        }
-	  
 	        btnLogin.attr('disabled', 'disabled').html('正在登录...');
-	        
     		var param = form.serialize();
         	$.ajax({
-        		url :contextPath+"/login.koala",
-        		dataType:"json",
-        		data:param,
-        		type:"POST",
-        		success:function(data){
+        		url: contextPath+"/login.koala",
+        		dataType: "json",
+        		data: param,
+        		type: "POST",
+        		success: function(data){
         			if(data.success){
         				$('.login_con_R').message({
         					type: 'success',
-        					content:  data.message
+        					content:  '登录成功！'
         				});
-        				window.location.href=contextPath+"/pages/index.jsp";
+        				window.location.href=contextPath+"/index.koala";
         			}else{
         				btnLogin.removeAttr('disabled').html('登录');
         				$('.login_con_R').message({
         					type: 'error',
-        					content: data.message
+        					content: data.errorMessage
         				});
         			}
         		}

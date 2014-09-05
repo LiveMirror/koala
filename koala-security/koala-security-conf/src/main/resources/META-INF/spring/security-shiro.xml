@@ -37,7 +37,7 @@
 	<bean id="anyRoleFilter" class="org.openkoala.security.shiro.filter.AnyRoleAuthorizationFilter"></bean>
  	
 	<bean id="jCaptchaValidateFilter" class="org.openkoala.security.shiro.Jcaptcha.JCaptchaValidateFilter">
-		<property name="jCaptchaDisabled" value="${org.security.jCaptchaDisabled}" />
+		<property name="jCaptchaDisabled" value="${security.jCaptchaDisabled}" />
 		<property name="jCaptchaCode" value="jCaptchaCode" />
 		<property name="failureKeyAttribute" value="shiroLoginFailure" />
 	</bean>

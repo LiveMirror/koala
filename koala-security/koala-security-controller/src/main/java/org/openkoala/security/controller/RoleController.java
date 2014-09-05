@@ -2,9 +2,6 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
@@ -13,12 +10,9 @@ import org.openkoala.security.facade.command.CreateRoleCommand;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
-import org.openkoala.security.shiro.realm.CustomAuthoringRealm;
-import org.openkoala.security.shiro.realm.CustomAuthoringRealm.ShiroUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,31 +38,6 @@ public class RoleController {
 	@Inject
 	private ShiroFilterChainManager shiroFilterChainManager;
 
-	@Inject
-	private CustomAuthoringRealm customAuthoringRealm;
-	
-	/**
-	 * 角色切换
-	 * 
-	 * @param roleName
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/switchover/{roleName}", method = RequestMethod.POST)
-	public InvokeResult switchOver(@PathVariable String roleName) {
-		if (StringUtils.isBlank(roleName)) {
-			return InvokeResult.failure("角色名为空");
-		}
-		if (!securityAccessFacade.checkRoleName(roleName)) {
-			return InvokeResult.failure("角色名不存在");
-		}
-		PrincipalCollection principalCollection = SecurityUtils.getSubject().getPrincipals();
-		ShiroUser shiroUser = (ShiroUser) principalCollection.getPrimaryPrincipal();
-		shiroUser.setRoleName(roleName);
-		customAuthoringRealm.doGetAuthorizationInfo(principalCollection);
-		return InvokeResult.success();
-	}
-	
 	/**
 	 * 添加角色
 	 *

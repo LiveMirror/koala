@@ -158,4 +158,9 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 	public boolean checkRoleName(String roleName) {
 		return Role.checkName(roleName);
 	}
+
+    @Override
+    public <T extends Authority> T getAuthority(Long authorityId) {
+        return Authority.getBy(authorityId);
+    }
 }

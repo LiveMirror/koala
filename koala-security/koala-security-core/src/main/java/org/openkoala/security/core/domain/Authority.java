@@ -195,4 +195,8 @@ public abstract class Authority extends SecurityAbstractEntity {
     public static List<MenuResource> findMenuResourceByAuthorities(Set<Authority> authorities) {
         return ResourceAssignment.findMenuResourceByAuthorities(authorities);
     }
+
+    public static <T extends Authority> T getBy(Long authorityId) {
+        return Authority.getBy(authorityId);
+    }
 }

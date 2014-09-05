@@ -23,7 +23,7 @@
 	<!-- Creates a EntityManagerFactory for use with the Hibernate JPA provider 
 		and a simple in-memory data source populated with test data -->
 	<bean id="entityManagerFactory_security" class="org.openkoala.koala.util.KoalaEntityManagerFactoryBean">
-		<property name="persistenceUnitName" value="${jpa.persistenceUnitName}" />
+		<property name="persistenceUnitName" value="${security.jpa.persistenceUnitName}" />
 		<property name="packagesToScan">
 			<list>
 				<value>org.openkoala.security.core.domain</value>
@@ -34,17 +34,17 @@
 		<property name="dataSource" ref="dataSource_security" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="database" value="${org.db.Type}"></property>
-				<property name="showSql" value="${org.hibernate.show_sql}"></property>
-				<property name="generateDdl" value="${org.generateDdl}"></property>
-				<property name="databasePlatform" value="${org.db.jdbc.dialect}"></property>
+				<property name="database" value="${security.db.Type}"></property>
+				<property name="showSql" value="${security.hibernate.show_sql}"></property>
+				<property name="generateDdl" value="${security.generateDdl}"></property>
+				<property name="databasePlatform" value="${security.db.jdbc.dialect}"></property>
 			</bean>
 		</property>
 	</bean>
 
 
     <bean id="entityManager_security" class="org.springframework.orm.jpa.support.SharedEntityManagerBean" scope="prototype">
-        <property name="persistenceUnitName" value="${jpa.persistenceUnitName}" />
+        <property name="persistenceUnitName" value="${security.jpa.persistenceUnitName}" />
     </bean>
 
     <bean id="repository_security" class="org.openkoala.koala.commons.domain.jpa.KoalaEntityRepositoryJpa">
@@ -56,15 +56,15 @@
     </bean>
 
 	<bean id="dataSource_security" class="org.logicalcobwebs.proxool.ProxoolDataSource">
-		<property name="driver" value="${org.db.jdbc.driver}" />
-		<property name="driverUrl" value="${org.db.jdbc.connection.url}" />
-		<property name="user" value="${org.db.jdbc.username}" />
-		<property name="password" value="${org.db.jdbc.password}" />
+		<property name="driver" value="${security.db.jdbc.driver}" />
+		<property name="driverUrl" value="${security.db.jdbc.connection.url}" />
+		<property name="user" value="${security.db.jdbc.username}" />
+		<property name="password" value="${security.db.jdbc.password}" />
 		<property name="prototypeCount" value="5" />
-		<property name="maximumConnectionCount" value="${org.maximumConnectionCount}" />
-		<property name="minimumConnectionCount" value="${org.minimumConnectionCount}" />
+		<property name="maximumConnectionCount" value="${security.maximumConnectionCount}" />
+		<property name="minimumConnectionCount" value="${security.minimumConnectionCount}" />
 		<property name="houseKeepingTestSql" value="select 1" />
 		<property name="testBeforeUse" value="true" />
-		<property name="alias" value="${db.dataSource.alias}" />
+		<property name="alias" value="${security.db.dataSource.alias}" />
 	</bean>
 </beans>

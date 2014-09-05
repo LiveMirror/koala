@@ -203,4 +203,5 @@ public interface SecurityAccessApplication {
 	 */
 	boolean checkRoleName(String roleName);
 
+    <T extends Authority> T getAuthority(Long authorityId);
 }

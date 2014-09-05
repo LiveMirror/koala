@@ -92,8 +92,6 @@
 
 
 #btn1{
-
-     
         cursor: pointer;
         height: 45px;
         width: 45px;
@@ -103,30 +101,18 @@
         left:5px;
 }
 
-
 label{
-
      padding-right:3px;
 }
 
-
 div.btn-group > span {
-        
         font-size: 15px;
         line-height: 39px;
         padding:0 2px 0px 3px;
-        
-        
         background:#fff;
-     
-      
-       
-}      
-
     </style>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
-        console.log(contextPath);
     </script>
 </head>
 
@@ -143,26 +129,14 @@ div.btn-group > span {
 	            <!-- 账号信息 -->
 	            <div class="btn-group navbar-right">
 	                <label for = "userAccount" class = "user_name yhmc">用户  : </label>
-	               
                    	<span><koala:user property="name"/></span>
-                   	
-                   	
-                   
 	                <img class=" dropdown-toggle" data-toggle="dropdown" id='btn1'  src="../images/setMenu.png"  >
-	                
-	                
-	             
-	                
-	              <!--  <i class = "menu-icon glyphicon  glyphicon-cog"></i>--> 
+	              <!--  <i class = "menu-icon glyphicon  glyphicon-cog"></i>-->
 	                <ul class="dropdown-menu" id="userManager" >
 	                    <li data-target="loginOut"><a href="#">注销</a></li>
 	                    <li data-toggle="modal" data-target="#userDetial"><a href="#">用户详细</a></li>
 	                    <li data-toggle='modal' data-target="#rolesToggle"><a href="#">角色切换</a></li>
-	                    
-	                    
 	                </ul>
-	                
-	             
 	                
 	            </div>
 	            <div class="btn-group navbar-right">
@@ -194,75 +168,6 @@ div.btn-group > span {
 	</div>
 	<div id="footer" class="g-foot"><span>Copyright © 2011-2013 Koala</span></div>
 	
-  <!-- 切换角色模态框 -->
-	
-<div class="modal fade" id="rolesToggle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-     <div class="modal-content">
-     
-       <div class="modal-header">
-         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-         <h4 class="modal-title" id="myModalLabel">切换角色</h4>
-      </div>
-      <div class="modal-body">
-      
-    <div class='grid-body' style='width:100%;min-width:300px;border:0.5px #d0d0d0 groove;'>
-      
-     <div class='grid-table-head'>
-      
-      <table class='table table-bordered'>
-    
-       <thead>
-         
-         <tr>
-            <th style='width:100px;'>角色名称</th>
-            <th style='width:auto'>描述</th>
-        </tr>
-      
-         
-      
-       </thead>
-      </div>
-      <div class='grid-table-body'></div>
-      <tbody>
-         <tr>
-            <td>superAdmin</td>
-            <td></td>
-         </tr>
-         
-         <tr>
-            <td>test</td>
-            <td></td>
-         </tr>
-         
-          
-         <tr>
-            <td>test</td>
-            <td></td>
-         </tr>
-         
-          
-         <tr>
-            <td>test</td>
-            <td></td>
-         </tr>
-         </tbody>
-     </table>
-     
-     
-    
-   </div>
-      
-      
-       
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
-        <button type="button" class="btn btn-success">取消</button>
-      </div>
-    </div>
- </div>
-  
 	<script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="../lib/respond.min.js"></script>
 	<script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
@@ -275,6 +180,7 @@ div.btn-group > span {
 	<script type="text/javascript" src="../js/main.js" ></script>
     <script type="text/javascript" src="../js/security/role.js" ></script>
     <script type="text/javascript" src="../js/security/user.js" ></script>
+
 	<script>
 	$(function(){
 		/*获取用户的角色*/
@@ -326,22 +232,6 @@ div.btn-group > span {
 	});
 	
 	var renderSubMenu = function(data, $menu){		
-		/*$menu.find('[data-toggle="collapse"]').each(function(){
-		    var $this = $(this);
-		    $menu.find($(this).attr('href')).on({
-		        'shown.bs.collapse': function(e){
-		        	e.stopPropagation();
-		        	e.preventDefault();
-		            $this.find('i:last').addClass('glyphicon-chevron-left').removeClass('glyphicon-chevron-right');
-		        },
-		        'hidden.bs.collapse': function(e){
-		        	e.stopPropagation();
-		        	e.preventDefault();
-		            $this.find('i:last').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-right');
-		        }
-		    });
-		});*/
-		
 		 $menu.find('li.submenu').on('click', function(){
 			var $this = $(this);
 				
@@ -360,10 +250,6 @@ div.btn-group > span {
 			});
 		};
 	
-		$('.switchRole').click(function(){
-			console.info("click...");
-		});
-		
 		/*判断一个对象是否数组*/
 		function isArray(o){
 			return '[object Array]' == Object.prototype.toString.call(o);
@@ -402,20 +288,97 @@ div.btn-group > span {
 	    	$(".asd"+data).next('.nav-stacked').toggle(600);
 	      }
 	    $(function(){
+
 	    	$("#userManager").find('li').on("click",function(){
 	    		var indexs = $(this).index();
-	    		//console.log("aasaa"+indexs);
 	    		if(indexs == 2){
 	    			$.get(contextPath + '/pages/auth/userDetial.jsp').done(function() {
 	    				userDetial();
 	    			});
 	    			function userDetial(){
-	    				console.log("2222");
+//	    				console.log("2222");
 	    			}
 	    			}
 	    	});
-	    });
+
+            /*切换角色*/
+            $('#userManager').find("li[data-target=#rolesToggle]").click(function(){
+                $.get(contextPath + '/pages/auth/toggle-role.jsp').done(function(data){
+                    var dialog = $(data);
+                    dialog.find('#toggle').on('click',function(){
+                        var items = dialog.find('.selectRoleGrid').data('koala.grid').selectedRows();
+                        if(items.length == 0){
+                            dialog.find('.selectRoleGrid').message({
+                                type: 'warning',
+                                content: '请选择要切换的角色'
+                            });
+                            return;
+                        }
+                        if(items.length>1){
+                            dialog.find('.selectRoleGrid').message({
+                                type:'warning',
+                                content:'只能选择一个角色'
+                            });
+                            return;
+                        }
+                        $.post(contextPath + '/auth/currentUser/switchOverRoleOfUser.koala', "roleName=" + items[0].name,function(data){
+                            if(data.success){
+                                // TODO 停留时间
+                                dialog.find('.selectRoleGrid').message({
+                                    type:'success',
+                                    content:'切换角色成功！'
+                                });
+                                window.location.href=contextPath+"/pages/index.jsp"
+                            }else{
+                                dialog.find('.selectRoleGrid').message({
+                                    type:'error',
+                                    content:'系统错误！'
+                                });
+                            }
+                        });
+
+                    })
+                    dialog.modal({
+                        keyboard: false
+                    }).on({
+                        'hidden.bs.modal': function(){
+                            $(this).remove();
+                        },
+
+                        'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化url选择表格
+                            var columns = [{
+                                title : "角色名称",
+                                name : "name",
+                                width : 250
+                            }, {
+                                title : "角色描述",
+                                name : "description",
+                                width : 250
+                            }];
+
+                            dialog.find('.selectRoleGrid').grid({
+                                identity: 'id',
+                                columns: columns,
+                                querys: [{title: 'roleId', value: 'roleId'}],
+                                dataFilter:function(result){
+                                    return result.data;
+                                },
+                                url: contextPath + '/auth/currentUser/pagingQueryRolesOfUser.koala'
+                            });
+                        }
+
+                    });
+                    //兼容IE8 IE9
+                    if(window.ActiveXObject){
+                        if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){
+                            dialog.trigger('shown.bs.modal');
+                        }
+                    }
+                });
+
+            });
+        });
+
 	</script>
 </body>
 </html>
->>>>>>> origin/master

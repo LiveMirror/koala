@@ -8,6 +8,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.command.LoginCommand;
+import org.openkoala.security.shiro.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,9 @@ public class LoginController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
-		LOGGER.info("into login page.");
+        if(CurrentUser.getSubject().isAuthenticated()){
+            return "redirect:index.koala";
+        }
 		return "login";
 	}
 
@@ -55,7 +58,7 @@ public class LoginController {
 					command.getRememberMe());
 			try {
 				SecurityUtils.getSubject().login(usernamePasswordToken);
-				return InvokeResult.success("登陆成功!");
+				return InvokeResult.success();
 			} catch (UnknownAccountException e) {
 				LOGGER.error(e.getMessage(), e);
 				return InvokeResult.failure("账号或者密码不存在。");			
