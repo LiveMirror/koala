@@ -70,10 +70,10 @@ $(function(){
 	 */
 	self.on('modifyPwd',function(){
 		$('body').modifyPassword({
-			service: contextPath + '/auth/user/updatePassword.koala'
+			service: contextPath + '/auth/currentUser/updatePassword.koala'
 		});
 	});
-	
+
 	/*
 	注销
 	*/

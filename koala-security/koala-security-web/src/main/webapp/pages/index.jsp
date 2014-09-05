@@ -125,16 +125,101 @@
             return menu;
         }
 
-
         function click_here(data){
             $(".asd"+data).next('.nav-stacked').toggle(600);
         }
 
+        // 更改联系电话
+        // ------------ changeTelePhoneOfUser start ---------------
         $(function(){
-            $('#userManager').find("li[data-target=#changeEmailOfUser]").click(function(){
+            $('#userManager').find("li[data-target=#changeTelePhoneOfUser]").click(function(){
+                $.get(contextPath + '/pages/auth/user-changeTelePhone.jsp').done(function(data){
+                    var dialog  = $(data);
+                    var oldTelePhone = dialog.find('#oldTelePhone');
+                    var newTelePhone = dialog.find('#newTelePhone');
+                    var confirmPassword = dialog.find('#confirmPassword');
 
+                    dialog.find('#changeTelePhoneOfUserSave').on('click', function(){
+                        var data = {};
+                        data['telePhone'] = newTelePhone.val();
+                        data['userPassword'] = confirmPassword.val();
+                        $.post(contextPath+'/auth/currentUser/changeUserTelePhone.koala',data,function(data){
+                            if(data.success){
+                                dialog.find('#changeTelePhoneOfUserMessage').message({
+                                    type : 'success',
+                                    content : '更改联系电话成功!'
+                                });
+                                window.location.href=contextPath+"/index.koala";
+                            }else{
+                                dialog.find('#changeTelePhoneOfUserMessage').message({
+                                    type : 'error',
+                                    content : data.errorMessage
+                                });
+                            }
+                        });
+                    }).end().modal({
+                        keyboard : false
+                    }).on({
+                        'hidden.bs.modal' : function() {
+                            $(this).remove();
+                        }
+                    });
+                    //兼容IE8 IE9
+                    if(window.ActiveXObject){
+                        if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){
+                            dialog.trigger('shown.bs.modal');
+                        }
+                    }
+                });
             });
         });
+        // ------------ changeTelePhoneOfUser end ---------------
+
+        // 更改邮箱
+        // ------------ changeEmailOfUser start ---------------
+        $(function(){
+            $('#userManager').find("li[data-target=#changeEmailOfUser]").click(function(){
+                $.get(contextPath + '/pages/auth/user-changeEmail.jsp').done(function(data){
+                    var dialog  = $(data);
+                    var oldEmail = dialog.find('#oldEmail');
+                    var newEmail = dialog.find('#newEmail');
+                    var confirmPassword = dialog.find('#confirmPassword');
+
+                    dialog.find('#changeEmailOfUserSave').on('click', function(){
+                        var data = {};
+                        data['email'] = newEmail.val();
+                        data['userPassword'] = confirmPassword.val();
+                        $.post(contextPath+'/auth/currentUser/changeUserEmail.koala',data,function(data){
+                            if(data.success){
+                                dialog.find('#changeEmailOfUserMessage').message({
+                                    type : 'success',
+                                    content : '更改邮箱成功!'
+                                });
+                               window.location.href=contextPath+"/index.koala";
+                            }else{
+                                dialog.find('#changeEmailOfUserMessage').message({
+                                    type : 'error',
+                                    content : data.errorMessage
+                                });
+                            }
+                        });
+                    }).end().modal({
+                        keyboard : false
+                    }).on({
+                        'hidden.bs.modal' : function() {
+                            $(this).remove();
+                        }
+                    });
+                    //兼容IE8 IE9
+                    if(window.ActiveXObject){
+                        if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){
+                            dialog.trigger('shown.bs.modal');
+                        }
+                    }
+                });
+            });
+        });
+        // ------------ changeEmailOfUser end ---------------
 
         /*切换角色*/
         $(function(){
@@ -165,7 +250,7 @@
                                     type:'success',
                                     content:'切换角色成功！'
                                 });
-                                window.location.href=contextPath+"/pages/index.jsp"
+                                window.location.href=contextPath+"/index.koala";
                             }else{
                                 dialog.find('.selectRoleGrid').message({
                                     type:'error',
@@ -215,6 +300,7 @@
                 // ------------ switchOverRoleOfUser end ---------------
             });
         });
+
     </script>
 </head>
 
@@ -227,17 +313,18 @@
 	        	<img src="../images/global.logo.png"/>
 	        	<span style="font-weight:800;">Koala权限系统</span>
 	        </a>
-	        
 	        <div class="collapse navbar-collapse navbar-ex1-collapse">
 	            <!-- 账号信息 -->
 	            <div class="btn-group navbar-right">
 	                <label for = "userAccount" class = "user_name yhmc">用户  : </label>
-                   	<span><koala:user property="name"/></span>
-	                <img class=" dropdown-toggle" data-toggle="dropdown" id='btn1'  src =${pageContext.request.contextPath}/images/setMenu.png  />
-	              <!--  <i class = "menu-icon glyphicon  glyphicon-cog"></i>-->
-	                <ul class="dropdown-menu" id="userManager" >
+                   	<span id="userAccount" class="user_name yhmc">
+                        <koala:user property="name"/>
+                   	</span>
+	                <img class="dropdown-toggle" data-toggle="dropdown" id='btn1'  src =${pageContext.request.contextPath}/images/setMenu.png  />
+	                <ul class="dropdown-menu" id="userManager" style="min-width: 0">
 	                    <li data-target="loginOut"><a href="#">注销</a></li>
-	                    <li data-toggle="modal" data-target="#changeEmailOfUser"><a href="#">更改邮箱</a></li>
+                        <li data-target="modifyPwd"><a href="#">更改密码</a></li>
+                        <li data-toggle="modal" data-target="#changeEmailOfUser"><a href="#">更改邮箱</a></li>
 	                    <li data-toggle="modal" data-target="#changeTelePhoneOfUser"><a href="#">更改电话</a></li>
 	                    <li data-toggle='modal' data-target="#rolesToggle"><a href="#">切换角色</a></li>
 	                </ul>
@@ -245,7 +332,7 @@
 	            <div class="btn-group navbar-right">
 	                <label for = "roles" class = "user_name">角色 :</label>
 	            	<span id="roles">
-	            		<koala:user property="roleName"/>
+	            		<koala:user property="roleName" />
 	                </span>
 	                &nbsp;
 	                <ul class="dropdown-menu" id="allRolesId"></ul>
@@ -268,7 +355,6 @@
 	        </div>
 	    </div>
 	</div>
-
     <%-- 底部 --%>
 	<div id="footer" class="g-foot"><span>Copyright © 2011-2013 Koala</span></div>
 </body>

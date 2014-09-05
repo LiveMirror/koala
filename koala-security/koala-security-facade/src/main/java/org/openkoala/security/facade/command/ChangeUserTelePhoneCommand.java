@@ -3,6 +3,8 @@ package org.openkoala.security.facade.command;
 public class ChangeUserTelePhoneCommand {
 
 	private Long id;
+
+    private String userAccount;
 	
 	private String telePhone;
 	
@@ -31,5 +33,12 @@ public class ChangeUserTelePhoneCommand {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
-	
+
+    public String getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
+    }
 }

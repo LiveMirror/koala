@@ -19,6 +19,10 @@ public final class CurrentUser {
 		return getPrincipal().getRoleName();
 	}
 
+    public static String getTelePhone(){
+        return getPrincipal().getTelePhone();
+    }
+
 	public static Subject getSubject() {
 		return SecurityUtils.getSubject();
 	}

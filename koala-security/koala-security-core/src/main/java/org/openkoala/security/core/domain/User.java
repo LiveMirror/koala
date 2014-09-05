@@ -47,7 +47,7 @@ public class User extends Actor {
     @Column(name = "PASSWORD")
     private String password = INIT_PASSWORD;
 
-    @Email
+//    @Email
     @Column(name = "EMAIL")
     private String email;
 

@@ -11,7 +11,6 @@ import javax.inject.Named;
 
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -259,13 +258,9 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
         private String email;
 
-		ShiroUser() {}
+        private String telePhone;
 
-		public ShiroUser(Long id, String userAccount, String name) {
-			this.id = id;
-			this.userAccount = userAccount;
-			this.name = name;
-		}
+		ShiroUser() {}
 
 		public ShiroUser(Long id, String userAccount, String name, String roleName) {
 			super();
@@ -275,25 +270,25 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 			this.roleName = roleName;
 		}
 
-		public Long getId() {
-			return id;
-		}
+        public Long getId() {
+            return id;
+        }
 
-		public String getUserAccount() {
-			return userAccount;
-		}
+        public String getUserAccount() {
+            return userAccount;
+        }
 
-		public String getName() {
-			return name;
-		}
+        public String getName() {
+            return name;
+        }
 
-		public String getRoleName() {
-			return roleName;
-		}
+        public String getRoleName() {
+            return roleName;
+        }
 
-		public void setRoleName(String roleName) {
-			this.roleName = roleName;
-		}
+        public void setRoleName(String roleName) {
+            this.roleName = roleName;
+        }
 
         public String getEmail() {
             return email;
@@ -301,6 +296,14 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+
+        public String getTelePhone() {
+            return telePhone;
+        }
+
+        public void setTelePhone(String telePhone) {
+            this.telePhone = telePhone;
         }
 
         @Override

@@ -7,17 +7,13 @@ import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.ConstraintViolationException;
 
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.application.SecurityDBInitApplication;
-import org.openkoala.security.core.CorrelationException;
-import org.openkoala.security.core.IdentifierIsExistedException;
-import org.openkoala.security.core.NameIsExistedException;
-import org.openkoala.security.core.NullArgumentException;
-import org.openkoala.security.core.UrlIsExistedException;
-import org.openkoala.security.core.UserAccountIsExistedException;
+import org.openkoala.security.core.*;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
@@ -116,7 +112,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult changeUserPassword(ChangeUserPasswordCommand command) {
         User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
         boolean message = securityAccessApplication.updatePassword(user, command.getUserPassword(),command.getOldUserPassword());
-        return message ? InvokeResult.success() : InvokeResult.failure("更新用户：\" + user.getName() + \"密码失败");
+        return message ? InvokeResult.success() : InvokeResult.failure("更新用户密码失败!");
     }
 
     @Override
@@ -650,16 +646,47 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Override
     public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
-        User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
-        securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
-        return InvokeResult.success();
+        try{
+            User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
+            securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
+            return InvokeResult.success();
+        }catch(NullArgumentException e){
+            LOGGER.error(e.getMessage(),e);
+            return InvokeResult.failure("邮箱或者密码不能为空！");
+        }catch (UserPasswordException e){
+            LOGGER.error(e.getMessage(),e);
+            return InvokeResult.failure("密码错误！");
+        }catch(ConstraintViolationException e){
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("邮箱不合法，请重新输入！");
+        }catch(EmailIsExistedException e) {
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("邮箱已经存在，请重新输入！");
+        }catch(Exception e){
+            LOGGER.error(e.getMessage(),e);
+            return InvokeResult.failure("系统错误！");
+        }
     }
 
     @Override
     public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
-        User user = securityAccessApplication.getUserById(command.getId());
-        securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());// 显示调用。
-        return InvokeResult.success();
+        try{
+            User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
+            securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());
+            return InvokeResult.success();
+        }catch(NullArgumentException e){
+            LOGGER.error(e.getMessage(),e);
+            return InvokeResult.failure("电话或者密码不能为空！");
+        }catch (UserPasswordException e){
+            LOGGER.error(e.getMessage(),e);
+            return InvokeResult.failure("密码错误！");
+        }catch (TelePhoneIsExistedException e){
+            LOGGER.error(e.getMessage(),e);
+            return InvokeResult.failure("联系电话已经存在！");
+        }catch(Exception e){
+            LOGGER.error(e.getMessage(),e);
+            return InvokeResult.failure("系统错误！");
+        }
     }
 
     @Override

@@ -60,7 +60,11 @@ public class CurrentUserController {
 	@RequestMapping(value = "/changeUserEmail", method = RequestMethod.POST)
 	public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
         command.setUserAccount(CurrentUser.getUserAccount());
-		return securityConfigFacade.changeUserEmail(command);
+		InvokeResult result =  securityConfigFacade.changeUserEmail(command);
+        if(result.isSuccess()){
+             CurrentUser.getPrincipal().setEmail(command.getEmail());
+        }
+        return result;
 	}
 
 	/**
@@ -72,7 +76,12 @@ public class CurrentUserController {
 	@ResponseBody
 	@RequestMapping(value = "/changeUserTelePhone", method = RequestMethod.POST)
 	public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
-		return securityConfigFacade.changeUserTelePhone(command);
+        command.setUserAccount(CurrentUser.getUserAccount());
+		InvokeResult result =  securityConfigFacade.changeUserTelePhone(command);
+        if(result.isSuccess()){
+            CurrentUser.getPrincipal().setTelePhone(command.getTelePhone());
+        }
+        return result;
 	}
 	
 	/**

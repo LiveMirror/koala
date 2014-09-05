@@ -10,6 +10,7 @@ import org.openkoala.security.facade.command.CreateRoleCommand;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
+import org.openkoala.security.shiro.realm.CustomAuthoringRealm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,9 @@ public class RoleController {
 	@Inject
 	private ShiroFilterChainManager shiroFilterChainManager;
 
+    @Inject
+    private CustomAuthoringRealm customAuthoringRealm;
+
 	/**
 	 * 添加角色
 	 *
@@ -59,7 +63,14 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public InvokeResult update(ChangeRolePropsCommand command) {
-		return securityConfigFacade.changeRoleProps(command);
+		InvokeResult result =  securityConfigFacade.changeRoleProps(command);
+        if(result.isSuccess()){
+            //修改成功，并且是把角色给修改了，那么就刷新realm。
+            if(!command.getName().equals(CurrentUser.getRoleName())){
+                customAuthoringRealm.resetRoleNameOfCurrentUser(command.getName());
+            }
+        }
+        return result;
 	}
 
 	/**

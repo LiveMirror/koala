@@ -1073,14 +1073,14 @@
 			return;
 		}
 		var data = "oldUserPassword=" + thiz.oldPwd.val() + "&userPassword=" + thiz.newPwd.val();
-		var url = contextPath + '/auth/user/updatePassword.koala';
+		var url = contextPath + '/auth/currentUser/updatePassword.koala';
 		$.ajax({
 			type : "post",
 			url : url,
 			data : data,
 			dataType:"json",
 			success:function(msg){
-				if (msg.result == "success") {
+				if (msg.success) {
 					$('body').message({
 						type : 'success',
 						content : '修改成功'
@@ -1089,7 +1089,7 @@
 				} else {
 					self.$element.find('.modal-content').message({
 						type : 'error',
-						content : msg.result
+						content : msg.errorMessage
 					});
 				}
 			},
@@ -1131,8 +1131,8 @@
 	+ '<form class="form-horizontal" role="form">' 
 	+ '<div class="form-group">' 
 	+ '<label for="oldUserPassword" class="col-lg-3 control-label">原始密码:</label>' 
-	+ '<div class="col-lg-9">' 
-	+ '<input type="password" class="form-control" style="width:80%;display:inline;" id="oldUserPassword" value="000000"/><span class="required">*</span>' 
+	+ '<div class="col-lg-9">'
+	+ '<input type="password" class="form-control" style="width:80%;display:inline;" id="oldUserPassword" /><span class="required">*</span>'
 	+ '</div> ' + '</div>  ' + '<div class="form-group">' 
 	+ '<label for="newPassword" class="col-lg-3 control-label">新密码:</label>' 
 	+ '<div class="col-lg-9">' 
