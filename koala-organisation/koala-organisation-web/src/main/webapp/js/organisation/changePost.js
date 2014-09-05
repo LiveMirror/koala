@@ -235,7 +235,8 @@ var changePost = function(){
 			identity: 'id',
 			isShowIndexCol: false,
 			columns: cols,
-			querys: [{title: '岗位名称', value: 'name'}]
+			querys: [{title: '岗位名称', value: 'name'}],
+			url: contextPath  + '/post/pagingquery.koala'
 		}).on({
 			'addPost':function(evnet, data){
 				var post = selectedPost.find('[data-value="'+data.postId+'"]');

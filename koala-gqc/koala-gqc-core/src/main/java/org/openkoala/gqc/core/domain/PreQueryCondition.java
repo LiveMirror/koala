@@ -18,21 +18,25 @@ public class PreQueryCondition extends QueryCondition {
 	/**
 	 * 查询值
 	 */
+	@Column(name = "VALUE")
 	private String value;
 	
 	/**
 	 * 查询开始值，用于区间查询
 	 */
+	@Column(name = "START_VALUE")
 	private String startValue;
 	
 	/**
 	 * 查询值结束值，用于区间查询
 	 */
+	@Column(name = "END_VALUE")
 	private String endValue;
 
 	/**
 	 * 该条件是否显示在查询页面上
 	 */
+	@Column(name = "VISIBLE")
 	private Boolean visible = false;
 	
 	public PreQueryCondition() {
@@ -43,7 +47,6 @@ public class PreQueryCondition extends QueryCondition {
 		this.setFieldName(fieldName);
 	}
 	
-	@Column(name = "VALUE")
 	public String getValue() {
 		return value;
 	}
@@ -52,7 +55,6 @@ public class PreQueryCondition extends QueryCondition {
 		this.value = value;
 	}
 
-	@Column(name = "VISIBLE")
 	public Boolean getVisible() {
 		return visible;
 	}
@@ -61,7 +63,6 @@ public class PreQueryCondition extends QueryCondition {
 		this.visible = visible;
 	}
 
-	@Column(name = "START_VALUE")
 	public String getStartValue() {
 		return startValue;
 	}
@@ -70,7 +71,6 @@ public class PreQueryCondition extends QueryCondition {
 		this.startValue = startValue;
 	}
 
-	@Column(name = "END_VALUE")
 	public String getEndValue() {
 		return endValue;
 	}

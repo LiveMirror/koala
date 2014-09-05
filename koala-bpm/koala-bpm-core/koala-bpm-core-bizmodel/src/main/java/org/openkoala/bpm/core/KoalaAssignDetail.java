@@ -16,6 +16,8 @@ public class KoalaAssignDetail extends KoalaAbstractEntity {
 	private static final long serialVersionUID = 9037655291650063741L;
 	
 	
+	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.PERSIST)
+	@JoinColumn(name="assign_info_id") 
 	private KoalaAssignInfo assignInfo;
 	
 	public KoalaAssignDetail() {
@@ -36,11 +38,9 @@ public class KoalaAssignDetail extends KoalaAbstractEntity {
 	}
 
 
-
+	@Column
 	private String processId;
 	
-	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.PERSIST)
-	@JoinColumn(name="assign_info_id") 
 	public KoalaAssignInfo getAssignInfo() {
 		return assignInfo;
 	}
@@ -49,7 +49,6 @@ public class KoalaAssignDetail extends KoalaAbstractEntity {
 		this.assignInfo = assignInfo;
 	}
 
-	@Column
 	public String getProcessId() {
 	
 		return processId;

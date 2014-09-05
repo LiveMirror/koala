@@ -27,26 +27,32 @@ public class Tool extends AbstractEntity {
 	private static final long serialVersionUID = -7321784040020043756L;
 
 	
+	@ManyToOne
+	@JoinColumn(name = "project_id")
 	private Project project;
 
 	
+	@ManyToOne
+	@JoinColumn(name = "tool_configuration_id")
 	private ToolConfiguration toolConfiguration;
 
 	
+	@Enumerated(EnumType.STRING)
 	private ToolIntegrationStatus status;
 
 	
+	@OneToMany(mappedBy = "tool", fetch = FetchType.EAGER)
 	private Set<ToolInterfaceImplement> toolInterfaceImplements = new HashSet<ToolInterfaceImplement>();
 
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "integration_date")
 	private Date integrationDate = new Date();
 
 	Tool() {
 	}
 	
 	
-	@ManyToOne
-	@JoinColumn(name = "project_id")
 	protected Project getProject() {
 		return project;
 	}
@@ -100,24 +106,18 @@ public class Tool extends AbstractEntity {
 		save();
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "tool_configuration_id")
 	public ToolConfiguration getToolConfiguration() {
 		return toolConfiguration;
 	}
 
-	@Enumerated(EnumType.STRING)
 	public ToolIntegrationStatus getStatus() {
 		return status;
 	}
 
-	@OneToMany(mappedBy = "tool", fetch = FetchType.EAGER)
 	public Set<ToolInterfaceImplement> getToolInterfaceImplements() {
 		return toolInterfaceImplements;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "integration_date")
 	public Date getIntegrationDate() {
 		return integrationDate;
 	}

@@ -26,8 +26,10 @@ public abstract class ToolConfiguration extends AbstractEntity {
 	private String name;
 	
 	
+	@Column(name = "service_url")
 	private String serviceUrl;
 	
+	@Column(nullable = false, unique = true)
 	private String username;
 	
 	private String password;
@@ -62,12 +64,10 @@ public abstract class ToolConfiguration extends AbstractEntity {
 		save();
 	}
 
-	@Column(nullable = false, unique = true)
 	public String getName() {
 		return name;
 	}
 	
-	@Column(name = "service_url")
 	public String getServiceUrl() {
 		return serviceUrl;
 	}

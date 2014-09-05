@@ -43,21 +43,30 @@ public class MonitorWarnInfo extends KmBaseEntity {
 
 	private static final long serialVersionUID = -3481793288195803639L;
 
+	@Column(name="CONTENT")
 	private String content;
 	
+	@Column(name="WARN_LEVEL")
 	private int level;
 	
+	@Column(name="STATUS")
 	private int status;
 	
+	@Column(name="REMARK")
 	private String remark;
 	
+	@ManyToOne(targetEntity = MonitorNode.class)
+	@JoinColumn(name="FK_NODE_ID")
 	private MonitorNode belongNode;
 	
+	@Column(name="WARN_TIME")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date warnTime;
 	
+	@Column(name="PROCESS_TIME")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date processTime;
 
-	@Column(name="CONTENT")
 	public String getContent() {
 		return content;
 	}
@@ -66,7 +75,6 @@ public class MonitorWarnInfo extends KmBaseEntity {
 		this.content = content;
 	}
 
-	@Column(name="WARN_LEVEL")
 	public int getLevel() {
 		return level;
 	}
@@ -75,7 +83,6 @@ public class MonitorWarnInfo extends KmBaseEntity {
 		this.level = level;
 	}
 
-	@Column(name="STATUS")
 	public int getStatus() {
 		return status;
 	}
@@ -84,7 +91,6 @@ public class MonitorWarnInfo extends KmBaseEntity {
 		this.status = status;
 	}
 
-	@Column(name="REMARK")
 	public String getRemark() {
 		return remark;
 	}
@@ -93,8 +99,6 @@ public class MonitorWarnInfo extends KmBaseEntity {
 		this.remark = remark;
 	}
 
-	@ManyToOne(targetEntity = MonitorNode.class)
-	@JoinColumn(name="FK_NODE_ID")
 	public MonitorNode getBelongNode() {
 		return belongNode;
 	}
@@ -103,8 +107,6 @@ public class MonitorWarnInfo extends KmBaseEntity {
 		this.belongNode = belongNode;
 	}
 
-	@Column(name="WARN_TIME")
-	@Temporal(TemporalType.TIMESTAMP)
 	public Date getWarnTime() {
 		return warnTime;
 	}
@@ -113,8 +115,6 @@ public class MonitorWarnInfo extends KmBaseEntity {
 		this.warnTime = warnTime;
 	}
 
-	@Column(name="PROCESS_TIME")
-	@Temporal(TemporalType.TIMESTAMP)
 	public Date getProcessTime() {
 		return processTime;
 	}
