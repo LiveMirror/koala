@@ -180,9 +180,10 @@ var department = function(){
 			}
 			dialog.find('#save').removeAttr('disabled');
 		}).fail(function(data){
+			alert("====================");
 				dialog.find('.modal-content').message({
 					type: 'error',
-					content: '保存失败'
+					content: '该编号已经存在，无法保存！'
 				});
 				dialog.find('#save').removeAttr('disabled');
 				refreshToken(dialog.find('input[name="koala.token"]'));
