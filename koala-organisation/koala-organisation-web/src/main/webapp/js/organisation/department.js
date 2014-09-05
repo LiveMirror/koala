@@ -180,7 +180,6 @@ var department = function(){
 			}
 			dialog.find('#save').removeAttr('disabled');
 		}).fail(function(data){
-			alert("====================");
 				dialog.find('.modal-content').message({
 					type: 'error',
 					content: '该编号已经存在，无法保存！'
