@@ -32,6 +32,8 @@ public class Module implements Serializable {
 	
 	private Monitor monitor;
 	
+	private Example example;
+	
 	private GeneralQuery generalQuery;
 	
 	private Organization organization;
@@ -138,6 +140,13 @@ public class Module implements Serializable {
 	public void setBusinessLog(BusinessLog businessLog) {
 		this.businessLog = businessLog;
 	}
-	
-	
+
+	public Example getExample() {
+		return example;
+	}
+
+	public void setExample(Example example) {
+		this.example = example;
+	}
+
 }
