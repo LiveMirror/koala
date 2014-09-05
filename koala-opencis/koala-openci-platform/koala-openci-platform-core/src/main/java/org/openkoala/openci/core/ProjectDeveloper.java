@@ -22,12 +22,18 @@ public class ProjectDeveloper extends AbstractEntity {
 
 	private static final long serialVersionUID = -5833807367997029745L;
 
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "project_developer_role_relations", joinColumns = { @JoinColumn(name = "project_developer_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
 	private Set<Role> roles = new HashSet<Role>();
 
 	
+	@OneToOne
+	@JoinColumn(name = "developer_id")
 	private Developer developer;
 
 	
+	@ManyToOne
+	@JoinColumn(name = "project_id")
 	private Project project;
 
 	ProjectDeveloper() {
@@ -45,22 +51,16 @@ public class ProjectDeveloper extends AbstractEntity {
 		save();
 	}
 
-	@OneToOne
-	@JoinColumn(name = "developer_id")
 	public Developer getDeveloper() {
 		return developer;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "project_developer_role_relations", joinColumns = { @JoinColumn(name = "project_developer_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
 	
 	public Set<Role> getRoles() {
 		return roles;
 	}
 	
 	
-	@ManyToOne
-	@JoinColumn(name = "project_id")
 	public Project getProject() {
 		return project;
 	}

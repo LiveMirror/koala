@@ -18,22 +18,28 @@ public class KoalaAssignInfo  extends KoalaAbstractEntity{
 
 	private static final long serialVersionUID = -7692102858676116384L;
 
+	@Column
 	private String name;
 	
+	@Column
 	private String assigner;
 	
+	@Column
 	private String assignerTo;
 	
+	@Column
 	private Date beginTime;
 	
+	@Column
 	private Date endTime;
 	
+	@Column
 	private String creater;
 	
 	
+	@OneToMany(mappedBy = "assignInfo",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<KoalaAssignDetail> jbpmNames;
 
-	@Column
 	public String getName() {
 		return name;
 	}
@@ -41,7 +47,7 @@ public class KoalaAssignInfo  extends KoalaAbstractEntity{
 	public void setName(String name) {
 		this.name = name;
 	}
-	@Column
+	
 	public String getAssigner() {
 		return assigner;
 	}
@@ -49,7 +55,7 @@ public class KoalaAssignInfo  extends KoalaAbstractEntity{
 	public void setAssigner(String assigner) {
 		this.assigner = assigner;
 	}
-	@Column
+	
 	public String getAssignerTo() {
 		return assignerTo;
 	}
@@ -57,7 +63,7 @@ public class KoalaAssignInfo  extends KoalaAbstractEntity{
 	public void setAssignerTo(String assignerTo) {
 		this.assignerTo = assignerTo;
 	}
-	@Column
+	
 	public Date getBeginTime() {
 		return beginTime;
 	}
@@ -65,7 +71,7 @@ public class KoalaAssignInfo  extends KoalaAbstractEntity{
 	public void setBeginTime(Date beginTime) {
 		this.beginTime = beginTime;
 	}
-	@Column
+	
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -73,7 +79,7 @@ public class KoalaAssignInfo  extends KoalaAbstractEntity{
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	@Column
+	
 	public String getCreater() {
 		return creater;
 	}
@@ -98,7 +104,6 @@ public class KoalaAssignInfo  extends KoalaAbstractEntity{
 		return result;
 	}
 
-	@OneToMany(mappedBy = "assignInfo",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	public List<KoalaAssignDetail> getJbpmNames() {
 		if(jbpmNames==null)jbpmNames = new ArrayList<KoalaAssignDetail>();
 		return jbpmNames;

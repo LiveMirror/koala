@@ -14,19 +14,25 @@ public class JoinAssign extends KoalaAbstractEntity {
 
 	private static final long serialVersionUID = 2974044399273194451L;
 
+	@Column
 	private String name;// 会签名
 
+	@Column
 	private String description;// 会签描述
 
+	@Column
 	private String keyChoice;
 
+	@Column
 	private String type;// 会签类型 "NumberJoin" or "PercentJoing"
 
+	@Column
 	private String successResult;// 会签通过条件
 
+	@Column
 	private String monitorVal;
 
-	@Column
+	
 	public String getName() {
 		return name;
 	}
@@ -35,7 +41,7 @@ public class JoinAssign extends KoalaAbstractEntity {
 		this.name = name;
 	}
 	
-	@Column
+	
 	public String getType() {
 		return type;
 	}
@@ -44,7 +50,7 @@ public class JoinAssign extends KoalaAbstractEntity {
 		this.type = type;
 	}
 
-	@Column
+	
 	public String getSuccessResult() {
 		return successResult;
 	}
@@ -53,7 +59,7 @@ public class JoinAssign extends KoalaAbstractEntity {
 		this.successResult = successResult;
 	}
 
-	@Column
+	
 	public String getKeyChoice() {
 		return keyChoice;
 	}
@@ -62,7 +68,7 @@ public class JoinAssign extends KoalaAbstractEntity {
 		this.keyChoice = keyChoice;
 	}
 
-	@Column
+	
 	public String getDescription() {
 		return description;
 	}
@@ -70,7 +76,7 @@ public class JoinAssign extends KoalaAbstractEntity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	@Column
+	
 	public String getMonitorVal() {
 		return monitorVal;
 	}

@@ -31,9 +31,14 @@ public abstract class GeneralQueryEntity implements Entity {
 	private static final long serialVersionUID = 8882145540383345037L;
 
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
 	private Long id;
 
 	
+	@Version
+	@Column(name = "VERSION")
 	private int version;
 
 
@@ -42,9 +47,6 @@ public abstract class GeneralQueryEntity implements Entity {
 	 * 
 	 * @return 实体的标识
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID")
 	public Long getId() {
 		return id;
 	}
@@ -64,8 +66,6 @@ public abstract class GeneralQueryEntity implements Entity {
 	 * 
 	 * @return 实体的版本号
 	 */
-	@Version
-	@Column(name = "VERSION")
 	public int getVersion() {
 		return version;
 	}

@@ -38,66 +38,82 @@ public class GeneralQuery extends GeneralQueryEntity {
 	/**
 	 * 数据源
 	 */
+	@ManyToOne
+	@JoinColumn(name = "DATA_SOURCE_ID", nullable = false)
 	private DataSource dataSource;
 	
 	/**
 	 * 查询名称
 	 */
 	
+	@Column(name = "QUERY_NAME", unique = true)
 	private String queryName;
 	
 	/**
 	 * 表名
 	 */
 	
+	@Column(name = "TABLE_NAME", nullable = false)
 	private String tableName;
 	
 	/**
 	 * 描述
 	 */
 	
+	@Column(name = "DESCRIPTION")
 	private String description;
 	
 	/**
 	 * 创建日期
 	 */
 	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "CREATE_DATE")
 	private Date createDate;
 	
 	/**
 	 * 静态查询条件
 	 */
 	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "KGV_PRE_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
+	@OrderColumn(name = "ORDER_COLUMN")
 	private List<PreQueryCondition> preQueryConditions = new ArrayList<PreQueryCondition>();
 	
 	/**
 	 * 动态查询条件
 	 */
 	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "KGV_DYNAMIC_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
+	@OrderColumn(name = "ORDER_COLUMN")
 	private List<DynamicQueryCondition> dynamicQueryConditions = new ArrayList<DynamicQueryCondition>();
 	
 	/**
 	 * 查询结果要显示的字段
 	 */
 	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "KGV_FIELD_DETAILS", joinColumns = @JoinColumn(name = "GQ_ID"))
+	@OrderColumn(name = "ORDER_COLUMN")
 	private List<FieldDetail> fieldDetails = new ArrayList<FieldDetail>();
 	
 	/**
 	 * 查询所有查询器
 	 */
+	@Transient
 	private transient QueryAllQuerier queryAllQuerier;
 	
 	/**
 	 * 分页查询查询器
 	 */
+	@Transient
 	private transient PagingQuerier pagingQuerier;
 	
 	public GeneralQuery() {
 		
 	}
 	
-	@ManyToOne
-	@JoinColumn(name = "DATA_SOURCE_ID", nullable = false)
 	public DataSource getDataSource() {
 		return dataSource;
 	}
@@ -106,7 +122,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.dataSource = dataSource;
 	}
 
-	@Column(name = "QUERY_NAME", unique = true)
 	public String getQueryName() {
 		return queryName;
 	}
@@ -119,7 +134,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.tableName = tableName;
 	}
 	
-	@Column(name = "TABLE_NAME", nullable = false)
 	public String getTableName() {
 		return tableName;
 	}
@@ -128,7 +142,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.tableName = tableName;
 	}
 
-	@Column(name = "DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}
@@ -137,8 +150,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.description = description;
 	}
  
-	@Temporal(TemporalType.DATE)
-	@Column(name = "CREATE_DATE")
 	public Date getCreateDate() {
 		return new Date(createDate.getTime());
 	}
@@ -147,9 +158,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.createDate = createDate;
 	}
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "KGV_PRE_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
-	@OrderColumn(name = "ORDER_COLUMN")
 	public List<PreQueryCondition> getPreQueryConditions() {
 		return preQueryConditions;
 	}
@@ -158,9 +166,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.preQueryConditions = preQueryConditions;
 	}
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "KGV_DYNAMIC_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
-	@OrderColumn(name = "ORDER_COLUMN")
 	public List<DynamicQueryCondition> getDynamicQueryConditions() {
 		return dynamicQueryConditions;
 	}
@@ -170,9 +175,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.dynamicQueryConditions = dynamicQueryConditions;
 	}
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "KGV_FIELD_DETAILS", joinColumns = @JoinColumn(name = "GQ_ID"))
-	@OrderColumn(name = "ORDER_COLUMN")
 	public List<FieldDetail> getFieldDetails() {
 		return fieldDetails;
 	}
@@ -182,7 +184,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 	}
 
 	
-	@Transient
 	private QueryAllQuerier obtainQueryAllQuerier() {
 		if (queryAllQuerier == null) {
 			queryAllQuerier = new QueryAllQuerier(obtainQuerySql(), dataSource);
@@ -192,7 +193,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		return queryAllQuerier;
 	}
 
-	@Transient
 	private PagingQuerier obtainPagingQuerier() {
 		if (pagingQuerier == null) {
 			pagingQuerier = new PagingQuerier(obtainQuerySql(), dataSource);

@@ -21,25 +21,29 @@ public abstract class AbstractBusinessLog implements Entity {
     private static final String ENTITY_REPOSITORY = "repository_businessLog";
 
    
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
+     private Long id;
 
     
+    @Version
+    @Column(name = "VERSION")
     private int version;
 
    
-    private String category;
+    @Column(name = "LOG_CATEGORY")
+     private String category;
 
     
-    private String log;
+    @Column(name = "LOG_CONTENT")
+     private String log;
 
     /**
      * 获得实体的标识
      *
      * @return 实体的标识
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
     public Long getId() {
         return id;
     }
@@ -53,7 +57,6 @@ public abstract class AbstractBusinessLog implements Entity {
         this.id = id;
     }
 
-    @Column(name = "LOG_CONTENT")
     public String getLog() {
         return log;
     }
@@ -62,8 +65,7 @@ public abstract class AbstractBusinessLog implements Entity {
         this.log = log;
     }
 
-    @Column(name = "LOG_CATEGORY")
-    public String getCategory() {
+     public String getCategory() {
         return category;
     }
 
@@ -76,8 +78,6 @@ public abstract class AbstractBusinessLog implements Entity {
      *
      * @return 实体的版本号
      */
-    @Version
-    @Column(name = "VERSION")
     public int getVersion() {
         return version;
     }

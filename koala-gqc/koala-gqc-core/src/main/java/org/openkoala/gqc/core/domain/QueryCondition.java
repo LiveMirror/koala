@@ -24,21 +24,25 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 	/**
 	 * 字段名称
 	 */
+	@Column(name = "FIELD_NAME")
 	private String fieldName;
 
 	/**
 	 * 查询操作
 	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name = "QUERY_OPERATION")
 	private QueryOperation queryOperation;
 	
 	/**
      * 字段数据类型（匹配java.sql.Types中的常量）
      */
+	@Column(name = "FIELD_TYPE")
     private Integer fieldType;
 	
-    private DataSource dataSource;
+	@Transient
+	private DataSource dataSource;
     
-	@Column(name = "FIELD_NAME")
 	public String getFieldName() {
 		return fieldName;
 	}
@@ -47,8 +51,6 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 		this.fieldName = fieldName;
 	}
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "QUERY_OPERATION")
 	public QueryOperation getQueryOperation() {
 		return queryOperation;
 	}
@@ -57,8 +59,7 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 		this.queryOperation = queryOperation;
 	}
 	
-	@Column(name = "FIELD_TYPE")
-    public Integer getFieldType() {
+	public Integer getFieldType() {
         return fieldType;
     }
 
@@ -66,7 +67,6 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
         this.fieldType = fieldType;
     }
 
-	@Transient
 	public DataSource getDataSource() {
 		return dataSource;
 	}

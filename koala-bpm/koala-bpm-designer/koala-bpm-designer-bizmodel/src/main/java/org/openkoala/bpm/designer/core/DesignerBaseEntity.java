@@ -24,8 +24,13 @@ public abstract class DesignerBaseEntity implements Entity {
 	 */
 	private static final long serialVersionUID = -4056700001979365458L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
 	private Long id;
 
+	@Version
+	@Column(name = "VERSION")
 	private int version;
 
 	/**
@@ -33,9 +38,6 @@ public abstract class DesignerBaseEntity implements Entity {
 	 * 
 	 * @return 实体的标识
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID")
 	@Override
 	public Long getId() {
 		return id;
@@ -56,8 +58,6 @@ public abstract class DesignerBaseEntity implements Entity {
 	 * 
 	 * @return 实体的版本号
 	 */
-	@Version
-	@Column(name = "VERSION")
 	public int getVersion() {
 		return version;
 	}

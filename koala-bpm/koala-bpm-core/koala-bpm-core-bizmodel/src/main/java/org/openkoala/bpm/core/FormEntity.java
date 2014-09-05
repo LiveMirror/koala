@@ -13,11 +13,13 @@ public class FormEntity extends KoalaAbstractEntity {
 	
 	private static final long serialVersionUID = -8234793881235433137L;
 
+	@Column
 	private String name;
 	
+	@Column
 	private String remark;
 
-	@Column
+	
 	public String getName() {
 		return name;
 	}
@@ -26,7 +28,6 @@ public class FormEntity extends KoalaAbstractEntity {
 		this.name = name;
 	}
 	
-	@Column
 	public String getRemark() {
 		return remark;
 	}

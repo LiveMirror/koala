@@ -16,11 +16,13 @@ public class Developer extends TimeIntervalEntity {
 	private static final long serialVersionUID = -3733063134487603001L;
 
 	
+	@Column(name = "developer_id", nullable = false, unique = true)
 	private String developerId;
 
 	private String name;
 
 	
+	@Column(nullable = false, unique = true)
 	private String email;
 
 	private String password;
@@ -36,7 +38,6 @@ public class Developer extends TimeIntervalEntity {
 	Developer() {
 	}
 
-	@Column(name = "developer_id", nullable = false, unique = true)
 	public String getDeveloperId() {
 		return developerId;
 	}
@@ -53,7 +54,6 @@ public class Developer extends TimeIntervalEntity {
 		this.name = name;
 	}
 
-	@Column(nullable = false, unique = true)
 	public String getEmail() {
 		return email;
 	}

@@ -40,29 +40,39 @@ public class DynaProcessForm extends BpmFormEntity {
 	 * 关联的流程ID
 	 */
 	
+	@Column(name = "PROCESS_ID")
+	@NotNull
 	private String processId;
 
 	/**
 	 * 业务表单名称
 	 */
 	
+	@Column(name = "BIZ_NAME")
+	@NotNull
 	private String bizName;
 
 	/**
 	 * 业务表单描述
 	 */
 	
+	@Column(name = "BIZ_DESCRIPTION")
 	private String bizDescription;
 
 	/**
 	 * 是否激活
 	 */
 	
+	@Column(name = "ACTIVE",columnDefinition="bit")
 	private boolean active;
 
-	private Set<DynaProcessKey> keys = new HashSet<DynaProcessKey>();
+    @OneToMany(cascade = { CascadeType.REFRESH, CascadeType.PERSIST,
+	CascadeType.MERGE, CascadeType.REMOVE }, mappedBy = "dynaTable", fetch = FetchType.EAGER)
+    private Set<DynaProcessKey> keys = new HashSet<DynaProcessKey>();
 	
 	
+	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH }, optional = true)  
+	@JoinColumn(name="TEMPLATE_ID")
 	private DynaProcessTemplate template;
 
 	public DynaProcessForm() {
@@ -83,8 +93,6 @@ public class DynaProcessForm extends BpmFormEntity {
 		this.bizDescription = bizDescription;
 	}
 
-	@Column(name = "PROCESS_ID")
-	@NotNull
 	public String getProcessId() {
 		return processId;
 	}
@@ -93,8 +101,6 @@ public class DynaProcessForm extends BpmFormEntity {
 		this.processId = processId;
 	}
 
-	@Column(name = "BIZ_NAME")
-	@NotNull
 	public String getBizName() {
 		return bizName;
 	}
@@ -103,7 +109,6 @@ public class DynaProcessForm extends BpmFormEntity {
 		this.bizName = bizName;
 	}
 
-	@Column(name = "BIZ_DESCRIPTION")
 	public String getBizDescription() {
 		return bizDescription;
 	}
@@ -112,7 +117,6 @@ public class DynaProcessForm extends BpmFormEntity {
 		this.bizDescription = bizDescription;
 	}
 
-	@Column(name = "ACTIVE",columnDefinition="bit")
 	public boolean isActive() {
 		return active;
 	}
@@ -127,9 +131,7 @@ public class DynaProcessForm extends BpmFormEntity {
 				+ bizName + ", active=" + active + "]";
 	}
 
-	@OneToMany(cascade = { CascadeType.REFRESH, CascadeType.PERSIST,
-			CascadeType.MERGE, CascadeType.REMOVE }, mappedBy = "dynaTable", fetch = FetchType.EAGER)
-	public Set<DynaProcessKey> getKeys() {
+		public Set<DynaProcessKey> getKeys() {
 		return keys;
 	}
 
@@ -137,8 +139,6 @@ public class DynaProcessForm extends BpmFormEntity {
 		this.keys = keys;
 	}
 	
-	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH }, optional = true)  
-	@JoinColumn(name="TEMPLATE_ID")
 	public DynaProcessTemplate getTemplate() {
 		return template;
 	}

@@ -18,29 +18,36 @@ public class HistoryLog extends KoalaAbstractEntity {
 
 	private static final long serialVersionUID = -2409238992583642261L;
 	
+	@Column
 	private String processId;
 
+	@Column
 	private long processInstanceId;
 	
+	@Column
 	private String user;//用户
 	
+	@Column
 	private Date createDate;//日期
 	
+	@Column
 	private String nodeName;//步骤名称
 	
+	@Column
 	private long nodeId;
 	
+	@Column
 	private String result;//审批结果
 	
+	@Column
 	private String comment;//备注
 	
-	
+	@Lob
 	private String processData;//流程级参数
 	
-	
+	@Lob
 	private String taskData;//节点级参数
 	
-	@Column
 	public String getUser() {
 		return user;
 	}
@@ -49,7 +56,7 @@ public class HistoryLog extends KoalaAbstractEntity {
 		this.user = user;
 	}
 	
-	@Column
+	
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -58,7 +65,6 @@ public class HistoryLog extends KoalaAbstractEntity {
 		this.createDate = createDate;
 	}
 	
-	@Column
 	public String getNodeName() {
 		return nodeName;
 	}
@@ -67,7 +73,6 @@ public class HistoryLog extends KoalaAbstractEntity {
 		this.nodeName = nodeName;
 	}
 
-	@Column
 	public String getResult() {
 		return result;
 	}
@@ -76,7 +81,6 @@ public class HistoryLog extends KoalaAbstractEntity {
 		this.result = result;
 	}
 
-	@Column
 	public String getComment() {
 		return comment;
 	}
@@ -93,7 +97,7 @@ public class HistoryLog extends KoalaAbstractEntity {
 		this.processInstanceId = processInstanceId;
 	}
 
-	@Lob
+	
 	public String getProcessData() {
 		return processData;
 	}
@@ -102,7 +106,6 @@ public class HistoryLog extends KoalaAbstractEntity {
 		this.processData = processData;
 	}
 
-	@Lob
 	public String getTaskData() {
 		return taskData;
 	}
@@ -111,7 +114,6 @@ public class HistoryLog extends KoalaAbstractEntity {
 		this.taskData = taskData;
 	}
 
-	@Column
 	public long getNodeId() {
 		return nodeId;
 	}
@@ -120,7 +122,6 @@ public class HistoryLog extends KoalaAbstractEntity {
 		this.nodeId = nodeId;
 	}
 
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -142,7 +143,6 @@ public class HistoryLog extends KoalaAbstractEntity {
 		return result;
 	}
 
-	@Column
 	public String getProcessId() {
 		return processId;
 	}
