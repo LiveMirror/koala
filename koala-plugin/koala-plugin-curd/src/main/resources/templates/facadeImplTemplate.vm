@@ -5,19 +5,21 @@ package ${facadeImplClass.packageName};
 #set($currntVO = ${domainClass.concat("DTO")})
 #set($currntVOVariable = ${currntVO.substring(0, 1).toLowerCase()} + ${currntVO.substring(1)})
 #set($joinClause = "")
+#set($assembler = ${domainClass.concat("Assembler")})
+
 
 import java.util.List;
 import java.util.ArrayList;
 import java.text.MessageFormat;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import ${dtoClass.packageName}.*;
+import ${facadeImplClass.packageName}.assembler.${entity.name}Assembler;
 import ${dtoClass.packageName.replaceAll("dto","")}${facadeImplClass.name.replaceAll("Impl","")};
 import ${applicationClass.packageName.replaceAll("impl","")}${applicationClass.name};
 
@@ -42,12 +44,12 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ${currntVO} get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
 		${domainClass} $variableName =application.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name});
-		return ${currntVO}.EntityToDto($variableName);
+		return ${assembler}.EntityToDto($variableName);
 	}
 	
 	public ${currntVO} save${domainClass}(${currntVO} ${currntVOVariable}) {
 		${domainClass} ${variableName} = new ${domainClass}();
-        ${variableName}=${currntVO}.DtoToEntity(${currntVOVariable});
+        ${variableName}=${assembler}.DtoToEntity(${currntVOVariable});
 		application.save${domainClass}(${variableName} );
 		${currntVOVariable}.set${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}((${dtoClass.entityModel.singleIDFieldModel.type}) ${variableName}.get${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}());
 		return ${currntVOVariable};
@@ -55,7 +57,7 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 	
 	public void update${domainClass}(${currntVO} ${currntVOVariable}) {
 		${domainClass} ${variableName} = ${domainClass}.get(${domainClass}.class, ${currntVOVariable}.get${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}());
-		application.update${domainClass}(${currntVO}.DtoToEntity(${currntVOVariable}));
+		application.update${domainClass}(${assembler}.DtoToEntity(${currntVOVariable}));
 	}
 	
 	public void remove${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
@@ -71,7 +73,7 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 		List<${currntVO}> list = new ArrayList<${currntVO}>();
 		List<${domainClass}> all = ${domainClass}.findAll(${domainClass}.class);
 		for (${domainClass} ${variableName} : all) {
-			list.add(${currntVO}.EntityToDto( ${variableName}));
+			list.add(${assembler}.EntityToDto( ${variableName}));
 		}
 		return list;
 	}
@@ -93,7 +95,7 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 	   	StringBuilder jpql = new StringBuilder("${jpql} $!{joinClause} where 1=1 ");
 #foreach($field in ${entity.fields})
 #set($propertyName = ${field.name.substring(0, 1).toUpperCase()} + ${field.name.substring(1)})
-#if(${dtoClass.isPrimitiveType(${field.type})} || ${field.name} != "id" )
+#if(${dtoClass.isPrimitiveType(${field.type})} && ${field.name} != "id" )
 	   	if (queryVo.get${propertyName}() != null) {
 	   		jpql.append(" and _${variableName}.${field.name}=?");
 	   		conditionVals.add(queryVo.get${propertyName}());
@@ -123,7 +125,7 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
         for (${domainClass} ${variableName} : pages.getData()) {
            // 将domain转成VO 
                   
-         ${currntVO} ${currntVOVariable} = ${currntVO}.EntityToDto(${variableName});       
+         ${currntVO} ${currntVOVariable} = ${assembler}.EntityToDto(${variableName});       
       #foreach($view in ${facadeImplClass.entityViewUI.listModel.views})
         #set($property = ${view.relative.substring(0, 1).toUpperCase()} + ${view.relative.substring(1)})
         #set($express = ${view.express.substring(0, 1).toUpperCase()} + ${view.express.substring(1)})

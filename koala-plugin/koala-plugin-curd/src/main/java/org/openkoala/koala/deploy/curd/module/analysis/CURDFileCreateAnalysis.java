@@ -25,6 +25,7 @@ import org.openkoala.koala.deploy.curd.module.core.EntityModel;
 import org.openkoala.koala.deploy.curd.module.core.model.RelationFieldModel;
 import org.openkoala.koala.deploy.curd.module.pojo.ActionNewFile;
 import org.openkoala.koala.deploy.curd.module.pojo.ApplicationNewFile;
+import org.openkoala.koala.deploy.curd.module.pojo.AssemblerNewFile;
 import org.openkoala.koala.deploy.curd.module.pojo.ControllerNewFile;
 import org.openkoala.koala.deploy.curd.module.pojo.ControllerWebFormpageNewFile;
 import org.openkoala.koala.deploy.curd.module.pojo.ControllerWebListpageNewFile;
@@ -91,7 +92,14 @@ public class CURDFileCreateAnalysis {
         createApplicationFile(entityUI, entityUI.getEntityModel(), newFiles, applicationProjects);
         
      /*   createApplicationImplFile(entityUI, entityUI.getEntityModel(), newFiles, implProjects);        */
+      
         createFacadeImplFile(entityUI, entityUI.getEntityModel(), newFiles, facadeImplProjects);
+        createAssemblerFile(project,entityUI, entityUI.getEntityModel(), newFiles, facadeImplProjects);
+        createRelationAssemblerFile(project, entityUI, entityUI.getEntityModel(), newFiles, facadeImplProjects);
+       
+        
+        
+        
         createFacadeFile(entityUI, entityUI.getEntityModel(), newFiles, facadeProjects);
         createActionIfNeed(project, entityUI, entityUI.getEntityModel(), newFiles, webProject);
         createControllerIfNeed(project, entityUI, entityUI.getEntityModel(), newFiles, webProject);
@@ -349,7 +357,58 @@ public class CURDFileCreateAnalysis {
         dtoNewFile.setFieldMap(getVoParams(entityUI, dtoNewFile.getRelativeTypes()));
         newFiles.add(dtoNewFile);
 	}
+	
+	  /**
+     * 创建自身的Assembler
+     * @param project
+     * @param entityUI
+     * @param entity
+     * @param newFiles
+     * @param applicationProjects
+     */
+	private static void createAssemblerFile(MavenProject project,
+			EntityViewUI entityUI, EntityModel entity, List<NewFile> newFiles,
+			List<MavenProject> applicationProjects) {
+		AssemblerNewFile assemblerNewFile = new AssemblerNewFile(getAssemblerClassName(entity), applicationProjects,NewFileType.Assembler, project, entity);
+		assemblerNewFile.setFieldMap(getVoParams(entityUI, assemblerNewFile.getRelativeTypes()));
+        newFiles.add(assemblerNewFile);
+	}
 
+	 /**
+     * 创建关联对象的Assembler文件
+     * @param project
+     * @param entityUI
+     * @param entity
+     * @param newFiles
+     * @param applicationProjects
+     */
+	private static void createRelationAssemblerFile(MavenProject project,
+			EntityViewUI entityUI, EntityModel entity, List<NewFile> newFiles,
+			List<MavenProject> applicationProjects) {
+		for(RelationFieldModel reliation:entity.getRelationFieldModel()){
+            if (reliation.getRelationModel().getEntityModel().getName().equals(entity.getName())) {
+            	continue;
+            }
+            AssemblerNewFile relationAssemblerNewFile = new AssemblerNewFile(getRelationAssemblerClassName(reliation), applicationProjects, NewFileType.Assembler, project, entity);
+            for (TabViewUI ui:entityUI.getViewModel().getTabs()) {
+                if (ui.getRelationFieldModel().equals(reliation)) {
+                	relationAssemblerNewFile.setFieldMap(getVoParams(ui.getListModel()));
+                }
+            }
+            newFiles.add(relationAssemblerNewFile);
+        }
+	}
+
+    /**
+     * 获取关联属性Assembler的类名
+     * @param reliation
+     * @return
+     */
+	private static String getRelationAssemblerClassName(RelationFieldModel reliation) {
+		return reliation.getRelationModel().getEntityModel().getName() + "Assembler";
+	}
+
+	
 	/**
      * 创建自身的Impl
      * @param project
@@ -388,6 +447,15 @@ public class CURDFileCreateAnalysis {
      */
 	private static String getDtoClassName(EntityModel entity) {
 		return entity.getName() + "DTO";
+	}
+	
+	 /**
+     * 获取Assembler的类名
+     * @param entity
+     * @return
+     */
+	private static String getAssemblerClassName(EntityModel entity) {
+		return entity.getName() + "Assembler";
 	}
     
     private static List<RelationFieldModel> getRelationModel(EntityViewUI entityUI){
