@@ -30,6 +30,7 @@ import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.openkoala.security.shiro.CurrentUser;
+import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,10 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
 	@Inject
 	protected EncryptService passwordEncryptService;
-	
+
+    @Inject
+    private ShiroFilterChainManager shiroFilterChainManager;
+
 	@Override
 	public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
@@ -176,20 +180,25 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 
 	/**TODO 需要重构。 可能不存在角色。。。
 	 * 查找出用户的第一个角色,因为需要角色切换
-	 * 
 	 * @param user
 	 *            用户
 	 * @return
 	 */
 	private String getRoleName(UserDTO user) {
-		InvokeResult result =  securityAccessFacade.findRolesByUserAccount(user.getUserAccount());
+		String defaultRoleName = "";
+        InvokeResult result =  securityAccessFacade.findRolesByUserAccount(user.getUserAccount());
         if(result.isSuccess()){
           List<RoleDTO> roles = (List<RoleDTO>) result.getData();
             if (!roles.isEmpty()) {
-                return roles.get(0).getName();
+                defaultRoleName =  roles.get(0).getName();
             }
+            if(StringUtils.isBlank(defaultRoleName)){
+                defaultRoleName = "暂未分配角色";
+            }
+        }else{
+            defaultRoleName = "暂未分配角色";
         }
-		return null;
+		return defaultRoleName;
 	}
 
 	/**
@@ -233,7 +242,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
         if (CurrentUser.getRoleName().equals(roleName)) {
             return InvokeResult.success();
         }
-        if (!securityAccessFacade.checkRoleName(roleName)) {
+        if (!securityAccessFacade.checkRoleByName(roleName)) {
             return InvokeResult.failure("角色名不存在。");
         }
         PrincipalCollection principalCollection = CurrentUser.getPrincipals();
@@ -241,6 +250,12 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
         shiroUser.setRoleName(roleName);
         this.doGetAuthorizationInfo(principalCollection);
         return InvokeResult.success();
+    }
+
+    // TODO
+    public void resetRoleNameOfCurrentUser(String name) {
+        switchOverRoleOfUser(name);
+        shiroFilterChainManager.initFilterChain();
     }
 
 
@@ -305,6 +320,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
         public void setTelePhone(String telePhone) {
             this.telePhone = telePhone;
         }
+
 
         @Override
 		public String toString() {

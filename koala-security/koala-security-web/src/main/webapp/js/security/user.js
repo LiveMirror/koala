@@ -79,7 +79,7 @@ var userManager = function() {
 			} else {
 				dataGrid.message({
 					type : 'error',
-					content : data.actionError
+					content : data.errorMessage
 				});
 			}
 		}).fail(function(data) {
@@ -105,7 +105,7 @@ var userManager = function() {
 			} else {
 				dataGrid.message({
 					type : 'error',
-					content : data.actionError
+					content : data.errorMessage
 				});
 			}
 		}).fail(function(data) {
@@ -132,7 +132,7 @@ var userManager = function() {
 			} else {
 				dataGrid.message({
 					type : 'error',
-					content : data.actionError
+					content : data.errorMessage
 				});
 			}
 		}).fail(function(data) {
@@ -159,7 +159,7 @@ var userManager = function() {
 			}else{
 				$('body').message({
 					type: 'error',
-					content: data.actionError
+					content: data.errorMessage
 				});
 			}
 		}).fail(function(data){
@@ -177,10 +177,7 @@ var userManager = function() {
 		dialog.find('.modal-header').find('.modal-title').html( item ? '修改用户信息' : '添加用户');
 		userName = dialog.find('#userName');
 		userAccount = dialog.find('#userAccount');
-		//email = dialog.find('#email');
-		//userPassword = dialog.find('#userPassword');
 		description = dialog.find('#description');
-		//telePhone = dialog.find('#telePhone');
 		isEnable = dialog.find('[name="isEnable"]');
 		isEnable.on('click', function() {
 			isEnable.each(function() {
@@ -241,9 +238,8 @@ var userManager = function() {
 			} else {
 				dialog.find('.modal-content').message({
 					type : 'error',
-					content : data.actionError
+					content : data.errorMessage
 				});
-				refreshToken(dialog.find('input[name="koala.token"]'));
 			}
 			dialog.find('#save').removeAttr('disabled');
 		});
@@ -286,10 +282,7 @@ var userManager = function() {
 		var data = {};
 		data['name'] = userName.val();
 		data['userAccount'] = userAccount.val();
-		//data['email'] = email.val();
-		//data['userPassword'] = userPassword.val();
 		data['description'] = description.val();
-		//data['telePhone'] = telePhone.val();
 		if (item) {
 			data['id'] = item.id;
 		}
@@ -339,7 +332,7 @@ var userManager = function() {
 						$saveBtn.removeAttr('disabled');
 						dialog.find('.modal-content').message({
 							type : 'error',
-							content : data.actionError
+							content : data.errorMessage
 						});
 					}
 				}).fail(function(data) {
@@ -429,7 +422,7 @@ var userManager = function() {
 			} else {
 				dataGrid.message({
 					type : 'error',
-					content : data.actionError
+					content : data.errorMessage
 				});
 			}
 		}).fail(function(data) {

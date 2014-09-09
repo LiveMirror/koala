@@ -23,28 +23,22 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 control-label" for="id">菜单资源名称:</label>
+                        <label class="col-lg-3 control-label" for="menuResourceName">菜单资源名称:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="name"><span class="required">*</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="identifier">菜单资源标识:</label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control" name="identifier"><span class="required">*</span>
+                            <input type="text" class="form-control" name="name" id="menuResourceName"><span class="required">*</span>
                         </div>
                     </div>
                      <div class="form-group">
-                        <label class="col-lg-3 control-label" for="url">菜单资源url:</label>
+                        <label class="col-lg-3 control-label" for="menuResourceNameUrl">菜单资源url:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="url"/>
+                            <input type="text" class="form-control" name="url" id="menuResourceNameUrl"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label">菜单资源图片:</label>
                         <div class="col-lg-9">
                             <span id="menuIcon" class="menu-icon"></span>
-                            <input type="hidden" name="icon"/>
+                            <input type="hidden" name="menuIcon"/>
                             <button id="iconBtn" type="button" class="btn btn-info">浏览图片</button>
                         </div>
                     </div>

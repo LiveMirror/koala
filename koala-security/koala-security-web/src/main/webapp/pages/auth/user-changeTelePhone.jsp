@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="koala" uri="http://www.openkoala.org/security" %>
+
 <div aria-hidden="false" style="display: block;" class="modal fade in" id="changeTelePhoneOfUser">
     <div class="modal-dialog changeTelePhoneOfUser" style="padding-top:80px;">
         <div class="modal-content">
@@ -8,11 +8,11 @@
                 <h4 class="modal-title">更改用户联系电话</h4></div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form">
-                    <div class="form-group"><label for="oldTelePhone" class="col-lg-3 control-label">现在的电话</label>
+                    <div class="form-group"><label for="oldTelePhone" class="col-lg-3 control-label">现在的电话:</label>
                         <div class="col-lg-9">
-                            <span id="oldTelePhone" style="width:80%;">
+                            <p id="oldTelePhone" class="form-control-static">
                                 <koala:user property="telePhone"/>
-                            </span>
+                            </p>
                         </div>
                     </div>
                     <div class="form-group"><label for="newTelePhone" class="col-lg-3 control-label">新的电话:</label>

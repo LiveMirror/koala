@@ -756,6 +756,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             securityConfigApplication.changeNameOfRole(role, command.getName());
             role.setDescription(command.getDescription());
             securityConfigApplication.createAuthority(role);
+
             return InvokeResult.success();
         } catch (NullArgumentException e) {
             LOGGER.error(e.getMessage());

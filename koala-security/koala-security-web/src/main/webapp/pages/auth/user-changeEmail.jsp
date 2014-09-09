@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="koala" uri="http://www.openkoala.org/security" %>
 
 <div aria-hidden="false" style="display: block;" class="modal fade in" id="changeEmailOfUser">
     <div class="modal-dialog changeEmailOfUser" style="padding-top:80px;">
@@ -11,9 +10,9 @@
                 <form class="form-horizontal" role="form">
                     <div class="form-group"><label for="oldEmail" class="col-lg-3 control-label">现在的邮箱地址:</label>
                         <div class="col-lg-9">
-                            <span id="oldEmail" style="width:80%;">
+                            <p id="oldEmail" class="form-control-static">
                                 <koala:user property="email"/>
-                            </span>
+                            </p>
                         </div>
                     </div>
 

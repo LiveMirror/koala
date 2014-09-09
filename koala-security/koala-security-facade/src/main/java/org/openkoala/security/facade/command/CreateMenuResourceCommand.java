@@ -1,5 +1,7 @@
 package org.openkoala.security.facade.command;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class CreateMenuResourceCommand {
 
 	private String name;
@@ -42,4 +44,14 @@ public class CreateMenuResourceCommand {
 		this.description = description;
 	}
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)//
+                .append(name)//
+                .append(url)//
+                .append(menuIcon)//
+                .append(description)//
+                .build();
+    }
+    
 }

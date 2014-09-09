@@ -31,6 +31,5 @@ public class ChangeRolePropsCommand {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+
 }

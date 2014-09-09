@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="ks" uri="http://www.openkoala.org/security" %>
+<%@include file="/commons/taglibs.jsp"%>
 
-<link rel="stylesheet" href="../lib/validateForm/css/style.css"/>
-<script src="../lib/validateForm/validateForm.js"></script>
 <script>
 	$(function(){
 		var baseUrl = contextPath + '/auth/permission/';
@@ -84,7 +81,7 @@
 		        				} else {
 		        					dialog.find('.modal-content').message({
 		        						type : 'error',
-		        						content : data.actionError
+		        						content : data.errorMessage
 		        					});
 		        				}
 		        				dialog.find('#save').removeAttr('disabled');
@@ -108,7 +105,7 @@
 				} else {
 					grid.message({
 						type : 'error',
-						content : data.actionError
+						content : data.errorMessage
 					});
 				}
 			}).fail(function(data){
@@ -305,7 +302,7 @@
         						saveBtn.attr('disabled', 'disabled');	
         						grid.message({
         							type: 'error',
-        							content: data.actionError
+        							content: data.errorMessage
         						});
         					}
         				}).fail(function(data){
@@ -393,7 +390,7 @@
 							}else{
 								grid.message({
 									type: 'error',
-									content: data.actionError
+									content: data.errorMessage
 								});
 							}
 						}).fail(function(data){
@@ -432,14 +429,9 @@
         				saveBtn.attr('disabled', 'disabled');
         				
         				var data = "menuResourceId="+menuId;
-        				
-        					data += "&permissionId=" + items[0].permissionId;
-        				
+        				data += "&permissionId=" + items[0].id;
         				
         				$.post(contextPath + '/auth/menu/grantPermisssionsToMenuResource.koala', data).done(function(data){
-        					
-        					//console.log(data.success);
-        					
         					if(data.success){
         						grid.message({
         							type: 'success',
@@ -451,7 +443,7 @@
         						saveBtn.removeAttr('disabled');	
         						grid.message({
         							type: 'error',
-        							content: '保存失败'
+        							content: data.errorMessage
         						});
         					}
         				}).fail(function(data){
@@ -488,8 +480,10 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'permissionNameForSearch'}],
-        			             //url: contextPath + '/auth/permission/pagingquery.koala?menuResourceId='+menuId
-        			            url:contextPath + '/auth/menu/pagingQueryNotGrantPermissionsByMenuResourceId.koala?menuResourceId=' + menuId
+                                 dataFilter:function(result){
+                                    return result.data;
+                                 },
+        			             url:contextPath + '/auth/menu/pagingQueryNotGrantPermissionsByMenuResourceId.koala?menuResourceId=' + menuId
         			        });        						
        					},
        					'complete': function(){
@@ -532,7 +526,7 @@
 						var url = contextPath + '/auth/menu/terminatePermissionsFromMenuResource.koala';
 						var params = "menuResourceId="+menuId;
 						
-							params += ("&permissionId=" + data.item[0].permissionId);
+							params += ("&permissionId=" + data.item[0].id);
 					
 						
 						$.post(url, params).done(function(data){
@@ -545,7 +539,7 @@
 							}else{
 								grid.message({
 									type: 'error',
-									content: data.actionError
+									content: data.errorMessage
 								});
 							}
 						}).fail(function(data){
@@ -597,7 +591,7 @@
         						saveBtn.attr('disabled', 'disabled');	
         						grid.message({
         							type: 'error',
-        							content: data.actionError
+        							content: data.errorMessage
         						});
         					}
         				}).fail(function(data){
@@ -691,7 +685,7 @@
 							}else{
 								grid.message({
 									type: 'error',
-									content: data.actionError
+									content: data.errorMessage
 								});
 							}
 						}).fail(function(data){
@@ -743,7 +737,7 @@
         						saveBtn.attr('disabled', 'disabled');	
         						grid.message({
         							type: 'error',
-        							content: data.actionError
+        							content: data.errorMessage
         						});
         					}
         				}).fail(function(data){
@@ -837,7 +831,7 @@
 							}else{
 								grid.message({
 									type: 'error',
-									content: data.actionError
+									content: data.errorMessage
 								});
 							}
 						}).fail(function(data){
@@ -892,7 +886,7 @@
         						saveBtn.attr('disabled', 'disabled');	
         						grid.message({
         							type: 'error',
-        							content: data.actionError
+        							content: data.errorMessage
         						});
         					}
         				}).fail(function(data){
@@ -980,7 +974,7 @@
 							}else{
 								grid.message({
 									type: 'error',
-									content: data.actionError
+									content: data.errorMessage
 								});
 							}
 						}).fail(function(data){

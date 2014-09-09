@@ -61,6 +61,7 @@
 				/images/** = anon
 				/css/** = anon
 				/lib/** = anon
+                /commons/** = anon
 				/jcaptcha.jpg = anon
 				/login.koala = jCaptchaValidate
 				/unauthorized.koala = authc

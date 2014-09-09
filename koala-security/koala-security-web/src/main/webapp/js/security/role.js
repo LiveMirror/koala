@@ -47,7 +47,7 @@ var roleManager = function(){
 					}else{
 						dialog.find('.modal-content').message({
 							type: 'error',
-							content: data.actionError
+							content: data.errorMessage
 						});
 					}
 					dialog.find('#save').removeAttr('disabled');
@@ -84,7 +84,7 @@ var roleManager = function(){
 			}else{
 				$('body').message({
 					type: 'error',
-					content: data.actionError
+					content: data.errorMessage
 				});
 			}
 		}).fail(function(data){
@@ -149,7 +149,7 @@ var roleManager = function(){
 			}else{
 				dialog.find('.modal-content').message({
 					type: 'error',
-					content: data.actionError
+					content: data.errorMessage
 				});
 			}
 			dialog.find('#save').removeAttr('disabled');
@@ -213,7 +213,7 @@ var roleManager = function(){
 					}else{
 						dialog.find('.modal-content').message({
 							type: 'error',
-							content: data.actionError
+							content: data.errorMessage
 						});
 					}
 				}).fail(function(data){

@@ -1,78 +1,46 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="koala" uri="http://www.openkoala.org/security" %>
+<%@include file="/commons/taglibs.jsp"%>
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <%@include file="/commons/metas.jsp"%>
     <title>Koala权限系统</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-
-    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="../css/main.css"/>
-    <link rel="stylesheet" href="../css/security.css"/>
-    <link rel="stylesheet" href="../css/koala.css"/>
-    <link rel="stylesheet" href="../lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css"/>
-
-    <script type="text/javascript" src="../lib/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="../lib/respond.min.js"></script>
-    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../lib/koala-tree.js"></script>
-    <script type="text/javascript" src="../lib/koala-ui.plugin.js" ></script>
-    <script type="text/javascript" src="../lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript" src="../lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
-    <script type="text/javascript" src="../lib/validate.js"></script>
-    <script type="text/javascript" src="../js/security/menu.js"></script>
-    <script type="text/javascript" src="../js/main.js" ></script>
-    <script type="text/javascript" src="../js/security/role.js" ></script>
-    <script type="text/javascript" src="../js/security/user.js" ></script>
-
+    <%@include file="/commons/statics.jsp"%>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
-
         $(function(){
-            /*获取用户的角色*/
-            $.getJSON(contextPath + '/auth/role/findRolesByUsername.koala', function(data) {
-                var roles = $("#roles");
-                roles.change();
-            });
+            var roleName = $('#roles').html().trim();
+            var url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
+            $.get(url, {'roleName':roleName},function(menuData){
+                var menu = initMenu(menuData.data);
+                $("#roleMenu").empty().append(menu);
 
-            /*根据roleid获取菜单*/
-            $("#roles").change(function(){
-                var roleName = '<koala:user property="roleName"/>';
-                console.log(roleName);
+                /*删除上一个角色打开的tab*/
+                $("#navTabs").children().each(function(i, t){
+                    (i > 0) ? $(t).remove() : "";
+                });
+                $("#tabContent").children().each(function(i, t){
+                    (i > 0) ? $(t).remove() : "";
+                });
 
-                url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
-                $.get(url, {'roleName':roleName},function(menuData){
-                    var menu = initMenu(menuData.data);
+                /*激活第一个tab*/
+                $("#navTabs").find("a").click();
+                /*生成角色菜单*/
+                menu.delegate(".leaf_node","click",function(){
+                    var thiz 	= $(this),
+                            url 	= thiz.attr("url"),
+                            title 	= thiz.find('.menu_name').html(),
+                            mark 	= thiz.attr('mark');
 
-                    $("#roleMenu").empty().append(menu);
-
-                    /*删除上一个角色打开的tab*/
-                    $("#navTabs").children().each(function(i, t){
-                        (i > 0) ? $(t).remove() : "";
-                    });
-                    $("#tabContent").children().each(function(i, t){
-                        (i > 0) ? $(t).remove() : "";
-                    });
-
-                    /*激活第一个tab*/
-                    $("#navTabs").find("a").click();
-                    /*生成角色菜单*/
-                    menu.delegate(".leaf_node","click",function(){
-                        var thiz 	= $(this),
-                                url 	= thiz.attr("url"),
-                                title 	= thiz.find('.menu_name').html(),
-                                mark 	= thiz.attr('mark');
-
-                        if(title && url){
-                            mark = openTab(url, title, mark);
-                            if(mark){
-                                thiz.attr("mark",mark);
-                            }
+                    if(title && url){
+                        mark = openTab(url, title, mark);
+                        if(mark){
+                            thiz.attr("mark",mark);
                         }
-                    });
-                },"json");
-            });
+                    }
+                });
+            },"json");
         });
 
         var renderSubMenu = function(data, $menu){
@@ -310,33 +278,39 @@
 	<div class="g-head">
 	    <nav class="navbar navbar-default">
 	        <a class="navbar-brand" href="#">
-	        	<img src="../images/global.logo.png"/>
+	        	<img src="${contextPath}/images/global.logo.png"/>
 	        	<span style="font-weight:800;">Koala权限系统</span>
 	        </a>
 	        <div class="collapse navbar-collapse navbar-ex1-collapse">
-	            <!-- 账号信息 -->
-	            <div class="btn-group navbar-right">
-	                <label for = "userAccount" class = "user_name yhmc">用户  : </label>
-                   	<span id="userAccount" class="user_name yhmc">
-                        <koala:user property="name"/>
-                   	</span>
-	                <img class="dropdown-toggle" data-toggle="dropdown" id='btn1'  src =${pageContext.request.contextPath}/images/setMenu.png  />
-	                <ul class="dropdown-menu" id="userManager" style="min-width: 0">
-	                    <li data-target="loginOut"><a href="#">注销</a></li>
-                        <li data-target="modifyPwd"><a href="#">更改密码</a></li>
-                        <li data-toggle="modal" data-target="#changeEmailOfUser"><a href="#">更改邮箱</a></li>
-	                    <li data-toggle="modal" data-target="#changeTelePhoneOfUser"><a href="#">更改电话</a></li>
-	                    <li data-toggle='modal' data-target="#rolesToggle"><a href="#">切换角色</a></li>
-	                </ul>
-	            </div>
-	            <div class="btn-group navbar-right">
-	                <label for = "roles" class = "user_name">角色 :</label>
+                <div class="btn-group navbar-right">
+                    <img class="dropdown-toggle" data-toggle="dropdown" id='btn1'  src =${contextPath}/images/systemFunction.png />
+                    <ul class="dropdown-menu" id="userManager" style="min-width: 0">
+                        <li data-target="loginOut"><a href="#" class="glyphicon glyphicon-off">&nbsp;注销</a></li>
+                        <li data-target="modifyPwd"><a href="#" class="glyphicon glyphicon-pencil">&nbsp;更改密码</a></li>
+                        <li data-toggle="modal" data-target="#changeEmailOfUser"><a href="#" class="glyphicon glyphicon-envelope">&nbsp;更改邮箱</a></li>
+                        <li data-toggle="modal" data-target="#changeTelePhoneOfUser"><a href="#" class="glyphicon glyphicon-earphone">&nbsp;更改电话</a></li>
+                        <li data-toggle='modal' data-target="#rolesToggle"><a href="#" class="glyphicon glyphicon-repeat">&nbsp;切换角色</a></li>
+                    </ul>
+                </div>
+
+                <!--角色信息-->
+                <div class="btn-group navbar-right">
+                    <label for = "roles" class = "user_name">角色: </label>
 	            	<span id="roles">
 	            		<koala:user property="roleName" />
 	                </span>
-	                &nbsp;
-	                <ul class="dropdown-menu" id="allRolesId"></ul>
-	            </div>
+                    &nbsp;
+                    <ul class="dropdown-menu" id="allRolesId"></ul>
+                </div>
+	            <!-- 账号信息 -->
+	            <div class="btn-group navbar-right">
+                    <span>
+                        <!-- 为了不改变页面布局-->
+                    </span>
+                    <a href="#" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px" >&nbsp;<koala:user property="name"/>
+                    </a>
+                    &nbsp; &nbsp;
+                </div>
 	        </div>
 	    </nav>
 	</div>

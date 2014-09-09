@@ -11,5 +11,6 @@ public class CreateChildMenuResourceCommand extends CreateMenuResourceCommand{
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
-	
+
+
 }

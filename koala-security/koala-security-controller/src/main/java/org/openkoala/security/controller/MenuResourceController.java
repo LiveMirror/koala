@@ -9,7 +9,6 @@ import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeMenuResourcePropsCommand;
 import org.openkoala.security.facade.command.CreateChildMenuResourceCommand;
 import org.openkoala.security.facade.command.CreateMenuResourceCommand;
-import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.realm.CustomAuthoringRealm;
 import org.slf4j.Logger;
@@ -36,9 +35,6 @@ public class MenuResourceController {
 
 	@Inject
 	private SecurityConfigFacade securityConfigFacade;
-
-	@Inject
-	private CustomAuthoringRealm customAuthoringRealm;
 
 	/**
 	 * 添加菜单权限资源。

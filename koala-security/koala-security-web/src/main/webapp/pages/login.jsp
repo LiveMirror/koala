@@ -1,16 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="/commons/taglibs.jsp"%>
+
 <!DOCTYPE html>
-<html>
-<head>
-<title>欢迎使用Koala</title>
-<link href="lib/bootstrap/css/bootstrap.min.css"   rel="stylesheet">
-<script type="text/javascript" src="lib/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="lib/respond.min.js"></script>
-<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="lib/koala-ui.plugin.js"></script>	
-<script type="text/javascript" src="lib/validate.js"></script>
+<html lang="zh-CN">
+    <head>
+        <%@include file="/commons/metas.jsp"%>
+        <title>欢迎使用Koala</title>
+        <%@include file="/commons/statics.jsp"%>
+
 <style type="text/css">
 *   .* {
 	margin: 0;

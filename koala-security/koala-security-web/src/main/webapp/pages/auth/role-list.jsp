@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@ taglib prefix="ks" uri="http://www.openkoala.org/security" %>
+<%@include file="/commons/taglibs.jsp"%>
+
 <script>
 	$(function() {
 		var tabData 	= $('.tab-pane.active').data();
@@ -290,7 +291,7 @@
 							}else{
 								grid.message({
 									type: 'error',
-									content: data.actionError
+									content: data.errorMessage
 								});
 							}
 						}).fail(function(data){

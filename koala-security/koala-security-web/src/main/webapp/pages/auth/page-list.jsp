@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@ taglib prefix="ks" uri="http://www.openkoala.org/security" %>
-
-
-<link rel="stylesheet" href="../lib/validateForm/css/style.css"/>
-<script src="../lib/validateForm/validateForm.js"></script>
+<%@include file="/commons/taglibs.jsp"%>
 
 <script>
 	$(function(){
@@ -88,7 +84,7 @@
 		        				} else {
 		        					dialog.find('.modal-content').message({
 		        						type : 'error',
-		        						content : data.actionError
+		        						content : data.errorMessage
 		        					});
 		        				}
 		        				dialog.find('#save').removeAttr('disabled');
@@ -112,7 +108,7 @@
 				} else {
 					grid.message({
 						type : 'error',
-						content : data.actionError
+						content : data.errorMessage
 					});
 				}
 			}).fail(function(data){
@@ -285,7 +281,7 @@
         						}else{
         							grid.message({
         								type : 'error',
-        								content : data.actionError
+        								content : data.errorMessage
         							});
         						}
         	
@@ -381,7 +377,7 @@
 							}else{
 								grid.message({
 									type: 'error',
-									content: data.actionError
+									content: data.errorMessage
 								});
 							}
 						}).fail(function(data){

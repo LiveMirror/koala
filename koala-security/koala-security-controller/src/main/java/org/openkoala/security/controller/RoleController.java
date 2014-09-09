@@ -65,8 +65,8 @@ public class RoleController {
 	public InvokeResult update(ChangeRolePropsCommand command) {
 		InvokeResult result =  securityConfigFacade.changeRoleProps(command);
         if(result.isSuccess()){
-            //修改成功，并且是把角色给修改了，那么就刷新realm。
-            if(!command.getName().equals(CurrentUser.getRoleName())){
+            // 检查当前角色是否存在,可能会有问题。
+            if(!securityAccessFacade.checkRoleByName(CurrentUser.getRoleName())){
                 customAuthoringRealm.resetRoleNameOfCurrentUser(command.getName());
             }
         }
@@ -96,17 +96,6 @@ public class RoleController {
 	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
 	public InvokeResult pagingQuery(int page, int pagesize, RoleDTO roleDTO) {
 		return securityAccessFacade.pagingQueryRoles(page, pagesize, roleDTO);
-	}
-
-	/**
-	 * 根据用户名查找所有的角色。
-	 *
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/findRolesByUsername", method = RequestMethod.GET)
-	public InvokeResult findRoleDtosByUsername() {
-		return securityAccessFacade.findRolesByUserAccount(CurrentUser.getUserAccount());
 	}
 
 	/**
@@ -142,11 +131,15 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/grantUrlAccessResourcesToRole", method = RequestMethod.POST)
-	public InvokeResult grantUrlAccessResourcesToRole(Long roleId, Long[] urlAccessResourceIds) {
-		shiroFilterChainManager.initFilterChain();
-		return	securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
-	}
+    @RequestMapping(value = "/grantUrlAccessResourcesToRole", method = RequestMethod.POST)
+    public InvokeResult grantUrlAccessResourcesToRole(Long roleId, Long[] urlAccessResourceIds) {
+        shiroFilterChainManager.initFilterChain();
+        InvokeResult result = securityConfigFacade.grantUrlAccessResourcesToRole(roleId, urlAccessResourceIds);
+        if (result.isSuccess()) {
+            shiroFilterChainManager.initFilterChain();
+        }
+        return result;
+    }
 
 	/**
 	 * 从角色中撤销Url访问权限资源。
@@ -155,12 +148,15 @@ public class RoleController {
 	 * @param urlAccessResourceIds
 	 * @return
 	 */
-	@ResponseBody
-	@RequestMapping(value = "/terminateUrlAccessResourcesFromRole", method = RequestMethod.POST)
-	public InvokeResult terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds) {
-			shiroFilterChainManager.initFilterChain();
-			return securityConfigFacade.terminateUrlAccessResourcesFromRole(roleId, urlAccessResourceIds);
-	}
+    @ResponseBody
+    @RequestMapping(value = "/terminateUrlAccessResourcesFromRole", method = RequestMethod.POST)
+    public InvokeResult terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds) {
+        InvokeResult result = securityConfigFacade.terminateUrlAccessResourcesFromRole(roleId, urlAccessResourceIds);
+        if (result.isSuccess()) {
+            shiroFilterChainManager.initFilterChain();
+        }
+        return result;
+    }
 
 	/**
 	 * 查出已经授权的URL访问权限资源。
