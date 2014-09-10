@@ -345,7 +345,13 @@ var employee = function(){
 		
 		data.name = name.val();
 		data.sn = sn.val();
+		data.gender = gender.getValue();
 		data.entryDate = entryDate.find('input').val();
+		data.idNumber = idNumber.val();
+		data.mobilePhone = mobilePhone.val();
+		data.familyPhone = familyPhone.val();
+		data.email = email.val();
+		
 		if (employeeId != null) {
 			data.id = employeeId;
 		}

@@ -6,7 +6,7 @@ import javax.servlet.ServletContext;
 
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.shiro.CurrentUser;
-import org.openkoala.security.shiro.realm.CustomAuthoringRealm.ShiroUser;
+import org.openkoala.security.shiro.realm.ShiroUser;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 

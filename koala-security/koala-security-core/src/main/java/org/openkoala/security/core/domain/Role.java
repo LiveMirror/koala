@@ -94,6 +94,8 @@ public class Role extends Authority {
 	public static List<Role> findAll(){
 		return Role.findAll(Role.class);
 	}
+
+    // TODO 名称应该放在基类上面。
 	public static Role getRoleBy(String name) {
 		return getRepository()//
 				.createCriteriaQuery(Role.class)//

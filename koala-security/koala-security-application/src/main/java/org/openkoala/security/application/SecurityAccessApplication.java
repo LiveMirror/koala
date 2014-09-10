@@ -201,7 +201,7 @@ public interface SecurityAccessApplication {
 	 * @param roleName
 	 * @return
 	 */
-	boolean checkRoleName(String roleName);
+	boolean checkRoleByName(String roleName);
 
     <T extends Authority> T getAuthority(Long authorityId);
 }

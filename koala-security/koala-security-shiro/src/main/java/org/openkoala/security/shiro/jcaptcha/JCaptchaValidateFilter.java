@@ -1,4 +1,4 @@
-package org.openkoala.security.shiro.Jcaptcha;
+package org.openkoala.security.shiro.jcaptcha;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

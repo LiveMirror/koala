@@ -6,7 +6,7 @@ var menuManager = function(){
 	var identifier 	= null; //资源标识
 	var menuUrl		= null;
 	var desc 		= null; //资源描述
-	var menuImg 	= null; //菜单图片
+	var menuIcon 	= null; //菜单图片
 	var menuImgBtn 	= null; //菜单图片按钮
 	var dataGrid 	= null; //Grid对象
 	var opreate 	= null;
@@ -81,11 +81,11 @@ var menuManager = function(){
 		name 		= dialog.find('#name');
 		menuUrl		= dialog.find("#menuUrl");
 		identifier 	= dialog.find('#identifier');
-		menuImg 	= dialog.find('#menuIcon');
+        menuIcon 	= dialog.find('#menuIcon');
 		menuImgBtn 	= dialog.find('#iconBtn');
 		desc 		= dialog.find('#desc');
-		
-		menuImg.addClass('glyphicon glyphicon-list-alt').attr('src', 'glyphicon glyphicon-list-alt');
+
+        menuIcon.addClass('glyphicon glyphicon-list-alt').attr('src', 'glyphicon glyphicon-list-alt');
 		
 		if(opreate == 'modify'){
 			setData(item);
@@ -102,7 +102,7 @@ var menuManager = function(){
 				imgsDialog.find('#images').html(contents.join(''))
 				.find('span')
 				.on('click', function(){
-					 menuImg.removeClass().addClass('menu-icon')
+                        menuIcon.removeClass().addClass('menu-icon')
                          .addClass($(this).attr('src')).attr('src',$(this).attr('src'));
 					 imgsDialog.modal('hide');
 				});
@@ -148,7 +148,7 @@ var menuManager = function(){
 		desc.val(item.desc);
 		identifier.val(item.identifier);
 		menuUrl.val(item.url);
-		menuImg.removeClass().addClass('menu-icon').addClass(item.icon).attr('src', item.icon);
+		menuIcon.removeClass().addClass('menu-icon').addClass(item.icon).attr('src', item.icon);
 	};
 		
 	/*
@@ -173,7 +173,7 @@ var menuManager = function(){
 			}else{
 				dialog.find('.modal-content').message({
 					type: 'error',
-					content: data.actionError
+					content: data.errorMessage
 				});
 				refreshToken(dialog.find('input[name="koala.token"]'));
 			}
@@ -201,9 +201,8 @@ var menuManager = function(){
 		data['identifier'] 	= identifier.val();
 		data['url']			= menuUrl.val();
 		data['name'] 		= name.val();
-		data['icon'] 		= menuImg.attr('src');
-		
-		
+		data['menuIcon'] 	= menuIcon.attr('src');
+
 		if(item){
 			data['id'] = item.id;	
 		}
@@ -293,7 +292,7 @@ var menuManager = function(){
 			if(data.actionError){
 				grid.message({
 	                type: 'error',
-	                content: data.actionError
+	                content: data.errorMessage
 	            });
 			}else{
 				grid.message({

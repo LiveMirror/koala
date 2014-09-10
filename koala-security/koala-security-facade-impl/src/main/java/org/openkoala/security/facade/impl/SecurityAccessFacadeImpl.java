@@ -859,8 +859,8 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	}
 
 	@Override
-	public boolean checkRoleName(String roleName) {
-		return securityAccessApplication.checkRoleName(roleName);
+	public boolean checkRoleByName(String roleName) {
+		return securityAccessApplication.checkRoleByName(roleName);
 	}
 
 }

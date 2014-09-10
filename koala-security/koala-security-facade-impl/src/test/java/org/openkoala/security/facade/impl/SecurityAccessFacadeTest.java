@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.MenuResource;

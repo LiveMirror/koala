@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@ taglib prefix="ks" uri="http://www.openkoala.org/security"%>
+<%@include file="/commons/taglibs.jsp"%>
 
-<link rel="stylesheet" href="../lib/validateForm/css/style.css"/>
-<script src="../lib/validateForm/validateForm.js"></script>
 <script>
 	$(function() {
 		var baseUrl = contextPath + '/auth/url/';
@@ -15,9 +13,8 @@
 			if(item){
 				/*TODO*/
 				form.find("input[name='name']").val(item.name);
-				form.find("input[name='identifier']").val(item.identifier);
-				form.find("input[name='description']").val(item.description);
 				form.find("input[name='url']").val(item.url);
+				form.find("input[name='description']").val(item.description);
 			}
 			
 			dialog.modal({
@@ -52,8 +49,8 @@
 					rules:["notnull"],
 					focusMsg:'必填',	
 					rightMsg:"正确"
-				},{ 
-					name:"identifier",	
+				},{
+					name:"url",
 					rules:['notnull'],
 					focusMsg:'必填',
 					rightMsg:"正确"
@@ -89,7 +86,7 @@
 		        				} else {
 		        					dialog.find('.modal-content').message({
 		        						type : 'error',
-		        						content : data.actionError
+		        						content : data.errorMessage
 		        					});
 		        				}
 		        				dialog.find('#save').removeAttr('disabled');
@@ -113,7 +110,7 @@
 				} else {
 					grid.message({
 						type : 'error',
-						content : data.actionError
+						content : data.errorMessage
 					});
 				}
 			}).fail(function(data){
@@ -139,15 +136,6 @@
 			title 	: "url描述",
 			name 	: "description",
 			width 	: 200
-		},{
-			title : "是否有效",
-			name : "disabled",
-			width : 100,
-			render : function(item, name, index) {
-				return item[name] != true ? 
-						'<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>' : 
-							'<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>';
-			}
 		}];
 		var getButtons = function() {
 			if (roleId) {

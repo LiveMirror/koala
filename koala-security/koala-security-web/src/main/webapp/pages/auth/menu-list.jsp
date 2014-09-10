@@ -1,10 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@ taglib prefix="ks" uri="http://www.openkoala.org/security"%>
-
-<link rel="stylesheet" href="../lib/validateForm/css/style.css"/>
-<script src="../lib/validateForm/validateForm.js"></script>
-
-
+<%@include file="/commons/taglibs.jsp"%>
 <script>
 	$(function(){
 
@@ -22,7 +17,6 @@
 			
 			if(item && opreate == "modify"){	
 				form.find("input[name='name']").val(item.name);
-				form.find("input[name='identifier']").val(item.identifier);
 				form.find("input[name='url']").val(item.url);
 			    form.find("input[name='description']").val(item.description);
 			}
@@ -87,11 +81,6 @@
 					name:"name",	
 					rules:["notnull"],
 					focusMsg:'必填',	
-					rightMsg:"正确"
-				},{
-					name:"identifier",
-					rules:["notnull"],
-					focusMsg:'必填',
 					rightMsg:"正确"
 				}
 			];
@@ -355,11 +344,7 @@
        							name : "name",
        							width : 150
        						},
-       					    {
-       							title : "菜单标识",
-       							name : "identifier",
-       							width : 150
-       						},{
+       					   {
        							title : "菜单url",
        							name : "url",
        							width : 150
@@ -427,7 +412,7 @@
 							}else{
 								grid.message({
 									type: 'error',
-									content: data.actionError
+									content: data.errorMessage
 								});
 							}
 						}).fail(function(data){

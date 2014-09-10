@@ -155,7 +155,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     }
 
 	@Override
-	public boolean checkRoleName(String roleName) {
+	public boolean checkRoleByName(String roleName) {
 		return Role.checkName(roleName);
 	}
 

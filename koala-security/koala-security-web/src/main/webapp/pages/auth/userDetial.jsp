@@ -25,7 +25,6 @@
 				<h4 class="modal-title">用户详细信息列表</h4>
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
-				aaaaaaaaaaaaa
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
