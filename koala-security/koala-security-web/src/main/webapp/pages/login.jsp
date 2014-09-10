@@ -153,7 +153,7 @@ body {
 						<input type="text" id="jCaptchaCode"  style="width:50%;" name="jCaptchaCode" value="" class="form-control" placeholder="验证码"  autocomplete="off"/>
 						<div style="width:120px;"></div>
 					</div>
-					<img src="jcaptcha.jpg" id="checkCode" onclick='$(this).attr("src","jcaptcha.jpg?time="+new Date().getTime());' class="checkCode"/>
+					<img src="jcaptcha.jpg" id="checkCode" onclick='refreshCode()' class="checkCode"/>
                 </c:if>
 				
 				<div class="form-group input-group" style="margin-top: 45px;">
@@ -207,11 +207,17 @@ body {
         					type: 'error',
         					content: data.errorMessage
         				});
+        				refreshCode();
         			}
         		}
         	});
 		};
 		});
+		
+		function refreshCode() {
+			$("#checkCode").attr("src","jcaptcha.jpg?time="+new Date().getTime());
+		}
+		
 	</script>
 </body>
 </html>
