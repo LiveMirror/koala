@@ -34,9 +34,11 @@ public class ParseObjectFunctionCreate implements
 
 	public void process() throws Exception {
 		logger.info("解析类对象【" + name + "】");
+		if(name != "Example" && !name.equals("Example")){
 		String xmlPath = "xml/ObjectFunctionCreate/" + name + ".xml";
 		XmlParseUtil.parseXml(xmlPath, params);
 		logger.info("类对象【" + name + "】解析成功");
+		}
 	} 
 
 }
