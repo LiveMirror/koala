@@ -3,7 +3,7 @@ package org.openkoala.security.shiro;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
-import org.openkoala.security.shiro.realm.CustomAuthoringRealm.ShiroUser;
+import org.openkoala.security.shiro.realm.ShiroUser;
 
 public final class CurrentUser {
 

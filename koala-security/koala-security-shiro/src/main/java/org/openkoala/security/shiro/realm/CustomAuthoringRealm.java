@@ -1,6 +1,5 @@
 package org.openkoala.security.shiro.realm;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -33,6 +31,8 @@ import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Sets;
 
 /**
  * 这里加入一个角色。 自定义Realm 放入用户以及角色和权限
@@ -79,7 +79,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		checkUserStatus(user);
 		checkUserPassword(userPassword, user);
 		String roleName = getRoleName(user);
-		ShiroUser shiroUser = new ShiroUser(user.getId(), user.getUserAccount(), user.getName(), roleName);
+		ShiroUser shiroUser = new ShiroUser(user.getUserAccount(), user.getName(), roleName);
         shiroUser.setEmail(user.getEmail());
 		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
 				shiroUser, //
@@ -258,74 +258,4 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
         shiroFilterChainManager.initFilterChain();
     }
 
-
-    public static class ShiroUser implements Serializable {
-
-		private static final long serialVersionUID = 5876323074602221444L;
-
-		private Long id;
-
-		private String userAccount;
-
-		private String name;
-
-		private String roleName;
-
-        private String email;
-
-        private String telePhone;
-
-		ShiroUser() {}
-
-		public ShiroUser(Long id, String userAccount, String name, String roleName) {
-			super();
-			this.id = id;
-			this.userAccount = userAccount;
-			this.name = name;
-			this.roleName = roleName;
-		}
-
-        public Long getId() {
-            return id;
-        }
-
-        public String getUserAccount() {
-            return userAccount;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getRoleName() {
-            return roleName;
-        }
-
-        public void setRoleName(String roleName) {
-            this.roleName = roleName;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getTelePhone() {
-            return telePhone;
-        }
-
-        public void setTelePhone(String telePhone) {
-            this.telePhone = telePhone;
-        }
-
-
-        @Override
-		public String toString() {
-			return "ShiroUser [id=" + id + ", userAccount=" + userAccount + ", name=" + name + ", roleName=" + roleName + "]";
-		}
-
-	}
 }
