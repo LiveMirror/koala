@@ -97,10 +97,10 @@
 		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;禁用</button></ks:hasSecurityResource>',
 		 					action : 'forbidden'
 		 				},{
-		 					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;激活</button>',
+		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;激活</button></ks:hasSecurityResource>',
 		 					action : 'available'
 		 				},{
-		 					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>',
+		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button></ks:hasSecurityResource>',
 		 					action : 'search'
 		 				}];
 		 			}
@@ -315,6 +315,7 @@
 				});
 		    }
 		};
+		PageLoader.initSearchPanel();
 		PageLoader.initGridPanel();
 		 form.find('#search').on('click', function(){
 	            var params = {};
@@ -326,13 +327,7 @@
 	                    params[name] = $this.val();
 	                }
 	            });
-	            //$('[data-role="userGrid"]').off().getGrid().search(params);
-	            
-	            var url =  contextPath + '/auth/user/pagingQuery.koala'
-	    		$.get(url, params).done(function(data) {
-	    			if(data.success){}
-	    			alert(data.success);
-	    		});
+	            $('[data-role="userGrid"]').getGrid().search(params);
 	        });
 	});
 </script>
