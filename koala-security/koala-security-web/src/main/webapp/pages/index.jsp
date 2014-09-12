@@ -277,7 +277,12 @@
     	 */
     	var showDetail = function(){
         	var userInfo = $("#userInfo").html();
-    		openTab('/pages/auth/user-info.jsp',userInfo);
+        	   var thiz 	= $(this),
+               mark 	= thiz.attr('mark');
+       		  mark = openTab('/pages/auth/user-info.jsp', userInfo, mark);
+              if(mark){
+                  thiz.attr("mark",mark);
+              }
     	};
     </script>
 </head>
@@ -317,7 +322,7 @@
                     <span>
                         <!-- 为了不改变页面布局-->
                     </span>
-                    <a href="#" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px"  title="查看个人信息"  >&nbsp;<koala:user property="name" />
+                    <a href="#abc123" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px"  title="查看个人信息"  >&nbsp;<koala:user property="name" />
                     </a>
                     &nbsp; &nbsp;
                 </div>
