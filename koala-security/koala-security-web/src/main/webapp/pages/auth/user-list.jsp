@@ -31,13 +31,13 @@
         </div>
            <label class="control-label" style="width:100px;float:left;">用户状态:&nbsp;</label>
            <select  name="disabled" class="form-control"  style = "width:180px;margin-left:15px;float:left;">
-          	 <option value=""></option>
+          	 <option value="">全部</option>
              <option value="false">可用</option>
              <option value="true">挂起</option>
            </select>
             </div>
             </td>
-       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button></td>
+       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-info"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
   </tr>
 </table>	
 </div>
@@ -94,13 +94,13 @@
 		 					content : '<ks:hasSecurityResource identifier="userManagerResetPassword"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;重置密码</button></ks:hasSecurityResource>',
 		 					action : 'resetPassword'
 		 				},{
-		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;禁用</button></ks:hasSecurityResource>',
+		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;禁用</button></ks:hasSecurityResource>',
 		 					action : 'forbidden'
 		 				},{
-		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;激活</button></ks:hasSecurityResource>',
+		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;激活</button></ks:hasSecurityResource>',
 		 					action : 'available'
 		 				},{
-		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button></ks:hasSecurityResource>',
+		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
 		 					action : 'search'
 		 				}];
 		 			}

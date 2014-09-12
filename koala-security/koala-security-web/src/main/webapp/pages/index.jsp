@@ -89,11 +89,13 @@
                 } else {
                     node.addClass("leaf_node").attr("url",d.url);
                 }
+                
             });
-            return menu;
+           return menu;
         }
 
-        function click_here(data){
+        function click_here(data){        	
+        	
             $(".asd"+data).next('.nav-stacked').toggle(600);
         }
 
@@ -267,8 +269,16 @@
                 });
                 // ------------ switchOverRoleOfUser end ---------------
             });
+            
+        
         });
-
+        /**
+    	 * 显示详细信息
+    	 */
+    	var showDetail = function(){
+        	var userInfo = $("#userInfo").html();
+    		openTab('/pages/auth/user-info.jsp',userInfo);
+    	};
     </script>
 </head>
 
@@ -307,7 +317,7 @@
                     <span>
                         <!-- 为了不改变页面布局-->
                     </span>
-                    <a href="#" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px" >&nbsp;<koala:user property="name"/>
+                    <a href="#" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px"  title="查看个人信息"  >&nbsp;<koala:user property="name" />
                     </a>
                     &nbsp; &nbsp;
                 </div>
