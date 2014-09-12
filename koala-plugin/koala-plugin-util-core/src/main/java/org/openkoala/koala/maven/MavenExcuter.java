@@ -32,4 +32,15 @@ public class MavenExcuter {
 		if (result != 0)
 			throw new KoalaException("项目不能正常编译，请检查");
 	}
+
+	public static void run(String path, String command)
+			throws KoalaException {
+		MavenCli cli = new MavenCli();
+		int result = 0;
+		result = cli.doMain(new String[] {command, "-DskipTests=true"},
+				path, System.out, System.err);
+
+		if (result != 0)
+			throw new KoalaException("项目不能正常编译，请检查");
+	}
 }
