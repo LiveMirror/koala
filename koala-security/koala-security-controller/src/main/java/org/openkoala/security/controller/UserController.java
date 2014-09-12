@@ -66,8 +66,10 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
+
 	public InvokeResult terminate(Long[] userIds) {
-		return securityConfigFacade.terminateUsers(userIds);
+        String currentUserAccount = CurrentUser.getUserAccount();
+		return securityConfigFacade.terminateUsers(userIds,currentUserAccount);
 	}
 
 	/**
@@ -103,7 +105,8 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/suspend", method = RequestMethod.POST)
 	public InvokeResult suspend(Long userId) {
-		return securityConfigFacade.suspend(userId);
+        String currentUserAccount = CurrentUser.getUserAccount();
+		return securityConfigFacade.suspend(userId,currentUserAccount);
 	}
 
 	/**
@@ -127,7 +130,8 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/suspends", method = RequestMethod.POST)
 	public InvokeResult suspends(Long[] userIds) {
-		return securityConfigFacade.suspend(userIds);
+        String currentUserAccount = CurrentUser.getUserAccount();
+        return securityConfigFacade.suspend(userIds,currentUserAccount);
 	}
 
 	// ~ 授权

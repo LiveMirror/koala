@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@include file="/commons/taglibs.jsp"%>
 
 <div aria-hidden="false" style="display: block;" class="modal fade in" id="changeTelePhoneOfUser">
     <div class="modal-dialog changeTelePhoneOfUser" style="padding-top:80px;">

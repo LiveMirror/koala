@@ -10,7 +10,6 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
-	<tx:annotation-driven />
 
 	<bean id="customAuthoringRealm" class="org.openkoala.security.shiro.realm.CustomAuthoringRealm">
 		<property name="cachingEnabled" value="false" />

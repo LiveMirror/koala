@@ -21,4 +21,5 @@ public interface SecurityDBInitApplication {
 //	void initUrlAccessResources();
 	
 	void initSecuritySystem();
+
 }

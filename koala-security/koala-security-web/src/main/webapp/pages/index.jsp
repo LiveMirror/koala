@@ -7,6 +7,11 @@
     <%@include file="/commons/metas.jsp"%>
     <title>Koala权限系统</title>
     <%@include file="/commons/statics.jsp"%>
+    <style>
+        .nav-stacked .node ul{
+            display:none;
+        }
+    </style>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
         $(function(){
@@ -74,13 +79,16 @@
 
             $.each(data,function(i,d){
                 if(!d.name) return;
+
                 node = $('<li class="node"> \
-							<a href="#menuMark'+ d.id +'" class = "asd'+d.id+'" onclick="click_here('+d.id+')"> \
+							<a href="#menuMark'+ d.id +'" class = "asd'+d.id+'"> \
 								<span class="'+d.icon+'"></span> \
 								<span class="menu_name">' + d.name + '</span> \
 								<i class="glyphicon glyphicon-chevron-right pull-right" style="position:relative;right:12px;font-size:12px;"></i> \
 							</a> \
 						</li>');
+
+                if(i==0) node.addClass("active");
                 menu.append(node);
 
                 /*如果children有值，该节点将不会是叶子节点*/
@@ -89,14 +97,20 @@
                 } else {
                     node.addClass("leaf_node").attr("url",d.url);
                 }
-                
             });
-           return menu;
-        }
 
-        function click_here(data){        	
-        	
-            $(".asd"+data).next('.nav-stacked').toggle(600);
+            menu.children(".node.active").children("ul").show();
+
+            menu.delegate(".node", "click", function(){
+                var thiz = $(this);
+
+                if(!thiz.is(".active")){
+                    menu.find(".active").removeClass("active").children("ul").slideUp();
+                    thiz.addClass("active").children("ul").slideDown();
+                }
+            });
+
+            return menu;
         }
 
         // 更改联系电话
