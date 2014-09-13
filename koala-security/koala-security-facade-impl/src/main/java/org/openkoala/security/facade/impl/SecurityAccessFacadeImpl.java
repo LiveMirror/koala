@@ -681,6 +681,11 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			jpql.append(".telePhone LIKE :telePhone");
 			conditionVals.put("telePhone", MessageFormat.format("%{0}%", queryUserCondition.getTelePhone()));
 		}
+		if (!StringUtils.isBlank(queryUserCondition.getDescription())) {
+			jpql.append(andCondition);
+			jpql.append(".description LIKE :description");
+			conditionVals.put("description", MessageFormat.format("%{0}%", queryUserCondition.getDescription()));
+		}
 	}
 
 	private void assembleRoleJpqlAndConditionValues(RoleDTO queryRoleCondition, StringBuilder jpql,
