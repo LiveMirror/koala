@@ -38,7 +38,7 @@
                         <label class="col-lg-3 control-label">菜单资源图片:</label>
                         <div class="col-lg-9">
                             <span id="menuIcon" class="menu-icon"></span>
-                            <input type="hidden" name="menuIcon"/>
+                            <input type="hidden" name="menuIcon" id="icon"/>
                             <button id="iconBtn" type="button" class="btn btn-info">浏览图片</button>
                         </div>
                     </div>

@@ -20,7 +20,7 @@ public class MenuResourceDTO implements Serializable {
 	
 	private String url;
 	
-	private String icon;
+	private String menuIcon;
 	
 	private String description;
 	
@@ -43,11 +43,11 @@ public class MenuResourceDTO implements Serializable {
 		this.name = name;
 	}
 
-	public MenuResourceDTO(Long id,String name, String url, String icon, String description, Long parentId,int level) {
+	public MenuResourceDTO(Long id,String name, String url, String menuIcon, String description, Long parentId,int level) {
 		this.id = id;
 		this.name = name;
 		this.url = url;
-		this.icon = icon;
+		this.menuIcon = menuIcon;
 		this.description = description;
 		this.parentId = parentId;
 		this.level = level;
@@ -76,13 +76,13 @@ public class MenuResourceDTO implements Serializable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
-	public String getIcon() {
-		return icon;
+	
+	public String getMenuIcon() {
+		return menuIcon;
 	}
 
-	public void setIcon(String icon) {
-		this.icon = icon;
+	public void setMenuIcon(String menuIcon) {
+		this.menuIcon = menuIcon;
 	}
 
 	public String getDescription() {
@@ -174,7 +174,7 @@ public class MenuResourceDTO implements Serializable {
 				.append(getId())//
 				.append(getName())//
 				.append(getDescription())//
-				.append(getIcon())//
+				.append(getMenuIcon())//
 				.append(getLevel())//
 				.append(getUrl())//
 				.append(getParentId())//

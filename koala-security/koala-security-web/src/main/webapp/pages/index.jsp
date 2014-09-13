@@ -76,7 +76,7 @@
                 if(!d.name) return;
                 node = $('<li class="node"> \
 							<a href="#menuMark'+ d.id +'" class = "asd'+d.id+'" onclick="click_here('+d.id+')"> \
-								<span class="'+d.icon+'"></span> \
+								<span class="'+d.menuIcon+'"></span> \
 								<span class="menu_name">' + d.name + '</span> \
 								<i class="glyphicon glyphicon-chevron-right pull-right" style="position:relative;right:12px;font-size:12px;"></i> \
 							</a> \
@@ -322,7 +322,7 @@
                     <span>
                         <!-- 为了不改变页面布局-->
                     </span>
-                    <a href="#abc123" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px"  title="查看个人信息"  >&nbsp;<koala:user property="name" />
+                    <a href="#" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px"  title="查看个人信息"  >&nbsp;<koala:user property="name" />
                     </a>
                     &nbsp; &nbsp;
                 </div>
