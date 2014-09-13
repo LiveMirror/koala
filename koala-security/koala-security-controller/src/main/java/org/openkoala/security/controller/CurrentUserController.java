@@ -2,7 +2,7 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
-import org.apache.shiro.web.subject.support.WebDelegatingSubject;
+import org.apache.commons.lang3.StringUtils;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
@@ -10,9 +10,8 @@ import org.openkoala.security.facade.command.ChangeUserAccountCommand;
 import org.openkoala.security.facade.command.ChangeUserEmailCommand;
 import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
-import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
-import org.openkoala.security.shiro.realm.CustomAuthoringRealm;
+import org.openkoala.security.shiro.RoleHandle;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +34,7 @@ public class CurrentUserController {
     private SecurityAccessFacade securityAccessFacade;
 
     @Inject
-    private CustomAuthoringRealm customAuthoringRealm;
+    private RoleHandle roleHandle;
 	
 	/**
 	 * 更改用户账号。
@@ -118,7 +117,25 @@ public class CurrentUserController {
     @ResponseBody
     @RequestMapping(value = "/switchOverRoleOfUser", method = RequestMethod.POST)
     public InvokeResult switchOverRoleOfUser(String roleName){
-        return customAuthoringRealm.switchOverRoleOfUser(roleName);
+    	if (StringUtils.isBlank(roleName)) {
+            return InvokeResult.failure("角色名为空。");
+        }
+        // 角色名相同 不做任何处理
+        if (CurrentUser.getRoleName().equals(roleName)) {
+            return InvokeResult.success();
+        }
+        if (!securityAccessFacade.checkRoleByName(roleName)) {
+            return InvokeResult.failure("角色名不存在。");
+        }
+        if (!securityAccessFacade.checkUserIsHaveRole(CurrentUser.getUserAccount(), roleName)) {
+        	return InvokeResult.failure("该角色未分配当前用户");
+        }
+        try {
+			roleHandle.switchOverRoleOfUser(roleName);
+			return InvokeResult.success();
+		} catch (Exception e) {
+			return InvokeResult.failure("角色切换失败。");
+		}
     }
 
     @ResponseBody

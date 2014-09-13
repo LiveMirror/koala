@@ -31,6 +31,7 @@ import org.openkoala.security.facade.impl.assembler.UserAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("unchecked")
 @Named
 public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
@@ -113,8 +114,10 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		Set<Authority> authorities = new HashSet<Authority>();
 		Role role = securityAccessApplication.getRoleBy(roleName);
 		// securityAccessApplication.checkAuthorization(userAccount, role); //TODO 检查
-		authorities.add(role);
-		authorities.addAll(role.getPermissions());
+		if (role != null) {
+			authorities.add(role);
+			authorities.addAll(role.getPermissions());
+		}
 		authorities.addAll(User.findAllPermissionsBy(userAccount));
 		// 1、User 的角色、2、User本身的Permission 3、角色所关联的Permission。
 		List<MenuResourceDTO> results = findTopMenuResourceDTOByUserAccountAsRole(authorities);
@@ -301,7 +304,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return InvokeResult.success(results);
 	}
 
-    @Override
+	@Override
     public InvokeResult pagingQueryRoles(int pageIndex, int pageSize, RoleDTO queryRoleCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
         StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description) FROM Role _role");
@@ -861,6 +864,20 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public boolean checkRoleByName(String roleName) {
 		return securityAccessApplication.checkRoleByName(roleName);
+	}
+
+	@Override
+	public boolean checkUserIsHaveRole(String userAccount, String roleName) {
+		List<Role> roles = securityAccessApplication.findAllRolesByUserAccount(userAccount);
+		if (roles.isEmpty()) {
+			return false;
+		}
+		for (Role each : roles) {
+			if (each.getName().equals(roleName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
