@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.dto.*;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface SecurityAccessFacade {
 
@@ -209,5 +208,20 @@ public interface SecurityAccessFacade {
      */
     InvokeResult getuserDetail(String userAccount);
     
+    /**
+     * 检测角色名是否存在
+     * 
+     * @param roleName
+     * @return
+     */
     boolean checkRoleByName(String roleName);
+    
+    /**
+     * 检测用户是否有某个角色
+     * 
+     * @param userAccount
+     * @param roleName
+     * @return
+     */
+    boolean checkUserIsHaveRole(String userAccount, String roleName);
 }

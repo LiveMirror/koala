@@ -14,6 +14,8 @@ import com.google.common.collect.Lists;
 @Named
 public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication {
 
+    public static final String MENU_ICON = "glyphicon  glyphicon-list-alt";
+
     @Override
     public void initSecuritySystem() {
         if (User.getCount() == 0) {
@@ -37,6 +39,7 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
             user.grant(role);
 
             role.addSecurityResources(menuResources);
+
             role.addSecurityResources(initUrlAccessResources());
             role.addSecurityResources(menuUrls);
             role.addSecurityResources(initPageElementResources());
@@ -54,6 +57,11 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 
             role.addSecurityResources(urls);
             role1.addSecurityResources(urls);
+
+            // TODO 组织系统 目前在一起初始化~ 后面会分开
+            List<MenuResource> orgMenuResource = createOrgMenuResource();
+            role.addSecurityResources(orgMenuResource);
+            role1.addSecurityResources(orgMenuResource);
         }
     }
 
@@ -231,56 +239,87 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
         return role;
     }
 
-    private List<MenuResource> createMenuResource() {
-        String menuIcon = "glyphicon  glyphicon-list-alt";
+    private List<MenuResource> createOrgMenuResource() {
+        MenuResource rootMenuResouce = new MenuResource("组织机构管理");
+        rootMenuResouce.setMenuIcon(MENU_ICON);
+        rootMenuResouce.setDescription("组织机构管理菜单");
+        rootMenuResouce.save();
 
+        MenuResource departmentMenuResouce = new MenuResource("机构管理");
+        departmentMenuResouce.setUrl("/pages/organisation/departmentList.jsp");
+        departmentMenuResouce.setMenuIcon(MENU_ICON);
+        rootMenuResouce.addChild(departmentMenuResouce);
+
+        MenuResource jobMenuResouce = new MenuResource("职务管理");
+        jobMenuResouce.setUrl("/pages/organisation/jobList.jsp");
+        jobMenuResouce.setMenuIcon(MENU_ICON);
+        rootMenuResouce.addChild(jobMenuResouce);
+
+        MenuResource positionMenuResouce = new MenuResource("岗位管理");
+        positionMenuResouce.setUrl("/pages/organisation/positionList.jsp");
+        positionMenuResouce.setMenuIcon(MENU_ICON);
+        rootMenuResouce.addChild(positionMenuResouce);
+
+        MenuResource employeeMenuResouce = new MenuResource("人员管理");
+        employeeMenuResouce.setUrl("/pages/organisation/employeeList.jsp");
+        employeeMenuResouce.setMenuIcon(MENU_ICON);
+        rootMenuResouce.addChild(employeeMenuResouce);
+
+        return Lists.newArrayList(rootMenuResouce,//
+                departmentMenuResouce,//
+                jobMenuResouce,//
+                positionMenuResouce,//
+                employeeMenuResouce);
+    }
+
+    private List<MenuResource> createMenuResource() {
         MenuResource actorSecurityMenuResource = new MenuResource("参与者管理");
         actorSecurityMenuResource.setDescription("用户、用户组等页面管理。");
-        actorSecurityMenuResource.setMenuIcon(menuIcon);
+        actorSecurityMenuResource.setMenuIcon(MENU_ICON);
         actorSecurityMenuResource.save();
 
         MenuResource userMenuResource = new MenuResource("用户管理");
-        userMenuResource.setMenuIcon(menuIcon);
+        userMenuResource.setMenuIcon(MENU_ICON);
         userMenuResource.setUrl("/pages/auth/user-list.jsp");
         actorSecurityMenuResource.addChild(userMenuResource);
 
         MenuResource userDisabledMenuResource = new MenuResource("用户挂起管理");
-        userDisabledMenuResource.setMenuIcon(menuIcon);
+        userDisabledMenuResource.setMenuIcon(MENU_ICON);
         userDisabledMenuResource.setUrl("/pages/auth/forbidden-list.jsp");
         actorSecurityMenuResource.addChild(userDisabledMenuResource);
 
-        MenuResource authoritySecurityMenuResource = new MenuResource("授权体管理");
+        MenuResource authoritySecurityMenuResource = new MenuResource("授权管理");
         authoritySecurityMenuResource.setDescription("角色、权限等页面管理。");
-        authoritySecurityMenuResource.setMenuIcon(menuIcon);
+        authoritySecurityMenuResource.setMenuIcon(MENU_ICON);
         authoritySecurityMenuResource.save();
 
         MenuResource roleMenuResource = new MenuResource("角色管理");
-        roleMenuResource.setMenuIcon(menuIcon);
+        roleMenuResource.setMenuIcon(MENU_ICON);
         roleMenuResource.setUrl("/pages/auth/role-list.jsp");
         authoritySecurityMenuResource.addChild(roleMenuResource);
 
         MenuResource permisisonMenuResource = new MenuResource("权限管理");
-        permisisonMenuResource.setMenuIcon(menuIcon);
+        permisisonMenuResource.setMenuIcon(MENU_ICON);
         permisisonMenuResource.setUrl("/pages/auth/permission-list.jsp");
         authoritySecurityMenuResource.addChild(permisisonMenuResource);
 
-        MenuResource securityMenuResource = new MenuResource("权限资源管理");
+        MenuResource securityMenuResource = new MenuResource("资源管理");
         securityMenuResource.setDescription("角色、权限等页面管理。");
-        securityMenuResource.setMenuIcon(menuIcon);
+        securityMenuResource.setMenuIcon(MENU_ICON);
         securityMenuResource.save();
 
         MenuResource menuResource = new MenuResource("菜单管理");
-        menuResource.setMenuIcon(menuIcon);
+        menuResource.setMenuIcon(MENU_ICON);
         menuResource.setUrl("/pages/auth/menu-list.jsp");
         securityMenuResource.addChild(menuResource);
 
         MenuResource urlAccessResource = new MenuResource("URL访问管理");
-        urlAccessResource.setMenuIcon(menuIcon);
+        urlAccessResource.setMenuIcon(MENU_ICON);
         urlAccessResource.setUrl("/pages/auth/url-list.jsp");
         securityMenuResource.addChild(urlAccessResource);
 
         MenuResource pageElementResource = new MenuResource("页面元素管理");
-        pageElementResource.setMenuIcon(menuIcon);
+        pageElementResource.setMenuIcon(MENU_ICON);
         pageElementResource.setUrl("/pages/auth/page-list.jsp");
         securityMenuResource.addChild(pageElementResource);
 

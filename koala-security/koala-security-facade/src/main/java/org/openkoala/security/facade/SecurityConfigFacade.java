@@ -20,7 +20,7 @@ import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
 import org.openkoala.security.facade.command.CreateUserCommand;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(value = "transactionManager_security")
+@Transactional
 public interface SecurityConfigFacade {
 
 	/**
@@ -174,15 +174,16 @@ public interface SecurityConfigFacade {
 	 * @param userId
 	 * @return
 	 */
-	InvokeResult terminateUser(Long userId);
+	InvokeResult terminateUser(Long userId, String currentUserAccount);
 
 	/**
 	 * 批量撤销用户
 	 * 
 	 * @param userIds
-	 * @return
+	 * @param currentUserAccount
+     * @return
 	 */
-	InvokeResult terminateUsers(Long[] userIds);
+	InvokeResult terminateUsers(Long[] userIds, String currentUserAccount);
 
 	/**
 	 * 撤销角色
@@ -282,11 +283,11 @@ public interface SecurityConfigFacade {
 
 	InvokeResult activate(Long userId);
 
-	InvokeResult suspend(Long userId);
+	InvokeResult suspend(Long[] userId, String currentUserAccount);
 
 	InvokeResult activate(Long[] userIds);
 
-	InvokeResult suspend(Long[] userIds);
+	InvokeResult suspend(Long userIds,String currentUserAccount);
 
 	InvokeResult terminateAuthorizationByUserInRole(Long userId, Long roleId);
 

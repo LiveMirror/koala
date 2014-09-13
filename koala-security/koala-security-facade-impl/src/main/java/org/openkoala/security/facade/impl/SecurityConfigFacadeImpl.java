@@ -48,7 +48,6 @@ import org.openkoala.security.facade.impl.assembler.UrlAccessResourceAssembler;
 import org.openkoala.security.facade.impl.assembler.UserAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 
@@ -74,7 +73,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             return InvokeResult.success();
         } catch (UserAccountIsExistedException e) {
             LOGGER.error(e.getMessage());
-//            return InvokeResult.msgKey(e.getMessage());
             return InvokeResult.failure("用户账号:" + command.getUserAccount() + "已经存在。");
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -83,20 +81,23 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     @Override
-    public InvokeResult terminateUsers(Long[] userIds) {
+    public InvokeResult terminateUsers(Long[] userIds, String currentUserAccount) {
         InvokeResult result = null;
         for (Long userId : userIds) {
-            result = this.terminateUser(userId);
+            result = this.terminateUser(userId,currentUserAccount);
             if (!result.isSuccess()) {
                 break;
             }
         }
-        return InvokeResult.success(result);
+        return result;
     }
 
     @Override
-    public InvokeResult terminateUser(Long userId) {
+    public InvokeResult terminateUser(Long userId, String currentUserAccount) {
         User user = securityAccessApplication.getUserById(userId);
+        if(user.getUserAccount().equals(currentUserAccount)){
+            return InvokeResult.failure("不能撤销自己！");
+        }
         securityConfigApplication.terminateActor(user);
         return InvokeResult.success();
     }
@@ -111,7 +112,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     @Override
     public InvokeResult changeUserPassword(ChangeUserPasswordCommand command) {
         User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
-        boolean message = securityAccessApplication.updatePassword(user, command.getUserPassword(),command.getOldUserPassword());
+        boolean message = securityAccessApplication.updatePassword(user, command.getUserPassword(), command.getOldUserPassword());
         return message ? InvokeResult.success() : InvokeResult.failure("更新用户密码失败!");
     }
 
@@ -135,10 +136,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             securityConfigApplication.terminateAuthority(role);
             return InvokeResult.success();
         } catch (CorrelationException e) {
-            LOGGER.error(e.getMessage(),e);
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("撤销角色：" + role.getName() + "失败。");
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(),e);
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("撤销角色失败");
         }
     }
@@ -162,10 +163,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             securityConfigApplication.terminateSecurityResource(menuResource);
             return InvokeResult.success();
         } catch (CorrelationException e) {
-            LOGGER.error(e.getMessage(),e);
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("不能撤销，因为有角色或者权限关联。");
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(),e);
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("撤销菜单全线资源失败。");
         }
     }
@@ -266,10 +267,13 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     @Override
-    public InvokeResult suspend(Long userId) {
+    public InvokeResult suspend(Long userId, String currentUserAccount) {
         User user = null;
         try {
             user = securityAccessApplication.getUserById(userId);
+            if (user.getUserAccount().equals(currentUserAccount)) {
+                return InvokeResult.failure("不能挂起自己！");
+            }
             securityConfigApplication.suspendUser(user);
             return InvokeResult.success();
         } catch (Exception e) {
@@ -292,10 +296,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     @Override
-    public InvokeResult suspend(Long[] userIds) {
+    public InvokeResult suspend(Long[] userIds, String currentUserAccount) {
         InvokeResult result = null;
         for (Long userId : userIds) {
-            result = this.suspend(userId);
+            result = this.suspend(userId, currentUserAccount);
             if (!result.isSuccess()) {
                 break;
             }
@@ -639,52 +643,52 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Override
     public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
-            User user = securityAccessApplication.getUserById(command.getId());
-            securityConfigApplication.changeUserAccount(user, command.getUserAccount(), command.getUserPassword());
-            return InvokeResult.success();
+        User user = securityAccessApplication.getUserById(command.getId());
+        securityConfigApplication.changeUserAccount(user, command.getUserAccount(), command.getUserPassword());
+        return InvokeResult.success();
     }
 
     @Override
     public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
-        try{
+        try {
             User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
             securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
             return InvokeResult.success();
-        }catch(NullArgumentException e){
-            LOGGER.error(e.getMessage(),e);
+        } catch (NullArgumentException e) {
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("邮箱或者密码不能为空！");
-        }catch (UserPasswordException e){
-            LOGGER.error(e.getMessage(),e);
+        } catch (UserPasswordException e) {
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("密码错误！");
-        }catch(ConstraintViolationException e){
+        } catch (ConstraintViolationException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("邮箱不合法，请重新输入！");
-        }catch(EmailIsExistedException e) {
+        } catch (EmailIsExistedException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("邮箱已经存在，请重新输入！");
-        }catch(Exception e){
-            LOGGER.error(e.getMessage(),e);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("系统错误！");
         }
     }
 
     @Override
     public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
-        try{
+        try {
             User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
             securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());
             return InvokeResult.success();
-        }catch(NullArgumentException e){
-            LOGGER.error(e.getMessage(),e);
+        } catch (NullArgumentException e) {
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("电话或者密码不能为空！");
-        }catch (UserPasswordException e){
-            LOGGER.error(e.getMessage(),e);
+        } catch (UserPasswordException e) {
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("密码错误！");
-        }catch (TelePhoneIsExistedException e){
-            LOGGER.error(e.getMessage(),e);
+        } catch (TelePhoneIsExistedException e) {
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("联系电话已经存在！");
-        }catch(Exception e){
-            LOGGER.error(e.getMessage(),e);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("系统错误！");
         }
     }
@@ -710,7 +714,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     @Override
     public InvokeResult changeUrlAccessResourceProps(ChangeUrlAccessResourcePropsCommand command) {
         try {
-            UrlAccessResource  urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(command.getId());
+            UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(command.getId());
             securityConfigApplication.changeNameOfUrlAccessResource(urlAccessResource, command.getName());
             securityConfigApplication.changeUrlOfUrlAccessResource(urlAccessResource, command.getUrl());
             urlAccessResource.setDescription(command.getDescription());

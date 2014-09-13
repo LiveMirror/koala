@@ -17,9 +17,7 @@
 				form.find("input[name='identifier']").val(item.identifier);
 			    form.find("input[name='description']").val(item.description);
 			}
-			
-			
-			
+
 			dialog.modal({
 				keyboard : false
 			}).on({
@@ -79,7 +77,7 @@
 	        				type: "POST",
 	        				dataType:"json",
 	        				success:function(data){
-	        					if (data) {
+	        					if (data.success) {
 		        					dialog.trigger('complete');
 		        				} else {
 		        					dialog.find('.modal-content').message({

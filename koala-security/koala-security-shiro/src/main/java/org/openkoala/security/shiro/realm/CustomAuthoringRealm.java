@@ -28,6 +28,7 @@ import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
 import org.openkoala.security.shiro.CurrentUser;
+import org.openkoala.security.shiro.RoleHandle;
 import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ import com.google.common.collect.Sets;
  * 
  */
 @Named("customAuthoringRealm")
-public class CustomAuthoringRealm extends AuthorizingRealm {
+public class CustomAuthoringRealm extends AuthorizingRealm implements RoleHandle {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomAuthoringRealm.class);
 
@@ -80,7 +81,18 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 		checkUserPassword(userPassword, user);
 		String roleName = getRoleName(user);
 		ShiroUser shiroUser = new ShiroUser(user.getUserAccount(), user.getName(), roleName);
-        shiroUser.setEmail(user.getEmail());
+
+        if(StringUtils.isBlank(user.getEmail())){
+            shiroUser.setEmail("您还没有邮箱，请添加邮箱！");
+        }else{
+            shiroUser.setEmail(user.getEmail());
+        }
+
+        if(StringUtils.isBlank(user.getTelePhone())){
+            shiroUser.setTelePhone("您还没有联系电话，请添加电话！");
+        }else{
+            shiroUser.setTelePhone(user.getTelePhone());
+        }
 		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
 				shiroUser, //
 				user.getUserPassword(),//
@@ -184,6 +196,7 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
 	 *            用户
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private String getRoleName(UserDTO user) {
 		String defaultRoleName = "";
         InvokeResult result =  securityAccessFacade.findRolesByUserAccount(user.getUserAccount());
@@ -233,29 +246,17 @@ public class CustomAuthoringRealm extends AuthorizingRealm {
      * @param roleName 角色名称
      * @return
      */
-    public InvokeResult switchOverRoleOfUser(String roleName) {
-
-        if (StringUtils.isBlank(roleName)) {
-            return InvokeResult.failure("角色名为空。");
-        }
-        // 角色名相同 不做任何处理
-        if (CurrentUser.getRoleName().equals(roleName)) {
-            return InvokeResult.success();
-        }
-        if (!securityAccessFacade.checkRoleByName(roleName)) {
-            return InvokeResult.failure("角色名不存在。");
-        }
+    public void switchOverRoleOfUser(String roleName) {
         PrincipalCollection principalCollection = CurrentUser.getPrincipals();
         ShiroUser shiroUser = (ShiroUser) principalCollection.getPrimaryPrincipal();
         shiroUser.setRoleName(roleName);
         this.doGetAuthorizationInfo(principalCollection);
-        return InvokeResult.success();
     }
 
-    // TODO
-    public void resetRoleNameOfCurrentUser(String name) {
-        switchOverRoleOfUser(name);
+	@Override
+	public void resetRoleName(String name) {
+		switchOverRoleOfUser(name);
         shiroFilterChainManager.initFilterChain();
-    }
+	}
 
 }

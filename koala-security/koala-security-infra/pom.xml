@@ -15,11 +15,22 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+        <dependency>
+            <groupId>org.openkoala.security</groupId>
+            <artifactId>koala-security-conf</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-core</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>org.openkoala.koalacommons</groupId>
+            <artifactId>koala-commons-test-support</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>test</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
@@ -29,6 +40,10 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
 	</dependencies>
 	<build>
 		<plugins>
