@@ -13,7 +13,9 @@ import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public interface SecurityConfigApplication {
 
 	/**
@@ -24,7 +26,7 @@ public interface SecurityConfigApplication {
 	void updateActor(Actor actor);
 
 	/**
-	 * 
+	 *
 	 * @param user
 	 */
 	void suspendUser(User user);

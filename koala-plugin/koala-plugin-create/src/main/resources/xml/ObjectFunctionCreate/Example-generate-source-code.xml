@@ -2,7 +2,6 @@
 
 <XmlParse>
 
-	<property name="description">Koala-Example-generate-source-code</property>
 
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/example_source_code/application</property>

@@ -432,6 +432,7 @@ var userManager = function() {
 			});
 		});
 	};
+	
 	return {
 		add : add,
 		modify : modify,

@@ -81,7 +81,18 @@ public class CustomAuthoringRealm extends AuthorizingRealm implements RoleHandle
 		checkUserPassword(userPassword, user);
 		String roleName = getRoleName(user);
 		ShiroUser shiroUser = new ShiroUser(user.getUserAccount(), user.getName(), roleName);
-        shiroUser.setEmail(user.getEmail());
+
+        if(StringUtils.isBlank(user.getEmail())){
+            shiroUser.setEmail("您还没有邮箱，请添加邮箱！");
+        }else{
+            shiroUser.setEmail(user.getEmail());
+        }
+
+        if(StringUtils.isBlank(user.getTelePhone())){
+            shiroUser.setTelePhone("您还没有联系电话，请添加电话！");
+        }else{
+            shiroUser.setTelePhone(user.getTelePhone());
+        }
 		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
 				shiroUser, //
 				user.getUserPassword(),//

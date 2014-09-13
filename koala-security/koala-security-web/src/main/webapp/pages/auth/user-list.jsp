@@ -8,8 +8,9 @@
 %>
 <!-- strat form -->
 <form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
-<input type="hidden" name="page" value="0">
-<input type="hidden" name="pagesize" value="10">
+<input type="hidden" class="form-control" name="page" value="0">
+<input type="hidden"  class="form-control"  name="pagesize" value="10">
+<div class="panel" hidden="true">
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td>
@@ -29,15 +30,17 @@
             <input name="description" class="form-control" type="text" style="width:180px;"  />
         </div>
            <label class="control-label" style="width:100px;float:left;">用户状态:&nbsp;</label>
-           <select style = "width:180px;margin-left:15px;float:left;">
-             <option>可用</option>
-             <option>挂起</option>
+           <select  name="disabled" class="form-control"  style = "width:180px;margin-left:15px;float:left;">
+          	 <option value="">全部</option>
+             <option value="false">可用</option>
+             <option value="true">挂起</option>
            </select>
             </div>
             </td>
-       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button></td>
+       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-info"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
   </tr>
 </table>	
+</div>
 </form>
 <!-- end form -->
 
@@ -61,7 +64,7 @@
 		        	            	                	            	                	            	                	            	                	            	        	     },
 		    initGridPanel: function(){
 		         var self = this;
-		         var url = contextPath + '/auth/user/pagingQuery.koala?disabled=false';
+		         var url = contextPath + '/auth/user/pagingQuery.koala';
 		         var getButtons = function() {
 		 			if (roleId) {
 		 				return [{
@@ -91,8 +94,14 @@
 		 					content : '<ks:hasSecurityResource identifier="userManagerResetPassword"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;重置密码</button></ks:hasSecurityResource>',
 		 					action : 'resetPassword'
 		 				},{
-		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;禁用</button></ks:hasSecurityResource>',
+		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;禁用</button></ks:hasSecurityResource>',
 		 					action : 'forbidden'
+		 				},{
+		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;激活</button></ks:hasSecurityResource>',
+		 					action : 'available'
+		 				},{
+		 					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+		 					action : 'search'
 		 				}];
 		 			}
 		 		};
@@ -117,11 +126,11 @@
 							width : 200
 						}, {
 							title : "是否有效",
-							name : "valid",
+							name : "disabled",
 							width : 100,
-							render : function(item, name, index) {
-								return item[name] == true ? '<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>' : '<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>';
-							}
+							 render : function(item, name, index) {
+								return item[name]?  '<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>':'<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>';
+							}  
 						}
 		                ]
 		         }).on({
@@ -279,22 +288,46 @@
 						}
 						
 						userManager().forbidden(data.item[0] , $this);
-					}
+					},
+					'search' : function() {						
+						$(".panel").slideToggle("slow");						 
+						
+					},
+					'available' : function(event, data) {						
+						var indexs = data.data;
+						var $this = $(this);
+						if (indexs.length == 0) {
+							$this.message({
+								type : 'warning',
+								content : '请选择一条记录进行修改'
+							});
+							return;
+						}
+						if (indexs.length > 1) {
+							$this.message({
+								type : 'warning',
+								content : '只能选择一条记录进行修改'
+							});
+							return;
+						} 
+						userManager().available(data.item[0] , $this);
+				}
 				});
 		    }
 		};
+		PageLoader.initSearchPanel();
 		PageLoader.initGridPanel();
 		 form.find('#search').on('click', function(){
 	            var params = {};
-	            form.find('input').each(function(){
+	            form.find('.form-control').each(function(){
 	                var $this = $(this);
 	                var name = $this.attr('name');
 	                console.log(name);
-	                if(name){
+	                 if(name){
 	                    params[name] = $this.val();
 	                }
 	            });
-	            $('[data-role="userGrid"]').off().getGrid().search(params);
+	            $('[data-role="userGrid"]').getGrid().search(params);
 	        });
 	});
 </script>

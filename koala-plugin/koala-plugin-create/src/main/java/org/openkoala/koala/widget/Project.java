@@ -1,7 +1,6 @@
 package org.openkoala.koala.widget;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +25,8 @@ public class Project implements Serializable {
 	private String version = "1.0-SNAPSHOT";
 
 	private List<Module> module;
+	
+	private Example example;
 	
 	private static final String BUSINESS_LOG_PACKAGE="org.openkoala.businesslog.model";
 	
@@ -161,6 +162,14 @@ public class Project implements Serializable {
 
 	public void setDbProtocol(String dbProtocol) {
 		this.dbProtocol = dbProtocol;
+	}
+
+	public Example getExample() {
+		return example;
+	}
+
+	public void setExample(Example example) {
+		this.example = example;
 	}
 
 	/**

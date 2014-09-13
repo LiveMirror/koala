@@ -48,4 +48,13 @@ public class CreateUserCommand {
 		this.description = description;
 	}
 
+    @Override
+    public String toString() {
+        return "CreateUserCommand{" +
+                "name='" + name + '\'' +
+                ", userAccount='" + userAccount + '\'' +
+                ", createOwner='" + createOwner + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

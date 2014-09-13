@@ -31,7 +31,6 @@ import org.openkoala.security.facade.impl.assembler.UserAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("unchecked")
 @Named
 public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
@@ -292,7 +291,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public InvokeResult pagingQueryUsers(int pageIndex, int pageSize, UserDTO queryUserCondition) {
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
-		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UserDTO(_user.id, _user.version, _user.name, _user.userAccount, _user.createDate, _user.description, _user.lastLoginTime, _user.createOwner, _user.lastModifyTime, _user.disabled) FROM User _user");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UserDTO(_user.id, _user.version, _user.name, _user.userAccount, _user.createDate, _user.description, _user.lastLoginTime, _user.createOwner, _user.lastModifyTime, _user.disabled) FROM User _user where 1=1");
 
 		assembleUserJpqlAndConditionValues(queryUserCondition, jpql, "_user", conditionVals);
 
@@ -304,7 +303,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return InvokeResult.success(results);
 	}
 
-	@Override
+    @Override
     public InvokeResult pagingQueryRoles(int pageIndex, int pageSize, RoleDTO queryRoleCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
         StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description) FROM Role _role");
@@ -657,7 +656,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		String andCondition = " AND " + conditionPrefix;
 
 		if (null != queryUserCondition.getDisabled() && !"".equals(queryUserCondition.getDisabled())) {
-			jpql.append(whereCondition);
+			jpql.append(andCondition);
 			jpql.append(".disabled = :disabled");
 			conditionVals.put("disabled", queryUserCondition.getDisabled());
 		}
