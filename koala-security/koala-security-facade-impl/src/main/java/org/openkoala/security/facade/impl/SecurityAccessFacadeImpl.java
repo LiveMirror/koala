@@ -113,8 +113,10 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		Set<Authority> authorities = new HashSet<Authority>();
 		Role role = securityAccessApplication.getRoleBy(roleName);
 		// securityAccessApplication.checkAuthorization(userAccount, role); //TODO 检查
-		authorities.add(role);
-		authorities.addAll(role.getPermissions());
+		if (role != null) {
+			authorities.add(role);
+			authorities.addAll(role.getPermissions());
+		}
 		authorities.addAll(User.findAllPermissionsBy(userAccount));
 		// 1、User 的角色、2、User本身的Permission 3、角色所关联的Permission。
 		List<MenuResourceDTO> results = findTopMenuResourceDTOByUserAccountAsRole(authorities);
@@ -679,6 +681,11 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			jpql.append(".telePhone LIKE :telePhone");
 			conditionVals.put("telePhone", MessageFormat.format("%{0}%", queryUserCondition.getTelePhone()));
 		}
+		if (!StringUtils.isBlank(queryUserCondition.getDescription())) {
+			jpql.append(andCondition);
+			jpql.append(".description LIKE :description");
+			conditionVals.put("description", MessageFormat.format("%{0}%", queryUserCondition.getDescription()));
+		}
 	}
 
 	private void assembleRoleJpqlAndConditionValues(RoleDTO queryRoleCondition, StringBuilder jpql,
@@ -861,6 +868,20 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public boolean checkRoleByName(String roleName) {
 		return securityAccessApplication.checkRoleByName(roleName);
+	}
+
+	@Override
+	public boolean checkUserIsHaveRole(String userAccount, String roleName) {
+		List<Role> roles = securityAccessApplication.findAllRolesByUserAccount(userAccount);
+		if (roles.isEmpty()) {
+			return false;
+		}
+		for (Role each : roles) {
+			if (each.getName().equals(roleName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

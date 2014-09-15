@@ -26,7 +26,7 @@ public class MenuResourceAssembler {
     public static MenuResourceDTO toMenuResourceDTO(MenuResource menuResource) {
         MenuResourceDTO result = new MenuResourceDTO(menuResource.getId(),menuResource.getName());
         result.setVersion(menuResource.getVersion());
-        result.setIcon(menuResource.getMenuIcon());
+        result.setMenuIcon(menuResource.getMenuIcon());
         result.setLevel(menuResource.getLevel());
         result.setUrl(menuResource.getUrl());
         result.setDescription(menuResource.getDescription());

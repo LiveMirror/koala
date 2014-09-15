@@ -16,8 +16,6 @@ public class ShiroUser implements Serializable {
 
     private String telePhone;
 
-	ShiroUser() {}
-
 	public ShiroUser(String userAccount, String name, String roleName) {
 		super();
 		this.userAccount = userAccount;

@@ -96,9 +96,12 @@
 	            	 */
 	            	
 	            	if(result){
+	            		var menuIcon = $("#menuIcon").attr('src');
+	            		$("#icon").val(menuIcon);
 	            		var data = form.serialize();
+	            		console.info("---->");
+	            		console.log(data);
 	            		var url = baseUrl + 'add.koala';
-	            		
 	            		if(item != null){//problem
 	            			console.log("aaa");
 	            			url = baseUrl + 'addChildToParent.koala';	
@@ -122,7 +125,7 @@
 		        				} else {
 		        					dialog.find('.modal-content').message({
 		        						type : 'error',
-		        						content : data.actionError
+		        						content : data.errorMessage
 		        					});
 		        				}
 		        				dialog.find('#save').removeAttr('disabled');
@@ -165,7 +168,7 @@
 				width : 150
 			},{
 				title : "菜单图片",
-				name : "icon",
+				name : "menuIcon",
 				width : 150,
 				render: function(item, name, index){
 					return '<span class="'+item[name]+'"></span>';
@@ -198,15 +201,11 @@
 					action: 'permissionAssign'
 				}];
 		
-		
-		
-
-		
 		$("<div/>").appendTo($("#tabContent>div:last-child")).grid({
 			 identity: 'id',
              columns: columns,
              buttons: buttons,
-             isShowPages: true,
+             isShowPages: false,
              url: url,
              tree: {
              	column: 'name'

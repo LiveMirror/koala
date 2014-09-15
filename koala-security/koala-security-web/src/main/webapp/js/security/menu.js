@@ -119,6 +119,7 @@ var menuManager = function(){
 		});
 		
 		dialog.find('#save').on('click',function(){
+			alert("=========================");
 			$(this).attr('disabled', 'disabled');
 			save(item);
 		}).end().modal({
