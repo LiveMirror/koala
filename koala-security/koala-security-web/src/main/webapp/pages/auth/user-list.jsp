@@ -82,7 +82,7 @@
 		 					content : '<ks:hasSecurityResource identifier="userManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
 		 					action : 'modify'
 		 				}, {
-		 					content : '<ks:hasSecurityResource identifier="userManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
+		 					content : '<ks:hasSecurityResource identifier="userManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>撤销</button></ks:hasSecurityResource>',
 		 					action : 'delete'
 		 				}, {
 		 					content : '<ks:hasSecurityResource identifier="userManagerGrantRole"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配角色</button></ks:hasSecurityResource>',
@@ -159,15 +159,17 @@
 					'delete' : function(event, data) {
 						var indexs = data.data;
 						var $this = $(this);
-						if (indexs.length == 0) {
+
+                        if (indexs.length == 0) {
 							$this.message({
 								type : 'warning',
-								content : '请选择要删除的记录'
+								content : '请选择要撤销的记录'
 							});
-							return;
+                            return;
 						}
+
 						$this.confirm({
-							content : '确定要删除所选记录吗?',
+							content : '确定要撤销所选记录吗?',
 							callBack : function() {
 								userManager().deleteUser(data.item, $this);
 							}
@@ -190,8 +192,6 @@
 							});
 							return;
 						}
-						console.log(data.data[0]);
-						console.log(data.item[0].userAccount);
 						userManager().assignRole(data.data[0], data.item[0].userAccount);
 					},
 					"permissionAssign":function(event,data) {
