@@ -652,8 +652,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
         try {
             User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
-            securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
-            return InvokeResult.success();
+           if( user.getPassword() == command.getUserPassword() && command.getUserPassword().equals(user.getPassword())){
+        	   securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
+        	   return InvokeResult.success();
+           }else {
+        	   return InvokeResult.failure("密码错误！");
+           }
         } catch (NullArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("邮箱或者密码不能为空！");
@@ -676,8 +680,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
         try {
             User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
-            securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());
-            return InvokeResult.success();
+            if( user.getPassword() == command.getUserPassword() && command.getUserPassword().equals(user.getPassword())){
+	            securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());
+	            return InvokeResult.success();
+            }else{  
+            	return InvokeResult.failure("密码错误！");
+            }
         } catch (NullArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("电话或者密码不能为空！");
