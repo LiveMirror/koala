@@ -15,7 +15,7 @@ public class JobDtoAssembler {
 	}
 
 	public static Job assemEntity(JobDTO jobDTO) {
-		Job result = new Job(jobDTO.getName(), jobDTO.getName());
+		Job result = new Job(jobDTO.getName(), jobDTO.getSn());
 		result.setId(jobDTO.getId());
 		result.setDescription(jobDTO.getDescription());
 		result.setVersion(jobDTO.getVersion());
