@@ -301,13 +301,17 @@ var employee = function(){
 			dialog.find('#save').removeAttr('disabled');
 			return false;
 		}
-		var url = '';
+		/*var url = '';
 		if(id){
 			url =  baseUrl + 'update.koala';
 		}else{
 			url = baseUrl + 'create.koala?postId='+post.getValue();
+		}*/
+		var url = baseUrl + 'create.koala?postId='+post.getValue();
+		if(id){
+			url =  baseUrl + 'update.koala';
 		}
-		$.post(url, getAllData()).done(function(data){
+		$.post(url, getAllData(id)).done(function(data){
 			if(data.result == 'success'){
 				dialog.trigger('complete');
 			} else if(data.result == '该职务已存在'){

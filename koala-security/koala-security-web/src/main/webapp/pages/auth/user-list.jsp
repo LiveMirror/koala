@@ -32,8 +32,8 @@
            <label class="control-label" style="width:100px;float:left;">用户状态:&nbsp;</label>
            <select  name="disabled" class="form-control"  style = "width:180px;margin-left:15px;float:left;">
           	 <option value="">全部</option>
-             <option value="false">可用</option>
-             <option value="true">挂起</option>
+             <option value="false">激活</option>
+             <option value="true">禁用</option>
            </select>
             </div>
             </td>

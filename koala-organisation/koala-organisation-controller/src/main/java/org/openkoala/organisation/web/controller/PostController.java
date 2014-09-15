@@ -125,7 +125,7 @@ public class PostController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/terminate-posts", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/terminatePosts", method = RequestMethod.POST, consumes = "application/json")
     public Map<String, Object> terminatePosts(@RequestBody PostDTO[] postDTOs) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("result", postFacade.terminatePosts(postDTOs));
