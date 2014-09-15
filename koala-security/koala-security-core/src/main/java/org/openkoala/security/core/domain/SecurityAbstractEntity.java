@@ -6,6 +6,8 @@ import org.dayatang.domain.Entity;
 import org.dayatang.domain.EntityRepository;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.utils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +23,8 @@ import java.util.Map;
 public abstract class SecurityAbstractEntity implements Entity {
 
     private static final long serialVersionUID = 8882145540383345037L;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityAbstractEntity.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

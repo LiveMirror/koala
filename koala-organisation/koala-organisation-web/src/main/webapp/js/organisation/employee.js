@@ -301,13 +301,17 @@ var employee = function(){
 			dialog.find('#save').removeAttr('disabled');
 			return false;
 		}
-		var url = '';
+		/*var url = '';
 		if(id){
 			url =  baseUrl + 'update.koala';
 		}else{
 			url = baseUrl + 'create.koala?postId='+post.getValue();
+		}*/
+		var url = baseUrl + 'create.koala?postId='+post.getValue();
+		if(id){
+			url =  baseUrl + 'update.koala';
 		}
-		$.post(url, getAllData()).done(function(data){
+		$.post(url, getAllData(id)).done(function(data){
 			if(data.result == 'success'){
 				dialog.trigger('complete');
 			} else if(data.result == '该职务已存在'){
@@ -327,39 +331,33 @@ var employee = function(){
 	 */
 	var getAllData = function(){
 		var data = {};
-		data['person.name'] = name.val();
-		data['person.gender'] = gender.getValue();
+		data.gender = gender.getValue();
 		
 		if (checkNotNull(idNumber.val())) {
-			data['person.idNumber'] = $.trim(idNumber.val());
+			data.idNumber = $.trim(idNumber.val());
 		}
 		if (checkNotNull(mobilePhone.val())) {
-			data['person.mobilePhone'] = $.trim(mobilePhone.val());
+			data.mobilePhone = $.trim(mobilePhone.val());
 		}
 		if (checkNotNull(familyPhone.val())) {
-			data['person.familyPhone'] = $.trim(familyPhone.val());
+			data.familyPhone = $.trim(familyPhone.val());
 		}
 		if (checkNotNull(email.val())) {
-			data['person.email'] = $.trim(email.val());
+			data.email = $.trim(email.val());
 		}
 		
 		data.name = name.val();
 		data.sn = sn.val();
-		data.gender = gender.getValue();
 		data.entryDate = entryDate.find('input').val();
-		data.idNumber = idNumber.val();
-		data.mobilePhone = mobilePhone.val();
-		data.familyPhone = familyPhone.val();
-		data.email = email.val();
 		
 		if (employeeId != null) {
 			data.id = employeeId;
 		}
 		if (personId != null) {
-			data['person.id'] = personId;
+			data.personId = personId;
 		}
 		if (personVersion != null) {
-			data['person.version'] = personVersion;
+			data.personVersion = personVersion;
 		}
 		if (version != null) {
 			data.version = version;

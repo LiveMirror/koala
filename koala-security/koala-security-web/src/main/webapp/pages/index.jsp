@@ -15,7 +15,7 @@
     <script>
         var contextPath = '${pageContext.request.contextPath}';
         $(function(){
-            var roleName = $('#roles').html().trim();
+            var roleName = $('#roles').html();
             var url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
             $.get(url, {'roleName':roleName},function(menuData){
                 var menu = initMenu(menuData.data);
@@ -325,9 +325,7 @@
                 <!--角色信息-->
                 <div class="btn-group navbar-right">
                     <label for = "roles" class = "user_name">角色: </label>
-	            	<span id="roles">
-	            		<koala:user property="roleName" />
-	                </span>
+	            	<span id="roles"><koala:user property="roleName" /></span>
                     &nbsp;
                     <ul class="dropdown-menu" id="allRolesId"></ul>
                 </div>
