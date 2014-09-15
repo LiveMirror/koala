@@ -113,7 +113,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult changeUserPassword(ChangeUserPasswordCommand command) {
         User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
         boolean message = securityAccessApplication.updatePassword(user, command.getUserPassword(), command.getOldUserPassword());
-        return message ? InvokeResult.success() : InvokeResult.failure("更新用户密码失败!");
+        return message ? InvokeResult.success() : InvokeResult.failure("原始密码输入不正确!");
     }
 
     @Override
