@@ -64,7 +64,7 @@ public class LoginController {
 				return InvokeResult.failure("账号或者密码不存在。");			
 			} catch (LockedAccountException e) {
 				LOGGER.error(e.getMessage(), e);
-				return InvokeResult.failure("该账号已经挂起，请联系管理员。");			
+				return InvokeResult.failure("该用户已禁用，请联系管理员。");			
 			} catch (AuthenticationException e) {
 				LOGGER.error(e.getMessage(), e);
 				return InvokeResult.failure("账号或者密码不正确。");

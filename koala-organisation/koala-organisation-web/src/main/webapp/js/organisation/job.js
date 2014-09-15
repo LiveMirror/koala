@@ -137,6 +137,7 @@ var job = function(){
 	*获取表单数据
 	 */
 	var getAllData = function(id){
+		alert("jobName================"+jobName.val()+"====jobSn===="+jobSn.val());
 		if(id){
 			job.name = jobName.val();
 			job.sn = jobSn.val();

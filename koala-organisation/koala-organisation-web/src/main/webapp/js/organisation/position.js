@@ -47,7 +47,7 @@ var position = function(){
 		        'Content-Type': 'application/json' 
 		    },
 		    'type': "Post",
-		    'url': baseUrl + 'terminate-posts.koala',
+		    'url': baseUrl + 'terminatePosts.koala',
 		    'data': JSON.stringify(objects),
 		    'dataType': 'json'
 		 }).done(function(data){
@@ -66,7 +66,7 @@ var position = function(){
 		}).fail(function(data){
 				dataGrid.message({
 					type: 'error',
-					content: data.result
+					content: '删除失败'
 				});
 			});
 	};

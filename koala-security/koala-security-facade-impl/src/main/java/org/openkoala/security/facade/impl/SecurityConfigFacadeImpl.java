@@ -113,7 +113,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult changeUserPassword(ChangeUserPasswordCommand command) {
         User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
         boolean message = securityAccessApplication.updatePassword(user, command.getUserPassword(), command.getOldUserPassword());
-        return message ? InvokeResult.success() : InvokeResult.failure("更新用户密码失败!");
+        return message ? InvokeResult.success() : InvokeResult.failure("原始密码输入不正确!");
     }
 
     @Override
@@ -272,13 +272,13 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         try {
             user = securityAccessApplication.getUserById(userId);
             if (user.getUserAccount().equals(currentUserAccount)) {
-                return InvokeResult.failure("不能挂起自己！");
+                return InvokeResult.failure("不能禁用自己！");
             }
             securityConfigApplication.suspendUser(user);
             return InvokeResult.success();
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return InvokeResult.failure("挂起用户：" + user.getUserAccount() + "失败。");
+            return InvokeResult.failure("禁用用户：" + user.getUserAccount() + "失败。");
         }
 
     }
@@ -652,8 +652,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
         try {
             User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
-            securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
-            return InvokeResult.success();
+           if( user.getPassword() == command.getUserPassword() && command.getUserPassword().equals(user.getPassword())){
+        	   securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
+        	   return InvokeResult.success();
+           }else {
+        	   return InvokeResult.failure("密码错误！");
+           }
         } catch (NullArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("邮箱或者密码不能为空！");
@@ -676,8 +680,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
         try {
             User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
-            securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());
-            return InvokeResult.success();
+            if( user.getPassword() == command.getUserPassword() && command.getUserPassword().equals(user.getPassword())){
+	            securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());
+	            return InvokeResult.success();
+            }else{  
+            	return InvokeResult.failure("密码错误！");
+            }
         } catch (NullArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("电话或者密码不能为空！");

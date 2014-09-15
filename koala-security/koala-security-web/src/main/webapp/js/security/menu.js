@@ -12,6 +12,7 @@ var menuManager = function(){
 	var opreate 	= null;
 	var parentId 	= null;
 	var parentLevel = null;
+
 	/*
 	 *新增
 	 */
