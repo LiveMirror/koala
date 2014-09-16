@@ -322,7 +322,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
     public InvokeResult pagingQueryPermissions(int pageIndex, int pageSize,
                                                       PermissionDTO queryPermissionCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
-        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.identifier, _permission.description) FROM Permission _permission");
+        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.identifier, _permission.description) FROM Permission _permission where 1 = 1");
 
         assemblePermissionJpqlAndConditionValues(queryPermissionCondition, jpql, "_permission", conditionVals);
 
@@ -713,15 +713,19 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		String whereCondition = " WHERE " + conditionPrefix;
 
 		if (!StringUtils.isBlank(queryPermissionCondition.getName())) {
-			jpql.append(whereCondition);
-			jpql.append(".name =:name");
-			conditionVals.put("name", queryPermissionCondition.getName());
+			jpql.append(andCondition);
+			jpql.append(".name LIKE :name");
+			conditionVals.put("name", MessageFormat.format("%{0}%", queryPermissionCondition.getName()));
 		}
-
+		if (!StringUtils.isBlank(queryPermissionCondition.getIdentifier())) {
+			jpql.append(andCondition);
+			jpql.append(".identifier LIKE :identifier");
+			conditionVals.put("identifier", MessageFormat.format("%{0}%", queryPermissionCondition.getIdentifier()));
+		}
 		if (!StringUtils.isBlank(queryPermissionCondition.getDescription())) {
 			jpql.append(andCondition);
-			jpql.append(".description =:description");
-			conditionVals.put("description", queryPermissionCondition.getDescription());
+			jpql.append(".description LIKE :description");
+			conditionVals.put("description", MessageFormat.format("%{0}%", queryPermissionCondition.getDescription()));
 		}
 	}
 
