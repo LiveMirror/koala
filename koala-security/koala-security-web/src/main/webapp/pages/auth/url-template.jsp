@@ -27,7 +27,6 @@
 					<div class="form-group">
 						<label class="col-lg-3 control-label">Url路径描述:</label>
 						<div class="col-lg-9">
-							<span class="required"> </span>
 							<input type="text" class="form-control" name="description">
 						</div>
 					</div>

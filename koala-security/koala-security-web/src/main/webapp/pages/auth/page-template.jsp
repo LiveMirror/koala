@@ -25,7 +25,7 @@
                    <div class="form-group">
                         <label class="col-lg-3 control-label" for="identifier">页面元素标识:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="identifier">
+                            <input type="text" class="form-control" name="identifier"><span class="required">*</span>
                         </div>
                     </div>
                        <div class="form-group">

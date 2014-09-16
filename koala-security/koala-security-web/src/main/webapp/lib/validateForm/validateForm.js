@@ -23,8 +23,8 @@
 	    		css({
 	        		"position" 	: "absolute",
 	        		"top"		: input.position().top+Math.ceil((input.outerHeight()-28)/2),
-	        		"left"		: input.position().left + input.innerWidth() + 12
-	        	});
+	        		"left"		: input.position().left + input.innerWidth() + 17
+	        	}).show();
 	    },
 	    
 		/*正则匹配*/
@@ -79,7 +79,6 @@
 					tip = $("<span class='input_tip'></span>");
 					input.data("tip", tip).data("setting", inputSetting);
 					input.after(tip);
-					
 		    		if(setting.showTipsAfterInit && inputSetting.focusMsg){
 		    			Verifier.prototype.tipStatu("focus", input, inputSetting.focusMsg);
 		    		}
@@ -124,7 +123,7 @@
         /*将设置信息分离出来，方便以后遍历*/
     	verifier.initContext(form, sets);
     	
-       /*失焦提示*/
+    	/*失焦提示*/
         form.delegate("input,textarea","blur",function(){
 	        verifier.doValidate($(this), form, rules);
         });  

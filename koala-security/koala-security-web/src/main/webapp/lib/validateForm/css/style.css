@@ -9,6 +9,7 @@
 	white-space: nowrap;
 	z-index: 100;
 	position: absolute;
+	display:none;
 }
 
 .focus_tip, .right_tip, .error_tip{

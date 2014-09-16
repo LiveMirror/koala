@@ -19,7 +19,7 @@
                     <div class="form-group parentName">
                         <label class="col-lg-3 control-label">父菜单名称:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name = "parentId" disabled>
+                            <input type="text" class="form-control" name = "parentId" disabled><span class="required">*</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -31,7 +31,7 @@
                      <div class="form-group">
                         <label class="col-lg-3 control-label" for="menuResourceNameUrl">菜单资源url:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="url" id="menuResourceNameUrl"/>
+                            <input type="text" class="form-control" name="url" id="menuResourceNameUrl"/><span class="required">*</span>
                         </div>
                     </div>
                     <div class="form-group">
