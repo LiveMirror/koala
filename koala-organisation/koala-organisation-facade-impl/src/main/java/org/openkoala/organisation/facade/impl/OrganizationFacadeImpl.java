@@ -134,7 +134,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 		return organization == null ? null : OrganizationDtoAssembler.assemDto(organization);
 	}
 
-	public OrganizationDTO _getOrganizationTree() {
+	private OrganizationDTO _getOrganizationTree() {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.organisation.facade.dto.OrganizationDTO"
 				+ "(r.id, olm.commissioner.id, r.name, r.sn, r.createDate, r.terminateDate, r.description, r.category, r.version) "
 				+ "FROM OrganizationLineManagement olm LEFT JOIN olm.responsible r "

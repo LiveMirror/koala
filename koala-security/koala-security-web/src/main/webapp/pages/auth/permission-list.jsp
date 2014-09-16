@@ -126,14 +126,20 @@
 	       	});
 		};
 		
-		deletePermission = function(urls, grid) {
+		deletePermission = function(permissions, grid) {
+
 			var url = baseUrl + 'terminate.koala';
-			console.log(urls[0].id);
-			$.post(url,{"permissionIds":urls[0].id}).done(function(data){
+
+            var data = "";
+            $.each(permissions, function (i, permission) {
+                data += ("permissionIds=" + permission.id + "&");
+            });
+            data = data.substring(0, data.length - 1);
+            $.post(url,data).done(function(data){
 			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
-						content : '删除成功'
+						content : '撤销成功'
 					});
 			 		grid.grid('refresh');
 				} else {
@@ -145,7 +151,7 @@
 			}).fail(function(data){
 				grid.message({
 					type : 'error',
-					content : '删除失败'
+					content : '撤销失败'
 				});
 			});
 		};
@@ -222,7 +228,7 @@
 				return [
 					{content: '<ks:hasSecurityResource identifier="permissionManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>', action: 'add'},
 					{content: '<ks:hasSecurityResource identifier="permissionManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>', action: 'modify'},
-					{content: '<ks:hasSecurityResource identifier="permissionManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>', action: 'delete'},
+					{content: '<ks:hasSecurityResource identifier="permissionManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>撤销</button></ks:hasSecurityResource>', action: 'delete'},
 					{content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',action : 'search'
 	 				}];
 			}
@@ -290,12 +296,12 @@
         		if(indexs.length == 0){
 		            grid.message({
 		                   type: 'warning',
-		                    content: '请选择要删除的记录'
+		                    content: '请选择要撤销的记录'
 		            });
 		             return;
 	            }
 	            grid.confirm({
-	                content: '确定要删除所选记录吗?',
+	                content: '确定要撤销所选记录吗?',
 	                callBack: function(){
 	                	deletePermission(data.item, grid);
 	                }

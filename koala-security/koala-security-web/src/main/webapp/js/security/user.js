@@ -142,14 +142,22 @@ var userManager = function() {
 			});
 		});
 	};
-	/*
-	 删除方法
-	 */
+
+    /**
+     * 删除多个用户
+     * @param users 多个用户
+     * @param grid
+     */
 	var deleteUser = function(users, grid) {
 
-		var userIds = users[0].id;
-		dataGrid = grid;
-		$.post(baseUrl + 'terminate.koala',{"userIds" : userIds}).done(function(data){
+        var data = "";
+        $.each(users, function(i, user){
+            data += ("userIds=" + user.id + "&");
+        });
+        data = data.substring(0, data.length-1);
+
+        dataGrid = grid;
+		$.post(baseUrl + 'terminate.koala', data).done(function(data){
 			if(data.success){
 				dataGrid.message({
 					type: 'success',
@@ -169,6 +177,7 @@ var userManager = function() {
 			});
 		});
 	};
+
 	/**
 	 * 初始化
 	 */
@@ -244,6 +253,7 @@ var userManager = function() {
 			dialog.find('#save').removeAttr('disabled');
 		});
 	};
+
 	/**
 	 * 数据验证
 	 */

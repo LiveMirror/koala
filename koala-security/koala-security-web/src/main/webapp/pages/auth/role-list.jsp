@@ -63,7 +63,7 @@
 					content : '<ks:hasSecurityResource identifier="roleManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
 					action : 'modify'
 				}, {
-					content : '<ks:hasSecurityResource identifier="roleManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
+					content : '<ks:hasSecurityResource identifier="roleManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>撤销</button></ks:hasSecurityResource>',
 					action : 'delete'
 				}, {
 					content : '<ks:hasSecurityResource identifier="roleManagerGrantUrlAccessResource"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配URL访问资源</button></ks:hasSecurityResource>',
@@ -126,12 +126,12 @@
 				if (indexs.length == 0) {
 					$this.message({
 						type : 'warning',
-						content : '请选择要删除的记录'
+						content : '请选择要撤销的记录'
 					});
 					return;
 				}
 				$this.confirm({
-					content : '确定要删除所选记录吗?',
+					content : '确定要撤销所选记录吗?',
 					callBack : function() {
 						roleManager().deleteRole(data.item, $this);
 					}
