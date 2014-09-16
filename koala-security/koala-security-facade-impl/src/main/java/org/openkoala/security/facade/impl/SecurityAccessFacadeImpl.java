@@ -825,7 +825,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	private List<MenuResourceDTO> findChidrenMenuResource() {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id,_resource.name, _resource.url, _resource.menuIcon, _resource.description,"
-						+ "_resource.parent.id,_resource.level) FROM MenuResource _resource");
+						+ "_resource.parent.id,_resource.level,_resource.parent.name) FROM MenuResource _resource");
 		jpql.append(" WHERE _resource.level > :level");//
 		jpql.append(" GROUP BY _resource.id");//
 

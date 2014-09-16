@@ -30,6 +30,9 @@ public class MenuResourceAssembler {
         result.setLevel(menuResource.getLevel());
         result.setUrl(menuResource.getUrl());
         result.setDescription(menuResource.getDescription());
+        if(menuResource.getParent() != null && !menuResource.getParent().equals(null)){
+        	result.setParentName(menuResource.getParent().getName());
+        }
         return result;
     }
 }

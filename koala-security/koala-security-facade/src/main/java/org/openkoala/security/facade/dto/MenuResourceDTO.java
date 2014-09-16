@@ -26,6 +26,8 @@ public class MenuResourceDTO implements Serializable {
 	
 	private Long parentId;
 	
+	private String parentName;
+	
 	private int level;
 	
 	private boolean checked;
@@ -43,7 +45,7 @@ public class MenuResourceDTO implements Serializable {
 		this.name = name;
 	}
 
-	public MenuResourceDTO(Long id,String name, String url, String menuIcon, String description, Long parentId,int level) {
+	public MenuResourceDTO(Long id,String name, String url, String menuIcon, String description, Long parentId, int level) {
 		this.id = id;
 		this.name = name;
 		this.url = url;
@@ -52,7 +54,18 @@ public class MenuResourceDTO implements Serializable {
 		this.parentId = parentId;
 		this.level = level;
 	}
-
+	
+	public MenuResourceDTO(Long id,String name, String url, String menuIcon, String description, Long parentId, int level,String parentName) {
+		this.id = id;
+		this.name = name;
+		this.url = url;
+		this.menuIcon = menuIcon;
+		this.description = description;
+		this.parentId = parentId;
+		this.level = level;
+		this.parentName=parentName;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -150,7 +163,15 @@ public class MenuResourceDTO implements Serializable {
         this.permissions = permissions;
     }
 
-    @Override
+    public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
+
+	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()//
 				.append(name)//
