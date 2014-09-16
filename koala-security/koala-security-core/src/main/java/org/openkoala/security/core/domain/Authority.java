@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.dayatang.domain.AbstractEntity;
 import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
@@ -32,7 +31,6 @@ import org.openkoala.security.core.NullArgumentException;
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({
 		@NamedQuery(name = "Authority.findAllAuthoritiesByUserAccount", query = "SELECT _authority FROM Authorization _authorization JOIN  _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.userAccount = :userAccount AND TYPE(_authority) = :authorityType GROUP BY _authority.id"),
-		//@NamedQuery(name = "Authority.checkHasSecurityResource", query = "SELECT _authority FROM Authority _authority JOIN _authority.securityResources _securityResource WHERE _authority IN (:authorities) AND TYPE(_securityResource) = :securityResourceType  AND _securityResource.identifier = :identifier"),
 		@NamedQuery(name = "Authority.getAuthorityByName", query = "SELECT _authority FROM Authority _authority WHERE TYPE(_authority) = :authorityType AND _authority.name = :name") })
 public abstract class Authority extends SecurityAbstractEntity {
 
@@ -127,12 +125,12 @@ public abstract class Authority extends SecurityAbstractEntity {
     public static boolean checkHasPageElementResource(Set<Authority> authorities, String identifier) {
 
 		List<Authority> results = getRepository()//
-				.createNamedQuery("Authority.checkHasSecurityResource")//
+				.createNamedQuery("ResourceAssignment.checkHasSecurityResource")//
 				.addParameter("authorities", authorities)//
 				.addParameter("securityResourceType", PageElementResource.class)//
 				.addParameter("identifier", identifier)//
 				.list();
-		return results.isEmpty();
+		return !results.isEmpty();
 	}
 
 

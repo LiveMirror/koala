@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <%@include file="/commons/metas.jsp"%>
+    <%--<%@include file="/commons/metas.jsp"%>--%>
     <title>Koala权限系统</title>
     <%@include file="/commons/statics.jsp"%>
     <style>
@@ -14,6 +14,14 @@
     </style>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
+//
+//        $.ajaxSetup({
+//            url:contextPath+"/login",
+//            success: function(data){
+//                window.location.href=contextPath+"/index.koala";
+//            }
+//        });
+
         $(function(){
             var roleName = $('#roles').html();
             var url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
@@ -298,6 +306,7 @@
                   thiz.attr("mark",mark);
               }
     	};
+
     </script>
 </head>
 
@@ -325,7 +334,7 @@
                 <!--角色信息-->
                 <div class="btn-group navbar-right">
                     <label for = "roles" class = "user_name">角色: </label>
-	            	<span id="roles"><koala:user property="roleName" /></span>
+	            	<span id="roles"><ks:user property="roleName" /></span>
                     &nbsp;
                     <ul class="dropdown-menu" id="allRolesId"></ul>
                 </div>
@@ -334,7 +343,7 @@
                     <span>
                         <!-- 为了不改变页面布局-->
                     </span>
-                    <a href="#" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px"  title="查看个人信息"  >&nbsp;<koala:user property="name" />
+                    <a href="#" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px"  title="查看个人信息"  >&nbsp;<ks:user property="name" />
                     </a>
                     &nbsp; &nbsp;
                 </div>

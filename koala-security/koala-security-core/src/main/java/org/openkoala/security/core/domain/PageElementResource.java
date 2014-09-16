@@ -59,15 +59,15 @@ public class PageElementResource extends SecurityResource {
 	}
 
 	public static boolean hasIdentifier(String identifier) {
-		return getby(identifier) == null;
+		return getby(identifier) != null;
 	}
 
 	private static PageElementResource getby(String identifier) {
-		PageElementResource ressult = getRepository()//
+		PageElementResource result = getRepository()//
 				.createCriteriaQuery(PageElementResource.class)//
 				.eq("identifier", identifier)//
 				.singleResult();
-		return ressult;
+		return result;
 	}
 
 

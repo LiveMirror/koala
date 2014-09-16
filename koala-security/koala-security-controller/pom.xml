@@ -42,11 +42,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
-			<artifactId>koala-security-taglibs</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-shiro</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>

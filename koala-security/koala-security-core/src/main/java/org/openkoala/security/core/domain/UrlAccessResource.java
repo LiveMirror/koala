@@ -6,9 +6,7 @@ import javax.persistence.Entity;
 
 import org.openkoala.security.core.UrlIsExistedException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @DiscriminatorValue("URL_ACCESS_RESOURCE")

@@ -13,6 +13,11 @@
 	<name>koala-security-web Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
+        <dependency>
+            <groupId>org.openkoala.security</groupId>
+            <artifactId>koala-security-taglibs</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-controller</artifactId>
