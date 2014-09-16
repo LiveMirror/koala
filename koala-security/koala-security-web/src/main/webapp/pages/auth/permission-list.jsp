@@ -6,10 +6,9 @@
 		var baseUrl = contextPath + '/auth/permission/';
 		function initEditDialog(data, item, grid) {
 			dialog = $(data);
-			dialog.find('.modal-header').find('.modal-title').html( item ? '修改权限信息' : '添加权限');		
+			dialog.find('.modal-header').find('.modal-tite').html( item ? '修改权限信息' : '添加权限');		
 			var form = dialog.find(".permisstion_form");
 			validate(form, dialog, item);
-			console.log(item);
 			if(item){
 				form.find("input[name='name']").val(item.name);
 				form.find("input[name='identifier']").val(item.identifier);
@@ -130,7 +129,7 @@
 				name : "name",
 				width : 150
 			},{
-				title : "菜单标识",
+				title : "权限标识",
 				name : "identifier",
 				width : 150
 			},{

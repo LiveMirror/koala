@@ -21,9 +21,7 @@
 			    form.find("input[name='description']").val(item.description);
 			}
 			
-			
-			
-			dialog.modal({
+			dialog.modal({	
 				keyboard : false
 			}).on({
 				'hidden.bs.modal' : function() {
