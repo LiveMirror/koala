@@ -118,7 +118,7 @@ var generalQuery = function(){
 	 * 填充选择框
 	 */
 	var fillSelectData = function(id){
-		$.get(baseUrl + 'findAllDataSource.koala').done(function(data){
+		$.get(baseUrl + 'findAllDataSource.koala' + "?" + new Date().getTime()).done(function(data){
 			var dataSourceList = data.dataSourceList;
 			var contents = new Array();
 			for(var i=0, j=dataSourceList.length; i<j; i++){
@@ -537,18 +537,13 @@ var generalQuery = function(){
 	};
 	var preview = function(id, dataSourceId){
 		$.get(contextPath + "/dataSource/checkDataSourceById.koala?id=" + dataSourceId).done(function(data){
-			if (data.result == "该数据源不可用") {
-				$('#generalQueryGrid').message({
-					type: 'error',
-					content: "数据源不可用！"
-				});
-			} else if (data.result == "该数据源可用") {
+			if (data.result == "该数据源可用") {
 				var previewWindow = window.open(contextPath + '/previewTemplate/'+id+'.koala', '预览');
 				previewWindow.resizeTo(previewWindow.screen.width, previewWindow.screen.height);
 			} else {
 				$('#generalQueryGrid').message({
 					type: 'error',
-					content: data.error
+					content: data.result
 				});
 			}
 		});

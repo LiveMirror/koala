@@ -83,7 +83,11 @@ public class PagingQuerier extends Querier {
             	result = queryRunner.query(connection, generateQueryTotalCountSql(), new ScalarHandler<Number>(), getQuerySql().getValues().toArray());
             }
         } catch (SQLException e) {
-        	throw new RuntimeException(e);
+        	String errorMessage = "";
+        	if (e.getMessage().contains("Table") && e.getMessage().contains("doesn't exist")) {
+        		errorMessage = "查询数据表不存在！";
+        	}
+        	throw new RuntimeException(errorMessage, e);
         } finally {
             DbUtils.closeQuietly(connection);
         }

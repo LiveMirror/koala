@@ -183,7 +183,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.fieldDetails = fieldDetails;
 	}
 
-	
 	private QueryAllQuerier obtainQueryAllQuerier() {
 		if (queryAllQuerier == null) {
 			queryAllQuerier = new QueryAllQuerier(obtainQuerySql(), dataSource);
@@ -246,13 +245,12 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * 生成查询SQL语句
 	 * @return
 	 */
-	@Transient
 	private SqlStatmentMode obtainQuerySql() {
 		return generateCommonQuerySql();
 	}
 	
 	/**
-	 * 获得可现实的静态条件
+	 * 获得可显示的静态条件
 	 * @return
 	 */
 	@Transient

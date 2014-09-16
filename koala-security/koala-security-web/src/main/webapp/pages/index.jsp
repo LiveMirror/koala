@@ -25,100 +25,80 @@
         $(function(){
             var roleName = $('#roles').html();
             var url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
-            $.get(url, {'roleName':roleName},function(menuData){
-                var menu = initMenu(menuData.data);
-                $("#roleMenu").empty().append(menu);
-
-                /*删除上一个角色打开的tab*/
-                $("#navTabs").children().each(function(i, t){
-                    (i > 0) ? $(t).remove() : "";
-                });
-                $("#tabContent").children().each(function(i, t){
-                    (i > 0) ? $(t).remove() : "";
-                });
-
-                /*激活第一个tab*/
-                $("#navTabs").find("a").click();
-                /*生成角色菜单*/
-                menu.delegate(".leaf_node","click",function(){
-                    var thiz 	= $(this),
-                            url 	= thiz.attr("url"),
-                            title 	= thiz.find('.menu_name').html(),
-                            mark 	= thiz.attr('mark');
-
-                    if(title && url){
-                        mark = openTab(url, title, mark);
-                        if(mark){
-                            thiz.attr("mark",mark);
-                        }
-                    }
-                });
+            $.get(url, {'roleName':roleName},function(data){
+                $.each(data.data,function(){
+                var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.menuIcon+'"></span>&nbsp;'+this.name+'&nbsp;'+
+                            '<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu in"></ul></li>');
+                        $('.first-level-menu').append($li);
+                        renderSubMenu(this.children, $li);
+            	});
+            /*
+                    * 菜单收缩样式变化
+                     */
+                    var firstLevelMenu = $('.first-level-menu');
+                    firstLevelMenu.find('[data-toggle="collapse"]').each(function(){
+                        var $this = $(this);
+                        firstLevelMenu.find($(this).attr('href')).on({
+                            'shown.bs.collapse': function(e){
+                                $this.find('i:last').addClass('glyphicon-chevron-left').removeClass('glyphicon-chevron-right');
+                            },
+                            'hidden.bs.collapse': function(e){
+                                $this.find('i:last').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-right');
+                            }
+                        });
+                    });
             },"json");
         });
 
-        var renderSubMenu = function(data, $menu){
-            $menu.find('li.submenu').on('click', function(){
-                var $this = $(this);
-
-                $('.first-level-menu').find('li').each(function(){
-                    var $menuLi = $(this);
-                    $menuLi.hasClass('active') && $menuLi.removeClass('active').parent().parent().removeClass('active');
-                });
-
-                $this.addClass('active').parents().filter('.folder').addClass('active');
-                var target = $this.data('target');
-                var title = $this.data('title');
-                var mark = $this.data('mark');
-                if(target && title && mark ){
-                    openTab(target, title, mark);
-                }
-            });
-        };
+        	var renderSubMenu = function(data, $menu){
+						$.each(data, function(){
+							if(this.children.length > 0){
+		                        var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.menuIcon+'"></span>&nbsp;'+this.name+'&nbsp;'+
+		                            '<i class="glyphicon glyphicon-chevron-right pull-right" style="position: relative; right: 12px;font-size: 12px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu collapse"></ul></li>');
+		                        $li.appendTo($menu.find('.second-level-menu:first')).find('a').css('padding-left', parseInt(this.level + 1)*18+'px');
+		                        renderSubMenu(this.children, $li);
+		                    }else{
+		                        var $li = $(' <li class="submenu" data-role="openTab" data-target="'+this.url+'" data-title="'+this.name+'" ' +
+		                            'data-mark="menuMark'+this.id+'"><a ><span class="'+this.menuIcon+'"></span>&nbsp;'+this.name+'</a></li>');
+		                        $li.appendTo($menu.find('.second-level-menu:first')).find('a').css('padding-left', parseInt(this.level + 1)*18+'px');
+		                        
+		                        
+		                    }
+						});
+	                    $menu.find('[data-toggle="collapse"]').each(function(){
+	                        var $this = $(this);
+	                        $menu.find($(this).attr('href')).on({
+	                            'shown.bs.collapse': function(e){
+	                            	e.stopPropagation();
+	                            	e.preventDefault();
+	                                $this.find('i:last').addClass('glyphicon-chevron-left').removeClass('glyphicon-chevron-right');
+	                            },
+	                            'hidden.bs.collapse': function(e){
+	                            	e.stopPropagation();
+	                            	e.preventDefault();
+	                                $this.find('i:last').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-right');
+	                            }
+	                        });
+	                    });
+						$menu.find('li.submenu').on('click', function(){
+							var $this = $(this);
+							$('.first-level-menu').find('li').each(function(){
+								var $menuLi = $(this);
+								$menuLi.hasClass('active') && $menuLi.removeClass('active').parent().parent().removeClass('active');
+							});
+							$this.addClass('active').parents().filter('.folder').addClass('active');
+							var target = $this.data('target');
+							var title = $this.data('title');
+							var mark = $this.data('mark');
+							if(target && title && mark ){
+								openTab(target, title, mark);
+							}
+						});
+			};
 
         /*判断一个对象是否数组*/
         function isArray(o){
             return '[object Array]' == Object.prototype.toString.call(o);
-        }
-
-        /*递归初始化菜单*/
-        function initMenu(data){
-            var menu = $('<ul class="nav nav-stacked"></ul>');
-            var node;
-
-            $.each(data,function(i,d){
-                if(!d.name) return;
-
-                node = $('<li class="node"> \
-							<a href="#menuMark'+ d.id +'" class = "asd'+d.id+'"> \
-								<span class="'+d.menuIcon+'"></span> \
-								<span class="menu_name">' + d.name + '</span> \
-								<i class="glyphicon glyphicon-chevron-right pull-right" style="position:relative;right:12px;font-size:12px;"></i> \
-							</a> \
-						</li>');
-
-                if(i==0) node.addClass("active");
-                menu.append(node);
-
-                /*如果children有值，该节点将不会是叶子节点*/
-                if(isArray(d.children) && d.children.length > 0){
-                    node.addClass("folder").append(initMenu(d.children));
-                } else {
-                    node.addClass("leaf_node").attr("url",d.url);
-                }
-            });
-
-            menu.children(".node.active").children("ul").show();
-
-            menu.delegate(".node", "click", function(){
-                var thiz = $(this);
-
-                if(!thiz.is(".active")){
-                    menu.find(".active").removeClass("active").children("ul").slideUp();
-                    thiz.addClass("active").children("ul").slideDown();
-                }
-            });
-
-            return menu;
         }
 
         // 更改联系电话
@@ -354,7 +334,11 @@
 	<%-- 中间 --%>
 	<div class="g-body">
 		<!-- 左边导航 -->
-	    <div class="col-xs-2 g-sidec" id="roleMenu"></div>
+	    <div class="col-xs-2 g-sidec">
+	        <ul class="nav nav-stacked first-level-menu">
+	       		
+	        </ul>
+	    </div>
 	    <!-- 右边内容 -->
 	    <div class="col-xs-10 g-mainc">
 	        <ul class="nav nav-tabs" id="navTabs">
@@ -366,6 +350,6 @@
 	    </div>
 	</div>
     <%-- 底部 --%>
-	<div id="footer" class="g-foot"><span>Copyright © 2011-2013 Koala</span></div>
+	<div id="footer" class="g-foot"><span>Copyright © 2011-2014 Koala</span></div>
 </body>
 </html>
