@@ -7,7 +7,7 @@
 		
 		function initEditDialog(data, item, grid) {
 			dialog = $(data);
-			dialog.find('.modal-header').find('.modal-title').html( item ? '修改页面信息' : '添加页面');
+			dialog.find('.modal-header').find('.modal-title').html( item ? '修改页面元素资源信息' : '添加页面元素资源信息');
 			
 			var form = dialog.find(".page_form");
 			validate(form, dialog, item);
@@ -93,14 +93,20 @@
 	       	});
 		};
 		
-		deletePage = function(urls, grid) { 
+		deletePage = function(pageElements, grid) {
+
+            var data = "";
+            $.each(pageElements, function(i, pageElement){
+                data += ("pageElementResourceIds=" + pageElement.id + "&");
+            });
+            data = data.substring(0, data.length-1);
+
 			var url = baseUrl + 'terminate.koala';
-			var pageElementResourceIds =urls[0].id;
-			$.post(url,{"pageElementResourceIds":pageElementResourceIds}).done(function(data){
+			$.post(url,data).done(function(data){
 			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
-						content : '删除成功'
+						content : '撤销成功'
 					});
 			 		grid.grid('refresh');
 				} else {
@@ -112,7 +118,7 @@
 			}).fail(function(data){
 				grid.message({
 					type : 'error',
-					content : '删除失败'
+					content : '撤销失败'
 				});
 			});
 		};
@@ -124,11 +130,11 @@
 		var columns = [{
 				title : "页面名称",
 				name : "name",
-				width : 150
+				width : 200
 			},{
 				title : "页面标识",
 				name : "identifier",
-				width : 150
+				width : 250
 			},{
 				title : "页面描述",
 				name : "description",
@@ -214,12 +220,12 @@
         		if(indexs.length == 0){
 		            grid.message({
 		                   type: 'warning',
-		                    content: '请选择要删除的记录'
+		                    content: '请选择要撤销的记录'
 		            });
 		             return;
 	            }
 	            grid.confirm({
-	                content: '确定要删除所选记录吗?',
+	                content: '确定要撤销所选记录吗?',
 	                callBack: function(){
 	                	deletePage(data.item, grid);
 	                }

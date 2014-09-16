@@ -1,8 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@include file="/commons/taglibs.jsp"%>
-
+<%@ page import="java.util.Date"%>
+<% String formId = "form_" + new Date().getTime();
+   String gridId = "grid_" + new Date().getTime();
+   String path = request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);
+%>
+<!-- strat form -->
+<form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
+<input type="hidden" class="form-control" name="page" value="0">
+<input type="hidden"  class="form-control"  name="pagesize" value="10">
+<div class="panel" hidden="true" >
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+            <div class ="form-group">
+             <label class="control-label" style="width:100px;float:left;">权限名称:&nbsp;</label>
+            <div style="margin-left:15px;float:left;">
+            <input name="name" class="form-control" type="text" style="width:180px;"  />
+        </div>
+       		 <label class="control-label" style="width:100px;float:left;">菜单标识:&nbsp;</label>
+            <div style="margin-left:15px;float:left;">
+            <input name="identifier" class="form-control" type="text" style="width:180px;"  />
+        </div>
+             <label class="control-label" style="width:100px;float:left;">权限描述:&nbsp;</label>
+            <div style="margin-left:15px;float:left;">
+            <input name="description" class="form-control" type="text" style="width:180px;"  />
+        </div>
+            </td>
+       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-info"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
+  </tr>
+</table>	
+</div>
+</form>
+<!-- end form -->
+<div data-role="userGrid"></div>
 <script>
 	$(function(){
+		var form;
 		var baseUrl = contextPath + '/auth/permission/';
 		function initEditDialog(data, item, grid) {
 			dialog = $(data);
@@ -91,14 +125,20 @@
 	       	});
 		};
 		
-		deletePermission = function(urls, grid) {
+		deletePermission = function(permissions, grid) {
+
 			var url = baseUrl + 'terminate.koala';
-			console.log(urls[0].id);
-			$.post(url,{"permissionIds":urls[0].id}).done(function(data){
+
+            var data = "";
+            $.each(permissions, function (i, permission) {
+                data += ("permissionIds=" + permission.id + "&");
+            });
+            data = data.substring(0, data.length - 1);
+            $.post(url,data).done(function(data){
 			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
-						content : '删除成功'
+						content : '撤销成功'
 					});
 			 		grid.grid('refresh');
 				} else {
@@ -110,12 +150,12 @@
 			}).fail(function(data){
 				grid.message({
 					type : 'error',
-					content : '删除失败'
+					content : '撤销失败'
 				});
 			});
 		};
 		
-		var tabData = $('.tab-pane.active').data();
+		var tabData =  $('[data-role="userGrid"]').closest('.tab-pane.active').data();
 		var userId 	= tabData.userId;
 		var menuId = tabData.menuId;
 		var pageId = tabData.pageId;
@@ -187,9 +227,9 @@
 				return [
 					{content: '<ks:hasSecurityResource identifier="permissionManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>', action: 'add'},
 					{content: '<ks:hasSecurityResource identifier="permissionManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>', action: 'modify'},
-					{content: '<ks:hasSecurityResource identifier="permissionManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>', action: 'delete'}
-				
-				];
+					{content: '<ks:hasSecurityResource identifier="permissionManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>撤销</button></ks:hasSecurityResource>', action: 'delete'},
+					{content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',action : 'search'
+	 				}];
 			}
 		})();
 		
@@ -212,7 +252,7 @@
 			url = contextPath + '/auth/role/pagingQueryGrantPermissionsByRoleId.koala?roleId=' + roleId;
 		}
 		
-		$("<div/>").appendTo($("#tabContent>div:last-child")).grid({
+		$("#tabContent>div:last-child").find('[data-role="userGrid"]').grid({
 			 identity: 'id',
              columns: columns,
              buttons: buttons,
@@ -255,12 +295,12 @@
         		if(indexs.length == 0){
 		            grid.message({
 		                   type: 'warning',
-		                    content: '请选择要删除的记录'
+		                    content: '请选择要撤销的记录'
 		            });
 		             return;
 	            }
 	            grid.confirm({
-	                content: '确定要删除所选记录吗?',
+	                content: '确定要撤销所选记录吗?',
 	                callBack: function(){
 	                	deletePermission(data.item, grid);
 	                }
@@ -795,6 +835,9 @@
         	        }
         		});
         	},
+			'search' : function() {						
+				$(".panel").slideToggle("slow");						 
+			},
         	'removePermissionForUrl':function(event, data) {
 				var indexs = data.data;
 				var grid = $(this);
@@ -985,6 +1028,19 @@
 					}
 				});
 			}
+        }); 
+		form = $("#<%=formId%>");
+		form.find('#search').on('click', function(){
+            var params = {};
+            form.find('.form-control').each(function(){
+                var $this = $(this);
+                var name = $this.attr('name');
+                 if(name){
+                    params[name] = $this.val();
+                }
+                 console.log(name+"=="+params[name]);
+            });
+           $('[data-role="userGrid"]').getGrid().search(params);
         });
-	});
+});
 </script>

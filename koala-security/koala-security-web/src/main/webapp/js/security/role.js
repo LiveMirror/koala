@@ -64,36 +64,42 @@ var roleManager = function(){
 			setData(item);
 		});
 	};
-	
-	/*
-	 删除方法
-	 */
-	var deleteRole = function(roles, grid){
-		/*for(var i=0,j=roles.length; i<j; i++){
-			delete roles[i].permissionDTOs;
-		}*/
-		dataGrid = grid;
-		var url = baseUrl + 'terminate.koala';
-		$.post(url,{"roleIds":roles[0].id}).done(function(data){
-			if(data.success){
-				dataGrid.message({
-					type: 'success',
-					content: '删除成功'
-				});
-				dataGrid.grid('refresh');
-			}else{
-				$('body').message({
-					type: 'error',
-					content: data.errorMessage
-				});
-			}
-		}).fail(function(data){
-			dataGrid.message({
-				type: 'error',
-				content: '删除失败'
-			});
-		});
-	};
+
+    /**
+     * 删除多个角色
+     * @param roles 多个角色
+     * @param grid
+     */
+    var deleteRole = function (roles, grid) {
+        dataGrid = grid;
+        var url = baseUrl + 'terminate.koala';
+
+        var data = "";
+        $.each(roles, function (i, role) {
+            data += ("roleIds=" + role.id + "&");
+        });
+        data = data.substring(0, data.length - 1);
+
+        $.post(url, data).done(function (data) {
+            if (data.success) {
+                dataGrid.message({
+                    type: 'success',
+                    content: '删除成功'
+                });
+                dataGrid.grid('refresh');
+            } else {
+                $('body').message({
+                    type: 'error',
+                    content: data.errorMessage
+                });
+            }
+        }).fail(function (data) {
+            dataGrid.message({
+                type: 'error',
+                content: '删除失败'
+            });
+        });
+    };
 	
 	/**
 	 * 初始化

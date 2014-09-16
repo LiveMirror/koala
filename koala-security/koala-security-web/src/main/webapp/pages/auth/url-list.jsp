@@ -97,14 +97,20 @@
 	       	});
 		}
 		
-		deleteUrl = function(urls, grid) {
-			var urlAccessResourceIds = urls[0].id;
+		deleteUrl = function(urlAccessResources, grid) {
+
+            var data = "";
+            $.each(urlAccessResources, function(i, urlAccessResource){
+                data += ("urlAccessResourceIds=" + urlAccessResource.id + "&");
+            });
+            data = data.substring(0, data.length-1);
+
 			var url = baseUrl + 'terminate.koala';
-			$.post(url,{"urlAccessResourceIds":urlAccessResourceIds}).done(function(data){
+			$.post(url,data).done(function(data){
 			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
-						content : '删除成功'
+						content : '撤销成功'
 					});
 			 		grid.grid('refresh');
 				} else {
@@ -116,7 +122,7 @@
 			}).fail(function(data){
 				grid.message({
 					type : 'error',
-					content : '删除失败'
+					content : '撤销失败'
 				});
 			});
 		};
@@ -127,11 +133,11 @@
 		var columns = [{
 			title 	: "url名称",
 			name 	: "name",
-			width 	: 150
+			width 	: 200
 		},{
 			title 	: "url路径",
 			name 	: "url",
-			width 	: 150
+			width 	: 400
 		},{
 			title 	: "url描述",
 			name 	: "description",
@@ -140,7 +146,7 @@
 		var getButtons = function() {
 			if (roleId) {
 				return [{
-					content : '<ks:hasSecurityResource identifier="roleManagerGrantUrlAccessResource"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配url</button></ks:hasSecurityResource>',
+					content : '<ks:hasSecurityResource identifier="roleManagerGrantUrlAccessResource"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配URL</button></ks:hasSecurityResource>',
 					action : 'assignUrl'
 				}, {
 					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
@@ -214,12 +220,12 @@
 				if (indexs.length == 0) {
 					$this.message({
 						type : 'warning',
-						content : '请选择要删除的记录'
+						content : '请选择要撤销的记录'
 					});
 					return;
 				}
 				$this.confirm({
-					content : '确定要删除所选记录吗?',
+					content : '确定要撤销所选记录吗?',
 					callBack : function() {
 						deleteUrl(data.item, $this);
 					}

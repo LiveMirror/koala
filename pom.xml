@@ -184,7 +184,7 @@
 		<module>koala-opencis</module>
 		<module>koala-businesslog</module>
 		<module>koala-plugin</module>
-		<module>koala-security-org</module>
+		<!-- <module>koala-security-org</module> -->
 	</modules>
 
 	<properties>
