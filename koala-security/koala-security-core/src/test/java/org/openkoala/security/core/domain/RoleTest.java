@@ -15,7 +15,7 @@ import static org.openkoala.security.core.util.EntitiesHelper.*;
 
 public class RoleTest extends AbstractDomainIntegrationTestCase {
 
-	@Test(expected = NullArgumentException.class)
+    @Test(expected = NullArgumentException.class)
 	public void testSaveNameIsNull() throws Exception {
 		Role role = new Role(null);
 		role.save();

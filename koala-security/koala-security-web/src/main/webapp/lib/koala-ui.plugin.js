@@ -341,7 +341,6 @@
 
                     if(self.options.dataFilter){
                         result = self.options.dataFilter(result);
-                        if(result.false === false) return;
                     }
 
 					if (!result.data) {

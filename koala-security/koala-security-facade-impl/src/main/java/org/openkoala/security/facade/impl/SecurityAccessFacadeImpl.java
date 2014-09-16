@@ -306,7 +306,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
     @Override
     public InvokeResult pagingQueryRoles(int pageIndex, int pageSize, RoleDTO queryRoleCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
-        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description) FROM Role _role");
+        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description) FROM Role _role where 1 = 1");
 
         assembleRoleJpqlAndConditionValues(queryRoleCondition, jpql, "_role", conditionVals);
 
@@ -322,7 +322,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
     public InvokeResult pagingQueryPermissions(int pageIndex, int pageSize,
                                                       PermissionDTO queryPermissionCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
-        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.identifier, _permission.description) FROM Permission _permission");
+        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id, _permission.name, _permission.identifier, _permission.description) FROM Permission _permission where 1 = 1");
 
         assemblePermissionJpqlAndConditionValues(queryPermissionCondition, jpql, "_permission", conditionVals);
 
@@ -425,7 +425,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public InvokeResult pagingQueryUrlAccessResources(int pageIndex, int pageSize,UrlAccessResourceDTO queryUrlAccessResourceCondition) {
 
-		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UrlAccessResourceDTO(_urlAccessResource.id, _urlAccessResource.name, _urlAccessResource.url,_urlAccessResource.description) FROM UrlAccessResource _urlAccessResource");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UrlAccessResourceDTO(_urlAccessResource.id, _urlAccessResource.name, _urlAccessResource.url,_urlAccessResource.description) FROM UrlAccessResource _urlAccessResource where 1 = 1");
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 
 		assembleUrlAccessResourceJpqlAndConditionValues(queryUrlAccessResourceCondition, jpql, "_urlAccessResource",conditionVals);
@@ -547,7 +547,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	@Override
 	public InvokeResult pagingQueryPageElementResources(int page, int pageSize, PageElementResourceDTO queryPageElementCondition) {
-		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PageElementResourceDTO(_resource.id,_resource.version, _resource.name,_resource.identifier, _resource.description) FROM PageElementResource _resource");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PageElementResourceDTO(_resource.id,_resource.version, _resource.name,_resource.identifier, _resource.description) FROM PageElementResource _resource WHERE 1 = 1");
 
         Map<String, Object> conditionVals = new HashMap<String, Object>();
 		assemblePageElementResourceJpqlAndConditionValues(queryPageElementCondition, jpql, "_resource",conditionVals);
@@ -652,7 +652,6 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	private void assembleUserJpqlAndConditionValues(UserDTO queryUserCondition, StringBuilder jpql,
 			String conditionPrefix, Map<String, Object> conditionVals) {
 
-		String whereCondition = " WHERE " + conditionPrefix;
 		String andCondition = " AND " + conditionPrefix;
 
 		if (null != queryUserCondition.getDisabled() && !"".equals(queryUserCondition.getDisabled())) {
@@ -692,79 +691,78 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			String conditionPrefix, Map<String, Object> conditionVals) {
 
 		String andCondition = " AND " + conditionPrefix;
-		String whereCondition = " WHERE " + conditionPrefix;
 
 		if (!StringUtils.isBlank(queryRoleCondition.getName())) {
-			jpql.append(whereCondition);
-			jpql.append(".name =:name");
-			conditionVals.put("name", queryRoleCondition.getName());
+			jpql.append(andCondition);
+			jpql.append(".name LIKE :name");
+			conditionVals.put("name", MessageFormat.format("%{0}%", queryRoleCondition.getName()));
 		}
 
 		if (!StringUtils.isBlank(queryRoleCondition.getDescription())) {
 			jpql.append(andCondition);
-			jpql.append(".description =:description");
-			conditionVals.put("description", queryRoleCondition.getDescription());
+			jpql.append(".description LIKE :description");
+			conditionVals.put("description", MessageFormat.format("%{0}%", queryRoleCondition.getDescription()));
 		}
 	}
 
 	private void assemblePermissionJpqlAndConditionValues(PermissionDTO queryPermissionCondition, StringBuilder jpql,
 			String conditionPrefix, Map<String, Object> conditionVals) {
 		String andCondition = " AND " + conditionPrefix;
-		String whereCondition = " WHERE " + conditionPrefix;
 
 		if (!StringUtils.isBlank(queryPermissionCondition.getName())) {
-			jpql.append(whereCondition);
-			jpql.append(".name =:name");
-			conditionVals.put("name", queryPermissionCondition.getName());
+			jpql.append(andCondition);
+			jpql.append(".name LIKE :name");
+			conditionVals.put("name", MessageFormat.format("%{0}%", queryPermissionCondition.getName()));
 		}
-
+		if (!StringUtils.isBlank(queryPermissionCondition.getIdentifier())) {
+			jpql.append(andCondition);
+			jpql.append(".identifier LIKE :identifier");
+			conditionVals.put("identifier", MessageFormat.format("%{0}%", queryPermissionCondition.getIdentifier()));
+		}
 		if (!StringUtils.isBlank(queryPermissionCondition.getDescription())) {
 			jpql.append(andCondition);
-			jpql.append(".description =:description");
-			conditionVals.put("description", queryPermissionCondition.getDescription());
+			jpql.append(".description LIKE :description");
+			conditionVals.put("description", MessageFormat.format("%{0}%", queryPermissionCondition.getDescription()));
 		}
 	}
 
 	private void assemblePageElementResourceJpqlAndConditionValues( PageElementResourceDTO queryPageElementResourceCondition, StringBuilder jpql, String conditionPrefix, Map<String, Object> conditionVals) {
 		String andCondition = " AND " + conditionPrefix;
-        String whereCondition = " WHERE "+conditionPrefix;
 
 		if (!StringUtils.isBlank(queryPageElementResourceCondition.getName())) {
-			jpql.append(whereCondition);
-			jpql.append(".name =:name");
-			conditionVals.put("name", queryPageElementResourceCondition.getName());
+			jpql.append(andCondition);
+			jpql.append(".name LIKE :name");
+			conditionVals.put("name", MessageFormat.format("%{0}%", queryPageElementResourceCondition.getName()));
 		}
 		if (!StringUtils.isBlank(queryPageElementResourceCondition.getDescription())) {
 			jpql.append(andCondition);
-			jpql.append(".description =:description");
-			conditionVals.put("description", queryPageElementResourceCondition.getDescription());
+			conditionVals.put("description", MessageFormat.format("%{0}%", queryPageElementResourceCondition.getDescription()));			
 		}
 		if (!StringUtils.isBlank(queryPageElementResourceCondition.getIdentifier())) {
 			jpql.append(andCondition);
-			jpql.append(".identifier =:identifier");
-			conditionVals.put("identifier", queryPageElementResourceCondition.getIdentifier());
+			jpql.append(".identifier LIKE :identifier");
+			conditionVals.put("identifier", MessageFormat.format("%{0}%", queryPageElementResourceCondition.getIdentifier()));			
 		}
 	}
 
 	private void assembleUrlAccessResourceJpqlAndConditionValues(UrlAccessResourceDTO queryUrlAccessResourceCondition,
 			StringBuilder jpql, String conditionPrefix, Map<String, Object> conditionVals) {
 		String andCondition = " AND " + conditionPrefix;
-		String whereCondition = " WHERE " + conditionPrefix;
 
 		if (!StringUtils.isBlank(queryUrlAccessResourceCondition.getName())) {
-			jpql.append(whereCondition);
-			jpql.append(".name =:name");
-			conditionVals.put("name", queryUrlAccessResourceCondition.getName());
+			jpql.append(andCondition);
+			jpql.append(".name LIKE :name");
+			conditionVals.put("name", MessageFormat.format("%{0}%", queryUrlAccessResourceCondition.getName()));
 		}
 		if (!StringUtils.isBlank(queryUrlAccessResourceCondition.getDescription())) {
 			jpql.append(andCondition);
-			jpql.append(".description =:description");
-			conditionVals.put("description", queryUrlAccessResourceCondition.getDescription());
+			jpql.append(".description LIKE :description");
+			conditionVals.put("description", MessageFormat.format("%{0}%", queryUrlAccessResourceCondition.getDescription()));			
 		}
 		if (!StringUtils.isBlank(queryUrlAccessResourceCondition.getUrl())) {
 			jpql.append(andCondition);
-			jpql.append(".url =:url");
-			conditionVals.put("url", queryUrlAccessResourceCondition.getUrl());
+			jpql.append(".url LIKE :url");
+			conditionVals.put("url", MessageFormat.format("%{0}%", queryUrlAccessResourceCondition.getUrl()));
 		}
 	}
 
@@ -827,7 +825,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	private List<MenuResourceDTO> findChidrenMenuResource() {
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id,_resource.name, _resource.url, _resource.menuIcon, _resource.description,"
-						+ "_resource.parent.id,_resource.level) FROM MenuResource _resource");
+						+ "_resource.parent.id,_resource.level,_resource.parent.name) FROM MenuResource _resource");
 		jpql.append(" WHERE _resource.level > :level");//
 		jpql.append(" GROUP BY _resource.id");//
 

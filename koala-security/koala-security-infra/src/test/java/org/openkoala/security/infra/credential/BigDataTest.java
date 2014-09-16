@@ -13,7 +13,7 @@ public class BigDataTest extends AbstractInfrantegrationTestCase {
 
     @Test
     public void testUserBigData10000(){
-        for(int i = 1; i < 10000; i++) {
+        for(int i = 1; i < 500; i++) {
             User result = new User("自动生成测试用户" + i, "autoTest" + i);
             result.setCreateOwner("admin");
             result.setDescription("测试");

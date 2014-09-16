@@ -14,7 +14,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">添加页面元素</h4>
             </div>
-            <div class="modal-body" style="padding-left:45px; padding-right:65px; height: 210px;">
+            <div class="modal-body" style="padding-left:45px; padding-right:65px; height: 250px;">
                 <form class="form-horizontal page_form">
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="name">页面元素名称:</label>

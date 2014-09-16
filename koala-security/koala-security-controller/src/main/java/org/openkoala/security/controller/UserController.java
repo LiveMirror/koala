@@ -66,7 +66,6 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
-
 	public InvokeResult terminate(Long[] userIds) {
         String currentUserAccount = CurrentUser.getUserAccount();
 		return securityConfigFacade.terminateUsers(userIds,currentUserAccount);

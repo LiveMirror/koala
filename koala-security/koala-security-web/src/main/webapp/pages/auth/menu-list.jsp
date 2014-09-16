@@ -12,18 +12,15 @@
 			validate(form, dialog, item, opreate);
 		    //console.log(item[3]);
 		   if(item != null){
-				form.find("input[name='parentId']").val(item.name);			    	        
+				form.find("input[name='parentId']").val(item.parentName);			    	        
 			}
-			
-			if(item && opreate == "modify"){	
+			if(item && opreate == "modify"){					
 				form.find("input[name='name']").val(item.name);
 				form.find("input[name='url']").val(item.url);
 			    form.find("input[name='description']").val(item.description);
 			}
 			
-			
-			
-			dialog.modal({
+			dialog.modal({	
 				keyboard : false
 			}).on({
 				'hidden.bs.modal' : function() {
@@ -136,26 +133,33 @@
 	       	});
 		};
 		
-		deleteMenu = function(urls, grid) {
-			var id = urls[0].id;
-			var url = baseUrl + 'terminate.koala';
-			$.post(url,{"menuResourceIds":id}).done(function(data){
+		deleteMenu = function(menus, grid) {
+
+            // TODO 待优化。。。。大量重复撤销代码。
+            var data = "";
+            $.each(menus, function (i, menu) {
+                data += ("menuResourceIds=" + menu.id + "&");
+            });
+            data = data.substring(0, data.length - 1);
+
+            var url = baseUrl + 'terminate.koala';
+			$.post(url,data).done(function(data){
 			 	if (data.success) {
 			 		grid.message({
 						type : 'success',
-						content : '删除成功'
+						content : '撤销成功'
 					});
 			 		grid.grid('refresh');
 				} else {
 					grid.message({
 						type : 'error',
-						content : data.actionError
+						content : data.errorMessage
 					});
 				}
 			}).fail(function(data){
 				grid.message({
 					type : 'error',
-					content : '删除失败'
+					content : '撤销失败'
 				});
 			});
 		};
@@ -176,7 +180,7 @@
 			},{
 				title : "菜单url",
 				name : "url",
-				width : 150
+				width : 250
 			},{
 				title : "菜单描述",
 				name : "description",
@@ -253,12 +257,12 @@
         		if(indexs.length == 0){
 		            grid.message({
 		                   type: 'warning',
-		                    content: '请选择要删除的记录'
+		                    content: '请选择要撤销的记录'
 		            });
 		             return;
 	            }
 	            grid.confirm({
-	                content: '确定要删除所选记录吗?',
+	                content: '确定要撤销所选记录吗?',
 	                callBack: function(){
 	                	deleteMenu(data.item, grid);
 	                }
