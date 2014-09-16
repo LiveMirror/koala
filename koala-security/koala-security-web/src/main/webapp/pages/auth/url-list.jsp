@@ -1,6 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@include file="/commons/taglibs.jsp"%>
-
+<%@ page import="java.util.Date"%>
+<% String formId = "form_" + new Date().getTime();
+   String gridId = "grid_" + new Date().getTime();
+   String path = request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);
+%>
+<!-- strat form -->
+<form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
+<input type="hidden" class="form-control" name="page" value="0">
+<input type="hidden"  class="form-control"  name="pagesize" value="10">
+<div class="panel" hidden="true" >
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+            <div class ="form-group">
+             <label class="control-label" style="width:100px;float:left;">url名称:&nbsp;</label>
+            <div style="margin-left:15px;float:left;">
+            <input name="name" class="form-control" type="text" style="width:180px;"  />
+        </div>
+       		 <label class="control-label" style="width:100px;float:left;">url路径:&nbsp;</label>
+            <div style="margin-left:15px;float:left;">
+            <input name="url" class="form-control" type="text" style="width:180px;"  />
+        </div>
+             <label class="control-label" style="width:100px;float:left;">url描述:&nbsp;</label>
+            <div style="margin-left:15px;float:left;">
+            <input name="description" class="form-control" type="text" style="width:180px;"  />
+        </div>
+            </td>
+       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-info"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
+  </tr>
+</table>	
+</div>
+</form>
+<!-- end form -->
+<div data-role="userGrid"></div>
 <script>
 	$(function() {
 		var baseUrl = contextPath + '/auth/url/';
@@ -165,7 +198,9 @@
 				},{
 					content: '<ks:hasSecurityResource identifier="urlAccessResourceManagerGrantPermission"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
 					action: 'permissionAssign'
-				}];
+				},{
+					content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',action : 'search'
+ 				}];
 			}
 		};
 		
@@ -177,7 +212,7 @@
 		}
 		
 		/*解决id冲突的问题*/
-		$("<div/>").appendTo($("#tabContent>div:last-child")).grid({
+		$("#tabContent>div:last-child").find('[data-role="userGrid"]').grid({
 			identity : 'id',
 			columns : columns,
 			buttons : getButtons(),
@@ -334,7 +369,9 @@
         	        }
         		});
 			},
-			
+			'search' : function() {						
+				$(".panel").slideToggle("slow");						 
+			},
 			"removeUrlFromRole" : function(event, data){ //解除授予
 				var indexs = data.data;
 				var grid = $(this);
@@ -370,5 +407,18 @@
 				});
 			}
 		});
+		var formId = $("#<%=formId%>");
+		formId.find('#search').on('click', function(){
+            var params = {};
+            formId.find('.form-control').each(function(){
+                var $this = $(this);
+                var name = $this.attr('name');
+                 if(name){
+                    params[name] = $this.val();
+                }
+                 console.log(name+"=="+params[name]);
+            });
+           $('[data-role="userGrid"]').getGrid().search(params);
+        });
 	});
 </script>

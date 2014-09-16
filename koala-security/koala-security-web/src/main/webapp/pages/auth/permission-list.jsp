@@ -36,7 +36,6 @@
 <div data-role="userGrid"></div>
 <script>
 	$(function(){
-		var form;
 		var baseUrl = contextPath + '/auth/permission/';
 		function initEditDialog(data, item, grid) {
 			dialog = $(data);
@@ -1030,10 +1029,10 @@
 				});
 			}
         }); 
-		form = $("#<%=formId%>");
-		form.find('#search').on('click', function(){
+		var formId = $("#<%=formId%>");
+		formId.find('#search').on('click', function(){
             var params = {};
-            form.find('.form-control').each(function(){
+            formId.find('.form-control').each(function(){
                 var $this = $(this);
                 var name = $this.attr('name');
                  if(name){
