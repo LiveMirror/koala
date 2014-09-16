@@ -306,7 +306,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
     @Override
     public InvokeResult pagingQueryRoles(int pageIndex, int pageSize, RoleDTO queryRoleCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
-        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description) FROM Role _role");
+        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description) FROM Role _role where 1 = 1");
 
         assembleRoleJpqlAndConditionValues(queryRoleCondition, jpql, "_role", conditionVals);
 
@@ -695,15 +695,15 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		String whereCondition = " WHERE " + conditionPrefix;
 
 		if (!StringUtils.isBlank(queryRoleCondition.getName())) {
-			jpql.append(whereCondition);
-			jpql.append(".name =:name");
-			conditionVals.put("name", queryRoleCondition.getName());
+			jpql.append(andCondition);
+			jpql.append(".name LIKE :name");
+			conditionVals.put("name", MessageFormat.format("%{0}%", queryRoleCondition.getName()));
 		}
 
 		if (!StringUtils.isBlank(queryRoleCondition.getDescription())) {
 			jpql.append(andCondition);
-			jpql.append(".description =:description");
-			conditionVals.put("description", queryRoleCondition.getDescription());
+			jpql.append(".description LIKE :description");
+			conditionVals.put("description", MessageFormat.format("%{0}%", queryRoleCondition.getDescription()));
 		}
 	}
 
