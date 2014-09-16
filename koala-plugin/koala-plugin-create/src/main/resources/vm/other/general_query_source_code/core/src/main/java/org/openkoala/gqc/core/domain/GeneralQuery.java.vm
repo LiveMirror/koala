@@ -45,24 +45,28 @@ public class GeneralQuery extends GeneralQueryEntity {
 	/**
 	 * 查询名称
 	 */
+	
 	@Column(name = "QUERY_NAME", unique = true)
 	private String queryName;
 	
 	/**
 	 * 表名
 	 */
+	
 	@Column(name = "TABLE_NAME", nullable = false)
 	private String tableName;
 	
 	/**
 	 * 描述
 	 */
+	
 	@Column(name = "DESCRIPTION")
 	private String description;
 	
 	/**
 	 * 创建日期
 	 */
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "CREATE_DATE")
 	private Date createDate;
@@ -70,6 +74,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	/**
 	 * 静态查询条件
 	 */
+	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "KGV_PRE_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
 	@OrderColumn(name = "ORDER_COLUMN")
@@ -78,6 +83,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	/**
 	 * 动态查询条件
 	 */
+	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "KGV_DYNAMIC_QUERY_CONDITIONS", joinColumns = @JoinColumn(name = "GQ_ID"))
 	@OrderColumn(name = "ORDER_COLUMN")
@@ -86,6 +92,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	/**
 	 * 查询结果要显示的字段
 	 */
+	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "KGV_FIELD_DETAILS", joinColumns = @JoinColumn(name = "GQ_ID"))
 	@OrderColumn(name = "ORDER_COLUMN")
@@ -107,7 +114,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		
 	}
 	
-	
 	public DataSource getDataSource() {
 		return dataSource;
 	}
@@ -116,7 +122,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.dataSource = dataSource;
 	}
 
-	
 	public String getQueryName() {
 		return queryName;
 	}
@@ -129,7 +134,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.tableName = tableName;
 	}
 	
-	
 	public String getTableName() {
 		return tableName;
 	}
@@ -138,7 +142,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.tableName = tableName;
 	}
 
-	
 	public String getDescription() {
 		return description;
 	}
@@ -147,7 +150,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.description = description;
 	}
  
-	
 	public Date getCreateDate() {
 		return new Date(createDate.getTime());
 	}
@@ -156,7 +158,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.createDate = createDate;
 	}
 
-	
 	public List<PreQueryCondition> getPreQueryConditions() {
 		return preQueryConditions;
 	}
@@ -165,7 +166,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.preQueryConditions = preQueryConditions;
 	}
 
-	
 	public List<DynamicQueryCondition> getDynamicQueryConditions() {
 		return dynamicQueryConditions;
 	}
@@ -175,7 +175,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.dynamicQueryConditions = dynamicQueryConditions;
 	}
 
-	
 	public List<FieldDetail> getFieldDetails() {
 		return fieldDetails;
 	}
@@ -184,8 +183,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		this.fieldDetails = fieldDetails;
 	}
 
-	
-	
 	private QueryAllQuerier obtainQueryAllQuerier() {
 		if (queryAllQuerier == null) {
 			queryAllQuerier = new QueryAllQuerier(obtainQuerySql(), dataSource);
@@ -195,7 +192,6 @@ public class GeneralQuery extends GeneralQueryEntity {
 		return queryAllQuerier;
 	}
 
-	
 	private PagingQuerier obtainPagingQuerier() {
 		if (pagingQuerier == null) {
 			pagingQuerier = new PagingQuerier(obtainQuerySql(), dataSource);
@@ -249,13 +245,12 @@ public class GeneralQuery extends GeneralQueryEntity {
 	 * 生成查询SQL语句
 	 * @return
 	 */
-	@Transient
 	private SqlStatmentMode obtainQuerySql() {
 		return generateCommonQuerySql();
 	}
 	
 	/**
-	 * 获得可现实的静态条件
+	 * 获得可显示的静态条件
 	 * @return
 	 */
 	@Transient

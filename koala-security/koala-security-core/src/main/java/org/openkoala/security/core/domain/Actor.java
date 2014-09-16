@@ -13,7 +13,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
-import org.dayatang.domain.AbstractEntity;
 import org.openkoala.security.core.NullArgumentException;
 
 /**

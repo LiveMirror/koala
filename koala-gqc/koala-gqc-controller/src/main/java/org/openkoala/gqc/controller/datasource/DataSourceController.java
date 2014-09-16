@@ -157,21 +157,19 @@ public class DataSourceController {
 	@ResponseBody
 	@RequestMapping("/checkDataSourceById")
 	public Map<String, Object> checkDataSourceById(Long id) {
-		// Json对象
-		Map<String, Object> dataMap = null;
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		try {
-			dataMap = new HashMap<String, Object>();
-
 			boolean result = dataSourceFacade.testConnection(id);
 			if (result) {
 				dataMap.put("result", "该数据源可用");
 			} else {
 				dataMap.put("result", "该数据源不可用");
 			}
+		} catch (RuntimeException e) {
+			dataMap.put("result", e.getMessage());
 		} catch (Exception e) {
-			if (dataMap != null) {
-				dataMap.put("error", "检测数据源是否可用失败！");
-			}
+			dataMap.put("result", "检测数据源是否可用失败！");
+			e.printStackTrace();
 		}
 		return dataMap;
 	}

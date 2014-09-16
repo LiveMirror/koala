@@ -12,7 +12,7 @@ public class SecurityResourceTag extends AbstractAuthorizationTag {
 	protected Authz authz =  null;
 	
 	/**
-	 * 资源名称
+	 * 资源标识
 	 */
 	protected String identifier;
 

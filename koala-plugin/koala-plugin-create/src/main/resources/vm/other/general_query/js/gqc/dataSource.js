@@ -107,7 +107,7 @@ var dataSource = function(){
 	var testConnectionById = function(id){
 		$.post(baseUrl+'checkDataSourceById.koala?id='+id).done(function(data){
 			var result = data.result;
-			var type = data.result == '该数据源不可用' ? 'warning' : 'success';
+			var type = data.result == '该数据源可用' ? 'success' : 'warning';
 			$('#dataSourceGrid').message({
 				type: type,
 				content: result

@@ -602,8 +602,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     @Override
-    public boolean checkUserHasPageElementResource(String userAccount, String currentRoleName,
-                                                   String securityResourceIdentifier) {
+    public boolean checkUserHasPageElementResource(String userAccount, String currentRoleName,String securityResourceIdentifier) {
 
         if (!securityAccessApplication.hasPageElementResource(securityResourceIdentifier)) {
             return true;

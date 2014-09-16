@@ -88,9 +88,8 @@ public class AuthzImpl implements Authz {
 			securityConfigFacade = getApplicationContext().getBean(SecurityConfigFacade.class);
 		}
 		
-		boolean hasResource = securityConfigFacade.checkUserHasPageElementResource(userAccount, currentRoleName,securityResourceIdentifier);
+		return securityConfigFacade.checkUserHasPageElementResource(userAccount, currentRoleName,securityResourceIdentifier);
 		
-		return hasResource ? true : false;
 	}
 
 	public ServletContext getServletContext() {

@@ -12,10 +12,9 @@
 			validate(form, dialog, item, opreate);
 		    //console.log(item[3]);
 		   if(item != null){
-				form.find("input[name='parentId']").val(item.name);			    	        
+				form.find("input[name='parentId']").val(item.parentName);			    	        
 			}
-			
-			if(item && opreate == "modify"){	
+			if(item && opreate == "modify"){					
 				form.find("input[name='name']").val(item.name);
 				form.find("input[name='url']").val(item.url);
 			    form.find("input[name='description']").val(item.description);

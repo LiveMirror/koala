@@ -1,8 +1,6 @@
 package org.openkoala.security.core.domain;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.dayatang.domain.AbstractEntity;
 import org.openkoala.security.core.NullArgumentException;
 
 import javax.persistence.*;
@@ -18,7 +16,8 @@ import java.util.Set;
 @Table(name = "KS_RESOURCEASSIGNMENTS")
 @NamedQueries({
         @NamedQuery(name="ResourceAssignment.findSecurityResourcesByAuthorities",query = "SELECT _resource FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority in (:authorities) AND TYPE(_resource)= :resourceType GROUP BY _resource.id ORDER BY _resource.id"),
-        @NamedQuery(name="ResourceAssignment.findAuthoritiesBySecurityResource",query = "SELECT _authority FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource = :resource AND TYPE(_authority)= :authorityType GROUP BY _authority.id ORDER BY _authority.id")
+        @NamedQuery(name="ResourceAssignment.findAuthoritiesBySecurityResource",query = "SELECT _authority FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource = :resource AND TYPE(_authority)= :authorityType GROUP BY _authority.id ORDER BY _authority.id"),
+        @NamedQuery(name = "ResourceAssignment.checkHasSecurityResource", query = "SELECT _resourceAssignment FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority IN (:authorities) AND TYPE(_resource) = :securityResourceType  AND _resource.identifier = :identifier")
 })
 public class ResourceAssignment extends SecurityAbstractEntity {
 
