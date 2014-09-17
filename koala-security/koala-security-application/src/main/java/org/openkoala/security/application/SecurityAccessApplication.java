@@ -204,4 +204,21 @@ public interface SecurityAccessApplication {
 	boolean checkRoleByName(String roleName);
 
     <T extends Authority> T getAuthority(Long authorityId);
+
+    /**
+     * 查找用户拥有的所有角色。
+     *
+     * @param user 用户
+     * @return
+     */
+    Set<Role> findRolesOfUser(User user);
+
+    /**
+     * 查找用户拥有的所有权限。
+     *
+     * @param user 用户
+     * @return
+     */
+    Set<Permission> findPermissionsOfUser(User user);
+
 }

@@ -224,4 +224,11 @@ public interface SecurityAccessFacade {
      * @return
      */
     boolean checkUserIsHaveRole(String userAccount, String roleName);
+
+    /**
+     * 根据用户ID查找用户信息：包含用户本身信息，用户授权信息（即：拥有的角色、拥有的权限）。
+     * @param userId
+     * @return
+     */
+    InvokeResult findInfoOfUser(Long userId);
 }

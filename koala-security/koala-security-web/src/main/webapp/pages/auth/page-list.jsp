@@ -199,7 +199,7 @@
 							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerGrantPermission"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
 							action: 'permissionAssignForPage'
 						},{
-							content : '<ks:hasSecurityResource identifier="userManagerSuspend"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+							content : '<ks:hasSecurityResource identifier="pageElementResourceManagerQuery"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
 							action : 'search'
 		 				}];
 			}

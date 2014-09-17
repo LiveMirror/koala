@@ -2,6 +2,7 @@ package org.openkoala.security.core.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -10,6 +11,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.InstanceFactory;
 import org.openkoala.security.core.EmailIsExistedException;
@@ -149,6 +151,24 @@ public class User extends Actor {
             this.email = email;
             save();
         }
+    }
+
+    public Set<Role> findAllRoles() {
+        List<Role> results = getRepository()//
+                .createNamedQuery("Authorization.findAuthoritiesByActor")//
+                .addParameter("actor", this)//
+                .addParameter("authorityType", Role.class)//
+                .list();
+        return Sets.newHashSet(results);
+    }
+
+    public Set<Permission> findAllPermissions() {
+        List<Permission> results = getRepository()//
+                .createNamedQuery("Authorization.findAuthoritiesByActor")//
+                .addParameter("actor", this)//
+                .addParameter("authorityType", Permission.class)//
+                .list();
+        return Sets.newHashSet(results);
     }
 
     /**
@@ -364,5 +384,6 @@ public class User extends Actor {
     public String getSalt() {
         return salt;
     }
+
 
 }

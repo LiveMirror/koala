@@ -4,11 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.inject.Named;
+import javax.persistence.*;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.CriteriaQuery;
@@ -23,6 +20,7 @@ import org.openkoala.security.core.NullArgumentException;
  */
 @Entity
 @Table(name = "KS_AUTHORIZATIONS")
+@NamedQueries(@NamedQuery(name="Authorization.findAuthoritiesByActor",query = "SELECT _authority FROM Authorization _authorization JOIN _authorization.authority _authority JOIN _authorization.actor _actor WHERE _actor = :actor AND TYPE(_authority) = :authorityType"))
 public class Authorization extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = -7604610067031217444L;
