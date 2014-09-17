@@ -24,10 +24,10 @@ public class LogoutController {
     public InvokeResult logout() {
         try {
             SecurityUtils.getSubject().logout();
-            return InvokeResult.success("用户退出成功。");
+            return InvokeResult.success();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return InvokeResult.success("用户退出成功。");
+            return InvokeResult.success("用户退出失败。");
         }
     }
 }

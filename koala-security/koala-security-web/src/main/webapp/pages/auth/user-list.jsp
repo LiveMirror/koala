@@ -131,6 +131,13 @@
 							 render : function(item, name, index) {
 								return item[name]?  '<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>':'<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>';
 							}  
+						}, {
+							title : "查看",
+							name : "operate",
+							width : 200,
+							 render: function(item, name, index){
+					             	return '<a href="#" onclick="showDetail('+item.id+', \''+item.name+'\')"><span class="glyphicon glyphicon glyphicon-eye-open"></span>&nbsp;详细</a>';
+					        	 }
 						}
 		                ]
 		         }).on({
@@ -330,4 +337,16 @@
 	            $('[data-role="userGrid"]').getGrid().search(params);
 	        });
 	});
+	  /**
+	 * 显示详细信息
+	 */
+	var showDetail = function(){
+    	var userInfo = $("#userInfo").html();
+    	   var thiz 	= $(this),
+           mark 	= thiz.attr('mark');
+   		  mark = openTab('/pages/auth/currentUser-info.jsp', userInfo, mark);
+          if(mark){
+              thiz.attr("mark",mark);
+          }
+	};
 </script>
