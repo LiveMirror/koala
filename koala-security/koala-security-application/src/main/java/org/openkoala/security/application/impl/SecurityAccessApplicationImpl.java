@@ -173,4 +173,34 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     public Set<Permission> findPermissionsOfUser(User user) {
         return user.findAllPermissions();
     }
+
+    @Override
+    public Set<MenuResource> findMenuResourcesOfRole(Role role) {
+        return role.findMenuResources();
+    }
+
+    @Override
+    public Set<UrlAccessResource> findUrlAccessResourcesOfRole(Role role) {
+        return role.findUrlAccessResources();
+    }
+
+    @Override
+    public Set<PageElementResource> findPageElementResourcesOfRole(Role role) {
+        return role.findPageElementResources();
+    }
+
+    @Override
+    public Set<PageElementResource> findPageElementResourcesOfPermission(Permission permission) {
+        return permission.findPageElementResources();
+    }
+
+    @Override
+    public Set<UrlAccessResource> findUrlAccessResourcesOfPermission(Permission permission) {
+        return permission.findUrlAccessResources();
+    }
+
+    @Override
+    public Set<MenuResource> findMenuResourcesOfPermission(Permission permission) {
+        return permission.findMenuResources();
+    }
 }

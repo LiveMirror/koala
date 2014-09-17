@@ -1,9 +1,7 @@
 package org.openkoala.security.facade.dto;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -25,6 +23,13 @@ public class RoleDTO implements Serializable {
 	private String url;
 
 	private Set<PermissionDTO> permissionDTOs = new HashSet<PermissionDTO>();
+
+    private List<MenuResourceDTO> menuResources = new ArrayList<MenuResourceDTO>();
+
+    private List<UrlAccessResourceDTO> urlAccessResources = new ArrayList<UrlAccessResourceDTO>();
+
+    private  List<PageElementResourceDTO> pageElementResources = new ArrayList<PageElementResourceDTO>();
+
 
 	protected RoleDTO() {
 	}
@@ -103,7 +108,31 @@ public class RoleDTO implements Serializable {
 		this.url = url;
 	}
 
-	/**
+    public List<MenuResourceDTO> getMenuResources() {
+        return menuResources;
+    }
+
+    public void setMenuResources(List<MenuResourceDTO> menuResources) {
+        this.menuResources = menuResources;
+    }
+
+    public List<UrlAccessResourceDTO> getUrlAccessResources() {
+        return urlAccessResources;
+    }
+
+    public void setUrlAccessResources(List<UrlAccessResourceDTO> urlAccessResources) {
+        this.urlAccessResources = urlAccessResources;
+    }
+
+    public List<PageElementResourceDTO> getPageElementResources() {
+        return pageElementResources;
+    }
+
+    public void setPageElementResources(List<PageElementResourceDTO> pageElementResources) {
+        this.pageElementResources = pageElementResources;
+    }
+
+    /**
 	 * 因为{@link SecurityAccessFacade}findRolesByMenuOrUrl需要url 所以比领域层多一个url。
 	 */
 	@Override

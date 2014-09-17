@@ -4,6 +4,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PermissionDTO {
 
 	private Long id;
@@ -19,6 +22,12 @@ public class PermissionDTO {
 	private String description;
 
 	private String url;
+
+    private List<MenuResourceDTO> menuResources = new ArrayList<MenuResourceDTO>();
+
+    private List<UrlAccessResourceDTO> urlAccessResources = new ArrayList<UrlAccessResourceDTO>();
+
+    private  List<PageElementResourceDTO> pageElementResources = new ArrayList<PageElementResourceDTO>();
 
 	protected PermissionDTO() {}
 
@@ -93,7 +102,31 @@ public class PermissionDTO {
 		this.url = url;
 	}
 
-	@Override
+    public List<MenuResourceDTO> getMenuResources() {
+        return menuResources;
+    }
+
+    public void setMenuResources(List<MenuResourceDTO> menuResources) {
+        this.menuResources = menuResources;
+    }
+
+    public List<UrlAccessResourceDTO> getUrlAccessResources() {
+        return urlAccessResources;
+    }
+
+    public void setUrlAccessResources(List<UrlAccessResourceDTO> urlAccessResources) {
+        this.urlAccessResources = urlAccessResources;
+    }
+
+    public List<PageElementResourceDTO> getPageElementResources() {
+        return pageElementResources;
+    }
+
+    public void setPageElementResources(List<PageElementResourceDTO> pageElementResources) {
+        this.pageElementResources = pageElementResources;
+    }
+
+    @Override
 	public int hashCode() {
 		return new HashCodeBuilder()//
 				.append(name)//

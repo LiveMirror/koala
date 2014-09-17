@@ -1,7 +1,9 @@
 package org.openkoala.security.facade.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -43,6 +45,10 @@ public class UserDTO implements Serializable {
 	 * TRUE FALSE NULL
 	 */
 	private Boolean disabled;
+
+    private List<RoleDTO> roles = new ArrayList<RoleDTO>();
+
+    private List<PermissionDTO> permissions = new ArrayList<PermissionDTO>();
 
 	protected UserDTO() {
 	}
@@ -202,7 +208,23 @@ public class UserDTO implements Serializable {
 		this.disabled = disabled;
 	}
 
-	@Override
+    public List<RoleDTO> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleDTO> roles) {
+        this.roles = roles;
+    }
+
+    public List<PermissionDTO> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<PermissionDTO> permissions) {
+        this.permissions = permissions;
+    }
+
+    @Override
 	public int hashCode() {
 		return new HashCodeBuilder()//
 				.append(userPassword)//

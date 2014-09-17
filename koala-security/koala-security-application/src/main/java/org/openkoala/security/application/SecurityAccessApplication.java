@@ -221,4 +221,33 @@ public interface SecurityAccessApplication {
      */
     Set<Permission> findPermissionsOfUser(User user);
 
+    /**
+     * 查找角色拥有的所有菜单
+     *
+     * @param role 角色
+     * @return
+     */
+    Set<MenuResource> findMenuResourcesOfRole(Role role);
+
+    /**
+     * 查找角色拥有的所有URL访问资源
+     *
+     * @param role 角色
+     * @return
+     */
+    Set<UrlAccessResource> findUrlAccessResourcesOfRole(Role role);
+
+    /**
+     * 查找角色拥有的所有页面元素资源
+     *
+     * @param role 角色
+     * @return
+     */
+    Set<PageElementResource> findPageElementResourcesOfRole(Role role);
+
+    Set<PageElementResource> findPageElementResourcesOfPermission(Permission permission);
+
+    Set<UrlAccessResource> findUrlAccessResourcesOfPermission(Permission permission);
+
+    Set<MenuResource> findMenuResourcesOfPermission(Permission permission);
 }

@@ -98,6 +98,12 @@ public class RoleController {
 		return securityAccessFacade.pagingQueryRoles(page, pagesize, roleDTO);
 	}
 
+    @ResponseBody
+    @RequestMapping(value = "findInfoOfRole" , method = RequestMethod.GET)
+    public InvokeResult findInfoOfRole(Long roleId){
+        return securityAccessFacade.findInfOfRole(roleId);
+    }
+
 	/**
 	 * 根据角色ID查询菜单权限资源树带有已经选中项。
 	 *

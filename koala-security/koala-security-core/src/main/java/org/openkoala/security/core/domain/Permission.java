@@ -1,5 +1,6 @@
 package org.openkoala.security.core.domain;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.IdentifierIsExistedException;
@@ -146,4 +147,35 @@ public class Permission extends Authority {
 		return identifier;
 	}
 
+    public Set<PageElementResource> findPageElementResources() {
+        List<PageElementResource> results = getRepository()//
+                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthority")//
+                .addParameter("authority", this)//
+                .addParameter("resourceType", PageElementResource.class)//
+                .addParameter("authorityType", Permission.class)//
+                .list();
+        return Sets.newHashSet(results);
+
+    }
+
+    public Set<UrlAccessResource> findUrlAccessResources() {
+
+        List<UrlAccessResource> results = getRepository()//
+                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthority")//
+                .addParameter("authority", this)//
+                .addParameter("resourceType", UrlAccessResource.class)//
+                .addParameter("authorityType", Permission.class)//
+                .list();
+        return Sets.newHashSet(results);
+    }
+
+    public Set<MenuResource> findMenuResources() {
+        List<MenuResource> results = getRepository()//
+                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthority")//
+                .addParameter("authority", this)//
+                .addParameter("resourceType", MenuResource.class)//
+                .addParameter("authorityType", Permission.class)//
+                .list();
+        return Sets.newHashSet(results);
+    }
 }

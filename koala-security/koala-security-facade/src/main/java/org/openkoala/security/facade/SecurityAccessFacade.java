@@ -227,8 +227,19 @@ public interface SecurityAccessFacade {
 
     /**
      * 根据用户ID查找用户信息：包含用户本身信息，用户授权信息（即：拥有的角色、拥有的权限）。
+     *
      * @param userId
      * @return
      */
     InvokeResult findInfoOfUser(Long userId);
+
+    /**
+     * 根据角色ID查找角色信息：包含角色本身信息，权限信息，权限资源信息（菜单资源、URL访问资源、页面元素资源）
+     *
+     * @param roleId
+     * @return
+     */
+    InvokeResult findInfOfRole(Long roleId);
+
+    InvokeResult findInfOfPermission(Long permissionId);
 }

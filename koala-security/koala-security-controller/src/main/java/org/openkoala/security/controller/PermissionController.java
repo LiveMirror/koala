@@ -81,4 +81,11 @@ public class PermissionController {
 		return securityAccessFacade.pagingQueryPermissions(page, pagesize,queryPermissionCondition);
 	}
 
+    @ResponseBody
+    @RequestMapping(value = "findInfoOfPermission" , method = RequestMethod.GET)
+    public InvokeResult findInfoOfPermission(Long permissionId){
+        return securityAccessFacade.findInfOfPermission(permissionId);
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package org.openkoala.security.core.domain;
 
+import com.google.common.collect.Sets;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -123,5 +125,36 @@ public class Role extends Authority {
 	public void setPermissions(Set<Permission> permissions) {
 		this.permissions = permissions;
 	}
-	
+
+    public Set<MenuResource> findMenuResources() {
+        List<MenuResource> results =  getRepository()//
+                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthority")//
+                .addParameter("authority", this)//
+                .addParameter("resourceType", MenuResource.class)//
+                .addParameter("authorityType", Role.class)//
+                .list();
+        return Sets.newHashSet(results);
+
+    }
+
+    public Set<UrlAccessResource> findUrlAccessResources() {
+        List<UrlAccessResource> results =  getRepository()//
+                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthority")//
+                .addParameter("authority", this)//
+                .addParameter("resourceType", UrlAccessResource.class)//
+                .addParameter("authorityType", Role.class)//
+                .list();
+        return Sets.newHashSet(results);
+    }
+
+    public Set<PageElementResource> findPageElementResources() {
+        List<PageElementResource> results =  getRepository()//
+                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthority")//
+                .addParameter("authority", this)//
+                .addParameter("resourceType", PageElementResource.class)//
+                .addParameter("authorityType", Role.class)//
+                .list();
+        return Sets.newHashSet(results);
+
+    }
 }

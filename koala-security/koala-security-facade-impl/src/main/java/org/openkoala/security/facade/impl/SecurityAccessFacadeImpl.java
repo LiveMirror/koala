@@ -24,10 +24,7 @@ import org.openkoala.security.facade.dto.*;
 
 import com.google.common.collect.Sets;
 
-import org.openkoala.security.facade.impl.assembler.MenuResourceAssembler;
-import org.openkoala.security.facade.impl.assembler.PermissionAssembler;
-import org.openkoala.security.facade.impl.assembler.RoleAssembler;
-import org.openkoala.security.facade.impl.assembler.UserAssembler;
+import org.openkoala.security.facade.impl.assembler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -888,20 +885,86 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
         Set<Role> roles = securityAccessApplication.findRolesOfUser(user);
         Set<Permission> permissions = securityAccessApplication.findPermissionsOfUser(user);
 
-        UserDTO userDTO = UserAssembler.toUserDTOThisOftenUsed(user);
         List<RoleDTO> roleDTOs = transformToRoleDTOs(roles);
         List<PermissionDTO> permissionDTO = transformToPermissionDTOs(permissions);
 
-        Map<String,Object> result = new HashMap<String, Object>();
-        result.put("user",userDTO);
-        result.put("roles",roleDTOs);
-        result.put("permissions",permissionDTO);
+        UserDTO result = UserAssembler.toUserDTOThisOftenUsed(user);
+        result.setRoles(roleDTOs);
+        result.setPermissions(permissionDTO);
+
         return InvokeResult.success(result);
+    }
+
+    @Override
+    public InvokeResult findInfOfRole(Long roleId) {
+        Role role = securityAccessApplication.getRoleBy(roleId);
+
+        Set<Permission> permissions = role.getPermissions();
+        Set<MenuResource> menuResources = securityAccessApplication.findMenuResourcesOfRole(role);
+        Set<UrlAccessResource> urlAccessResources = securityAccessApplication.findUrlAccessResourcesOfRole(role);
+        Set<PageElementResource> pageElementResources = securityAccessApplication.findPageElementResourcesOfRole(role);
+
+        List<PermissionDTO> permissionDTOs = transformToPermissionDTOs(permissions);
+        List<MenuResourceDTO> menuResourceDTOs = transformToMenuResourceDTOs(menuResources);
+        List<UrlAccessResourceDTO> urlAccessResourceDTOs = transformToUrlAccessResources(urlAccessResources);
+        List<PageElementResourceDTO> pageElementResourceDTOs = transformToPageElementResources(pageElementResources);
+
+        RoleDTO result = RoleAssembler.toRoleDTO(role);
+        result.setPermissionDTOs(Sets.newHashSet(permissionDTOs));
+        result.setMenuResources(menuResourceDTOs);
+        result.setUrlAccessResources(urlAccessResourceDTOs);
+        result.setPageElementResources(pageElementResourceDTOs);
+
+        return InvokeResult.success(result);
+
+    }
+
+    @Override
+    public InvokeResult findInfOfPermission(Long permissionId) {
+
+        Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+        Set<MenuResource> menuResources = securityAccessApplication.findMenuResourcesOfPermission(permission);
+        Set<UrlAccessResource> urlAccessResources = securityAccessApplication.findUrlAccessResourcesOfPermission(permission);
+        Set<PageElementResource> pageElementResources = securityAccessApplication.findPageElementResourcesOfPermission(permission);
+
+        PermissionDTO result = PermissionAssembler.toPermissionDTO(permission);
+        List<MenuResourceDTO> menuResourceDTOs = transformToMenuResourceDTOs(menuResources);
+        List<UrlAccessResourceDTO> urlAccessResourceDTOs = transformToUrlAccessResources(urlAccessResources);
+        List<PageElementResourceDTO> pageElementResourceDTOs = transformToPageElementResources(pageElementResources);
+        result.setMenuResources(menuResourceDTOs);
+        result.setUrlAccessResources(urlAccessResourceDTOs);
+        result.setPageElementResources(pageElementResourceDTOs);
+        return InvokeResult.success(result);
+    }
+
+    private List<PageElementResourceDTO> transformToPageElementResources(Set<PageElementResource> pageElementResources) {
+        List<PageElementResourceDTO> results = new ArrayList<PageElementResourceDTO>();
+        for (PageElementResource pageElementResource : pageElementResources) {
+            results.add(PageElementResourceAssembler.toPageElementResourceDTO(pageElementResource));
+        }
+        return results;
+    }
+
+    private List<UrlAccessResourceDTO> transformToUrlAccessResources(Set<UrlAccessResource> urlAccessResources) {
+        List<UrlAccessResourceDTO> results = new ArrayList<UrlAccessResourceDTO>();
+        for (UrlAccessResource urlAccessResource : urlAccessResources) {
+            results.add(UrlAccessResourceAssembler.toUrlAccessResourceDTO(urlAccessResource));
+        }
+        return results;
+
+    }
+
+    private List<MenuResourceDTO> transformToMenuResourceDTOs(Set<MenuResource> menuResources) {
+        List<MenuResourceDTO> results = new ArrayList<MenuResourceDTO>();
+        for (MenuResource menuResource : menuResources) {
+            results.add(MenuResourceAssembler.toMenuResourceDTO(menuResource));
+        }
+        return results;
     }
 
     private List<PermissionDTO> transformToPermissionDTOs(Set<Permission> permissions) {
         List<PermissionDTO> results = new ArrayList<PermissionDTO>();
-        for(Permission permission : permissions){
+        for (Permission permission : permissions) {
             results.add(PermissionAssembler.toPermissionDTO(permission));
         }
         return results;
