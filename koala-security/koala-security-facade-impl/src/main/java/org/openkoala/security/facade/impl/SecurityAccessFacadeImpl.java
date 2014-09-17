@@ -882,4 +882,38 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return false;
 	}
 
+    @Override
+    public InvokeResult findInfoOfUser(Long userId) {
+        User user = securityAccessApplication.getUserById(userId);
+        Set<Role> roles = securityAccessApplication.findRolesOfUser(user);
+        Set<Permission> permissions = securityAccessApplication.findPermissionsOfUser(user);
+
+        UserDTO userDTO = UserAssembler.toUserDTOThisOftenUsed(user);
+        List<RoleDTO> roleDTOs = transformToRoleDTOs(roles);
+        List<PermissionDTO> permissionDTO = transformToPermissionDTOs(permissions);
+
+        Map<String,Object> result = new HashMap<String, Object>();
+        result.put("user",userDTO);
+        result.put("roles",roleDTOs);
+        result.put("permissions",permissionDTO);
+        return InvokeResult.success(result);
+    }
+
+    private List<PermissionDTO> transformToPermissionDTOs(Set<Permission> permissions) {
+        List<PermissionDTO> results = new ArrayList<PermissionDTO>();
+        for(Permission permission : permissions){
+            results.add(PermissionAssembler.toPermissionDTO(permission));
+        }
+        return results;
+
+    }
+
+    private List<RoleDTO> transformToRoleDTOs(Set<Role> roles) {
+        List<RoleDTO> results = new ArrayList<RoleDTO>();
+        for (Role role : roles) {
+            results.add(RoleAssembler.toRoleDTO(role));
+        }
+        return results;
+    }
+
 }

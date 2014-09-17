@@ -252,6 +252,12 @@ public class UserController {
 		return  securityAccessFacade.pagingQueryUsers(page, pagesize, queryUserCondition);
 	}
 
+    @ResponseBody
+    @RequestMapping(value = "/findInfoOfUser", method = RequestMethod.GET)
+    public InvokeResult findInfoOfUser(Long userId){
+        return securityAccessFacade.findInfoOfUser(userId);
+    }
+
 	/**
 	 * 根据用户ID分页查找已经授权的角色。
 	 *

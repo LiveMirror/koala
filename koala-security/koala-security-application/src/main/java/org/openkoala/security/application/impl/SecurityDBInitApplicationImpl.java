@@ -132,11 +132,15 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
                 "pageElementResourceManagerTerminate");
         PageElementResource pageElementResourceManagerGrantPermission = new PageElementResource("页面元素资源管理-授权权限",
                 "pageElementResourceManagerGrantPermission");
+        PageElementResource pageElementResourceManagerQuery = new PageElementResource("页面元素资源管理-查询",
+                "pageElementResourceManagerQuery");
         return Lists.newArrayList(//
                 pageElementResourceManagerAdd,//
                 pageElementResourceManagerUpdate,//
                 pageElementResourceManagerTerminate,//
-                pageElementResourceManagerGrantPermission);
+                pageElementResourceManagerGrantPermission,//
+                pageElementResourceManagerQuery
+        );
     }
 
     private List<PageElementResource> createPageElementResourcesOfUrlAccessResource() {
@@ -148,21 +152,22 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
                 "urlAccessResourceManagerTerminate");
         PageElementResource urlAccessResourceManagerGrantPermission = new PageElementResource("路径访问资源管理-授权权限",
                 "urlAccessResourceManagerGrantPermission");
+        PageElementResource urlAccessResourceManagerQuery = new PageElementResource("路径访问资源管理-查询","urlAccessResourceManagerQuery");
         return Lists.newArrayList(//
                 urlAccessResourceManagerAdd,//
                 urlAccessResourceManagerUpdate,//
                 urlAccessResourceManagerTerminate,//
-                urlAccessResourceManagerGrantPermission);
+                urlAccessResourceManagerGrantPermission,//
+                urlAccessResourceManagerQuery
+        );
     }
 
     private List<PageElementResource> createPageElementResourcesOfMenuResource() {
         PageElementResource menuResourceManagerAdd = new PageElementResource("菜单资源管理-添加", "menuResourceManagerAdd");
-        PageElementResource menuResourceManagerUpdate = new PageElementResource("菜单资源管理-修改",
-                "menuResourceManagerUpdate");
-        PageElementResource menuResourceManagerTerminate = new PageElementResource("菜单资源管理-撤销",
-                "menuResourceManagerTerminate");
-        PageElementResource menuResourceManagerGrantPermission = new PageElementResource("菜单资源管理-授权权限",
-                "menuResourceManagerGrantPermission");
+        PageElementResource menuResourceManagerUpdate = new PageElementResource("菜单资源管理-修改","menuResourceManagerUpdate");
+        PageElementResource menuResourceManagerTerminate = new PageElementResource("菜单资源管理-撤销","menuResourceManagerTerminate");
+        PageElementResource menuResourceManagerGrantPermission = new PageElementResource("菜单资源管理-授权权限","menuResourceManagerGrantPermission");
+
         return Lists.newArrayList(//
                 menuResourceManagerAdd,//
                 menuResourceManagerUpdate,//
@@ -173,26 +178,25 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
     private List<PageElementResource> createPageElementResourcesOfPermission() {
         PageElementResource permissionManagerAdd = new PageElementResource("权限管理-添加", "permissionManagerAdd");
         PageElementResource permissionManagerUpdate = new PageElementResource("权限管理-修改", "permissionManagerUpdate");
-        PageElementResource permissionManagerTerminate = new PageElementResource("权限管理-撤销",
-                "permissionManagerTerminate");
+        PageElementResource permissionManagerTerminate = new PageElementResource("权限管理-撤销","permissionManagerTerminate");
+        PageElementResource permissionManagerQuery = new PageElementResource("权限管理-查询","permissionManagerQuery");
         return Lists.newArrayList(//
                 permissionManagerAdd,//
                 permissionManagerUpdate,//
-                permissionManagerTerminate);
+                permissionManagerTerminate,//
+                permissionManagerQuery
+        );
     }
 
     private List<PageElementResource> createPageElementResourcesOfRole() {
         PageElementResource roleManagerAdd = new PageElementResource("角色管理-添加", "roleManagerAdd");
         PageElementResource roleManagerUpdate = new PageElementResource("角色管理-修改", "roleManagerUpdate");
         PageElementResource roleManagerTerminate = new PageElementResource("角色管理-撤销", "roleManagerTerminate");
-        PageElementResource roleManagerGrantUrlAccessResource = new PageElementResource("角色管理-分配路径访问权限资源",
-                "roleManagerGrantUrlAccessResource");
-        PageElementResource roleManagerGrantMenuResource = new PageElementResource("角色管理-分配菜单权限资源",
-                "roleManagerGrantMenuResource");
-        PageElementResource roleManagerPageElementResource = new PageElementResource("角色管理-分配页面元素权限资源",
-                "roleManagerGrantPageElementResource");
-        PageElementResource roleManagerPagePermission = new PageElementResource("角色管理-分配权限",
-                "roleManagerGrantPermission");
+        PageElementResource roleManagerGrantUrlAccessResource = new PageElementResource("角色管理-分配路径访问权限资源","roleManagerGrantUrlAccessResource");
+        PageElementResource roleManagerGrantMenuResource = new PageElementResource("角色管理-分配菜单权限资源","roleManagerGrantMenuResource");
+        PageElementResource roleManagerPageElementResource = new PageElementResource("角色管理-分配页面元素权限资源", "roleManagerGrantPageElementResource");
+        PageElementResource roleManagerPagePermission = new PageElementResource("角色管理-分配权限", "roleManagerGrantPermission");
+        PageElementResource roleManagerQuery = new PageElementResource("角色管理-查询", "roleManagerQuery");
         return Lists.newArrayList(//
                 roleManagerAdd,//
                 roleManagerUpdate,//
@@ -200,7 +204,9 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
                 roleManagerGrantUrlAccessResource,//
                 roleManagerGrantMenuResource,//
                 roleManagerPageElementResource,//
-                roleManagerPagePermission);
+                roleManagerPagePermission,//
+                roleManagerQuery
+        );
     }
 
     private List<PageElementResource> createPageElementResourcesOfUser() {
@@ -208,11 +214,11 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
         PageElementResource userManagerUpdate = new PageElementResource("用户管理-修改", "userManagerUpdate");
         PageElementResource userManagerTerminate = new PageElementResource("用户管理-撤销", "userManagerTerminate");
         PageElementResource userManagerGrantRole = new PageElementResource("用户管理-分配角色", "userManagerGrantRole");
-        PageElementResource userManagerGrantPermission = new PageElementResource("用户管理-分配权限",
-                "userManagerGrantPermission");
+        PageElementResource userManagerGrantPermission = new PageElementResource("用户管理-分配权限", "userManagerGrantPermission");
         PageElementResource userManagerResetPassword = new PageElementResource("用户管理-重置密码", "userManagerResetPassword");
         PageElementResource userManagerSuspend = new PageElementResource("用户管理-挂起", "userManagerSuspend");
         PageElementResource userManagerActivate = new PageElementResource("用户管理-激活", "userManagerActivate");
+        PageElementResource userManagerQuery = new PageElementResource("用户管理-查询", "userManagerQuery");
 
         return Lists.newArrayList(//
                 userManagerAdd,//
@@ -222,7 +228,8 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
                 userManagerGrantPermission,//
                 userManagerResetPassword,//
                 userManagerSuspend,//
-                userManagerActivate//
+                userManagerActivate,//
+                userManagerQuery
         );
     }
 
@@ -282,11 +289,6 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
         userMenuResource.setMenuIcon(MENU_ICON);
         userMenuResource.setUrl("/pages/auth/user-list.jsp");
         actorSecurityMenuResource.addChild(userMenuResource);
-
-        MenuResource userDisabledMenuResource = new MenuResource("用户挂起管理");
-        userDisabledMenuResource.setMenuIcon(MENU_ICON);
-        userDisabledMenuResource.setUrl("/pages/auth/forbidden-list.jsp");
-        actorSecurityMenuResource.addChild(userDisabledMenuResource);
 
         MenuResource authoritySecurityMenuResource = new MenuResource("授权管理");
         authoritySecurityMenuResource.setDescription("角色、权限等页面管理。");

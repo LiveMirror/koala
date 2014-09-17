@@ -163,4 +163,14 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     public <T extends Authority> T getAuthority(Long authorityId) {
         return Authority.getBy(authorityId);
     }
+
+    @Override
+    public Set<Role> findRolesOfUser(User user) {
+        return user.findAllRoles();
+    }
+
+    @Override
+    public Set<Permission> findPermissionsOfUser(User user) {
+        return user.findAllPermissions();
+    }
 }
