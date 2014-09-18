@@ -44,7 +44,8 @@
 			title : "角色描述",
 			name : "description",
 			width : 250
-		}];
+		}
+        ];
 	
 		var buttons = (function() {
 			if (userId) {

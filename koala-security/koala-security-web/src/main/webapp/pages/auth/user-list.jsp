@@ -136,7 +136,7 @@
 							name : "operate",
 							width : 200,
 							 render: function(item, name, index){
-					             	return '<a href="#" onclick="showDetail('+item.id+', \''+item.name+'\')"><span class="glyphicon glyphicon glyphicon-eye-open"></span>&nbsp;详细</a>';
+					             	return '<a href="#" onclick="showUserDetail('+item.id+', \''+item.name+'\')"><span class="glyphicon glyphicon glyphicon-eye-open"></span>&nbsp;详细</a>';
 					        	 }
 						}
 		                ]
@@ -337,14 +337,13 @@
 	            $('[data-role="userGrid"]').getGrid().search(params);
 	        });
 	});
-	  /**
-	 * 显示详细信息
-	 */
-	var showDetail = function(){
-    	var userInfo = $("#userInfo").html();
-    	   var thiz 	= $(this),
-           mark 	= thiz.attr('mark');
-   		  mark = openTab('/pages/auth/currentUser-info.jsp', userInfo, mark);
+	 /**
+		 * 显示详细信息
+		 */
+	var showUserDetail = function(id, userName){
+    	  var thiz 	= $(this);
+          var  mark 	= thiz.attr('mark');
+   		  mark = openTab('/pages/auth/userDetial.jsp', userName, mark,id);
           if(mark){
               thiz.attr("mark",mark);
           }
