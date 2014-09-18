@@ -57,6 +57,13 @@
 		</property>
 	</VelocityDirObject>
  -->
+ <CopyFiles>
+		<property name="express">$Module.moduleType=='war'</property>
+		<property name="srcDir">vm/other/webapp/</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/webapp/
+		</property>
+	</CopyFiles>
+	
 	<CopyFiles>
 		<property name="express"><![CDATA[$Project.dbProtocol=='JPA' && $Module.moduleType=='bizModel' || $Module.moduleType=='applicationImpl')]]></property>
 		<property name="srcDir">vm/other/sql/Account-jpa.xml.vm</property>

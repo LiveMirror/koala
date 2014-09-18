@@ -1,4 +1,4 @@
-﻿package org.openkoala.koala.annotation.parse;
+package org.openkoala.koala.annotation.parse;
 
 import java.util.List;
 
