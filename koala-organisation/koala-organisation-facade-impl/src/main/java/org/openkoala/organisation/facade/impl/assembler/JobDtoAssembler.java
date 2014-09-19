@@ -6,8 +6,7 @@ import org.openkoala.organisation.facade.dto.JobDTO;
 public class JobDtoAssembler {
 
 	public static JobDTO assemDto(Job job) {
-		JobDTO dto = new JobDTO(job.getId(), job.getName());
-		dto.setSn(job.getSn());
+		JobDTO dto = new JobDTO(job.getId(), job.getName(), job.getSn());
 		dto.setCreateDate(job.getCreateDate());
 		dto.setDescription(job.getDescription());
 		dto.setVersion(job.getVersion());
