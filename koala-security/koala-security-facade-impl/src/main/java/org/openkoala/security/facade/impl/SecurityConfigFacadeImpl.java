@@ -258,6 +258,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         User user = null;
         try {
             user = securityAccessApplication.getUserById(userId);
+            if(user.isDisabled()){
+                return InvokeResult.failure("用户：" + user.getUserAccount() + "已经是激活状态，不需要再次激活！");
+            }
             securityConfigApplication.activateUser(user);
             return InvokeResult.success();
         } catch (Exception e) {
@@ -271,6 +274,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         User user = null;
         try {
             user = securityAccessApplication.getUserById(userId);
+            if(!user.isDisabled()){
+                return InvokeResult.failure("用户：" + user.getUserAccount() + "已经是禁用状态，不需要再次禁用！");
+            }
+
             if (user.getUserAccount().equals(currentUserAccount)) {
                 return InvokeResult.failure("不能禁用自己！");
             }
@@ -711,7 +718,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             return InvokeResult.failure("URL访问权限资源名称：" + command.getName() + "已经存在。");
         } catch (UrlIsExistedException e) {
             LOGGER.error(e.getMessage(), e);
-            return InvokeResult.failure("URL访问权限资源名称：" + command.getUrl() + "已经存在。");
+            return InvokeResult.failure("URL访问权限资源URL：" + command.getUrl() + "已经存在。");
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("添加URL访问权限资源失败");
@@ -735,7 +742,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             return InvokeResult.failure("更新URL访问权限资源名称：" + command.getName() + "已经存在。");
         } catch (UrlIsExistedException e) {
             LOGGER.error(e.getMessage(), e);
-            return InvokeResult.failure("更新URL访问权限资源名称：" + command.getUrl() + "已经存在。");
+            return InvokeResult.failure("更新URL访问权限资源URL：" + command.getUrl() + "已经存在。");
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("更新URL访问权限资源失败。");
