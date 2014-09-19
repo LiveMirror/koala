@@ -281,7 +281,7 @@
         	var userInfo = $("#userInfo").html();
         	   var thiz 	= $(this),
                mark 	= thiz.attr('mark');
-       		  mark = openTab('/pages/auth/user-info.jsp', userInfo, mark);
+       		  mark = openTab('/pages/auth/currentUser-info.jsp', userInfo, mark);
               if(mark){
                   thiz.attr("mark",mark);
               }
