@@ -336,11 +336,4 @@ public interface SecurityConfigFacade {
 	 */
 	public void initSecuritySystem();
 
-	/**
-	 * 更新登陆时间
-	 * 
-	 * @param userId
-	 */
-	void updateUserLastLoginTime(Long userId);
-
 }

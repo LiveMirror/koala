@@ -31,8 +31,6 @@ public class UserDTO implements Serializable {
 
 	private String oldUserPassword;
 
-	private Date lastLoginTime;
-
 	private String telePhone;
 
 	private String createOwner;
@@ -75,14 +73,13 @@ public class UserDTO implements Serializable {
 		this.description = description;
 	}
 
-    public UserDTO(Long id, int version, String name, String userAccount, Date createDate, String description, Date lastLoginTime, String createOwner, Date lastModifyTime, Boolean disabled) {
+    public UserDTO(Long id, int version, String name, String userAccount, Date createDate, String description, String createOwner, Date lastModifyTime, Boolean disabled) {
         this.id = id;
         this.version = version;
         this.name = name;
         this.userAccount = userAccount;
         this.createDate = createDate;
         this.description = description;
-        this.lastLoginTime = lastLoginTime;
         this.createOwner = createOwner;
         this.lastModifyTime = lastModifyTime;
         this.disabled = disabled;
@@ -118,14 +115,6 @@ public class UserDTO implements Serializable {
 
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
-	}
-
-	public Date getLastLoginTime() {
-		return lastLoginTime;
-	}
-
-	public void setLastLoginTime(Date lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
 	}
 
 	public String getOldUserPassword() {
@@ -254,7 +243,6 @@ public class UserDTO implements Serializable {
 				.append(getDescription())//
 				.append(getDisabled())//
 				.append(getDisabled())//
-				.append(getLastLoginTime())//
 				.append(getLastModifyTime())//
 				.build();
 	}

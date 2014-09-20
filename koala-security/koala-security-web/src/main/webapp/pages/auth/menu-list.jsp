@@ -195,13 +195,13 @@
 					content: '<ks:hasSecurityResource identifier="menuResourceManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
 					action: 'add'
 				},{
-					content: '<ks:hasSecurityResource identifier="menuResourceManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
+					content: '<ks:hasSecurityResource identifier="menuResourceManagerUpdate"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
 					action: 'modify'
 				},{
 					content: '<ks:hasSecurityResource identifier="menuResourceManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
 					action: 'delete'
 				},{
-					content: '<ks:hasSecurityResource identifier="menuResourceManagerGrantPermission"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
+					content: '<ks:hasSecurityResource identifier="menuResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
 					action: 'permissionAssign'
 				}];
 		

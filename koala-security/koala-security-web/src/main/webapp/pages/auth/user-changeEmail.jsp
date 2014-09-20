@@ -12,7 +12,7 @@
                     <div class="form-group"><label for="oldEmail" class="col-lg-3 control-label">现在的邮箱地址:</label>
                         <div class="col-lg-9">
                             <p id="oldEmail" class="form-control-static">
-                                <koala:user property="email"/>
+                                <ks:user property="email"/>
                             </p>
                         </div>
                     </div>

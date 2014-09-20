@@ -37,7 +37,7 @@
            </select>
             </div>
             </td>
-       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-info glyphicon glyphicon-search"></button></td>
+       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success glyphicon glyphicon-search"></button></td>
   </tr>
 </table>	
 </div>
@@ -64,7 +64,7 @@
                         content : '<ks:hasSecurityResource identifier="userManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
                         action : 'add'
                     }, {
-                        content : '<ks:hasSecurityResource identifier="userManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
+                        content : '<ks:hasSecurityResource identifier="userManagerUpdate"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
                         action : 'modify'
                     }, {
                         content : '<ks:hasSecurityResource identifier="userManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>撤销</button></ks:hasSecurityResource>',
@@ -85,7 +85,7 @@
                         content : '<ks:hasSecurityResource identifier="userManagerActivate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;激活</button></ks:hasSecurityResource>',
                         action : 'available'
                     },{
-                        content : '<ks:hasSecurityResource identifier="userManagerQuery"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+                        content : '<ks:hasSecurityResource identifier="userManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
                         action : 'search'
                     }];
 		 		};
@@ -99,19 +99,31 @@
 		                columns: [{
 							title : "用户名称",
 							name : "name",
-							width : 150
+							width : 100
 						}, {
 							title : "用户帐号",
 							name : "userAccount",
-							width : 150
+							width : 100
+						}, {
+							title : "创建人",
+							name : "createOwner",
+							width : 100
+						}, {
+							title : "创建时间",
+							name : "createDate",
+							width : 100
+						}, {
+							title : "最后更改时间",
+							name : "lastModifyTime",
+							width : 100
 						}, {
 							title : "用户描述",
 							name : "description",
-							width : 200
+							width : 150
 						}, {
 							title : "是否有效",
 							name : "disabled",
-							width : 100,
+							width : 80,
 							 render : function(item, name, index) {
 								return item[name]?  '<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>':'<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>';
 							}  
@@ -120,7 +132,7 @@
 							name : "operate",
 							width : 200,
 							 render: function(item, name, index){
-					             	return '<a href="#" onclick="showUserDetail(' + item.id + ', ' + item.name +')"><span class="glyphicon glyphicon glyphicon-eye-open"></span>&nbsp;详细</a>';
+					             	return '<a href="#" onclick="showUserDetail('+item.id+', \''+item.name+'\')"><span class="glyphicon glyphicon glyphicon-eye-open"></span>&nbsp;详细</a>';
 					        	 }
 						}
 		                ]

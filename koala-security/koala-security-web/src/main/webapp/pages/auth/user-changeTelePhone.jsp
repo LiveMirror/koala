@@ -12,7 +12,7 @@
                     <div class="form-group"><label for="oldTelePhone" class="col-lg-3 control-label">现在的电话:</label>
                         <div class="col-lg-9">
                             <p id="oldTelePhone" class="form-control-static">
-                                <koala:user property="telePhone"/>
+                                <ks:user property="telePhone"/>
                             </p>
                         </div>
                     </div>

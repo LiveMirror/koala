@@ -258,7 +258,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         User user = null;
         try {
             user = securityAccessApplication.getUserById(userId);
-            if(user.isDisabled()){
+            if(!user.isDisabled()){
                 return InvokeResult.failure("用户：" + user.getUserAccount() + "已经是激活状态，不需要再次激活！");
             }
             securityConfigApplication.activateUser(user);
@@ -274,7 +274,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         User user = null;
         try {
             user = securityAccessApplication.getUserById(userId);
-            if(!user.isDisabled()){
+            if(user.isDisabled()){
                 return InvokeResult.failure("用户：" + user.getUserAccount() + "已经是禁用状态，不需要再次禁用！");
             }
 
@@ -633,17 +633,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     @Override
-    public void updateUserLastLoginTime(Long userId) {
-        User user = securityAccessApplication.getUserById(userId);
-        securityConfigApplication.updateUserLastLoginTime(user);
-    }
-
-    @Override
     public InvokeResult changeUserProps(ChangeUserPropsCommand command) {
         User user = securityAccessApplication.getUserById(command.getId());
         user.setName(command.getName());
         user.setDescription(command.getDescription());
         securityConfigApplication.createActor(user);// 显示调用。
+        securityConfigApplication.changeLastModifyTimeOfUser(user);
         return InvokeResult.success();
     }
 
@@ -651,6 +646,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
         User user = securityAccessApplication.getUserById(command.getId());
         securityConfigApplication.changeUserAccount(user, command.getUserAccount(), command.getUserPassword());
+        securityConfigApplication.changeLastModifyTimeOfUser(user);
         return InvokeResult.success();
     }
 
@@ -658,18 +654,15 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
         try {
             User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
-           if( user.getPassword() == command.getUserPassword() && command.getUserPassword().equals(user.getPassword())){
-        	   securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
-        	   return InvokeResult.success();
-           }else {
-        	   return InvokeResult.failure("密码错误！");
-           }
+            securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
+            securityConfigApplication.changeLastModifyTimeOfUser(user);
+            return InvokeResult.success();
         } catch (NullArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("邮箱或者密码不能为空！");
         } catch (UserPasswordException e) {
             LOGGER.error(e.getMessage(), e);
-            return InvokeResult.failure("密码错误！");
+            return InvokeResult.failure("输入密码错误！");
         } catch (ConstraintViolationException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("邮箱不合法，请重新输入！");
@@ -686,18 +679,15 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
         try {
             User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
-            if( user.getPassword() == command.getUserPassword() && command.getUserPassword().equals(user.getPassword())){
-	            securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());
-	            return InvokeResult.success();
-            }else{  
-            	return InvokeResult.failure("密码错误！");
-            }
+            securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());
+            securityConfigApplication.changeLastModifyTimeOfUser(user);
+            return InvokeResult.success();
         } catch (NullArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("电话或者密码不能为空！");
         } catch (UserPasswordException e) {
             LOGGER.error(e.getMessage(), e);
-            return InvokeResult.failure("密码错误！");
+            return InvokeResult.failure("输入密码错误！");
         } catch (TelePhoneIsExistedException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("联系电话已经存在！");

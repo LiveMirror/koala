@@ -10,26 +10,33 @@
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
 <div class="panel" hidden="true" >
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td>
-            <div class ="form-group">
-             <label class="control-label" style="width:100px;float:left;">页面名称:&nbsp;</label>
-            <div style="margin-left:15px;float:left;">
-            <input name="name" class="form-control" type="text" style="width:180px;"  />
-        </div>
-       		 <label class="control-label" style="width:100px;float:left;">页面标识:&nbsp;</label>
-            <div style="margin-left:15px;float:left;">
-            <input name="identifier" class="form-control" type="text" style="width:180px;"  />
-        </div>
-             <label class="control-label" style="width:100px;float:left;">页面描述:&nbsp;</label>
-            <div style="margin-left:15px;float:left;">
-            <input name="description" class="form-control" type="text" style="width:180px;"  />
-        </div>
+    <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>
+                <div class="form-group">
+                    <label class="control-label" style="width:100px;float:left;">页面名称:&nbsp;</label>
+
+                    <div style="margin-left:15px;float:left;">
+                        <input name="name" class="form-control" type="text" style="width:180px;"/>
+                    </div>
+                    <label class="control-label" style="width:100px;float:left;">页面标识:&nbsp;</label>
+
+                    <div style="margin-left:15px;float:left;">
+                        <input name="identifier" class="form-control" type="text" style="width:180px;"/>
+                    </div>
+                    <label class="control-label" style="width:100px;float:left;">页面描述:&nbsp;</label>
+
+                    <div style="margin-left:15px;float:left;">
+                        <input name="description" class="form-control" type="text" style="width:180px;"/>
+                    </div>
+                    <td style="vertical-align: bottom;">
+                        <button id="search" type="button" style="position:relative; margin-left:35px; top: -15px"
+                                class="btn btn-success glyphicon glyphicon-search"></button>
+                    </td>
+                </div>
             </td>
-       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-info"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
-  </tr>
-</table>	
+        </tr>
+    </table>
 </div>
 </form>
 <!-- end form -->
@@ -190,16 +197,16 @@
 							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
 							action: 'add'
 						},{
-							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
+							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerUpdate"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
 							action: 'modify'
 						},{
 							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
 							action: 'delete'
 						},{
-							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerGrantPermission"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
+							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
 							action: 'permissionAssignForPage'
 						},{
-							content : '<ks:hasSecurityResource identifier="pageElementResourceManagerQuery"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+							content : '<ks:hasSecurityResource identifier="pageElementResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
 							action : 'search'
 		 				}];
 			}

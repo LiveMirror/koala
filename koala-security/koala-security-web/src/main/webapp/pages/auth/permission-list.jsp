@@ -27,7 +27,7 @@
             <input name="description" class="form-control" type="text" style="width:180px;"  />
         </div>
             </td>
-       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-info"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
+       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
   </tr>
 </table>	
 </div>
@@ -225,9 +225,9 @@
 			}else {
 				return [
 					{content: '<ks:hasSecurityResource identifier="permissionManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>', action: 'add'},
-					{content: '<ks:hasSecurityResource identifier="permissionManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>', action: 'modify'},
+					{content: '<ks:hasSecurityResource identifier="permissionManagerUpdate"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>', action: 'modify'},
 					{content: '<ks:hasSecurityResource identifier="permissionManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>撤销</button></ks:hasSecurityResource>', action: 'delete'},
-					{content : '<ks:hasSecurityResource identifier="permissionManagerQuery"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',action : 'search'
+					{content : '<ks:hasSecurityResource identifier="permissionManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',action : 'search'
 	 				}];
 			}
 		})();

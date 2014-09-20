@@ -287,9 +287,6 @@ public interface SecurityConfigApplication {
 	 */
 	void grantAuthorityToActor(Authority authority, Actor actor);
 
-	@Deprecated
-	void updateUserLastLoginTime(User user);
-
 	/**
 	 * 更改用户账号
 	 * 
@@ -339,4 +336,11 @@ public interface SecurityConfigApplication {
 	void changeNameOfMenuResource(MenuResource menuResource, String name);
 
     void terminateActorFromAuthorityInScope(Actor actor, Authority authority, Scope scope);
+
+    /**
+     * 更改用户的最后修改时间
+     *
+     * @param user 用户
+     */
+    void changeLastModifyTimeOfUser(User user);
 }

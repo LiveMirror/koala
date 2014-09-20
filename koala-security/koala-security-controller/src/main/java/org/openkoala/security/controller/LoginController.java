@@ -7,6 +7,8 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.openkoala.koala.commons.InvokeResult;
+import org.openkoala.security.facade.SecurityAccessFacade;
+import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.LoginCommand;
 import org.openkoala.security.shiro.CurrentUser;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 /**

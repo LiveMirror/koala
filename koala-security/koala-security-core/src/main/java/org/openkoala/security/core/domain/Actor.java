@@ -4,13 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openkoala.security.core.NullArgumentException;
@@ -43,6 +37,7 @@ public abstract class Actor extends SecurityAbstractEntity {
 	/**
 	 * 最后更新时间
 	 */
+    @Temporal(TemporalType.DATE)
 	@Column(name = "LAST_MODIFY_TIME")
 	private Date lastModifyTime;
 
@@ -55,6 +50,7 @@ public abstract class Actor extends SecurityAbstractEntity {
 	/**
 	 * 创建时间
 	 */
+    @Temporal(TemporalType.DATE)
 	@Column(name = "CREATE_DATE")
 	private Date createDate = new Date();
 
@@ -135,6 +131,10 @@ public abstract class Actor extends SecurityAbstractEntity {
 		return results;
 	}
 
+    public void changeLastModifyTime(){
+        this.lastModifyTime = new Date();
+    };
+
 	protected static void checkArgumentIsNull(String nullMessage, String argument) {
 		if (StringUtils.isBlank(argument)) {
 			throw new NullArgumentException(nullMessage);
@@ -172,10 +172,6 @@ public abstract class Actor extends SecurityAbstractEntity {
 		return lastModifyTime;
 	}
 
-	protected void setLastModifyTime(Date lastModifyTime) {
-		this.lastModifyTime = lastModifyTime;
-	}
-
 	public String getCreateOwner() {
 		return createOwner;
 	}
@@ -192,4 +188,5 @@ public abstract class Actor extends SecurityAbstractEntity {
         Authorization authorization = Authorization.findByActorOfAuthorityInScope(this,authority,scope);
         authorization.remove();
     }
+
 }
