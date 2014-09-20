@@ -46,17 +46,17 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 	@Inject
 	private OrganizationApplication organizationApplication;
 	
-	@Override
+	
 	public boolean isTopOrganizationExists() {
 		return organizationApplication.isTopOrganizationExists();
 	}
 
-    @Override
+    
 	public void createAsTopOrganization(OrganizationDTO company) {
     	organizationApplication.createAsTopOrganization((Company) OrganizationDtoAssembler.assemEntity(company));
 	}
 
-	@Override
+	
 	public InvokeResult createCompany(Long parentId, OrganizationDTO companyDTO) {
 		Company parent = baseApplication.getEntity(Company.class, parentId);
 		try {
@@ -73,19 +73,19 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
     	}
 	}
 
-	@Override
+	
 	public void assignChildOrganization(OrganizationDTO parent, OrganizationDTO child, Date date) {
 		organizationApplication.assignChildOrganization(OrganizationDtoAssembler.assemEntity(parent), 
 				OrganizationDtoAssembler.assemEntity(child), date);
 	}
 
-	@Override
+	
 	public OrganizationDTO getParentOfOrganization(OrganizationDTO organizationDTO, Date date) {
 		Organization organization = organizationApplication.getParentOfOrganization(OrganizationDtoAssembler.assemEntity(organizationDTO), date);
 		return organization == null ? null : OrganizationDtoAssembler.assemDto(organization);
 	}
 
-	@Override
+	
 	public List<OrganizationDTO> findChildrenOfOrganization(OrganizationDTO organizationDTO, Date date) {
 		List<OrganizationDTO> results = new ArrayList<OrganizationDTO>();
 		for (Organization organization : organizationApplication.findChildrenOfOrganization(OrganizationDtoAssembler.assemEntity(organizationDTO), date)) {
@@ -94,7 +94,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 		return results;
 	}
 
-	@Override
+	
 	public OrganizationDTO getOrganizationTree() {
 		// Organization organization = Organization.getTopOrganization();
 		// OrganizationDTO top = OrganizationDTO.generateDtoBy(organization);
@@ -104,7 +104,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 		return top;
 	}
 
-	@Override
+	
 	public InvokeResult createDepartment(Long parentId, OrganizationDTO departmentDTO) {
 		Organization parent = baseApplication.getEntity(Organization.class, parentId);
 		try {
@@ -119,7 +119,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
     	}
 	}
 
-	@Override
+	
 	public void terminateEmployeeOrganizationRelation(Long organizationId, EmployeeDTO[] employeeDtos) {
 		Set<Employee> employees = new HashSet<Employee>();
 		for (EmployeeDTO employeeDTO : employeeDtos) {
@@ -128,7 +128,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 		organizationApplication.terminateEmployeeOrganizationRelation(baseApplication.getEntity(Organization.class, organizationId), employees);
 	}
 
-	@Override
+	
 	public OrganizationDTO getOrganizationById(Long id) {
 		Organization organization = baseApplication.getEntity(Organization.class, id);
 		return organization == null ? null : OrganizationDtoAssembler.assemDto(organization);
@@ -174,7 +174,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 		}
 	}
 
-	@Override
+	
 	public InvokeResult updateOrganization(OrganizationDTO organizationDTO) {
 		try {
 			baseApplication.updateParty(OrganizationDtoAssembler.assemEntity(organizationDTO));
@@ -189,7 +189,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
     	}
 	}
 
-	@Override
+	
 	public InvokeResult terminateOrganization(OrganizationDTO organizationDTO) {
 		try {
 			baseApplication.terminateParty(OrganizationDtoAssembler.assemEntity(organizationDTO));

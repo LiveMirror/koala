@@ -60,7 +60,7 @@ public class JobFacadeImplTest {
 	
 	@Test
 	public void testCreateJob() {
-		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1");
+		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
 		jobFacadeImpl.createJob(jobDTO);
 		verify(baseApplication, only()).saveParty(JobDtoAssembler.assemEntity(jobDTO));
@@ -68,7 +68,7 @@ public class JobFacadeImplTest {
 	
 	@Test
 	public void testCatchSnIsExistExceptionWhenCreateJob() {
-		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1");
+		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
 		doThrow(new SnIsExistException()).when(baseApplication).saveParty(JobDtoAssembler.assemEntity(jobDTO));
 		assertEquals("职务编码: " + jobDTO.getSn() + " 已被使用！", jobFacadeImpl.createJob(jobDTO).getMessage());
@@ -76,7 +76,7 @@ public class JobFacadeImplTest {
 	
 	@Test
 	public void testExceptionWhenCreateJob() {
-		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1");
+		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
 		doThrow(new RuntimeException()).when(baseApplication).saveParty(JobDtoAssembler.assemEntity(jobDTO));
 		assertEquals("保存失败！", jobFacadeImpl.createJob(jobDTO).getMessage());
@@ -84,7 +84,7 @@ public class JobFacadeImplTest {
 	
 	@Test
 	public void testUpdateJob() {
-		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1");
+		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
 		jobFacadeImpl.updateJobInfo(jobDTO);
 		verify(baseApplication, only()).updateParty(JobDtoAssembler.assemEntity(jobDTO));
@@ -92,7 +92,7 @@ public class JobFacadeImplTest {
 	
 	@Test
 	public void testCatchSnIsExistExceptionWhenUpdateJob() {
-		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1");
+		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
 		doThrow(new SnIsExistException()).when(baseApplication).updateParty(JobDtoAssembler.assemEntity(jobDTO));
 		assertEquals("职务编码: " + jobDTO.getSn() + " 已被使用！", jobFacadeImpl.updateJobInfo(jobDTO).getMessage());
@@ -100,7 +100,7 @@ public class JobFacadeImplTest {
 	
 	@Test
 	public void testExceptionWhenUpdateJob() {
-		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1");
+		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
 		doThrow(new RuntimeException()).when(baseApplication).updateParty(JobDtoAssembler.assemEntity(jobDTO));
 		assertEquals("修改失败！", jobFacadeImpl.updateJobInfo(jobDTO).getMessage());
@@ -118,7 +118,7 @@ public class JobFacadeImplTest {
 	
 	@Test
 	public void testTerminateEmployee() {
-		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1");
+		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
 		jobFacadeImpl.terminateJob(jobDTO);
 		verify(baseApplication, only()).terminateParty(JobDtoAssembler.assemEntity(jobDTO));
