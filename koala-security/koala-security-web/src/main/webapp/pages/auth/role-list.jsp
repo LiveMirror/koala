@@ -80,7 +80,7 @@
 			url = contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId=' + userId;
 		}
 		
-		$("#tabContent>div:last-child").find('[data-role="userGrid"]').grid({
+		$('[data-role="userGrid"]').grid({
 			identity : 'id',
 			columns : columns,
 			buttons : buttons,

@@ -218,7 +218,7 @@
 		if(pageId){
            var url = contextPath + "/auth/role/pagingQueryGrantPageElementResourcesByRoleId.koala?roleId="+ pageId;		
 		}
-		$("#tabContent>div:last-child").find('[data-role="userGrid"]').grid({
+		$('[data-role="userGrid"]').grid({
 			 identity: 'id',
              columns: columns,
              buttons: buttons,

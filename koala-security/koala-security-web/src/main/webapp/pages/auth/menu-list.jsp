@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@include file="/commons/taglibs.jsp"%>
+<!-- end form -->
+<div data-role="userGrid"></div>
 <script>
-	$(function(){
-
-		var baseUrl 	= contextPath + '/auth/menu/';
+	$(function() {
+		var baseUrl = contextPath + '/auth/menu/';
 		function initEditDialog(dialog, item, grid, opreate) {
 			dialog = $(dialog);
 			dialog.find('.modal-header').find('.modal-title').html( item && opreate =='modify' ? '修改菜单信息' : '添加菜单');
 			
 			var form = dialog.find(".menu_form");
 			validate(form, dialog, item, opreate);
-		    //console.log(item[3]);
-		   if(item != null){
+			if(item != null){
 				form.find("input[name='parentId']").val(item.parentName);			    	        
 			}
 			if(item && opreate == "modify"){					
@@ -20,7 +20,7 @@
 			    form.find("input[name='description']").val(item.description);
 			}
 			
-			dialog.modal({	
+			dialog.modal({
 				keyboard : false
 			}).on({
 				'hidden.bs.modal' : function() {
@@ -62,13 +62,14 @@
 					});
 				});
 			});
+			
 		};
-
+		
 		function validate(form, dialog, item, opreate){
 			var rules = {
 				"notnull"		: {
 					"rule" : function(value, formData){
-						      return value ? true : false;
+						return value ? true : false;
 					},
 					"tip" : "不能为空"
 				}
@@ -91,7 +92,6 @@
 	            	 * result是表单验证的结果。
 	            	 * 如果表单的验证结果为true,说明全部校验都通过，你可以通过ajax提交表单参数
 	            	 */
-	            	
 	            	if(result){
 	            		var menuIcon = $("#menuIcon").attr('src');
 	            		$("#icon").val(menuIcon);
@@ -131,7 +131,7 @@
 					}
 	            }
 	       	});
-		};
+		}
 		
 		deleteMenu = function(menus, grid) {
 
@@ -163,8 +163,7 @@
 				});
 			});
 		};
-	
-
+		
 		
 		var columns = [{
 				title : "菜单名称",
@@ -187,9 +186,7 @@
 				width : 150
 			}];
 		
-	
 		var url = contextPath + "/auth/menu/findAllMenusTree.koala";
-
 		
 		var buttons =[{
 					content: '<ks:hasSecurityResource identifier="menuResourceManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
@@ -205,8 +202,9 @@
 					action: 'permissionAssign'
 				}];
 		
-		$("<div/>").appendTo($("#tabContent>div:last-child")).grid({
-			 identity: 'id',
+		/*解决id冲突的问题*/
+		$('[data-role="userGrid"]').grid({
+			identity: 'id',
              columns: columns,
              buttons: buttons,
              isShowPages: false,
@@ -214,8 +212,8 @@
              tree: {
              	column: 'name'
              }
-        }).on({
-        	'add': function(event, data){//data change item
+		}).on({
+			'add': function(event, data){//data change item
         		var indexs = data.data;
                 var grid = $(this);        	  
 	            if(indexs.length > 1){
@@ -427,6 +425,7 @@
 					}
 				});
 			}
-        });
+		});
+		
 	});
 </script>
