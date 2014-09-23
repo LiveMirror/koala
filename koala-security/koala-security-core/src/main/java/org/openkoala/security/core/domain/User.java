@@ -1,14 +1,9 @@
 package org.openkoala.security.core.domain;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.collect.Sets;
@@ -53,9 +48,6 @@ public class User extends Actor {
 
     @Column(name = "DISABLED")
     private boolean disabled = false;
-
-    @Column(name = "LAST_LOGIN_TIME")
-    private Date lastLoginTime;
 
     @Column(name = "TELE_PHONE")
     private String telePhone;
@@ -110,14 +102,6 @@ public class User extends Actor {
         User user = User.get(User.class, this.getId());
         String userPassword = encryptPassword(INIT_PASSWORD);
         user.password = userPassword;
-    }
-
-    /**
-     * 修改最后登陆时间。
-     */
-    public void updateLastLoginTime() {
-        User user = getById(this.getId());
-        changeLastLoginTime(user);
     }
 
     /**
@@ -295,10 +279,6 @@ public class User extends Actor {
 
 	/*------------- Private helper methods  -----------------*/
 
-    private static void changeLastLoginTime(User user) {
-        user.lastLoginTime = new Date();
-    }
-
     private void isExistTelePhone(String telePhone) {
         User user = getRepository().createCriteriaQuery(User.class)//
                 .eq("telePhone", telePhone)//
@@ -355,10 +335,6 @@ public class User extends Actor {
                 .append(telePhone)//
                 .append(getName())//
                 .build();
-    }
-
-    public Date getLastLoginTime() {
-        return lastLoginTime;
     }
 
     public String getUserAccount() {

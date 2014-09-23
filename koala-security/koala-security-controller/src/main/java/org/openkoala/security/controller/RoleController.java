@@ -65,9 +65,10 @@ public class RoleController {
 	public InvokeResult update(ChangeRolePropsCommand command) {
 		InvokeResult result =  securityConfigFacade.changeRoleProps(command);
         if(result.isSuccess()){
-            // 检查当前角色是否存在,可能会有问题。
             if(!securityAccessFacade.checkRoleByName(CurrentUser.getRoleName())){
             	roleHandle.resetRoleName(command.getName());
+            }else{
+                shiroFilterChainManager.initFilterChain();
             }
         }
         return result;

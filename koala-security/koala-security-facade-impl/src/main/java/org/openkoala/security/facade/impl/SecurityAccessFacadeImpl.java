@@ -288,7 +288,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public InvokeResult pagingQueryUsers(int pageIndex, int pageSize, UserDTO queryUserCondition) {
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
-		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UserDTO(_user.id, _user.version, _user.name, _user.userAccount, _user.createDate, _user.description, _user.lastLoginTime, _user.createOwner, _user.lastModifyTime, _user.disabled) FROM User _user where 1=1");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.UserDTO(_user.id, _user.version, _user.name, _user.userAccount, _user.createDate, _user.description, _user.createOwner, _user.lastModifyTime, _user.disabled) FROM User _user where 1=1");
 
 		assembleUserJpqlAndConditionValues(queryUserCondition, jpql, "_user", conditionVals);
 
@@ -334,6 +334,9 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 
 	@Override
 	public InvokeResult pagingQueryNotGrantRoles(int pageIndex, int pageSize, RoleDTO queryRoleCondition, Long userId) {
+        if(userId == null){
+            InvokeResult.failure("用户ID不能为空");
+        }
 		StringBuilder jpql = new StringBuilder(
 				"SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description)  FROM Role _role");
 		Map<String, Object> conditionVals = new HashMap<String, Object>();

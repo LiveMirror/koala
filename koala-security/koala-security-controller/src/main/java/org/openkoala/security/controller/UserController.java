@@ -223,7 +223,7 @@ public class UserController {
 	@RequestMapping(value = "/terminateAuthorizationByUserInRoles", method = RequestMethod.POST)
 	public InvokeResult terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds) {
 		return securityConfigFacade.terminateAuthorizationByUserInRoles(userId, roleIds);
-		}
+	}
 
 	/**
 	 * 通过权限下的用户撤销多个授权中心{@link org.openkoala.security.core.domain.Authorization}。。

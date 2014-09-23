@@ -24,6 +24,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.EncryptService;
 import org.openkoala.security.facade.SecurityAccessFacade;
+import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.facade.dto.UserDTO;
@@ -93,10 +94,12 @@ public class CustomAuthoringRealm extends AuthorizingRealm implements RoleHandle
         }else{
             shiroUser.setTelePhone(user.getTelePhone());
         }
+
 		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
 				shiroUser, //
 				user.getUserPassword(),//
 				getName());
+
 		return result;
 	}
 

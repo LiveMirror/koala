@@ -25,7 +25,6 @@ public class UserAssembler {
 		result.setName(user.getName());
 		result.setEmail(user.getEmail());
 		result.setTelePhone(user.getTelePhone());
-		result.setLastLoginTime(user.getLastLoginTime());
 		result.setVersion(user.getVersion());
 		result.setCreateOwner(user.getCreateOwner());
 		result.setLastModifyTime(user.getLastModifyTime());
@@ -39,7 +38,6 @@ public class UserAssembler {
 		result.setName(user.getName());
 		result.setEmail(user.getEmail());
 		result.setTelePhone(user.getTelePhone());
-		result.setLastLoginTime(user.getLastLoginTime());
 		result.setVersion(user.getVersion());
 		result.setCreateOwner(user.getCreateOwner());
 		result.setLastModifyTime(user.getLastModifyTime());
@@ -51,7 +49,6 @@ public class UserAssembler {
 		UserDTO result = new UserDTO(user.getUserAccount(),user.getCreateDate(),user.getDescription());
 		result.setId(user.getId());
 		result.setName(user.getName());
-		result.setLastLoginTime(user.getLastLoginTime());
 		result.setVersion(user.getVersion());
 		result.setCreateOwner(user.getCreateOwner());
 		result.setLastModifyTime(user.getLastModifyTime());

@@ -18,7 +18,6 @@ import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Sets;
 
@@ -235,11 +234,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
     }
 
     @Override
-    public void updateUserLastLoginTime(User user) {
-        user.updateLastLoginTime();
-    }
-
-    @Override
     public void changeUserAccount(User user, String userAccount, String userPassword) {
         user.changeUserAccount(userAccount, userPassword);
     }
@@ -297,6 +291,11 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
     @Override
     public void terminateActorFromAuthorityInScope(Actor actor, Authority authority, Scope scope) {
         actor.terminateAuthorityInScope(authority,scope);
+    }
+
+    @Override
+    public void changeLastModifyTimeOfUser(User user) {
+        user.changeLastModifyTime();
     }
 
 }
