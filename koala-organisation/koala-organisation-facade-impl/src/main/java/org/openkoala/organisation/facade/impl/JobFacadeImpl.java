@@ -120,7 +120,7 @@ public class JobFacadeImpl implements JobFacade {
 			baseApplication.terminateParty(JobDtoAssembler.assemEntity(jobDTO));
 			return InvokeResult.success();
 		} catch (TheJobHasPostAccountabilityException e) {
-			return InvokeResult.failure("职务：" + jobDTO.getName() + "已经被相关关联岗位，不能被撤销！");
+			return InvokeResult.failure("职务：" + jobDTO.getName() + "已经关联岗位，不能被撤销！");
 		}
 	}
 
@@ -134,7 +134,7 @@ public class JobFacadeImpl implements JobFacade {
 			baseApplication.terminateParties(jobs);
 			return InvokeResult.success();
 		} catch (TheJobHasPostAccountabilityException e) {
-			return InvokeResult.failure("该职务已经被相关关联岗位，不能被撤销！");
+			return InvokeResult.failure("该职务已经关联岗位，不能被撤销！");
 		}
 	}
 

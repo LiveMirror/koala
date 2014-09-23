@@ -121,7 +121,7 @@ public abstract class Party extends OrganizationAbstractEntity {
 
 	public static <P extends Party> boolean isExistSn(Class<P> clazz, String sn, Date date) {
 		List<P> parties = getRepository().createCriteriaQuery(clazz).eq("sn", sn).le("createDate", date).gt("terminateDate", date).list();
-		return parties.isEmpty() ? false : true;
+		return !parties.isEmpty();
 	}
 
 	private static EntityRepository repository;
