@@ -1,14 +1,13 @@
 package org.openkoala.security.org.facade;
 
-import org.openkoala.koala.commons.InvokeResult;
+import org.dayatang.querychannel.Page;
 import org.openkoala.security.org.facade.dto.EmployeeUserDTO;
-import org.openkoala.security.org.facade.dto.OrganizationScopeDTO;
-
-import java.util.List;
+import org.openkoala.security.org.facade.dto.OrgPermissionDTO;
+import org.openkoala.security.org.facade.dto.OrgRoleDTO;
 
 public interface SecurityOrgAccessFacade {
 	
-    InvokeResult pagingQueryEmployeeUsers(int pageIndex, int pageSize, EmployeeUserDTO queryEmployeeUserCondition);
+    Page<EmployeeUserDTO> pagingQueryEmployeeUsers(int pageIndex, int pageSize, EmployeeUserDTO queryEmployeeUserCondition);
 
     /**
      * 分页查询用户已经拥有的角色
@@ -18,7 +17,7 @@ public interface SecurityOrgAccessFacade {
      * @param userId
      * @return
      */
-    InvokeResult pagingQueryGrantRolesByUserId(int pageIndex, int pageSize, Long userId);
+    Page<OrgRoleDTO> pagingQueryGrantRolesByUserId(int pageIndex, int pageSize, Long userId);
 
-    InvokeResult pagingQueryGrantPermissionsByUserId(int pageIndex, int pageSize, Long userId);
+    Page<OrgPermissionDTO> pagingQueryGrantPermissionsByUserId(int pageIndex, int pageSize, Long userId);
 }

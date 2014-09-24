@@ -5,13 +5,12 @@ import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.koala.commons.InvokeResult;
+import org.openkoala.organisation.domain.Organization;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.User;
-import org.openkoala.security.facade.SecurityAccessFacade;
-import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.org.core.domain.EmployeeUser;
 import org.openkoala.security.org.core.domain.OrganisationScope;
 import org.openkoala.security.org.facade.SecurityOrgAccessFacade;
@@ -33,7 +32,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
     private SecurityAccessApplication securityAccessApplication;
 
     @Override
-    public InvokeResult pagingQueryEmployeeUsers(int pageIndex, int pageSize, EmployeeUserDTO queryEmployeeUserCondition) {
+    public Page<EmployeeUserDTO> pagingQueryEmployeeUsers(int pageIndex, int pageSize, EmployeeUserDTO queryEmployeeUserCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
         StringBuilder jpql = new StringBuilder("FROM EmployeeUser _user where 1=1");
         assembleUserJpqlAndConditionValues(queryEmployeeUserCondition, jpql, "_user", conditionVals);
@@ -44,7 +43,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
                 .pagedList();
 
 
-        return InvokeResult.success(new Page<EmployeeUserDTO>(results.getStart(), results.getResultCount(), pageSize, transformToEmployeeUserDTO(results.getData())));
+        return new Page<EmployeeUserDTO>(results.getStart(), results.getResultCount(), pageSize, transformToEmployeeUserDTO(results.getData()));
     }
 
     private List<EmployeeUserDTO> transformToEmployeeUserDTO(List<EmployeeUser> employeeUsers) {
@@ -52,9 +51,12 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
         for (EmployeeUser employeeUser : employeeUsers) {
             EmployeeUserDTO result = EmployeeUserAssembler.toEmployeeUserDTO(employeeUser);
             // 这个地方直接使用用户管理的员工的组织的名称。因为组织的名称和范围的名称一直。保存同步
-            if(null != employeeUser.getEmployee()){
+            if(employeeUser.getEmployee() != null){
                 result.setEmployeeName(employeeUser.getEmployee().getName());
-                result.setEmployeeOrgName(employeeUser.getEmployee().getOrganization(new Date()).getName());
+                Organization organization = employeeUser.getEmployee().getOrganization(new Date());
+                if(organization != null){
+                    result.setEmployeeOrgName(organization.getName());
+                }
             }
             results.add(result);
         }
@@ -98,56 +100,6 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
             }
             results.add(result);
         }
-        return results;
-    }
-
-    private void addOrganizationScopeChildrenToParent(Set<OrganizationScopeDTO> all) {
-        LinkedHashMap<Long, OrganizationScopeDTO> map = new LinkedHashMap<Long, OrganizationScopeDTO>();
-        for (OrganizationScopeDTO organizationScopeDTO : all) {
-            map.put(organizationScopeDTO.getId(), organizationScopeDTO);
-        }
-        for (OrganizationScopeDTO organizationScopeDTO : map.values()) {
-            Long parentId = organizationScopeDTO.getParentId();
-            if (!StringUtils.isBlank(parentId + "") && map.get(parentId) != null) {
-                map.get(parentId).getChildren().add(organizationScopeDTO);
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<OrganizationScopeDTO> findChidrenOrganizationScopes() {
-
-        StringBuilder jpql = new StringBuilder(
-                "SELECT NEW org.openkoala.security.facade.dto.OrganizationScopeDTO(_organizationScope.id, _organizationScope.name, _organizationScope.description, _organizationScope.parent.id) FROM OrganisationScope _organizationScope");
-        jpql.append(" WHERE _organizationScope.level > :level");
-        jpql.append(" GROUP BY _organizationScope.id");
-
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("level", 0);
-
-        List<OrganizationScopeDTO> results = getQueryChannelService()//
-                .createJpqlQuery(jpql.toString())//
-                .setParameters(parameters)//
-                .list();
-
-        return results;
-    }
-
-    private List<OrganizationScopeDTO> findTopOrganizationScopes() {
-        StringBuilder jpql = new StringBuilder(
-                "SELECT NEW org.openkoala.security.facade.dto.OrganizationScopeDTO(_organizationScope.id, _organizationScope.name, _organizationScope.description, _organizationScope.parent.id) FROM OrganisationScope _organizationScope");
-        jpql.append(" WHERE _organizationScope.parent IS NULL");
-        jpql.append(" AND _organizationScope.level = :level");
-        jpql.append(" GROUP BY _organizationScope.id");
-
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("level", 0);
-
-        List<OrganizationScopeDTO> results = getQueryChannelService()//
-                .createJpqlQuery(jpql.toString())//
-                .setParameters(parameters)//
-                .list();
-
         return results;
     }
 
@@ -197,21 +149,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
     }
 
     @Override
-    public InvokeResult pagingQueryGrantRolesByUserId(int pageIndex, int pageSize, Long userId) {
-
-//        StringBuilder jpql = new StringBuilder("SELECT _authorization FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority");
-//        jpql.append(" WHERE TYPE(_authority) = :authorityType");
-//        jpql.append(" AND _actor.id = :userId");
-//        Map<String, Object> parameters = new HashMap<String, Object>();
-//        parameters.put("authorityType", Role.class);
-//        parameters.put("userId", userId);
-
-
-//        Page<Authorization> results = getQueryChannelService()//
-//                .createJpqlQuery(jpql.toString())//
-//                .setParameters(parameters)//
-//                .setPage(pageIndex, pageSize)//
-//                .pagedList();
+    public Page<OrgRoleDTO> pagingQueryGrantRolesByUserId(int pageIndex, int pageSize, Long userId) {
 
         User user = securityAccessApplication.getUserById(userId);
 
@@ -222,7 +160,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
                 .setPage(pageIndex, pageSize)//
                 .pagedList();
 
-        return InvokeResult.success(new Page<OrgRoleDTO>(results.getStart(), results.getResultCount(), pageSize, transformToOrgRoleDTO(results.getData())));
+        return new Page<OrgRoleDTO>(results.getStart(), results.getResultCount(), pageSize, transformToOrgRoleDTO(results.getData()));
     }
 
     /**
@@ -233,7 +171,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
      * @return
      */
     @Override
-    public InvokeResult pagingQueryGrantPermissionsByUserId(int pageIndex, int pageSize, Long userId) {
+    public Page<OrgPermissionDTO> pagingQueryGrantPermissionsByUserId(int pageIndex, int pageSize, Long userId) {
         User user = securityAccessApplication.getUserById(userId);
         Page<Authorization> results = getQueryChannelService()//
                 .createJpqlQuery(getAuthorizationsByActorJpql())//
@@ -242,7 +180,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
                 .setPage(pageIndex, pageSize)//
                 .pagedList();
 
-        return InvokeResult.success(new Page<OrgPermissionDTO>(results.getStart(), results.getResultCount(), pageSize, transformToOrgPermissionDTO(results.getData())));
+        return new Page<OrgPermissionDTO>(results.getStart(), results.getResultCount(), pageSize, transformToOrgPermissionDTO(results.getData()));
 
     }
 

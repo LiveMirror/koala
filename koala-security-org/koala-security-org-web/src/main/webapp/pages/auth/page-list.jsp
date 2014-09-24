@@ -223,9 +223,6 @@
              columns: columns,
              buttons: buttons,
              isShowPages: true,
-             dataFilter:function(result){
-                return result.data;
-             },
              url: url
         }).on({
         	'add': function(evnet, item){
@@ -370,9 +367,6 @@
        						 identity: 'id',
        			             columns: columns,
        			             querys: [{title: '页面名称', value: 'roleNameForSearch'}],
-       			             dataFilter:function(result){
-                                return result.data;
-                             },
        			             url: contextPath + '/auth/role/pagingQueryNotGrantPageElementResourcesByRoleId.koala?roleId='+pageId
        			           });    
        					  

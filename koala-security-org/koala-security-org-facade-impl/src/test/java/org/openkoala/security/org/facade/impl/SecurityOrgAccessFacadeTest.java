@@ -2,6 +2,7 @@ package org.openkoala.security.org.facade.impl;
 
 import static org.junit.Assert.*;
 
+import org.dayatang.querychannel.Page;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.koala.commons.InvokeResult;
@@ -38,7 +39,8 @@ public class SecurityOrgAccessFacadeTest extends AbstractOrgFacadeIntegrationTes
 
     @Test
     public void testPagingQueryEmployeeUsers(){
-        InvokeResult result = securityOrgAccessFacade.pagingQueryEmployeeUsers(0, 10, new EmployeeUserDTO());
-        assertTrue(result.isSuccess());
+        Page<EmployeeUserDTO> result = securityOrgAccessFacade.pagingQueryEmployeeUsers(0, 10, new EmployeeUserDTO());
+        assertFalse(result.getData().isEmpty());
+        assertTrue(result.getData().size() == 1);
     }
 }

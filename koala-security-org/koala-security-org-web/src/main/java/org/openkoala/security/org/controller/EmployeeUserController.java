@@ -2,12 +2,15 @@ package org.openkoala.security.org.controller;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.org.facade.command.*;
 import org.openkoala.security.org.facade.SecurityOrgAccessFacade;
 import org.openkoala.security.org.facade.SecurityOrgConfigFacade;
 import org.openkoala.security.org.facade.dto.AuthorizationCommand;
 import org.openkoala.security.org.facade.dto.EmployeeUserDTO;
+import org.openkoala.security.org.facade.dto.OrgPermissionDTO;
+import org.openkoala.security.org.facade.dto.OrgRoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +58,7 @@ public class EmployeeUserController {
 
     @ResponseBody
     @RequestMapping(value = "/pagingQueryGrantRoleByUserId", method = RequestMethod.GET)
-    public InvokeResult pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
+    public Page<OrgRoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
         return securityOrgAccessFacade.pagingQueryGrantRolesByUserId(page, pagesize, userId);
     }
 
@@ -70,7 +73,7 @@ public class EmployeeUserController {
      */
     @ResponseBody
     @RequestMapping(value = "/pagingQueryGrantPermissionByUserId", method = RequestMethod.GET)
-    public InvokeResult pagingQueryGrantPermissionByUserId(int page, int pagesize, Long userId) {
+    public Page<OrgPermissionDTO> pagingQueryGrantPermissionByUserId(int page, int pagesize, Long userId) {
         return  securityOrgAccessFacade.pagingQueryGrantPermissionsByUserId(page, pagesize, userId);
     }
 
@@ -96,7 +99,7 @@ public class EmployeeUserController {
 
     @ResponseBody
     @RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
-    public InvokeResult pagingQuery(int page, int pagesize, EmployeeUserDTO queryEmployeeUserCondition) {
+    public Page<EmployeeUserDTO> pagingQuery(int page, int pagesize, EmployeeUserDTO queryEmployeeUserCondition) {
         return securityOrgAccessFacade.pagingQueryEmployeeUsers(page,pagesize,queryEmployeeUserCondition);
     }
 

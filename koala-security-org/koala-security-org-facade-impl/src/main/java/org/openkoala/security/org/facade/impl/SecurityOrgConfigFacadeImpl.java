@@ -17,14 +17,12 @@ import org.openkoala.security.org.facade.command.*;
 import org.openkoala.security.org.core.domain.EmployeeUser;
 import org.openkoala.security.org.facade.SecurityOrgConfigFacade;
 import org.openkoala.security.org.facade.dto.AuthorizationCommand;
-import org.openkoala.security.org.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.org.facade.impl.assembler.EmployeeUserAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Set;
 
 @Named
 public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
@@ -53,26 +51,6 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
     }
 
 	@Override
-	public void saveOrganization(OrganizationScopeDTO organizationScopeDTO) {
-
-	}
-
-	@Override
-	public void updateOrganization(OrganizationScopeDTO organizationScopeDTO) {
-
-	}
-
-	@Override
-	public void terminateOrganizations(OrganizationScopeDTO[] organizationScopeDTOs) {
-
-	}
-
-	@Override
-	public void saveChildToParent(OrganizationScopeDTO child, Long parentId) {
-
-	}
-
-	@Override
 	public InvokeResult createEmployeeUser(CreateEmpolyeeUserCommand command) {
 		try {
 			EmployeeUser employeeUser = EmployeeUserAssembler.toEmployeeUser(command);
@@ -93,53 +71,6 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 			LOGGER.error(e.getMessage(), e);
 			return InvokeResult.failure("添加用户失败。");
 		}
-	}
-
-	@Override
-	public InvokeResult grantRolesToUserInScope(Long userId, GrantRoleToUserInScopeCommand[] commands) {
-//		EmployeeUser employeeUser = securityAccessApplication.getActorById(userId);
-//
-//		for (GrantRoleToUserInScopeCommand command : commands) {
-//			Long roleId = command.getRoleId();
-//			Set<Long> scopeIds = command.getScopeIds();
-//			Role role = securityAccessApplication.getRoleBy(roleId);
-//			if(!scopeIds.isEmpty()){
-//                for (Long scopeId : scopeIds) {
-//                    OrganisationScope scope = securityAccessApplication.getScope(scopeId);
-//                    securityConfigApplication.checkRoleOfUserInScope(employeeUser,role,scope);
-//                    if(scope == null){
-//                        scope.setId(scopeId);
-//                        securityConfigApplication.createScope(scope);
-//			            securityConfigApplication.grantActorToAuthorityInScope(employeeUser, role, scope);
-//                    }
-//
-//                }
-//            }
-//            //TODO 等待测试。
-//		}
-		return InvokeResult.success();
-	}
-
-	@Override
-	public InvokeResult grantPermissionToUserInScope(Long userId, GrantPermissionToUserInScopeCommand[] commands) {
-        EmployeeUser employeeUser = securityAccessApplication.getActorById(userId);
-		for (GrantPermissionToUserInScopeCommand command : commands) {
-			Long permissionId = command.getPermissionId();
-			Set<Long> scopeIds = command.getScopeIds();
-			Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-            if(!scopeIds.isEmpty()){
-                for(Long scopeId : scopeIds){
-                    OrganisationScope scope = securityAccessApplication.getScope(scopeId);
-                    if(scope == null){
-                        scope.setId(scopeId);
-                        securityConfigApplication.createScope(scope);
-            			securityConfigApplication.grantActorToAuthorityInScope(employeeUser, permission, scope);
-                    }
-                }
-            }
-
-		}
-		return InvokeResult.success();
 	}
 
     @Override
@@ -165,60 +96,6 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
             OrganisationScope scope = securityAccessApplication.getScope(scopeId);
             securityConfigApplication.terminateActorFromAuthorityInScope(employeeUser, permission, scope);
         }
-        return InvokeResult.success();
-    }
-
-    @Override
-    public InvokeResult grantRolesToUserInScope(AuthorizationCommand[] authorizations) {
-//
-//        Long actorId = authorizations[0].getActorId();
-//
-//        List<AuthorizationCommand> targetOwnerAuthorizations =  Arrays.asList(authorizations);
-//
-//        List<AuthorizationCommand> originalAuthorizations = organizationApplication.findAllAuthorizationsByActorId(actorId);
-//
-//        List<AuthorizationCommand> tmpList = Lists.newArrayList(targetOwnerAuthorizations);
-//
-//        // 待添加的
-//        List<AuthorizationCommand> waitingAddList = new ArrayList<AuthorizationCommand>();
-//
-//        // 带删除的
-//        List<AuthorizationCommand> waitingDelList = new ArrayList<AuthorizationCommand>();
-//
-//        // 得到相同的菜单
-//        targetOwnerAuthorizations.retainAll(originalAuthorizations);
-//
-//        // 原有菜单删除相同菜单
-//        originalAuthorizations.removeAll(targetOwnerAuthorizations);
-//
-//        // 得到待删除的菜单
-//        waitingDelList.addAll(originalAuthorizations);
-//
-//        // 现有菜单删除相同菜单
-//        tmpList.removeAll(targetOwnerAuthorizations);
-//
-//        // 得到带添加的菜单
-//        waitingAddList.addAll(tmpList);
-//
-//
-//        Actor actor = securityAccessApplication.getActorById(actorId);
-//
-//        for(AuthorizationCommand waitingDel : waitingAddList){
-//            Authority authority = securityAccessApplication.getAuthority(waitingDel.getAuthorityId());
-//            Scope scope = securityAccessApplication.getScope(waitingDel.getScopeId());
-//            securityConfigApplication.terminateActorFromAuthorityInScope(actor,authority,scope);
-//        }
-//
-//        for(AuthorizationCommand waitingAdd : waitingAddList){
-//            Authority authority = securityAccessApplication.getAuthority(waitingAdd.getAuthorityId());
-//            Scope scope = securityAccessApplication.getScope(waitingAdd.getScopeId());
-//            if(scope == null){
-//                scope.setId(waitingAdd.getScopeId());
-//                securityConfigApplication.createScope(scope);
-//            }
-//            securityConfigApplication.grantActorToAuthorityInScope(actor,authority,scope);
-//        }
-
         return InvokeResult.success();
     }
 
