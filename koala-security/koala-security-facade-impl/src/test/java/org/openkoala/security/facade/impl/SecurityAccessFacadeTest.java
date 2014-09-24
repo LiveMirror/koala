@@ -22,7 +22,6 @@ import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.dto.*;
 import org.openkoala.security.facade.impl.assembler.*;
 
-
 /**
  * 完善测试 对其测试结果进行断言。
  */

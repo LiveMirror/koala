@@ -1,12 +1,13 @@
 package org.openkoala.security.core.domain;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
 /**
  * Created by luzhao on 14-9-11.
  */
-
+@Ignore
 @TransactionConfiguration(transactionManager = "transactionManager_security", defaultRollback = false)
 public class BigDataTest extends AbstractDomainIntegrationTestCase {
 

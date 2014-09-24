@@ -337,8 +337,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
         if(userId == null){
             InvokeResult.failure("用户ID不能为空");
         }
-		StringBuilder jpql = new StringBuilder(
-				"SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description)  FROM Role _role");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.RoleDTO(_role.id, _role.name, _role.description)  FROM Role _role WHERE 1 = 1 ");
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 
 		assembleRoleJpqlAndConditionValues(queryRoleCondition, jpql, "_role", conditionVals);
@@ -348,7 +347,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		jpql.append(" _role.id NOT IN(SELECT _authority.id FROM Authorization _authorization JOIN _authorization.actor _actor JOIN _authorization.authority _authority WHERE _actor.id= :userId)");
 
 		conditionVals.put("userId", userId);
-		 Page<RoleDTO> results  = getQueryChannelService()//
+		Page<RoleDTO> results  = getQueryChannelService()//
 				.createJpqlQuery(jpql.toString())//
 				.setParameters(conditionVals)//
 				.setPage(pageIndex, pageSize)//
@@ -527,7 +526,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			PermissionDTO queryPermissionCondition, Long userId) {
 		Map<String, Object> conditionVals = new HashMap<String, Object>();
 
-		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id,_permission.name, _permission.identifier,_permission.description)  FROM Permission _permission");
+		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.PermissionDTO(_permission.id,_permission.name, _permission.identifier,_permission.description)  FROM Permission _permission WHERE 1=1 ");
 
 		assemblePermissionJpqlAndConditionValues(queryPermissionCondition, jpql, "_permission", conditionVals);
 
@@ -687,8 +686,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		}
 	}
 
-	private void assembleRoleJpqlAndConditionValues(RoleDTO queryRoleCondition, StringBuilder jpql,
-			String conditionPrefix, Map<String, Object> conditionVals) {
+	private void assembleRoleJpqlAndConditionValues(RoleDTO queryRoleCondition, StringBuilder jpql, String conditionPrefix, Map<String, Object> conditionVals) {
 
 		String andCondition = " AND " + conditionPrefix;
 

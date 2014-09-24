@@ -22,7 +22,6 @@ public final class EntitiesHelper {
 		assertEquals(expected.getName(), actual.getName());
 		assertEquals(expected.getTelePhone(), actual.getTelePhone());
 		assertEquals(expected.getUserAccount(), actual.getUserAccount());
-		assertEquals(expected.getLastLoginTime(), actual.getLastLoginTime());
 		assertEquals(expected.getLastModifyTime(), actual.getLastModifyTime());
 	}
 
