@@ -158,9 +158,15 @@ var openTab = function(target, title, mark, id, param){
  加载DIV内容
  */
 var loadContent = function(obj, url){
-    $.get(contextPath + url).done(function(data){
-        obj.html(data);
-        $('#tabContent').trigger('loadContentCompalte', obj);
+    $.get(contextPath + url).done(function(data, status, objXMLHttp){
+    	
+    	var headers = objXMLHttp.getAllResponseHeaders();
+    	if (headers.indexOf("login: login") >= 0 && window.location.pathname != "/login.koala") {
+    		window.location.href = "/login.koala";
+    	} else {
+    		obj.html(data);
+            $('#tabContent').trigger('loadContentCompalte', obj);
+    	}
     }).fail(function(){
             throw new Error('加载失败');
     }).always(function(){
