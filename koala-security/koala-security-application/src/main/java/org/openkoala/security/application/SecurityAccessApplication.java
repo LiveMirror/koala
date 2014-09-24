@@ -9,7 +9,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 判断用户是否有权限Permission
-	 * 
+	 *
 	 * @param user
 	 *            用户
 	 */
@@ -17,7 +17,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 判断用户是否拥有权限资源securityResource
-	 * 
+	 *
 	 * @param user
 	 *            用户
 	 * @param securityResource
@@ -27,7 +27,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据账户查找该用户拥有的所有角色
-	 * 
+	 *
 	 * @param userAccount
 	 *            账户
 	 * @return
@@ -36,7 +36,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据账户查找该用户拥有的所有角色
-	 * 
+	 *
 	 * @param userAccount
 	 *            账户
 	 * @return
@@ -45,7 +45,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据用户ID获取用户
-	 * 
+	 *
 	 * @param userId
 	 *            用户ID
 	 * @return
@@ -56,7 +56,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据角色ID获取角色
-	 * 
+	 *
 	 * @param roleId
 	 *            角色ID
 	 * @return
@@ -65,7 +65,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据账户获取用户
-	 * 
+	 *
 	 * @param userAccount
 	 *            账户
 	 * @return
@@ -74,7 +74,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据权限ID得到权限
-	 * 
+	 *
 	 * @param permissionId
 	 *            权限ID
 	 * @return
@@ -83,7 +83,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据菜单资源ID得到菜单资源
-	 * 
+	 *
 	 * @param menuResourceId
 	 *            菜单资源ID
 	 * @return
@@ -92,7 +92,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据URL访问资源ID得到URL访问资源
-	 * 
+	 *
 	 * @param urlAccessResourceId
 	 * @return
 	 */
@@ -100,7 +100,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据页面元素ID得到页面元素资源
-	 * 
+	 *
 	 * @param pageElementResourceId
 	 *            页面元素ID
 	 * @return
@@ -109,7 +109,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据页面元素名称得到页面元素资源
-	 * 
+	 *
 	 * @param pageElementResourceName
 	 *            页面元素资源名称
 	 * @return
@@ -118,7 +118,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据角色名称得到角色。
-	 * 
+	 *
 	 * @param roleName
 	 *            角色名称
 	 * @return
@@ -129,7 +129,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据账户查找拥有的菜单资源
-	 * 
+	 *
 	 * @param userAccount
 	 *            账户
 	 * @return
@@ -138,7 +138,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 更新用户密码
-	 * 
+	 *
 	 * @param user
 	 *            用户
 	 * @param oldUserPassword
@@ -149,7 +149,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 通过角色下的用户检查Authorization是否存在
-	 * 
+	 *
 	 * @param userAccount
 	 *            账户
 	 * @param role
@@ -159,7 +159,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 根据角色查找菜单资源
-	 * 
+	 *
 	 * @param role
 	 *            角色
 	 * @return
@@ -168,21 +168,21 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 查找所有的角色
-	 * 
+	 *
 	 * @return
 	 */
 	List<Role> findAllRoles();
 
 	/**
 	 * 查找所有的URL访问资源。
-	 * 
+	 *
 	 * @return
 	 */
 	List<UrlAccessResource> findAllUrlAccessResources();
 
 	/**
 	 * 查找所有的菜单资源
-	 * 
+	 *
 	 * @return
 	 */
 	List<MenuResource> findAllMenuResorces();
@@ -197,7 +197,7 @@ public interface SecurityAccessApplication {
 
 	/**
 	 * 检测角色名是否存在
-	 * 
+	 *
 	 * @param roleName
 	 * @return
 	 */
@@ -250,4 +250,13 @@ public interface SecurityAccessApplication {
     Set<UrlAccessResource> findUrlAccessResourcesOfPermission(Permission permission);
 
     Set<MenuResource> findMenuResourcesOfPermission(Permission permission);
+
+    /**
+     * 查找授权中心
+     *
+     * @param actor
+     * @param authority
+     * @return
+     */
+    Authorization getAuthorization(Actor actor, Authority authority);
 }
