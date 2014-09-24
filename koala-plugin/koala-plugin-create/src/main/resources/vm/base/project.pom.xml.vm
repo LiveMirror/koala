@@ -502,13 +502,6 @@
 			<artifactId>koala-commons-dddlib-mybatis</artifactId>
 			<version>${koala.version}</version>
 		  </dependency>
-
-            <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
-                <version>3.2</version>
-                <scope>provided</scope>
-            </dependency>
             <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
