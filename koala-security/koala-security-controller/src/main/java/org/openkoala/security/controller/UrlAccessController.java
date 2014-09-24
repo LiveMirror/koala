@@ -2,11 +2,13 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeUrlAccessResourcePropsCommand;
 import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
+import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
 import org.springframework.stereotype.Controller;
@@ -81,7 +83,7 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
-	public InvokeResult pagingQuery(int page, int pagesize,
+	public Page<UrlAccessResourceDTO> pagingQuery(int page, int pagesize,
 			UrlAccessResourceDTO queryUrlAccessResourceCondition) {
 		return  securityAccessFacade.pagingQueryUrlAccessResources(page, pagesize,queryUrlAccessResourceCondition);
 	}
@@ -124,7 +126,7 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
 			Long urlAccessResourceId) {
 		 return securityAccessFacade.pagingQueryGrantPermissionsByUrlAccessResourceId(page,
 				pagesize, urlAccessResourceId);
@@ -140,7 +142,7 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,Long urlAccessResourceId) {
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,Long urlAccessResourceId) {
 		return securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(page,pagesize, urlAccessResourceId);
 	}
 

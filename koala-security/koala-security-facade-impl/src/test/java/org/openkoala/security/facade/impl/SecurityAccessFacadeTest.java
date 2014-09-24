@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import org.dayatang.querychannel.Page;
 import org.junit.Before;
 import org.junit.Test;
-import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
@@ -183,21 +182,21 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 
 	@Test
 	public void testPagingQueryUsers() {
-		Page<UserDTO> userDTOPages = (Page<UserDTO>) securityAccessFacade.pagingQueryUsers(currentPage, pageSize, userDTO).getData();
+		Page<UserDTO> userDTOPages = securityAccessFacade.pagingQueryUsers(currentPage, pageSize, userDTO);
 		assertFalse(userDTOPages.getData().isEmpty());
 		assertTrue(userDTOPages.getResultCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryRoles() {
-		Page<RoleDTO> roleDTOPages = (Page<RoleDTO>) securityAccessFacade.pagingQueryRoles(currentPage, pageSize, roleDTO).getData();
+		Page<RoleDTO> roleDTOPages = securityAccessFacade.pagingQueryRoles(currentPage, pageSize, roleDTO);
 		assertFalse(roleDTOPages.getData().isEmpty());
 		assertTrue(roleDTOPages.getResultCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryPermissions() {
-		Page<PermissionDTO> permissionDTOPages = (Page<PermissionDTO>) securityAccessFacade.pagingQueryPermissions(currentPage, pageSize, permissionDTO).getData();
+		Page<PermissionDTO> permissionDTOPages =  securityAccessFacade.pagingQueryPermissions(currentPage, pageSize, permissionDTO);
 		assertFalse(permissionDTOPages.getData().isEmpty());
 		assertTrue(permissionDTOPages.getResultCount() == 1);
 	}
@@ -206,7 +205,7 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testPagingQueryNotGrantRolesConditionIsNull() {
 		Role role = new Role("PagingQueryNotGrantRolesIntIntPermissionDTOLong");
 		role.save();
-		Page<RoleDTO> roleDTOPages = (Page<RoleDTO>) securityAccessFacade.pagingQueryNotGrantRoles(currentPage, pageSize, new RoleDTO(null, ""), user.getId()).getData();
+		Page<RoleDTO> roleDTOPages =  securityAccessFacade.pagingQueryNotGrantRoles(currentPage, pageSize, new RoleDTO(null, ""), user.getId());
 		assertFalse(roleDTOPages.getData().isEmpty());
 		assertTrue(roleDTOPages.getPageCount() == 1);
 	}
@@ -215,20 +214,20 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testPagingQueryNotGrantRoles() {
 		Role role = new Role("PagingQueryNotGrantRolesIntIntPermissionDTOLong");
 		role.save();
-		Page<RoleDTO> roleDTOPages = (Page<RoleDTO>) securityAccessFacade.pagingQueryNotGrantRoles(currentPage, pageSize, RoleAssembler.toRoleDTO(role), user.getId()).getData();
+		Page<RoleDTO> roleDTOPages =  securityAccessFacade.pagingQueryNotGrantRoles(currentPage, pageSize, RoleAssembler.toRoleDTO(role), user.getId());
 		assertFalse(roleDTOPages.getData().isEmpty());
 		assertTrue(roleDTOPages.getPageCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryGrantPermissionByUserId() {
-		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryGrantPermissionByUserId(currentPage, pageSize, user.getId()).getData();
+		Page<PermissionDTO> results =  securityAccessFacade.pagingQueryGrantPermissionByUserId(currentPage, pageSize, user.getId());
 		assertTrue(results.getData().isEmpty());
 	}
 
 	@Test
 	public void testPagingQueryGrantRolesByUserId() {
-		Page<RoleDTO> results = (Page<RoleDTO>) securityAccessFacade.pagingQueryGrantRolesByUserId(currentPage, pageSize, user.getId()).getData();
+		Page<RoleDTO> results =  securityAccessFacade.pagingQueryGrantRolesByUserId(currentPage, pageSize, user.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
@@ -237,28 +236,28 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testPagingQueryNotGrantPermissionsByRoleId() {
 		Permission permission = new Permission("testPagingQueryNotGrantPermissionsByRoleId", "testPagingQueryNotGrantPermissionsByRoleId");
 		permission.save();
-		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(currentPage, pageSize, role.getId()).getData();
+		Page<PermissionDTO> results =  securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(currentPage, pageSize, role.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryGrantPermissionsByRoleId() {
-		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryGrantPermissionsByRoleId(currentPage, pageSize, role.getId()).getData();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByRoleId(currentPage, pageSize, role.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryUrlAccessResources() {
-		Page<UrlAccessResourceDTO> results = (Page<UrlAccessResourceDTO>) securityAccessFacade.pagingQueryUrlAccessResources(currentPage, pageSize, urlAccessResourceDTO).getData();
+		Page<UrlAccessResourceDTO> results =  securityAccessFacade.pagingQueryUrlAccessResources(currentPage, pageSize, urlAccessResourceDTO);
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryGrantUrlAccessResourcesByRoleId() {
-		Page<UrlAccessResourceDTO> results = (Page<UrlAccessResourceDTO>) securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(currentPage, pageSize, role.getId()).getData();
+		Page<UrlAccessResourceDTO> results = securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(currentPage, pageSize, role.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
@@ -267,14 +266,14 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testPagingQueryNotGrantUrlAccessResourcesByRoleId() {
 		UrlAccessResource urlAccessResource = new UrlAccessResource("testPagingQueryNotGrantUrlAccessResourcesByRoleId", "testPagingQueryNotGrantUrlAccessResourcesByRoleId");
 		urlAccessResource.save();
-		Page<UrlAccessResourceDTO> results = (Page<UrlAccessResourceDTO>) securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(currentPage, pageSize, role.getId()).getData();
+		Page<UrlAccessResourceDTO> results =  securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(currentPage, pageSize, role.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryGrantPermissionsByUrlAccessResourceId() {
-		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryGrantPermissionsByUrlAccessResourceId(currentPage, pageSize, urlAccessResource.getId()).getData();
+		Page<PermissionDTO> results =  securityAccessFacade.pagingQueryGrantPermissionsByUrlAccessResourceId(currentPage, pageSize, urlAccessResource.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
@@ -283,14 +282,14 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testPagingQueryNotGrantPermissionsByUrlAccessResourceId() {
 		Permission permission = new Permission("testPagingQueryNotGrantPermissionsByUrlAccessResourceId", "testPagingQueryNotGrantPermissionsByUrlAccessResourceId");
 		permission.save();
-		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(currentPage, pageSize, urlAccessResource.getId()).getData();
+		Page<PermissionDTO> results =  securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(currentPage, pageSize, urlAccessResource.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryGrantPermissionsByMenuResourceId() {
-		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryGrantPermissionsByMenuResourceId(currentPage, pageSize, menuResource.getId()).getData();
+		Page<PermissionDTO> results =  securityAccessFacade.pagingQueryGrantPermissionsByMenuResourceId(currentPage, pageSize, menuResource.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
@@ -299,28 +298,28 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testPagingQueryNotGrantPermissionsByMenuResourceId() {
 		Permission permission = new Permission("testPagingQueryNotGrantPermissionsByMenuResourceId", "testPagingQueryNotGrantPermissionsByMenuResourceId");
 		permission.save();
-		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(currentPage, pageSize, menuResource.getId()).getData();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(currentPage, pageSize, menuResource.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryNotGrantPermissionsByUserId() {
-		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(currentPage, pageSize, permissionDTO, user.getId()).getData();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(currentPage, pageSize, permissionDTO, user.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryPageElementResources() {
-		Page<PageElementResourceDTO> results = (Page<PageElementResourceDTO>) securityAccessFacade.pagingQueryPageElementResources(currentPage, pageSize, pageElementResourceDTO).getData();
+		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryPageElementResources(currentPage, pageSize, pageElementResourceDTO);
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryGrantPageElementResourcesByRoleId() {
-		Page<PageElementResourceDTO> results = (Page<PageElementResourceDTO>) securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(currentPage, pageSize, role.getId()).getData();
+		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(currentPage, pageSize, role.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
@@ -329,14 +328,14 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testPagingQueryNotGrantPageElementResourcesByRoleId() {
 		PageElementResource pageElementResource = new PageElementResource("测试分页查询没有授权的页面元素资源","testPagingQueryNotGrantPageElementResourcesByRoleId");
 		pageElementResource.save();
-		Page<PageElementResourceDTO> results = (Page<PageElementResourceDTO>) securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(currentPage, pageSize, role.getId()).getData();
+		Page<PageElementResourceDTO> results = securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(currentPage, pageSize, role.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
 
 	@Test
 	public void testPagingQueryGrantPermissionsByPageElementResourceId() {
-		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(currentPage, pageSize,pageElementResource.getId()).getData();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(currentPage, pageSize,pageElementResource.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
         PermissionDTO actualPermission = results.getData().get(0);
@@ -352,17 +351,16 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 	public void testPagingQueryNotGrantPermissionsByPageElementResourceId() {
 		Permission permission = new Permission("testPagingQueryNotGrantPermissionsByPageElementResourceId", "testPagingQueryNotGrantPermissionsByPageElementResourceId");
 		permission.save();
-		Page<PermissionDTO> results = (Page<PermissionDTO>) securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(currentPage, pageSize,pageElementResource.getId()).getData();
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(currentPage, pageSize,pageElementResource.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
 	}
 
     @Test
     public void testPagingQueryRolesOfUser(){
-        InvokeResult invokeResult = securityAccessFacade.pagingQueryRolesOfUser(0, 10, user.getUserAccount());
-        Page<Role> roles = (Page<Role>) invokeResult.getData();
-        assertFalse(roles.getData().isEmpty());
-        assertTrue(roles.getPageCount() == 1);
+        Page<RoleDTO> results = securityAccessFacade.pagingQueryRolesOfUser(0, 10, user.getUserAccount());
+        assertFalse(results.getData().isEmpty());
+        assertTrue(results.getPageCount() == 1);
     }
 
 }

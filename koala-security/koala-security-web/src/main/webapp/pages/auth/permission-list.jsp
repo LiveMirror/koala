@@ -254,9 +254,6 @@
              columns: columns,
              buttons: buttons,
              isShowPages: true,
-             dataFilter:function(result){
-                return result.data;
-             },
              url:url
         }).on({
         	'add' : function(event, item) {
@@ -374,9 +371,6 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],
-        			             dataFilter:function(result){
-                                    return result.data;
-                                 },
         			             url: contextPath + '/auth/user/pagingQueryNotGrantPermissions.koala?userId='+userId
         			        });        						
        					},
@@ -516,9 +510,6 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'permissionNameForSearch'}],
-                                 dataFilter:function(result){
-                                    return result.data;
-                                 },
         			             url:contextPath + '/auth/menu/pagingQueryNotGrantPermissionsByMenuResourceId.koala?menuResourceId=' + menuId
         			        });        						
        					},
@@ -663,9 +654,6 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],
-                                 dataFilter:function(result){
-                                     return result.data;
-                                 },
         			             url: contextPath + '/auth/page/pagingQueryNotGrantPermissionsByPageElementResourceId.koala?pageElementResourceId='+pageId
         			        });        						
        					},
@@ -809,9 +797,6 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],
-        			             dataFilter:function(result){
-                                   return result.data;
-                                 },
         			             url: contextPath + '/auth/url/pagingQueryNotGrantPermissionsByUrlAccessResourceId.koala?urlAccessResourceId='+urlId
         			        });        						
        					},
@@ -961,9 +946,6 @@
         						 identity: 'id',
         			             columns: columns,
         			             querys: [{title: '权限名称', value: 'roleNameForSearch'}],
-        			             dataFilter:function(result){
-                                    return result.data;
-                                 },
         			             url: contextPath + '/auth/role/pagingQueryNotGrantPermissionsByRoleId.koala?roleId='+roleId
         			        });        						
        					},

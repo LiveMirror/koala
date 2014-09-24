@@ -93,9 +93,6 @@
 		                identity:"id",
 		                buttons: getButtons(),
 		                url:url,
-		                dataFilter:function(result){
-		                    return result.data;
-		                },
 		                columns: [{
 							title : "用户名称",
 							name : "name",
@@ -345,18 +342,12 @@
                                     dialog.find('#notGrantAuthoritiesToUserGrid').grid({
                                         identity: 'id',
                                         columns: columns,
-                                        dataFilter:function(result){
-                                            return result.data;
-                                        },
                                         url: contextPath + '/auth/user/pagingQueryNotGrantRoles.koala?userId='+userId
                                     });
 
                                     dialog.find('#grantAuthoritiesToUserGrid').grid({
                                         identity: 'id',
                                         columns: columns,
-                                        dataFilter:function(result){
-                                            return result.data;
-                                        },
                                         url: contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId='+userId
                                     });
                                 }
@@ -472,18 +463,12 @@
                                     dialog.find('#notGrantAuthoritiesToUserGrid').grid({
                                         identity: 'id',
                                         columns: columns,
-                                        dataFilter:function(result){
-                                            return result.data;
-                                        },
                                         url: contextPath + '/auth/user/pagingQueryNotGrantPermissions.koala?userId='+userId
                                     });
 
                                     dialog.find('#grantAuthoritiesToUserGrid').grid({
                                         identity: 'id',
                                         columns: columns,
-                                        dataFilter:function(result){
-                                            return result.data;
-                                        },
                                         url: contextPath + '/auth/user/pagingQueryGrantPermissionByUserId.koala?userId='+userId
                                     });
                                 }

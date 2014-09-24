@@ -2,12 +2,16 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeRolePropsCommand;
 import org.openkoala.security.facade.command.CreateRoleCommand;
+import org.openkoala.security.facade.dto.PageElementResourceDTO;
+import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.RoleHandle;
 import org.openkoala.security.shiro.extend.ShiroFilterChainManager;
@@ -95,7 +99,7 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
-	public InvokeResult pagingQuery(int page, int pagesize, RoleDTO roleDTO) {
+	public Page<RoleDTO> pagingQuery(int page, int pagesize, RoleDTO roleDTO) {
 		return securityAccessFacade.pagingQueryRoles(page, pagesize, roleDTO);
 	}
 
@@ -175,7 +179,7 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantUrlAccessResourcesByRoleId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
+	public Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
 		return securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page,pagesize, roleId);
 	}
 
@@ -189,7 +193,7 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantUrlAccessResourcesByRoleId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
+	public Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
 		return securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page,	pagesize, roleId);
 	}
 
@@ -229,7 +233,7 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPermissionsByRoleId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryPermissionsByRoleId(int page, int pagesize, Long roleId) {
+	public Page<PermissionDTO> pagingQueryPermissionsByRoleId(int page, int pagesize, Long roleId) {
 		return securityAccessFacade.pagingQueryGrantPermissionsByRoleId(page, pagesize, roleId);
 	}
 
@@ -243,7 +247,7 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByRoleId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId) {
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId) {
 		return securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize,	roleId);
 	}
 
@@ -283,7 +287,7 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
+	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
 		return securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page,	pagesize, roleId);
 	}
 
@@ -297,33 +301,8 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize,
+	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize,
 			Long roleId) {
 		return securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(page, pagesize, roleId);
 	}
-
-	// ==================TODO==================
-
-	/**
-	 * TODO 还未实现 为角色授权方法调用权限资源。
-	 *
-	 * @param roleId
-	 * @param menuResourceIds
-	 * @return
-	 */
-	/*@ResponseBody
-	@RequestMapping(value = "/grantMethodInvocationResourcesToRole", method = RequestMethod.GET)
-	public JsonResult grantMethodInvocationResourcesToRole(Long roleId, Long[] menuResourceIds) {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			securityConfigFacade.grantMethodInvocationResourcesToRole(roleId, menuResourceIds);
-			jsonResult.setSuccess(true);
-			jsonResult.setMessage("为角色授权方法调用权限资源成功");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			jsonResult.setSuccess(false);
-			jsonResult.setMessage("为角色授权方法调用权限资源失败");
-		}
-		return jsonResult;
-	}*/
 }

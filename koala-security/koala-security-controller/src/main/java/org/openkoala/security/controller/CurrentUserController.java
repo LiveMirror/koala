@@ -3,6 +3,7 @@ package org.openkoala.security.controller;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
@@ -10,6 +11,7 @@ import org.openkoala.security.facade.command.ChangeUserAccountCommand;
 import org.openkoala.security.facade.command.ChangeUserEmailCommand;
 import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
+import org.openkoala.security.facade.dto.RoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.openkoala.security.shiro.RoleHandle;
 import org.springframework.stereotype.Controller;
@@ -104,7 +106,7 @@ public class CurrentUserController {
      */
     @ResponseBody
     @RequestMapping(value = "/pagingQueryRolesOfUser", method = RequestMethod.GET)
-    public InvokeResult pagingQueryRolesOfUser(int page,int pagesize){
+    public Page<RoleDTO> pagingQueryRolesOfUser(int page,int pagesize){
         String userAccount = CurrentUser.getUserAccount();
         return securityAccessFacade.pagingQueryRolesOfUser(page,pagesize,userAccount);
     }

@@ -2,6 +2,7 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.facade.SecurityAccessFacade;
@@ -248,7 +249,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
-	public InvokeResult pagingQuery(int page, int pagesize, UserDTO queryUserCondition) {
+	public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO queryUserCondition) {
 		return  securityAccessFacade.pagingQueryUsers(page, pagesize, queryUserCondition);
 	}
 
@@ -268,7 +269,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantRoleByUserId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
+	public Page<RoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
 		return securityAccessFacade.pagingQueryGrantRolesByUserId(page, pagesize, userId);
 	}
 
@@ -282,7 +283,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPermissionByUserId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryGrantPermissionByUserId(int page, int pagesize, Long userId) {
+	public Page<PermissionDTO> pagingQueryGrantPermissionByUserId(int page, int pagesize, Long userId) {
 		return  securityAccessFacade.pagingQueryGrantPermissionByUserId(page, pagesize, userId);
 	}
 
@@ -296,7 +297,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantRoles", method = RequestMethod.GET)
-	public InvokeResult pagingQueryNotGrantRoles(int page, int pagesize, Long userId, RoleDTO queryRoleCondition) {
+	public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, Long userId, RoleDTO queryRoleCondition) {
 		return securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition,userId);
 	}
 
@@ -311,7 +312,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissions", method = RequestMethod.GET)
-	public InvokeResult pagingQueryNotGrantPermissions(int page, int pagesize,PermissionDTO queryPermissionCondition, Long userId) {
+	public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize,PermissionDTO queryPermissionCondition, Long userId) {
 		return securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(page, pagesize,	queryPermissionCondition, userId);
 	}
 }

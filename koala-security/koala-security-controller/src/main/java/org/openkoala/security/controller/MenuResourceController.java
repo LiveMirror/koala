@@ -3,12 +3,14 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeMenuResourcePropsCommand;
 import org.openkoala.security.facade.command.CreateChildMenuResourceCommand;
 import org.openkoala.security.facade.command.CreateMenuResourceCommand;
+import org.openkoala.security.facade.dto.PermissionDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,7 +153,7 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPermissionsByMenuResourceId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
 		return  securityAccessFacade.pagingQueryGrantPermissionsByMenuResourceId(page, pagesize,menuResourceId);
 	}
 
@@ -165,7 +167,7 @@ public class MenuResourceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByMenuResourceId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,	Long menuResourceId) {
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize,	Long menuResourceId) {
 		return securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(page,pagesize, menuResourceId);
 	}
 }

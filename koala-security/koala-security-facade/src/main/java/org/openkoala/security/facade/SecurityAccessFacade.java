@@ -3,6 +3,7 @@ package org.openkoala.security.facade;
 import java.util.List;
 import java.util.Set;
 
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.dto.*;
 
@@ -40,7 +41,7 @@ public interface SecurityAccessFacade {
      * @param queryUserCondition
      * @return
      */
-    InvokeResult pagingQueryUsers(int pageIndex, int pageSize, UserDTO queryUserCondition);
+    Page<UserDTO> pagingQueryUsers(int pageIndex, int pageSize, UserDTO queryUserCondition);
 
     /**
      * 分页查询角色信息
@@ -50,7 +51,7 @@ public interface SecurityAccessFacade {
      * @param queryRoleCondition
      * @return
      */
-    InvokeResult pagingQueryRoles(int pageIndex, int pageSize, RoleDTO queryRoleCondition);
+    Page<RoleDTO> pagingQueryRoles(int pageIndex, int pageSize, RoleDTO queryRoleCondition);
 
     /**
      * 分页查询权限信息
@@ -60,7 +61,7 @@ public interface SecurityAccessFacade {
      * @param queryPermissionCondition
      * @return
      */
-    InvokeResult pagingQueryPermissions(int pageIndex, int pageSize, PermissionDTO queryPermissionCondition);
+    Page<PermissionDTO> pagingQueryPermissions(int pageIndex, int pageSize, PermissionDTO queryPermissionCondition);
 
     /**
      * 查询某个角色下用户的菜单资源。
@@ -73,17 +74,17 @@ public interface SecurityAccessFacade {
 
     InvokeResult findAllMenusTree();
 
-    InvokeResult pagingQueryNotGrantRoles(int pageIndex, int pageSize, RoleDTO queryRoleCondition, Long userId);
+    Page<RoleDTO> pagingQueryNotGrantRoles(int pageIndex, int pageSize, RoleDTO queryRoleCondition, Long userId);
 
-    InvokeResult pagingQueryGrantPermissionByUserId(int pageIndex, int pageSize, Long userId);
+    Page<PermissionDTO> pagingQueryGrantPermissionByUserId(int pageIndex, int pageSize, Long userId);
 
-    InvokeResult pagingQueryGrantRolesByUserId(int pageIndex, int pageSize, Long userId);
+    Page<RoleDTO> pagingQueryGrantRolesByUserId(int pageIndex, int pageSize, Long userId);
 
-    InvokeResult pagingQueryNotGrantPermissionsByRoleId(int pageIndex, int pageSize, Long roleId);
+    Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int pageIndex, int pageSize, Long roleId);
 
-    InvokeResult pagingQueryGrantPermissionsByRoleId(int pageIndex, int pageSize, Long roleId);
+    Page<PermissionDTO> pagingQueryGrantPermissionsByRoleId(int pageIndex, int pageSize, Long roleId);
 
-    InvokeResult pagingQueryUrlAccessResources(int pageIndex, int pageSize, UrlAccessResourceDTO queryUrlAccessResourceCondition);
+    Page<UrlAccessResourceDTO> pagingQueryUrlAccessResources(int pageIndex, int pageSize, UrlAccessResourceDTO queryUrlAccessResourceCondition);
 
     /**
      * 根据URL或者菜单类型查找所有的权限
@@ -109,7 +110,7 @@ public interface SecurityAccessFacade {
      * @param roleId
      * @return
      */
-    InvokeResult pagingQueryGrantUrlAccessResourcesByRoleId(int pageIndex, int pageSize, Long roleId);
+    Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int pageIndex, int pageSize, Long roleId);
 
     /**
      * 根据角色ID查找所有没有授权的URL访问资源。
@@ -119,7 +120,7 @@ public interface SecurityAccessFacade {
      * @param roleId
      * @return
      */
-    InvokeResult pagingQueryNotGrantUrlAccessResourcesByRoleId(int pageIndex, int pageSize, Long roleId);
+    Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int pageIndex, int pageSize, Long roleId);
 
     /**
      * 根据URL访问资源分页查询已经授权的权限。
@@ -129,7 +130,7 @@ public interface SecurityAccessFacade {
      * @param urlAccessResourceId
      * @return
      */
-    InvokeResult pagingQueryGrantPermissionsByUrlAccessResourceId(int pageIndex, int pageSize, Long urlAccessResourceId);
+    Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int pageIndex, int pageSize, Long urlAccessResourceId);
 
     /**
      * 根据URL访问资源分页查询没有授权的权限。
@@ -139,7 +140,7 @@ public interface SecurityAccessFacade {
      * @param urlAccessResourceId
      * @return
      */
-    InvokeResult pagingQueryNotGrantPermissionsByUrlAccessResourceId(int pageIndex, int pageSize, Long urlAccessResourceId);
+    Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int pageIndex, int pageSize, Long urlAccessResourceId);
 
     /**
      * 根据角色ID查询菜单树（已经选择的有选择标识）。
@@ -149,21 +150,21 @@ public interface SecurityAccessFacade {
      */
     InvokeResult findMenuResourceTreeSelectItemByRoleId(Long roleId);
 
-    InvokeResult pagingQueryGrantPermissionsByMenuResourceId(int pageIndex, int pageSize, Long menuResourceId);
+    Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int pageIndex, int pageSize, Long menuResourceId);
 
-    InvokeResult pagingQueryNotGrantPermissionsByMenuResourceId(int pageIndex, int pageSize, Long menuResourceId);
+    Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int pageIndex, int pageSize, Long menuResourceId);
 
-    InvokeResult pagingQueryNotGrantPermissionsByUserId(int pageIndex, int pageSize, PermissionDTO queryPermissionCondition, Long userId);
+    Page<PermissionDTO> pagingQueryNotGrantPermissionsByUserId(int pageIndex, int pageSize, PermissionDTO queryPermissionCondition, Long userId);
 
-    InvokeResult pagingQueryPageElementResources(int pageIndex, int pageSize, PageElementResourceDTO queryPageElementResourceCondition);
+    Page<PageElementResourceDTO> pagingQueryPageElementResources(int pageIndex, int pageSize, PageElementResourceDTO queryPageElementResourceCondition);
 
-    InvokeResult pagingQueryGrantPageElementResourcesByRoleId(int pageIndex, int pageSize, Long roleId);
+    Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int pageIndex, int pageSize, Long roleId);
 
-    InvokeResult pagingQueryNotGrantPageElementResourcesByRoleId(int pageIndex, int pageSize, Long roleId);
+    Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int pageIndex, int pageSize, Long roleId);
 
-    InvokeResult pagingQueryGrantPermissionsByPageElementResourceId(int pageIndex, int pageSize, Long pageElementResourceId);
+    Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int pageIndex, int pageSize, Long pageElementResourceId);
 
-    InvokeResult pagingQueryNotGrantPermissionsByPageElementResourceId(int pageIndex, int pageSize, Long pageElementResourceId);
+    Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int pageIndex, int pageSize, Long pageElementResourceId);
 
     /**
      * 通过账户查找用户
@@ -198,7 +199,7 @@ public interface SecurityAccessFacade {
      */
     Set<PermissionDTO> findPermissionsByUserAccountAndRoleName(String userAccount, String roleName);
 
-    InvokeResult pagingQueryRolesOfUser(int pageIndex, int pageSize, String userAccount);
+    Page<RoleDTO> pagingQueryRolesOfUser(int pageIndex, int pageSize, String userAccount);
 
     /**
      * 根据账户查询用户详细

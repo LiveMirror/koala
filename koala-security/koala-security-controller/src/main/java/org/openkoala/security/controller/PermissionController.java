@@ -77,7 +77,7 @@ public class PermissionController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
-	public InvokeResult pagingQuery(int page, int pagesize, PermissionDTO queryPermissionCondition) {
+	public Page<PermissionDTO> pagingQuery(int page, int pagesize, PermissionDTO queryPermissionCondition) {
 		return securityAccessFacade.pagingQueryPermissions(page, pagesize,queryPermissionCondition);
 	}
 

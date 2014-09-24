@@ -1,6 +1,8 @@
 package org.openkoala.security.controller;
 
 import javax.inject.Inject;
+
+import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
@@ -8,6 +10,7 @@ import org.openkoala.security.facade.command.ChangePageElementResourcePropsComma
 import org.openkoala.security.facade.command.CreatePageElementResourceCommand;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
 
+import org.openkoala.security.facade.dto.PermissionDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -101,7 +104,7 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
-	public InvokeResult pagingQuery(int page, int pagesize, PageElementResourceDTO queryPageElementResourceCondition) {
+	public Page<PageElementResourceDTO> pagingQuery(int page, int pagesize, PageElementResourceDTO queryPageElementResourceCondition) {
 		return securityAccessFacade.pagingQueryPageElementResources(page, pagesize, queryPageElementResourceCondition);
 	}
 
@@ -115,7 +118,7 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPermissionsByPageElementResourceId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId) {
+	public Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId) {
 		return securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(page, pagesize, pageElementResourceId);
 	}
 
@@ -129,7 +132,7 @@ public class PageElementController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByPageElementResourceId", method = RequestMethod.GET)
-	public InvokeResult pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
 			Long pageElementResourceId) {
 		return  securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(page,
 				pagesize, pageElementResourceId);
