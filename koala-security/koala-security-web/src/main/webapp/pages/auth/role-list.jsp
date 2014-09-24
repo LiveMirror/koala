@@ -29,11 +29,11 @@
 </div>
 </form>
 <!-- end form -->
-<div data-role="userGrid"></div>
+<div data-role="roleGrid"></div>
 <script>
 
 	$(function() {
-		var tabData 	= $('[data-role="userGrid"]').closest('.tab-pane.active').data();
+		var tabData 	= $('[data-role="roleGrid"]').closest('.tab-pane.active').data();
 		var userId 		= tabData.userId;
 		var form;
 		var columns = [{
@@ -80,7 +80,7 @@
 			url = contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId=' + userId;
 		}
 		
-		$('[data-role="userGrid"]').grid({
+		$('[data-role="roleGrid"]').grid({
 			identity : 'id',
 			columns : columns,
 			buttons : buttons,
@@ -239,7 +239,7 @@
 	                }
 	                 console.log(name+"=="+params[name]);
 	            });
-	           $('[data-role="userGrid"]').getGrid().search(params);
+	           $('[data-role="roleGrid"]').getGrid().search(params);
 	        });
 	});
 </script>

@@ -33,7 +33,7 @@
 </div>
 </form>
 <!-- end form -->
-<div data-role="userGrid"></div>
+<div data-role="urlGrid"></div>
 <script>
 	$(function() {
 		var baseUrl = contextPath + '/auth/url/';
@@ -212,7 +212,7 @@
 		}
 		
 		/*解决id冲突的问题*/
-		$('[data-role="userGrid"]').grid({
+		$('[data-role="urlGrid"]').grid({
 			identity : 'id',
 			columns : columns,
 			buttons : getButtons(),
@@ -418,7 +418,7 @@
                 }
                  console.log(name+"=="+params[name]);
             });
-           $('[data-role="userGrid"]').getGrid().search(params);
+           $('[data-role="urlGrid"]').getGrid().search(params);
         });
 	});
 </script>
