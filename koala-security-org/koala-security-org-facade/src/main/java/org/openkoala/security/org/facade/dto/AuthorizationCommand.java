@@ -7,13 +7,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * Created by luzhao on 14-9-4.
  */
-public class AuthorizationDTO {
+public class AuthorizationCommand {
 
     private Long actorId;
 
     private Long authorityId;
 
-    private Long scopeId;
+    private Long organizationId;
+
+    private String organizationName;
 
     public Long getActorId() {
         return actorId;
@@ -31,12 +33,20 @@ public class AuthorizationDTO {
         this.authorityId = authorityId;
     }
 
-    public Long getScopeId() {
-        return scopeId;
+    public String getOrganizationName() {
+        return organizationName;
     }
 
-    public void setScopeId(Long scopeId) {
-        this.scopeId = scopeId;
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
     }
 
     @Override
@@ -44,20 +54,20 @@ public class AuthorizationDTO {
         return new HashCodeBuilder()//
                 .append(actorId)//
                 .append(authorityId)//
-                .append(scopeId)//
+                .append(organizationId)//
                 .toHashCode();
     }
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof AuthorizationDTO)) {
+        if (!(other instanceof AuthorizationCommand)) {
             return false;
         }
-        AuthorizationDTO that = (AuthorizationDTO) other;
+        AuthorizationCommand that = (AuthorizationCommand) other;
         return new EqualsBuilder()//
                 .append(this.getActorId(), that.getActorId())//
                 .append(this.getAuthorityId(), that.getAuthorityId())//
-                .append(this.getScopeId(), that.getScopeId())//
+                .append(this.getOrganizationId(), that.getOrganizationId())//
                 .isEquals();
     }
 
@@ -66,7 +76,7 @@ public class AuthorizationDTO {
         return new ToStringBuilder(this)//
                 .append(getActorId())//
                 .append(getAuthorityId())//
-                .append(getScopeId())//
+                .append(getOrganizationId())//
                 .build();//
     }
 }

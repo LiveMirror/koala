@@ -6,7 +6,7 @@ import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.org.facade.command.*;
 import org.openkoala.security.org.facade.SecurityOrgAccessFacade;
 import org.openkoala.security.org.facade.SecurityOrgConfigFacade;
-import org.openkoala.security.org.facade.dto.AuthorizationDTO;
+import org.openkoala.security.org.facade.dto.AuthorizationCommand;
 import org.openkoala.security.org.facade.dto.EmployeeUserDTO;
 import org.openkoala.security.shiro.CurrentUser;
 import org.slf4j.Logger;
@@ -53,37 +53,34 @@ public class EmployeeUserController {
 
     // ~ 授权
 
+    @ResponseBody
+    @RequestMapping(value = "/pagingQueryGrantRoleByUserId", method = RequestMethod.GET)
+    public InvokeResult pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
+        return securityOrgAccessFacade.pagingQueryGrantRolesByUserId(page, pagesize, userId);
+    }
+
+
     /**
-     * TODO 查询出用户默认的范围。默认范围又员工查询。
-     * 为用户授权某个范围下的角色。
+     * 根据用户ID分页查询已经授权的权限
      *
+     * @param page
+     * @param pagesize
      * @param userId
-     * @param commands
      * @return
      */
+    @ResponseBody
+    @RequestMapping(value = "/pagingQueryGrantPermissionByUserId", method = RequestMethod.GET)
+    public InvokeResult pagingQueryGrantPermissionByUserId(int page, int pagesize, Long userId) {
+        return  securityOrgAccessFacade.pagingQueryGrantPermissionsByUserId(page, pagesize, userId);
+    }
+
+
     @ResponseBody
     @RequestMapping(value = "/grantRolesToUserInScope", method = RequestMethod.POST)
-    public InvokeResult grantRolesToUserInScope(Long userId, GrantRoleToUserInScopeCommand[] commands) {
-        return securityOrgConfigFacade.grantRolesToUserInScope(userId, commands);
+    public InvokeResult grantRolesToUserInScope(AuthorizationCommand authorization){
+        return securityOrgConfigFacade.grantRolesToUserInScope(authorization);
     }
 
-    public InvokeResult grantRolesToUserInScope(AuthorizationDTO[] authorizations){
-        return securityOrgConfigFacade.grantRolesToUserInScope(authorizations);
-    }
-
-    /**
-     * TODO 查询出用户默认的范围。默认范围又员工查询。
-     * 为用户授权某个范围下的权限。
-     *
-     * @param userId
-     * @param commands
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/grantPermissionsToUserInScope", method = RequestMethod.POST)
-    public InvokeResult grantPermissionsToUserInScope(Long userId, GrantPermissionToUserInScopeCommand[] commands) {
-        return securityOrgConfigFacade.grantPermissionToUserInScope(userId, commands);
-    }
 
     @ResponseBody
     @RequestMapping(value = "/terminateUserFromRoleInScope", method = RequestMethod.POST)
@@ -102,7 +99,5 @@ public class EmployeeUserController {
     public InvokeResult pagingQuery(int page, int pagesize, EmployeeUserDTO queryEmployeeUserCondition) {
         return securityOrgAccessFacade.pagingQueryEmployeeUsers(page,pagesize,queryEmployeeUserCondition);
     }
-
-
 
 }

@@ -3,7 +3,7 @@
 <html lang="en-ZH">
     <head>
         <style>
-            .modal-body {
+            .modal-body.this_page{
                 display: block;
                 text-align: center;
             }
@@ -19,7 +19,7 @@
             }
 
             .middle{
-                width:75px;
+                width:85px;
                 text-align:center;
             }
 
@@ -37,14 +37,14 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title center" >授权角色</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body this_page">
                         <div class="left">
                             <div class="left-modal-body">已授权角色</div>
                             <div id="grantAuthoritiesToUserGrid"></div>
                         </div>
-                        <div class="middle ">
-                            <button class="btn btn-success" id="grantAuthorityToUserButton">&lt;授权</button><br/><br/><br/><br/>
-                            <button class="btn btn-danger" id="notGrantAuthorityToUserButton">撤权&gt;</button>
+                        <div class="middle">
+                            <button class="btn btn-success glyphicon glyphicon-chevron-left" id="grantAuthorityToUserButton">&nbsp;授权</button><br/><br/><br/><br/>
+                            <button class="btn btn-danger glyphicon glyphicon-chevron-right" id="notGrantAuthorityToUserButton">&nbsp;撤权</button>
                             <br/><br/><br/><br/>
                             <div id="grantAuthorityToUserMessage"></div>
                         </div>

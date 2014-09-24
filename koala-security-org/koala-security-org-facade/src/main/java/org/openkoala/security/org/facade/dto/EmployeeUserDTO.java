@@ -14,6 +14,8 @@ public class EmployeeUserDTO extends UserDTO{
      */
     private String employeeName;
 
+    private String employeeOrgName;
+
 
     public EmployeeUserDTO() {}
 
@@ -27,5 +29,13 @@ public class EmployeeUserDTO extends UserDTO{
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+    }
+
+    public String getEmployeeOrgName() {
+        return employeeOrgName;
+    }
+
+    public void setEmployeeOrgName(String employeeOrgName) {
+        this.employeeOrgName = employeeOrgName;
     }
 }

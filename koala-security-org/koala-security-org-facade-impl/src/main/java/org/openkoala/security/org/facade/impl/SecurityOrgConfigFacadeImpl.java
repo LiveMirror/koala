@@ -1,19 +1,22 @@
 package org.openkoala.security.org.facade.impl;
 
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.application.BaseApplication;
 import org.openkoala.organisation.application.OrganizationApplication;
 import org.openkoala.organisation.domain.Employee;
+import org.openkoala.organisation.domain.Organization;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.domain.*;
+import org.openkoala.security.org.core.domain.OrganisationScope;
 import org.openkoala.security.org.facade.command.*;
 import org.openkoala.security.org.core.domain.EmployeeUser;
-import org.openkoala.security.org.core.domain.OrganisationScope;
 import org.openkoala.security.org.facade.SecurityOrgConfigFacade;
-import org.openkoala.security.org.facade.dto.AuthorizationDTO;
+import org.openkoala.security.org.facade.dto.AuthorizationCommand;
 import org.openkoala.security.org.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.org.facade.impl.assembler.EmployeeUserAssembler;
 import org.slf4j.Logger;
@@ -39,6 +42,15 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 
     @Inject
     private OrganizationApplication organizationApplication;
+
+    private QueryChannelService queryChannelService;
+
+    public QueryChannelService getQueryChannelService() {
+        if (queryChannelService == null) {
+            queryChannelService = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel_security");
+        }
+        return queryChannelService;
+    }
 
 	@Override
 	public void saveOrganization(OrganizationScopeDTO organizationScopeDTO) {
@@ -157,21 +169,21 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
     }
 
     @Override
-    public InvokeResult grantRolesToUserInScope(AuthorizationDTO[] authorizations) {
+    public InvokeResult grantRolesToUserInScope(AuthorizationCommand[] authorizations) {
 //
 //        Long actorId = authorizations[0].getActorId();
 //
-//        List<AuthorizationDTO> targetOwnerAuthorizations =  Arrays.asList(authorizations);
+//        List<AuthorizationCommand> targetOwnerAuthorizations =  Arrays.asList(authorizations);
 //
-//        List<AuthorizationDTO> originalAuthorizations = organizationApplication.findAllAuthorizationsByActorId(actorId);
+//        List<AuthorizationCommand> originalAuthorizations = organizationApplication.findAllAuthorizationsByActorId(actorId);
 //
-//        List<AuthorizationDTO> tmpList = Lists.newArrayList(targetOwnerAuthorizations);
+//        List<AuthorizationCommand> tmpList = Lists.newArrayList(targetOwnerAuthorizations);
 //
 //        // 待添加的
-//        List<AuthorizationDTO> waitingAddList = new ArrayList<AuthorizationDTO>();
+//        List<AuthorizationCommand> waitingAddList = new ArrayList<AuthorizationCommand>();
 //
 //        // 带删除的
-//        List<AuthorizationDTO> waitingDelList = new ArrayList<AuthorizationDTO>();
+//        List<AuthorizationCommand> waitingDelList = new ArrayList<AuthorizationCommand>();
 //
 //        // 得到相同的菜单
 //        targetOwnerAuthorizations.retainAll(originalAuthorizations);
@@ -191,13 +203,13 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 //
 //        Actor actor = securityAccessApplication.getActorById(actorId);
 //
-//        for(AuthorizationDTO waitingDel : waitingAddList){
+//        for(AuthorizationCommand waitingDel : waitingAddList){
 //            Authority authority = securityAccessApplication.getAuthority(waitingDel.getAuthorityId());
 //            Scope scope = securityAccessApplication.getScope(waitingDel.getScopeId());
 //            securityConfigApplication.terminateActorFromAuthorityInScope(actor,authority,scope);
 //        }
 //
-//        for(AuthorizationDTO waitingAdd : waitingAddList){
+//        for(AuthorizationCommand waitingAdd : waitingAddList){
 //            Authority authority = securityAccessApplication.getAuthority(waitingAdd.getAuthorityId());
 //            Scope scope = securityAccessApplication.getScope(waitingAdd.getScopeId());
 //            if(scope == null){
@@ -208,6 +220,32 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 //        }
 
         return InvokeResult.success();
+    }
+
+    @Override
+    public InvokeResult grantRolesToUserInScope(AuthorizationCommand command) {
+        Actor actor = securityAccessApplication.getActorById(command.getActorId());
+        Authority authority = securityAccessApplication.getAuthority(command.getAuthorityId());
+
+        Organization organization = organizationApplication.getOrganizationById(command.getOrganizationId());
+        Scope scope = findOrganizationScope(organization);
+
+        if(scope == null){
+            scope = new OrganisationScope(command.getOrganizationName(),organization);
+            securityConfigApplication.createScope(scope);
+        }
+
+        securityConfigApplication.grantActorToAuthorityInScope(actor,authority,scope);
+
+        return InvokeResult.success();
+    }
+
+    private OrganisationScope findOrganizationScope(Organization organization){
+       OrganisationScope organisationScope = (OrganisationScope) getQueryChannelService()//
+                .createNamedQuery("OrganisationScope.hasOrganizationOfScope")//
+                .addParameter("organization",organization)//
+                .singleResult();
+        return organisationScope;
     }
 
     @Override
@@ -234,5 +272,6 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
             return InvokeResult.failure("添加用户失败。");
         }
     }
+
 
 }

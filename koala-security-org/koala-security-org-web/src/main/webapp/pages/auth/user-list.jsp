@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@include file="/commons/taglibs.jsp"%>
+<%@include file="/commons/statics.jsp"%>
 
 <%@ page import="java.util.Date"%>
 <% String formId = "form_" + new Date().getTime();
@@ -47,6 +48,12 @@
 <div data-role="userGrid">
 </div>
 	<script>
+    //组织需要用到的变量。
+    var departmentTree = null;
+    var positionDepartment = null;
+    var departmentId = null;
+    var departmentName = null;
+
 	/*
 	*多条件查询
 	*/var grid;
@@ -128,7 +135,7 @@
 							title : "是否有效",
 							name : "disabled",
 							width : 80,
-							 render : function(item, name, index) {
+							render : function(item, name, index) {
 								return item[name]?  '<span class="glyphicon glyphicon-remove" style="color:#D9534F;margin-left:15px;"></span>':'<span class="glyphicon glyphicon-ok" style="color:#5CB85C;margin-left:15px;"></span>';
 							}  
 						}, {
@@ -266,6 +273,8 @@
 
                         var userId = data.item[0].id;
                         var userAccount = data.item[0].userAccount;
+                        var employeeOrgName = data.item[0].employeeOrgName;
+
 
                         $.get(contextPath + '/pages/auth/user-grantAuthorityToUser.jsp').done(function(data){
                             var dialog  = $(data);
@@ -337,7 +346,7 @@
                                     $(this).remove();
                                 },
                                 'shown.bs.modal' : function(){
-                                    var columns = [{
+                                    var hasGrantRoleColumns = [{
                                         title : "角色名称",
                                         name : "name",
                                         width : 100
@@ -345,11 +354,39 @@
                                         title : "角色描述",
                                         name : "description",
                                         width : 100
+                                    }, {
+                                       title : "组织机构",
+                                       name : "employeeUserOrgName",
+                                       width : 150,
+                                       render: function(item){
+                                           var employeeOrgNameValue = item.employeeUserOrgName;
+                                           if(employeeOrgNameValue == null){
+                                               employeeOrgNameValue = employeeOrgName;
+                                           }
+                                           return '<span id="selectemployeeOrgOfRole" onclick="selectemployeeOrg(event,\''+userId+'\',\''+item.id+'\');" style="cursor: pointer;">' + employeeOrgNameValue + '<span class="caret"></span></span>';
+                                       }
+                                    }];
+
+                                    var notGrantRolecolumns = [{
+                                        title : "角色名称",
+                                        name : "name",
+                                        width : 100
+                                    }, {
+                                        title : "角色描述",
+                                        name : "description",
+                                        width : 100
+                                    }, {
+                                       title : "组织机构",
+                                       name : "employeeOrgName",
+                                       width : 150,
+                                       render: function(){
+                                            return '<span>' + employeeOrgName + '</span>';
+                                       }
                                     }];
 
                                     dialog.find('#notGrantAuthoritiesToUserGrid').grid({
                                         identity: 'id',
-                                        columns: columns,
+                                        columns: notGrantRolecolumns,
                                         dataFilter:function(result){
                                             return result.data;
                                         },
@@ -358,11 +395,11 @@
 
                                     dialog.find('#grantAuthoritiesToUserGrid').grid({
                                         identity: 'id',
-                                        columns: columns,
+                                        columns: hasGrantRoleColumns,
                                         dataFilter:function(result){
                                             return result.data;
                                         },
-                                        url: contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId='+userId
+                                        url: contextPath + '/auth/employeeUser/pagingQueryGrantRoleByUserId.koala?userId='+userId
                                     });
                                 }<!-- end-->
 
@@ -393,6 +430,7 @@
 
                         var userId = data.item[0].id;
                         var userAccount = data.item[0].userAccount;
+                        var employeeOrgName = data.item[0].employeeOrgName;
 
                         $.get(contextPath + '/pages/auth/user-grantAuthorityToUser.jsp').done(function(data){
                             var dialog  = $(data);
@@ -466,7 +504,7 @@
                                     $(this).remove();
                                 },
                                 'shown.bs.modal' : function(){
-                                    var columns = [{
+                                    var hasGrantPermissionColumns = [{
                                         title : "权限名称",
                                         name : "name",
                                         width : 100
@@ -474,11 +512,39 @@
                                         title : "权限标识",
                                         name : "identifier",
                                         width : 100
+                                    }, {
+                                        title : "组织机构",
+                                        name : "employeeUserOrgName",
+                                        width : 150,
+                                        render: function(item){
+                                            var employeeOrgNameValue = item.employeeUserOrgName;
+                                            if(employeeOrgNameValue == null){
+                                                employeeOrgNameValue = employeeOrgName;
+                                            }
+                                            return '<span style="cursor: pointer;" onclick="selectemployeeOrg(event,\''+userId+'\',\''+item.id+'\');">' + employeeOrgNameValue + '<span class="caret"></span></span>';
+                                        }
+                                    }];
+
+                                    var notGrantPermissioncolumns = [{
+                                        title : "权限名称",
+                                        name : "name",
+                                        width : 100
+                                    }, {
+                                        title : "权限标识",
+                                        name : "identifier",
+                                        width : 100
+                                    }, {
+                                        title : "组织机构",
+                                        name : "employeeOrgName",
+                                        width : 150,
+                                        render: function(){
+                                            return '<span>' + employeeOrgName + '</span>';
+                                        }
                                     }];
 
                                     dialog.find('#notGrantAuthoritiesToUserGrid').grid({
                                         identity: 'id',
-                                        columns: columns,
+                                        columns: notGrantPermissioncolumns,
                                         dataFilter:function(result){
                                             return result.data;
                                         },
@@ -487,11 +553,11 @@
 
                                     dialog.find('#grantAuthoritiesToUserGrid').grid({
                                         identity: 'id',
-                                        columns: columns,
+                                        columns: hasGrantPermissionColumns,
                                         dataFilter:function(result){
                                             return result.data;
                                         },
-                                        url: contextPath + '/auth/user/pagingQueryGrantPermissionByUserId.koala?userId='+userId
+                                        url: contextPath + '/auth/employeeUser/pagingQueryGrantPermissionByUserId.koala?userId='+userId
                                     });
                                 }<!-- end-->
 
@@ -516,6 +582,7 @@
             });
             $('[data-role="userGrid"]').getGrid().search(params);
         });
+
 	});
 
     /**
@@ -531,4 +598,138 @@
               thiz.attr("mark",mark);
           }
 	};
+
+    /**
+    * 选择一个组织机构
+    */
+    var selectemployeeOrg = function (event, actorId, authorityId) {
+        // 阻止事件冒泡和捕捉
+        event.stopPropagation();
+
+        /**
+         * 部门选择
+         */
+        $.get( contextPath + '/pages/organisation/selectDepartmentTemplate.jsp').done(function(data){
+            var departmentTreeDialog = $(data);
+            positionDepartment = departmentTreeDialog.find('#positionDepartment');
+            departmentTreeDialog.find('.modal-body').css({height:'325px'});
+            departmentTree = departmentTreeDialog.find('.tree');
+            loadDepartmentTree(departmentTree);
+            departmentTreeDialog.find('#confirm').on('click',function(){
+                departmentTreeDialog.modal('hide');
+                positionDepartment.find('input').val(departmentId);
+                positionDepartment.find('[data-toggle="item"]').html(departmentName);
+                positionDepartment.trigger('keydown');
+                var data  = {};
+                data['actorId'] = actorId;
+                data['authorityId'] = authorityId;
+                data['organizationId'] = departmentId;
+                data['organizationName'] = departmentName;
+                $.post(contextPath + '/auth/employeeUser/grantRolesToUserInScope.koala', data, function (data) {
+                    if(data.success){
+                        $('#grantAuthoritiesToUserGrid').grid('refresh');
+                    }
+                });
+
+            }).end().modal({
+                backdrop: false,
+                keyboard: false
+            }).on({
+                'hidden.bs.modal': function(){
+                    $(this).remove();
+                }
+            });
+        });
+    }
+
+    /**
+     * 加载部门树
+     */
+    var loadDepartmentTree = function(departmentTree){
+        $.get( contextPath + '/pages/organisation/selectDepartmentTemplate.jsp').done(function(data){
+            var departmentTreeDialog = $(data);
+            departmentTreeDialog.find('.modal-body').css({height:'325px'});
+            departmentTree = departmentTreeDialog.find('.tree');
+            loadDepartmentTree(departmentTree);
+            departmentTreeDialog.find('#confirm').on('click',function(){
+                departmentTreeDialog.modal('hide');
+                positionDepartment.find('input').val(departmentId);
+                positionDepartment.find('[data-toggle="item"]').html(departmentName);
+                positionDepartment.trigger('keydown');
+            }).end().modal({
+                backdrop: false,
+                keyboard: false
+            }).on({
+                'hidden.bs.modal': function(){
+                    $(this).remove();
+                }
+            });
+        });
+    }
+
+    /**
+     * 加载部门树
+     */
+    var loadDepartmentTree = function(departmentTree){
+        departmentTree.parent().loader({
+            opacity: 0
+        });
+        $.get(contextPath  + '/organization/orgTree.koala').done(function(data){
+            departmentTree.parent().loader('hide');
+            var zNodes = new Array();
+            $.each(data, function(){
+                var zNode = {};
+                if(this.organizationType == 'company'){
+                    zNode.type = 'parent';
+                }else{
+                    zNode.icon = 'glyphicon glyphicon-list-alt'
+                }
+                this.title = this.name;
+                zNode.menu = this;
+                if(this.children && this.children.length > 0){
+                    zNode.children = getChildrenData(new Array(), this.children);
+                }
+                zNodes.push(zNode);
+            });
+            var dataSourceTree = {
+                data: zNodes,
+                delay: 400
+            };
+            departmentTree.tree({
+                dataSource: dataSourceTree,
+                loadingHTML: '<div class="static-loader">Loading...</div>',
+                multiSelect: false,
+                cacheItems: true
+            }).on({
+                'selectParent': function(event, data){
+                    var data = data.data;
+                    departmentId = data.id;
+                    departmentName = data.name;
+                },
+                'selectChildren': function(event, data){
+                    departmentId = data.id;
+                    departmentName = data.name;
+                }
+            });
+        });
+    };
+
+    var getChildrenData = function(nodes, items){
+        $.each(items, function(){
+            var zNode = {};
+            if(this.organizationType == 'company'){
+                zNode.type = 'parent';
+            }else{
+                zNode.icon = 'glyphicon glyphicon-list-alt'
+            }
+            this.title = this.name;
+            zNode.menu = this;
+            if(this.children && this.children.length > 0){
+                zNode.children = getChildrenData(new Array(), this.children);
+            }
+            nodes.push(zNode);
+        });
+        return nodes;
+    };
+
 </script>
