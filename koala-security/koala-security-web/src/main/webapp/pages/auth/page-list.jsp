@@ -40,7 +40,7 @@
 </div>
 </form>
 <!-- end form -->
-<div data-role="userGrid"></div>
+<div data-role="pageGrid"></div>
 <script>
 	$(function(){
 		var baseUrl = contextPath + '/auth/page/';
@@ -218,7 +218,7 @@
 		if(pageId){
            var url = contextPath + "/auth/role/pagingQueryGrantPageElementResourcesByRoleId.koala?roleId="+ pageId;		
 		}
-		$('[data-role="userGrid"]').grid({
+		$('[data-role="pageGrid"]').grid({
 			 identity: 'id',
              columns: columns,
              buttons: buttons,
@@ -451,7 +451,7 @@
                 }
                  console.log(name+"=="+params[name]);
             });
-           $('[data-role="userGrid"]').getGrid().search(params);
+           $('[data-role="pageGrid"]').getGrid().search(params);
         });
 });
 </script>

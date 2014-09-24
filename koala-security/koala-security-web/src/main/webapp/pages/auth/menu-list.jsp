@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@include file="/commons/taglibs.jsp"%>
 <!-- end form -->
-<div data-role="userGrid"></div>
+<div data-role="menuGrid"></div>
 <script>
 	$(function() {
 		var baseUrl = contextPath + '/auth/menu/';
@@ -208,7 +208,7 @@
 				}];
 		
 		/*解决id冲突的问题*/
-		$('[data-role="userGrid"]').grid({
+		$('[data-role="menuGrid"]').grid({
 			identity: 'id',
              columns: columns,
              buttons: buttons,

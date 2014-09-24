@@ -33,7 +33,7 @@
 </div>
 </form>
 <!-- end form -->
-<div data-role="userGrid"></div>
+<div data-role="permissionGrid"></div>
 <script>
 	$(function(){
 		var baseUrl = contextPath + '/auth/permission/';
@@ -154,7 +154,7 @@
 			});
 		};
 		
-		var tabData =  $('[data-role="userGrid"]').closest('.tab-pane.active').data();
+		var tabData =  $('[data-role="permissionGrid"]').closest('.tab-pane.active').data();
 		var userId 	= tabData.userId;
 		var menuId = tabData.menuId;
 		var pageId = tabData.pageId;
@@ -249,7 +249,7 @@
 			url = contextPath + '/auth/role/pagingQueryGrantPermissionsByRoleId.koala?roleId=' + roleId;
 		}
 		
-		$('[data-role="userGrid"]').grid({
+		$('[data-role="permissionGrid"]').grid({
 			 identity: 'id',
              columns: columns,
              buttons: buttons,
@@ -1037,7 +1037,7 @@
                 }
                  console.log(name+"=="+params[name]);
             });
-           $('[data-role="userGrid"]').getGrid().search(params);
+           $('[data-role="permissionGrid"]').getGrid().search(params);
         });
 });
 </script>
