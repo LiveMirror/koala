@@ -114,7 +114,7 @@ public class Employee extends Party {
 	
 	/**
 	 * 获得员工的兼任职务
-	 * @param queryDate
+	 * @param date
 	 * @return
 	 */
 	public List<Post> getAdditionalPosts(Date date) {
@@ -177,7 +177,6 @@ public class Employee extends Party {
 	/**
 	 * 保存员工及其任职信息和所属机构关系
 	 * @param post
-	 * @param organization
 	 */
 	public void saveWithPost(Post post) {
 		save();
