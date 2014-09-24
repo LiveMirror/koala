@@ -22,8 +22,6 @@ public interface SecurityConfigApplication {
 	 */
 	void terminateActor(Actor actor);
 
-	void updateActor(Actor actor);
-
 	/**
 	 *
 	 * @param user
@@ -46,12 +44,6 @@ public interface SecurityConfigApplication {
 	 * 
 	 * @param authority
 	 */
-	void updateAuthority(Authority authority);
-
-	/**
-	 * 
-	 * @param authority
-	 */
 	void terminateAuthority(Authority authority);
 
 	/**
@@ -59,12 +51,6 @@ public interface SecurityConfigApplication {
 	 * @param securityResource
 	 */
 	void createSecurityResource(SecurityResource securityResource);
-
-	/**
-	 * 
-	 * @param securityResource
-	 */
-	void updateSecurityResource(SecurityResource securityResource);
 
 	/**
 	 * 
@@ -88,13 +74,6 @@ public interface SecurityConfigApplication {
 
 	/**
 	 * 
-	 * @param authorities
-	 * @param securityResource
-	 */
-	void grantAuthoritiesToSecurityResource(List<Authority> authorities, SecurityResource securityResource);
-
-	/**
-	 * 
 	 * @param role
 	 * @param permission
 	 */
@@ -108,7 +87,7 @@ public interface SecurityConfigApplication {
 	void grantRoleToPermissions(Role role, List<Permission> permission);
 
 	/**
-	 * 
+	 *
 	 * @param roles
 	 * @param permission
 	 */
@@ -191,20 +170,6 @@ public interface SecurityConfigApplication {
 	 */
 	void terminateAuthoritiesFromActor(List<Authority> authorities, Actor actor);
 
-	boolean isSecurityResourceEmpty();
-
-	/**
-	 * 
-	 * @param securityResource
-	 */
-	boolean isSecurityResourceNameExist(SecurityResource securityResource);
-
-	/**
-	 * 
-	 * @param securityResource
-	 */
-	boolean isSecurityResourceIdentifierExist(SecurityResource securityResource);
-
 	/***
 	 * 创建参与者
 	 * 
@@ -240,8 +205,6 @@ public interface SecurityConfigApplication {
 	 * @param parentId
 	 */
 	void createChildToParent(MenuResource child, Long parentId);
-
-	void terminateScope(Scope scope);
 
 	/**
 	 * 为可授权体:Authority授予多个权限资源:SecurityResources。

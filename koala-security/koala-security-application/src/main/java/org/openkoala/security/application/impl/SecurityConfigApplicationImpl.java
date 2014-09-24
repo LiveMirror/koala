@@ -16,15 +16,10 @@ import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.Sets;
 
 @Named
 public class SecurityConfigApplicationImpl implements SecurityConfigApplication {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfigApplicationImpl.class);
 
     public void createActor(Actor actor) {
         actor.save();
@@ -46,10 +41,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
         authority.save();
     }
 
-    public void updateAuthority(Authority authority) {
-        authority.save();
-    }
-
     public void terminateAuthority(Authority authority) {
         authority.remove();
     }
@@ -58,18 +49,8 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
         securityResource.save();
     }
 
-    public void updateSecurityResource(SecurityResource securityResource) {
-        securityResource.save();
-    }
-
     public void terminateSecurityResource(SecurityResource securityResource) {
         securityResource.remove();
-    }
-
-    public void grantAuthoritiesToSecurityResource(List<Authority> authorities, SecurityResource securityResource) {
-        for (Authority authority : authorities) {
-            grantAuthorityToSecurityResource(authority, securityResource);
-        }
     }
 
     public void grantRoleToPermission(Role role, Permission permission) {
@@ -148,21 +129,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
         }
     }
 
-    public boolean isSecurityResourceEmpty() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public boolean isSecurityResourceNameExist(SecurityResource securityResource) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public boolean isSecurityResourceIdentifierExist(SecurityResource securityResource) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
     public void createScope(Scope scope) {
         scope.save();
     }
@@ -194,11 +160,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
     }
 
     @Override
-    public void terminateScope(Scope scope) {
-        scope.remove();
-    }
-
-    @Override
     public void grantSecurityResourcesToAuthority(List<? extends SecurityResource> securityResources, Authority authority) {
         authority.addSecurityResources(securityResources);
     }
@@ -221,11 +182,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
     @Override
     public boolean checkAuthoritiHasPageElementResource(Set<Authority> authorities, String identifier) {
         return Authority.checkHasPageElementResource(authorities, identifier);
-    }
-
-    @Override
-    public void updateActor(Actor actor) {
-        actor.save();
     }
 
     @Override
@@ -290,7 +246,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
 
     @Override
     public void terminateActorFromAuthorityInScope(Actor actor, Authority authority, Scope scope) {
-        actor.terminateAuthorityInScope(authority,scope);
+        actor.terminateAuthorityInScope(authority, scope);
     }
 
     @Override

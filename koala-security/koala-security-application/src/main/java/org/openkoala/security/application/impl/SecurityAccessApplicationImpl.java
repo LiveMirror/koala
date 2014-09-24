@@ -14,33 +14,14 @@ import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
-import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
 
 @Named
 public class SecurityAccessApplicationImpl implements SecurityAccessApplication {
 
-    @Override
-    public boolean hasPermission(User user) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public boolean hasOwnSecurityResource(User user, SecurityResource securityResource) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
     public List<Role> findAllRolesByUserAccount(String userAccount) {
         return User.findAllRolesBy(userAccount);
-    }
-
-    public List<Permission> findAllPermissionsByUserAccount(String userAccount) {
-        return User.findAllPermissionsBy(userAccount);
     }
 
     public User getUserById(Long userId) {
@@ -69,12 +50,6 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     }
 
     @Override
-    public void checkAuthorization(String userAccount, Role role) {
-        User user = getUserByUserAccount(userAccount);
-        Authorization.checkAuthorization(user, role);
-    }
-
-    @Override
     public Role getRoleBy(Long roleId) {
         return Role.get(Role.class, roleId);
     }
@@ -100,28 +75,8 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     }
 
     @Override
-    public List<Role> findAllRoles() {
-        return Role.findAll(Role.class);
-    }
-
-    @Override
-    public List<UrlAccessResource> findAllUrlAccessResources() {
-        return UrlAccessResource.findAllUrlAccessResources();
-    }
-
-    @Override
-    public List<MenuResource> findAllMenuResorces() {
-        return MenuResource.findAllMenuResources();
-    }
-
-    @Override
     public PageElementResource getPageElementResourceBy(Long pageElementResourceId) {
         return PageElementResource.get(PageElementResource.class, pageElementResourceId);
-    }
-
-    @Override
-    public PageElementResource getPageElementResourceBy(String securityResourceName) {
-        return PageElementResource.getBy(securityResourceName);
     }
 
     @Override
@@ -204,8 +159,4 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
         return permission.findMenuResources();
     }
 
-    @Override
-    public Authorization getAuthorization(Actor actor, Authority authority) {
-        return Authorization.findByActorInAuthority(actor,authority);
-    }
 }

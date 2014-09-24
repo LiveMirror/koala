@@ -7,23 +7,6 @@ import org.openkoala.security.core.domain.*;
 
 public interface SecurityAccessApplication {
 
-	/**
-	 * 判断用户是否有权限Permission
-	 *
-	 * @param user
-	 *            用户
-	 */
-	boolean hasPermission(User user);
-
-	/**
-	 * 判断用户是否拥有权限资源securityResource
-	 *
-	 * @param user
-	 *            用户
-	 * @param securityResource
-	 *            权限资源
-	 */
-	boolean hasOwnSecurityResource(User user, SecurityResource securityResource);
 
 	/**
 	 * 根据账户查找该用户拥有的所有角色
@@ -33,15 +16,6 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	List<Role> findAllRolesByUserAccount(String userAccount);
-
-	/**
-	 * 根据账户查找该用户拥有的所有角色
-	 *
-	 * @param userAccount
-	 *            账户
-	 * @return
-	 */
-	List<Permission> findAllPermissionsByUserAccount(String userAccount);
 
 	/**
 	 * 根据用户ID获取用户
@@ -108,15 +82,6 @@ public interface SecurityAccessApplication {
 	PageElementResource getPageElementResourceBy(Long pageElementResourceId);
 
 	/**
-	 * 根据页面元素名称得到页面元素资源
-	 *
-	 * @param pageElementResourceName
-	 *            页面元素资源名称
-	 * @return
-	 */
-	PageElementResource getPageElementResourceBy(String pageElementResourceName);
-
-	/**
 	 * 根据角色名称得到角色。
 	 *
 	 * @param roleName
@@ -148,16 +113,6 @@ public interface SecurityAccessApplication {
 	boolean updatePassword(User user, String userPassword, String oldUserPassword);
 
 	/**
-	 * 通过角色下的用户检查Authorization是否存在
-	 *
-	 * @param userAccount
-	 *            账户
-	 * @param role
-	 *            角色
-	 */
-	void checkAuthorization(String userAccount, Role role);
-
-	/**
 	 * 根据角色查找菜单资源
 	 *
 	 * @param role
@@ -165,27 +120,6 @@ public interface SecurityAccessApplication {
 	 * @return
 	 */
 	List<MenuResource> findAllMenuResourcesByRole(Role role);
-
-	/**
-	 * 查找所有的角色
-	 *
-	 * @return
-	 */
-	List<Role> findAllRoles();
-
-	/**
-	 * 查找所有的URL访问资源。
-	 *
-	 * @return
-	 */
-	List<UrlAccessResource> findAllUrlAccessResources();
-
-	/**
-	 * 查找所有的菜单资源
-	 *
-	 * @return
-	 */
-	List<MenuResource> findAllMenuResorces();
 
 	boolean hasPageElementResource(String identifier);
 
@@ -251,12 +185,4 @@ public interface SecurityAccessApplication {
 
     Set<MenuResource> findMenuResourcesOfPermission(Permission permission);
 
-    /**
-     * 查找授权中心
-     *
-     * @param actor
-     * @param authority
-     * @return
-     */
-    Authorization getAuthorization(Actor actor, Authority authority);
 }

@@ -8,18 +8,6 @@ package org.openkoala.security.application;
  */
 public interface SecurityDBInitApplication {
 	
-//	void initUsers();
-//	
-//	void initRoles();
-//	
-//	void initPermissions();
-//	
-//	void initMenuResources();
-//	
-//	void initPageElementResources();
-//	
-//	void initUrlAccessResources();
-	
 	void initSecuritySystem();
 
 }
