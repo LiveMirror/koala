@@ -9,8 +9,6 @@
               min-height: 310px;
           }
           .selectDepartment .tree {
-          	  margin-left: auto;
-          	  margin-right: auto;
           	  width: 96%;
               min-height: 285px;
               max-height: 300px;

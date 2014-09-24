@@ -1,35 +1,23 @@
 package org.openkoala.security.org.core.domain;
 
-import org.dayatang.domain.EntityRepository;
-import org.dayatang.domain.InstanceFactory;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.security.core.domain.Scope;
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * 组织机构范围。
  * 
  * @author luzhao
- * 
+ *
  */
 @Entity
 @DiscriminatorValue("ORGANIZATION_SCOPE")
+@NamedQueries(@NamedQuery(name="OrganisationScope.hasOrganizationOfScope",query = "FROM OrganisationScope _scope WHERE _scope.organization = :organization"))
 public class OrganisationScope extends Scope {
 
 	private static final long serialVersionUID = 4668728765272500424L;
-
-//	@ManyToOne
-//	@JoinTable(name = "KS_OS__RELATION", //
-//	joinColumns = @JoinColumn(name = "CHILD_ID"), //
-//	inverseJoinColumns = @JoinColumn(name = "PARENT_ID"))
-//	private OrganisationScope parent;
-//
-//	@OneToMany(mappedBy = "parent")
-//	private Set<OrganisationScope> children = new HashSet<OrganisationScope>();
 
 	@OneToOne
 	@JoinColumn(name = "ORGANIZATION_ID")
@@ -49,14 +37,18 @@ public class OrganisationScope extends Scope {
 
     protected OrganisationScope() {}
 
-	public Organization getOrganization() {
-		return organization;
-	}
+    public OrganisationScope(String name, Organization organization) {
+        super(name);
+        this.organization = organization;
+    }
 
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
+    public Organization getOrganization() {
+        return organization;
+    }
 
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
 
     @Override
     public String[] businessKeys() {

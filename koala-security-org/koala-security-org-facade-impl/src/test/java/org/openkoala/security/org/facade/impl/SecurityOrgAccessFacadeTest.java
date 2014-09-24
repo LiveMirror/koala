@@ -2,8 +2,6 @@ package org.openkoala.security.org.facade.impl;
 
 import static org.junit.Assert.*;
 
-import org.dayatang.domain.EntityRepository;
-import org.dayatang.domain.InstanceFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.koala.commons.InvokeResult;
@@ -14,7 +12,6 @@ import org.openkoala.security.org.facade.SecurityOrgAccessFacade;
 import org.openkoala.security.org.facade.dto.EmployeeUserDTO;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import java.util.Date;
 
 /**

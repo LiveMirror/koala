@@ -31,7 +31,7 @@
     </head>
     <body>
         <div class="modal fade">
-            <div class="modal-dialog" style="width:900px;">
+            <div class="modal-dialog" style="width:800px;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -43,8 +43,8 @@
                             <div id="grantAuthoritiesToUserGrid"></div>
                         </div>
                         <div class="middle ">
-                            <button class="btn btn-success" id="grantAuthorityToUserButton">&lt;授权</button><br/><br/><br/><br/>
-                            <button class="btn btn-danger" id="notGrantAuthorityToUserButton">撤权&gt;</button>
+                            <button class="btn btn-success glyphicon glyphicon-chevron-left" id="grantAuthorityToUserButton">&nbsp;授权</button><br/><br/><br/><br/>
+                            <button class="btn btn-danger glyphicon glyphicon-chevron-right" id="notGrantAuthorityToUserButton">&nbsp;撤权</button>
                             <br/><br/><br/><br/>
                             <div id="grantAuthorityToUserMessage"></div>
                         </div>

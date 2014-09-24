@@ -88,6 +88,11 @@ public abstract class Actor extends SecurityAbstractEntity {
 	 *            范围
 	 */
 	public void grant(Authority authority, Scope scope) {
+        // 有可能授权的时候已经是有了，所以是需要修改的。
+        if(Authorization.exists(this,authority)){
+            Authorization authorization = Authorization.findByActorInAuthority(this,authority);
+            authorization.changeScope(scope);
+        }
 		if (Authorization.exists(this, authority, scope)) {
 			return;
 		}

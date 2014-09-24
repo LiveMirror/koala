@@ -8,8 +8,17 @@ import java.util.List;
 
 public interface SecurityOrgAccessFacade {
 	
-	List<OrganizationScopeDTO> findAllOrganizationScopesTree();
-
     InvokeResult pagingQueryEmployeeUsers(int pageIndex, int pageSize, EmployeeUserDTO queryEmployeeUserCondition);
 
+    /**
+     * 分页查询用户已经拥有的角色
+     *
+     * @param pageIndex
+     * @param pageSize
+     * @param userId
+     * @return
+     */
+    InvokeResult pagingQueryGrantRolesByUserId(int pageIndex, int pageSize, Long userId);
+
+    InvokeResult pagingQueryGrantPermissionsByUserId(int pageIndex, int pageSize, Long userId);
 }

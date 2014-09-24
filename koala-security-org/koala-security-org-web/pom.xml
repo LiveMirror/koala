@@ -158,14 +158,9 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-        <dependency>
-            <groupId>ch.org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>3.2.6.RELEASE</version>
-        </dependency>
     </dependencies>
 	<build>
-		<finalName>koala-security-web</finalName>
+		<finalName>koala-security-org</finalName>
 		<plugins>
 			<!-- 配置加入jetty服务器，开发时我们一般使用jetty服务器 -->
 			<plugin>

@@ -195,6 +195,6 @@ public abstract class Authority extends SecurityAbstractEntity {
     }
 
     public static <T extends Authority> T getBy(Long authorityId) {
-        return Authority.getBy(authorityId);
+        return (T) Authority.get(Authority.class,authorityId);
     }
 }

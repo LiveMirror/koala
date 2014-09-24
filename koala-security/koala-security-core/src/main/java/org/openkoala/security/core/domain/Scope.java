@@ -2,13 +2,7 @@ package org.openkoala.security.core.domain;
 
 import java.util.Set;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.dayatang.domain.AbstractEntity;
 
@@ -16,9 +10,12 @@ import org.dayatang.domain.AbstractEntity;
 @Table(name = "KS_SCOPES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
-public abstract class Scope extends AbstractEntity {
+public abstract class Scope extends SecurityAbstractEntity {
 
 	private static final long serialVersionUID = -7219997981491797461L;
+
+    @Column(name = "NAME")
+    private String name;
 
 	@Transient
 	public abstract Scope getParent();
@@ -28,7 +25,11 @@ public abstract class Scope extends AbstractEntity {
 
 	protected Scope() {}
 
-	public static Scope getBy(Long scopeId) {
+    public Scope(String name) {
+        this.name = name;
+    }
+
+    public static Scope getBy(Long scopeId) {
 		return Scope.get(Scope.class, scopeId);
 	}
 	
@@ -49,4 +50,7 @@ public abstract class Scope extends AbstractEntity {
 		return contains(scope.getParent());
 	}
 
+    public String getName() {
+        return name;
+    }
 }

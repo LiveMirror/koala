@@ -203,4 +203,9 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     public Set<MenuResource> findMenuResourcesOfPermission(Permission permission) {
         return permission.findMenuResources();
     }
+
+    @Override
+    public Authorization getAuthorization(Actor actor, Authority authority) {
+        return Authorization.findByActorInAuthority(actor,authority);
+    }
 }
