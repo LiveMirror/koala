@@ -161,8 +161,6 @@
 		var urlId = tabData.url_listId;
 		var roleId = tabData.permissionsId;
 		
-	     console.log(roleId);
-	     
 		var columns = [{
 				title : "权限名称",
 				name : "name",
@@ -251,7 +249,7 @@
 			url = contextPath + '/auth/role/pagingQueryGrantPermissionsByRoleId.koala?roleId=' + roleId;
 		}
 		
-		$("#tabContent>div:last-child").find('[data-role="userGrid"]').grid({
+		$('[data-role="userGrid"]').grid({
 			 identity: 'id',
              columns: columns,
              buttons: buttons,

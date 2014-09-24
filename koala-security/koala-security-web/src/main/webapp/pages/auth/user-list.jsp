@@ -241,7 +241,6 @@
 						} 
 						userManager().available(data.item[0] , $this);
 				    },
-                    <!-- 用户授权角色管理 开始 -->
                     'grantRoleToUser' : function(event, data) {
                         var indexs = data.data;
                         var $this = $(this);
@@ -360,14 +359,12 @@
                                         },
                                         url: contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId='+userId
                                     });
-                                }<!-- end-->
+                                }
 
                             });
                         });
 
-                    },<!-- 用户授权角色管理 结束-->
-
-                    <!-- 用户授权权限管理 开始-->
+                    },
                     'grantPermissionToUser' : function(event, data){
 
                         var indexs = data.data;
@@ -489,13 +486,12 @@
                                         },
                                         url: contextPath + '/auth/user/pagingQueryGrantPermissionByUserId.koala?userId='+userId
                                     });
-                                }<!-- end-->
+                                }
 
-                            });<!-- dialog end-->
+                            });
 
-                        });<!-- get end-->
-
-                    }<!-- 用户授权权限管理 结束-->
+                        });
+                    }
 				});
 		    }
 		};

@@ -23,7 +23,6 @@
 		<module>koala-organisation-web</module>
 	</modules>
 		 <properties>
-             <!--
 				<db.groupId>mysql</db.groupId>
 				<db.artifactId>mysql-connector-java</db.artifactId>
 				<db.version>5.1.22</db.version>
@@ -37,8 +36,7 @@
 				<db.password>koala</db.password>
 				<db.Type>MYSQL</db.Type>
 				<generateDdl>true</generateDdl>
-				-->
-			</properties> 
+			</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

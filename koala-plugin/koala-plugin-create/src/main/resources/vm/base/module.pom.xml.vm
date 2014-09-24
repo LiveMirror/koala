@@ -61,15 +61,10 @@
             <groupId>org.openkoala.koalacommons</groupId>  
             <artifactId>koala-commons-domain</artifactId>  
         </dependency>  
-		 <dependency>
-			  	<groupId>$Project.groupId</groupId>
-				<artifactId>${Project.artifactId}-infra</artifactId>
-				<version>${project.parent.version}</version>
-			 </dependency>
   <!-- 加入CONF依赖 -->
   <dependency>
   	<groupId>$Project.groupId</groupId>
-	<artifactId>${Project.artifactId}-conf</artifactId>
+	<artifactId>${Project.appName}-conf</artifactId>
 	<version>${project.parent.version}</version>
 	<type>test-jar</type>
     <scope>test</scope>
@@ -109,7 +104,7 @@
  	
    <dependency>
   	<groupId>$Project.groupId</groupId>
-	<artifactId>${Project.artifactId}-conf</artifactId>
+	<artifactId>${Project.appName}-conf</artifactId>
 	<version>${project.parent.version}</version>
 	<type>test-jar</type>
     <scope>test</scope>
@@ -231,7 +226,7 @@
  	
    <dependency>
   	<groupId>$Project.groupId</groupId>
-	<artifactId>${Project.artifactId}-conf</artifactId>
+	<artifactId>${Project.appName}-conf</artifactId>
 	<version>${project.parent.version}</version>
 	<type>test-jar</type>
     <scope>test</scope>
@@ -328,10 +323,14 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-context-support</artifactId>
    </dependency>     
-	
+	<dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>3.2</version>
+    </dependency>
   <dependency>
   	<groupId>$Project.groupId</groupId>
-	<artifactId>${Project.artifactId}-conf</artifactId>
+	<artifactId>${Project.appName}-conf</artifactId>
 	<version>$Project.version</version>
   </dependency>
   

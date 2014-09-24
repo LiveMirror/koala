@@ -8,11 +8,11 @@
 	    <artifactId>$Project.artifactId</artifactId>
 	    <version>$Project.version</version>
 	</parent>
-	<artifactId>${Project.artifactId}-conf</artifactId>
+	<artifactId>${Project.appName}-conf</artifactId>
 	
 	<packaging>jar</packaging>
 	
-	<name>${Project.artifactId}-conf</name>
+	<name>${Project.appName}-conf</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
