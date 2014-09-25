@@ -42,7 +42,7 @@ public class User extends Actor {
     @Column(name = "PASSWORD")
     private String password = INIT_PASSWORD;
 
-//    @Email
+    //    @Email
     @Column(name = "EMAIL")
     private String email;
 
@@ -172,12 +172,6 @@ public class User extends Actor {
         }
     }
 
-    public static Long getCount() {
-        return getRepository()//
-                .createNamedQuery("User.count")//
-                .singleResult();
-    }
-
     /**
      * 根据账户查找拥有的所有角色Role
      *
@@ -259,6 +253,18 @@ public class User extends Actor {
         return result;
     }
 
+    /**
+     * 检查仓储中用户是否有数据。
+     *
+     * @return
+     */
+    public static boolean hasUserExisted() {
+        long result = getRepository()//
+                .createNamedQuery("User.count")//
+                .singleResult();
+        return result > 0;
+    }
+
     protected static EncryptService passwordEncryptService;
 
     protected static EncryptService getPasswordEncryptService() {
@@ -317,7 +323,7 @@ public class User extends Actor {
      * @return
      */
     /*
-	 * private String generateSalt() { SecureRandom random = new SecureRandom(); byte[] bytes = new byte[8];
+     * private String generateSalt() { SecureRandom random = new SecureRandom(); byte[] bytes = new byte[8];
 	 * random.nextBytes(bytes); try { return new String(bytes, "UTF-8"); } catch (UnsupportedEncodingException e) {
 	 * throw new RuntimeException(e); } }
 	 */

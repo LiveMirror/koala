@@ -629,7 +629,18 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Override
     public void initSecuritySystem() {
-        securityDBInitApplication.initSecuritySystem();
+        if(securityAccessApplication.hasUserExisted()){
+            return;
+        }
+        User user = securityDBInitApplication.initUser();
+        Role role = securityDBInitApplication.initRole();
+        List<MenuResource> menuResources = securityDBInitApplication.initMenuResources();
+        List<PageElementResource> pageElementResources = securityDBInitApplication.initPageElementResources();
+        List<UrlAccessResource> urlAccessResources = securityDBInitApplication.initUrlAccessResources();
+        securityConfigApplication.grantAuthorityToActor(role,user);
+        securityConfigApplication.grantSecurityResourcesToAuthority(menuResources,role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResources,role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(urlAccessResources,role);
     }
 
     @Override

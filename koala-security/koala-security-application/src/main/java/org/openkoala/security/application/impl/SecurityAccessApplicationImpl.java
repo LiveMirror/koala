@@ -159,4 +159,8 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
         return permission.findMenuResources();
     }
 
+    @Override
+    public boolean hasUserExisted() {
+        return User.hasUserExisted();
+    }
 }
