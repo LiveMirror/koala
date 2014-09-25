@@ -31,11 +31,6 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.openkoala.security.org</groupId>
-            <artifactId>koala-security-org-application</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.openkoala.security</groupId>
             <artifactId>koala-security-facade</artifactId>
             <version>${project.parent.version}</version>
