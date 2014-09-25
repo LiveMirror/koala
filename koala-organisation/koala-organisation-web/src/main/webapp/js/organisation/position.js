@@ -47,7 +47,7 @@ var position = function(){
 		        'Content-Type': 'application/json' 
 		    },
 		    'type': "Post",
-		    'url': baseUrl + 'terminatePosts.koala',
+		    'url': baseUrl + 'terminate-posts.koala',
 		    'data': JSON.stringify(objects),
 		    'dataType': 'json'
 		 }).done(function(data){
