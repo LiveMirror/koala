@@ -230,12 +230,16 @@ var changePost = function(){
 			postGrid.data('koala.grid', null);
 			postGrid.empty();
 		}
-		postGrid.off() ;
 		postGrid.grid({
 			identity: 'id',
 			isShowIndexCol: false,
 			columns: cols,
 			querys: [{title: '岗位名称', value: 'name'}],
+			url: contextPath + '/post/paging-query-post-by-org.koala?organizationId='+id,
+			dataFilter:function(result){
+				console.log(result);
+                return result.data;
+            }
 		}).on({
 			'addPost':function(evnet, data){
 				var post = selectedPost.find('[data-value="'+data.postId+'"]');
@@ -297,39 +301,36 @@ var changePost = function(){
 		});
 		
 		var grid = postGrid.data("koala.grid");
-		$.post(contextPath + '/post/paging-query-post-by-org.koala?organizationId='+id,{pagesize:10,page:0},function(result){
-			var existIds = [];
-			$("#selectedPost .selected-post").each(function(i,t){
-				existIds.push($(t).attr("data-value"));
-			});
-			
-			var data = [];
-			
-			$.each(result.data,function(i,d){
-				var exist = false;
-				$.each(existIds,function(j,t){
-					if(d.id == t){
-						exist = true;
-						return false;
-					}
-				});
-				
-				if(!exist){
-					data.push(d);
+		
+		var existIds = [];
+		$("#selectedPost .selected-post").each(function(i,t){
+			existIds.push($(t).attr("data-value"));
+		});
+		
+		var data = [];
+		var result = grid.itemsMap;
+		$.each(result,function(i,d){
+			var exist = false;
+			$.each(existIds,function(j,t){
+				if(d.id == t){
+					exist = true;
+					return false;
 				}
 			});
 			
-			result = {
-				"pageSize"		: result.pageSize,
-				"start"			: result.start,
-				"data"			: data,
-				"resultCount"	: data.length,
-				"pageIndex"		: result.pageCount,
-				"pageCount"		: result.pageCount
-			};
-			
-			grid.update(result);
-		},"json");
+			if(!exist){
+				data.push(d);
+			}
+		});
+		
+		result = {
+			"pageSize"		: result.pageSize,
+			"start"			: result.start,
+			"data"			: data,
+			"resultCount"	: data.length,
+			"pageIndex"		: result.pageCount,
+			"pageCount"		: result.pageCount
+		};
 		
 		if (!!window.ActiveXObject || "ActiveXObject" in window) {
 			postGrid.find('.grid-table-body').css({height: '208px'});
@@ -342,3 +343,7 @@ var changePost = function(){
 		addPost: addPost
 	};
 };
+
+function test() {
+	alert('a')
+}
