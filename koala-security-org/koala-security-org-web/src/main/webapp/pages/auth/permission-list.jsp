@@ -882,14 +882,7 @@
         					});
         					return;
         				}
-        				if(items.length > 1){
-        					dialog.find('.modal-content').message({
-        						type: 'warning',
-        						content: '只能分配一条权限'
-        					});
-        					return;
-        				}
-        				
+
         				saveBtn.attr('disabled', 'disabled');
         				
         				var data = "roleId="+roleId;
