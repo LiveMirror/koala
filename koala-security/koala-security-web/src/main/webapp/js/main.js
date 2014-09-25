@@ -159,10 +159,7 @@ var openTab = function(target, title, mark, id, param){
  */
 var loadContent = function(obj, url){
     $.get(contextPath + url).done(function(data, status, objXMLHttp){
-    	
     	var headers = objXMLHttp.getAllResponseHeaders();
-    	console.log(headers.indexOf("login: login"))
-    	console.log(window.location.pathname)
     	if (headers.indexOf("login: login") >= 0 && window.location.pathname.indexOf("/login.koala") < 0) {
     		window.location.href = contextPath + "/login.koala";
     	} else {

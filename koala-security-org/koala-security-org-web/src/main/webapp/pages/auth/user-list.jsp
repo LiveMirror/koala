@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@include file="/commons/taglibs.jsp"%>
-<%@include file="/commons/statics.jsp"%>
 
 <%@ page import="java.util.Date"%>
 <% String formId = "form_" + new Date().getTime();
    String gridId = "grid_" + new Date().getTime();
    String path = request.getContextPath()+request.getServletPath().substring(0, request.getServletPath().lastIndexOf("/") + 1);
 %>
-<!-- strat form -->
 <form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
@@ -43,12 +41,10 @@
 </table>	
 </div>
 </form>
-<!-- end form -->
 
 <div data-role="userGrid">
 </div>
-	<script>
-    //组织需要用到的变量。
+	<script type="text/javascript">
     var departmentTree = null;
     var positionDepartment = null;
     var departmentId = null;
@@ -249,7 +245,9 @@
 						} 
 						userManager().available(data.item[0] , $this);
 				    },
-                    <!-- 用户授权角色管理 开始 -->
+				    
+				    
+				    
                     'grantRoleToUser' : function(event, data) {
                         var indexs = data.data;
                         var $this = $(this);
@@ -392,14 +390,12 @@
                                         columns: hasGrantRoleColumns,
                                         url: contextPath + '/auth/employeeUser/pagingQueryGrantRoleByUserId.koala?userId='+userId
                                     });
-                                }<!-- end-->
+                                }
 
                             });
                         });
 
-                    },<!-- 用户授权角色管理 结束-->
-
-                    <!-- 用户授权权限管理 开始-->
+                    },
                     'grantPermissionToUser' : function(event, data){
 
                         var indexs = data.data;
@@ -544,13 +540,11 @@
                                         columns: hasGrantPermissionColumns,
                                         url: contextPath + '/auth/employeeUser/pagingQueryGrantPermissionByUserId.koala?userId='+userId
                                     });
-                                }<!-- end-->
+                                }
 
-                            });<!-- dialog end-->
-
-                        });<!-- get end-->
-
-                    }<!-- 用户授权权限管理 结束-->
+                            });
+                        });
+                    }
 				});
 		    }
 		};
@@ -584,137 +578,6 @@
           }
 	};
 
-    /**
-    * 选择一个组织机构
-    */
-    var selectemployeeOrg = function (event, actorId, authorityId) {
-        // 阻止事件冒泡和捕捉
-        event.stopPropagation();
-
-        /**
-         * 部门选择
-         */
-        $.get( contextPath + '/pages/organisation/selectDepartmentTemplate.jsp').done(function(data){
-            var departmentTreeDialog = $(data);
-            positionDepartment = departmentTreeDialog.find('#positionDepartment');
-            departmentTreeDialog.find('.modal-body').css({height:'325px'});
-            departmentTree = departmentTreeDialog.find('.tree');
-            loadDepartmentTree(departmentTree);
-            departmentTreeDialog.find('#confirm').on('click',function(){
-                departmentTreeDialog.modal('hide');
-                positionDepartment.find('input').val(departmentId);
-                positionDepartment.find('[data-toggle="item"]').html(departmentName);
-                positionDepartment.trigger('keydown');
-                var data  = {};
-                data['actorId'] = actorId;
-                data['authorityId'] = authorityId;
-                data['organizationId'] = departmentId;
-                data['organizationName'] = departmentName;
-                $.post(contextPath + '/auth/employeeUser/grantRolesToUserInScope.koala', data, function (data) {
-                    if(data.success){
-                        $('#grantAuthoritiesToUserGrid').grid('refresh');
-                    }
-                });
-
-            }).end().modal({
-                backdrop: false,
-                keyboard: false
-            }).on({
-                'hidden.bs.modal': function(){
-                    $(this).remove();
-                }
-            });
-        });
-    }
-
-    /**
-     * 加载部门树
-     */
-    var loadDepartmentTree = function(departmentTree){
-        $.get( contextPath + '/pages/organisation/selectDepartmentTemplate.jsp').done(function(data){
-            var departmentTreeDialog = $(data);
-            departmentTreeDialog.find('.modal-body').css({height:'325px'});
-            departmentTree = departmentTreeDialog.find('.tree');
-            loadDepartmentTree(departmentTree);
-            departmentTreeDialog.find('#confirm').on('click',function(){
-                departmentTreeDialog.modal('hide');
-                positionDepartment.find('input').val(departmentId);
-                positionDepartment.find('[data-toggle="item"]').html(departmentName);
-                positionDepartment.trigger('keydown');
-            }).end().modal({
-                backdrop: false,
-                keyboard: false
-            }).on({
-                'hidden.bs.modal': function(){
-                    $(this).remove();
-                }
-            });
-        });
-    }
-
-    /**
-     * 加载部门树
-     */
-    var loadDepartmentTree = function(departmentTree){
-        departmentTree.parent().loader({
-            opacity: 0
-        });
-        $.get(contextPath  + '/organization/orgTree.koala').done(function(data){
-            departmentTree.parent().loader('hide');
-            var zNodes = new Array();
-            $.each(data, function(){
-                var zNode = {};
-                if(this.organizationType == 'company'){
-                    zNode.type = 'parent';
-                }else{
-                    zNode.icon = 'glyphicon glyphicon-list-alt'
-                }
-                this.title = this.name;
-                zNode.menu = this;
-                if(this.children && this.children.length > 0){
-                    zNode.children = getChildrenData(new Array(), this.children);
-                }
-                zNodes.push(zNode);
-            });
-            var dataSourceTree = {
-                data: zNodes,
-                delay: 400
-            };
-            departmentTree.tree({
-                dataSource: dataSourceTree,
-                loadingHTML: '<div class="static-loader">Loading...</div>',
-                multiSelect: false,
-                cacheItems: true
-            }).on({
-                'selectParent': function(event, data){
-                    var data = data.data;
-                    departmentId = data.id;
-                    departmentName = data.name;
-                },
-                'selectChildren': function(event, data){
-                    departmentId = data.id;
-                    departmentName = data.name;
-                }
-            });
-        });
-    };
-
-    var getChildrenData = function(nodes, items){
-        $.each(items, function(){
-            var zNode = {};
-            if(this.organizationType == 'company'){
-                zNode.type = 'parent';
-            }else{
-                zNode.icon = 'glyphicon glyphicon-list-alt'
-            }
-            this.title = this.name;
-            zNode.menu = this;
-            if(this.children && this.children.length > 0){
-                zNode.children = getChildrenData(new Array(), this.children);
-            }
-            nodes.push(zNode);
-        });
-        return nodes;
-    };
+   
 
 </script>
