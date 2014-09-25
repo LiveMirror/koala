@@ -218,8 +218,11 @@
 				}, {
 					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除角色权限</button>',
 					action : 'removePermissionForRole'
-				}];
-			}else {
+                },{
+                    content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search" />&nbsp;高级搜索&nbsp;<span class="caret" /></button>',
+                    action : 'search'
+                }];
+            }else {
 				return [
 					{content: '<ks:hasSecurityResource identifier="permissionManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>', action: 'add'},
 					{content: '<ks:hasSecurityResource identifier="permissionManagerUpdate"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>', action: 'modify'},
