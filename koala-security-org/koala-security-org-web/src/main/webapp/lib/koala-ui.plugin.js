@@ -339,6 +339,10 @@
 				dataType : 'json',
 				success : function(result){
 
+					if(self.options.dataFilter){
+						result = self.options.dataFilter(result);
+					}
+					
 					if (!result.data) {
 						self.$element.message({
 							type : 'error',

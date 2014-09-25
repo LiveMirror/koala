@@ -125,6 +125,7 @@ body {
         var contextPath = '${pageContext.request.contextPath}';
 </script>
 </head>
+<% response.setHeader("login","login"); %>
 <body>
 	<div class="head"></div>
 	<div class="logo">
