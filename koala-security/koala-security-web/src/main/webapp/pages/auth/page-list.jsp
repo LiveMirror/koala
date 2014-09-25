@@ -184,14 +184,16 @@
 		
 		var buttons = (function(){
 			 if(pageId){
-				return [{
-					
-							content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为角色分配页面</button>',
-							action : 'assignPageFromRole'
-							},{
-							content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为删除角色分配页面</button>',
-							action : 'removePageFromRole'
-				        }];
+                 return [{
+                         content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为角色分配页面</button>',
+                         action: 'assignPageFromRole'
+                     }, {
+                         content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为删除角色分配页面</button>',
+                         action: 'removePageFromRole'
+                     }, {
+                         content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search" />&nbsp;高级搜索&nbsp;<span class="caret" /></button>',
+                         action : 'search'
+                     }];
 				} else {
 					 return [{
 							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',

@@ -179,9 +179,9 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantUrlAccessResourcesByRoleId", method = RequestMethod.GET)
-	public Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
-		return securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page,pagesize, roleId);
-	}
+	public Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId, UrlAccessResourceDTO queryUrlAccessResourceCondition) {
+        return securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page, pagesize, roleId, queryUrlAccessResourceCondition);
+    }
 
 	/**
 	 * 查出没有授权的URL访问权限资源。
@@ -193,8 +193,8 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantUrlAccessResourcesByRoleId", method = RequestMethod.GET)
-	public Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId) {
-		return securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page,	pagesize, roleId);
+	public Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId, UrlAccessResourceDTO queryUrlAccessResourceCondition) {
+		return securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page,	pagesize, roleId,queryUrlAccessResourceCondition);
 	}
 
 	/**
@@ -233,8 +233,8 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPermissionsByRoleId", method = RequestMethod.GET)
-	public Page<PermissionDTO> pagingQueryPermissionsByRoleId(int page, int pagesize, Long roleId) {
-		return securityAccessFacade.pagingQueryGrantPermissionsByRoleId(page, pagesize, roleId);
+	public Page<PermissionDTO> pagingQueryPermissionsByRoleId(int page, int pagesize, Long roleId, PermissionDTO queryPermissionCondition) {
+		return securityAccessFacade.pagingQueryGrantPermissionsByRoleId(page, pagesize, roleId, queryPermissionCondition);
 	}
 
 	/**
@@ -287,8 +287,8 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
-	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId) {
-		return securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page,	pagesize, roleId);
+	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId, PageElementResourceDTO queryPageElementResourceCondition) {
+		return securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page,	pagesize, roleId, queryPageElementResourceCondition);
 	}
 
 	/**

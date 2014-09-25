@@ -243,4 +243,20 @@ public interface SecurityAccessFacade {
     InvokeResult findInfOfRole(Long roleId);
 
     InvokeResult findInfOfPermission(Long permissionId);
+
+    /**
+     *
+     * @param pageIndex
+     * @param pageSize
+     * @param roleId
+     * @param queryUrlAccessResourceCondition
+     * @return
+     */
+    Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int pageIndex, int pageSize, Long roleId, UrlAccessResourceDTO queryUrlAccessResourceCondition);
+
+    Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int pageIndex, int pageSize, Long roleId, UrlAccessResourceDTO queryUrlAccessResourceCondition);
+
+    Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int pageIndex, int pageSize, Long roleId, PageElementResourceDTO queryPageElementResourceCondition);
+
+    Page<PermissionDTO> pagingQueryGrantPermissionsByRoleId(int pageIndex, int pageSize, Long roleId, PermissionDTO queryPermissionCondition);
 }
