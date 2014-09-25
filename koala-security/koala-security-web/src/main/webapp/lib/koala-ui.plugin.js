@@ -1081,6 +1081,12 @@
 						content : '修改成功'
 					});
 					self.$element.modal('hide');
+					var logOut = contextPath+"/logout.koala";
+					$.post(logOut,function(data){
+						if(data.success){
+							window.location.href = contextPath+"/login.koala";
+						}
+					});
 				} else {
 					self.$element.find('.modal-content').message({
 						type : 'error',
