@@ -38,7 +38,7 @@
 			});
 			
 			if(item && opreate == "modify"){
-				form.find("#menuIcon").addClass(item.menuIcon).attr('src', 'glyphicon glyphicon-list-alt');
+				form.find("#menuIcon").addClass(item.menuIcon).attr('src', item.menuIcon);
 			}else{
 				form.find("#menuIcon").addClass('glyphicon glyphicon-list-alt').attr('src', 'glyphicon glyphicon-list-alt');
 			}
