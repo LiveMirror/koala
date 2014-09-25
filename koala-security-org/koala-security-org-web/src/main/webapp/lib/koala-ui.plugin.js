@@ -338,6 +338,7 @@
 				data : params,
 				dataType : 'json',
 				success : function(result){
+
 					if (!result.data) {
 						self.$element.message({
 							type : 'error',
