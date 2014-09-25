@@ -7,30 +7,37 @@
 %>
 <!-- strat form -->
 <form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
-<input type="hidden" class="form-control" name="page" value="0">
-<input type="hidden"  class="form-control"  name="pagesize" value="10">
-<div class="panel" hidden="true" >
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td>
-            <div class ="form-group">
-             <label class="control-label" style="width:100px;float:left;">url名称:&nbsp;</label>
-            <div style="margin-left:15px;float:left;">
-            <input name="name" class="form-control" type="text" style="width:180px;"  />
-        </div>
-       		 <label class="control-label" style="width:100px;float:left;">url路径:&nbsp;</label>
-            <div style="margin-left:15px;float:left;">
-            <input name="url" class="form-control" type="text" style="width:180px;"  />
-        </div>
-             <label class="control-label" style="width:100px;float:left;">url描述:&nbsp;</label>
-            <div style="margin-left:15px;float:left;">
-            <input name="description" class="form-control" type="text" style="width:180px;"  />
-        </div>
-            </td>
-       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
-  </tr>
-</table>	
-</div>
+    <input type="hidden" class="form-control" name="page" value="0">
+    <input type="hidden" class="form-control" name="pagesize" value="10">
+
+    <div class="panel" hidden="true">
+        <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label class="control-label" style="width:100px;float:left;">url名称:&nbsp;</label>
+                        <div style="margin-left:15px;float:left;">
+                            <input name="name" class="form-control" type="text" style="width:180px;"/>
+                        </div>
+
+                        <label class="control-label" style="width:100px;float:left;">url路径:&nbsp;</label>
+                        <div style="margin-left:15px;float:left;">
+                            <input name="url" class="form-control" type="text" style="width:180px;"/>
+                        </div>
+
+                        <label class="control-label" style="width:100px;float:left;">url描述:&nbsp;</label>
+                        <div style="margin-left:15px;float:left;">
+                            <input name="description" class="form-control" type="text" style="width:180px;"/>
+                        </div>
+                    </div>
+                </td>
+                <td style="vertical-align: bottom;">
+                    <button id="search" type="button" style="position:relative; margin-left:35px; top: -15px"
+                            class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button>
+                </td>
+            </tr>
+        </table>
+    </div>
 </form>
 <!-- end form -->
 <div data-role="urlGrid"></div>
@@ -179,12 +186,15 @@
 		var getButtons = function() {
 			if (roleId) {
 				return [{
-					content : '<ks:hasSecurityResource identifier="roleManagerGrantUrlAccessResource"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配URL</button></ks:hasSecurityResource>',
+					content : '<ks:hasSecurityResource identifier="roleManagerGrantUrlAccessResource"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"/>&nbsp;分配URL</button></ks:hasSecurityResource>',
 					action : 'assignUrl'
 				}, {
-					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button>',
+					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove" />&nbsp;删除</button>',
 					action : 'removeUrlFromRole'
-				}];
+				},{
+                    content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search" />&nbsp;高级搜索&nbsp;<span class="caret" /></button>',
+                    action : 'search'
+                }];
 			} else {
 				return [{
 					content : '<ks:hasSecurityResource identifier="urlAccessResourceManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
@@ -199,7 +209,8 @@
 					content: '<ks:hasSecurityResource identifier="urlAccessResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
 					action: 'permissionAssign'
 				},{
-					content : '<ks:hasSecurityResource identifier="urlAccessResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',action : 'search'
+					content : '<ks:hasSecurityResource identifier="urlAccessResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+                    action : 'search'
  				}];
 			}
 		};
@@ -341,7 +352,6 @@
         					dialog.find('#selectUrlGrid').grid({
         						 identity: 'id',
         			             columns: columns,
-        			             querys: [{title: 'url名称', value: 'roleNameForSearch'}],
         			             url: contextPath + '/auth/role/pagingQueryNotGrantUrlAccessResourcesByRoleId.koala?roleId='+roleId
         			        });
        					},

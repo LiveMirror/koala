@@ -219,7 +219,10 @@
 				}, {
 					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除角色权限</button>',
 					action : 'removePermissionForRole'
-				}];
+				},{
+                    content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search" />&nbsp;高级搜索&nbsp;<span class="caret" /></button>',
+                    action : 'search'
+                }];
 			}else {
 				return [
 					{content: '<ks:hasSecurityResource identifier="permissionManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>', action: 'add'},
@@ -883,14 +886,7 @@
         					});
         					return;
         				}
-        				if(items.length > 1){
-        					dialog.find('.modal-content').message({
-        						type: 'warning',
-        						content: '只能分配一条权限'
-        					});
-        					return;
-        				}
-        				
+
         				saveBtn.attr('disabled', 'disabled');
         				
         				var data = "roleId="+roleId;
