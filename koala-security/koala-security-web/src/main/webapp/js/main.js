@@ -161,8 +161,10 @@ var loadContent = function(obj, url){
     $.get(contextPath + url).done(function(data, status, objXMLHttp){
     	
     	var headers = objXMLHttp.getAllResponseHeaders();
-    	if (headers.indexOf("login: login") >= 0 && window.location.pathname != "/login.koala") {
-    		window.location.href = "/login.koala";
+    	console.log(headers.indexOf("login: login"))
+    	console.log(window.location.pathname)
+    	if (headers.indexOf("login: login") >= 0 && window.location.pathname.indexOf("/login.koala") < 0) {
+    		window.location.href = contextPath + "/login.koala";
     	} else {
     		obj.html(data);
             $('#tabContent').trigger('loadContentCompalte', obj);
