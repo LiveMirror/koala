@@ -102,6 +102,12 @@
 		<error-code>302</error-code>
 		<location>/pages/errors/302.jsp</location>
 	</error-page>
-	<distributable />
+	
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://www.openkoala.com/token</taglib-uri>
+			<taglib-location>/WEB-INF/token.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 
 </web-app>

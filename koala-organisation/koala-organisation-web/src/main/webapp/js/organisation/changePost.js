@@ -237,8 +237,24 @@ var changePost = function(){
 			querys: [{title: '岗位名称', value: 'name'}],
 			url: contextPath + '/post/paging-query-post-by-org.koala?organizationId='+id,
 			dataFilter:function(result){
-				console.log(result);
-                return result.data;
+				var gridData = [];
+				var existIds = [];
+				$("#selectedPost .selected-post").each(function(i,t){
+					existIds.push($(t).attr("data-value"));
+				});
+				$.each(result.data,function(r,i){
+					var repetition = true;
+					$.each(existIds,function(j,t){
+						if (i.id == t) {
+							repetition = false;
+						}
+					});
+					if (repetition) {
+						gridData.push(i);
+					}
+				});
+				result.data = gridData;
+                return result;
             }
 		}).on({
 			'addPost':function(evnet, data){
@@ -299,38 +315,6 @@ var changePost = function(){
 				}
 			}
 		});
-		
-		var grid = postGrid.data("koala.grid");
-		
-		var existIds = [];
-		$("#selectedPost .selected-post").each(function(i,t){
-			existIds.push($(t).attr("data-value"));
-		});
-		
-		var data = [];
-		var result = grid.itemsMap;
-		$.each(result,function(i,d){
-			var exist = false;
-			$.each(existIds,function(j,t){
-				if(d.id == t){
-					exist = true;
-					return false;
-				}
-			});
-			
-			if(!exist){
-				data.push(d);
-			}
-		});
-		
-		result = {
-			"pageSize"		: result.pageSize,
-			"start"			: result.start,
-			"data"			: data,
-			"resultCount"	: data.length,
-			"pageIndex"		: result.pageCount,
-			"pageCount"		: result.pageCount
-		};
 		
 		if (!!window.ActiveXObject || "ActiveXObject" in window) {
 			postGrid.find('.grid-table-body').css({height: '208px'});
