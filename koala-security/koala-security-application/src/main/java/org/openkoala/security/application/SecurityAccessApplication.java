@@ -185,4 +185,5 @@ public interface SecurityAccessApplication {
 
     Set<MenuResource> findMenuResourcesOfPermission(Permission permission);
 
+    boolean hasUserExisted();
 }

@@ -1,6 +1,7 @@
 package org.openkoala.security.application.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Named;
@@ -17,60 +18,13 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
     public static final String MENU_ICON = "glyphicon  glyphicon-list-alt";
 
     @Override
-    public void initSecuritySystem() {
-        if (User.getCount() == 0) {
-            User user = initUser();
-            User user1 = new User("李四", "lisi");
-            user1.save();
-
-            Role role1 = new Role("test");
-            role1.save();
-            user1.grant(role1);
-            List<MenuResource> menuResources = initMenuResources();
-            role1.addSecurityResources(menuResources);
-
-            List<UrlAccessResource> menuUrls = createMenuResourceUrls();
-            SecurityResource.batchSave(menuUrls);
-            role1.addSecurityResources(menuUrls);
-            
-            user.changeEmail("zhangsan@koala.com", "888888");
-            user.changeTelePhone("18665589188", "888888");
-            Role role = initRole();
-            user.grant(role);
-
-            role.addSecurityResources(menuResources);
-
-            role.addSecurityResources(initUrlAccessResources());
-            role.addSecurityResources(menuUrls);
-            role.addSecurityResources(initPageElementResources());
-
-            UrlAccessResource userPageUrl = new UrlAccessResource("用户管理页面","/pages/auth/user-list.jsp");
-            UrlAccessResource suspendPageUrl = new UrlAccessResource("用户挂起页面","/pages/auth/forbidden-list.jsp");
-            UrlAccessResource rolePageUrl = new UrlAccessResource("角色管理页面","/pages/auth/role-list.jsp");
-            UrlAccessResource permissionPageUrl = new UrlAccessResource("权限管理页面","/pages/auth/permission-list.jsp");
-            UrlAccessResource menuPageUrl = new UrlAccessResource("菜单管理页面","/pages/auth/menu-list.jsp");
-            UrlAccessResource urlPage = new UrlAccessResource("URL管理页面","/pages/auth/url-list.jsp");
-            UrlAccessResource pageElementPage = new UrlAccessResource("页面元素管理页面","/pages/auth/page-list.jsp");
-
-            List<UrlAccessResource> urls = Lists.newArrayList(userPageUrl,suspendPageUrl,rolePageUrl,permissionPageUrl,menuPageUrl,urlPage,pageElementPage);
-            SecurityResource.batchSave(urls);
-
-            role.addSecurityResources(urls);
-            role1.addSecurityResources(urls);
-
-            // TODO 组织系统 目前在一起初始化~ 后面会分开
-            List<MenuResource> orgMenuResource = createOrgMenuResource();
-            role.addSecurityResources(orgMenuResource);
-            role1.addSecurityResources(orgMenuResource);
-        }
-    }
-
     public User initUser() {
         User result = createUser();
         result.save();
         return result;
     }
 
+    @Override
     public Role initRole() {
         Role result = createRole();
         result.save();
@@ -78,15 +32,18 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
     }
 
     // TODO 初始化permission
-    public void initPermissions() {
-
+    @Override
+    public List<Permission> initPermissions() {
+        return Collections.emptyList();
     }
 
+    @Override
     public List<MenuResource> initMenuResources() {
         List<MenuResource> results = createMenuResource();
         return results;
     }
 
+    @Override
     public List<UrlAccessResource> initUrlAccessResources() {
         List<UrlAccessResource> results = new ArrayList<UrlAccessResource>();
         List<UrlAccessResource> pageUrls = createPageElementResourceUrls();
@@ -94,16 +51,23 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
         List<UrlAccessResource> roleUrls = createRoleUrls();
         List<UrlAccessResource> userUrls = createUserUrls();
         List<UrlAccessResource> urls = createUrlAccessResourceUrls();
+        List<UrlAccessResource> menuUrls = createMenuResourceUrls();
         results.addAll(pageUrls);
         results.addAll(permissionUrls);
         results.addAll(roleUrls);
         results.addAll(userUrls);
         results.addAll(urls);
+        results.addAll(menuUrls);
         SecurityResource.batchSave(results);
         return results;
     }
-    
 
+    @Override
+    public void initActor(Actor actor) {
+        actor.save();
+    }
+
+    @Override
     public List<PageElementResource> initPageElementResources() {
         List<PageElementResource> userResults = createPageElementResourcesOfUser();
         List<PageElementResource> roleResults = createPageElementResourcesOfRole();
@@ -246,39 +210,6 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
         return role;
     }
 
-    private List<MenuResource> createOrgMenuResource() {
-        MenuResource rootMenuResouce = new MenuResource("组织机构管理");
-        rootMenuResouce.setMenuIcon(MENU_ICON);
-        rootMenuResouce.setDescription("组织机构管理菜单");
-        rootMenuResouce.save();
-
-        MenuResource departmentMenuResouce = new MenuResource("机构管理");
-        departmentMenuResouce.setUrl("/pages/organisation/departmentList.jsp");
-        departmentMenuResouce.setMenuIcon(MENU_ICON);
-        rootMenuResouce.addChild(departmentMenuResouce);
-
-        MenuResource jobMenuResouce = new MenuResource("职务管理");
-        jobMenuResouce.setUrl("/pages/organisation/jobList.jsp");
-        jobMenuResouce.setMenuIcon(MENU_ICON);
-        rootMenuResouce.addChild(jobMenuResouce);
-
-        MenuResource positionMenuResouce = new MenuResource("岗位管理");
-        positionMenuResouce.setUrl("/pages/organisation/positionList.jsp");
-        positionMenuResouce.setMenuIcon(MENU_ICON);
-        rootMenuResouce.addChild(positionMenuResouce);
-
-        MenuResource employeeMenuResouce = new MenuResource("人员管理");
-        employeeMenuResouce.setUrl("/pages/organisation/employeeList.jsp");
-        employeeMenuResouce.setMenuIcon(MENU_ICON);
-        rootMenuResouce.addChild(employeeMenuResouce);
-
-        return Lists.newArrayList(rootMenuResouce,//
-                departmentMenuResouce,//
-                jobMenuResouce,//
-                positionMenuResouce,//
-                employeeMenuResouce);
-    }
-
     private List<MenuResource> createMenuResource() {
         MenuResource actorSecurityMenuResource = new MenuResource("参与者管理");
         actorSecurityMenuResource.setDescription("用户、用户组等页面管理。");
@@ -416,7 +347,6 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
      * @return
      */
     private List<UrlAccessResource> createRoleUrls() {
-//        UrlAccessResource allRoleUrls = new UrlAccessResource("所有的角色", "/auth/role/**");
         UrlAccessResource addRoleUrls = new UrlAccessResource("添加角色", "/auth/role/add.koala");
         UrlAccessResource updateRoleUrls = new UrlAccessResource("修改角色", "/auth/role/update.koala");
         UrlAccessResource terminateRoleUrls = new UrlAccessResource("撤销角色", "/auth/role/terminate.koala");
@@ -489,7 +419,6 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
      */
     private List<UrlAccessResource> createUserUrls() {
         UrlAccessResource allUserUrl = new UrlAccessResource("用户管理", "/auth/user/**");
-//        UrlAccessResource usersUrlList = new UrlAccessResource("用户管理", "/pages/auth/user-list.jsp");
         UrlAccessResource userAddUrl = new UrlAccessResource("用户管理-添加", "/auth/user/add.koala");
         UrlAccessResource userUpdateUrl = new UrlAccessResource("用户管理-更新", "/auth/user/update.koala");
         UrlAccessResource userTerminateUrl = new UrlAccessResource("用户管理-撤销", "/auth/user/terminate.koala");
@@ -522,7 +451,6 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 
         return Lists.newArrayList(allUserUrl,//
                 userAddUrl,//
-//                usersUrlList,//
                 userUpdateUrl,//
                 userTerminateUrl,//
                 userPagingqueryUrl,//

@@ -1,5 +1,6 @@
 package org.openkoala.security.org.facade.impl;
 
+import com.google.common.collect.Lists;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.koala.commons.InvokeResult;
@@ -9,6 +10,7 @@ import org.openkoala.organisation.domain.Employee;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
+import org.openkoala.security.application.SecurityDBInitApplication;
 import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.domain.*;
@@ -23,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 @Named
 public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
@@ -40,6 +43,9 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 
     @Inject
     private OrganizationApplication organizationApplication;
+
+    @Inject
+    private SecurityDBInitApplication securityDBInitApplication;
 
     private QueryChannelService queryChannelService;
 
@@ -150,5 +156,65 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
         }
     }
 
+    @Override
+    public void initSecurityOrgSystem() {
+        if(securityAccessApplication.hasUserExisted()){
+            return;
+        }
+        EmployeeUser employeeUser = createEmployeeUser();
+        securityDBInitApplication.initActor(employeeUser);
+        Role role = securityDBInitApplication.initRole();
+        List<MenuResource> menuResources = securityDBInitApplication.initMenuResources();
+        List<PageElementResource> pageElementResources = securityDBInitApplication.initPageElementResources();
+        List<UrlAccessResource> urlAccessResources = securityDBInitApplication.initUrlAccessResources();
+        List<MenuResource> orgMenuResources = createOrgMenuResource();
+        securityConfigApplication.grantAuthorityToActor(role,employeeUser);
+        securityConfigApplication.grantSecurityResourcesToAuthority(menuResources,role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResources,role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(urlAccessResources,role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(orgMenuResources,role);
+
+    }
+
+    private EmployeeUser createEmployeeUser() {
+        EmployeeUser employeeUser = new EmployeeUser("张三", "zhangsan");
+        employeeUser.setCreateOwner("admin");
+        employeeUser.setDescription("普通用户");
+        return employeeUser;
+    }
+
+    private List<MenuResource> createOrgMenuResource() {
+        String menuIcon = "glyphicon  glyphicon-list-alt";
+        MenuResource rootMenuResouce = new MenuResource("组织机构管理");
+        rootMenuResouce.setMenuIcon(menuIcon);
+        rootMenuResouce.setDescription("组织机构管理菜单");
+        rootMenuResouce.save();
+
+        MenuResource departmentMenuResouce = new MenuResource("机构管理");
+        departmentMenuResouce.setUrl("/pages/organisation/departmentList.jsp");
+        departmentMenuResouce.setMenuIcon(menuIcon);
+        rootMenuResouce.addChild(departmentMenuResouce);
+
+        MenuResource jobMenuResouce = new MenuResource("职务管理");
+        jobMenuResouce.setUrl("/pages/organisation/jobList.jsp");
+        jobMenuResouce.setMenuIcon(menuIcon);
+        rootMenuResouce.addChild(jobMenuResouce);
+
+        MenuResource positionMenuResouce = new MenuResource("岗位管理");
+        positionMenuResouce.setUrl("/pages/organisation/positionList.jsp");
+        positionMenuResouce.setMenuIcon(menuIcon);
+        rootMenuResouce.addChild(positionMenuResouce);
+
+        MenuResource employeeMenuResouce = new MenuResource("人员管理");
+        employeeMenuResouce.setUrl("/pages/organisation/employeeList.jsp");
+        employeeMenuResouce.setMenuIcon(menuIcon);
+        rootMenuResouce.addChild(employeeMenuResouce);
+
+        return Lists.newArrayList(rootMenuResouce,//
+                departmentMenuResouce,//
+                jobMenuResouce,//
+                positionMenuResouce,//
+                employeeMenuResouce);
+    }
 
 }

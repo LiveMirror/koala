@@ -14,7 +14,7 @@
 		<listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>org.openkoala.security.listener.SecurityDBInitListener</listener-class>
+		<listener-class>org.openkoala.security.org.listener.SecurityOrgDBInitListener</listener-class>
 	</listener>
 	<listener>
 		<listener-class>org.openkoala.security.listener.SystemEvenmentListener</listener-class>
@@ -83,7 +83,7 @@
 	</welcome-file-list>
 	
 	<session-config>
-		<session-timeout>120</session-timeout>
+		<session-timeout>2</session-timeout>
 	</session-config>
 	
 	<error-page>

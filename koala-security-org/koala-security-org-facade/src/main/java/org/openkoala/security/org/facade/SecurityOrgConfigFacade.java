@@ -19,4 +19,5 @@ public interface SecurityOrgConfigFacade {
 
     InvokeResult changeEmployeeUserProps(ChangeEmployeeUserPropsCommand command);
 
+    void initSecurityOrgSystem();
 }

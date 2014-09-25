@@ -366,6 +366,13 @@ var userManager = function() {
                 dialog.trigger('keydown');
             });
 
+            //兼容IE8 IE9
+            if(window.ActiveXObject){
+                if(parseInt(navigator.userAgent.toLowerCase().match(/msie ([\d.]+)/)[1]) < 10){
+                    dialog.trigger('shown.bs.modal');
+                }
+            }
+
         });
     };<!-- 选择员工结束-->
 
