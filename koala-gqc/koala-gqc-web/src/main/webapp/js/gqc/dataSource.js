@@ -1,3 +1,5 @@
+$.ajaxSetup({cache:false});
+
 var dataSource = function(){
 	var baseUrl = contextPath + '/dataSource/';
 	var dialog = null;    //对话框
