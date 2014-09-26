@@ -51,7 +51,7 @@ var department = function(){
 			url = 'terminate-company.koala';
 		}
 		$.post(baseUrl + url, org).done(function(data){
-			if(data.result == 'success'){
+			if(data.result.message == 'success'){
 				$('#departmentDetail').message({
 					type: 'success',
 					content: '撤销成功'
