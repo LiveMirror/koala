@@ -51,6 +51,16 @@
 
   
         #if ($Module.moduleType == "bizModel")
+          <dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>17.0</version>
+		</dependency>
+		<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>5.0.3.Final</version>
+			</dependency>
 		<!-- 加入对DOMAIN层的依赖 -->
 		<dependency>
 			<groupId>org.dayatang.dddlib</groupId>
@@ -85,10 +95,6 @@
 					<artifactId>javassist</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.openkoala.koalacommons</groupId>
-			<artifactId>koala-commons-exception</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
@@ -221,7 +227,6 @@
             <artifactId>spring-context</artifactId>
         </dependency>		
   #end
-
 #if ($Module.moduleType == "facadeImpl")
  	
    <dependency>
@@ -314,9 +319,20 @@
 	        <artifactId>koala-commons-support</artifactId>
 	    </dependency>
 #end
+#if ($Module.moduleType == "infra")
 
+<dependency>
+  	<groupId>$Project.groupId</groupId>
+	<artifactId>${Project.appName}-core</artifactId>
+	<version>$Project.version</version>
+  </dependency>
+  <dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.2.3</version>
+		</dependency>
 
-
+#end
 #if ($Module.moduleType == "war")
 
    <dependency>
@@ -333,6 +349,38 @@
 	<artifactId>${Project.appName}-conf</artifactId>
 	<version>$Project.version</version>
   </dependency>
+  <dependency>
+  	<groupId>$Project.groupId</groupId>
+	<artifactId>${Project.appName}-infra</artifactId>
+	<version>$Project.version</version>
+  </dependency>
+   <dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+<!-- 	验证码 -->
+		<dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha</artifactId>
+			<version>${jcaptcha.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha-integration-simple-servlet</artifactId>
+			<version>${jcaptcha.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
   
   <!-- 加入对dayatang的spring的实现 -->
 		<dependency>
@@ -362,12 +410,6 @@
 			<artifactId>standard</artifactId>
 			<version>1.1.2</version>
 		</dependency>
-		
-	<dependency> 
-		<groupId>org.openkoala.security</groupId> 
-		<artifactId>koala-security-core</artifactId> 
-	</dependency>
-	
 	<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
