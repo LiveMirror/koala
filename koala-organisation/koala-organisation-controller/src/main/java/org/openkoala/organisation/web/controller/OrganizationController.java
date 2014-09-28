@@ -143,7 +143,7 @@ public class OrganizationController extends BaseController {
 	public Map<String, Object> terminateCompany(OrganizationDTO companyDto) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		companyDto.setOrganizationType(OrganizationDTO.COMPANY);
-		dataMap.put("result", organizationFacade.terminateOrganization(companyDto).getMessage());
+		dataMap.put("result", organizationFacade.terminateOrganization(companyDto));
 		return dataMap;
 	}
 

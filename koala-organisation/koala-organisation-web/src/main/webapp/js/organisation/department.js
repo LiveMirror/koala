@@ -66,7 +66,7 @@ var department = function(){
 			}else{
 				$('body').message({
 					type: 'error',
-					content: data.result
+					content: data.result.message
 				});
 			}
 		}).fail(function(data){
