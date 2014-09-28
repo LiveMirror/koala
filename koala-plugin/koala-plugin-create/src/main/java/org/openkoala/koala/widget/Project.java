@@ -204,7 +204,6 @@ public class Project implements Serializable {
 		bizModel.setModuleName("core");
 		bizModel.setProjectName(appName);
 		bizModel.setBasePackage(getGroupId() + "." + getPackageName() + ".core.domain");
-		bizModel.getDependencies().add("infra");
 		getModule().add(bizModel);
 
 		// 初始化一个接口层
@@ -215,6 +214,7 @@ public class Project implements Serializable {
 		application.setBasePackage(getGroupId() + "."
 				+ getPackageName() + ".application"+".impl");
 		application.getDependencies().add("core");
+		application.getDependencies().add("infra");
 		getModule().add(application);
 		
 		// 初始化一个门面层
@@ -226,7 +226,6 @@ public class Project implements Serializable {
 				+ getPackageName() + ".facade.dto");
 		facade.getDependencies().add("core");
 		facade.getDependencies().add("application");
-		facade.getDependencies().add("infra");
 		getModule().add(facade);
 		// 初始化一个门面层的实现
 				Module  facadeImpl= new Module();
@@ -237,7 +236,6 @@ public class Project implements Serializable {
 						+ getPackageName() + ".facade.impl");
 				facadeImpl.getDependencies().add("application");
 				facadeImpl.getDependencies().add("core");
-				facadeImpl.getDependencies().add("infra");
 				facadeImpl.getDependencies().add("facade");
 				getModule().add(facadeImpl);				
 		// 初始化一个实现层

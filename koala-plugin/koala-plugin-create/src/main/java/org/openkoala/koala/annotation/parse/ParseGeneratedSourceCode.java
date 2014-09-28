@@ -30,6 +30,8 @@ public class ParseGeneratedSourceCode implements Parse {
 		name = name.replaceAll("GenerateSourceCode", "");
 		if(fieldVal ){
 			 xmlPath = "xml/ObjectFunctionCreate/" + name + "-generate-source-code.xml";
+		}else{
+			 xmlPath = "xml/ObjectFunctionCreate/" + name + "-not-generate-source-code.xml";
 		}
 		XmlParseUtil.parseXml(xmlPath, params);
 		logger.info("类对象【" + name + "】解析成功");

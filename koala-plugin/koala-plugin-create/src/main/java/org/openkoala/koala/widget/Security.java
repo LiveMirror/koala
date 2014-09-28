@@ -2,12 +2,16 @@ package org.openkoala.koala.widget;
 
 import java.io.Serializable;
 
+import org.openkoala.koala.annotation.GeneratedSourceCode;
 import org.openkoala.koala.annotation.ObjectFunctionCreate;
 
 @ObjectFunctionCreate
 public class Security implements Serializable {
 
 	private static final long serialVersionUID = 9195935564812042299L;
+	
+	@GeneratedSourceCode
+	private Boolean SecurityGenerateSourceCode = true;
 
 	// @ 后续提供 EJB,LDAP的实现
 	private String connType = "JDBC";
@@ -51,6 +55,14 @@ public class Security implements Serializable {
 
 	public void setCacheType(String cacheType) {
 		this.cacheType = cacheType;
+	}
+
+	public Boolean getSecurityGenerateSourceCode() {
+		return SecurityGenerateSourceCode;
+	}
+
+	public void setSecurityGenerateSourceCode(Boolean securityGenerateSourceCode) {
+		SecurityGenerateSourceCode = securityGenerateSourceCode;
 	}
 	
 }
