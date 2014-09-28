@@ -60,7 +60,7 @@ public class JobFacadeImpl implements JobFacade {
 		}
 		if (!StringUtils.isBlank(jobSearchExample.getDescription())) {
 			jpql.append(" and _job.description like ?");
-			conditionVals.add(MessageFormat.format("%{0}%", jobSearchExample.getSn()));
+			conditionVals.add(MessageFormat.format("%{0}%", jobSearchExample.getDescription()));
 		}
 
 		return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
