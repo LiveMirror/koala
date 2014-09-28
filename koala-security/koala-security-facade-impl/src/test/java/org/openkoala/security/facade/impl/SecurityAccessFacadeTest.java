@@ -271,6 +271,18 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		assertTrue(results.getPageCount() == 1);
 	}
 
+    @Test
+	public void testPagingQueryNotGrantUrlAccessResourcesByRoleIdAndQueryCondition() {
+		UrlAccessResource urlAccessResource = new UrlAccessResource("testPagingQueryNotGrantUrlAccessResourcesByRoleId", "testPagingQueryNotGrantUrlAccessResourcesByRoleId");
+		urlAccessResource.save();
+        UrlAccessResourceDTO queryUrlAccessResourceCondition = new UrlAccessResourceDTO("test");
+        queryUrlAccessResourceCondition.setName("测试");
+        queryUrlAccessResourceCondition.setDescription("测试");
+		Page<UrlAccessResourceDTO> results =  securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(currentPage, pageSize, role.getId(),queryUrlAccessResourceCondition);
+		assertTrue(results.getData().isEmpty());
+		assertTrue(results.getPageCount() == 0);
+	}
+
 	@Test
 	public void testPagingQueryGrantPermissionsByUrlAccessResourceId() {
 		Page<PermissionDTO> results =  securityAccessFacade.pagingQueryGrantPermissionsByUrlAccessResourceId(currentPage, pageSize, urlAccessResource.getId());
@@ -354,6 +366,16 @@ public class SecurityAccessFacadeTest extends AbstractFacadeIntegrationTestCase{
 		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(currentPage, pageSize,pageElementResource.getId());
 		assertFalse(results.getData().isEmpty());
 		assertTrue(results.getPageCount() == 1);
+	}
+
+    @Test
+	public void testPagingQueryNotGrantPermissionsByPageElementResourceIdAndQueryCondition() {
+		Permission permission = new Permission("testPagingQueryNotGrantPermissionsByPageElementResourceId", "testPagingQueryNotGrantPermissionsByPageElementResourceId");
+		permission.save();
+        PermissionDTO queryPermissionCondition = new PermissionDTO(1L,"aa","Aa","Aa");
+		Page<PermissionDTO> results = securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(currentPage, pageSize,pageElementResource.getId(),queryPermissionCondition);
+		assertTrue(results.getData().isEmpty());
+		assertTrue(results.getPageCount() == 0);
 	}
 
     @Test

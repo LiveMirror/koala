@@ -85,7 +85,7 @@
                         content : '<ks:hasSecurityResource identifier="userManagerActivate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;激活</button></ks:hasSecurityResource>',
                         action : 'available'
                     },{
-                        content : '<ks:hasSecurityResource identifier="userManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+                        content : '<ks:hasSecurityResource identifier="userManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
                         action : 'search'
                     }];
 		 		};

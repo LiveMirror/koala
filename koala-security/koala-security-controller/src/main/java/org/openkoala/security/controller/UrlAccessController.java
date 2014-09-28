@@ -142,8 +142,8 @@ public class UrlAccessController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,Long urlAccessResourceId) {
-		return securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(page,pagesize, urlAccessResourceId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize,Long urlAccessResourceId, PermissionDTO queryPermissionCondition) {
+		return securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(page,pagesize, urlAccessResourceId, queryPermissionCondition);
 	}
 
 }

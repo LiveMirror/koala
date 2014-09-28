@@ -97,7 +97,6 @@
 	            button		: ".save",
 	            rules 		: rules,
 	            onButtonClick:function(result, button, form){
-	            	//console.log(item);
 	            	/**
 	            	 * result是表单验证的结果。
 	            	 * 如果表单的验证结果为true,说明全部校验都通过，你可以通过ajax提交表单参数
@@ -168,15 +167,15 @@
 		console.log(pageId);
 		
 		var columns = [{
-				title : "页面名称",
+				title : "页面元素名称",
 				name : "name",
 				width : 200
 			},{
-				title : "页面标识",
+				title : "页面元素标识",
 				name : "identifier",
 				width : 250
 			},{
-				title : "页面描述",
+				title : "页面元素描述",
 				name : "description",
 				width : 150
 			}];
@@ -208,7 +207,7 @@
 							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
 							action: 'permissionAssignForPage'
 						},{
-							content : '<ks:hasSecurityResource identifier="pageElementResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+							content : '<ks:hasSecurityResource identifier="pageElementResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
 							action : 'search'
 		 				}];
 			}
@@ -297,6 +296,19 @@
 				*/
         		$.get(contextPath + '/pages/auth/select-page.jsp').done(function(data){
         			var dialog = $(data);
+
+                    dialog.find('#search').on('click', function(){
+                        var params = {};
+                        dialog.find('.form-control').each(function(){
+                            var $this = $(this);
+                            var name = $this.attr('name');
+                            if(name){
+                                params[name] = $this.val();
+                            }
+                        });
+                        $('[data-role="selectPageGrid"]').getGrid().search(params);
+                    });
+
         			dialog.find('#save').click(function(){
         				var saveBtn = $(this);
         				var items = dialog.find('#selectPageGrid').data('koala.grid').selectedRows();
@@ -347,20 +359,15 @@
        					
        					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化url选择表格
        						var columns = [{
-       							title : "页面名称",
+       							title : "页面元素名称",
        							name : "name",
-       							width : 150
-       						},
-       					  {
-       							title : "页面标识",
-       							name : "identifier",
-       							width : 150
-       						},{
-       							title : "页面类型",
-       							name : "pageElementType",
-       							width : 150
+       							width : 200
        						}, {
-       							title : "页面描述",
+       							title : "页面元素标识",
+       							name : "identifier",
+       							width : 200
+       						}, {
+       							title : "页面元素描述",
        							name : "description",
        							width : 200
        						}];
@@ -368,7 +375,6 @@
        						dialog.find('#selectPageGrid').grid({
        						 identity: 'id',
        			             columns: columns,
-       			             querys: [{title: '页面名称', value: 'roleNameForSearch'}],
        			             url: contextPath + '/auth/role/pagingQueryNotGrantPageElementResourcesByRoleId.koala?roleId='+pageId
        			           });    
        					  
