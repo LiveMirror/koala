@@ -6,33 +6,33 @@
    String path = request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);
 %>
 <!-- strat form -->
-<form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
+<form  id="urlListForm" target="_self" class="form-horizontal searchCondition">
     <input type="hidden" class="form-control" name="page" value="0">
     <input type="hidden" class="form-control" name="pagesize" value="10">
 
-    <div class="panel" hidden="true">
+    <div id="urlAccessResourceManagerQueryDivId" class="panel" hidden="true">
         <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>
                     <div class="form-group">
-                        <label class="control-label" style="width:100px;float:left;">url名称:&nbsp;</label>
+                        <label class="control-label" style="width:100px;float:left;">URL名称:&nbsp;</label>
                         <div style="margin-left:15px;float:left;">
                             <input name="name" class="form-control" type="text" style="width:180px;"/>
                         </div>
 
-                        <label class="control-label" style="width:100px;float:left;">url路径:&nbsp;</label>
+                        <label class="control-label" style="width:100px;float:left;">URL路径:&nbsp;</label>
                         <div style="margin-left:15px;float:left;">
                             <input name="url" class="form-control" type="text" style="width:180px;"/>
                         </div>
 
-                        <label class="control-label" style="width:100px;float:left;">url描述:&nbsp;</label>
+                        <label class="control-label" style="width:100px;float:left;">URL描述:&nbsp;</label>
                         <div style="margin-left:15px;float:left;">
                             <input name="description" class="form-control" type="text" style="width:180px;"/>
                         </div>
                     </div>
                 </td>
                 <td style="vertical-align: bottom;">
-                    <button id="search" type="button" style="position:relative; margin-left:35px; top: -15px"
+                    <button id="urlListSearch" type="button" style="position:relative; margin-left:35px; top: -15px"
                             class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button>
                 </td>
             </tr>
@@ -171,15 +171,15 @@
 		var roleId = role ? role.roleId : null;
 		
 		var columns = [{
-			title 	: "url名称",
+			title 	: "URL名称",
 			name 	: "name",
 			width 	: 200
 		},{
-			title 	: "url路径",
+			title 	: "URL路径",
 			name 	: "url",
 			width 	: 400
 		},{
-			title 	: "url描述",
+			title 	: "URL描述",
 			name 	: "description",
 			width 	: 200
 		}];
@@ -193,7 +193,7 @@
 					action : 'removeUrlFromRole'
 				},{
                     content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search" />&nbsp;高级搜索&nbsp;<span class="caret" /></button>',
-                    action : 'search'
+                    action : 'urlAccessResourceManagerQuery'
                 }];
 			} else {
 				return [{
@@ -209,8 +209,8 @@
 					content: '<ks:hasSecurityResource identifier="urlAccessResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
 					action: 'permissionAssign'
 				},{
-					content : '<ks:hasSecurityResource identifier="urlAccessResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
-                    action : 'search'
+					content : '<ks:hasSecurityResource identifier="urlAccessResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+                    action : 'urlAccessResourceManagerQuery'
  				}];
 			}
 		};
@@ -293,6 +293,19 @@
 				var grid = $(this);
         		$.get(contextPath + '/pages/auth/select-url.jsp').done(function(data){
         			var dialog = $(data);
+
+                    dialog.find('#selectUrlsearch').on('click', function(){
+                        var params = {};
+                        dialog.find('.form-control').each(function(){
+                            var $this = $(this);
+                            var name = $this.attr('name');
+                            if(name){
+                                params[name] = $this.val();
+                            }
+                        });
+                        $('[data-role="selectUrlGrid"]').getGrid().search(params);
+                    });
+
         			dialog.find('#save').click(function(){
         				var $saveBtn = $(this);
         				var items = dialog.find('#selectUrlGrid').data('koala.grid').selectedRows();
@@ -334,25 +347,24 @@
        					},
        					
        					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化url选择表格
-       						var columns = [
-       						{
-       							title : "url名称",
-       							name : "name",
-       							width : 150
-       						},{
-       							title : "url路径",
-       							name : "url",
-       							width : 150
-       						},{
-       							title : "url描述",
-       							name : "description",
-       							width : 200
-       						}];
-       					
+                            var columns = [{
+                                title 	: "URL名称",
+                                name 	: "name",
+                                width 	: 300
+                            },{
+                                title 	: "URL路径",
+                                name 	: "url",
+                                width 	: 300
+                            },{
+                                title 	: "URL描述",
+                                name 	: "description",
+                                width 	: 100
+                            }];
+
         					dialog.find('#selectUrlGrid').grid({
         						 identity: 'id',
         			             columns: columns,
-        			             url: contextPath + '/auth/role/pagingQueryNotGrantUrlAccessResourcesByRoleId.koala?roleId='+roleId
+                                url: contextPath + '/auth/role/pagingQueryNotGrantUrlAccessResourcesByRoleId.koala?roleId=' + roleId
         			        });
        					},
        					
@@ -373,8 +385,8 @@
         	        }
         		});
 			},
-			'search' : function() {						
-				$(".panel").slideToggle("slow");						 
+			'urlAccessResourceManagerQuery' : function() {
+				$("#urlAccessResourceManagerQueryDivId").slideToggle("slow");
 			},
 			"removeUrlFromRole" : function(event, data){ //解除授予
 				var indexs = data.data;
@@ -411,8 +423,8 @@
 				});
 			}
 		});
-		var formId = $("#<%=formId%>");
-		formId.find('#search').on('click', function(){
+		var formId = $("#urlListForm");
+		formId.find('#urlListSearch').on('click', function(){
             var params = {};
             formId.find('.form-control').each(function(){
                 var $this = $(this);

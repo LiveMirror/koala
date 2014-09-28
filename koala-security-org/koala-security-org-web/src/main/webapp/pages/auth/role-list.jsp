@@ -9,7 +9,7 @@
 <form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
-<div class="panel" hidden="true" >
+<div id ="roleManagerQueryDivId" class="panel" hidden="true" >
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
       <td>
@@ -25,7 +25,7 @@
               </div>
           </div>
       </td>
-      <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
+      <td style="vertical-align: bottom;"><button id="roleManagerSearch" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
   </tr>
 </table>	
 </div>
@@ -72,8 +72,8 @@
                 content : '<ks:hasSecurityResource identifier="roleManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配权限</button></ks:hasSecurityResource>',
                 action : 'permissionAssign'
             },{
-                content : '<ks:hasSecurityResource identifier="roleManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
-                action : 'search'
+                content : '<ks:hasSecurityResource identifier="roleManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+                action : 'roleManagerQuery'
             }];
 		})();
 		
@@ -127,8 +127,8 @@
 					}
 				});
 			},
-			'search' : function() {						
-				$(".panel").slideToggle("slow");						 
+			'roleManagerQuery' : function() {
+				$("#roleManagerQueryDivId").slideToggle("slow");
 			},
 			"urlAssign" : function(event, data){
 				var items 	= data.item;
@@ -182,7 +182,8 @@
 				}
 				//roleManager().pageAssign($(this), items[0].roleId);
 				var page = items[0];
-				openTab('/pages/auth/page-list.jsp', page.name+'的page管理', 'roleManager_' + page.id, page.id, {pageId : page.id});
+                console.log("页面--->",page);
+                openTab('/pages/auth/page-list.jsp', page.name+'的page管理', 'roleManager_' + page.id, page.id, {pageId : page.id});
 			},
 			'permissionAssign' : function(event, data) {
 				var items = data.item;
@@ -201,33 +202,13 @@
 					});
 					return;
 				}
-				//roleManager().pageAssign($(this), items[0].roleId);
 				var permissions = items[0];
+                console.log("权限--->",permissions);
 				openTab('/pages/auth/permission-list.jsp', permissions.name+'的权限管理', 'roleManager_' + permissions.id, permissions.id, {permissionsId : permissions.id});
-			},
-			'assignResource' : function(event, data) {
-				var indexs = data.data;
-				var $this = $(this);
-				if (indexs.length == 0) {
-					$this.message({
-						type : 'warning',
-						content : '请选择一条记录进行操作'
-					});
-					return;
-				}
-				if (indexs.length > 1) {
-					$this.message({
-						type : 'warning',
-						content : '只能选择一条记录进行操作'
-					});
-					return;
-				}
-				console.log(data.data[0]);
-				roleManager().assignResource($(this), data.data[0]);
 			}
 		});
-		 form = $("#<%=formId%>");
-		form.find('#search').on('click', function(){
+		form = $("#<%=formId%>");
+		form.find('#roleManagerSearch').on('click', function(){
 	            var params = {};
 	            form.find('.form-control').each(function(){
 	                var $this = $(this);

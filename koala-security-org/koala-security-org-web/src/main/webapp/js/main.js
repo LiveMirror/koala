@@ -123,7 +123,6 @@ var openTab = function(target, title, mark, id, param){
     loadContent(content, target);
     contents.append(content);
     var tab =  $('<li>');
-    //tab.html('<a href="#'+mark+'" data-toggle="tab"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><span>'+title+'<span></a>');
     tab.append($('<a href="#'+mark+'" data-toggle="tab"></a>')).find('a').html('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><span>'+title+'<span>');
     var closeBtn = tab.appendTo(tabs).on('click',function(){
         var $this = $(this);

@@ -313,8 +313,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
 	public void testGetUserCount() throws Exception {
 		User user = initUser();
 		user.save();
-		long size = User.getCount();
-		assertTrue(size > 0);
+		User.hasUserExisted();
 	}
 
 	/*------------- Private helper methods  -----------------*/

@@ -9,7 +9,7 @@
 <form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
-<div class="panel" hidden="true" >
+<div  id = "roleManagerQueryDivId" class="panel" hidden="true" >
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
       <td>
@@ -72,8 +72,8 @@
                 content : '<ks:hasSecurityResource identifier="roleManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配权限</button></ks:hasSecurityResource>',
                 action : 'permissionAssign'
             },{
-                content : '<ks:hasSecurityResource identifier="roleManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
-                action : 'search'
+                content : '<ks:hasSecurityResource identifier="roleManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+                action : 'roleManagerQuery'
             }];
 		})();
 		
@@ -127,8 +127,8 @@
 					}
 				});
 			},
-			'search' : function() {						
-				$(".panel").slideToggle("slow");						 
+			'roleManagerQuery' : function() {
+				$("#roleManagerQueryDivId").slideToggle("slow");
 			},
 			"urlAssign" : function(event, data){
 				var items 	= data.item;

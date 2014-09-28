@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.dayatang.querychannel.Page;
 import org.openkoala.koala.commons.InvokeResult;
+import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangeRolePropsCommand;
@@ -247,8 +248,8 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByRoleId", method = RequestMethod.GET)
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId) {
-		return securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize,	roleId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId, PermissionDTO queryPermissionCondition) {
+		return securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize,	roleId, queryPermissionCondition);
 	}
 
 	/**
@@ -299,10 +300,10 @@ public class RoleController {
 	 * @param roleId
 	 * @return
 	 */
-	@ResponseBody
-	@RequestMapping(value = "/pagingQueryNotGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
-	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize,
-			Long roleId) {
-		return securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(page, pagesize, roleId);
-	}
+    @ResponseBody
+    @RequestMapping(value = "/pagingQueryNotGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
+    public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize,
+                                                                                        Long roleId, PageElementResourceDTO queryPageElementResourceCondition) {
+        return securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(page, pagesize, roleId, queryPageElementResourceCondition);
+    }
 }

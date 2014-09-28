@@ -101,12 +101,9 @@
 	            		var menuIcon = $("#menuIcon").attr('src');
 	            		$("#icon").val(menuIcon);
 	            		var data = form.serialize();
-	            		console.info("---->");
-	            		console.log(data);
 	            		var url = baseUrl + 'add.koala';
 	            		if(item != null){//problem
-	            			console.log("aaa");
-	            			url = baseUrl + 'addChildToParent.koala';	
+	            			url = baseUrl + 'addChildToParent.koala';
 	            			data += ("&parentId=" +item.id);
 	        			}else{
 	        				var url = baseUrl + 'add.koala';
@@ -123,7 +120,7 @@
 	        				dataType:"json",
 	        				success:function(data){
 	        					if (data.success) {
-		        					dialog.trigger('complete');			
+		        					dialog.trigger('complete');
 		        				} else {
 		        					dialog.find('.modal-content').message({
 		        						type : 'error',

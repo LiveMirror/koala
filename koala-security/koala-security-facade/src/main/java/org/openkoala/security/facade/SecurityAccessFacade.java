@@ -208,18 +208,18 @@ public interface SecurityAccessFacade {
      * @return
      */
     InvokeResult getuserDetail(String userAccount);
-    
+
     /**
      * 检测角色名是否存在
-     * 
+     *
      * @param roleName
      * @return
      */
     boolean checkRoleByName(String roleName);
-    
+
     /**
      * 检测用户是否有某个角色
-     * 
+     *
      * @param userAccount
      * @param roleName
      * @return
@@ -245,7 +245,6 @@ public interface SecurityAccessFacade {
     InvokeResult findInfOfPermission(Long permissionId);
 
     /**
-     *
      * @param pageIndex
      * @param pageSize
      * @param roleId
@@ -259,4 +258,14 @@ public interface SecurityAccessFacade {
     Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int pageIndex, int pageSize, Long roleId, PageElementResourceDTO queryPageElementResourceCondition);
 
     Page<PermissionDTO> pagingQueryGrantPermissionsByRoleId(int pageIndex, int pageSize, Long roleId, PermissionDTO queryPermissionCondition);
+
+    Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int pageIndex, int pageSize, Long roleId, PageElementResourceDTO queryPageElementResourceCondition);
+
+    Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int pageIndex, int pageSize, Long roleId, PermissionDTO queryPermissionCondition);
+
+    Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int pageIndex, int pageSize, Long menuResourceId, PermissionDTO queryPermissionCondition);
+
+    Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int pageIndex, int pageSize, Long pageElementResourceId, PermissionDTO queryPermissionCondition);
+
+    Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int pageIndex, int pageSize, Long urlAccessResourceId, PermissionDTO queryPermissionCondition);
 }
