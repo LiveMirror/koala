@@ -8,7 +8,7 @@
 			height: 250px;
 		}
 		.select-role .modal-dialog {
-			width: 850px;
+			width: 900px;
 		}
 	</style>
 	<div class="modal-dialog">
@@ -18,7 +18,31 @@
 				<h4 class="modal-title">分配权限</h4>
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
-				<div id="selectUrlGrid"></div>
+                <form id="selectUrlFrom" target="_self" class="form-inline searchCondition">
+                    <input type="hidden" class="form-control" name="page" value="0">
+                    <input type="hidden" class="form-control" name="pagesize" value="10">
+
+                    <div class="panel">
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="control-label">URL名称:&nbsp;</label>
+                                        <input name="name" class="form-control" type="text"/>
+                                        <label class="control-label">URL路径:&nbsp;</label>
+                                        <input name="url" class="form-control" type="text"/>
+                                        <label class="control-label">URL描述:&nbsp;</label>
+                                        <input name="description" class="form-control" type="text"/>
+                                    </div>
+                                </td>
+                                <td style="vertical-align: bottom; padding: 0 5px;" >
+                                    <button id="search" type="button" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+                <div id="selectUrlGrid" data-role="selectUrlGrid"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

@@ -29,14 +29,16 @@
                                     <div class="form-group">
                                         <label class="control-label">URL名称:&nbsp;</label>
                                         <input name="name" class="form-control" type="text"/>
+
                                         <label class="control-label">URL路径:&nbsp;</label>
                                         <input name="url" class="form-control" type="text"/>
+
                                         <label class="control-label">URL描述:&nbsp;</label>
                                         <input name="description" class="form-control" type="text"/>
                                     </div>
                                 </td>
                                 <td style="vertical-align: bottom; padding: 0 5px;" >
-                                    <button id="search" type="button" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button>
+                                    <button id="selectUrlsearch" type="button" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button>
                                 </td>
                             </tr>
                         </table>

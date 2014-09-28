@@ -101,26 +101,23 @@
 	            		var menuIcon = $("#menuIcon").attr('src');
 	            		$("#icon").val(menuIcon);
 	            		var data = form.serialize();
-	            		console.info("---->");
-	            		console.log(data);
 	            		var url = baseUrl + 'add.koala';
 	            		if(item != null){//problem
-	            			console.log("aaa");
-	            			url = baseUrl + 'addChildToParent.koala';	
+	            			url = baseUrl + 'addChildToParent.koala';
 	            			data += ("&parentId=" +item.id);
 	        			}else{
 	        				var url = baseUrl + 'add.koala';
 	        			}
-	        			if (item&&opreate =='modify') {
-	        				url = baseUrl + 'update.koala';
-	        			    data += ("&id=" + item.id);
-	        				
-	        			}
+                        if (item && opreate == 'modify') {
+                            url = baseUrl + 'update.koala';
+                            data += ("&id=" + item.id);
+
+                        }
 	        			$.ajax({
-	        				url : url,
-	        				data: data,
-	        				type: "POST",
-	        				dataType:"json",
+                            url: url,
+                            data: data,
+                            type: "POST",
+                            dataType: "json",
 	        				success:function(data){
 	        					if (data.success) {
 		        					dialog.trigger('complete');			

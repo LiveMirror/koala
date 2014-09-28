@@ -9,7 +9,7 @@
 <form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
-<div class="panel" hidden="true">
+<div id="userManagerQueryDivId" class="panel" hidden="true">
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td>
@@ -36,7 +36,7 @@
            </select>
             </div>
             </td>
-       <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success glyphicon glyphicon-search"></button></td>
+       <td style="vertical-align: bottom;"><button id="userManagerSearch" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success glyphicon glyphicon-search"></button></td>
   </tr>
 </table>	
 </div>
@@ -88,8 +88,8 @@
                         content : '<ks:hasSecurityResource identifier="userManagerActivate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-wrench"></span>&nbsp;激活</button></ks:hasSecurityResource>',
                         action : 'available'
                     },{
-                        content : '<ks:hasSecurityResource identifier="userManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
-                        action : 'search'
+                        content : '<ks:hasSecurityResource identifier="userManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+                        action : 'userManagerQuery'
                     }];
 		 		};
 		         return $('[data-role="userGrid"]').off().grid({
@@ -222,8 +222,8 @@
 						
 						userManager().forbidden(data.item[0] , $this);
 					},
-					'search' : function() {						
-						$(".panel").slideToggle("slow");						 
+					'userManagerQuery' : function() {
+						$("#userManagerQueryDivId").slideToggle("slow");
 						
 					},
 					'available' : function(event, data) {
@@ -388,7 +388,7 @@
                                     dialog.find('#grantAuthoritiesToUserGrid').grid({
                                         identity: 'id',
                                         columns: hasGrantRoleColumns,
-                                        url: contextPath + '/auth/employeeUser/pagingQueryGrantRoleByUserId.koala?userId='+userId
+                                        url: contextPath + '/auth/employeeUser/pagingQueryGrantRoleByUserId.koala?userId=' + userId
                                     });
                                 }
 
@@ -566,7 +566,7 @@
 		};
 		PageLoader.initSearchPanel();
 		PageLoader.initGridPanel();
-        form.find('#search').on('click', function(){
+        form.find('#userManagerSearch').on('click', function(){
             var params = {};
             form.find('.form-control').each(function(){
                 var $this = $(this);

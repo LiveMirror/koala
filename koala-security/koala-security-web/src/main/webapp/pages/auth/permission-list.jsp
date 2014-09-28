@@ -10,7 +10,7 @@
     <input type="hidden" class="form-control" name="page" value="0">
     <input type="hidden" class="form-control" name="pagesize" value="10">
 
-    <div class="panel" hidden="true">
+    <div id="permissionManagerQueryDivId" class="panel" hidden="true">
         <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>
@@ -221,15 +221,22 @@
 					action : 'removePermissionForRole'
 				},{
                     content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search" />&nbsp;高级搜索&nbsp;<span class="caret" /></button>',
-                    action : 'search'
+                    action : 'permissionManagerQuery'
                 }];
 			}else {
-				return [
-					{content: '<ks:hasSecurityResource identifier="permissionManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>', action: 'add'},
-					{content: '<ks:hasSecurityResource identifier="permissionManagerUpdate"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>', action: 'modify'},
-					{content: '<ks:hasSecurityResource identifier="permissionManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>撤销</button></ks:hasSecurityResource>', action: 'delete'},
-					{content : '<ks:hasSecurityResource identifier="permissionManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',action : 'search'
-	 				}];
+                return [{
+                        content: '<ks:hasSecurityResource identifier="permissionManagerAdd"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"><span>添加</button></ks:hasSecurityResource>',
+                        action: 'add'
+                }, {
+                        content: '<ks:hasSecurityResource identifier="permissionManagerUpdate"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
+                        action: 'modify'
+                }, {
+                        content: '<ks:hasSecurityResource identifier="permissionManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>撤销</button></ks:hasSecurityResource>',
+                        action: 'delete'
+                }, {
+                        content: '<ks:hasSecurityResource identifier="permissionManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+                        action: 'permissionManagerQuery'
+                    }];
 			}
 		})();
 		
@@ -691,7 +698,7 @@
        							name : "name",
        							width : 150
        						},{
-       							title : "菜单标识",
+       							title : "权限标识",
        							name : "identifier",
        							width : 150
        						},{
@@ -723,8 +730,8 @@
         	        }
         		});
         	},
-			'search' : function() {						
-				$(".panel").slideToggle("slow");						 
+			'permissionManagerQuery' : function() {
+				$("#permissionManagerQueryDivId").slideToggle("slow");
 			},
         	'removePermissionForUrl':function(event, data) {
 				var indexs = data.data;

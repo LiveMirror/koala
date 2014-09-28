@@ -120,7 +120,7 @@
 	        				dataType:"json",
 	        				success:function(data){
 	        					if (data.success) {
-		        					dialog.trigger('complete');			
+		        					dialog.trigger('complete');
 		        				} else {
 		        					dialog.find('.modal-content').message({
 		        						type : 'error',
