@@ -23,12 +23,8 @@ import org.openkoala.organisation.facade.JobFacade;
 import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.JobDTO;
 import org.openkoala.organisation.facade.impl.assembler.JobDtoAssembler;
-import org.springframework.transaction.annotation.Transactional;
 
 @Named
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-//@Stateless(name = "JobApplication")
-//@Remote
 public class JobFacadeImpl implements JobFacade {
 
 	@Inject
@@ -120,7 +116,7 @@ public class JobFacadeImpl implements JobFacade {
 			baseApplication.terminateParty(JobDtoAssembler.assemEntity(jobDTO));
 			return InvokeResult.success();
 		} catch (TheJobHasPostAccountabilityException e) {
-			return InvokeResult.failure("职务：" + jobDTO.getName() + "已经关联岗位，不能被撤销！");
+			return InvokeResult.failure("该职务已被使用!");
 		}
 	}
 
@@ -134,7 +130,7 @@ public class JobFacadeImpl implements JobFacade {
 			baseApplication.terminateParties(jobs);
 			return InvokeResult.success();
 		} catch (TheJobHasPostAccountabilityException e) {
-			return InvokeResult.failure("该职务已经关联岗位，不能被撤销！");
+			return InvokeResult.failure("该职务已被使用!");
 		}
 	}
 

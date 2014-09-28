@@ -27,12 +27,8 @@ import org.openkoala.organisation.facade.PostFacade;
 import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.PostDTO;
 import org.openkoala.organisation.facade.impl.assembler.PostDtoAssembler;
-import org.springframework.transaction.annotation.Transactional;
 
 @Named
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-//@Stateless(name = "PostApplication")
-//@Remote
 public class PostFacadeImpl implements PostFacade {
 
 	@Inject

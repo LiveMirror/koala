@@ -64,8 +64,6 @@ public class JobController extends BaseController {
 	@ResponseBody
 	@RequestMapping("/create")
 	public Map<String, Object> createJob(JobDTO jobDto) {
-		System.out.println("getName================="+jobDto.getName());
-		System.out.println("getSn================="+jobDto.getSn());
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("result", jobFacade.createJob(jobDto).getMessage());
 		return dataMap;
