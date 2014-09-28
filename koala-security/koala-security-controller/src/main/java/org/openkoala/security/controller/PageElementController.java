@@ -133,8 +133,8 @@ public class PageElementController {
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByPageElementResourceId", method = RequestMethod.GET)
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
-			Long pageElementResourceId) {
+			Long pageElementResourceId, PermissionDTO queryPermissionCondition) {
 		return  securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(page,
-				pagesize, pageElementResourceId);
+				pagesize, pageElementResourceId, queryPermissionCondition);
 	}
 }

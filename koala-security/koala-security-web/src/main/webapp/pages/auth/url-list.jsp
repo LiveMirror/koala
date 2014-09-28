@@ -209,7 +209,7 @@
 					content: '<ks:hasSecurityResource identifier="urlAccessResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
 					action: 'permissionAssign'
 				},{
-					content : '<ks:hasSecurityResource identifier="urlAccessResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+					content : '<ks:hasSecurityResource identifier="urlAccessResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
                     action : 'search'
  				}];
 			}
@@ -293,6 +293,20 @@
 				var grid = $(this);
         		$.get(contextPath + '/pages/auth/select-url.jsp').done(function(data){
         			var dialog = $(data);
+                    var formId = dialog.find("#selectUrlFrom");
+                    formId.find('#search').on('click', function(){
+                        var params = {};
+                        formId.find('.form-control').each(function(){
+                            var $this = $(this);
+                            var name = $this.attr('name');
+                            if(name){
+                                params[name] = $this.val();
+                            }
+                        });
+                        $('[data-role="selectUrlGrid"]').getGrid().search(params);
+                    });
+
+
         			dialog.find('#save').click(function(){
         				var $saveBtn = $(this);
         				var items = dialog.find('#selectUrlGrid').data('koala.grid').selectedRows();
@@ -334,25 +348,24 @@
        					},
        					
        					'shown.bs.modal': function(){ //弹窗初始化完毕后，初始化url选择表格
-       						var columns = [
-       						{
-       							title : "url名称",
-       							name : "name",
-       							width : 150
-       						},{
-       							title : "url路径",
-       							name : "url",
-       							width : 150
-       						},{
-       							title : "url描述",
-       							name : "description",
-       							width : 200
-       						}];
-       					
+                            var columns = [{
+                                title 	: "URL名称",
+                                name 	: "name",
+                                width 	: 300
+                            },{
+                                title 	: "URL路径",
+                                name 	: "url",
+                                width 	: 300
+                            },{
+                                title 	: "URL描述",
+                                name 	: "description",
+                                width 	: 100
+                            }];
+
         					dialog.find('#selectUrlGrid').grid({
         						 identity: 'id',
         			             columns: columns,
-        			             url: contextPath + '/auth/role/pagingQueryNotGrantUrlAccessResourcesByRoleId.koala?roleId='+roleId
+                                url: contextPath + '/auth/role/pagingQueryNotGrantUrlAccessResourcesByRoleId.koala?roleId=' + roleId
         			        });
        					},
        					
