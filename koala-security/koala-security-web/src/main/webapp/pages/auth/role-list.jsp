@@ -9,7 +9,7 @@
 <form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
-<div class="panel" hidden="true" >
+<div  id = "roleManagerQueryDivId" class="panel" hidden="true" >
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
       <td>
@@ -73,7 +73,7 @@
                 action : 'permissionAssign'
             },{
                 content : '<ks:hasSecurityResource identifier="roleManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
-                action : 'search'
+                action : 'roleManagerQuery'
             }];
 		})();
 		
@@ -127,8 +127,8 @@
 					}
 				});
 			},
-			'search' : function() {						
-				$(".panel").slideToggle("slow");						 
+			'roleManagerQuery' : function() {
+				$("#roleManagerQueryDivId").slideToggle("slow");
 			},
 			"urlAssign" : function(event, data){
 				var items 	= data.item;

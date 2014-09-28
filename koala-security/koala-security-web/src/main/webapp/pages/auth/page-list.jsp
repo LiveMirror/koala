@@ -9,7 +9,7 @@
 <form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
-<div class="panel" hidden="true" >
+<div id = "pageElementResourceManagerQueryDivId" class="panel" hidden="true" >
     <table border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>
@@ -208,7 +208,7 @@
 							action: 'permissionAssignForPage'
 						},{
 							content : '<ks:hasSecurityResource identifier="pageElementResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
-							action : 'search'
+							action : 'pageElementResourceManagerQuery'
 		 				}];
 			}
 		})();
@@ -397,8 +397,8 @@
         	        }
         		});
 			},
-			'search' : function() {						
-				$(".panel").slideToggle("slow");						 
+			'pageElementResourceManagerQuery' : function() {
+				$("#pageElementResourceManagerQueryDivId").slideToggle("slow");
 			},
 			'removePageFromRole' : function(event, data) {
 				var indexs = data.data;
