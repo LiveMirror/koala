@@ -312,9 +312,9 @@ var userManager = function() {
                 },
                 'shown.bs.modal': function(){
                     var columns = [
-                        { title:'姓名', name:'name' , width: '100px'},
-                        { title:'员工编号', name:'sn', width: '100px'},
-                        { title:'性别', name:'gender', width: '60px',
+                        { title:'姓名', name:'name' , width: 100},
+                        { title:'员工编号', name:'sn', width: 100},
+                        { title:'性别', name:'gender', width: 60,
                             render: function(item, name, index){
                                 if(item[name] == 'FEMALE'){
                                     return '女';
@@ -323,10 +323,10 @@ var userManager = function() {
                                 }
                             }
                         },
-                        { title:'入职日期', name:'entryDate', width: '100px'},
-                        { title:'所属机构', name:'organizationName', width: '210px'},
-                        { title:'岗位', name:'postName', width: '180px'},
-                        { title:'兼职岗位', name:'additionalPostNames', width: '180px'},
+                        { title:'入职日期', name:'entryDate', width: 100},
+                        { title:'所属机构', name:'organizationName', width: 210},
+                        { title:'岗位', name:'postName', width: 180},
+                        { title:'兼职岗位', name:'additionalPostNames', width: 180}
                     ];<!-- definition columns end -->
 
                     //查询出当前表单所需要得数据。
