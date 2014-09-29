@@ -2,11 +2,14 @@ package org.openkoala.security.org.controller;
 
 import javax.inject.Inject;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.InvokeResult;
-import org.openkoala.security.org.facade.command.*;
 import org.openkoala.security.org.facade.SecurityOrgAccessFacade;
 import org.openkoala.security.org.facade.SecurityOrgConfigFacade;
+import org.openkoala.security.org.facade.command.ChangeEmployeeUserPropsCommand;
+import org.openkoala.security.org.facade.command.CreateEmpolyeeUserCommand;
+import org.openkoala.security.org.facade.command.TerminateUserFromPermissionInScopeCommand;
+import org.openkoala.security.org.facade.command.TerminateUserFromRoleInScopeCommand;
 import org.openkoala.security.org.facade.dto.AuthorizationCommand;
 import org.openkoala.security.org.facade.dto.EmployeeUserDTO;
 import org.openkoala.security.org.facade.dto.OrgPermissionDTO;

@@ -1,15 +1,15 @@
 package org.openkoala.organisation.application;
 
-import org.dayatang.querychannel.Page;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.application.dto.EmployeeDTO;
 import org.openkoala.organisation.application.dto.ResponsiblePostDTO;
 import org.openkoala.organisation.domain.Employee;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 /**
  * 员工应用层接口

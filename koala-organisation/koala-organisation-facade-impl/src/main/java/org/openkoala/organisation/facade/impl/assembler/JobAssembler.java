@@ -3,9 +3,9 @@ package org.openkoala.organisation.facade.impl.assembler;
 import org.openkoala.organisation.domain.Job;
 import org.openkoala.organisation.facade.dto.JobDTO;
 
-public class JobDtoAssembler {
+public class JobAssembler {
 
-	public static JobDTO assemDto(Job job) {
+	public static JobDTO toDTO(Job job) {
 		JobDTO dto = new JobDTO(job.getId(), job.getName(), job.getSn());
 		dto.setCreateDate(job.getCreateDate());
 		dto.setDescription(job.getDescription());
@@ -13,7 +13,7 @@ public class JobDtoAssembler {
 		return dto;
 	}
 
-	public static Job assemEntity(JobDTO jobDTO) {
+	public static Job toEntity(JobDTO jobDTO) {
 		Job result = new Job(jobDTO.getName(), jobDTO.getSn());
 		result.setId(jobDTO.getId());
 		result.setDescription(jobDTO.getDescription());

@@ -20,4 +20,8 @@
 		<module>koala-bpm-oss</module>
 	</modules>
 	
+	<properties>
+		<dddlib.version>4.3.0</dddlib.version>
+	</properties>
+	
 </project>

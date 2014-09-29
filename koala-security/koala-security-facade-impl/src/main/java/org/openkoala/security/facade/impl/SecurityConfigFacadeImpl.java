@@ -13,7 +13,15 @@ import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.application.SecurityDBInitApplication;
-import org.openkoala.security.core.*;
+import org.openkoala.security.core.CorrelationException;
+import org.openkoala.security.core.EmailIsExistedException;
+import org.openkoala.security.core.IdentifierIsExistedException;
+import org.openkoala.security.core.NameIsExistedException;
+import org.openkoala.security.core.NullArgumentException;
+import org.openkoala.security.core.TelePhoneIsExistedException;
+import org.openkoala.security.core.UrlIsExistedException;
+import org.openkoala.security.core.UserAccountIsExistedException;
+import org.openkoala.security.core.UserPasswordException;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
@@ -48,9 +56,11 @@ import org.openkoala.security.facade.impl.assembler.UrlAccessResourceAssembler;
 import org.openkoala.security.facade.impl.assembler.UserAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 
+@Transactional(value = "transactionManager_security")
 @Named
 public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 

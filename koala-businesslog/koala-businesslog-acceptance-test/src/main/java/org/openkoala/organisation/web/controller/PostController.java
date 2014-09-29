@@ -1,19 +1,28 @@
 package org.openkoala.organisation.web.controller;
 
-import org.dayatang.querychannel.Page;
-import org.openkoala.organisation.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import org.dayatang.utils.Page;
+import org.openkoala.organisation.NameExistException;
+import org.openkoala.organisation.OrganizationHasPrincipalYetException;
+import org.openkoala.organisation.PostExistException;
+import org.openkoala.organisation.SnIsExistException;
+import org.openkoala.organisation.TerminateHasEmployeePostException;
 import org.openkoala.organisation.application.PostApplication;
 import org.openkoala.organisation.application.dto.PostDTO;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 岗位管理Controller

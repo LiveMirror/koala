@@ -4,8 +4,7 @@ package org.openkoala.gqc.facade;
 import java.util.List;
 import java.util.Map;
 
-import org.dayatang.querychannel.Page;
-import org.openkoala.gqc.core.domain.DataSource;
+import org.dayatang.utils.Page;
 import org.openkoala.gqc.facade.dto.DataSourceDTO;
 
 /**
@@ -86,10 +85,10 @@ public interface DataSourceFacade {
 	
 	/**
 	 * 检测数据源是否可用
-	 * @param dataSource
+	 * @param dataSourceDTO
 	 * @return
 	 */
-	public boolean checkDataSourceCanConnect(DataSource dataSource);
+	public boolean checkDataSourceCanConnect(DataSourceDTO dataSourceDTO);
 	
 	/**
 	 * 测试数据源连接

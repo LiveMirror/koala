@@ -2,7 +2,7 @@ package org.openkoala.organisation.facade;
 
 import java.util.Set;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.PostDTO;
 

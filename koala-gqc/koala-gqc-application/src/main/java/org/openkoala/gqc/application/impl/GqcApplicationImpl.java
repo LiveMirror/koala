@@ -8,8 +8,8 @@ import javax.inject.Named;
 
 import org.dayatang.domain.AbstractEntity;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
+import org.dayatang.utils.Page;
 import org.openkoala.gqc.application.GqcApplication;
 import org.openkoala.gqc.core.domain.GeneralQuery;
 import org.openkoala.gqc.core.domain.GeneralQueryEntity;

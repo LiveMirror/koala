@@ -1,21 +1,26 @@
 package org.openkoala.organisation.application.impl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
-import org.dayatang.querychannel.QueryChannelService;
-import org.openkoala.organisation.application.PostApplication;
-import org.openkoala.organisation.application.dto.PostDTO;
-import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.Post;
-import org.springframework.transaction.annotation.Transactional;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.interceptor.Interceptors;
-import java.text.MessageFormat;
-import java.util.*;
+
+import org.apache.commons.lang3.StringUtils;
+import org.dayatang.domain.InstanceFactory;
+import org.dayatang.querychannel.QueryChannelService;
+import org.dayatang.utils.Page;
+import org.openkoala.organisation.application.PostApplication;
+import org.openkoala.organisation.application.dto.PostDTO;
+import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.domain.Post;
+import org.springframework.transaction.annotation.Transactional;
 
 @Named
 @Transactional(value = "transactionManager_org")

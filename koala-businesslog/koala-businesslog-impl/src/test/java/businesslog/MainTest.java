@@ -4,6 +4,7 @@ import business.ContractApplication;
 import business.InvoiceApplication;
 import business.ProjectApplication;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.businesslog.utils.ThreadLocalBusinessLogContext;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * Date: 3/4/14
  * Time: 8:45 AM
  */
+@Ignore
 public class MainTest extends AbstractIntegrationTest {
     @Inject
     private ContractApplication contractApplication;

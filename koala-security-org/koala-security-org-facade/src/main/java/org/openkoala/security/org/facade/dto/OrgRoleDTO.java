@@ -7,7 +7,9 @@ import org.openkoala.security.facade.dto.RoleDTO;
  */
 public class OrgRoleDTO extends RoleDTO {
 
-    //与组织机构集成需要
+	private static final long serialVersionUID = -14081653051740223L;
+	
+	//与组织机构集成需要
     private String employeeUserOrgName;
 
     public OrgRoleDTO() {

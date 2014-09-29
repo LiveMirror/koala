@@ -22,6 +22,10 @@
 		<module>koala-cas-management-web</module>
 	</modules>
 
+	<properties>
+		<dddlib.version>4.3.0</dddlib.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>mysql</groupId>

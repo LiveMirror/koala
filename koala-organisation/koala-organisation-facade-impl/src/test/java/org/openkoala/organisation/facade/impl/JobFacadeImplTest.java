@@ -18,7 +18,7 @@ import org.openkoala.organisation.SnIsExistException;
 import org.openkoala.organisation.application.BaseApplication;
 import org.openkoala.organisation.domain.Job;
 import org.openkoala.organisation.facade.dto.JobDTO;
-import org.openkoala.organisation.facade.impl.assembler.JobDtoAssembler;
+import org.openkoala.organisation.facade.impl.assembler.JobAssembler;
 
 /**
  * JobController单元测试
@@ -53,7 +53,7 @@ public class JobFacadeImplTest {
 	private List<JobDTO> assemJobDtos(List<Job> jobs) {
 		List<JobDTO> results = new ArrayList<JobDTO>();
 		for (Job job : jobs) {
-			results.add(JobDtoAssembler.assemDto(job));
+			results.add(JobAssembler.toDTO(job));
 		}
 		return results;
 	}
@@ -63,14 +63,14 @@ public class JobFacadeImplTest {
 		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
 		jobFacadeImpl.createJob(jobDTO);
-		verify(baseApplication, only()).saveParty(JobDtoAssembler.assemEntity(jobDTO));
+		verify(baseApplication, only()).saveParty(JobAssembler.toEntity(jobDTO));
 	}
 	
 	@Test
 	public void testCatchSnIsExistExceptionWhenCreateJob() {
 		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
-		doThrow(new SnIsExistException()).when(baseApplication).saveParty(JobDtoAssembler.assemEntity(jobDTO));
+		doThrow(new SnIsExistException()).when(baseApplication).saveParty(JobAssembler.toEntity(jobDTO));
 		assertEquals("职务编码: " + jobDTO.getSn() + " 已被使用！", jobFacadeImpl.createJob(jobDTO).getMessage());
 	}
 	
@@ -78,7 +78,7 @@ public class JobFacadeImplTest {
 	public void testExceptionWhenCreateJob() {
 		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
-		doThrow(new RuntimeException()).when(baseApplication).saveParty(JobDtoAssembler.assemEntity(jobDTO));
+		doThrow(new RuntimeException()).when(baseApplication).saveParty(JobAssembler.toEntity(jobDTO));
 		assertEquals("保存失败！", jobFacadeImpl.createJob(jobDTO).getMessage());
 	}
 	
@@ -87,14 +87,14 @@ public class JobFacadeImplTest {
 		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
 		jobFacadeImpl.updateJobInfo(jobDTO);
-		verify(baseApplication, only()).updateParty(JobDtoAssembler.assemEntity(jobDTO));
+		verify(baseApplication, only()).updateParty(JobAssembler.toEntity(jobDTO));
 	}
 	
 	@Test
 	public void testCatchSnIsExistExceptionWhenUpdateJob() {
 		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
-		doThrow(new SnIsExistException()).when(baseApplication).updateParty(JobDtoAssembler.assemEntity(jobDTO));
+		doThrow(new SnIsExistException()).when(baseApplication).updateParty(JobAssembler.toEntity(jobDTO));
 		assertEquals("职务编码: " + jobDTO.getSn() + " 已被使用！", jobFacadeImpl.updateJobInfo(jobDTO).getMessage());
 	}
 	
@@ -102,7 +102,7 @@ public class JobFacadeImplTest {
 	public void testExceptionWhenUpdateJob() {
 		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
-		doThrow(new RuntimeException()).when(baseApplication).updateParty(JobDtoAssembler.assemEntity(jobDTO));
+		doThrow(new RuntimeException()).when(baseApplication).updateParty(JobAssembler.toEntity(jobDTO));
 		assertEquals("修改失败！", jobFacadeImpl.updateJobInfo(jobDTO).getMessage());
 	}
 	
@@ -113,7 +113,7 @@ public class JobFacadeImplTest {
 		job.setId(jobId);
 		
 		when(baseApplication.getEntity(Job.class, jobId)).thenReturn(job);
-		assertEquals(JobDtoAssembler.assemDto(job), jobFacadeImpl.getJobById(jobId));
+		assertEquals(JobAssembler.toDTO(job), jobFacadeImpl.getJobById(jobId));
 	}
 	
 	@Test
@@ -121,7 +121,7 @@ public class JobFacadeImplTest {
 		JobDTO jobDTO = new JobDTO(2L, "JOB-XXXXX1", "JOB-SN-XXX1");
 		jobDTO.setName("总公司总经理");
 		jobFacadeImpl.terminateJob(jobDTO);
-		verify(baseApplication, only()).terminateParty(JobDtoAssembler.assemEntity(jobDTO));
+		verify(baseApplication, only()).terminateParty(JobAssembler.toEntity(jobDTO));
 	}
 	
 }

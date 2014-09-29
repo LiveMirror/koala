@@ -1,19 +1,20 @@
 package org.openkoala.security.org.facade.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.dayatang.querychannel.Page;
+import java.util.Date;
+
+import javax.inject.Inject;
+
+import org.dayatang.utils.Page;
 import org.junit.Before;
 import org.junit.Test;
-import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.domain.Employee;
 import org.openkoala.organisation.domain.Person;
 import org.openkoala.security.org.core.domain.EmployeeUser;
 import org.openkoala.security.org.facade.SecurityOrgAccessFacade;
 import org.openkoala.security.org.facade.dto.EmployeeUserDTO;
-
-import javax.inject.Inject;
-import java.util.Date;
 
 /**
  * Created by luzhao on 14-8-29.

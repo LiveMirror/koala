@@ -10,9 +10,9 @@ import org.openkoala.organisation.domain.Person;
 import org.openkoala.organisation.domain.Post;
 import org.openkoala.organisation.facade.dto.EmployeeDTO;
 
-public class EmployeeDtoAssembler {
+public class EmployeeAssembler {
 
-	public static Employee assemEntity(EmployeeDTO employeeDTO) {
+	public static Employee toEntity(EmployeeDTO employeeDTO) {
 		Person person = new Person(employeeDTO.getName());
 		person.setId(employeeDTO.getPersonId());
 		person.setVersion(employeeDTO.getPersonVersion());
@@ -38,7 +38,7 @@ public class EmployeeDtoAssembler {
 		return result;
 	}
 	
-	public static EmployeeDTO assemDto(Employee employee) {
+	public static EmployeeDTO toDTO(Employee employee) {
 		if (employee == null) {
 			return null;
 		}

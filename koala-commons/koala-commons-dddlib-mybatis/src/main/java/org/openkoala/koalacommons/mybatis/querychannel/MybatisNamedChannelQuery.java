@@ -1,8 +1,9 @@
 package org.openkoala.koalacommons.mybatis.querychannel;
 
 import java.util.List;
-import org.dayatang.querychannel.Page;
+
 import org.dayatang.utils.Assert;
+import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.domain.MybatisEntityRepository;
 import org.openkoala.koala.commons.domain.mybatis.MybatisNamedQuery;
 

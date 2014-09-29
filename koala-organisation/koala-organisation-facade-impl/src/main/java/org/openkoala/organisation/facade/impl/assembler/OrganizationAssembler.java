@@ -9,9 +9,9 @@ import org.openkoala.organisation.domain.Employee;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.facade.dto.OrganizationDTO;
 
-public class OrganizationDtoAssembler {
+public class OrganizationAssembler {
 
-	public static OrganizationDTO assemDto(Organization organization) {
+	public static OrganizationDTO toDTO(Organization organization) {
 		OrganizationDTO dto = new OrganizationDTO(organization.getId(), organization.getName());
 		dto.setSn(organization.getSn());
 		dto.setCreateDate(organization.getCreateDate());
@@ -38,7 +38,7 @@ public class OrganizationDtoAssembler {
 		return dto;
 	}
 
-	public static Organization assemEntity(OrganizationDTO organizationDTO) {
+	public static Organization toEntity(OrganizationDTO organizationDTO) {
 		Organization result = null;
 		if (organizationDTO.getOrganizationType().equals(OrganizationDTO.COMPANY)) {
 			result = new Company(organizationDTO.getName(), organizationDTO.getSn());

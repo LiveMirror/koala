@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.dayatang.domain.QueryParameters;
-import org.dayatang.querychannel.Page;
 import org.dayatang.utils.Assert;
+import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.domain.MybatisEntityRepository;
 import org.openkoala.koala.commons.domain.mybatis.MybatisBaseQuery;
 import org.openkoala.koala.commons.domain.mybatis.MybatisNamedQuery;

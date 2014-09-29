@@ -2,14 +2,13 @@ package org.openkoala.security.controller;
 
 import javax.inject.Inject;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.command.ChangePageElementResourcePropsCommand;
 import org.openkoala.security.facade.command.CreatePageElementResourceCommand;
 import org.openkoala.security.facade.dto.PageElementResourceDTO;
-
 import org.openkoala.security.facade.dto.PermissionDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

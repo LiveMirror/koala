@@ -1,6 +1,6 @@
 package org.openkoala.organisation.application;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.domain.Job;
 
 /**

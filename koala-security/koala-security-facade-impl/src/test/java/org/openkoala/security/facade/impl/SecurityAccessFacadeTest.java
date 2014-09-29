@@ -1,14 +1,23 @@
 package org.openkoala.security.facade.impl;
 
-import static org.junit.Assert.*;
-import static org.openkoala.security.facade.impl.util.EntitiesHelper.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.openkoala.security.facade.impl.util.EntitiesHelper.assertUserDTO;
+import static org.openkoala.security.facade.impl.util.EntitiesHelper.initMenuResource;
+import static org.openkoala.security.facade.impl.util.EntitiesHelper.initPageElementResource;
+import static org.openkoala.security.facade.impl.util.EntitiesHelper.initPermission;
+import static org.openkoala.security.facade.impl.util.EntitiesHelper.initRole;
+import static org.openkoala.security.facade.impl.util.EntitiesHelper.initUrlAccessResource;
+import static org.openkoala.security.facade.impl.util.EntitiesHelper.initUser;
 
 import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.security.core.domain.MenuResource;
@@ -18,8 +27,18 @@ import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityAccessFacade;
-import org.openkoala.security.facade.dto.*;
-import org.openkoala.security.facade.impl.assembler.*;
+import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.PageElementResourceDTO;
+import org.openkoala.security.facade.dto.PermissionDTO;
+import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
+import org.openkoala.security.facade.dto.UrlAuthorityDTO;
+import org.openkoala.security.facade.dto.UserDTO;
+import org.openkoala.security.facade.impl.assembler.PageElementResourceAssembler;
+import org.openkoala.security.facade.impl.assembler.PermissionAssembler;
+import org.openkoala.security.facade.impl.assembler.RoleAssembler;
+import org.openkoala.security.facade.impl.assembler.UrlAccessResourceAssembler;
+import org.openkoala.security.facade.impl.assembler.UserAssembler;
 
 /**
  * 完善测试 对其测试结果进行断言。

@@ -1,6 +1,14 @@
 package org.openkoala.organisation.web.controller;
 
-import org.dayatang.querychannel.Page;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.EmployeeMustHaveAtLeastOnePostException;
 import org.openkoala.organisation.HasPrincipalPostYetException;
 import org.openkoala.organisation.IdNumberIsExistException;
@@ -13,10 +21,11 @@ import org.openkoala.organisation.domain.Gender;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.util.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 员工管理controller

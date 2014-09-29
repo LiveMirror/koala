@@ -18,9 +18,7 @@ import org.openkoala.security.facade.command.CreatePermissionCommand;
 import org.openkoala.security.facade.command.CreateRoleCommand;
 import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
 import org.openkoala.security.facade.command.CreateUserCommand;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(value = "transactionManager_security")
 public interface SecurityConfigFacade {
 
 	/**

@@ -8,12 +8,11 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.gqc.core.domain.DynamicQueryCondition;
 import org.openkoala.gqc.facade.GqcFacade;
 import org.openkoala.gqc.facade.assembler.GqcAssembler;
 import org.openkoala.gqc.facade.dto.GeneralQueryDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;

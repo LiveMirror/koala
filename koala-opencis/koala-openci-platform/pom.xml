@@ -20,6 +20,10 @@
 		<module>koala-openci-platform-infra</module>
 		<module>koala-openci-platform-web</module>
 	</modules>
+	
+	<properties>
+		<dddlib.version>4.3.0</dddlib.version>
+	</properties>
 
     <build>
         <plugins>

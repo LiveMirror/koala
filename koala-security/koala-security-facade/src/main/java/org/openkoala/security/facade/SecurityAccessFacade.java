@@ -3,9 +3,15 @@ package org.openkoala.security.facade;
 import java.util.List;
 import java.util.Set;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.InvokeResult;
-import org.openkoala.security.facade.dto.*;
+import org.openkoala.security.facade.dto.MenuResourceDTO;
+import org.openkoala.security.facade.dto.PageElementResourceDTO;
+import org.openkoala.security.facade.dto.PermissionDTO;
+import org.openkoala.security.facade.dto.RoleDTO;
+import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
+import org.openkoala.security.facade.dto.UrlAuthorityDTO;
+import org.openkoala.security.facade.dto.UserDTO;
 
 public interface SecurityAccessFacade {
 

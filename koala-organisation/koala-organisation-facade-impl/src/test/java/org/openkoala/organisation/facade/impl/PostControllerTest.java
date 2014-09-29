@@ -24,7 +24,7 @@ import org.openkoala.organisation.domain.Company;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
 import org.openkoala.organisation.facade.dto.PostDTO;
-import org.openkoala.organisation.facade.impl.assembler.PostDtoAssembler;
+import org.openkoala.organisation.facade.impl.assembler.PostAssembler;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -35,7 +35,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  *
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({PostDtoAssembler.class})
+@PrepareForTest({PostAssembler.class})
 public class PostControllerTest {
 	
 	@Mock
@@ -66,8 +66,8 @@ public class PostControllerTest {
 	}
 	
 	private void staticMockAssemPost() {
-		PowerMockito.mockStatic(PostDtoAssembler.class);
-		when(PostDtoAssembler.assemEntity(postDTO)).thenReturn(post);
+		PowerMockito.mockStatic(PostAssembler.class);
+		when(PostAssembler.toEntity(postDTO)).thenReturn(post);
 	}
 
 	@Test
@@ -127,8 +127,8 @@ public class PostControllerTest {
 		Set<PostDTO> postDtos = new HashSet<PostDTO>();
 		postDtos.add(postDTO);
 
-		PowerMockito.mockStatic(PostDtoAssembler.class);
-		when(PostDtoAssembler.assemDto(post)).thenReturn(postDTO);
+		PowerMockito.mockStatic(PostAssembler.class);
+		when(PostAssembler.toDTO(post)).thenReturn(postDTO);
 		
 		when(postApplication.findPostsByOrganizationId(organizationId)).thenReturn(posts);
 		assertEquals(postDtos, postFacadeImpl.findPostsByOrganizationId(organizationId));
@@ -138,9 +138,9 @@ public class PostControllerTest {
 	public void testGetPostById() {
 		Long postId = 1L;
 		
-		PowerMockito.mockStatic(PostDtoAssembler.class);
+		PowerMockito.mockStatic(PostAssembler.class);
 		when(baseApplication.getEntity(Post.class, postId)).thenReturn(post);
-		when(PostDtoAssembler.assemDto(post)).thenReturn(postDTO);
+		when(PostAssembler.toDTO(post)).thenReturn(postDTO);
 		
 		assertEquals(postDTO, postFacadeImpl.getPostById(postId));
 	}
