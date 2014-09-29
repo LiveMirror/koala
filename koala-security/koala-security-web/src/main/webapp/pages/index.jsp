@@ -6,7 +6,7 @@
 <head>
     <%--<%@include file="/commons/metas.jsp"%>--%>
     <title>Koala权限系统</title>
-    <%--<%@include file="/commons/statics.jsp"%>--%>
+    <%@include file="/commons/statics.jsp"%>
     <style>
         .nav-stacked .node ul{
             display:none;

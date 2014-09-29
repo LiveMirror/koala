@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
-        <%--<%@include file="/commons/metas.jsp"%>--%>
+    <%--<%@include file="/commons/metas.jsp"%>--%>
         <title>欢迎使用Koala</title>
         <%@include file="/commons/statics.jsp"%>
 

@@ -31,7 +31,7 @@
 				<hibernate.show_sql>true</hibernate.show_sql>
 				<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
 				<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
-				<db.connectionURL>jdbc:mysql://172.16.1.222:3306/koala?useUnicode=true&amp;characterEncoding=UTF-8</db.connectionURL>
+				<db.connectionURL>jdbc:mysql://172.16.1.222:3306/koala_organisation?useUnicode=true&amp;characterEncoding=UTF-8</db.connectionURL>
 				<db.username>root</db.username>
 				<db.password>koala</db.password>
 				<db.Type>MYSQL</db.Type>

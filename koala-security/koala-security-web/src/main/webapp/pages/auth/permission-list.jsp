@@ -1,12 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@include file="/commons/taglibs.jsp"%>
-<%@ page import="java.util.Date"%>
-<% String formId = "form_" + new Date().getTime();
-   String gridId = "grid_" + new Date().getTime();
-   String path = request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);
-%>
+
 <!-- strat form -->
-<form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
+<form name=”permissionListForm“ id="${formId}" target="_self" class="form-horizontal searchCondition">
     <input type="hidden" class="form-control" name="page" value="0">
     <input type="hidden" class="form-control" name="pagesize" value="10">
 
@@ -33,7 +29,7 @@
                     </div>
                 </td>
                 <td style="vertical-align: bottom;">
-                    <button id="search" type="button" style="position:relative; margin-left:35px; top: -15px"
+                    <button id="permissionManagerSearch" type="button" style="position:relative; margin-left:35px; top: -15px"
                             class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button>
                 </td>
             </tr>
@@ -925,17 +921,16 @@
 					}
 				});
 			}
-        }); 
-		var formId = $("#<%=formId%>");
-		formId.find('#search').on('click', function(){
+        });
+        var form = $('#'+'${formId}');
+        form.find('#permissionManagerSearch').on('click', function(){
             var params = {};
-            formId.find('.form-control').each(function(){
+            form.find('.form-control').each(function(){
                 var $this = $(this);
                 var name = $this.attr('name');
                  if(name){
                     params[name] = $this.val();
                 }
-                 console.log(name+"=="+params[name]);
             });
            $('[data-role="permissionGrid"]').getGrid().search(params);
         });

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@include file="/commons/taglibs.jsp"%>
 
 <!-- strat form -->
 <form  name="urlListForm" id="${formId}" target="_self" class="form-horizontal searchCondition">
