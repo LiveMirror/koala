@@ -1,0 +1,166 @@
+package org.openkoala.security.application.impl;
+
+import java.util.List;
+import java.util.Set;
+
+import javax.inject.Named;
+
+import org.openkoala.security.application.SecurityAccessApplication;
+import org.openkoala.security.core.domain.Actor;
+import org.openkoala.security.core.domain.Authority;
+import org.openkoala.security.core.domain.Authorization;
+import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
+import org.openkoala.security.core.domain.Permission;
+import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.Scope;
+import org.openkoala.security.core.domain.UrlAccessResource;
+import org.openkoala.security.core.domain.User;
+
+@Named
+public class SecurityAccessApplicationImpl implements SecurityAccessApplication {
+
+    public List<Role> findAllRolesByUserAccount(String userAccount) {
+        return User.findAllRolesBy(userAccount);
+    }
+
+    public User getUserById(Long userId) {
+        return Actor.get(User.class, userId);
+    }
+
+    
+    public <T extends Actor> T getActorById(Long actorId) {
+        return (T) Actor.get(Actor.class,actorId);
+    }
+
+    public User getUserByUserAccount(String userAccount) {
+        return User.getByUserAccount(userAccount);
+    }
+
+    public List<MenuResource> findMenuResourceByUserAccount(String userAccount) {
+        User user = getUserByUserAccount(userAccount);
+        Set<Authority> authorities = Authorization.findAuthoritiesByActor(user);
+        List<MenuResource> result = Authority.findMenuResourceByAuthorities(authorities);
+        return result;
+    }
+
+    
+    public boolean updatePassword(User user, String userPassword, String oldUserPassword) {
+        return user.updatePassword(userPassword, oldUserPassword);
+    }
+
+    
+    public Role getRoleBy(Long roleId) {
+        return Role.get(Role.class, roleId);
+    }
+
+    
+    public Permission getPermissionBy(Long permissionId) {
+        return Permission.get(Permission.class, permissionId);
+    }
+
+    
+    public MenuResource getMenuResourceBy(Long menuResourceId) {
+        return MenuResource.get(MenuResource.class, menuResourceId);
+    }
+
+    
+    public List<MenuResource> findAllMenuResourcesByRole(Role role) {
+        return role.findMenuResourceByAuthority();
+    }
+
+    
+    public UrlAccessResource getUrlAccessResourceBy(Long urlAccessResourceId) {
+        return UrlAccessResource.get(UrlAccessResource.class, urlAccessResourceId);
+    }
+
+    
+    public PageElementResource getPageElementResourceBy(Long pageElementResourceId) {
+        return PageElementResource.get(PageElementResource.class, pageElementResourceId);
+    }
+
+    
+    public Role getRoleBy(String roleName) {
+        return Role.getRoleBy(roleName);
+    }
+
+    
+    public <T extends Scope> T getScope(Long scopeId) {
+        return (T)Scope.getBy(scopeId);
+    }
+
+    
+    public boolean hasPageElementResource(String identifier) {
+        return PageElementResource.hasIdentifier(identifier);
+    }
+
+    
+    public User getUserByEmail(String email) {
+        return User.getByEmail(email);
+    }
+
+    
+    public User getUserByTelePhone(String telePhone) {
+        return User.getByTelePhone(telePhone);
+    }
+
+    
+    public List<MenuResource> findAllMenuResourcesByIds(Long[] menuResourceIds) {
+        return MenuResource.findAllByIds(menuResourceIds);
+    }
+
+	
+	public boolean checkRoleByName(String roleName) {
+		return Role.checkName(roleName);
+	}
+
+    
+    public <T extends Authority> T getAuthority(Long authorityId) {
+        return Authority.getBy(authorityId);
+    }
+
+    
+    public Set<Role> findRolesOfUser(User user) {
+        return user.findAllRoles();
+    }
+
+    
+    public Set<Permission> findPermissionsOfUser(User user) {
+        return user.findAllPermissions();
+    }
+
+    
+    public Set<MenuResource> findMenuResourcesOfRole(Role role) {
+        return role.findMenuResources();
+    }
+
+    
+    public Set<UrlAccessResource> findUrlAccessResourcesOfRole(Role role) {
+        return role.findUrlAccessResources();
+    }
+
+    
+    public Set<PageElementResource> findPageElementResourcesOfRole(Role role) {
+        return role.findPageElementResources();
+    }
+
+    
+    public Set<PageElementResource> findPageElementResourcesOfPermission(Permission permission) {
+        return permission.findPageElementResources();
+    }
+
+    
+    public Set<UrlAccessResource> findUrlAccessResourcesOfPermission(Permission permission) {
+        return permission.findUrlAccessResources();
+    }
+
+    
+    public Set<MenuResource> findMenuResourcesOfPermission(Permission permission) {
+        return permission.findMenuResources();
+    }
+
+    
+    public boolean hasUserExisted() {
+        return User.hasUserExisted();
+    }
+}
