@@ -74,21 +74,21 @@ public class PostControllerTest {
 	public void testCatchOrganizationHasPrincipalYetExceptionWhenCreatePost() {
 		staticMockAssemPost();
 		doThrow(new OrganizationHasPrincipalYetException()).when(baseApplication).saveParty(post);
-		assertEquals("该机构已经有负责岗位！", postFacadeImpl.createPost(postDTO).getMessage());
+		assertEquals("该机构已经有负责岗位！", postFacadeImpl.createPost(postDTO).getErrorMessage());
 	}
 
 	@Test
 	public void testCatchSnIsExistExceptionWhenCreatePost() {
 		staticMockAssemPost();
 		doThrow(new SnIsExistException()).when(baseApplication).saveParty(post);
-		assertEquals("岗位编码: " + post.getSn() + " 已被使用！", postFacadeImpl.createPost(postDTO).getMessage());
+		assertEquals("岗位编码: " + post.getSn() + " 已被使用！", postFacadeImpl.createPost(postDTO).getErrorMessage());
 	}
 
 	@Test
 	public void testCatchExceptionWhenCreatePost() {
 		staticMockAssemPost();
 		doThrow(new RuntimeException()).when(baseApplication).saveParty(post);
-		assertEquals("保存失败！", postFacadeImpl.createPost(postDTO).getMessage());
+		assertEquals("保存失败！", postFacadeImpl.createPost(postDTO).getErrorMessage());
 	}
 
 	@Test
@@ -102,21 +102,21 @@ public class PostControllerTest {
 	public void testCatchSnIsExistExceptionWhenUpdatePost() {
 		staticMockAssemPost();
 		doThrow(new SnIsExistException()).when(baseApplication).updateParty(post);
-        assertEquals("岗位编码: " + post.getSn() + " 已被使用！", postFacadeImpl.updatePostInfo(postDTO).getMessage());
+        assertEquals("岗位编码: " + post.getSn() + " 已被使用！", postFacadeImpl.updatePostInfo(postDTO).getErrorMessage());
 	}
 
     @Test
     public void testCatchNameExistExceptionWhenUpdatePost() {
 		staticMockAssemPost();
         doThrow(new NameExistException()).when(baseApplication).updateParty(post);
-        assertEquals("岗位名称: " + post.getName() + " 已经存在！", postFacadeImpl.updatePostInfo(postDTO).getMessage());
+        assertEquals("岗位名称: " + post.getName() + " 已经存在！", postFacadeImpl.updatePostInfo(postDTO).getErrorMessage());
     }
 
 	@Test
 	public void testCatchExceptionWhenUpdatePost() {
 		staticMockAssemPost();
 		doThrow(new RuntimeException()).when(baseApplication).updateParty(post);
-		assertEquals("修改失败！", postFacadeImpl.updatePostInfo(postDTO).getMessage());
+		assertEquals("修改失败！", postFacadeImpl.updatePostInfo(postDTO).getErrorMessage());
 	}
 	
 	@Test
@@ -156,14 +156,14 @@ public class PostControllerTest {
 	public void testCatchTerminateHasEmployeePostExceptionWhenTerminatePost() {
 		staticMockAssemPost();
 		doThrow(new TerminateHasEmployeePostException()).when(baseApplication).terminateParty(post);
-		assertEquals("还有员工在此岗位上任职，不能撤销！", postFacadeImpl.terminatePost(postDTO).getMessage());
+		assertEquals("还有员工在此岗位上任职，不能撤销！", postFacadeImpl.terminatePost(postDTO).getErrorMessage());
 	}
 	
 	@Test
 	public void testCatchExceptionWhenTerminatePost() {
 		staticMockAssemPost();
 		doThrow(new RuntimeException()).when(baseApplication).terminateParty(post);
-		assertEquals("撤销员工岗位失败！", postFacadeImpl.terminatePost(postDTO).getMessage());
+		assertEquals("撤销员工岗位失败！", postFacadeImpl.terminatePost(postDTO).getErrorMessage());
 	}
 	
 	@Test
@@ -189,7 +189,7 @@ public class PostControllerTest {
 		
 		staticMockAssemPost();
 		doThrow(new TerminateHasEmployeePostException()).when(baseApplication).terminateParties(posts);
-		assertEquals("还有员工在此岗位上任职，不能撤销！", postFacadeImpl.terminatePosts(postDtos).getMessage());
+		assertEquals("还有员工在此岗位上任职，不能撤销！", postFacadeImpl.terminatePosts(postDtos).getErrorMessage());
 	}
 	
 	@Test
@@ -202,7 +202,7 @@ public class PostControllerTest {
 		
 		staticMockAssemPost();
 		doThrow(new RuntimeException()).when(baseApplication).terminateParties(posts);
-		assertEquals("撤销员工岗位失败！", postFacadeImpl.terminatePosts(postDtos).getMessage());
+		assertEquals("撤销员工岗位失败！", postFacadeImpl.terminatePosts(postDtos).getErrorMessage());
 	}
 
 }

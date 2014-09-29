@@ -42,11 +42,11 @@ var job = function(){
 		        'Content-Type': 'application/json' 
 		    },
 		    'type': "Post",
-		    'url': baseUrl + 'terminateJobs.koala',
+		    'url': baseUrl + 'terminate-jobs.koala',
 		    'data': JSON.stringify(objects),
 		    'dataType': 'json'
 		 }).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dataGrid.message({
 					type: 'success',
 					content: '删除成功'
@@ -55,15 +55,15 @@ var job = function(){
 			}else{
 				dataGrid.message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});
 			}
 		}).fail(function(data){
-				dataGrid.message({
-					type: 'error',
-					content: '删除失败'
-				});
+			dataGrid.message({
+				type: 'error',
+				content: '删除失败'
 			});
+		});
 	};
 	/**
 	 * 初始化
@@ -80,31 +80,30 @@ var job = function(){
 		}).end().modal({
 			keyboard: false
 		}).on({
-				'hidden.bs.modal': function(){
-					$(this).remove();
-				},
-				'complete': function(){
-					dataGrid.message({
-						type: 'success',
-						content: '保存成功'
-					});
-					$(this).modal('hide');
-					dataGrid.grid('refresh');
-				}
+			'hidden.bs.modal': function(){
+				$(this).remove();
+			},
+			'complete': function(){
+				dataGrid.message({
+					type: 'success',
+					content: '保存成功'
+				});
+				$(this).modal('hide');
+				dataGrid.grid('refresh');
+			}
 		});
 	};
 	/*
 	 *设置值
 	 */
 	var setData = function(id){
-		$.get(baseUrl+'get/'+id+'.koala')
-			.done(function(result){
-				job = result.data;
-				jobName.val(job.name);
-				jobSn.val(job.sn);
-				jobDescription.val(job.description);
-				version = job.version;
-			});
+		$.get(baseUrl+'get/'+id+'.koala').done(function(result){
+			job = result;
+			jobName.val(job.name);
+			jobSn.val(job.sn);
+			jobDescription.val(job.description);
+			version = job.version;
+		});
 	};
 	/*
 	*   保存数据 id存在则为修改 否则为新增
@@ -119,14 +118,14 @@ var job = function(){
 			url =  baseUrl + 'update.koala?id='+id;
 		}
 		$.post(url, getAllData(id)).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dialog.trigger('complete');
-			} else if(data.result == '该职务已存在'){
+			} else if(data.errorMessage == '该职务已存在'){
 				showErrorMessage(dataSourceId, '该职务已存在');
 			} else {
 				dialog.find('.modal-content').message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});
 			}
 			dialog.find('#save').removeAttr('disabled');	
@@ -182,14 +181,14 @@ var job = function(){
 			trigger: 'manual',
 			container: dialog
 		}).popover('show').on({
-				'blur': function(){
-					$element.popover('destroy');
-					$element.parent().removeClass('has-error');
-				},
-				'keydown': function(){
-					$element.popover('destroy');
-					$element.parent().removeClass('has-error');
-				}
+			'blur': function(){
+				$element.popover('destroy');
+				$element.parent().removeClass('has-error');
+			},
+			'keydown': function(){
+				$element.popover('destroy');
+				$element.parent().removeClass('has-error');
+			}
 		}).focus().parent().addClass('has-error');
 	};
 	return {

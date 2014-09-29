@@ -11,7 +11,7 @@ var department = function(){
 	$.ajaxSetup({cache:false});
 	
 	var addDepartment = function(id, organizationType, $element){
-		$.get(contextPath + '/pages/organisation/departmentTemplate.jsp').done(function(data){
+		$.get(contextPath + '/pages/organisation/department-template.jsp').done(function(data){
 			init(data,  id , 'addDepartment', organizationType, $element);
 		});
 	};
@@ -19,7 +19,7 @@ var department = function(){
 	 *新增子公司
 	 */
 	var addCompany = function(id, $element){
-		$.get( contextPath + '/pages/organisation/departmentTemplate.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/department-template.jsp').done(function(data){
 			init(data, id , 'addCompany', null, $element);
 		});
 	};
@@ -27,7 +27,7 @@ var department = function(){
 	 * 修改公司信息
 	 */
 	var updateCompany = function(id, $element){
-		$.get( contextPath + '/pages/organisation/departmentTemplate.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/department-template.jsp').done(function(data){
 			init(data,  id , 'updateCompany', null, $element);
 			setData(id);
 		});
@@ -36,7 +36,7 @@ var department = function(){
 	 * 修改部门信息
 	 */
 	var updateDepartment = function(id, $element){
-		$.get( contextPath + '/pages/organisation/departmentTemplate.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/department-template.jsp').done(function(data){
 			init(data,  id , 'updateDepartment', null, $element);
 			setData(id);
 		});
@@ -51,7 +51,7 @@ var department = function(){
 			url = 'terminate-company.koala';
 		}
 		$.post(baseUrl + url, org).done(function(data){
-			if(data.result.message == 'success'){
+			if(data.success){
 				$('#departmentDetail').message({
 					type: 'success',
 					content: '撤销成功'
@@ -66,15 +66,15 @@ var department = function(){
 			}else{
 				$('body').message({
 					type: 'error',
-					content: data.result.message
+					content: data.errorMessage
 				});
 			}
 		}).fail(function(data){
-				$('body').message({
-					type: 'error',
-					content: '撤销失败'
-				});
+			$('body').message({
+				type: 'error',
+				content: '撤销失败'
 			});
+		});
 	};
 	/**
 	 * 初始化
@@ -104,41 +104,41 @@ var department = function(){
 			$(this).attr('disabled', 'disabled');
 			save(id, type, organizationType);
 		}).end().modal({
-				keyboard: false
-			}).on({
-				'hidden.bs.modal': function(){
-					$(this).remove();
-				},
-				'complete': function(event, data){
-					var type = data.type
-					$('#departmentDetail').message({
-						type: 'success',
-						content: '保存成功'
-					});
-                    if(type == 'updateCompany' || type == 'updateDepartment'){
-                    	 $.get(contextPath + '/organization/getOrg.koala?id='+id).done(function(data){
- 	                        var org = data.org;
- 	                        $element.data(org);
- 	                        if(!$element.hasClass('tree-item')){
- 	                        	$element.find('.tree-folder-name:first').html(org.name).click();
- 	                        }else{
- 	                        	$element.find('.tree-item-name').html(org.name).click();
- 	                        }
-                         });
-                    }else{
-                        $('#departmentTree').off().empty().data('koala.tree', null)
-                        getTree(data.id);
-                    }
-					$(this).modal('hide');
-				}
-			});
+			keyboard: false
+		}).on({
+			'hidden.bs.modal': function(){
+				$(this).remove();
+			},
+			'complete': function(event, data){
+				var type = data.type
+				$('#departmentDetail').message({
+					type: 'success',
+					content: '保存成功'
+				});
+                if(type == 'updateCompany' || type == 'updateDepartment'){
+                	 $.get(contextPath + '/organization/get.koala?id='+id).done(function(data){
+                        var org = data;
+                        $element.data(org);
+                        if(!$element.hasClass('tree-item')){
+                        	$element.find('.tree-folder-name:first').html(org.name).click();
+                        }else{
+                        	$element.find('.tree-item-name').html(org.name).click();
+                        }
+                     });
+                }else{
+                    $('#departmentTree').off().empty().data('koala.tree', null)
+                    getTree(data.id);
+                }
+				$(this).modal('hide');
+			}
+		});
 	};
 	/*
 	 *设置值
 	 */
 	var setData = function(id){
-		$.get(baseUrl+'getOrg.koala?id='+id).done(function(data){
-			org = data.org;
+		$.get(baseUrl+'get.koala?id='+id).done(function(data){
+			org = data;
 			departmentSN.val(org.sn);
 			departmentName.val(org.name);
 			description.val(org.description);
@@ -169,50 +169,50 @@ var department = function(){
 		}
 		var data = getAllData(id, type);
 		$.post(url, data).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dialog.trigger('complete', {type:type, id: data.id});
 			}else{
 				dialog.find('.modal-content').message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});	
 				refreshToken(dialog.find('input[name="koala.token"]'));
 			}
 			dialog.find('#save').removeAttr('disabled');
 		}).fail(function(data){
-				dialog.find('.modal-content').message({
-					type: 'error',
-					content: '保存失败！'
-				});
-				dialog.find('#save').removeAttr('disabled');
-				refreshToken(dialog.find('input[name="koala.token"]'));
+			dialog.find('.modal-content').message({
+				type: 'error',
+				content: '保存失败！'
+			});
+			dialog.find('#save').removeAttr('disabled');
+			refreshToken(dialog.find('input[name="koala.token"]'));
 		});
 	};
 	/*
 	 *获取表单数据
 	 */
 	var getAllData = function(id, type){
-			if(type == 'addDepartment'){
-				var department = {};
-				department.sn = departmentSN.val();
-				department.name = departmentName.val();
-				department.description = description.val();
-				department['koala.token'] = dialog.find('input[name="koala.token"]').val();
-				return department;
-			}else if(type == 'addCompany'){
-				var company = {};
-				company.sn = departmentSN.val();
-				company.name = departmentName.val();
-				company.description = description.val();
-				company['koala.token'] = dialog.find('input[name="koala.token"]').val();
-				return company;
-		   }else {
-				org.sn = departmentSN.val();
-				org.name = departmentName.val();
-				org.description = description.val();
-				org['koala.token'] = dialog.find('input[name="koala.token"]').val();
-				return org;
-			}
+		if(type == 'addDepartment'){
+			var department = {};
+			department.sn = departmentSN.val();
+			department.name = departmentName.val();
+			department.description = description.val();
+			department['koala.token'] = dialog.find('input[name="koala.token"]').val();
+			return department;
+		}else if(type == 'addCompany'){
+			var company = {};
+			company.sn = departmentSN.val();
+			company.name = departmentName.val();
+			company.description = description.val();
+			company['koala.token'] = dialog.find('input[name="koala.token"]').val();
+			return company;
+	   }else {
+			org.sn = departmentSN.val();
+			org.name = departmentName.val();
+			org.description = description.val();
+			org['koala.token'] = dialog.find('input[name="koala.token"]').val();
+			return org;
+		}
 	};
 	/**
 	 * 表单验证 通过返回true  失败返回false
@@ -266,7 +266,7 @@ var department = function(){
 		$('#departmentTree').loader({
 			opacity: 0
 		});
-        $.get(baseUrl + 'orgTree.koala').done(function(data){
+        $.get(baseUrl + 'org-tree.koala').done(function(data){
         	$('#departmentTree').loader('hide');
             var zNodes = new Array();
             $.each(data, function(){
@@ -293,67 +293,67 @@ var department = function(){
                 multiSelect: false,
                 cacheItems: true
             }).on({
-                    'contextmenu': function(e){
-                        return false;
-                    },
-                    'rightClick': function(e, originalEvent){
-                        createRightMenu(originalEvent);
-                    },
-                    'selectParent': function(event, data){
-                        showDepartmentDetail(data.data.id);
-                    },
-                    'selectChildren': function(event, data){
-                        showDepartmentDetail(data.id);
-                    },
-                    'addCompany': function(event, data){
-                        var $element = $(data);
-                        var data = $element.data();
-                        addCompany(data.id, $element);
-                    },
-                    'addDepartment': function(event, data){
-                        var $element = $(data);
-                        var data = $element.data();
-                        addDepartment(data.id, data.organizationType, $element);
-                    },
-                    'update': function(event, data){
-                        var $element = $(data);
-                        var data = $element.data();
-                        if(data.organizationType == 'Company'){
-                            updateCompany(data.id, $element);
-                        }else{
-                            updateDepartment(data.id, $element);
-                        }
-                    },
-                    'delete': function(event, data){
-                        var $element = $(data);
-                        var data = $element.data();
-                        $(this).confirm({
-                            content: '确定要撤销该机构吗?',
-                            callBack: function(){
-                                var type = data.organizationType;
-                                delete data.children;
-                                delete data.organizationType;
-                                department().del(data, type, $element);
-                            }
-                        });
+                'contextmenu': function(e){
+                    return false;
+                },
+                'rightClick': function(e, originalEvent){
+                    createRightMenu(originalEvent);
+                },
+                'selectParent': function(event, data){
+                    showDepartmentDetail(data.data.id);
+                },
+                'selectChildren': function(event, data){
+                    showDepartmentDetail(data.id);
+                },
+                'addCompany': function(event, data){
+                    var $element = $(data);
+                    var data = $element.data();
+                    addCompany(data.id, $element);
+                },
+                'addDepartment': function(event, data){
+                    var $element = $(data);
+                    var data = $element.data();
+                    addDepartment(data.id, data.organizationType, $element);
+                },
+                'update': function(event, data){
+                    var $element = $(data);
+                    var data = $element.data();
+                    if(data.organizationType == 'Company'){
+                        updateCompany(data.id, $element);
+                    }else{
+                        updateDepartment(data.id, $element);
                     }
-                });
-            	if(id){
-            		var $element = $('#departmentTree').find('#'+id).click();
-            		if($element.hasClass('tree-folder')){
-            			$element.find('.tree-folder-header:first').click();
-            		}
-            		$element.parents().filter('.tree-folder-content').each(function(){
-            			var $this = $(this);
-						$this.show()
-							 .prev('.tree-folder-header')
-							 .find('.glyphicon-folder-close')
-							 .removeClass('glyphicon-folder-close')
-							 .addClass('glyphicon-folder-open');
-            		});
-            	}else{
-            		$('#departmentTree').find('.tree-folder-header:first').click();
-            	}
+                },
+                'delete': function(event, data){
+                    var $element = $(data);
+                    var data = $element.data();
+                    $(this).confirm({
+                        content: '确定要撤销该机构吗?',
+                        callBack: function(){
+                            var type = data.organizationType;
+                            delete data.children;
+                            delete data.organizationType;
+                            department().del(data, type, $element);
+                        }
+                    });
+                }
+            });
+        	if(id){
+        		var $element = $('#departmentTree').find('#'+id).click();
+        		if($element.hasClass('tree-folder')){
+        			$element.find('.tree-folder-header:first').click();
+        		}
+        		$element.parents().filter('.tree-folder-content').each(function(){
+        			var $this = $(this);
+					$this.show()
+						 .prev('.tree-folder-header')
+						 .find('.glyphicon-folder-close')
+						 .removeClass('glyphicon-folder-close')
+						 .addClass('glyphicon-folder-open');
+        		});
+        	}else{
+        		$('#departmentTree').find('.tree-folder-header:first').click();
+        	}
         });
 	};
     var createRightMenu = function(ev){
@@ -401,8 +401,8 @@ var department = function(){
     };
 
 	var showDepartmentDetail =  function(id){
-		$.get(contextPath + '/organization/getOrg.koala?id='+id).done(function(data){
-			var org = data.org;
+		$.get(contextPath + '/organization/get.koala?id='+id).done(function(data){
+			var org = data;
 			var departmentDetail = $('.right-content');
 			departmentDetail.find('[data-role="id"]').val(org.id);
 			departmentDetail.find('[data-role="number"]').text(org.sn);
@@ -410,7 +410,6 @@ var department = function(){
 			departmentDetail.find('[data-role="description"]').text(org.description == null ? '':org.description);
 			departmentDetail.find('[data-role="principalName"]').text(org.principalName == null ? '':org.principalName);
 			departmentDetail.find('[data-role="organizationType"]').val(org.organizationType);
-			//loadEmployeeList(org.id);
 			if(org.organizationType == 'Company'){
 				$('#addCompany').show();
 				$('#updateCompany').show();
@@ -421,15 +420,15 @@ var department = function(){
 				$('#updateDepartment').show();
 			}
 		}).fail(function(data){
-				$('body').message({
-					type: 'error',
-					content: '无法获取该部门信息'
-				});
+			$('body').message({
+				type: 'error',
+				content: '无法获取该部门信息'
 			});
+		});
 	};
 	
 	var showEmployeeList = function(id){
-		$.get( contextPath + '/pages/organisation/departmentEmployeeList.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/department-employee-list.jsp').done(function(data){
 			var employeeListDialog = $(data);
 			employeeListDialog.find('#deleteRelation').on('click',function(){
 				var grid = employeeListDialog.find('#employeeList');
@@ -524,23 +523,23 @@ var department = function(){
 						'Content-Type': 'application/json'
 					},
 					'type': "Post",
-					'url':  contextPath + '/organization/terminate_eoRelations.koala?organizationId=' + id,
+					'url':  contextPath + '/organization/terminate-eo-relations.koala?organizationId=' + id,
 					'data': JSON.stringify(items),
 					'dataType': 'json'
 				}).done(function(data){
-						if(data.result == 'success'){
-							$('body').message({
-								type: 'success',
-								content: '解除关系成功'
-							});
-							grid.grid('refresh');
-						}else{
-							employeeListDialog.find('.modal-content').message({
-								type: 'error',
-								content: data.result
-							});
-						}
-					});
+					if(data.success){
+						$('body').message({
+							type: 'success',
+							content: '解除关系成功'
+						});
+						grid.grid('refresh');
+					}else{
+						employeeListDialog.find('.modal-content').message({
+							type: 'error',
+							content: data.errorMessage
+						});
+					}
+				});
 			}
 		});
 	};

@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.dayatang.utils.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.OrganizationHasPrincipalYetException;
 import org.openkoala.organisation.PostExistException;
@@ -24,7 +25,6 @@ import org.openkoala.organisation.application.PostApplication;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
 import org.openkoala.organisation.facade.PostFacade;
-import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.PostDTO;
 import org.openkoala.organisation.facade.impl.assembler.PostAssembler;
 

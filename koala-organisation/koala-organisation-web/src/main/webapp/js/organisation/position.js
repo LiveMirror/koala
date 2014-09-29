@@ -203,7 +203,7 @@ var position = function(){
 	 */
 	var loadJobList = function(id){
 		$.get( contextPath + '/job/query-all.koala').done(function(data){
-			var items = data.data;
+			var items = data;
 			var contents = new Array();
 			for(var i= 0, j=items.length; i<j; i++){
 				var item = items[i];

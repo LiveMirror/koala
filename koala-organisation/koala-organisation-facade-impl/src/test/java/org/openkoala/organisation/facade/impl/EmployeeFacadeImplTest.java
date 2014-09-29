@@ -77,7 +77,7 @@ public class EmployeeFacadeImplTest {
 		doThrow(new SnIsExistException()).when(employeeApplication)
 				.createEmployeeWithPost(EmployeeAssembler.toEntity(employeeDTO), post);
 		assertEquals("员工编号: " + employeeDTO.getSn() + " 已被使用！", employeeFacadeImpl
-				.createEmployeeWithPost(employeeDTO, postId).getMessage());
+				.createEmployeeWithPost(employeeDTO, postId).getErrorMessage());
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class EmployeeFacadeImplTest {
 				.createEmployeeWithPost(EmployeeAssembler.toEntity(employeeDTO), post);
 		assertEquals(
 				"不能使用与其他人一样的证件号码！",
-				employeeFacadeImpl.createEmployeeWithPost(employeeDTO, postId).getMessage());
+				employeeFacadeImpl.createEmployeeWithPost(employeeDTO, postId).getErrorMessage());
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class EmployeeFacadeImplTest {
 				.createEmployeeWithPost(EmployeeAssembler.toEntity(employeeDTO), post);
 		assertEquals(
 				"保存失败！",
-				employeeFacadeImpl.createEmployeeWithPost(employeeDTO, postId).getMessage());
+				employeeFacadeImpl.createEmployeeWithPost(employeeDTO, postId).getErrorMessage());
 	}
 
 	private void initPost() {
@@ -146,7 +146,7 @@ public class EmployeeFacadeImplTest {
 		doThrow(new SnIsExistException()).when(baseApplication)
 			.updateParty(EmployeeAssembler.toEntity(employeeDTO));
 		assertEquals("员工编号: " + employeeDTO.getSn() + " 已被使用！", employeeFacadeImpl
-				.updateEmployeeInfo(employeeDTO).getMessage());
+				.updateEmployeeInfo(employeeDTO).getErrorMessage());
 	}
 
 	@Test
@@ -156,7 +156,7 @@ public class EmployeeFacadeImplTest {
 		doThrow(new IdNumberIsExistException()).when(baseApplication)
 				.updateParty(EmployeeAssembler.toEntity(employeeDTO));
 		assertEquals("不能使用与其他人一样的证件号码！",
-				employeeFacadeImpl.updateEmployeeInfo(employeeDTO).getMessage());
+				employeeFacadeImpl.updateEmployeeInfo(employeeDTO).getErrorMessage());
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class EmployeeFacadeImplTest {
 		doThrow(new RuntimeException()).when(baseApplication).updateParty(
 				EmployeeAssembler.toEntity(employeeDTO));
 		assertEquals("修改失败！",
-				employeeFacadeImpl.updateEmployeeInfo(employeeDTO).getMessage());
+				employeeFacadeImpl.updateEmployeeInfo(employeeDTO).getErrorMessage());
 	}
 
 //	@Test
@@ -192,7 +192,7 @@ public class EmployeeFacadeImplTest {
 //				.transformPost(responsiblePostDTOs));
 //		assertEquals("该员工已经有主任职岗位！",
 //				employeeFacadeImpl.transformPost(employeeId,
-//						responsiblePostDTOs).getMessage());
+//						responsiblePostDTOs).getErrorMessage());
 //	}
 //
 //	@Test

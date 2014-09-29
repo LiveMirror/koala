@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.dayatang.utils.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.facade.EmployeeFacade;
 import org.openkoala.organisation.facade.dto.EmployeeDTO;
 import org.openkoala.organisation.facade.dto.ResponsiblePostDTO;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 员工管理controller
+ * 员工管理
  * 
  * @author xmfang
  * 
@@ -39,9 +40,8 @@ public class EmployeeController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Page pagingQuery(int page, int pagesize, EmployeeDTO example) {
-		Page<EmployeeDTO> employees = employeeFacade.pagingQueryEmployees(example, page, pagesize);
-		return employees;
+	public Page<EmployeeDTO> pagingQuery(int page, int pagesize, EmployeeDTO example) {
+		return employeeFacade.pagingQueryEmployees(example, page, pagesize);
 	}
 
 	/**
@@ -55,19 +55,14 @@ public class EmployeeController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingquery-by-org")
-	public Page pagingQueryByOrganization(int page, int pagesize, EmployeeDTO example, Long organizationId, boolean queryAllChildren) {
-		Page<EmployeeDTO> employees = null;
+	public Page<EmployeeDTO> pagingQueryByOrganization(int page, int pagesize, EmployeeDTO example, Long organizationId, boolean queryAllChildren) {
 		if (organizationId == 0) {
-			employees = employeeFacade.pagingQueryEmployeesWhoNoPost(example, page, pagesize);
-		} else {
-			if (queryAllChildren) {
-				employees = employeeFacade.pagingQueryEmployeesByOrganizationAndChildren(example, organizationId, page, pagesize);
-			} else {
-				employees = employeeFacade.pagingQueryEmployeesByOrganization(example, organizationId, page, pagesize);
-			}
+			return employeeFacade.pagingQueryEmployeesWhoNoPost(example, page, pagesize);
 		}
-
-		return employees;
+		if (queryAllChildren) {
+			return employeeFacade.pagingQueryEmployeesByOrganizationAndChildren(example, organizationId, page, pagesize);
+		}
+		return employeeFacade.pagingQueryEmployeesByOrganization(example, organizationId, page, pagesize);
 	}
 
 	/**
@@ -79,11 +74,9 @@ public class EmployeeController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/create")
-	public Map<String, Object> createEmployee(EmployeeDTO employeeDto, Long postId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", employeeFacade.createEmployeeWithPost(employeeDto, postId).getMessage());
-		return dataMap;
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public InvokeResult createEmployee(EmployeeDTO employeeDto, Long postId) {
+		return employeeFacade.createEmployeeWithPost(employeeDto, postId);
 	}
 
 	/**
@@ -94,10 +87,8 @@ public class EmployeeController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public Map<String, Object> updateEmployee(EmployeeDTO employeeDto) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", employeeFacade.updateEmployeeInfo(employeeDto).getMessage());
-		return dataMap;
+	public InvokeResult updateEmployee(EmployeeDTO employeeDto) {
+		return employeeFacade.updateEmployeeInfo(employeeDto);
 	}
 
 	/**
@@ -108,12 +99,9 @@ public class EmployeeController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/transform-post", method = RequestMethod.POST, consumes = "application/json")
-	public Map<String, Object> transformPost(Long employeeId, @RequestBody ResponsiblePostDTO[] responsibleJobHoldings) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", 
-				employeeFacade.transformPost(employeeId, responsibleJobHoldings).getMessage());
-		return dataMap;
+	@RequestMapping(value = "/transform-post", method = RequestMethod.POST)
+	public InvokeResult transformPost(Long employeeId, @RequestBody ResponsiblePostDTO[] responsibleJobHoldings) {
+		return employeeFacade.transformPost(employeeId, responsibleJobHoldings);
 	}
 
 	/**
@@ -169,7 +157,7 @@ public class EmployeeController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminate")
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
 	public Map<String, Object> terminateEmployee(EmployeeDTO employeeDTO) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		employeeFacade.terminateEmployee(employeeDTO);
@@ -184,7 +172,7 @@ public class EmployeeController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/terminate-employees", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/terminate-employees", method = RequestMethod.POST)
 	public Map<String, Object> terminateEmployees(@RequestBody EmployeeDTO[] employeeDtos) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		employeeFacade.terminateEmployees(employeeDtos);

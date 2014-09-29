@@ -1,11 +1,11 @@
 package org.openkoala.organisation.web.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import org.dayatang.utils.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.facade.JobFacade;
 import org.openkoala.organisation.facade.dto.JobDTO;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 职务管理Controller
+ * 职务管理
  * 
  * @author xmfang
  * 
@@ -38,7 +38,7 @@ public class JobController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pagingquery")
-	public Page pagingQuery(int page, int pagesize, JobDTO jobDto) {
+	public Page<JobDTO> pagingQuery(int page, int pagesize, JobDTO jobDto) {
 		return jobFacade.pagingQueryJobs(jobDto, page, pagesize);
 	}
 
@@ -49,10 +49,8 @@ public class JobController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/query-all")
-	public Map<String, Object> queryAllJobs() {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("data", jobFacade.findAllJobs());
-		return dataMap;
+	public List<JobDTO> queryAllJobs() {
+		return jobFacade.findAllJobs();
 	}
 
 	/**
@@ -62,11 +60,9 @@ public class JobController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/create")
-	public Map<String, Object> createJob(JobDTO jobDto) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", jobFacade.createJob(jobDto).getMessage());
-		return dataMap;
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public InvokeResult createJob(JobDTO jobDto) {
+		return jobFacade.createJob(jobDto);
 	}
 
 	/**
@@ -76,11 +72,9 @@ public class JobController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/update")
-	public Map<String, Object> updateJob(JobDTO jobDTO) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", jobFacade.updateJobInfo(jobDTO).getMessage());
-		return dataMap;
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public InvokeResult updateJob(JobDTO jobDTO) {
+		return jobFacade.updateJobInfo(jobDTO);
 	}
 
 	/**
@@ -91,10 +85,8 @@ public class JobController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/get/{id}")
-	public Map<String, Object> get(@PathVariable("id") Long id) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("data", jobFacade.getJobById(id));
-		return dataMap;
+	public JobDTO get(@PathVariable("id") Long id) {
+		return jobFacade.getJobById(id);
 	}
 
 	/**
@@ -104,11 +96,9 @@ public class JobController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/terminate")
-	public Map<String, Object> terminateJob(JobDTO jobDTO) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", jobFacade.terminateJob(jobDTO).getMessage());
-		return dataMap;
+	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
+	public InvokeResult  terminateJob(JobDTO jobDTO) {
+		return jobFacade.terminateJob(jobDTO);
 	}
 
 	/**
@@ -118,11 +108,9 @@ public class JobController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/terminateJobs", method = RequestMethod.POST, consumes = "application/json")
-	public Map<String, Object> terminateJobs(@RequestBody JobDTO[] jobDtos) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("result", jobFacade.terminateJobs(jobDtos).getMessage());
-		return dataMap;
+	@RequestMapping(value = "/terminate-jobs", method = RequestMethod.POST)
+	public InvokeResult terminateJobs(@RequestBody JobDTO[] jobDtos) {
+		return jobFacade.terminateJobs(jobDtos);
 	}
 
 }

@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.dayatang.utils.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.HasPrincipalPostYetException;
 import org.openkoala.organisation.IdNumberIsExistException;
 import org.openkoala.organisation.SnIsExistException;
@@ -27,7 +28,6 @@ import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
 import org.openkoala.organisation.facade.EmployeeFacade;
 import org.openkoala.organisation.facade.dto.EmployeeDTO;
-import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.OrganizationDTO;
 import org.openkoala.organisation.facade.dto.ResponsiblePostDTO;
 import org.openkoala.organisation.facade.impl.assembler.EmployeeAssembler;
@@ -39,9 +39,6 @@ import org.openkoala.organisation.facade.impl.assembler.ResponsiblePostAssembler
  * 
  */
 @Named
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-//@Stateless(name = "EmployeeApplication")
-//@Remote
 public class EmployeeFacadeImpl implements EmployeeFacade {
 	
 	@Inject

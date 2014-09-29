@@ -75,14 +75,14 @@ public class OrganizationFacadeImplTest {
 		when(baseApplication.getEntity(Company.class, parentId)).thenReturn(parent);
 		doThrow(new SnIsExistException()).when(organizationApplication).createCompany(parent, company);
 		assertEquals("机构编码: " + company.getSn() + " 已被使用！", 
-				organizationFacadeImpl.createCompany(parentId, companyDTO).getMessage());
+				organizationFacadeImpl.createCompany(parentId, companyDTO).getErrorMessage());
 	}
 	
 	@Test
 	public void testCatchExceptionWhenCreateCompany() {
 		when(baseApplication.getEntity(Company.class, parentId)).thenReturn(parent);
 		doThrow(new RuntimeException()).when(organizationApplication).createCompany(parent, company);
-		assertEquals("创建公司失败！", organizationFacadeImpl.createCompany(parentId, companyDTO).getMessage());
+		assertEquals("创建公司失败！", organizationFacadeImpl.createCompany(parentId, companyDTO).getErrorMessage());
 	}
 	
 	@Test
@@ -97,7 +97,7 @@ public class OrganizationFacadeImplTest {
 		when(baseApplication.getEntity(Organization.class, parentId)).thenReturn(parent);
 		doThrow(new SnIsExistException()).when(organizationApplication).createDepartment(parent, department);
 		assertEquals("机构编码: " + department.getSn() + " 已被使用！",
-				organizationFacadeImpl.createDepartment(parentId, departmentDTO).getMessage());
+				organizationFacadeImpl.createDepartment(parentId, departmentDTO).getErrorMessage());
 	}
 	
 	@Test
@@ -105,7 +105,7 @@ public class OrganizationFacadeImplTest {
 		when(baseApplication.getEntity(Organization.class, parentId)).thenReturn(parent);
 		doThrow(new RuntimeException()).when(organizationApplication).createDepartment(parent, department);
 		assertEquals("创建部门失败！", 
-				organizationFacadeImpl.createDepartment(parentId, departmentDTO).getMessage());
+				organizationFacadeImpl.createDepartment(parentId, departmentDTO).getErrorMessage());
 	}
 	
 	@Test
@@ -118,13 +118,13 @@ public class OrganizationFacadeImplTest {
 	public void testCatchSnIsExistExceptionWhenUpdateCompany() {
 		doThrow(new SnIsExistException()).when(baseApplication).updateParty(company);
 		assertEquals("机构编码: " + company.getSn() + " 已被使用！", 
-				organizationFacadeImpl.updateOrganization(companyDTO).getMessage());
+				organizationFacadeImpl.updateOrganization(companyDTO).getErrorMessage());
 	}
 	
 	@Test
 	public void testExceptionWhenUpdateCompany() {
 		doThrow(new RuntimeException()).when(baseApplication).updateParty(company);
-		assertEquals("修改公司信息失败！", organizationFacadeImpl.updateOrganization(companyDTO).getMessage());
+		assertEquals("修改公司信息失败！", organizationFacadeImpl.updateOrganization(companyDTO).getErrorMessage());
 	}
 	
 	@Test
@@ -172,21 +172,21 @@ public class OrganizationFacadeImplTest {
 	@Test
 	public void testCatchTerminateRootOrganizationExceptionWhenTerminateCompany() {
 		doThrow(new TerminateRootOrganizationException()).when(baseApplication).terminateParty(company);
-		assertEquals("不能撤销根机构！", organizationFacadeImpl.terminateOrganization(companyDTO).getMessage());
+		assertEquals("不能撤销根机构！", organizationFacadeImpl.terminateOrganization(companyDTO).getErrorMessage());
 	}
 	
 	@Test
 	public void testCatchTerminateNotEmptyOrganizationExceptionWhenTerminateCompany() {
 		doThrow(new TerminateNotEmptyOrganizationException()).when(baseApplication).terminateParty(company);
 		assertEquals("该机构下还有员工，不能撤销！", 
-				organizationFacadeImpl.terminateOrganization(companyDTO).getMessage());
+				organizationFacadeImpl.terminateOrganization(companyDTO).getErrorMessage());
 	}
 	
 	@Test
 	public void testCatchTerminateNotEmptyOrganizationExceptionWhenTerminateDepartment() {
 		doThrow(new TerminateNotEmptyOrganizationException()).when(baseApplication).terminateParty(department);
 		assertEquals("该机构下还有员工，不能撤销！",
-				organizationFacadeImpl.terminateOrganization(departmentDTO).getMessage());
+				organizationFacadeImpl.terminateOrganization(departmentDTO).getErrorMessage());
 	}
 
 }

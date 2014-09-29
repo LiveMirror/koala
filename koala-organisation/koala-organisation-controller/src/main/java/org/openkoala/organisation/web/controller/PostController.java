@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.dayatang.utils.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.facade.PostFacade;
 import org.openkoala.organisation.facade.dto.PostDTO;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 岗位管理Controller
+ * 岗位管理
  *
  * @author xmfang
  */
@@ -37,7 +38,7 @@ public class PostController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/pagingquery")
-    public Page pagingQuery(int page, int pagesize, PostDTO postDto) {
+    public Page<PostDTO> pagingQuery(int page, int pagesize, PostDTO postDto) {
     	return postFacade.pagingQueryPosts(postDto, page, pagesize);
     }
 
@@ -48,12 +49,10 @@ public class PostController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/create")
-    public Map<String, Object> createPost(PostDTO postDTO, Long organizationId) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public InvokeResult createPost(PostDTO postDTO, Long organizationId) {
     	postDTO.setOrganizationId(organizationId);
-        dataMap.put("result", postFacade.createPost(postDTO).getMessage());
-        return dataMap;
+        return postFacade.createPost(postDTO);
     }
 
 	/**
@@ -63,12 +62,10 @@ public class PostController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/update")
-	public Map<String, Object> updatePost(PostDTO postDTO, Long organizationId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public InvokeResult updatePost(PostDTO postDTO, Long organizationId) {
 		postDTO.setOrganizationId(organizationId);
-		dataMap.put("result", postFacade.updatePostInfo(postDTO).getMessage());
-		return dataMap;
+		return postFacade.updatePostInfo(postDTO);
 	}
 
     @ResponseBody
@@ -81,7 +78,7 @@ public class PostController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/paging-query-post-by-org")
-    public Page pagingQueryPostsOfOrganization(Long organizationId, PostDTO example, int page, int pagesize) {
+    public Page<PostDTO> pagingQueryPostsOfOrganization(Long organizationId, PostDTO example, int page, int pagesize) {
         return postFacade.pagingQueryPostsOfOrganizatoin(organizationId, example, page, pagesize);
     }
 
@@ -111,11 +108,9 @@ public class PostController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/terminate")
-    public Map<String, Object> terminatePost(PostDTO postDTO) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("result", postFacade.terminatePost(postDTO).getMessage());
-        return dataMap;
+    @RequestMapping(value = "/terminate", method = RequestMethod.POST)
+    public InvokeResult terminatePost(PostDTO postDTO) {
+        return postFacade.terminatePost(postDTO);
     }
 
     /**
@@ -125,10 +120,9 @@ public class PostController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/terminate-posts", method = RequestMethod.POST, consumes = "application/json")
-    public Map<String, Object> terminatePosts(@RequestBody PostDTO[] postDTOs) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("result", postFacade.terminatePosts(postDTOs).getMessage());
-        return dataMap;
+    @RequestMapping(value = "/terminate-posts", method = RequestMethod.POST)
+    public InvokeResult terminatePosts(@RequestBody PostDTO[] postDTOs) {
+        return postFacade.terminatePosts(postDTOs);
     }
+    
 }

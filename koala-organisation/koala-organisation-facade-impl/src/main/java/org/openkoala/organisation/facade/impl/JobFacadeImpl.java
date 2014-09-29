@@ -14,13 +14,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.dayatang.utils.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.SnIsExistException;
 import org.openkoala.organisation.TheJobHasPostAccountabilityException;
 import org.openkoala.organisation.application.BaseApplication;
 import org.openkoala.organisation.domain.Job;
 import org.openkoala.organisation.facade.JobFacade;
-import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.JobDTO;
 import org.openkoala.organisation.facade.impl.assembler.JobAssembler;
 
