@@ -13,20 +13,20 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  <dependencies>
-  	<dependency>
-			<groupId>org.dayatang.dddlib</groupId>
-			<artifactId>dddlib-query-channel</artifactId>
-		</dependency>
-  		<dependency>
-  		<groupId>org.openkoala.koalacommons</groupId>
-			<artifactId>koala-commons-support</artifactId>
-			<version>${project.parent.version}</version>
-  		</dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.dayatang.dddlib</groupId>
+            <artifactId>dddlib-query-channel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openkoala.koalacommons</groupId>
+            <artifactId>koala-commons-support</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
