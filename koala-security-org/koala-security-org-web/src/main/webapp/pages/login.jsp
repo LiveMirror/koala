@@ -6,7 +6,7 @@
         <title>欢迎使用Koala</title>
         <%@include file="/commons/statics.jsp"%>
         <style type="text/css">
-            *   .* {
+            * .* {
                 margin: 0;
                 padding: 0;
             }
@@ -213,7 +213,7 @@
 		});
 		
 		function refreshCode() {
-			$("#checkCode").attr("src","jcaptcha.jpg?time="+new Date().getTime());
+            $("#checkCode").attr("src", "jcaptcha.jpg?time=" + new Date().getTime());
 		}
 		
 	</script>
