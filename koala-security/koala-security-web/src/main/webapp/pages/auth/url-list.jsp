@@ -1,12 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@include file="/commons/taglibs.jsp"%>
-<%@ page import="java.util.Date"%>
-<% String formId = "form_" + new Date().getTime();
-   String gridId = "grid_" + new Date().getTime();
-   String path = request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);
-%>
+
 <!-- strat form -->
-<form  id="urlListForm" target="_self" class="form-horizontal searchCondition">
+<form  name="urlListForm" id="${formId}" target="_self" class="form-horizontal searchCondition">
     <input type="hidden" class="form-control" name="page" value="0">
     <input type="hidden" class="form-control" name="pagesize" value="10">
 
@@ -32,7 +27,7 @@
                     </div>
                 </td>
                 <td style="vertical-align: bottom;">
-                    <button id="urlListSearch" type="button" style="position:relative; margin-left:35px; top: -15px"
+                    <button id="urlManagerSearch" type="button" style="position:relative; margin-left:35px; top: -15px"
                             class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button>
                 </td>
             </tr>
@@ -286,7 +281,6 @@
 				}
 				
 				var url_list = items[0];
-				console.log(url_list);
 				openTab('/pages/auth/permission-list.jsp', url_list.name+'的权限管理', 'roleManager_' + url_list.id, url_list.id, {url_listId : url_list.id});
         	},
 			"assignUrl" : function(event, data){
@@ -423,18 +417,19 @@
 				});
 			}
 		});
-		var formId = $("#urlListForm");
-		formId.find('#urlListSearch').on('click', function(){
+
+        var form = $('#'+'${formId}');
+        form.find('#urlManagerSearch').on('click', function(){
             var params = {};
-            formId.find('.form-control').each(function(){
+            form.find('.form-control').each(function(){
                 var $this = $(this);
                 var name = $this.attr('name');
                  if(name){
                     params[name] = $this.val();
                 }
-                 console.log(name+"=="+params[name]);
             });
            $('[data-role="urlGrid"]').getGrid().search(params);
         });
+
 	});
 </script>

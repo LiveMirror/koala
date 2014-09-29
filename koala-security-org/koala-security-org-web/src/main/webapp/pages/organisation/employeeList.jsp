@@ -58,7 +58,7 @@ $(function(){
          {content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>&nbsp;雇佣</button>', action: 'add'},
          {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"></span>&nbsp;修改基本信息</button>', action: 'modify'},
          {content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"></span>&nbsp;解雇</button>', action: 'delete'},
-         {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级查询<span class="caret"></span></button>', action: 'search'}
+         {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索<span class="caret"></span></button>', action: 'search'}
          ];
      $('#employeegrid').grid({
           identity: 'id',

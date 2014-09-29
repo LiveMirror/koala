@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@include file="/commons/taglibs.jsp"%>
+
 <!-- strat form -->
-<form id=“urlListQueryForm” target="_self" class="form-horizontal searchCondition">
+<form  name="urlListForm" id="${formId}" target="_self" class="form-horizontal searchCondition">
     <input type="hidden" class="form-control" name="page" value="0">
     <input type="hidden" class="form-control" name="pagesize" value="10">
 
@@ -27,7 +27,7 @@
                     </div>
                 </td>
                 <td style="vertical-align: bottom;">
-                    <button id="urlAccessResourceManagerSearch" type="button" style="position:relative; margin-left:35px; top: -15px"
+                    <button id="urlManagerSearch" type="button" style="position:relative; margin-left:35px; top: -15px"
                             class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button>
                 </td>
             </tr>
@@ -281,7 +281,6 @@
 				}
 				
 				var url_list = items[0];
-				console.log(url_list);
 				openTab('/pages/auth/permission-list.jsp', url_list.name+'的权限管理', 'roleManager_' + url_list.id, url_list.id, {url_listId : url_list.id});
         	},
 			"assignUrl" : function(event, data){
@@ -419,10 +418,11 @@
 				});
 			}
 		});
-		var formId = $("#urlListQueryForm");
-		formId.find('#urlAccessResourceManagerSearch').on('click', function(){
+
+        var form = $('#'+'${formId}');
+        form.find('#urlManagerSearch').on('click', function(){
             var params = {};
-            formId.find('.form-control').each(function(){
+            form.find('.form-control').each(function(){
                 var $this = $(this);
                 var name = $this.attr('name');
                  if(name){

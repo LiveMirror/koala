@@ -45,7 +45,7 @@
             {content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>&nbsp;创建</button>', action: 'add'},
             {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"></span>&nbsp;修改</button>', action: 'modify'},
             {content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"></span>&nbsp;撤销</button>', action: 'delete'},
-            {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级查询<span class="caret"></span></button>', action: 'search'}
+            {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索<span class="caret"></span></button>', action: 'search'}
         ];
         $('#jobgrid').grid({
              identity: 'id',
