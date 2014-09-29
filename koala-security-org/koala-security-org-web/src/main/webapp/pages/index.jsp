@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <%--<%@include file="/commons/metas.jsp"%>--%>
     <title>Koala权限系统</title>
     <%@include file="/commons/statics.jsp"%>
     <style>
@@ -14,13 +13,6 @@
     </style>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
-//
-//        $.ajaxSetup({
-//            url:contextPath+"/login",
-//            success: function(data){
-//                window.location.href=contextPath+"/index.koala";
-//            }
-//        });
 
         $(function(){
             var roleName = $('#roles').html();

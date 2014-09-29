@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@include file="/commons/taglibs.jsp"%>
 
-<%@ page import="java.util.Date"%>
-<% String formId = "form_" + new Date().getTime();
-   String gridId = "grid_" + new Date().getTime();
-   String path = request.getContextPath()+request.getServletPath().substring(0, request.getServletPath().lastIndexOf("/") + 1);
-%>
-<form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
+<form name="userListForm" id="${formId}" target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
 <div id="userManagerQueryDivId" class="panel" hidden="true">
@@ -50,13 +44,7 @@
     var departmentId = null;
     var departmentName = null;
 
-	/*
-	*多条件查询
-	*/var grid;
-	var form;
 	$(function (){
-	    grid = $("#<%=gridId%>");
-	    form = $("#<%=formId%>");
 		PageLoader = {
 		    initSearchPanel:function(){},
 		    initGridPanel: function(){
@@ -566,6 +554,8 @@
 		};
 		PageLoader.initSearchPanel();
 		PageLoader.initGridPanel();
+
+        var form = $('#'+'${formId}');
         form.find('#userManagerSearch').on('click', function(){
             var params = {};
             form.find('.form-control').each(function(){

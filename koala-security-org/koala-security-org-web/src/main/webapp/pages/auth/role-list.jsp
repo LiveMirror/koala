@@ -1,12 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@include file="/commons/taglibs.jsp"%>
-<%@ page import="java.util.Date"%>
-<% String formId = "form_" + new Date().getTime();
-   String gridId = "grid_" + new Date().getTime();
-   String path = request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);
-%>
+
 <!-- strat form -->
-<form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
+<form name="roleListForm" id="${formId}" target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
 <div id ="roleManagerQueryDivId" class="panel" hidden="true" >
@@ -182,7 +177,6 @@
 				}
 				//roleManager().pageAssign($(this), items[0].roleId);
 				var page = items[0];
-                console.log("页面--->",page);
                 openTab('/pages/auth/page-list.jsp', page.name+'的page管理', 'roleManager_' + page.id, page.id, {pageId : page.id});
 			},
 			'permissionAssign' : function(event, data) {
@@ -203,11 +197,11 @@
 					return;
 				}
 				var permissions = items[0];
-                console.log("权限--->",permissions);
 				openTab('/pages/auth/permission-list.jsp', permissions.name+'的权限管理', 'roleManager_' + permissions.id, permissions.id, {permissionsId : permissions.id});
 			}
 		});
-		form = $("#<%=formId%>");
+
+        var form = $('#'+'${formId}');
 		form.find('#roleManagerSearch').on('click', function(){
 	            var params = {};
 	            form.find('.form-control').each(function(){
@@ -216,7 +210,6 @@
 	                 if(name){
 	                    params[name] = $this.val();
 	                }
-	                 console.log(name+"=="+params[name]);
 	            });
 	           $('[data-role="roleGrid"]').getGrid().search(params);
 	        });

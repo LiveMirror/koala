@@ -1,12 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<%@include file="/commons/taglibs.jsp"%>
-<%@ page import="java.util.Date"%>
-<% String formId = "form_" + new Date().getTime();
-   String gridId = "grid_" + new Date().getTime();
-   String path = request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);
-%>
+
 <!-- strat form -->
-<form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
+<form name="roleListForm" id="${formId}" target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
 <div  id = "roleManagerQueryDivId" class="panel" hidden="true" >
@@ -25,7 +20,7 @@
               </div>
           </div>
       </td>
-      <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
+      <td style="vertical-align: bottom;"><button id="roleManagerSearch" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
   </tr>
 </table>	
 </div>
@@ -78,10 +73,7 @@
 		})();
 		
 		var url = contextPath + '/auth/role/pagingQuery.koala';
-		if (userId) {
-			url = contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId=' + userId;
-		}
-		
+
 		$('[data-role="roleGrid"]').grid({
 			identity : 'id',
 			columns : columns,
@@ -202,7 +194,6 @@
 					});
 					return;
 				}
-				//roleManager().pageAssign($(this), items[0].roleId);
 				var permissions = items[0];
 				openTab('/pages/auth/permission-list.jsp', permissions.name+'的权限管理', 'roleManager_' + permissions.id, permissions.id, {permissionsId : permissions.id});
 			},
@@ -223,12 +214,11 @@
 					});
 					return;
 				}
-				console.log(data.data[0]);
 				roleManager().assignResource($(this), data.data[0]);
 			}
 		});
-		 form = $("#<%=formId%>");
-		form.find('#search').on('click', function(){
+        var form = $('#'+'${formId}');
+		form.find('#roleManagerSearch').on('click', function(){
 	            var params = {};
 	            form.find('.form-control').each(function(){
 	                var $this = $(this);
@@ -236,7 +226,6 @@
 	                 if(name){
 	                    params[name] = $this.val();
 	                }
-	                 console.log(name+"=="+params[name]);
 	            });
 	           $('[data-role="roleGrid"]').getGrid().search(params);
 	        });
