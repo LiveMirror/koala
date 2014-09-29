@@ -1,6 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<form id="employeeSearchForm" target="_self" class="form-horizontal searchCondition">
+<input type="hidden" class="form-control" name="page" value="0">
+<input type="hidden"  class="form-control"  name="pagesize" value="10">
+	<div id="employeeQueryDiv" class="panel" hidden="true">
+	<table border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+		  <td>
+	          <div class="form-group">
+	              <label class="control-label" style="width:100px;float:left;">编号:&nbsp;</label>
+	              <div style="margin-left:15px;float:left;">
+	                  <input name="sn" class="form-control" type="text" style="width:180px;"/>
+	              </div>
+	
+	              <label class="control-label" style="width:100px;float:left;">姓名:&nbsp;</label>
+	              <div style="margin-left:15px;float:left;">
+	                  <input name="name" class="form-control" type="text" style="width:180px;"/>
+	              </div>
+	          </div>
+	      </td>
+	      <td style="vertical-align: bottom;"><button id="employeeSearchBtn" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
+	  </tr>
+	</table>	
+	</div>
+</form>
+
+
 <div id="employeegrid"></div>
 <script type="text/javascript" src="<c:url value='/js/organisation/employee.js' />"></script>
 
@@ -31,12 +57,13 @@ $(function(){
      var buttons = [
          {content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>&nbsp;雇佣</button>', action: 'add'},
          {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"></span>&nbsp;修改基本信息</button>', action: 'modify'},
-         {content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"></span>&nbsp;解雇</button>', action: 'delete'}     ];
+         {content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"></span>&nbsp;解雇</button>', action: 'delete'},
+         {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级查询<span class="caret"></span></button>', action: 'search'}
+         ];
      $('#employeegrid').grid({
           identity: 'id',
           columns: cols,
           buttons: buttons,
-          querys: [{title: '姓名', value: 'name'}, {title: '员工编号', value: 'sn'}],
           url: contextPath + '/employee/pagingquery.koala'
      }).on({
                  'add': function(){
@@ -75,7 +102,23 @@ $(function(){
                          content: '确定要删除所选记录吗?',
                          callBack: function(){ employee().del(data.item, $this);}
                      });
-                 }
+                 },
+				'search' : function() {						
+					$("#employeeQueryDiv").slideToggle("slow");						 
+				}
      })
+     
+     var form = $("#employeeSearchForm");
+        form.find('#employeeSearchBtn').on('click', function(){
+            var params = {};
+            form.find('.form-control').each(function(){
+                var $this = $(this);
+                var name = $this.attr('name');
+                 if(name){
+                    params[name] = $this.val();
+                }
+            });
+            $("#employeegrid").getGrid().search(params);
+        });
  })
 </script>

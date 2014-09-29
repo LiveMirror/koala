@@ -327,7 +327,3 @@ var changePost = function(){
 		addPost: addPost
 	};
 };
-
-function test() {
-	alert('a')
-}
