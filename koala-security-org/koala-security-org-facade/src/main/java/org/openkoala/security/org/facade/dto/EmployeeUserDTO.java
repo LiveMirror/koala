@@ -7,35 +7,37 @@ import java.util.Date;
 /**
  * Created by luzhao on 14-8-28.
  */
-public class EmployeeUserDTO extends UserDTO{
+public class EmployeeUserDTO extends UserDTO {
 
-    /**
-     * 员工名称，用于页面显示
-     */
-    private String employeeName;
+	private static final long serialVersionUID = -6799621455814324698L;
 
-    private String employeeOrgName;
+	/**
+	 * 员工名称，用于页面显示
+	 */
+	private String employeeName;
 
+	private String employeeOrgName;
 
-    public EmployeeUserDTO() {}
+	public EmployeeUserDTO() {
+	}
 
-    public EmployeeUserDTO(Long id, int version, String name, String userAccount, Date createDate, String description, String createOwner, Date lastModifyTime, Boolean disabled) {
-        super(id, version, name, userAccount, createDate, description, createOwner, lastModifyTime, disabled);
-    }
+	public EmployeeUserDTO(Long id, int version, String name, String userAccount, Date createDate, String description, String createOwner, Date lastModifyTime, Boolean disabled) {
+		super(id, version, name, userAccount, createDate, description, createOwner, lastModifyTime, disabled);
+	}
 
-    public String getEmployeeName() {
-        return employeeName;
-    }
+	public String getEmployeeName() {
+		return employeeName;
+	}
 
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
 
-    public String getEmployeeOrgName() {
-        return employeeOrgName;
-    }
+	public String getEmployeeOrgName() {
+		return employeeOrgName;
+	}
 
-    public void setEmployeeOrgName(String employeeOrgName) {
-        this.employeeOrgName = employeeOrgName;
-    }
+	public void setEmployeeOrgName(String employeeOrgName) {
+		this.employeeOrgName = employeeOrgName;
+	}
 }

@@ -3,9 +3,9 @@ package org.openkoala.organisation.facade.impl.assembler;
 import org.openkoala.organisation.domain.Post;
 import org.openkoala.organisation.facade.dto.ResponsiblePostDTO;
 
-public class ResponsiblePostDtoAssembler {
+public class ResponsiblePostAssembler {
 	
-	public static ResponsiblePostDTO assemEntity(Post post, boolean principal) {
+	public static ResponsiblePostDTO toEntity(Post post, boolean principal) {
 		ResponsiblePostDTO result = new ResponsiblePostDTO();
 		result.setPrincipal(principal);
 		result.setPostId(post.getId());
@@ -14,6 +14,5 @@ public class ResponsiblePostDtoAssembler {
 		result.setPostDescription(post.getDescription());
 		return result;
 	}
-
 	
 }

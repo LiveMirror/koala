@@ -1,24 +1,22 @@
 package org.openkoala.businesslog.applicationImpl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Named;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
+import org.dayatang.utils.Page;
 import org.openkoala.businesslog.BusinessLogBaseException;
 import org.openkoala.businesslog.application.BusinessLogApplication;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
 import org.openkoala.businesslog.model.DefaultBusinessLogDTO;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.inject.Named;
-import javax.interceptor.Interceptors;
-import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: zjzhai

@@ -25,8 +25,8 @@ import org.openkoala.organisation.domain.Employee;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.facade.dto.EmployeeDTO;
 import org.openkoala.organisation.facade.dto.OrganizationDTO;
-import org.openkoala.organisation.facade.impl.assembler.EmployeeDtoAssembler;
-import org.openkoala.organisation.facade.impl.assembler.OrganizationDtoAssembler;
+import org.openkoala.organisation.facade.impl.assembler.EmployeeAssembler;
+import org.openkoala.organisation.facade.impl.assembler.OrganizationAssembler;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -37,7 +37,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  *
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({OrganizationDtoAssembler.class})
+@PrepareForTest({OrganizationAssembler.class})
 public class OrganizationFacadeImplTest {
 	
 	@Mock
@@ -133,10 +133,10 @@ public class OrganizationFacadeImplTest {
 		OrganizationDTO organizationDTO = new OrganizationDTO(organizationId, "总公司");
 		organizationDTO.setSn("xxx");
 		organizationDTO.setOrganizationType(OrganizationDTO.COMPANY);
-		Organization organization = OrganizationDtoAssembler.assemEntity(organizationDTO);
+		Organization organization = OrganizationAssembler.toEntity(organizationDTO);
 		
-		PowerMockito.mockStatic(OrganizationDtoAssembler.class);
-		PowerMockito.when(OrganizationDtoAssembler.assemDto(organization)).thenReturn(organizationDTO);
+		PowerMockito.mockStatic(OrganizationAssembler.class);
+		PowerMockito.when(OrganizationAssembler.toDTO(organization)).thenReturn(organizationDTO);
 
 		when(baseApplication.getEntity(Organization.class, organizationId)).thenReturn(organization);
 		assertEquals(organizationDTO, organizationFacadeImpl.getOrganizationById(organizationId));
@@ -156,7 +156,7 @@ public class OrganizationFacadeImplTest {
 		employeeDTOs[0] = employeeDTO;
 		
 		Set<Employee> employees = new HashSet<Employee>();
-		employees.add(EmployeeDtoAssembler.assemEntity(employeeDTO));
+		employees.add(EmployeeAssembler.toEntity(employeeDTO));
 		
 		when(baseApplication.getEntity(Organization.class, organizationId)).thenReturn(company);
 		organizationFacadeImpl.terminateEmployeeOrganizationRelation(organizationId, employeeDTOs);

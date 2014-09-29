@@ -1,19 +1,24 @@
 package org.openkoala.organisation.web.controller;
 
-import org.dayatang.querychannel.Page;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.SnIsExistException;
 import org.openkoala.organisation.TheJobHasPostAccountabilityException;
 import org.openkoala.organisation.application.JobApplication;
 import org.openkoala.organisation.domain.Job;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 职务管理Controller

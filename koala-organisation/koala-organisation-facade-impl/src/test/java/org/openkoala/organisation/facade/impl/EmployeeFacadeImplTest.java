@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,7 +25,7 @@ import org.openkoala.organisation.domain.Employee;
 import org.openkoala.organisation.domain.Post;
 import org.openkoala.organisation.facade.dto.EmployeeDTO;
 import org.openkoala.organisation.facade.dto.ResponsiblePostDTO;
-import org.openkoala.organisation.facade.impl.assembler.EmployeeDtoAssembler;
+import org.openkoala.organisation.facade.impl.assembler.EmployeeAssembler;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -37,7 +37,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * 
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({EmployeeDtoAssembler.class})
+@PrepareForTest({EmployeeAssembler.class})
 public class EmployeeFacadeImplTest {
 
 	@Mock
@@ -64,7 +64,7 @@ public class EmployeeFacadeImplTest {
 		
 		when(baseApplication.getEntity(Post.class, postId)).thenReturn(post);
 		employeeFacadeImpl.createEmployeeWithPost(employeeDTO, postId);
-		verify(employeeApplication, only()).createEmployeeWithPost(EmployeeDtoAssembler.assemEntity(employeeDTO),
+		verify(employeeApplication, only()).createEmployeeWithPost(EmployeeAssembler.toEntity(employeeDTO),
 				post);
 	}	
 
@@ -75,7 +75,7 @@ public class EmployeeFacadeImplTest {
 
 		when(baseApplication.getEntity(Post.class, postId)).thenReturn(post);
 		doThrow(new SnIsExistException()).when(employeeApplication)
-				.createEmployeeWithPost(EmployeeDtoAssembler.assemEntity(employeeDTO), post);
+				.createEmployeeWithPost(EmployeeAssembler.toEntity(employeeDTO), post);
 		assertEquals("员工编号: " + employeeDTO.getSn() + " 已被使用！", employeeFacadeImpl
 				.createEmployeeWithPost(employeeDTO, postId).getMessage());
 	}
@@ -87,7 +87,7 @@ public class EmployeeFacadeImplTest {
 
 		when(baseApplication.getEntity(Post.class, postId)).thenReturn(post);
 		doThrow(new IdNumberIsExistException()).when(employeeApplication)
-				.createEmployeeWithPost(EmployeeDtoAssembler.assemEntity(employeeDTO), post);
+				.createEmployeeWithPost(EmployeeAssembler.toEntity(employeeDTO), post);
 		assertEquals(
 				"不能使用与其他人一样的证件号码！",
 				employeeFacadeImpl.createEmployeeWithPost(employeeDTO, postId).getMessage());
@@ -100,7 +100,7 @@ public class EmployeeFacadeImplTest {
 
 		when(baseApplication.getEntity(Post.class, postId)).thenReturn(post);
 		doThrow(new RuntimeException()).when(employeeApplication)
-				.createEmployeeWithPost(EmployeeDtoAssembler.assemEntity(employeeDTO), post);
+				.createEmployeeWithPost(EmployeeAssembler.toEntity(employeeDTO), post);
 		assertEquals(
 				"保存失败！",
 				employeeFacadeImpl.createEmployeeWithPost(employeeDTO, postId).getMessage());
@@ -136,7 +136,7 @@ public class EmployeeFacadeImplTest {
 		initEmployeeDto();
 
 		employeeFacadeImpl.updateEmployeeInfo(employeeDTO);
-		verify(baseApplication, only()).updateParty(EmployeeDtoAssembler.assemEntity(employeeDTO));
+		verify(baseApplication, only()).updateParty(EmployeeAssembler.toEntity(employeeDTO));
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class EmployeeFacadeImplTest {
 		initEmployeeDto();
 
 		doThrow(new SnIsExistException()).when(baseApplication)
-			.updateParty(EmployeeDtoAssembler.assemEntity(employeeDTO));
+			.updateParty(EmployeeAssembler.toEntity(employeeDTO));
 		assertEquals("员工编号: " + employeeDTO.getSn() + " 已被使用！", employeeFacadeImpl
 				.updateEmployeeInfo(employeeDTO).getMessage());
 	}
@@ -154,7 +154,7 @@ public class EmployeeFacadeImplTest {
 		initEmployeeDto();
 
 		doThrow(new IdNumberIsExistException()).when(baseApplication)
-				.updateParty(EmployeeDtoAssembler.assemEntity(employeeDTO));
+				.updateParty(EmployeeAssembler.toEntity(employeeDTO));
 		assertEquals("不能使用与其他人一样的证件号码！",
 				employeeFacadeImpl.updateEmployeeInfo(employeeDTO).getMessage());
 	}
@@ -164,7 +164,7 @@ public class EmployeeFacadeImplTest {
 		initEmployeeDto();
 
 		doThrow(new RuntimeException()).when(baseApplication).updateParty(
-				EmployeeDtoAssembler.assemEntity(employeeDTO));
+				EmployeeAssembler.toEntity(employeeDTO));
 		assertEquals("修改失败！",
 				employeeFacadeImpl.updateEmployeeInfo(employeeDTO).getMessage());
 	}
@@ -234,10 +234,10 @@ public class EmployeeFacadeImplTest {
 	@Test
 	public void testGet() {
 		initEmployeeDto();
-		Employee employee = EmployeeDtoAssembler.assemEntity(employeeDTO);
+		Employee employee = EmployeeAssembler.toEntity(employeeDTO);
 		when(baseApplication.getEntity(Employee.class, employeeId)).thenReturn(employee);
-		PowerMockito.mockStatic(EmployeeDtoAssembler.class);
-		PowerMockito.when(EmployeeDtoAssembler.assemDto(employee)).thenReturn(
+		PowerMockito.mockStatic(EmployeeAssembler.class);
+		PowerMockito.when(EmployeeAssembler.toDTO(employee)).thenReturn(
 				employeeDTO);
 		assertEquals(employeeDTO, employeeFacadeImpl.getEmployeeById(employeeId));
 	}
@@ -258,7 +258,7 @@ public class EmployeeFacadeImplTest {
 		dto.setId(employeeId);
 
 		employeeFacadeImpl.terminateEmployee(dto);
-		verify(baseApplication, only()).terminateParty(EmployeeDtoAssembler.assemEntity(dto));
+		verify(baseApplication, only()).terminateParty(EmployeeAssembler.toEntity(dto));
 	}
 
 	@Test
@@ -279,7 +279,7 @@ public class EmployeeFacadeImplTest {
 
 		Set<Employee> employees = new HashSet<Employee>();
 		for (EmployeeDTO employeeDTO : dtos) {
-			employees.add(EmployeeDtoAssembler.assemEntity(employeeDTO));
+			employees.add(EmployeeAssembler.toEntity(employeeDTO));
 		}
 
 		employeeFacadeImpl.terminateEmployees(dtos);

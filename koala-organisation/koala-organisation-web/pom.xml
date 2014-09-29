@@ -34,6 +34,7 @@
 	</dependencies>
 
 	<build>
+        <finalName>koala-organisation</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>

@@ -1,9 +1,22 @@
 package org.openkoala.organisation.application.impl;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.inject.Named;
+import javax.interceptor.Interceptors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.EmployeeMustHaveAtLeastOnePostException;
 import org.openkoala.organisation.application.EmployeeApplication;
 import org.openkoala.organisation.application.dto.EmployeeDTO;
@@ -13,13 +26,6 @@ import org.openkoala.organisation.domain.EmployeePostHolding;
 import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.inject.Named;
-import javax.interceptor.Interceptors;
-import java.text.MessageFormat;
-import java.util.*;
 
 /**
  * 员工应用实现层类

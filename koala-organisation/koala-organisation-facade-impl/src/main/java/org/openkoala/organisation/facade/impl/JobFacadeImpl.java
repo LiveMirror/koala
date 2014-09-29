@@ -12,8 +12,8 @@ import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.SnIsExistException;
 import org.openkoala.organisation.TheJobHasPostAccountabilityException;
@@ -22,7 +22,7 @@ import org.openkoala.organisation.domain.Job;
 import org.openkoala.organisation.facade.JobFacade;
 import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.JobDTO;
-import org.openkoala.organisation.facade.impl.assembler.JobDtoAssembler;
+import org.openkoala.organisation.facade.impl.assembler.JobAssembler;
 
 @Named
 public class JobFacadeImpl implements JobFacade {
@@ -70,7 +70,7 @@ public class JobFacadeImpl implements JobFacade {
 	public List<JobDTO> findAllJobs() {
 		List<JobDTO> results = new ArrayList<JobDTO>();
 		for (Job job : baseApplication.findAll(Job.class)) {
-			results.add(JobDtoAssembler.assemDto(job));
+			results.add(JobAssembler.toDTO(job));
 		}
 		return results;
 	}
@@ -78,7 +78,7 @@ public class JobFacadeImpl implements JobFacade {
 	@Override
 	public InvokeResult createJob(JobDTO jobDto) {
 		try {
-			baseApplication.saveParty(JobDtoAssembler.assemEntity(jobDto));
+			baseApplication.saveParty(JobAssembler.toEntity(jobDto));
 			return InvokeResult.success();
 		} catch (SnIsExistException exception) {
 			return InvokeResult.failure("职务编码: " + jobDto.getSn() + " 已被使用！");
@@ -93,7 +93,7 @@ public class JobFacadeImpl implements JobFacade {
 	@Override
 	public InvokeResult updateJobInfo(JobDTO jobDTO) {
 		try {
-			baseApplication.updateParty(JobDtoAssembler.assemEntity(jobDTO));
+			baseApplication.updateParty(JobAssembler.toEntity(jobDTO));
 			return InvokeResult.success();
 		} catch (SnIsExistException exception) {
 			return InvokeResult.failure("职务编码: " + jobDTO.getSn() + " 已被使用！");
@@ -107,13 +107,13 @@ public class JobFacadeImpl implements JobFacade {
 
 	@Override
 	public JobDTO getJobById(Long id) {
-		return JobDtoAssembler.assemDto(baseApplication.getEntity(Job.class, id));
+		return JobAssembler.toDTO(baseApplication.getEntity(Job.class, id));
 	}
 
 	@Override
 	public InvokeResult terminateJob(JobDTO jobDTO) {
 		try {
-			baseApplication.terminateParty(JobDtoAssembler.assemEntity(jobDTO));
+			baseApplication.terminateParty(JobAssembler.toEntity(jobDTO));
 			return InvokeResult.success();
 		} catch (TheJobHasPostAccountabilityException e) {
 			return InvokeResult.failure("该职务已被使用!");
@@ -124,7 +124,7 @@ public class JobFacadeImpl implements JobFacade {
 	public InvokeResult terminateJobs(JobDTO[] jobDtos) {
 		Set<Job> jobs = new HashSet<Job>();
 		for (JobDTO jobDTO : jobDtos) {
-			jobs.add(JobDtoAssembler.assemEntity(jobDTO));
+			jobs.add(JobAssembler.toEntity(jobDTO));
 		}
 		try {
 			baseApplication.terminateParties(jobs);

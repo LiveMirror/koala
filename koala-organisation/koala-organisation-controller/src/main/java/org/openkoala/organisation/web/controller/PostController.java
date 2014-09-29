@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.facade.PostFacade;
 import org.openkoala.organisation.facade.dto.PostDTO;
 import org.springframework.stereotype.Controller;

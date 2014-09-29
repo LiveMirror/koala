@@ -11,7 +11,7 @@ import me.lingen.Employee;
 import me.lingen.EmployeeApplication;
 
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;

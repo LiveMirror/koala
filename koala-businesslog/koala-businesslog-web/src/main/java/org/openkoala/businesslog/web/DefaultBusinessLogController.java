@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.businesslog.application.BusinessLogApplication;
 import org.openkoala.businesslog.model.DefaultBusinessLogDTO;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @RequestMapping("/log")

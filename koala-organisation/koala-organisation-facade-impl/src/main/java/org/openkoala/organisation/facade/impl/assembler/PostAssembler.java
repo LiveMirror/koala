@@ -7,9 +7,9 @@ import org.openkoala.organisation.domain.Organization;
 import org.openkoala.organisation.domain.Post;
 import org.openkoala.organisation.facade.dto.PostDTO;
 
-public class PostDtoAssembler {
+public class PostAssembler {
 
-	public static Post assemEntity(PostDTO postDTO) {
+	public static Post toEntity(PostDTO postDTO) {
 		Post result = new Post(postDTO.getName());
 		result.setId(postDTO.getId());
 
@@ -41,7 +41,7 @@ public class PostDtoAssembler {
 		return result;
 	}
 	
-	public static PostDTO assemDto(Post post) {
+	public static PostDTO toDTO(Post post) {
 		if (post == null) {
 			return null;
 		}

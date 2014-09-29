@@ -2,7 +2,7 @@ package org.openkoala.koalacommons.mybatis.querychannel.impl;
 
 import java.util.List;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.domain.MybatisEntityRepository;
 import org.openkoala.koalacommons.mybatis.MybatisQueryChannelService;
 import org.openkoala.koalacommons.mybatis.querychannel.MybatisChannelQuery;

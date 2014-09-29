@@ -3,7 +3,7 @@ package me.lingen;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.koalacommons.mybatis.MybatisQueryChannelService;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,19 +1,12 @@
 package org.openkoala.security.facade.impl;
 
-import static org.mockito.Mockito.when;
-import static org.openkoala.security.facade.impl.util.CommandHelper.initCreateUserCommand;
-
-import org.junit.Assert;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.application.SecurityDBInitApplication;
-import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityConfigFacade;
-import org.openkoala.security.facade.command.CreateUserCommand;
 import org.openkoala.security.facade.impl.assembler.UserAssembler;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;

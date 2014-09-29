@@ -1,6 +1,6 @@
 package me.lingen;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 
 public interface EmployeeApplication {
 

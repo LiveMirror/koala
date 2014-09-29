@@ -12,8 +12,8 @@ import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.OrganizationHasPrincipalYetException;
 import org.openkoala.organisation.PostExistException;
@@ -26,7 +26,7 @@ import org.openkoala.organisation.domain.Post;
 import org.openkoala.organisation.facade.PostFacade;
 import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.PostDTO;
-import org.openkoala.organisation.facade.impl.assembler.PostDtoAssembler;
+import org.openkoala.organisation.facade.impl.assembler.PostAssembler;
 
 @Named
 public class PostFacadeImpl implements PostFacade {
@@ -101,7 +101,7 @@ public class PostFacadeImpl implements PostFacade {
 	private List<PostDTO> transformToDtos(List<Post> posts) {
 		List<PostDTO> results = new ArrayList<PostDTO>();
 		for (Post post : posts) {
-			results.add(PostDtoAssembler.assemDto(post));
+			results.add(PostAssembler.toDTO(post));
 		}
 		return results;
 	}
@@ -109,14 +109,14 @@ public class PostFacadeImpl implements PostFacade {
 	@Override
 	public PostDTO getPostById(Long id) {
 		Post post = baseApplication.getEntity(Post.class, id);
-		return post == null ? null : PostDtoAssembler.assemDto(post);
+		return post == null ? null : PostAssembler.toDTO(post);
 	}
 
 	@Override
 	public Set<PostDTO> findPostsByOrganizationId(Long organizationId) {
 		Set<PostDTO> results = new HashSet<PostDTO>();
 		for (Post post : postApplication.findPostsByOrganizationId(organizationId)) {
-			results.add(PostDtoAssembler.assemDto(post));
+			results.add(PostAssembler.toDTO(post));
 		}
 		return results;
 	}
@@ -124,7 +124,7 @@ public class PostFacadeImpl implements PostFacade {
 	@Override
 	public InvokeResult createPost(PostDTO postDTO) {
 		try {
-			baseApplication.saveParty(PostDtoAssembler.assemEntity(postDTO));
+			baseApplication.saveParty(PostAssembler.toEntity(postDTO));
 			return InvokeResult.success();
 		} catch (NameExistException exception) {
 			return InvokeResult.failure("岗位名称: " + postDTO.getName() + " 已经存在！");
@@ -143,7 +143,7 @@ public class PostFacadeImpl implements PostFacade {
 	@Override
 	public InvokeResult updatePostInfo(PostDTO postDTO) {
 		try {
-			baseApplication.updateParty(PostDtoAssembler.assemEntity(postDTO));
+			baseApplication.updateParty(PostAssembler.toEntity(postDTO));
 			return InvokeResult.success();
 		} catch (PostExistException exception) {
 			return InvokeResult.failure("请不要在相同机构中创建相同职务的岗位！");
@@ -162,7 +162,7 @@ public class PostFacadeImpl implements PostFacade {
 	@Override
 	public InvokeResult terminatePost(PostDTO postDTO) {
 		try {
-			baseApplication.terminateParty(PostDtoAssembler.assemEntity(postDTO));
+			baseApplication.terminateParty(PostAssembler.toEntity(postDTO));
 			return InvokeResult.success();
 		} catch (TerminateHasEmployeePostException exception) {
             return InvokeResult.failure("还有员工在此岗位上任职，不能撤销！");
@@ -176,7 +176,7 @@ public class PostFacadeImpl implements PostFacade {
 	public InvokeResult terminatePosts(PostDTO[] postDtos) {
 		Set<Post> posts = new HashSet<Post>();
 		for (PostDTO postDTO : postDtos) {
-			posts.add(PostDtoAssembler.assemEntity(postDTO));
+			posts.add(PostAssembler.toEntity(postDTO));
 		}
 		
 		try {

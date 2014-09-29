@@ -1,6 +1,10 @@
 package org.openkoala.security.org.facade.impl;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.koala.commons.InvokeResult;
@@ -13,20 +17,30 @@ import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.application.SecurityDBInitApplication;
 import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.UserAccountIsExistedException;
-import org.openkoala.security.core.domain.*;
-import org.openkoala.security.org.core.domain.OrganisationScope;
-import org.openkoala.security.org.facade.command.*;
+import org.openkoala.security.core.domain.Actor;
+import org.openkoala.security.core.domain.Authority;
+import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
+import org.openkoala.security.core.domain.Permission;
+import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.Scope;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.org.core.domain.EmployeeUser;
+import org.openkoala.security.org.core.domain.OrganisationScope;
 import org.openkoala.security.org.facade.SecurityOrgConfigFacade;
+import org.openkoala.security.org.facade.command.ChangeEmployeeUserPropsCommand;
+import org.openkoala.security.org.facade.command.CreateEmpolyeeUserCommand;
+import org.openkoala.security.org.facade.command.TerminateUserFromPermissionInScopeCommand;
+import org.openkoala.security.org.facade.command.TerminateUserFromRoleInScopeCommand;
 import org.openkoala.security.org.facade.dto.AuthorizationCommand;
 import org.openkoala.security.org.facade.impl.assembler.EmployeeUserAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.List;
+import com.google.common.collect.Lists;
 
+@Transactional(value = "transactionManager_security")
 @Named
 public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 

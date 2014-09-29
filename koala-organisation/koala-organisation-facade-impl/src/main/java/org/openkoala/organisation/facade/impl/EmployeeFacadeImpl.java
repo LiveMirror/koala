@@ -14,8 +14,8 @@ import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.HasPrincipalPostYetException;
 import org.openkoala.organisation.IdNumberIsExistException;
 import org.openkoala.organisation.SnIsExistException;
@@ -30,10 +30,9 @@ import org.openkoala.organisation.facade.dto.EmployeeDTO;
 import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.OrganizationDTO;
 import org.openkoala.organisation.facade.dto.ResponsiblePostDTO;
-import org.openkoala.organisation.facade.impl.assembler.EmployeeDtoAssembler;
-import org.openkoala.organisation.facade.impl.assembler.OrganizationDtoAssembler;
-import org.openkoala.organisation.facade.impl.assembler.ResponsiblePostDtoAssembler;
-import org.springframework.transaction.annotation.Transactional;
+import org.openkoala.organisation.facade.impl.assembler.EmployeeAssembler;
+import org.openkoala.organisation.facade.impl.assembler.OrganizationAssembler;
+import org.openkoala.organisation.facade.impl.assembler.ResponsiblePostAssembler;
 
 /**
  * 员工应用实现层类
@@ -64,7 +63,7 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 	public OrganizationDTO getOrganizationOfEmployee(Long employeeId, Date date) {
 		Employee employee = baseApplication.getEntity(Employee.class, employeeId);
 		if (employee == null) return null;
-		return OrganizationDtoAssembler.assemDto(employee.getOrganization(date));
+		return OrganizationAssembler.toDTO(employee.getOrganization(date));
 	}
 
 	@Override
@@ -85,7 +84,7 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 			if (postId == null) {
 				return InvokeResult.failure("请选择岗位");
 			}
-			employeeApplication.createEmployeeWithPost(EmployeeDtoAssembler.assemEntity(employeeDto), baseApplication.getEntity(Post.class, postId));
+			employeeApplication.createEmployeeWithPost(EmployeeAssembler.toEntity(employeeDto), baseApplication.getEntity(Post.class, postId));
 			return InvokeResult.success();
 		} catch (SnIsExistException exception) {
 			return InvokeResult.failure("员工编号: " + employeeDto.getSn() + " 已被使用！");
@@ -204,7 +203,7 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 			if (results.contains(employee)) {
 				continue;
 			}
-			results.add(EmployeeDtoAssembler.assemDto(employee));
+			results.add(EmployeeAssembler.toDTO(employee));
 		}
 		return results;
 	}
@@ -236,7 +235,7 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 		List<ResponsiblePostDTO> results = new ArrayList<ResponsiblePostDTO>();
 		Map<Post, Boolean> postsMap = employeeApplication.getPostsByEmployee(baseApplication.getEntity(Employee.class, employeeId));
 		for (Post post : postsMap.keySet()) {
-			results.add(ResponsiblePostDtoAssembler.assemEntity(post, postsMap.get(post)));
+			results.add(ResponsiblePostAssembler.toEntity(post, postsMap.get(post)));
 		}
 		return results;
 	}
@@ -244,13 +243,13 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 	@Override
 	public EmployeeDTO getEmployeeById(Long id) {
 		Employee employee = baseApplication.getEntity(Employee.class, id);
-		return employee == null ? null : EmployeeDtoAssembler.assemDto(employee);
+		return employee == null ? null : EmployeeAssembler.toDTO(employee);
 	}
 
 	@Override
 	public InvokeResult updateEmployeeInfo(EmployeeDTO employeeDto) {
 		try {
-			baseApplication.updateParty(EmployeeDtoAssembler.assemEntity(employeeDto));
+			baseApplication.updateParty(EmployeeAssembler.toEntity(employeeDto));
 			return InvokeResult.success();
 		} catch (SnIsExistException exception) {
 			return InvokeResult.failure("员工编号: " + employeeDto.getSn() + " 已被使用！");
@@ -264,14 +263,14 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 
 	@Override
 	public void terminateEmployee(EmployeeDTO employeeDto) {
-		baseApplication.terminateParty(EmployeeDtoAssembler.assemEntity(employeeDto));
+		baseApplication.terminateParty(EmployeeAssembler.toEntity(employeeDto));
 	}
 
 	@Override
 	public void terminateEmployees(EmployeeDTO[] employeeDtos) {
 		Set<Employee> employees = new HashSet<Employee>();
 		for (EmployeeDTO employeeDTO : employeeDtos) {
-			employees.add(EmployeeDtoAssembler.assemEntity(employeeDTO));
+			employees.add(EmployeeAssembler.toEntity(employeeDTO));
 		}
 		baseApplication.terminateParties(employees);
 	}

@@ -2,14 +2,13 @@ package org.openkoala.gqc.facade.dto;
 
 import java.io.Serializable;
 
-import org.openkoala.gqc.core.domain.DataSourceType;
-
 /**
  * 
  * 与展示层交互的数据源对象
  *
  */
 public class DataSourceDTO implements Serializable {
+	
     private static final long serialVersionUID = -4952281843127855419L;
 
     /**
@@ -43,7 +42,7 @@ public class DataSourceDTO implements Serializable {
     private String dataSourceDescription;
 
     //（springmvc对枚举类型在页面和后台会分别自动转换为字符串和枚举）
-    private DataSourceType dataSourceType;
+    private DataSourceTypeDTO dataSourceTypeDTO;
 
     //类型字符串形式
 //    private String dataSourceTypeStr;
@@ -122,15 +121,15 @@ public class DataSourceDTO implements Serializable {
         return this.dataSourceDescription;
     }
 
-    public void setDataSourceType(DataSourceType dataSourceType) {
-        this.dataSourceType = dataSourceType;
-    }
+    public DataSourceTypeDTO getDataSourceTypeDTO() {
+		return dataSourceTypeDTO;
+	}
 
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
-    }
+	public void setDataSourceTypeDTO(DataSourceTypeDTO dataSourceTypeDTO) {
+		this.dataSourceTypeDTO = dataSourceTypeDTO;
+	}
 
-    public void setJdbcDriver(String jdbcDriver) {
+	public void setJdbcDriver(String jdbcDriver) {
         this.jdbcDriver = jdbcDriver;
     }
 

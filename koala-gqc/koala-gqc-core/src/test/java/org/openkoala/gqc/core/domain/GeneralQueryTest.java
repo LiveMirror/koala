@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

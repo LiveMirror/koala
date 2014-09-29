@@ -4,7 +4,6 @@ package org.openkoala.gqc.application;
 import java.util.List;
 import java.util.Map;
 
-import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.core.domain.DataSource;
 
 /**

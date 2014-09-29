@@ -1,10 +1,10 @@
 package org.openkoala.businesslog.application;
 
-import org.dayatang.querychannel.Page;
+import java.util.List;
+
+import org.dayatang.utils.Page;
 import org.openkoala.businesslog.model.DefaultBusinessLog;
 import org.openkoala.businesslog.model.DefaultBusinessLogDTO;
-
-import java.util.List;
 
 /**
  * User: zjzhai
