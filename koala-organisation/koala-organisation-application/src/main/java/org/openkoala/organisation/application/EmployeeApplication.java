@@ -9,12 +9,13 @@ import org.openkoala.organisation.core.domain.Post;
 
 /**
  * 员工应用层接口
- *
+ * 
  */
 public interface EmployeeApplication {
 
 	/**
 	 * 获取某个员工的所属机构
+	 * 
 	 * @param employee
 	 * @param date
 	 * @return
@@ -23,23 +24,26 @@ public interface EmployeeApplication {
 
 	/**
 	 * 创建员工的任职责任信息
+	 * 
 	 * @param employee
 	 * @param post
 	 */
 	void createEmployeeWithPost(Employee employee, Post post);
-	
+
 	/**
 	 * 调整某个员工的任职信息
+	 * 
 	 * @param employee
 	 * @param dtos
 	 */
 	void transformPost(Employee employee, Map<Post, Boolean> responsiblePosts);
-	
+
 	/**
 	 * 获得某个员工的任职职务信息
+	 * 
 	 * @param employee
 	 * @return
 	 */
 	Map<Post, Boolean> getPostsByEmployee(Employee employee);
-	
+
 }

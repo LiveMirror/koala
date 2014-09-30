@@ -19,12 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 员工应用实现层类
  * 
+ * @author xmfang
+ * 
  */
 @Named
 @Transactional(value = "transactionManager_org")
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-//@Stateless(name = "EmployeeApplication")
-//@Remote
 public class EmployeeApplicationImpl implements EmployeeApplication {
 
 	@Override
@@ -80,5 +79,5 @@ public class EmployeeApplicationImpl implements EmployeeApplication {
 		}
 		return results;
 	}
-	
+
 }

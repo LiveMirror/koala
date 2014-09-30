@@ -19,16 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 组织机构应用实现层类
  * 
+ * @author xmfang
+ * 
  */
 @Named
 @Transactional(value = "transactionManager_org")
 public class OrganizationApplicationImpl implements OrganizationApplication {
 
 	public boolean isTopOrganizationExists() {
-		return Organization.getTopOrganization() == null ? false : true;
+		return !(Organization.getTopOrganization() == null);
 	}
 
-    @Override
+	@Override
 	public void createAsTopOrganization(Company company) {
 		company.createAsTopOrganization();
 	}
@@ -73,5 +75,5 @@ public class OrganizationApplicationImpl implements OrganizationApplication {
 	public void updateOrganization(Organization organization) {
 		organization.update();
 	}
-	
+
 }
