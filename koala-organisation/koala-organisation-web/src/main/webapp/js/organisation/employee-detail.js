@@ -1,7 +1,7 @@
 $(function() {
 	var employeeId = $('.employee-detail').parent().attr('data-value');
 	$.get(contextPath + '/employee/get/' + employeeId + '.koala').done(function(result) {
-		var data = result.data;
+		var data = result;
 		var employeeDetail = $('.employee-detail');
 		$('#navTabs').find('[href="#employeeDetail"] span').text(data.name);
 		employeeDetail.find('[data-id="sn"]').text(data.sn);

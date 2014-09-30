@@ -39,6 +39,7 @@ public class JobFacadeImpl implements JobFacade {
 		return queryChannel;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Page<JobDTO> pagingQueryJobs(JobDTO jobSearchExample, int currentPage, int pageSize) {
 		List<Object> conditionVals = new ArrayList<Object>();

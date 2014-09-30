@@ -9,7 +9,7 @@ var selectEmployee = function(){
 	var selectedEmployee = null;//已选员工
 	var selectedItem = {};//已选员工数据
 	var init = function(hostOrgId){
-		$.get( contextPath + '/pages/organisation/selectEmployeeTemplate.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/select-employee-template.jsp').done(function(data){
 			dialog = $(data);
 			departmentTree = dialog.find('#departmentTree');
 			employeeGrid = dialog.find('#employeeGrid');

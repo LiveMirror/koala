@@ -238,15 +238,15 @@ var department = function(){
 			trigger: 'manual',
 			container: dialog
 		}).popover('show').on({
-				'blur': function(){
-					$element.popover('destroy');
-					$element.parent().removeClass('has-error');
-				},
-				'keydown': function(){
-					$element.popover('destroy');
-					$element.parent().removeClass('has-error');
-				}
-			}).focus().parent().addClass('has-error');
+			'blur': function(){
+				$element.popover('destroy');
+				$element.parent().removeClass('has-error');
+			},
+			'keydown': function(){
+				$element.popover('destroy');
+				$element.parent().removeClass('has-error');
+			}
+		}).focus().parent().addClass('has-error');
 	};
 	/**
 	 * 检查变量是否不为空  true:不空   false:空

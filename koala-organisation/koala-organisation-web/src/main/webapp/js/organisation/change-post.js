@@ -13,7 +13,7 @@ var changePost = function(){
 	});
 	
 	var init = function(employeeId){
-		$.get( contextPath + '/pages/organisation/changePost.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/change-post.jsp').done(function(data){
 			dialog = $(data);
 			departmentTree = dialog.find('#departmentTree');
 			postGrid = dialog.find('#postGrid');
@@ -42,7 +42,7 @@ var changePost = function(){
 				    'data': JSON.stringify(items),
 				    'dataType': 'json'
 				 }).done(function(data){
-					 if(data.result == 'success'){
+					 if(data.success){
 						 dialog.modal('hide');
 						 $('body').message({
 								type: 'success',
@@ -52,7 +52,7 @@ var changePost = function(){
 					 }else{
 						 dialog.find('.modal-content').message({
 								type: 'error',
-								content: data.result
+								content: data.errorMessage
 						 }); 
 					 }
 				 });
@@ -76,44 +76,43 @@ var changePost = function(){
 	};
 
 	var loadData =  function(employeeId){
-		$.get( contextPath + '/employee/get/'+employeeId+'.koala')
-			.done(function(result){
-				var data = result.data;
-				var employeeDetail = $('.employee-detail');
-				employeeDetail.find('[data-id="sn"]').html(data.sn);
-				employeeDetail.find('[data-id="name"]').html(data.name);
-				employeeDetail.find('[data-id="gender"]').html(data.gender=='MALE' ? '男':'女');
-				employeeDetail.find('[data-id="idNumber"]').html(data.idNumber);
-				employeeDetail.find('[data-id="organizationName"]').html(data.organizationName);
-				employeeDetail.find('[data-id="postName"]').html(data.postName);
-				employeeDetail.find('[data-id="mobilePhone"]').html(data.mobilePhone);
-				employeeDetail.find('[data-id="familyPhone"]').html(data.familyPhone);
-				employeeDetail.find('[data-id="email"]').html(data.email);
-				employeeDetail.find('[data-id="entryDate"]').html(data.entryDate);
-				employeeDetail.find('[data-id="additionalPostNames"]').html(data.additionalPostNames);
-			});
+		$.get( contextPath + '/employee/get/'+employeeId+'.koala').done(function(result){
+			var data = result;
+			var employeeDetail = $('.employee-detail');
+			employeeDetail.find('[data-id="sn"]').html(data.sn);
+			employeeDetail.find('[data-id="name"]').html(data.name);
+			employeeDetail.find('[data-id="gender"]').html(data.gender=='MALE' ? '男':'女');
+			employeeDetail.find('[data-id="idNumber"]').html(data.idNumber);
+			employeeDetail.find('[data-id="organizationName"]').html(data.organizationName);
+			employeeDetail.find('[data-id="postName"]').html(data.postName);
+			employeeDetail.find('[data-id="mobilePhone"]').html(data.mobilePhone);
+			employeeDetail.find('[data-id="familyPhone"]').html(data.familyPhone);
+			employeeDetail.find('[data-id="email"]').html(data.email);
+			employeeDetail.find('[data-id="entryDate"]').html(data.entryDate);
+			employeeDetail.find('[data-id="additionalPostNames"]').html(data.additionalPostNames);
+		});
 	};
 	
 	var loadExistPostList = function(employeeId){
 		$.get( contextPath + '/employee/get-posts-by-employee.koala?employeeId='+employeeId).done(function(data){
-			var postList = data.data;
+			var postList = data;
 			for(var i=0,j=postList.length; i<j; i++){
 				var post = postList[i];
 				selectedItem[post.postId] = {postId:post.postId, principal: post.principal};
 				$('<div title="点击设置主岗位" class="selected-post '+ (post.principal?'principal':'')+'" data-value="'+post.postId+'">'+post.postName+'<a class="glyphicon glyphicon-remove"></a></div>')
 				.appendTo(selectedPost)
 				.click({postId: post.postId}, function(event){
-						var $this = $(this);
-						if($this.hasClass('principal')){
-							return;
-						}
-						var principalPost = selectedPost.find('.principal');
-						if(principalPost.length > 0){
-							selectedItem[principalPost.data('value')].principal = false;
-							principalPost.removeClass('principal');
-						}
-						selectedItem[event.data.postId].principal = true;
-						$this.addClass('principal');
+					var $this = $(this);
+					if($this.hasClass('principal')){
+						return;
+					}
+					var principalPost = selectedPost.find('.principal');
+					if(principalPost.length > 0){
+						selectedItem[principalPost.data('value')].principal = false;
+						principalPost.removeClass('principal');
+					}
+					selectedItem[event.data.postId].principal = true;
+					$this.addClass('principal');
 				})
 				.find('a').click({postId: post.postId}, function(event){
 					delete selectedItem[event.data.postId];
@@ -135,7 +134,7 @@ var changePost = function(){
 			opacity: 0
 		});
 		
-        $.get(contextPath  + '/organization/orgTree.koala').done(function(data){
+        $.get(contextPath  + '/organization/org-tree.koala').done(function(data){
         	departmentTree.loader('hide');
             var zNodes = new Array();
             $.each(data, function(){

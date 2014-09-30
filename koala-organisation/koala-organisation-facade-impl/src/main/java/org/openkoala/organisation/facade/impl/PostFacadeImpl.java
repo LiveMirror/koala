@@ -72,10 +72,10 @@ public class PostFacadeImpl implements PostFacade {
 		return queryResult(example, jpql, "_post", conditionVals, currentPage, pagesize);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Page<PostDTO> queryResult(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals, int currentPage, int pagesize) {
 		assembleJpqlAndConditionValues(example, jpql, conditionPrefix, conditionVals);
 		Page<Post> postPage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
-
 		return new Page<PostDTO>(postPage.getStart(), postPage.getResultCount(), pagesize, transformToDtos(postPage.getData()));
 	}
 

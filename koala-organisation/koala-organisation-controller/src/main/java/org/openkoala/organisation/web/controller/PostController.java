@@ -1,7 +1,6 @@
 package org.openkoala.organisation.web.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -70,10 +69,8 @@ public class PostController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/query-post-by-org")
-    public Map<String, Object> queryPostsOfOrganization(Long organizationId) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("result", postFacade.findPostsByOrganizationId(organizationId));
-        return dataMap;
+    public Set<PostDTO> queryPostsOfOrganization(Long organizationId) {
+        return postFacade.findPostsByOrganizationId(organizationId);
     }
 
     @ResponseBody
@@ -90,15 +87,8 @@ public class PostController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/get/{id}")
-    public Map<String, Object> get(@PathVariable("id") Long id) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
-        try {
-            dataMap.put("data", postFacade.getPostById(id));
-        } catch (Exception e) {
-            dataMap.put("error", "查询指定岗位失败！");
-            e.printStackTrace();
-        }
-        return dataMap;
+    public PostDTO get(@PathVariable("id") Long id) {
+        return postFacade.getPostById(id);
     }
 
     /**

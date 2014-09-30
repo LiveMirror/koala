@@ -1,6 +1,6 @@
 package org.openkoala.organisation.web.controller;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -112,15 +112,8 @@ public class EmployeeController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/get/{id}")
-	public Map<String, Object> get(@PathVariable("id") Long id) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		try {
-			dataMap.put("data", employeeFacade.getEmployeeById(id));
-		} catch (Exception e) {
-			dataMap.put("error", "查询指定职务失败！");
-			e.printStackTrace();
-		}
-		return dataMap;
+	public EmployeeDTO get(@PathVariable("id") Long id) {
+		return employeeFacade.getEmployeeById(id);
 	}
 
 	/**
@@ -130,10 +123,8 @@ public class EmployeeController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/genders")
-	public Map<String, Object> getGendens() {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("data", employeeFacade.getGenders());
-		return dataMap;
+	public Map<String, String> getGendens() {
+		return employeeFacade.getGenders();
 	}
 
 	/**
@@ -144,10 +135,8 @@ public class EmployeeController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/get-posts-by-employee")
-	public Map<String, Object> getPostsByEmployee(Long employeeId) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("data", employeeFacade.getPostsByEmployee(employeeId));
-		return dataMap;
+	public List<ResponsiblePostDTO> getPostsByEmployee(Long employeeId) {
+		return employeeFacade.getPostsByEmployee(employeeId);
 	}
 
 	/**
@@ -158,11 +147,8 @@ public class EmployeeController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
-	public Map<String, Object> terminateEmployee(EmployeeDTO employeeDTO) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		employeeFacade.terminateEmployee(employeeDTO);
-		dataMap.put("result", "success");
-		return dataMap;
+	public InvokeResult terminateEmployee(EmployeeDTO employeeDTO) {
+		return employeeFacade.terminateEmployee(employeeDTO);
 	}
 
 	/**
@@ -173,11 +159,8 @@ public class EmployeeController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate-employees", method = RequestMethod.POST)
-	public Map<String, Object> terminateEmployees(@RequestBody EmployeeDTO[] employeeDtos) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		employeeFacade.terminateEmployees(employeeDtos);
-		dataMap.put("result", "success");
-		return dataMap;
+	public InvokeResult terminateEmployees(@RequestBody EmployeeDTO[] employeeDtos) {
+		return employeeFacade.terminateEmployees(employeeDtos);
 	}
 
 }

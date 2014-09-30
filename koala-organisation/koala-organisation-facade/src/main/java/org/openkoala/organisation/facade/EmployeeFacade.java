@@ -111,14 +111,14 @@ public interface EmployeeFacade {
 	 * 
 	 * @param employeeDTO
 	 */
-	void terminateEmployee(EmployeeDTO employeeDTO);
+	InvokeResult terminateEmployee(EmployeeDTO employeeDTO);
 
 	/**
 	 * 解雇一批员工
 	 * 
 	 * @param employeeDtos
 	 */
-	void terminateEmployees(EmployeeDTO[] employeeDtos);
+	InvokeResult terminateEmployees(EmployeeDTO[] employeeDtos);
 
 	/**
 	 * 获取系统的性别选项集

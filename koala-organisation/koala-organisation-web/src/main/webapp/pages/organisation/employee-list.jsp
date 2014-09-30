@@ -9,12 +9,12 @@
 	  <tr>
 		  <td>
 	          <div class="form-group">
-	              <label class="control-label" style="width:100px;float:left;">编号:&nbsp;</label>
+	              <label class="control-label" style="width:100px;float:left;">人员编号:&nbsp;</label>
 	              <div style="margin-left:15px;float:left;">
 	                  <input name="sn" class="form-control" type="text" style="width:180px;"/>
 	              </div>
 	
-	              <label class="control-label" style="width:100px;float:left;">姓名:&nbsp;</label>
+	              <label class="control-label" style="width:100px;float:left;">人员姓名:&nbsp;</label>
 	              <div style="margin-left:15px;float:left;">
 	                  <input name="name" class="form-control" type="text" style="width:180px;"/>
 	              </div>
@@ -46,9 +46,9 @@ $(function(){
          },
          { title:'入职日期', name:'entryDate', width: '100px'},
          { title:'所属机构', name:'organizationName', width: '210px'},
-         { title:'岗位', name:'postName', width: '180px'},
+         { title:'岗位', name:'postName', width: '130px'},
          { title:'兼职岗位', name:'additionalPostNames', width: '180px'},
-         { title:'查看', name:'operate', width: '120px', 
+         { title:'查看', name:'operate', width: '50px', 
         	 render: function(item, name, index){
              	return '<a href="#" onclick="employee().showDetail('+item.id+', \''+item.name+'\')"><span class="glyphicon glyphicon glyphicon-eye-open"></span>&nbsp;详细</a>';
         	 }
