@@ -6,7 +6,7 @@
     <input type="hidden" class="form-control" name="page" value="0">
     <input type="hidden" class="form-control" name="pagesize" value="10">
 
-    <div id="urlAccessResourceManagerQueryDivId" class="panel" hidden="true">
+    <div id="urlAccessResourceManagerQueryDivId" hidden="true">
         <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>

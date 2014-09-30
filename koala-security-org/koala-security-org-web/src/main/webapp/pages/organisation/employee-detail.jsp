@@ -124,10 +124,10 @@
 <script>
 $(function(){
 	var script = document.createElement('script');
-    script.src = contextPath + '/js/organisation/changePost.js';
+    script.src = contextPath + '/js/organisation/change-post.js';
     document.getElementById('employeeDetail').parentNode.appendChild(script);
     script = document.createElement('script');
-    script.src = contextPath + '/js/organisation/employeeDetail.js';
+    script.src = contextPath + '/js/organisation/employee-detail.js';
     document.getElementById('employeeDetail').parentNode.appendChild(script);
 });
 </script>

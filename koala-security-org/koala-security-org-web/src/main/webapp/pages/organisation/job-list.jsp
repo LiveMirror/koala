@@ -4,7 +4,7 @@
 <form id="jobSearchForm" target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
-	<div id="jobQueryDiv" class="panel" hidden="true">
+	<div id="jobQueryDiv" hidden="true">
 	<table border="0" cellspacing="0" cellpadding="0">
 	  <tr>
 		  <td>
@@ -53,46 +53,46 @@
              buttons: buttons,
              url: contextPath +'/job/pagingquery.koala'
         }).on({
-                    'add': function(){
-                        job().add( $(this));
-                    },
-                    'modify': function(event, data){
-                        var indexs = data.data;
-                        var $this = $(this);
-                        if(indexs.length == 0){
-                            $this.message({
-                                type: 'warning',
-                                content: '请选择一条记录进行修改'
-                            })
-                            return;
-                        }
-                        if(indexs.length > 1){
-                            $this.message({
-                                type: 'warning',
-                                content: '只能选择一条记录进行修改'
-                            })
-                            return;
-                        }
-                        job().modify(indexs[0], $this);
-                    },
-                    'delete': function(event, data){
-                        var indexs = data.data;
-                        var $this = $(this)
-                        if(indexs.length == 0){
-                            $this.message({
-                                type: 'warning',
-                                content: '请选择要删除的记录'
-                            })
-                            return;
-                        }
-                        $this.confirm({
-                            content: '确定要删除所选记录吗?',
-                            callBack: function(){ job().del(data.item, $this);}
-                        });
-                    },
-					'search' : function() {						
-						$("#jobQueryDiv").slideToggle("slow");						 
-					}
+            'add': function(){
+                job().add( $(this));
+            },
+            'modify': function(event, data){
+                var indexs = data.data;
+                var $this = $(this);
+                if(indexs.length == 0){
+                    $this.message({
+                        type: 'warning',
+                        content: '请选择一条记录进行修改'
+                    })
+                    return;
+                }
+                if(indexs.length > 1){
+                    $this.message({
+                        type: 'warning',
+                        content: '只能选择一条记录进行修改'
+                    })
+                    return;
+                }
+                job().modify(indexs[0], $this);
+            },
+            'delete': function(event, data){
+                var indexs = data.data;
+                var $this = $(this)
+                if(indexs.length == 0){
+                    $this.message({
+                        type: 'warning',
+                        content: '请选择要删除的记录'
+                    })
+                    return;
+                }
+                $this.confirm({
+                    content: '确定要删除所选记录吗?',
+                    callBack: function(){ job().del(data.item, $this);}
+                });
+            },
+			'search' : function() {						
+				$("#jobQueryDiv").slideToggle("slow");						 
+			}
         })
         var form = $("#jobSearchForm");
         form.find('#jobSearchBtn').on('click', function(){

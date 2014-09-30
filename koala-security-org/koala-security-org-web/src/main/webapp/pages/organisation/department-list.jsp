@@ -82,7 +82,7 @@
     <div style="clear:both;"></div>
 </div>
 <script type="text/javascript" src="<c:url value='/js/organisation/department.js' />"></script>
-<script type="text/javascript" src="<c:url value='/js/organisation/selectEmployee.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/organisation/select-employee.js' />"></script>
 
 <script>
     $(function(){
@@ -110,8 +110,8 @@
                 content: '确定要撤销该机构吗?',
                 callBack: function(){
                 	var id = $('.right-content').find('[data-role="id"]').val();
-                	$.get( contextPath + '/organization/getOrg.koala?id='+id).done(function(data){
-            			var org = data.org;
+                	$.get( contextPath + '/organization/get.koala?id='+id).done(function(data){
+            			var org = data;
                         var type = org.organizationType;
             			delete org.children;
                         delete org.organizationType;

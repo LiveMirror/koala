@@ -205,22 +205,22 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
         rootMenuResouce.save();
 
         MenuResource departmentMenuResouce = new MenuResource("机构管理");
-        departmentMenuResouce.setUrl("/pages/organisation/departmentList.jsp");
+        departmentMenuResouce.setUrl("/pages/organisation/department-list.jsp");
         departmentMenuResouce.setMenuIcon(menuIcon);
         rootMenuResouce.addChild(departmentMenuResouce);
 
         MenuResource jobMenuResouce = new MenuResource("职务管理");
-        jobMenuResouce.setUrl("/pages/organisation/jobList.jsp");
+        jobMenuResouce.setUrl("/pages/organisation/job-list.jsp");
         jobMenuResouce.setMenuIcon(menuIcon);
         rootMenuResouce.addChild(jobMenuResouce);
 
         MenuResource positionMenuResouce = new MenuResource("岗位管理");
-        positionMenuResouce.setUrl("/pages/organisation/positionList.jsp");
+        positionMenuResouce.setUrl("/pages/organisation/position-list.jsp");
         positionMenuResouce.setMenuIcon(menuIcon);
         rootMenuResouce.addChild(positionMenuResouce);
 
         MenuResource employeeMenuResouce = new MenuResource("人员管理");
-        employeeMenuResouce.setUrl("/pages/organisation/employeeList.jsp");
+        employeeMenuResouce.setUrl("/pages/organisation/employee-list.jsp");
         employeeMenuResouce.setMenuIcon(menuIcon);
         rootMenuResouce.addChild(employeeMenuResouce);
 
