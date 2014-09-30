@@ -1,14 +1,20 @@
-package org.openkoala.organisation.domain;
+package org.openkoala.organisation.core.domain;
 
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import org.dayatang.domain.EntityRepository;
-import org.dayatang.domain.InstanceFactory;
 import org.dayatang.utils.DateUtils;
-import org.openkoala.organisation.SnIsExistException;
+import org.openkoala.organisation.core.SnIsExistException;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -18,29 +24,35 @@ public abstract class Party extends OrganizationAbstractEntity {
 
 	private static final long serialVersionUID = -6083088250263550905L;
 
-	// 编码
-
-	@Column(name = "sn", length = 50)
+	/**
+	 * 编码
+	 */
+	@Column(name = "SN", length = 50)
 	private String sn;
 
-	// 名称
-
-	@Column(name = "name", length = 30, nullable = false)
+	/**
+	 * 名称
+	 */
+	@Column(name = "NAME", length = 30, nullable = false)
 	private String name;
 
-	// 创建日期
-
+	/**
+	 * 创建日期
+	 */
 	@Temporal(TemporalType.DATE)
-	@Column(name = "create_date")
+	@Column(name = "CREATE_DATE")
 	private Date createDate = new Date();
 
-	// 终结日期
-
+	/**
+	 * 终结日期
+	 */
 	@Temporal(TemporalType.DATE)
-	@Column(name = "terminate_date")
+	@Column(name = "TERMINATE_DATE")
 	private Date terminateDate = DateUtils.MAX_DATE;
 
-	// 类别
+	/**
+	 * 类别
+	 */
 	@Column(name = "CATEGORY", insertable = false, updatable = false)
 	private String category;
 
@@ -56,6 +68,58 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.sn = sn.trim();
 	}
 
+	@Override
+	public void save() {
+		if (getId() == null) {
+			checkSnExist();
+		} else {
+			Party party = get(Party.class, getId());
+			if (!party.getSn().equals(sn)) {
+				checkSnExist();
+			}
+		}
+		super.save();
+	}
+
+	private void checkSnExist() {
+		if (isExistSn(getClass(), sn, new Date())) {
+			throw new SnIsExistException();
+		}
+	}
+
+	public static <P extends Party> boolean isExistSn(Class<P> clazz, String sn, Date date) {
+		List<P> parties = getRepository().createCriteriaQuery(clazz).eq("sn", sn).le("createDate", date).gt("terminateDate", date).list();
+		return !parties.isEmpty();
+	}
+
+	/**
+	 * 判断在指定的日期是否“存活”，即参数date处于其生命周期内
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public boolean isActive(Date date) {
+		return DateUtils.isSameDay(date, getCreateDate()) || date.after(getCreateDate()) && date.before(getTerminateDate());
+	}
+
+	/**
+	 * 终结当事人，例如撤销机构、撤销岗位、员工离职退休等
+	 * 
+	 * @param date
+	 */
+	@SuppressWarnings("rawtypes")
+	public void terminate(Date date) {
+		for (Accountability each : Accountability.findAccountabilitiesByParty(this, date)) {
+			each.terminate(date);
+		}
+		terminateDate = date;
+		save();
+	}
+
+	public static <T extends Party> List<T> findAll(Class<T> clazz, Date date) {
+		return getRepository().createCriteriaQuery(clazz).le("createDate", date).gt("terminateDate", date).list();
+	}
+	
 	public String getSn() {
 		return sn;
 	}
@@ -96,65 +160,4 @@ public abstract class Party extends OrganizationAbstractEntity {
 		this.category = category;
 	}
 	
-	public static <T extends Party> List<T> findAll(Class<T> clazz, Date date) {
-		return getRepository().createCriteriaQuery(clazz).le("createDate", date).gt("terminateDate", date).list();
-	}
-
-	@Override
-	public void save() {
-		if (getId() == null) {
-			checkSnExist();
-		} else {
-			Party party = get(Party.class, getId());
-			if (!party.getSn().equals(sn)) {
-				checkSnExist();
-			}
-		}
-		super.save();
-	}
-
-	private void checkSnExist() {
-		if (isExistSn(getClass(), sn, new Date())) {
-			throw new SnIsExistException();
-		}
-	}
-
-	public static <P extends Party> boolean isExistSn(Class<P> clazz, String sn, Date date) {
-		List<P> parties = getRepository().createCriteriaQuery(clazz).eq("sn", sn).le("createDate", date).gt("terminateDate", date).list();
-		return !parties.isEmpty();
-	}
-
-	private static EntityRepository repository;
-
-	public static EntityRepository getRepository() {
-		if (repository == null) {
-			repository = InstanceFactory.getInstance(EntityRepository.class, "repository_org");
-		}
-		return repository;
-	}
-
-	/**
-	 * 判断在指定的日期是否“存活”，即参数date处于其生命周期内。
-	 * 
-	 * @param date
-	 * @return
-	 */
-	public boolean isActive(Date date) {
-		return DateUtils.isSameDay(date, getCreateDate()) || date.after(getCreateDate()) && date.before(getTerminateDate());
-	}
-
-	/**
-	 * 终结当事人，例如撤销机构、撤销岗位、员工离职退休等
-	 * 
-	 * @param date
-	 */
-	@SuppressWarnings("rawtypes")
-	public void terminate(Date date) {
-		for (Accountability each : Accountability.findAccountabilitiesByParty(this, date)) {
-			each.terminate(date);
-		}
-		terminateDate = date;
-		save();
-	}
-
 }

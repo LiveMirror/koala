@@ -14,9 +14,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.organisation.application.OrganizationApplication;
 import org.openkoala.organisation.application.impl.utils.OrganisationUtils;
-import org.openkoala.organisation.domain.Company;
-import org.openkoala.organisation.domain.Department;
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Organization;
 /**
  * 组织机构应用实现集成测试
  * @author xmfang

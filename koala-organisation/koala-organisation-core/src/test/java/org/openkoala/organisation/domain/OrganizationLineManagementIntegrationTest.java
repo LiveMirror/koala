@@ -7,6 +7,9 @@ import java.util.Date;
 import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.OrganizationLineManagement;
 import org.openkoala.organisation.utils.OrganisationUtils;
 
 /**

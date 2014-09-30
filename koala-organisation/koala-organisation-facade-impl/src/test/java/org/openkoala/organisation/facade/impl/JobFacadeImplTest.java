@@ -14,9 +14,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.openkoala.organisation.SnIsExistException;
 import org.openkoala.organisation.application.BaseApplication;
-import org.openkoala.organisation.domain.Job;
+import org.openkoala.organisation.core.SnIsExistException;
+import org.openkoala.organisation.core.domain.Job;
 import org.openkoala.organisation.facade.dto.JobDTO;
 import org.openkoala.organisation.facade.impl.assembler.JobAssembler;
 

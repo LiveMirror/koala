@@ -1,9 +1,10 @@
 package org.openkoala.security.org.core.domain;
 
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.security.core.domain.Scope;
 
 import javax.persistence.*;
+
 import java.util.Set;
 
 /**

@@ -10,9 +10,15 @@ import java.util.Set;
 import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.openkoala.organisation.HasPrincipalPostYetException;
-import org.openkoala.organisation.IdNumberIsExistException;
-import org.openkoala.organisation.SnIsExistException;
+import org.openkoala.organisation.core.HasPrincipalPostYetException;
+import org.openkoala.organisation.core.IdNumberIsExistException;
+import org.openkoala.organisation.core.SnIsExistException;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.Job;
+import org.openkoala.organisation.core.domain.Party;
+import org.openkoala.organisation.core.domain.Post;
 import org.openkoala.organisation.utils.OrganisationUtils;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 

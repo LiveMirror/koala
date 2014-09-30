@@ -1,6 +1,6 @@
 package org.openkoala.organisation.facade.impl.assembler;
 
-import org.openkoala.organisation.domain.Post;
+import org.openkoala.organisation.core.domain.Post;
 import org.openkoala.organisation.facade.dto.ResponsiblePostDTO;
 
 public class ResponsiblePostAssembler {

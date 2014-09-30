@@ -1,5 +1,4 @@
-package org.openkoala.organisation;
-
+package org.openkoala.organisation.core;
 
 public class HasPrincipalPostYetException extends OrganisationException {
 
@@ -16,8 +15,7 @@ public class HasPrincipalPostYetException extends OrganisationException {
 		super(cause);
 	}
 
-	public HasPrincipalPostYetException(String message,
-			Throwable cause) {
+	public HasPrincipalPostYetException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

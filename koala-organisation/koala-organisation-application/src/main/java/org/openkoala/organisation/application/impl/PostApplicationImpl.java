@@ -6,8 +6,8 @@ import java.util.Set;
 import javax.inject.Named;
 
 import org.openkoala.organisation.application.PostApplication;
-import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.Post;
+import org.openkoala.organisation.core.domain.Organization;
+import org.openkoala.organisation.core.domain.Post;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named

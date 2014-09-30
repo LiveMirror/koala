@@ -8,12 +8,12 @@ import java.util.Set;
 
 import javax.inject.Named;
 
-import org.openkoala.organisation.EmployeeMustHaveAtLeastOnePostException;
 import org.openkoala.organisation.application.EmployeeApplication;
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.EmployeePostHolding;
-import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.Post;
+import org.openkoala.organisation.core.EmployeeMustHaveAtLeastOnePostException;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.EmployeePostHolding;
+import org.openkoala.organisation.core.domain.Organization;
+import org.openkoala.organisation.core.domain.Post;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

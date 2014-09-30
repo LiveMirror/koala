@@ -10,8 +10,8 @@ import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
 import org.openkoala.organisation.application.BaseApplication;
-import org.openkoala.organisation.domain.OrganizationAbstractEntity;
-import org.openkoala.organisation.domain.Party;
+import org.openkoala.organisation.core.domain.OrganizationAbstractEntity;
+import org.openkoala.organisation.core.domain.Party;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named

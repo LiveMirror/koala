@@ -2,7 +2,7 @@ package org.openkoala.organisation.application.impl.utils;
 
 import java.util.Date;
 
-import org.openkoala.organisation.domain.*;
+import org.openkoala.organisation.core.domain.*;
 
 public class OrganisationUtils {
 	

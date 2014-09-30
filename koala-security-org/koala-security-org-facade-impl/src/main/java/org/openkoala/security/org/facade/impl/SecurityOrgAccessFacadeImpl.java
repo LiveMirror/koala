@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.dayatang.utils.Page;
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.core.domain.Permission;

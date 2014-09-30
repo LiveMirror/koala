@@ -1,4 +1,4 @@
-package org.openkoala.organisation.domain;
+package org.openkoala.organisation.core.domain;
 
 import java.util.Date;
 import java.util.List;
@@ -12,13 +12,13 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.dayatang.domain.AbstractEntity;
-import org.openkoala.organisation.IdNumberIsExistException;
+import org.openkoala.organisation.core.IdNumberIsExistException;
 
 /**
  * 人
+ * 
  * @author xmfang
- *
+ * 
  */
 @Entity
 @Table(name = "KO_PERSONS")
@@ -26,33 +26,59 @@ public class Person extends OrganizationAbstractEntity {
 
 	private static final long serialVersionUID = 4180083929142881138L;
 
+	@Column(name = "NAME")
 	private String name;
 
-	
 	@Enumerated(EnumType.STRING)
+	@Column(name = "GENDER")
 	private Gender gender;
-	
-	
-	@Column(name = "id_number", unique = true)
+
+	@Column(name = "ID_NUMBER", unique = true)
 	private String idNumber;
-	
-	
-	@Column(name = "mobile_phone")
+
+	@Column(name = "MOBILE_PHONE")
 	private String mobilePhone;
-	
-	
-	@Column(name = "family_phone")
+
+	@Column(name = "FAMILY_PHONE")
 	private String familyPhone;
-	
+
+	@Column(name = "EMAIL")
 	private String email;
-	
+
 	public Person() {
 	}
 
 	public Person(String name) {
 		this.name = name;
 	}
-	
+
+	@Override
+	public void save() {
+		if (getId() == null) {
+			checkIdNumberExist();
+		} else {
+			Person person = get(Person.class, getId());
+			if (!person.getIdNumber().equals(idNumber)) {
+				checkIdNumberExist();
+			}
+		}
+		super.save();
+	}
+
+	public void checkIdNumberExist() {
+		if (StringUtils.isBlank(idNumber)) {
+			return;
+		}
+		if (isExistIdNumber(idNumber, new Date())) {
+			throw new IdNumberIsExistException();
+		}
+	}
+
+	public static boolean isExistIdNumber(String sn, Date date) {
+		List<Person> parties = getRepository().createCriteriaQuery(Person.class).eq("idNumber", sn).list();
+		return parties.isEmpty() ? false : true;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -102,34 +128,6 @@ public class Person extends OrganizationAbstractEntity {
 	}
 	
 	@Override
-	public void save() {
-		if (getId() == null) {
-			checkIdNumberExist();
-		} else {
-			Person person = get(Person.class, getId());
-			if (!person.getIdNumber().equals(idNumber)) {
-				checkIdNumberExist();
-			}
-		}
-		super.save();
-	}
-	
-	public void checkIdNumberExist() {
-		if (StringUtils.isBlank(idNumber)) {
-			return;
-		}
-		if (isExistIdNumber(idNumber, new Date())) {
-			throw new IdNumberIsExistException();
-		}
-	}
-	
-	public static boolean isExistIdNumber(String sn, Date date) {
-		List<Person> parties = getRepository().createCriteriaQuery(Person.class)
-				.eq("idNumber", sn).list();
-		return parties.isEmpty() ? false : true;
-	}
-
-	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(idNumber).toHashCode();
 	}
@@ -143,8 +141,7 @@ public class Person extends OrganizationAbstractEntity {
 			return false;
 		}
 		Person that = (Person) other;
-		return new EqualsBuilder().append(this.idNumber, that.idNumber)
-				.isEquals();
+		return new EqualsBuilder().append(this.idNumber, that.idNumber).isEquals();
 	}
 
 	@Override

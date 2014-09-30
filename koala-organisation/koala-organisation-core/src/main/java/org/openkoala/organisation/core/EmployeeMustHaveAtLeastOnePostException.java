@@ -1,4 +1,4 @@
-package org.openkoala.organisation;
+package org.openkoala.organisation.core;
 
 
 public class EmployeeMustHaveAtLeastOnePostException extends OrganisationException {

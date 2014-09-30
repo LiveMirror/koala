@@ -1,6 +1,6 @@
 package org.openkoala.organisation.facade.impl.assembler;
 
-import org.openkoala.organisation.domain.Job;
+import org.openkoala.organisation.core.domain.Job;
 import org.openkoala.organisation.facade.dto.JobDTO;
 
 public class JobAssembler {

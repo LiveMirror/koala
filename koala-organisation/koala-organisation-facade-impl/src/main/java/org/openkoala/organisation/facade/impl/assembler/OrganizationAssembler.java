@@ -3,10 +3,10 @@ package org.openkoala.organisation.facade.impl.assembler;
 import java.util.Date;
 import java.util.List;
 
-import org.openkoala.organisation.domain.Company;
-import org.openkoala.organisation.domain.Department;
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.organisation.facade.dto.OrganizationDTO;
 
 public class OrganizationAssembler {

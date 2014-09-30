@@ -5,7 +5,9 @@ import java.util.Date;
 import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.openkoala.organisation.TheJobHasPostAccountabilityException;
+import org.openkoala.organisation.core.TheJobHasPostAccountabilityException;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Job;
 import org.openkoala.organisation.utils.OrganisationUtils;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 

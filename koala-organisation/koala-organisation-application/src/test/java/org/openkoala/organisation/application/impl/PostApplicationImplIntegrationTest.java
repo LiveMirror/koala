@@ -14,10 +14,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.organisation.application.PostApplication;
 import org.openkoala.organisation.application.impl.utils.OrganisationUtils;
-import org.openkoala.organisation.domain.Company;
-import org.openkoala.organisation.domain.Department;
-import org.openkoala.organisation.domain.Job;
-import org.openkoala.organisation.domain.Post;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Job;
+import org.openkoala.organisation.core.domain.Post;
 /**
  * 岗位应用接口实现集成测试
  * @author xmfang

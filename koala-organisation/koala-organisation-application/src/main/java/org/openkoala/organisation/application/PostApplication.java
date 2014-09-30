@@ -1,7 +1,8 @@
 package org.openkoala.organisation.application;
 
 import java.util.Set;
-import org.openkoala.organisation.domain.Post;
+
+import org.openkoala.organisation.core.domain.Post;
 
 /**
  * 岗位应用接口

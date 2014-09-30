@@ -7,13 +7,13 @@ import java.util.Set;
 import javax.inject.Named;
 
 import org.openkoala.organisation.application.OrganizationApplication;
-import org.openkoala.organisation.domain.Company;
-import org.openkoala.organisation.domain.Department;
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.EmployeePostHolding;
-import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.OrganizationAbstractEntity;
-import org.openkoala.organisation.domain.OrganizationLineManagement;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.EmployeePostHolding;
+import org.openkoala.organisation.core.domain.Organization;
+import org.openkoala.organisation.core.domain.OrganizationAbstractEntity;
+import org.openkoala.organisation.core.domain.OrganizationLineManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

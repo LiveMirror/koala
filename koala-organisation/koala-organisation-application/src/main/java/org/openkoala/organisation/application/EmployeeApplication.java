@@ -3,9 +3,9 @@ package org.openkoala.organisation.application;
 import java.util.Date;
 import java.util.Map;
 
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.Post;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.Organization;
+import org.openkoala.organisation.core.domain.Post;
 
 /**
  * 员工应用层接口

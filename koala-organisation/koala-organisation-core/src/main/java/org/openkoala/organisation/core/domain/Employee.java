@@ -1,4 +1,4 @@
-package org.openkoala.organisation.domain;
+package org.openkoala.organisation.core.domain;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -17,34 +17,34 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.openkoala.organisation.HasPrincipalPostYetException;
+import org.openkoala.organisation.core.HasPrincipalPostYetException;
 
 /**
  * 员工
+ * 
  * @author xmfang
- *
+ * 
  */
 @Entity
-@DiscriminatorValue("Employee")
+@DiscriminatorValue("EMPLOYEE")
 public class Employee extends Party {
 
 	private static final long serialVersionUID = -7339118476080239701L;
 
-	/*
+	/**
 	 * 作为员工的人
 	 */
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "person_id")
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn(name = "PERSON_ID")
 	private Person person;
 
-	/*
+	/**
 	 * 入职日期
 	 */
-	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "entry_date")
+	@Column(name = "ENTRY_DATE")
 	private Date entryDate;
-	
+
 	Employee() {
 	}
 
@@ -61,41 +61,9 @@ public class Employee extends Party {
 		setSn(sn);
 	}
 
-	public Person getPerson() {
-		return person;
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
-	}
-	
-	@Override
-	public void setName(String name) {
-		super.setName(name);
-		if (person != null) {
-			person.setName(name);
-		}
-	}
-	
-	public Date getEntryDate() {
-		return entryDate;
-	}
-
-	public void setEntryDate(Date entryDate) {
-		this.entryDate = entryDate;
-	}
-
-//	/**
-//	 * 获得员工的所有任职职务
-//	 * @param date
-//	 * @return
-//	 */
-//	public Set<Job> getJobs(Date date) {
-//		return new HashSet<Job>(EmployeePostHolding.findJobsOfEmployee(this, date));
-//	}
-	
 	/**
 	 * 获得员工的所有任职岗位
+	 * 
 	 * @param date
 	 * @return
 	 */
@@ -105,15 +73,17 @@ public class Employee extends Party {
 
 	/**
 	 * 获得员工的主任职岗位
+	 * 
 	 * @param date
 	 * @return
 	 */
 	public Post getPrincipalPost(Date date) {
 		return EmployeePostHolding.getPrincipalPostByEmployee(this, date);
 	}
-	
+
 	/**
 	 * 获得员工的兼任职务
+	 * 
 	 * @param date
 	 * @return
 	 */
@@ -123,15 +93,17 @@ public class Employee extends Party {
 
 	/**
 	 * 获得员工的所属机构
+	 * 
 	 * @param date
 	 * @return
 	 */
 	public Organization getOrganization(Date date) {
 		return EmployeePostHolding.getOrganizationOfEmployee(this, date);
 	}
-	
+
 	/**
 	 * 分配岗位
+	 * 
 	 * @param post
 	 * @param principal 是否主要任职职务
 	 */
@@ -140,12 +112,13 @@ public class Employee extends Party {
 		if (principal && EmployeePostHolding.getPrincipalPostByEmployee(this, now) != null) {
 			throw new HasPrincipalPostYetException("The employee has principal post yet!");
 		}
-		
+
 		new EmployeePostHolding(post, this, principal, now).save();
 	}
 
 	/**
 	 * 同时分配多个职务
+	 * 
 	 * @param posts
 	 */
 	public void assignPosts(Set<Post> posts) {
@@ -153,19 +126,14 @@ public class Employee extends Party {
 			assignPost(post, false);
 		}
 	}
-	
+
 	/**
 	 * 卸任岗位
+	 * 
 	 * @param posts
 	 */
 	public void outgoingPosts(Set<Post> posts) {
 		Date now = new Date();
-		
-//		Set<Post> currentPosts = new HashSet<Post>(EmployeePostHolding.findPostsOfEmployee(this, now));
-//		if (currentPosts.equals(posts)) {
-//			throw new EmployeeMustHaveAtLeastOnePostException();
-//		}
-		
 		for (Post post : posts) {
 			EmployeePostHolding holding = EmployeePostHolding.getByPostAndEmployee(post, this, now);
 			if (holding != null) {
@@ -173,19 +141,19 @@ public class Employee extends Party {
 			}
 		}
 	}
-	
+
 	/**
 	 * 保存员工及其任职信息和所属机构关系
+	 * 
 	 * @param post
 	 */
 	public void saveWithPost(Post post) {
 		save();
-		
 		if (post != null) {
 			assignPost(post, true);
 		}
 	}
-	
+
 	@Override
 	public void save() {
 		if (getId() == null) {
@@ -196,18 +164,40 @@ public class Employee extends Party {
 				person.checkIdNumberExist();
 			}
 		}
-		
 		super.save();
 	}
-	
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	@Override
+	public void setName(String name) {
+		super.setName(name);
+		if (person != null) {
+			person.setName(name);
+		}
+	}
+
+	public Date getEntryDate() {
+		return entryDate;
+	}
+
+	public void setEntryDate(Date entryDate) {
+		this.entryDate = entryDate;
+	}
+
 	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof Employee)) {
 			return false;
 		}
 		Employee that = (Employee) other;
-		return new EqualsBuilder().append(this.getSn(), that.getSn())
-				.isEquals();
+		return new EqualsBuilder().append(this.getSn(), that.getSn()).isEquals();
 	}
 
 	@Override

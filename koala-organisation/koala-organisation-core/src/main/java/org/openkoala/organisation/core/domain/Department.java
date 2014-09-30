@@ -1,4 +1,4 @@
-package org.openkoala.organisation.domain;
+package org.openkoala.organisation.core.domain;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -8,46 +8,40 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * 公司
+ * 部门
+ * 
  * @author xmfang
- *
+ * 
  */
 @Entity
-@DiscriminatorValue("Company")
-public class Company extends Organization {
+@DiscriminatorValue("DEPARTMENT")
+public class Department extends Organization {
 
 	private static final long serialVersionUID = -7339118476080239701L;
 
-	public Company() {
+	public Department() {
 	}
 
-	public Company(String name) {
+	public Department(String name) {
 		super(name);
 	}
 
-	public Company(String name, String sn) {
+	public Department(String name, String sn) {
 		super(name, sn);
-	}
-	
-	public Company(String name, String sn,String description) {
-		super(name, sn);
-		this.setDescription(description);
 	}
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof Company)) {
+		if (!(other instanceof Department)) {
 			return false;
 		}
-		Company that = (Company) other;
-		return new EqualsBuilder().append(this.getName(), that.getName())
-				.append(this.getSn(), that.getSn())
-				.isEquals();
+		Department that = (Department) other;
+		return new EqualsBuilder().append(this.getName(), that.getName()).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(getName()).append(getSn()).toHashCode();
+		return new HashCodeBuilder().append(getName()).toHashCode();
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package org.openkoala.organisation.facade.impl.assembler;
 
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.organisation.facade.dto.TransformOrganizationDTO;
 
 public class TransformOrganizationAssembler {

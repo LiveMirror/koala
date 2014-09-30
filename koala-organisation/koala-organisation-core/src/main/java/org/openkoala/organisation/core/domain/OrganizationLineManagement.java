@@ -1,9 +1,7 @@
-package org.openkoala.organisation.domain;
+package org.openkoala.organisation.core.domain;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -16,11 +14,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * 机构间直线责任关系
+ * 
  * @author xmfang
- *
+ * 
  */
 @Entity
-@DiscriminatorValue("OrganizationLineManagement")
+@DiscriminatorValue("ORGANIZATIONLINEMANAGEMENT")
 @NamedQueries({
 		@NamedQuery(name = "getParentOfOrganization", query = "select o.commissioner from OrganizationLineManagement o where o.responsible = :organization and o.fromDate <= :date and o.toDate > :date"),
 		@NamedQuery(name = "findChildrenOfOrganization", query = "select o.responsible from OrganizationLineManagement o where o.commissioner = :organization and o.fromDate <= :date and o.toDate > :date"),
@@ -38,18 +37,18 @@ public class OrganizationLineManagement extends Accountability<Organization, Org
 
 	/**
 	 * 获得某个机构的父机构
+	 * 
 	 * @param organization
 	 * @param date
 	 * @return
 	 */
 	public static Organization getParentOfOrganization(Organization organization, Date date) {
-		List<Organization> companies = getRepository().createNamedQuery("getParentOfOrganization")
-				.addParameter("organization", organization).addParameter("date", date).list();
-		return companies.isEmpty() ? null : companies.get(0);
+		return getRepository().createNamedQuery("getParentOfOrganization").addParameter("organization", organization).addParameter("date", date).singleResult();
 	}
 
 	/**
 	 * 获得某个机构的子机构
+	 * 
 	 * @param organization
 	 * @param date
 	 * @return
@@ -60,6 +59,7 @@ public class OrganizationLineManagement extends Accountability<Organization, Org
 
 	/**
 	 * 获得所有机构
+	 * 
 	 * @return
 	 */
 	public static List<OrganizationLineManagement> findAll() {
@@ -68,30 +68,24 @@ public class OrganizationLineManagement extends Accountability<Organization, Org
 
 	/**
 	 * 获得某个机构作为下级机构的机构责任关系
+	 * 
 	 * @param responsible
 	 * @param date
 	 * @return
 	 */
 	public static OrganizationLineManagement getByResponsible(Organization responsible, Date date) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("organization", responsible);
-		params.put("date", date);
-		List<OrganizationLineManagement> lineMgmts = getRepository().createNamedQuery("findByResponsible")
-				.addParameter("organization", responsible).addParameter("date", date).list();
-		return lineMgmts.isEmpty() ? null : lineMgmts.get(0);
+		return getRepository().createNamedQuery("findByResponsible").addParameter("organization", responsible).addParameter("date", date).singleResult();
 	}
 
 	/**
 	 * 获得顶级机构
+	 * 
 	 * @param queryDate
 	 * @return
 	 */
 	public static Organization getTopOrganization(Date queryDate) {
-		OrganizationLineManagement organizationLineManagement = getRepository().createCriteriaQuery(OrganizationLineManagement.class)
-				.isNull("commissioner")
-				.gt("toDate", queryDate)
+		OrganizationLineManagement organizationLineManagement = getRepository().createCriteriaQuery(OrganizationLineManagement.class).isNull("commissioner").gt("toDate", queryDate)
 				.le("fromDate", queryDate).singleResult();
-		
 		if (organizationLineManagement == null) {
 			return null;
 		}
@@ -104,22 +98,17 @@ public class OrganizationLineManagement extends Accountability<Organization, Org
 			return false;
 		}
 		OrganizationLineManagement that = (OrganizationLineManagement) other;
-		return new EqualsBuilder()
-				.append(this.getCommissioner(), that.getCommissioner())
-				.append(this.getResponsible(), that.getResponsible())
-				.isEquals();
+		return new EqualsBuilder().append(this.getCommissioner(), that.getCommissioner()).append(this.getResponsible(), that.getResponsible()).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(getCommissioner())
-				.append(getResponsible()).toHashCode();
+		return new HashCodeBuilder().append(getCommissioner()).append(getResponsible()).toHashCode();
 	}
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append(getCommissioner())
-				.append(getResponsible()).build();
+		return new ToStringBuilder(this).append(getCommissioner()).append(getResponsible()).build();
 	}
 
 }
