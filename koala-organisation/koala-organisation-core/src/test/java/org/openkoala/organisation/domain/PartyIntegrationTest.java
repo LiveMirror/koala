@@ -1,17 +1,14 @@
 package org.openkoala.organisation.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.openkoala.organisation.core.HasPrincipalPostYetException;
-import org.openkoala.organisation.core.IdNumberIsExistException;
 import org.openkoala.organisation.core.SnIsExistException;
 import org.openkoala.organisation.core.domain.Company;
 import org.openkoala.organisation.core.domain.Department;
@@ -24,12 +21,13 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 /**
  * Party集成测试
+ * 
  * @author xmfang
- *
+ * 
  */
 @TransactionConfiguration(transactionManager = "transactionManager_org", defaultRollback = true)
 public class PartyIntegrationTest extends AbstractIntegrationTest {
-	
+
 	private Company company;
 	private Department department;
 	private Job job;
@@ -37,9 +35,9 @@ public class PartyIntegrationTest extends AbstractIntegrationTest {
 	private Employee employee;
 	private Date date = DateUtils.date(2013, 1, 1);
 	private Date now = new Date();
-	
+
 	private OrganisationUtils organisationUtils = new OrganisationUtils();
-	
+
 	@Before
 	public void subSetup() {
 		company = organisationUtils.createCompany("总公司", "JG-XXX1", date);
@@ -58,18 +56,18 @@ public class PartyIntegrationTest extends AbstractIntegrationTest {
 		assertTrue(parties.contains(post));
 		assertTrue(parties.contains(employee));
 	}
-	
+
 	@Test(expected = SnIsExistException.class)
 	public void testSave() {
 		Party party = new Company("TestCompany", "JG-XXX1");
 		party.save();
 	}
-	
+
 	@Test
 	public void testIsExistSn() {
 		assertTrue(Party.isExistSn(Party.class, "JG-XXX1", now));
 	}
-	
+
 	@Test
 	public void testIsActive() {
 		assertTrue(employee.isActive(now));
@@ -83,5 +81,5 @@ public class PartyIntegrationTest extends AbstractIntegrationTest {
 		employee.terminate(now);
 		assertTrue(post.getEmployees(now).isEmpty());
 	}
-	
+
 }

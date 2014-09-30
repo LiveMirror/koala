@@ -1,6 +1,7 @@
 package org.openkoala.organisation.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,6 @@ import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.openkoala.organisation.core.OrganizationHasPrincipalYetException;
-import org.openkoala.organisation.core.TheJobHasPostAccountabilityException;
 import org.openkoala.organisation.core.domain.Company;
 import org.openkoala.organisation.core.domain.Department;
 import org.openkoala.organisation.core.domain.Employee;
@@ -22,12 +22,13 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 /**
  * 岗位集成测试
+ * 
  * @author xmfang
- *
+ * 
  */
 @TransactionConfiguration(transactionManager = "transactionManager_org", defaultRollback = true)
 public class PostIntegrationTest extends AbstractIntegrationTest {
-	
+
 	private Company company1;
 	private Company company2;
 	private Department department;
@@ -38,15 +39,15 @@ public class PostIntegrationTest extends AbstractIntegrationTest {
 	private Employee employee;
 	private Date date = DateUtils.date(2013, 1, 1);
 	private Date now = new Date();
-	
+
 	private OrganisationUtils organisationUtils = new OrganisationUtils();
-	
+
 	@Before
 	public void subSetup() {
 		company1 = organisationUtils.createCompany("总公司", "JG-XXX", date);
 		company2 = organisationUtils.createCompany("华南分公司", "JG-XXX2", company1, date);
 		department = organisationUtils.createDepartment("财务部", "JG-XXX3", company2, date);
-		
+
 		job1 = organisationUtils.createJob("会计", "JOB-XXX1", date);
 		job2 = organisationUtils.createJob("分公司总经理", "JOB-XXX2", date);
 		post1 = organisationUtils.createPost("会计", "POST-XXX1", job1, department, date);
@@ -61,27 +62,27 @@ public class PostIntegrationTest extends AbstractIntegrationTest {
 		assertEquals(1, posts.size());
 		assertTrue(posts.contains(post1));
 	}
-	
+
 	@Test
 	public void testFindByOrganization() {
 		List<Post> posts = Post.findByOrganization(department, now);
 		assertEquals(1, posts.size());
 		assertTrue(posts.contains(post1));
 	}
-	
+
 	@Test
 	public void testGetEmployees() {
 		Set<Employee> employees = post1.getEmployees(now);
 		assertEquals(1, employees.size());
 		assertTrue(employees.contains(employee));
 	}
-	
+
 	@Test
 	public void testHasPrincipalPostOfOrganization() {
 		post2.setOrganizationPrincipal(true);
 		assertTrue(Post.hasPrincipalPostOfOrganization(company2, now));
 	}
-	
+
 	@Test(expected = OrganizationHasPrincipalYetException.class)
 	public void testSaveMultiPrincipalPost() {
 		post2.setOrganizationPrincipal(true);

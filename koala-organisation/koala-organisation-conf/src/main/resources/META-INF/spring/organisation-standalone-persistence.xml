@@ -26,7 +26,7 @@
 		<property name="persistenceUnitName" value="org" />
 		<property name="packagesToScan">
 			<list>
-				<value>org.openkoala.organisation.domain</value>
+				<value>org.openkoala.organisation.core.domain</value>
 			</list>
 		</property>
 
