@@ -101,7 +101,7 @@ $(function() {
 		userDetial.find('[data-id="name"]').text(user.name);
 		userDetial.find('[data-id="userAccount"]').text(user.userAccount);
 		userDetial.find('[data-id="createDate"]').text(user.createDate);
-		userDetial.find('[data-id="description"]').text(user.description);
+		userDetial.find('[data-id="description"]').text(user.description==null?"":user.description);
 		userDetial.find('[data-id="disabled"]').text(user.disabled?"不可用":"可用");
 		/* ↓============迭代角色数据============↓ */
 		var roles = result.data.roles;
