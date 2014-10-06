@@ -56,7 +56,7 @@
 	<!-- 
 	========================所有角色=========================
 	 -->
-	<table  class="table table-bordered table-hover">
+	<table id="userDetialtoRoles" class="table table-bordered table-hover">
 		<tr>
 			<td colspan="4">
 		    			<label style="font-size:20px; " class="col-lg-4 control-label">②所有角色</label>
@@ -70,7 +70,6 @@
 			   <label class="col-lg-4 control-label">角色描述</label>
 			   </td>
 		</tr>
-		<tr id="userDetialtoRoles"></tr>
 	</table>
 	<!-- 
 	========================所有权限=========================
@@ -106,14 +105,14 @@ $(function() {
 		/* ↓============迭代角色数据============↓ */
 		var roles = result.data.roles;
 		$.each(roles, function(){
-			 var $tr = $(' <td width="25%"><div class="col-lg-4 control-label">'+this.name+'</div></td><td width="25%"><div class="col-lg-4 control-label">'+this.description+'</div></td>');
-                 $tr.appendTo($("#userDetialtoRoles"));
+			 var $tr = $('<tr><td width="25%"><div class="col-lg-4 control-label">'+this.name+'</div></td><td width="25%"><div class="col-lg-4 control-label">'+this.description+'</div></td></tr>');
+             $tr.appendTo($("#userDetialtoRoles"));
 		});
 		/* ↓============迭代权限数据============↓ */
 		var roles = result.data.permissions;
 		$.each(roles, function(){
 			 var $tr = $(' <tr><td width="25%"><div class="col-lg-4 control-label">'+this.name+'</div></td><td width="25%"><div class="col-lg-4 control-label">'+this.description+'</div></td><tr>');
-                 $tr.appendTo($("#userDetialtoPermissions"));
+             $tr.appendTo($("#userDetialtoPermissions"));
 		});
 	});
 });
