@@ -176,7 +176,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 			List<MenuResourceDTO> allMenuResources = (List<MenuResourceDTO>) menuResult.getData();
 
 			for (MenuResourceDTO menuResourceDTO : allMenuResources) {
-				checkMenuResourceIsContainChildren(menuResourceDTO.getChildren(), allMenResourcesAsRole);
+				setCheckPropertyToMenuResourceDTO(menuResourceDTO.getChildren(), allMenResourcesAsRole);
 				menuResourceDTO.setChecked(allMenResourcesAsRole.contains(menuResourceDTO));
 			}
 			return InvokeResult.success(allMenuResources);
@@ -186,11 +186,11 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		}
 	}
 
-	private void checkMenuResourceIsContainChildren(List<MenuResourceDTO> childrenMenuResources, List<MenuResourceDTO> allMenResourcesAsRole) {
+	private void setCheckPropertyToMenuResourceDTO(List<MenuResourceDTO> childrenMenuResources, List<MenuResourceDTO> allMenResourcesAsRole) {
 		if (!childrenMenuResources.isEmpty()) {
 			for (MenuResourceDTO childMenuResourceDTO : childrenMenuResources) {
 				childMenuResourceDTO.setChecked(allMenResourcesAsRole.contains(childMenuResourceDTO));
-				checkMenuResourceIsContainChildren(childMenuResourceDTO.getChildren(), allMenResourcesAsRole);
+				setCheckPropertyToMenuResourceDTO(childMenuResourceDTO.getChildren(), allMenResourcesAsRole);
 			}
 		}
 	}
