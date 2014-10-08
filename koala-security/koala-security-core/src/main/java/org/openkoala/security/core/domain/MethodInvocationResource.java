@@ -3,6 +3,9 @@ package org.openkoala.security.core.domain;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+/**
+ * 方法调用权限
+ */
 @Entity
 @DiscriminatorValue("METHOD_INVOCATION_RESOURCE")
 public class MethodInvocationResource extends SecurityResource {

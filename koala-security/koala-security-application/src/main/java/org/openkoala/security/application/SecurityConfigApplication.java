@@ -13,7 +13,6 @@ import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface SecurityConfigApplication {
 
