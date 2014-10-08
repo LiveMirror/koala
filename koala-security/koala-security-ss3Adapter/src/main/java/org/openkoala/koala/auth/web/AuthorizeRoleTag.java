@@ -47,7 +47,7 @@ public class AuthorizeRoleTag extends TagSupport {
     }
 
     private int ifAnyRoles() {
-        for(String role:ifAllRoles.split(",")){
+        for(String role:ifAnyRoles.split(",")){
             if(permissionController.hasRole(role)){
                return Tag.EVAL_BODY_INCLUDE;
             }
