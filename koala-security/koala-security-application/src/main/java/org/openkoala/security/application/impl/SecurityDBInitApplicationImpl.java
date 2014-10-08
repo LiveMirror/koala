@@ -4,11 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.application.SecurityDBInitApplication;
-import org.openkoala.security.core.domain.*;
-import org.springframework.transaction.annotation.Transactional;
+import org.openkoala.security.application.systeminit.SystemInit;
+import org.openkoala.security.application.systeminit.SystemInitFactory;
+import org.openkoala.security.core.domain.Actor;
+import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
+import org.openkoala.security.core.domain.Permission;
+import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.SecurityResource;
+import org.openkoala.security.core.domain.UrlAccessResource;
+import org.openkoala.security.core.domain.User;
 
 import com.google.common.collect.Lists;
 
@@ -17,21 +27,25 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 
     public static final String MENU_ICON = "glyphicon  glyphicon-list-alt";
 
+    @Inject
+    private SecurityConfigApplication securityConfigApplication;
+    
+    private static SystemInit systemInit = SystemInitFactory.INSTANCE.getSystemInit();
+    
     @Override
     public User initUser() {
-        User result = createUser();
-        result.save();
-        return result;
+        User user = createUser();
+        securityConfigApplication.createActor(user);
+        return user;
     }
 
     @Override
     public Role initRole() {
-        Role result = createRole();
-        result.save();
-        return result;
+        Role role = createRole();
+        securityConfigApplication.createAuthority(role);
+        return role;
     }
 
-    // TODO 初始化permission
     @Override
     public List<Permission> initPermissions() {
         return Collections.emptyList();
@@ -198,73 +212,58 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
     }
 
     private User createUser() {
-        User user = new User("张三", "zhangsan");
-        user.setCreateOwner("admin");
-        user.setDescription("普通用户");
+    	SystemInit.User initUser = systemInit.getUser();
+        User user = new User(initUser.getName(), initUser.getUsername());
+        user.setCreateOwner(initUser.getCreateOwner());
+        user.setDescription(initUser.getDescription());
         return user;
     }
 
     private Role createRole() {
-        Role role = new Role("superAdmin");
-        role.setDescription("超级管理员");
+    	SystemInit.Role initRole = systemInit.getRole();
+        Role role = new Role(initRole.getName());
+        role.setDescription(initRole.getDescription());
         return role;
     }
 
     private List<MenuResource> createMenuResource() {
-        MenuResource actorSecurityMenuResource = new MenuResource("参与者管理");
-        actorSecurityMenuResource.setDescription("用户、用户组等页面管理。");
-        actorSecurityMenuResource.setMenuIcon(MENU_ICON);
-        actorSecurityMenuResource.save();
+    	List<MenuResource> menuResources = new ArrayList<MenuResource>();
+    	for (SystemInit.MenuResource each : getParentMenuResources()) {
+    		MenuResource menuResource = transformMenuResourceEntity(each);
+    		securityConfigApplication.createSecurityResource(menuResource);
+    		menuResources.add(menuResource);
+    		createChildrenMenuResource(menuResource, each, menuResources);
+    	}
+        return menuResources;
+    }
 
-        MenuResource userMenuResource = new MenuResource("用户管理");
-        userMenuResource.setMenuIcon(MENU_ICON);
-        userMenuResource.setUrl("/pages/auth/user-list.jsp");
-        actorSecurityMenuResource.addChild(userMenuResource);
+	private MenuResource transformMenuResourceEntity(SystemInit.MenuResource initMenuResource) {
+		MenuResource menuResource = new MenuResource(initMenuResource.getName());
+		menuResource.setDescription(initMenuResource.getDescription());
+		menuResource.setMenuIcon(initMenuResource.getMenuIcon());
+		menuResource.setUrl(initMenuResource.getUrl());
+		return menuResource;
+	}
+    
+    private void createChildrenMenuResource(MenuResource menuResource, SystemInit.MenuResource parentMenuResource, List<MenuResource> menuResources) {
+    	for (SystemInit.MenuResource each : systemInit.getMenuResource()) {
+    		if (Integer.valueOf(parentMenuResource.getId()).equals(each.getPid())) {
+    			MenuResource children = transformMenuResourceEntity(each);
+    			menuResources.add(children);
+    			securityConfigApplication.createChildToParent(children, menuResource.getId());
+    			createChildrenMenuResource(children, each, menuResources);
+    		}
+    	}
+	}
 
-        MenuResource authoritySecurityMenuResource = new MenuResource("授权管理");
-        authoritySecurityMenuResource.setDescription("角色、权限等页面管理。");
-        authoritySecurityMenuResource.setMenuIcon(MENU_ICON);
-        authoritySecurityMenuResource.save();
-
-        MenuResource roleMenuResource = new MenuResource("角色管理");
-        roleMenuResource.setMenuIcon(MENU_ICON);
-        roleMenuResource.setUrl("/pages/auth/role-list.jsp");
-        authoritySecurityMenuResource.addChild(roleMenuResource);
-
-        MenuResource permisisonMenuResource = new MenuResource("权限管理");
-        permisisonMenuResource.setMenuIcon(MENU_ICON);
-        permisisonMenuResource.setUrl("/pages/auth/permission-list.jsp");
-        authoritySecurityMenuResource.addChild(permisisonMenuResource);
-
-        MenuResource securityMenuResource = new MenuResource("资源管理");
-        securityMenuResource.setDescription("角色、权限等页面管理。");
-        securityMenuResource.setMenuIcon(MENU_ICON);
-        securityMenuResource.save();
-
-        MenuResource menuResource = new MenuResource("菜单管理");
-        menuResource.setMenuIcon(MENU_ICON);
-        menuResource.setUrl("/pages/auth/menu-list.jsp");
-        securityMenuResource.addChild(menuResource);
-
-        MenuResource urlAccessResource = new MenuResource("URL访问管理");
-        urlAccessResource.setMenuIcon(MENU_ICON);
-        urlAccessResource.setUrl("/pages/auth/url-list.jsp");
-        securityMenuResource.addChild(urlAccessResource);
-
-        MenuResource pageElementResource = new MenuResource("页面元素管理");
-        pageElementResource.setMenuIcon(MENU_ICON);
-        pageElementResource.setUrl("/pages/auth/page-list.jsp");
-        securityMenuResource.addChild(pageElementResource);
-
-        return Lists.newArrayList(actorSecurityMenuResource, //
-                authoritySecurityMenuResource,//
-                securityMenuResource,//
-                userMenuResource, //
-                roleMenuResource, //
-                permisisonMenuResource,//
-                menuResource, //
-                urlAccessResource, //
-                pageElementResource);
+	private List<SystemInit.MenuResource> getParentMenuResources() {
+    	List<SystemInit.MenuResource> parentMenuResources = new ArrayList<SystemInit.MenuResource>();
+    	for (SystemInit.MenuResource each : systemInit.getMenuResource()) {
+    		if (each.getPid() == null) {
+    			parentMenuResources.add(each);
+    		}
+    	}
+    	return parentMenuResources;
     }
 
     /**

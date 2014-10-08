@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<systemInit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/systemInit systemInit.xsd">
+
+	<user name="超级管理员" username="admin" description="系统超级管理员" createOwner="system" />
+	<role name="超级管理员" description="拥有系统所有权限" />
+	<menuResource id="1" name="用户角色管理 " description="包含用户、角色管理等" menuIcon="glyphicon  glyphicon-list-alt" />
+	<menuResource id="2" pid="1" name="用户管理" url="/pages/auth/user-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	<menuResource id="3" pid="1" name="角色管理" url="/pages/auth/role-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	<urlAccessResource name="所有的页面元素资源" url="/auth/page/**" />
+	<pageElementResource name="用户管理-添加" url="userManagerAdd" />
+	
+</systemInit>
