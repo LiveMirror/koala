@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import org.dayatang.domain.AbstractEntity;
 
+
 @Entity
 @Table(name = "KS_SCOPES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

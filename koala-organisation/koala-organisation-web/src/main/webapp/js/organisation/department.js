@@ -110,7 +110,7 @@ var department = function(){
 				$(this).remove();
 			},
 			'complete': function(event, data){
-				var type = data.type
+				var type = data.type;
 				$('#departmentDetail').message({
 					type: 'success',
 					content: '保存成功'

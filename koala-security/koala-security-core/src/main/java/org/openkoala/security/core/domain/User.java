@@ -259,7 +259,7 @@ public class User extends Actor {
      * @return
      */
     public static boolean hasUserExisted() {
-        long result = getRepository()//
+        Long result = getRepository()//
                 .createNamedQuery("User.count")//
                 .singleResult();
         return result > 0;

@@ -145,6 +145,11 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
             jpql.append(".telePhone LIKE :telePhone");
             conditionVals.put("telePhone", MessageFormat.format("%{0}%", queryEmployeeUserCondition.getTelePhone()));
         }
+        if (!StringUtils.isBlank(queryEmployeeUserCondition.getDescription())) {
+            jpql.append(andCondition);
+            jpql.append(".description LIKE :description");
+            conditionVals.put("description", MessageFormat.format("%{0}%", queryEmployeeUserCondition.getDescription()));
+        }
         if (!StringUtils.isBlank(queryEmployeeUserCondition.getEmployeeName())) {
             jpql.append("AND .employee.name LIKE :employeeName");
             conditionVals.put("employeeName", MessageFormat.format("%{0}%", queryEmployeeUserCondition.getEmployeeName()));
