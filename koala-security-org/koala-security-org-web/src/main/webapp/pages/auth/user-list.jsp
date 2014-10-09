@@ -454,7 +454,7 @@
                                     data +="&organizationName=" + employeeOrgName;
                                     data +="&organizationId=" + employeeOrgId;
                                 }
-                                var url = contextPath+'auth/employeeUser/grantAuthorityToActorInScope.koala';
+                                var url = contextPath+'/auth/employeeUser/grantAuthorityToActorInScope.koala';
 
                                 $.each(grantPermissionsToUserItems,function(index,grantPermissionsToUserItem){
                                     data += ("&authorityIds=" + grantPermissionsToUserItem.id + "&");
