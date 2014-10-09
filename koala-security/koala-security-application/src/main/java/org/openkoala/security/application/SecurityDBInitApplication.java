@@ -11,22 +11,53 @@ import java.util.List;
  * 
  */
 public interface SecurityDBInitApplication {
-	
-    User initUser();
 
+	/**
+	 * 初始化用户
+	 * 
+	 * @return
+	 */
+	User initUser();
+
+	/**
+	 * 初始化角色
+	 * 
+	 * @return
+	 */
 	Role initRole();
 
-    /**
-     * TODO 赞时没有初始化数据
-     * @return
-     */
+	/**
+	 * TODO 初始化权限
+	 * 
+	 * @return
+	 */
 	List<Permission> initPermissions();
 
+	/**
+	 * 初始化菜单资源
+	 * 
+	 * @return
+	 */
 	List<MenuResource> initMenuResources();
 
+	/**
+	 * 初始化页面元素资源
+	 * 
+	 * @return
+	 */
 	List<PageElementResource> initPageElementResources();
 
+	/**
+	 * 初始化URL访问资源
+	 * 
+	 * @return
+	 */
 	List<UrlAccessResource> initUrlAccessResources();
 
-    void initActor(Actor actor);
+	/**
+	 * 创建参与者
+	 * 
+	 * @param actor
+	 */
+	void initActor(Actor actor);
 }
