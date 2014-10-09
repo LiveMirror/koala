@@ -484,7 +484,6 @@
             });
             $('[data-role="userGrid"]').getGrid().search(params);
         });
-
 	});
 
     /**

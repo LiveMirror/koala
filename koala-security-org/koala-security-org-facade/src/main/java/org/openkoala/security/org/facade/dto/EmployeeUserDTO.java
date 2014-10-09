@@ -18,6 +18,8 @@ public class EmployeeUserDTO extends UserDTO {
 
 	private String employeeOrgName;
 
+    private Long employeeOrgId;
+
 	public EmployeeUserDTO() {
 	}
 
@@ -40,4 +42,12 @@ public class EmployeeUserDTO extends UserDTO {
 	public void setEmployeeOrgName(String employeeOrgName) {
 		this.employeeOrgName = employeeOrgName;
 	}
+
+    public Long getEmployeeOrgId() {
+        return employeeOrgId;
+    }
+
+    public void setEmployeeOrgId(Long employeeOrgId) {
+        this.employeeOrgId = employeeOrgId;
+    }
 }

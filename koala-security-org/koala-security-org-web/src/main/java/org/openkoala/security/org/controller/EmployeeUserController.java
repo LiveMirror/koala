@@ -80,11 +80,17 @@ public class EmployeeUserController {
         return  securityOrgAccessFacade.pagingQueryGrantPermissionsByUserId(page, pagesize, userId);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/grantAuthorityToActorInScope", method = RequestMethod.POST)
+    public InvokeResult grantAuthorityToActorInScope(AuthorizationCommand command){
+        return securityOrgConfigFacade.grantAuthorityToActorInScope(command);
+    }
 
+    @Deprecated
     @ResponseBody
     @RequestMapping(value = "/grantRolesToUserInScope", method = RequestMethod.POST)
-    public InvokeResult grantRolesToUserInScope(AuthorizationCommand authorization){
-        return securityOrgConfigFacade.grantRolesToUserInScope(authorization);
+    public InvokeResult grantRolesToUserInScope(AuthorizationCommand command){
+        return securityOrgConfigFacade.grantRolesToUserInScope(command);
     }
 
 

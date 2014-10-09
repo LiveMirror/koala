@@ -122,7 +122,6 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
     @Override
     public InvokeResult grantRolesToUserInScope(AuthorizationCommand command) {
         Actor actor = securityAccessApplication.getActorById(command.getActorId());
-        Authority authority = securityAccessApplication.getAuthority(command.getAuthorityId());
 
         Organization organization = organizationApplication.getOrganizationById(command.getOrganizationId());
         Scope scope = findOrganizationScope(organization);
@@ -132,7 +131,10 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
             securityConfigApplication.createScope(scope);
         }
 
-        securityConfigApplication.grantActorToAuthorityInScope(actor,authority,scope);
+        for(Long authorityId : command.getAuthorityIds()){
+            Authority authority = securityAccessApplication.getAuthority(authorityId);
+            securityConfigApplication.grantActorToAuthorityInScope(actor,authority,scope);
+        }
 
         return InvokeResult.success();
     }
@@ -188,6 +190,26 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
         securityConfigApplication.grantSecurityResourcesToAuthority(urlAccessResources,role);
         securityConfigApplication.grantSecurityResourcesToAuthority(orgMenuResources,role);
 
+    }
+
+    @Override
+    public InvokeResult grantAuthorityToActorInScope(AuthorizationCommand command) {
+        Actor actor = securityAccessApplication.getActorById(command.getActorId());
+        for(Long authorityId : command.getAuthorityIds()) {
+            Authority authority = securityAccessApplication.getAuthority(authorityId);
+            if(command.getOrganizationId() != null) {
+                Organization organization = organizationApplication.getOrganizationById(command.getOrganizationId());
+                Scope scope = findOrganizationScope(organization);
+                if(scope == null){
+                    scope = new OrganisationScope(command.getOrganizationName(),organization);
+                    securityConfigApplication.createScope(scope);
+                }
+                securityConfigApplication.grantActorToAuthorityInScope(actor,authority,scope);
+            }else{
+                securityConfigApplication.grantAuthorityToActor(authority,actor);
+            }
+        }
+        return InvokeResult.success();
     }
 
     private EmployeeUser createEmployeeUser() {

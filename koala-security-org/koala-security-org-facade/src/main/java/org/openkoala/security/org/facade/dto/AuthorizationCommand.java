@@ -11,7 +11,7 @@ public class AuthorizationCommand {
 
     private Long actorId;
 
-    private Long authorityId;
+    private Long[] authorityIds;
 
     private Long organizationId;
 
@@ -25,12 +25,12 @@ public class AuthorizationCommand {
         this.actorId = actorId;
     }
 
-    public Long getAuthorityId() {
-        return authorityId;
+    public Long[] getAuthorityIds() {
+        return authorityIds;
     }
 
-    public void setAuthorityId(Long authorityId) {
-        this.authorityId = authorityId;
+    public void setAuthorityIds(Long[] authorityIds) {
+        this.authorityIds = authorityIds;
     }
 
     public String getOrganizationName() {
@@ -53,7 +53,7 @@ public class AuthorizationCommand {
     public int hashCode() {
         return new HashCodeBuilder()//
                 .append(actorId)//
-                .append(authorityId)//
+                .append(authorityIds)//
                 .append(organizationId)//
                 .toHashCode();
     }
@@ -66,7 +66,7 @@ public class AuthorizationCommand {
         AuthorizationCommand that = (AuthorizationCommand) other;
         return new EqualsBuilder()//
                 .append(this.getActorId(), that.getActorId())//
-                .append(this.getAuthorityId(), that.getAuthorityId())//
+                .append(this.getAuthorityIds(), that.getAuthorityIds())//
                 .append(this.getOrganizationId(), that.getOrganizationId())//
                 .isEquals();
     }
@@ -75,7 +75,7 @@ public class AuthorizationCommand {
     public String toString() {
         return new ToStringBuilder(this)//
                 .append(getActorId())//
-                .append(getAuthorityId())//
+                .append(getAuthorityIds())//
                 .append(getOrganizationId())//
                 .build();//
     }

@@ -39,18 +39,17 @@
                     </div>
                     <div class="modal-body">
                         <div class="left">
-                            <div class="left-modal-body">已授权角色</div>
-                            <div id="grantAuthoritiesToUserGrid"></div>
+                            <div class="right-modal-body">未授权角色</div>
+                            <div id="notGrantAuthoritiesToUserGrid"></div>
                         </div>
                         <div class="middle ">
+                            <button class="btn btn-danger glyphicon glyphicon-chevron-right" id="notGrantAuthorityToUserButton">&nbsp;撤权</button><br/><br/><br/><br/>
                             <button class="btn btn-success glyphicon glyphicon-chevron-left" id="grantAuthorityToUserButton">&nbsp;授权</button><br/><br/><br/><br/>
-                            <button class="btn btn-danger glyphicon glyphicon-chevron-right" id="notGrantAuthorityToUserButton">&nbsp;撤权</button>
-                            <br/><br/><br/><br/>
                             <div id="grantAuthorityToUserMessage"></div>
                         </div>
                         <div class="right">
-                            <div class="right-modal-body">未授权角色</div>
-                            <div id="notGrantAuthoritiesToUserGrid"></div>
+                            <div class="left-modal-body">已授权角色</div>
+                            <div id="grantAuthoritiesToUserGrid"></div>
                         </div>
                     </div>
                 </div>
