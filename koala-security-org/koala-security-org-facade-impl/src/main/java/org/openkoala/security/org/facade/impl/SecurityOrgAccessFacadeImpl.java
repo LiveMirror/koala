@@ -59,6 +59,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
                 Organization organization = employeeUser.getEmployee().getOrganization(new Date());
                 if(organization != null){
                     result.setEmployeeOrgName(organization.getName());
+                    result.setEmployeeOrgId(organization.getId());
                 }
             }
             results.add(result);

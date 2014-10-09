@@ -384,4 +384,7 @@ var userManager = function() {
 		available : available,
 		forbidden : forbidden
 	};
-}; 
+};
+
+
+
