@@ -16,10 +16,9 @@ import javax.persistence.OneToMany;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * 菜单权限资源
+ * 菜单权限资源。它是系统提供的功能入口。
  * 
- * @author luzhao
- * 
+ * @author lucas
  */
 @Entity
 @DiscriminatorValue("MENU_RESOURCE")

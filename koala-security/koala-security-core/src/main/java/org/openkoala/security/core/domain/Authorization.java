@@ -12,10 +12,9 @@ import org.openkoala.security.core.AuthorizationIsNotExisted;
 import org.openkoala.security.core.NullArgumentException;
 
 /**
- * 授权，在指定范围内将某种权限（Permission）或权限集合（Role）授予Actor
+ * 授权中心，在指定范围{@link Scope}将授权{@link Authority}授予参与者{@link Actor}。
  * 
- * @author luzhao
- * 
+ * @author lucas
  */
 @Entity
 @Table(name = "KS_AUTHORIZATIONS")

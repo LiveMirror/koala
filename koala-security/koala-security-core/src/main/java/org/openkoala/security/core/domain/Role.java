@@ -6,10 +6,10 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
- * 角色。角色是权限的集合。
- * 
+ * 角色是权限的集合，它可以可以是逻辑上的权限{@link Permission}，也可以是物理上的权限{@link SecurityResource}。
+ * 它代表一系列可执行操作或责任，因此它是授权的粗粒度。
+ *
  * @author luzhao
- * 
  */
 @Entity
 @DiscriminatorValue("ROLE")

@@ -3,8 +3,7 @@ package org.openkoala.security.core;
 /**
  * 对象关联关系异常
  * 
- * @author luzhao
- * 
+ * @author lucas
  */
 public class CorrelationException extends SecurityException{
 

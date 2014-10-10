@@ -4,9 +4,11 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import org.dayatang.domain.AbstractEntity;
-
-
+/**
+ * 代表某种范围，例如组织机构范围。
+ *
+ * @author lucas
+ */
 @Entity
 @Table(name = "KS_SCOPES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

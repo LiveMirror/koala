@@ -19,6 +19,12 @@ import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
 
+/**
+ * 权限资源,它是{@link MethodInvocationResource}、{@link MenuResource}、{@link PageElementResource}、{@link UrlAccessResource}共同的基类。
+ * 它是所有纳入系统管理的信息实体，如进销存系统中的进货订单，页面上的任何一个元素,菜单功能,方法调用,权限资源就是这些。
+ *
+ * @author lucas
+ */
 @Entity
 @Table(name = "KS_SECURITYRESOURCES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
