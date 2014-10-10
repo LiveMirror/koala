@@ -6,6 +6,7 @@ import org.openkoala.koala.widget.Module;
 import org.openkoala.koala.widget.Organization;
 import org.openkoala.koala.widget.Project;
 import org.openkoala.koala.widget.Security;
+import org.openkoala.koala.widget.SecurityOrg;
 
 public class Test {
 
@@ -16,11 +17,15 @@ public class Test {
 		pro.setPath("C:/Users/Administrator/Desktop/ran");
 		KoalaProjectCreate kpc = new KoalaProjectCreate();
 		pro.initSSJProject();
-		Security s = new Security();
-		s.setSecurityGenerateSourceCode(false);
-		for(Module m  : pro.getModule()){
-			if(m.getModuleType() == "war"){
-				m.setSecurity(s);
+		//Organization organization =	new Organization();
+		//organization.setOrganizationGenerateSourceCode(true);
+		//GeneralQuery gq = new GeneralQuery();
+		SecurityOrg s = new SecurityOrg();
+		for(Module module : pro.getModule()){
+			System.out.println(module.getModuleType());
+			if(module.getModuleType()=="war"){
+				//module.setOrganization(organization);
+				module.setSecurityOrg(s);
 			}
 		}
 		kpc.createProject(pro);
