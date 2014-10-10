@@ -65,26 +65,23 @@ public class EmployeeController extends BaseController {
 		return employeeFacade.pagingQueryEmployeesByOrganization(example, organizationId, page, pagesize);
 	}
 
-	/**
-	 * 创建一个员工
-	 * 
-	 * @param employee
-	 * @param jobId
-	 * @param organizationId
-	 * @return
-	 */
+    /**
+     * 创建一个员工
+     * @param employeeDto
+     * @param postId
+     * @return
+     */
 	@ResponseBody
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public InvokeResult createEmployee(EmployeeDTO employeeDto, Long postId) {
 		return employeeFacade.createEmployeeWithPost(employeeDto, postId);
 	}
 
-	/**
-	 * 更新某个员工的信息
-	 * 
-	 * @param employee
-	 * @return
-	 */
+    /**
+     * 更新某个员工的信息
+     * @param employeeDto
+     * @return
+     */
 	@ResponseBody
 	@RequestMapping("/update")
 	public InvokeResult updateEmployee(EmployeeDTO employeeDto) {

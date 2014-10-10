@@ -144,5 +144,5 @@ public class GqcApplicationImpl implements GqcApplication {
 	public void saveGeneralQuery(GeneralQuery generalQuery) {
 		generalQuery.save();
 	}
-	
+
 }

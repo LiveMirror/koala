@@ -27,7 +27,7 @@ public interface PostFacade {
 	/**
 	 * 分页查询某个机构下的岗位
 	 * 
-	 * @param organization
+	 * @param organizationId
 	 * @param example
 	 * @param currentPage
 	 * @param pagesize
