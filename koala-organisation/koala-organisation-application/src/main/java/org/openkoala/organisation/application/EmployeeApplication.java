@@ -34,7 +34,7 @@ public interface EmployeeApplication {
 	 * 调整某个员工的任职信息
 	 * 
 	 * @param employee
-	 * @param dtos
+	 * @param responsiblePosts
 	 */
 	void transformPost(Employee employee, Map<Post, Boolean> responsiblePosts);
 

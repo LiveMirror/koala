@@ -44,27 +44,29 @@ public class PostController extends BaseController {
     /**
      * 创建一个岗位
      *
-     * @param post
+     * @param postDto
+     * @param organizationId
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public InvokeResult createPost(PostDTO postDTO, Long organizationId) {
-    	postDTO.setOrganizationId(organizationId);
-        return postFacade.createPost(postDTO);
+    public InvokeResult createPost(PostDTO postDto, Long organizationId) {
+    	postDto.setOrganizationId(organizationId);
+        return postFacade.createPost(postDto);
     }
 
 	/**
 	 * 更新岗位信息
-	 * 
-	 * @param post
+	 *
+     * @param postDto
+     * @param organizationId
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public InvokeResult updatePost(PostDTO postDTO, Long organizationId) {
-		postDTO.setOrganizationId(organizationId);
-		return postFacade.updatePostInfo(postDTO);
+	public InvokeResult updatePost(PostDTO postDto, Long organizationId) {
+		postDto.setOrganizationId(organizationId);
+		return postFacade.updatePostInfo(postDto);
 	}
 
     @ResponseBody
@@ -99,8 +101,8 @@ public class PostController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/terminate", method = RequestMethod.POST)
-    public InvokeResult terminatePost(PostDTO postDTO) {
-        return postFacade.terminatePost(postDTO);
+    public InvokeResult terminatePost(PostDTO postDto) {
+        return postFacade.terminatePost(postDto);
     }
 
     /**

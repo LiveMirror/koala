@@ -34,7 +34,7 @@ public class OrganizationController extends BaseController {
 	 * 在某个公司下创建一个分公司
 	 * 
 	 * @param parentId
-	 * @param company
+	 * @param companyDto
 	 * @return
 	 */
 	@ResponseBody
@@ -48,8 +48,7 @@ public class OrganizationController extends BaseController {
 	 * 在某个机构下创建一个部门
 	 * 
 	 * @param parentId
-	 * @param parentType
-	 * @param department
+	 * @param departmentDto
 	 * @return
 	 */
 	@ResponseBody
@@ -62,7 +61,7 @@ public class OrganizationController extends BaseController {
 	/**
 	 * 更新公司信息
 	 * 
-	 * @param company
+	 * @param companyDto
 	 * @return
 	 */
 	@ResponseBody
@@ -75,7 +74,7 @@ public class OrganizationController extends BaseController {
 	/**
 	 * 更新部门信息
 	 * 
-	 * @param department
+	 * @param departmentDto
 	 * @return
 	 */
 	@ResponseBody
@@ -126,7 +125,7 @@ public class OrganizationController extends BaseController {
 	/**
 	 * 撤销一个公司
 	 * 
-	 * @param company
+	 * @param companyDto
 	 * @return
 	 */
 	@ResponseBody
@@ -139,7 +138,7 @@ public class OrganizationController extends BaseController {
 	/**
 	 * 撤销一个部门
 	 * 
-	 * @param department
+	 * @param departmentDto
 	 * @return
 	 */
 	@ResponseBody

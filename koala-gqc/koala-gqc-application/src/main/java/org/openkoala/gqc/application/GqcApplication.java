@@ -23,12 +23,12 @@ public interface GqcApplication {
 	<T extends GeneralQueryEntity> T getEntity(Class<T> clazz, Long id);
 	
 	/**
-	 * 保存用查询实例
-	 * @param entity
-	 */
-	void saveEntity(GeneralQueryEntity entity);
-	
-	/**
+     * 保存用查询实例
+     * @param entity
+     */
+    void saveEntity(GeneralQueryEntity entity);
+
+    /**
 	 * 更新用查询实例
 	 * @param entity
 	 */
@@ -77,6 +77,6 @@ public interface GqcApplication {
 	//Page<GeneralQuery> pagingQueryGeneralQueriesByQueryName(String queryName, int currentPage, int pagesize);
 	
 	Page<Map<String, Object>> pagingQuery(GeneralQuery generalQuery, int currentPage, int pagesize);
-	
+
 	void saveGeneralQuery(GeneralQuery generalQuery);
 }

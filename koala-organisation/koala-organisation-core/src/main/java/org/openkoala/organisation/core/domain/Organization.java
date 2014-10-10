@@ -205,7 +205,7 @@ public abstract class Organization extends Party {
 	/**
 	 * 获得机构负责人
 	 * 
-	 * @param queryDate
+	 * @param date
 	 * @return
 	 */
 	public List<Employee> getPrincipal(Date date) {

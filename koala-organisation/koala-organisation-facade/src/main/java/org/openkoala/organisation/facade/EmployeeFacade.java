@@ -17,9 +17,9 @@ import org.openkoala.organisation.facade.dto.ResponsiblePostDTO;
 public interface EmployeeFacade {
 
 	/**
-	 * 获取某个员工的所属机构
+	 * 根据员工id获取某个员工的所属机构
 	 * 
-	 * @param employee
+	 * @param employeeId
 	 * @param date
 	 * @return
 	 */
@@ -39,7 +39,7 @@ public interface EmployeeFacade {
 	 * 分页查询某个机构的直属员工
 	 * 
 	 * @param example
-	 * @param organization
+	 * @param orgId
 	 * @param currentPage
 	 * @param pagesize
 	 * @return
@@ -50,7 +50,7 @@ public interface EmployeeFacade {
 	 * 分页查询某个机构及其下属机构的员工
 	 * 
 	 * @param example
-	 * @param organization
+	 * @param orgId
 	 * @param currentPage
 	 * @param pagesize
 	 * @return
@@ -71,14 +71,14 @@ public interface EmployeeFacade {
 	 * 创建员工的任职责任信息
 	 * 
 	 * @param employee
-	 * @param post
+	 * @param postId
 	 */
 	InvokeResult createEmployeeWithPost(EmployeeDTO employee, Long postId);
 
 	/**
 	 * 调整某个员工的任职信息
 	 * 
-	 * @param employee
+	 * @param employeeId
 	 * @param dtos
 	 */
 	InvokeResult transformPost(Long employeeId, ResponsiblePostDTO[] dtos);
@@ -86,7 +86,7 @@ public interface EmployeeFacade {
 	/**
 	 * 获得某个员工的任职职务信息
 	 * 
-	 * @param employee
+	 * @param employeeId
 	 * @return
 	 */
 	List<ResponsiblePostDTO> getPostsByEmployee(Long employeeId);
@@ -102,7 +102,7 @@ public interface EmployeeFacade {
 	/**
 	 * 更新员工信息
 	 * 
-	 * @param employee
+	 * @param employeeDTO
 	 */
 	InvokeResult updateEmployeeInfo(EmployeeDTO employeeDTO);
 
