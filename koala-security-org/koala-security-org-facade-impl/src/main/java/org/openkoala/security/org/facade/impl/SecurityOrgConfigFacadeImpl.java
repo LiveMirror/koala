@@ -158,6 +158,9 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
             }
             employeeUser.setName(command.getName());
             employeeUser.setDescription(command.getDescription());
+
+            securityConfigApplication.changeLastModifyTimeOfUser(employeeUser);
+
             securityConfigApplication.createActor(employeeUser);
             return InvokeResult.success();
         } catch (NullArgumentException e) {

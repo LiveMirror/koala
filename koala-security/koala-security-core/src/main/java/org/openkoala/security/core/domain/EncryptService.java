@@ -1,10 +1,9 @@
 package org.openkoala.security.core.domain;
 
 /**
- * 密码加密服务
+ * 密码加密服务。
  * 
- * @author luzhao
- * 
+ * @author lucas
  */
 public interface EncryptService {
 

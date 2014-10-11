@@ -18,9 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * "ASC" 和 "DESC" 分别为升序和降序， JPQL 中默认为 ASC 升序
+ * 位于系统外部，与系统交互的人，是使用软件的人。
+ * 系统的登录，即认证。
+ * 可以对其授予角色 {@link Role}、权限 {@link Permission}和用户组 <code> UserGroup </code>
  *
- * @author luzhao
+ * @author lucas
  */
 @Entity
 @DiscriminatorValue("USER")

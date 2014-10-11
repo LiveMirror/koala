@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<XmlParse>
+
+	<property name="description">Koala-Security-Not-General-Source-Code</property>
+<XmlAdd>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/pom.xml</property>
+		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
+		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
+		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='org.openkoala' and xmlns:artifactId='koala-web']]]></property>
+		<property name="xmlContent">
+         <![CDATA[
+    <?xml version="1.0" encoding="UTF-8"?>
+    <root>
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-shiro</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-core</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		 <dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-application</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		 <dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-facade</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		 <dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-taglibs</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		 <dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-controller</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-infra</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-facade-impl</artifactId>
+			<version>${koala.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-facade</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		  <!-- 集成组织 -->
+		   <dependency>
+            <groupId>org.openkoala.organisation</groupId>
+            <artifactId>koala-organisation-core</artifactId>
+           <version>${koala.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openkoala.organisation</groupId>
+            <artifactId>koala-organisation-controller</artifactId>
+           <version>${koala.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openkoala.organisation</groupId>
+            <artifactId>koala-organisation-facade</artifactId>
+           <version>${koala.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openkoala.security.org</groupId>
+            <artifactId>koala-security-org-facade</artifactId>
+           <version>${koala.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>org.openkoala.security.org</groupId>
+			<artifactId>koala-security-org-facade-impl</artifactId>
+			<version>${koala.version}</version>
+            <scope>runtime</scope>
+		</dependency>
+	</root>
+         ]]>
+		</property>
+	</XmlAdd>
+</XmlParse>

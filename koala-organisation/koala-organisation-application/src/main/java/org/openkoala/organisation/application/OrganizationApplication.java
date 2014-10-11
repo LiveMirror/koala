@@ -32,7 +32,8 @@ public interface OrganizationApplication {
 	/**
 	 * 在某个公司下面创建一个分公司
 	 * 
-	 * @param organization
+	 * @param parent
+     * @param company
 	 * @return
 	 */
 	Company createCompany(Company parent, Company company);
@@ -41,7 +42,7 @@ public interface OrganizationApplication {
 	 * 在某个组织机构下创建下级部门
 	 * 
 	 * @param parent
-	 * @param child
+	 * @param department
 	 * @return
 	 */
 	Department createDepartment(Organization parent, Department department);

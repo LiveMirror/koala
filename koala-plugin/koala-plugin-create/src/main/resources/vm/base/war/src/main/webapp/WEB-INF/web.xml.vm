@@ -19,7 +19,11 @@
 	<listener>
 		<listener-class>org.openkoala.security.listener.SystemEvenmentListener</listener-class>
 	</listener>
-	
+#if ($Module.securityOrg)
+	<listener>
+        <listener-class>org.openkoala.organisation.web.context.OrganisationListener</listener-class>
+    </listener>
+#end
 	#if ($Module.monitor)
 	<!-- monitor config begin-->
      <listener>
@@ -52,7 +56,7 @@
 		</init-param>
 	</filter>
 	
-	   #if ($Module.security)
+	   #if ($Module.security || $Module.securityOrg)
 	<!-- shiro filter -->
 	<filter>
 		<filter-name>shiroFilter</filter-name>
@@ -104,7 +108,7 @@
 
 	
 	<!--组织子系统的listener-->
-#if ($Module.organization)
+#if ($Module.organization || $Module.securityOrg)
 	<listener>
 		<listener-class>org.openkoala.organisation.web.context.OrganisationListener</listener-class>
 	</listener>
@@ -126,7 +130,7 @@
 	</filter-mapping>
     #end
     
-    #if($Project.mvcProtocol == "SpringMVC" || $Module.security || $Module.monitor || $Module.generalQuery)
+    #if($Project.mvcProtocol == "SpringMVC" || $Module.security || $Module.securityOrg|| $Module.monitor || $Module.generalQuery)
     	<!-- 加入SpringMVC -->
 	 <servlet>
 		<servlet-name>spring</servlet-name>

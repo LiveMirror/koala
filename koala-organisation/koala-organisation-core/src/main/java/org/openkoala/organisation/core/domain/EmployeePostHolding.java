@@ -101,7 +101,7 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	 * 找出在指定日期担任指定职务的所有员工
 	 * 
 	 * @param job
-	 * @param queryDate
+	 * @param date
 	 * @return
 	 */
 	public static List<Employee> findEmployeesOfJob(Job job, Date date) {
@@ -134,7 +134,7 @@ public class EmployeePostHolding extends Accountability<Post, Employee> {
 	/**
 	 * 查找某个岗位相关的任职责任信息
 	 * 
-	 * @param employee
+	 * @param post
 	 * @param date
 	 * @return
 	 */

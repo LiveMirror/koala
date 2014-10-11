@@ -27,6 +27,8 @@
 			<list>
 				<value>org.openkoala.example.domain</value>
 				<value>org.openkoala.security.core.domain</value>
+				<value>org.openkoala.organisation.domain</value>
+				<value>org.openkoala.security.org.core.domain</value>
 				#foreach( $pkg in $Project.scanPackages) 
 				<value>${pkg}</value>
                 #end

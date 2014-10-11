@@ -8,6 +8,11 @@ import org.openkoala.security.core.UrlIsExistedException;
 
 import java.util.List;
 
+/**
+ * URL访问权限资源，他表示页面请求服务端的URL。
+ *
+ * @author lucas
+ */
 @Entity
 @DiscriminatorValue("URL_ACCESS_RESOURCE")
 public class UrlAccessResource extends SecurityResource {

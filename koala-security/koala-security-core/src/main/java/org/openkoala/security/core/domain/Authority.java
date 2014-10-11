@@ -20,10 +20,11 @@ import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
 
 /**
- * 可授权实体，代表某种权限（Permission）或权限集合（Role），可被授予Actor。
+ * 授权是是一个抽象的概念，是角色{@link Role}和权限{@link Permission}共同的基类。
+ * 它代表某种权限（Permission）或权限集合（Role），可被授予Actor(即对Actor授予Authority)。
+ * 它代表一系列的可执行操作或责任，用于限定您再软件系统中能做什么。不能做什么。
  *
- * @author luzhao
- *
+ * @author lucas
  */
 @Entity
 @Table(name = "KS_AUTHORITIES")

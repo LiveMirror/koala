@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.dayatang.domain.CriteriaQuery;
-import org.dayatang.utils.Page;
+import org.dayatang.querychannel.Page;
 import org.openkoala.gqc.core.domain.utils.PagingQuerier;
 import org.openkoala.gqc.core.domain.utils.QueryAllQuerier;
 import org.openkoala.gqc.core.domain.utils.SqlStatmentMode;

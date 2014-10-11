@@ -30,7 +30,8 @@ public interface OrganizationFacade {
 	/**
 	 * 在某个公司下面创建一个分公司
 	 * 
-	 * @param organization
+	 * @param parentId
+     * @param company
 	 * @return
 	 */
 	InvokeResult createCompany(Long parentId, OrganizationDTO company);
@@ -38,8 +39,8 @@ public interface OrganizationFacade {
 	/**
 	 * 在某个组织机构下创建下级部门
 	 * 
-	 * @param parent
-	 * @param child
+	 * @param parentId
+	 * @param department
 	 * @return
 	 */
 	InvokeResult createDepartment(Long parentId, OrganizationDTO department);
@@ -81,7 +82,7 @@ public interface OrganizationFacade {
 	/**
 	 * 撤销某个机构与一批员工的责任关系
 	 * 
-	 * @param organization
+	 * @param organizationId
 	 * @param employees
 	 */
 	InvokeResult terminateEmployeeOrganizationRelation(Long organizationId, EmployeeDTO[] employees);
@@ -102,9 +103,9 @@ public interface OrganizationFacade {
 	InvokeResult updateOrganization(OrganizationDTO organization);
 
 	/**
-	 * 撤销一个公司
+	 * 撤销一个机构
 	 * 
-	 * @param companyDto
+	 * @param organizationDTO
 	 */
 	InvokeResult terminateOrganization(OrganizationDTO organizationDTO);
 
