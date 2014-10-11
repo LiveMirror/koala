@@ -58,6 +58,7 @@
 	<urlAccessResource name="权限管理-修改" url="/auth/permission/update.koala" />
 	<urlAccessResource name="权限管理-撤销" url="/auth/permission/terminate.koala" />
 	<urlAccessResource name="权限管理-查询" url="/auth/permission/pagingQuery.koala" />
+	<urlAccessResource name="权限管理-获取详情" url="/auth/permission/findInfoOfPermission.koala" />
 	
 	<urlAccessResource name="菜单管理-所有" url="/auth/menu/**" />
 	<urlAccessResource name="菜单管理-添加" url="/auth/menu/add.koala" />
@@ -69,6 +70,7 @@
 	<urlAccessResource name="菜单管理-撤销权限" url="/auth/menu/terminatePermissionsFromMenuResource.koala" />
 	<urlAccessResource name="菜单管理-查询已授权的权限" url="/auth/menu/pagingQueryGrantPermissionsByMenuResourceId.koala" />
 	<urlAccessResource name="菜单管理-查询未授权的权限" url="/auth/menu/pagingQueryNotGrantPermissionsByMenuResourceId.koala" />
+	<urlAccessResource name="菜单管理-查询某角色下所有菜单" url="/auth/menu/findAllMenusByUserAsRole.koala" />
 	
 	<urlAccessResource name="URL访问管理-所有" url="/auth/url/**" />
 	<urlAccessResource name="URL访问管理-添加" url="/auth/url/add.koala" />
