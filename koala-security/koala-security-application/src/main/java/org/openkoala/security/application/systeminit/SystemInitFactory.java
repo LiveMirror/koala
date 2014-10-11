@@ -1,7 +1,7 @@
 package org.openkoala.security.application.systeminit;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -25,8 +25,8 @@ public class SystemInitFactory {
 		return null;
 	}
 
-	private File getSystemInitXml() throws IOException {
+	private InputStream getSystemInitXml() throws IOException {
 		Resource resource = new ClassPathResource("/META-INF/systemInit/systemInit.xml", SystemInitFactory.class);
-		return resource.getFile();
+		return resource.getInputStream();
 	}
 }
