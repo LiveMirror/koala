@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@include file="/commons/taglibs.jsp"%>
 
 <form id="employeeSearchForm" target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
@@ -55,10 +55,10 @@ $(function(){
          }
      ];
      var buttons = [
-         {content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>&nbsp;雇佣</button>', action: 'add'},
-         {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"></span>&nbsp;修改基本信息</button>', action: 'modify'},
-         {content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"></span>&nbsp;解雇</button>', action: 'delete'},
-         {content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索<span class="caret"></span></button>', action: 'search'}
+         {content: '<ks:hasSecurityResource identifier="employeeManagerCreate"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-plus"></span>&nbsp;雇佣</button></ks:hasSecurityResource>', action: 'add'},
+         {content: '<ks:hasSecurityResource identifier="employeeManagerUpdate"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-edit"></span>&nbsp;修改基本信息</button></ks:hasSecurityResource>', action: 'modify'},
+         {content: '<ks:hasSecurityResource identifier="employeeManagerDelete"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"></span>&nbsp;解雇</button></ks:hasSecurityResource>', action: 'delete'},
+         {content: '<ks:hasSecurityResource identifier="employeeManagerQuery"><<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索<span class="caret"></span></button></ks:hasSecurityResource>', action: 'search'}
          ];
      $('#employeegrid').grid({
           identity: 'id',
