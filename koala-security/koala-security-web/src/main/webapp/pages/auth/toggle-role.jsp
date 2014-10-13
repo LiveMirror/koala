@@ -3,13 +3,13 @@
 <div class="modal fade select-role">
 	<style>
 		.select-role .modal-body {
-			height: 420px;
+			height: 350px;
 		}
 		.select-role .grid-table-body {
 			height: 250px;
 		}
 		.select-role .modal-dialog {
-			width: 850px;
+			width: 700px;
 		}
 	</style>
 	<div class="modal-dialog">

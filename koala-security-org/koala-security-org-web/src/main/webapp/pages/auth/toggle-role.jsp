@@ -2,15 +2,15 @@
 
 <div class="modal fade select-role">
 	<style>
-		.select-role .modal-body {
-			height: 420px;
-		}
-		.select-role .grid-table-body {
-			height: 250px;
-		}
-		.select-role .modal-dialog {
-			width: 850px;
-		}
+        .select-role .modal-body {
+        height: 350px;
+        }
+        .select-role .grid-table-body {
+        height: 250px;
+        }
+        .select-role .modal-dialog {
+        width: 700px;
+        }
 	</style>
 	<div class="modal-dialog">
 		<div class="modal-content">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <systemInit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/systemInit systemInit.xsd">
 
-	<user name="超级管理员" username="admin" description="系统超级管理员" createOwner="system" />
+	<user name="考拉" username="koala" description="" createOwner="system" />
 	<role name="超级管理员" description="拥有系统所有权限" />
 	<menuResource id="10" name="用户角色管理 " description="包含用户、角色管理等" menuIcon="glyphicon  glyphicon-list-alt" />
 	<menuResource id="20" pid="10" name="用户管理" url="/pages/auth/user-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
