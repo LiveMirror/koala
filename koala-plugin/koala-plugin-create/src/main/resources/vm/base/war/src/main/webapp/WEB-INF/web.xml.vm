@@ -13,16 +13,13 @@
     <listener>
         <listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
     </listener>
+#if ($Module.security)
 	<listener>
 		<listener-class>org.openkoala.security.listener.SecurityDBInitListener</listener-class>
 	</listener>
 	<listener>
 		<listener-class>org.openkoala.security.listener.SystemEvenmentListener</listener-class>
 	</listener>
-#if ($Module.securityOrg)
-	<listener>
-        <listener-class>org.openkoala.organisation.web.context.OrganisationListener</listener-class>
-    </listener>
 #end
 	#if ($Module.monitor)
 	<!-- monitor config begin-->

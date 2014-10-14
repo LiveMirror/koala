@@ -18,7 +18,7 @@
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/businesslog_action</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/java/${Module.basePackagePath}/controller/businesslog/
+		<property name="pathDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/java/${Module.basePackagePath}/businesslog/
 		</property>
 	</VelocityDirObject>
 
