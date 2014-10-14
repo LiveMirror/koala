@@ -108,13 +108,13 @@ public class PostController extends BaseController {
     /**
      * 同时撤销多个职务
      *
-     * @param postDTOs
+     * @param postDtos
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/terminate-posts", method = RequestMethod.POST)
-    public InvokeResult terminatePosts(@RequestBody PostDTO[] postDTOs) {
-        return postFacade.terminatePosts(postDTOs);
+    public InvokeResult terminatePosts(@RequestBody PostDTO[] postDtos) {
+        return postFacade.terminatePosts(postDtos);
     }
     
 }

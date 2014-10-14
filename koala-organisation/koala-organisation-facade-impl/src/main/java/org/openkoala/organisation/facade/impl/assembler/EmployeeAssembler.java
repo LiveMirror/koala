@@ -13,6 +13,10 @@ import org.openkoala.organisation.facade.dto.EmployeeDTO;
 public class EmployeeAssembler {
 
 	public static Employee toEntity(EmployeeDTO employeeDTO) {
+        if (employeeDTO == null ){
+            return null;
+        }
+
 		Person person = new Person(employeeDTO.getName());
 		person.setId(employeeDTO.getPersonId());
 		person.setVersion(employeeDTO.getPersonVersion());

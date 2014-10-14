@@ -1,6 +1,7 @@
 package org.openkoala.organisation.application.impl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -17,7 +18,7 @@ public class PostApplicationImpl implements PostApplication {
 	@Override
 	public Set<Post> findPostsByOrganizationId(Long organizationId) {
 		Organization organization = Organization.get(Organization.class, organizationId);
-		return organization.getPosts(new Date());
+		return organization != null ? organization.getPosts(new Date()) : new HashSet<Post>();
 	}
 
 }

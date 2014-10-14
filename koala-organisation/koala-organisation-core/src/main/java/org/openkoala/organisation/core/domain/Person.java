@@ -75,8 +75,7 @@ public class Person extends OrganizationAbstractEntity {
 	}
 
 	public static boolean isExistIdNumber(String sn, Date date) {
-		List<Person> parties = getRepository().createCriteriaQuery(Person.class).eq("idNumber", sn).list();
-		return parties.isEmpty() ? false : true;
+		return !getRepository().createCriteriaQuery(Person.class).eq("idNumber", sn).list().isEmpty();
 	}
 
 	public String getName() {

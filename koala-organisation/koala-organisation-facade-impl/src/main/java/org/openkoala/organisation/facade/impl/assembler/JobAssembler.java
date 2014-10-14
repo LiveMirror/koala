@@ -6,6 +6,10 @@ import org.openkoala.organisation.facade.dto.JobDTO;
 public class JobAssembler {
 
 	public static JobDTO toDTO(Job job) {
+        if (job == null ) {
+            return null;
+        }
+
 		JobDTO dto = new JobDTO(job.getId(), job.getName(), job.getSn());
 		dto.setCreateDate(job.getCreateDate());
 		dto.setDescription(job.getDescription());
@@ -14,6 +18,10 @@ public class JobAssembler {
 	}
 
 	public static Job toEntity(JobDTO jobDTO) {
+        if (jobDTO == null) {
+            return null;
+        }
+
 		Job result = new Job(jobDTO.getName(), jobDTO.getSn());
 		result.setId(jobDTO.getId());
 		result.setDescription(jobDTO.getDescription());

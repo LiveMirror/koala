@@ -12,6 +12,10 @@ import org.openkoala.organisation.facade.dto.OrganizationDTO;
 public class OrganizationAssembler {
 
 	public static OrganizationDTO toDTO(Organization organization) {
+        if (organization == null) {
+            return null;
+        }
+
 		OrganizationDTO dto = new OrganizationDTO(organization.getId(), organization.getName());
 		dto.setSn(organization.getSn());
 		dto.setCreateDate(organization.getCreateDate());
@@ -39,6 +43,10 @@ public class OrganizationAssembler {
 	}
 
 	public static Organization toEntity(OrganizationDTO organizationDTO) {
+        if (organizationDTO == null) {
+            return null;
+        }
+
 		Organization result = null;
 		if (organizationDTO.getOrganizationType().equals(OrganizationDTO.COMPANY)) {
 			result = new Company(organizationDTO.getName(), organizationDTO.getSn());

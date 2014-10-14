@@ -59,9 +59,7 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 	@Override
 	public OrganizationDTO getOrganizationOfEmployee(Long employeeId, Date date) {
 		Employee employee = baseApplication.getEntity(Employee.class, employeeId);
-		if (employee == null)
-			return null;
-		return OrganizationAssembler.toDTO(employee.getOrganization(date));
+		return employee != null ? OrganizationAssembler.toDTO(employee.getOrganization(date)) : null;
 	}
 
 	@Override
@@ -118,10 +116,10 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 				+ " (select p from Post p where p.organization in ?1 and p.createDate <= ?2 and p.terminateDate > ?3)" + " and _holding.fromDate <= ?4 and _holding.toDate > ?5");
 		Date now = new Date();
 
-		Organization organizaton = baseApplication.getEntity(Organization.class, orgId);
+		Organization organization = baseApplication.getEntity(Organization.class, orgId);
 		List<Organization> organizations = new ArrayList<Organization>();
-		organizations.add(organizaton);
-		organizations.addAll(organizaton.getAllChildren(now));
+		organizations.add(organization);
+		organizations.addAll(organization.getAllChildren(now));
 
 		conditionVals.add(organizations);
 		conditionVals.add(now);
@@ -159,33 +157,39 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 		String andCondition = " and " + conditionPrefix;
 		int initialConditionIndex = conditionVals.size();
 		if (!StringUtils.isBlank(example.getName())) {
-			jpql.append(andCondition);
-			jpql.append(".name like ?" + ++initialConditionIndex);
+			jpql.append(andCondition)
+                .append(".name like ?")
+                .append(++initialConditionIndex);
 			conditionVals.add(MessageFormat.format("%{0}%", example.getName()));
 		}
 		if (!StringUtils.isBlank(example.getSn())) {
-			jpql.append(andCondition);
-			jpql.append(".sn like ?" + ++initialConditionIndex);
+			jpql.append(andCondition)
+                .append(".sn like ?")
+                .append(++initialConditionIndex);
 			conditionVals.add(MessageFormat.format("%{0}%", example.getSn()));
 		}
 		if (!StringUtils.isBlank(example.getIdNumber())) {
-			jpql.append(andCondition);
-			jpql.append(".person.idNumber like ?" + ++initialConditionIndex);
+			jpql.append(andCondition)
+			    .append(".person.idNumber like ?")
+                .append(+ ++initialConditionIndex);
 			conditionVals.add(MessageFormat.format("%{0}%", example.getSn()));
 		}
 		if (!StringUtils.isBlank(example.getEmail())) {
-			jpql.append(andCondition);
-			jpql.append(".person.email like ?" + ++initialConditionIndex);
+			jpql.append(andCondition)
+			    .append(".person.email like ?")
+                .append(++initialConditionIndex);
 			conditionVals.add(MessageFormat.format("%{0}%", example.getEmail()));
 		}
 		if (!StringUtils.isBlank(example.getMobilePhone())) {
-			jpql.append(andCondition);
-			jpql.append(".person.mobilePhone like ?" + ++initialConditionIndex);
+			jpql.append(andCondition)
+			    .append(".person.mobilePhone like ?")
+                .append(++initialConditionIndex);
 			conditionVals.add(MessageFormat.format("%{0}%", example.getMobilePhone()));
 		}
 		if (!StringUtils.isBlank(example.getFamilyPhone())) {
-			jpql.append(andCondition);
-			jpql.append(".person.familyPhone like ?" + ++initialConditionIndex);
+			jpql.append(andCondition)
+			    .append(".person.familyPhone like ?")
+                .append(++initialConditionIndex);
 			conditionVals.add(MessageFormat.format("%{0}%", example.getFamilyPhone()));
 		}
 	}
@@ -193,9 +197,6 @@ public class EmployeeFacadeImpl implements EmployeeFacade {
 	private List<EmployeeDTO> transformToDtos(List<Employee> employees) {
 		List<EmployeeDTO> results = new ArrayList<EmployeeDTO>();
 		for (Employee employee : employees) {
-			if (results.contains(employee)) {
-				continue;
-			}
 			results.add(EmployeeAssembler.toDTO(employee));
 		}
 		return results;

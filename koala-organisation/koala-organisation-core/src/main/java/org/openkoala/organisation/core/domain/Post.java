@@ -27,7 +27,8 @@ import org.openkoala.organisation.core.TerminateHasEmployeePostException;
 @DiscriminatorValue("POST")
 @NamedQueries({ 
 	@NamedQuery(name = "findByOrganization", query = "select o from Post o where o.organization = :organization and o.createDate <= :date and o.terminateDate > :date"),
-	@NamedQuery(name = "findByJob", query = "select o from Post o where o.job = :job and o.createDate <= :date and o.terminateDate > :date")
+	@NamedQuery(name = "findByJob", query = "select o from Post o where o.job = :job and o.createDate <= :date and o.terminateDate > :date"),
+    @NamedQuery(name = "findCountOfOrganization", query = "SELECT COUNT(p) FROM Post p WHERE p.organization.id = :organizationId AND p.organizationPrincipal = true AND p.createDate <= :queryDate AND p.terminateDate > :queryDate")
 })
 public class Post extends Party {
 
@@ -109,8 +110,10 @@ public class Post extends Party {
 	 * @return
 	 */
 	public static boolean hasPrincipalPostOfOrganization(Organization organization, Date date) {
-		String jpql = "SELECT COUNT(*) FROM Post p WHERE p.organization.id = :organizationId AND p.organizationPrincipal = true " + "AND p.createDate <= :queryDate AND p.terminateDate > :queryDate";
-		Long count = getRepository().createJpqlQuery(jpql).addParameter("organizationId", organization.getId()).addParameter("queryDate", date).singleResult();
+		Long count = getRepository()
+                .createNamedQuery("findCountOfOrganization")
+                .addParameter("organizationId", organization.getId())
+                .addParameter("queryDate", date).singleResult();
 		return count > 0;
 	}
 
@@ -147,7 +150,6 @@ public class Post extends Party {
 		if (getId() != null) {
 			query.notEq("id", getId());
 		}
-
 		return query.singleResult() != null;
 	}
 

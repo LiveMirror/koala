@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrganizationApplicationImpl implements OrganizationApplication {
 
 	public boolean isTopOrganizationExists() {
-		return !(Organization.getTopOrganization() == null);
+		return Organization.getTopOrganization() != null;
 	}
 
 	@Override
@@ -43,8 +43,7 @@ public class OrganizationApplicationImpl implements OrganizationApplication {
 
 	@Override
 	public void assignChildOrganization(Organization parent, Organization child, Date date) {
-		OrganizationLineManagement organizationLineManagement = new OrganizationLineManagement(parent, child, date);
-		organizationLineManagement.save();
+        new OrganizationLineManagement(parent, child, date).save();
 	}
 
 	public Organization getParentOfOrganization(Organization organization, Date date) {

@@ -82,18 +82,18 @@ public class PostFacadeImpl implements PostFacade {
 	private void assembleJpqlAndConditionValues(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals) {
 		String andCondition = " and " + conditionPrefix;
 		if (!StringUtils.isBlank(example.getName())) {
-			jpql.append(andCondition);
-			jpql.append(".name like ?");
+			jpql.append(andCondition)
+			    .append(".name like ?");
 			conditionVals.add(MessageFormat.format("%{0}%", example.getName()));
 		}
 		if (!StringUtils.isBlank(example.getSn())) {
-			jpql.append(andCondition);
-			jpql.append(".sn like ?");
+			jpql.append(andCondition)
+			    .append(".sn like ?");
 			conditionVals.add(MessageFormat.format("%{0}%", example.getSn()));
 		}
 		if (!StringUtils.isBlank(example.getDescription())) {
-			jpql.append(andCondition);
-			jpql.append(".description like ?");
+			jpql.append(andCondition)
+			    .append(".description like ?");
 			conditionVals.add(MessageFormat.format("%{0}%", example.getDescription()));
 		}
 	}
@@ -108,8 +108,7 @@ public class PostFacadeImpl implements PostFacade {
 
 	@Override
 	public PostDTO getPostById(Long id) {
-		Post post = baseApplication.getEntity(Post.class, id);
-		return post == null ? null : PostAssembler.toDTO(post);
+		return PostAssembler.toDTO(baseApplication.getEntity(Post.class, id));
 	}
 
 	@Override

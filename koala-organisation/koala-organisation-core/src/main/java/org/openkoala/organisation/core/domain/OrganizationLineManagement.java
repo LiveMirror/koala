@@ -86,10 +86,7 @@ public class OrganizationLineManagement extends Accountability<Organization, Org
 	public static Organization getTopOrganization(Date queryDate) {
 		OrganizationLineManagement organizationLineManagement = getRepository().createCriteriaQuery(OrganizationLineManagement.class).isNull("commissioner").gt("toDate", queryDate)
 				.le("fromDate", queryDate).singleResult();
-		if (organizationLineManagement == null) {
-			return null;
-		}
-		return organizationLineManagement.getResponsible();
+		return organizationLineManagement == null ? null : organizationLineManagement.getResponsible();
 	}
 
 	@Override

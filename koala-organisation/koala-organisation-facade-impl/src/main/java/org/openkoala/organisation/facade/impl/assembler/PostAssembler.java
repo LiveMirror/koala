@@ -10,6 +10,10 @@ import org.openkoala.organisation.facade.dto.PostDTO;
 public class PostAssembler {
 
 	public static Post toEntity(PostDTO postDTO) {
+        if (postDTO == null ){
+            return null;
+        }
+
 		Post result = new Post(postDTO.getName());
 		result.setId(postDTO.getId());
 

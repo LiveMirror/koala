@@ -78,8 +78,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 
 	@Override
 	public OrganizationDTO getParentOfOrganization(OrganizationDTO organizationDTO, Date date) {
-		Organization organization = organizationApplication.getParentOfOrganization(OrganizationAssembler.toEntity(organizationDTO), date);
-		return organization == null ? null : OrganizationAssembler.toDTO(organization);
+		return OrganizationAssembler.toDTO(organizationApplication.getParentOfOrganization(OrganizationAssembler.toEntity(organizationDTO), date));
 	}
 
 	@Override
@@ -152,8 +151,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 
 	@Override
 	public OrganizationDTO getOrganizationById(Long id) {
-		Organization organization = baseApplication.getEntity(Organization.class, id);
-		return organization == null ? null : OrganizationAssembler.toDTO(organization);
+		return OrganizationAssembler.toDTO(baseApplication.getEntity(Organization.class, id));
 	}
 
 	@Override
