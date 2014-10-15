@@ -27,8 +27,13 @@
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
-		<property name="vmDir">vm/other/example_source_code/web</property>
+		<property name="vmDir">vm/other/example_source_code/web/controller</property>
 		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/example_source_code/web/src/main/webapp/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/src/main/webapp/</property>
 	</VelocityDirObject>
 	
 	<!-- <XmlAdd>

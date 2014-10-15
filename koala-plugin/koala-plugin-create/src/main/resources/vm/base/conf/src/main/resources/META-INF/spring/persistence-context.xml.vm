@@ -25,10 +25,14 @@
 		<property name="persistenceUnitName" value="default" /> 
 		<property name="packagesToScan">
 			<list>
+			#if($Project.example)
 				<value>org.openkoala.example.domain</value>
+			#end
+			#if($Module.securityOrg)
 				<value>org.openkoala.security.core.domain</value>
 				<value>org.openkoala.organisation.domain</value>
 				<value>org.openkoala.security.org.core.domain</value>
+			#end
 				#foreach( $pkg in $Project.scanPackages) 
 				<value>${pkg}</value>
                 #end
