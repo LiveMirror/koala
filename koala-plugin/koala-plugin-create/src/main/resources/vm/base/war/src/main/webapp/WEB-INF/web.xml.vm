@@ -13,7 +13,7 @@
     <listener>
         <listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
     </listener>
-#if ($Module.security)
+#if ($Module.security|| $Module.securityOrg)
 	<listener>
 		<listener-class>org.openkoala.security.listener.SecurityDBInitListener</listener-class>
 	</listener>
@@ -21,6 +21,13 @@
 		<listener-class>org.openkoala.security.listener.SystemEvenmentListener</listener-class>
 	</listener>
 #end
+<!--组织子系统的listener-->
+#if ($Module.organization || $Module.securityOrg)
+	<listener>
+		<listener-class>org.openkoala.organisation.web.context.OrganisationListener</listener-class>
+	</listener>
+#end
+
 	#if ($Module.monitor)
 	<!-- monitor config begin-->
      <listener>
@@ -102,15 +109,6 @@
 	</servlet-mapping>
 	
    #end
-
-	
-	<!--组织子系统的listener-->
-#if ($Module.organization || $Module.securityOrg)
-	<listener>
-		<listener-class>org.openkoala.organisation.web.context.OrganisationListener</listener-class>
-	</listener>
-#end
-
 	<session-config>
 		<session-timeout>120</session-timeout>
 	</session-config>

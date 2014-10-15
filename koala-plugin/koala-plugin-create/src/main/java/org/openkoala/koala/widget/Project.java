@@ -230,7 +230,7 @@ public class Project implements Serializable {
 		// 初始化一个门面层的实现
 				Module  facadeImpl= new Module();
 				facadeImpl.setModuleType("facadeImpl");
-				facadeImpl.setModuleName("facadeImpl");
+				facadeImpl.setModuleName("facade-impl");
 				facadeImpl.setProjectName(appName);
 				facadeImpl.setBasePackage(getGroupId() + "."
 						+ getPackageName() + ".facade.impl");

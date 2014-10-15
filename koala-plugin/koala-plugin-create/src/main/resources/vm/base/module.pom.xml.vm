@@ -366,6 +366,12 @@
 	<artifactId>${Project.appName}-infra</artifactId>
 	<version>$Project.version</version>
   </dependency>
+   <dependency> 
+            <groupId>$Project.groupId</groupId>  
+            <artifactId>${Project.appName}-facade-impl</artifactId>  
+            <version>$Project.version</version> 
+            <scope>runtime</scope>
+        </dependency>  
    <dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>

@@ -31,11 +31,6 @@
          <![CDATA[
     <?xml version="1.0" encoding="UTF-8"?>
     <root>
-    	<dependency>
-			<groupId>org.openkoala.businesslog</groupId>
-			<artifactId>koala-businesslog-api</artifactId>
-			<version>${koala.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.openkoala.businesslog</groupId>
 			<artifactId>koala-businesslog-impl</artifactId>
@@ -45,7 +40,24 @@
          ]]>
 		</property>
 	</XmlAdd>
-
+<XmlAdd>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.appName}-application/pom.xml</property>
+		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
+		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
+		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='org.openkoala.businesslog' and xmlns:artifactId='koala-businesslog-api']]]></property>
+		<property name="xmlContent">
+         <![CDATA[
+    <?xml version="1.0" encoding="UTF-8"?>
+    <root>
+    	<dependency>
+			<groupId>org.openkoala.businesslog</groupId>
+			<artifactId>koala-businesslog-api</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+	</root>
+         ]]>
+		</property>
+	</XmlAdd>
 	
 	<XmlAdd>
 	    <property name="express">$Project.dbProtocol=='JPA'</property>
