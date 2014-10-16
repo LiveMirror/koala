@@ -7,9 +7,10 @@ package ${facadeImplClass.packageName};
 #set($joinClause = "")
 #set($assembler = ${domainClass.concat("Assembler")})
 
-
+import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
 import java.text.MessageFormat;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
+import org.openkoala.koala.commons.InvokeResult;
 import ${dtoClass.packageName}.*;
 import ${facadeImplClass.packageName}.assembler.${entity.name}Assembler;
 import ${dtoClass.packageName.replaceAll("dto","")}${facadeImplClass.name.replaceAll("Impl","")};
@@ -42,40 +44,37 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
     }
 	
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ${currntVO} get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
-		${domainClass} $variableName =application.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name});
-		return ${assembler}.EntityToDto($variableName);
+	public InvokeResult get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
+		return InvokeResult.success(${assembler}.toDTO(application.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name})));
 	}
 	
-	public ${currntVO} save${domainClass}(${currntVO} ${currntVOVariable}) {
-		${domainClass} ${variableName} = new ${domainClass}();
-        ${variableName}=${assembler}.DtoToEntity(${currntVOVariable});
-		application.save${domainClass}(${variableName} );
-		${currntVOVariable}.set${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}((${dtoClass.entityModel.singleIDFieldModel.type}) ${variableName}.get${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}());
-		return ${currntVOVariable};
+	public InvokeResult save${domainClass}(${currntVO} ${currntVOVariable}) {
+		application.save${domainClass}(${assembler}.toEntity(${currntVOVariable}));
+		return InvokeResult.success();
 	}
 	
-	public void update${domainClass}(${currntVO} ${currntVOVariable}) {
-		${domainClass} ${variableName} = ${domainClass}.get(${domainClass}.class, ${currntVOVariable}.get${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}());
-		application.update${domainClass}(${assembler}.DtoToEntity(${currntVOVariable}));
+	public InvokeResult update${domainClass}(${currntVO} ${currntVOVariable}) {
+		application.update${domainClass}(${assembler}.toEntity(${currntVOVariable}));
+		return InvokeResult.success();
 	}
 	
-	public void remove${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
-			application.remove${domainClass}( ${dtoClass.entityModel.singleIDFieldModel.name} );
+	public InvokeResult remove${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
+		application.remove${domainClass}(application.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name}));
+		return InvokeResult.success();
 	}
 	
-	public void remove${domainClass}s(${dtoClass.entityModel.singleIDFieldModel.simpleType}[] ${dtoClass.entityModel.singleIDFieldModel.name}s) {
-		application.remove${domainClass}s( ${dtoClass.entityModel.singleIDFieldModel.name}s) ;
+	public InvokeResult remove${domainClass}s(${dtoClass.entityModel.singleIDFieldModel.simpleType}[] ${dtoClass.entityModel.singleIDFieldModel.name}s) {
+		Set<${domainClass}> ${variableName}s= new HashSet<${domainClass}>();
+		for (Long ${dtoClass.entityModel.singleIDFieldModel.name} : ${dtoClass.entityModel.singleIDFieldModel.name}s) {
+			${variableName}s.add(application.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name}));
+		}
+		application.remove${domainClass}s(${variableName}s);
+		return InvokeResult.success();
 	}
 	
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<${currntVO}> findAll${domainClass}() {
-		List<${currntVO}> list = new ArrayList<${currntVO}>();
-		List<${domainClass}> all = ${domainClass}.findAll(${domainClass}.class);
-		for (${domainClass} ${variableName} : all) {
-			list.add(${assembler}.EntityToDto( ${variableName}));
-		}
-		return list;
+		return ${assembler}.toDTOs(application.findAll${domainClass}());
 	}
 	
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -121,8 +120,12 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 	   	}	
 #end	
 #end
-        Page<${domainClass}> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
-        for (${domainClass} ${variableName} : pages.getData()) {
+        Page<${domainClass}> pages = getQueryChannelService()
+		   .createJpqlQuery(jpql.toString())
+		   .setParameters(conditionVals)
+		   .setPage(currentPage, pageSize)
+		   .pagedList();
+       /** for (${domainClass} ${variableName} : pages.getData()) {
            // 将domain转成VO 
                   
          ${currntVO} ${currntVOVariable} = ${assembler}.EntityToDto(${variableName});       
@@ -136,8 +139,9 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
          #end
        #end
         result.add(${currntVOVariable});
-        }
-        return new Page<${currntVO}>(pages.getStart(), pages.getResultCount(), pageSize, result);
+        }**/
+        return new Page<${currntVO}>(pages.getStart(), pages.getResultCount(),
+         pageSize, ${assembler}.toDTOs(pages.getData()));
 	}
 	
 #foreach(${relation} in ${facadeClass.relations})

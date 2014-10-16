@@ -6,19 +6,20 @@ package ${applicationClass.packageName.replaceAll(".impl","")};
 
 
 import java.util.List;
+import java.util.Set;
 import  ${entity.className};
 
 public interface ${applicationClass.name} {
 
 	public ${domainClass} get${domainClass}($applicationClass.entityModel.singleIDFieldModel.simpleType ${applicationClass.entityModel.singleIDFieldModel.name});
 	
-	public ${domainClass} save${domainClass}(${domainClass} ${variableName});
+	public void save${domainClass}(${domainClass} ${variableName});
 	
 	public void update${domainClass}(${domainClass} ${variableName});
 	
-	public void remove${domainClass}(${applicationClass.entityModel.singleIDFieldModel.simpleType} ${applicationClass.entityModel.singleIDFieldModel.name});
+	public void remove${domainClass}(${domainClass} ${variableName});
 	
-	public void remove${domainClass}s(${applicationClass.entityModel.singleIDFieldModel.simpleType}[] ${applicationClass.entityModel.singleIDFieldModel.name}s);
+	public void remove${domainClass}s(Set<${domainClass}> ${variableName}s);
 	
 	public List<${domainClass}> findAll${domainClass}();
 	

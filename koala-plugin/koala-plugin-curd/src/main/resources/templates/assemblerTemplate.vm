@@ -1,12 +1,18 @@
 #set($package = ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})})
 package ${facadeImplClass.packageName}.assembler;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import ${dtoClass.packageName}.*;
 import ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})}.*;
 
 public class ${entity.name}Assembler {
 	
-public static ${dtoClass.name}  EntityToDto(${entity.name}  ${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}){
+	public static ${dtoClass.name}  toDTO(${entity.name}  ${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}){
+		if (${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)} == null) {
+			return null;
+		}
     	${dtoClass.name} result  = new ${dtoClass.name}();
 #foreach($field in  ${entity.fields} )
 #set($propertyName = ${field.name.substring(0, 1).toUpperCase()} + ${field.name.substring(1)})
@@ -15,7 +21,21 @@ public static ${dtoClass.name}  EntityToDto(${entity.name}  ${entity.name.substr
 	    return result;
 	 }
 	
-	 public static ${entity.name}  DtoToEntity(${dtoClass.name}  ${dtoClass.name.substring(0, 1).toLowerCase()}${dtoClass.name.substring(1)}){
+	public static List<${dtoClass.name}>  toDTOs(Collection<${entity.name}>  ${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}s){
+		if (${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}s == null) {
+			return null;
+		}
+		List<${dtoClass.name}> results = new ArrayList<${dtoClass.name}>();
+		for (${entity.name} each : ${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}s) {
+			results.add(toDTO(each));
+		}
+		return results;
+	}
+	
+	 public static ${entity.name}  toEntity(${dtoClass.name}  ${dtoClass.name.substring(0, 1).toLowerCase()}${dtoClass.name.substring(1)}){
+	 	if (${dtoClass.name.substring(0, 1).toLowerCase()}${dtoClass.name.substring(1)} == null) {
+			return null;
+		}
 	 	${entity.name} result  = new ${entity.name}();
 #foreach($field in  ${entity.fields} )
 #set($propertyName = ${field.name.substring(0, 1).toUpperCase()} + ${field.name.substring(1)})
@@ -23,5 +43,16 @@ public static ${dtoClass.name}  EntityToDto(${entity.name}  ${entity.name.substr
  #end
 	  	return result;
 	 }
-
+	
+	public static List<${entity.name}> toEntities(Collection<${dtoClass.name}> ${dtoClass.name.substring(0, 1).toLowerCase()}${dtoClass.name.substring(1)}s) {
+		if (${dtoClass.name.substring(0, 1).toLowerCase()}${dtoClass.name.substring(1)}s == null) {
+			return null;
+		}
+		
+		List<${entity.name}> results = new ArrayList<${entity.name}>();
+		for (${dtoClass.name} each : ${dtoClass.name.substring(0, 1).toLowerCase()}${dtoClass.name.substring(1)}s) {
+			results.add(toEntity(each));
+		}
+		return results;
+	}
 }

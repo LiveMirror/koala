@@ -1,4 +1,5 @@
-pointcut=execution(* org.openkoala.organisation.application.impl.*.*(..))
+pointcut=execution(* ${Project.groupId}.${Project.packageName}.application.impl.*.*(..)) || execution(* ${Project.groupId}.${Project.packageName}.facade.impl.*.*(..))
+
 
 #日志开关
 kaola.businesslog.enable=true

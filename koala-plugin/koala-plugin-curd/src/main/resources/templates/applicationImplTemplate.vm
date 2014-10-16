@@ -7,13 +7,10 @@ package ${applicationClass.packageName};
 #set($joinClause = "")
 
 import java.util.List;
-import java.util.ArrayList;
-import java.text.MessageFormat;
-import javax.inject.Inject;
+import java.util.Set;
 import javax.inject.Named;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
-import org.dayatang.domain.InstanceFactory;
 import ${applicationClass.packageName.replaceAll("impl","")}${applicationClass.name.replaceAll("Impl","")};
 import ${entity.className};
 
@@ -22,27 +19,25 @@ public class ${applicationClass.name} implements ${applicationClass.name.replace
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ${domainClass} get${domainClass}(${applicationClass.entityModel.singleIDFieldModel.simpleType} ${applicationClass.entityModel.singleIDFieldModel.name}) {
-		${domainClass} $variableName = ${domainClass}.load(${domainClass}.class, ${applicationClass.entityModel.singleIDFieldModel.name});
-		
-		return ${variableName};
+		return ${domainClass}.get(${domainClass}.class, ${applicationClass.entityModel.singleIDFieldModel.name});
 	}
 	
-	public ${domainClass} save${domainClass}(${domainClass} ${variableName}) {
+	public void save${domainClass}(${domainClass} ${variableName}) {
 		${variableName}.save();
-		return ${variableName};
 	}
 	
 	public void update${domainClass}(${domainClass} ${variableName}) {
 		${variableName} .save();
 	}
 	
-	public void remove${domainClass}(${applicationClass.entityModel.singleIDFieldModel.simpleType}  ${applicationClass.entityModel.singleIDFieldModel.name}) {
-		this.remove${domainClass}s(new ${applicationClass.entityModel.singleIDFieldModel.simpleType}[] { ${applicationClass.entityModel.singleIDFieldModel.name} });
+	public void remove${domainClass}(${domainClass} ${variableName}) {
+		if(${variableName} != null){
+			${variableName}.remove();
+		}
 	}
 	
-	public void remove${domainClass}s(${applicationClass.entityModel.singleIDFieldModel.simpleType}[] ${applicationClass.entityModel.singleIDFieldModel.name}s) {
-		for (int i = 0; i < ${applicationClass.entityModel.singleIDFieldModel.name}s.length; i++) {
-			${domainClass} ${variableName} = ${domainClass}.load(${domainClass}.class, ${applicationClass.entityModel.singleIDFieldModel.name}s[i]);
+	public void remove${domainClass}s(Set<${domainClass}> ${variableName}s) {
+		for (${domainClass} ${variableName} : ${variableName}s) {
 			${variableName}.remove();
 		}
 	}
