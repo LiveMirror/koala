@@ -41,17 +41,15 @@
 	$(function() {
 		var baseUrl = contextPath + '/auth/url/';
 		function initEditDialog(data, item, grid) {
-			dialog = $(data);
-			dialog.find('.modal-header').find('.modal-title').html( item ? '修改URL访问资源信息' : '添加URL访问资源');
-			
-			var form = dialog.find("#url_form");
-			validate(form, dialog, item);
-			if(item){
-				/*TODO*/l
-				form.find("input[name='name']").val(item.name);
-				form.find("input[name='url']").val(item.url);
-				form.find("input[name='description']").val(item.description);
-			}
+            dialog = $(data);
+            var form = dialog.find("#url_form");
+            validate(form, dialog, item);
+            if(item){
+                dialog.find('.modal-header').find('.modal-title').html('修改URL访问资源信息');
+                form.find("input[name='name']").val(item.name);
+                form.find("input[name='url']").val(item.url).attr('disabled', 'disabled');
+                form.find("input[name='description']").val(item.description);
+            }
 			
 			dialog.modal({
 				keyboard : false
