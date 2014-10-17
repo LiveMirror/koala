@@ -11,21 +11,21 @@
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
 				<form class="form-horizontal" id="url_form">
 					<div class="form-group">
-						<label class="col-lg-3 control-label">Url路径名称:</label>
+						<label class="col-lg-3 control-label">URL名称:</label>
 						<div class="col-lg-9">
 							<input type="text" class="form-control" name="name">
 							<span class="required">*</span>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-3 control-label">Url路径链接:</label>
+						<label class="col-lg-3 control-label">URL路径:</label>
 						<div class="col-lg-9">
 							<input type="text" class="form-control" name="url">
 							<span class="required">*</span>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-3 control-label">Url路径描述:</label>
+						<label class="col-lg-3 control-label">URL描述:</label>
 						<div class="col-lg-9">
 							<input type="text" class="form-control" name="description">
 						</div>
