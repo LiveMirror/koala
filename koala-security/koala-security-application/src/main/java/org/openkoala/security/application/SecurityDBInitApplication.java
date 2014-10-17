@@ -5,59 +5,58 @@ import org.openkoala.security.core.domain.*;
 import java.util.List;
 
 /**
- * 权限数据初始化应用层
- * 
- * @author luzhao
- * 
+ * 权限功能初始化，它能够让系统可以正常使用。
+ *
+ * @author lucas
  */
 public interface SecurityDBInitApplication {
 
-	/**
-	 * 初始化用户
-	 * 
-	 * @return
-	 */
-	User initUser();
+    /**
+     * 初始化用户
+     *
+     * @return 返回被初始化的用户
+     */
+    User initUser();
 
-	/**
-	 * 初始化角色
-	 * 
-	 * @return
-	 */
-	Role initRole();
+    /**
+     * 初始化角色
+     *
+     * @return 返回被初始化的角色
+     */
+    Role initRole();
 
-	/**
-	 * TODO 初始化权限
-	 * 
-	 * @return
-	 */
-	List<Permission> initPermissions();
+    /**
+     * 初始化权限
+     *
+     * @return 返回初始化权限的集合
+     */
+    List<Permission> initPermissions();
 
-	/**
-	 * 初始化菜单资源
-	 * 
-	 * @return
-	 */
-	List<MenuResource> initMenuResources();
+    /**
+     * 初始化菜单资源
+     *
+     * @return 返回初始化菜单资源的集合
+     */
+    List<MenuResource> initMenuResources();
 
-	/**
-	 * 初始化页面元素资源
-	 * 
-	 * @return
-	 */
-	List<PageElementResource> initPageElementResources();
+    /**
+     * 初始化页面元素资源
+     *
+     * @return 返回初始化页面元素资源的集合
+     */
+    List<PageElementResource> initPageElementResources();
 
-	/**
-	 * 初始化URL访问资源
-	 * 
-	 * @return
-	 */
-	List<UrlAccessResource> initUrlAccessResources();
+    /**
+     * 初始化URL访问资源
+     *
+     * @return 返回初始化URL访问资源的集合
+     */
+    List<UrlAccessResource> initUrlAccessResources();
 
-	/**
-	 * 创建参与者
-	 * 
-	 * @param actor
-	 */
-	void initActor(Actor actor);
+    /**
+     * 初始化参与者(即用户，用户组)。
+     *
+     * @param actor 返回初始化的参与者
+     */
+    void initActor(Actor actor);
 }

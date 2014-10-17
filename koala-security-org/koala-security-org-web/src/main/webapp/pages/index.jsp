@@ -210,7 +210,6 @@
                         }
                         $.post(contextPath + '/auth/currentUser/switchOverRoleOfUser.koala', "roleName=" + items[0].name,function(data){
                             if(data.success){
-                                // TODO 停留时间
                                 dialog.find('.selectRoleGrid').message({
                                     type:'success',
                                     content:'切换角色成功！'

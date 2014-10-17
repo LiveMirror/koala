@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openkoala.security.core.NullArgumentException;
@@ -34,8 +35,8 @@ public abstract class Actor extends SecurityAbstractEntity {
 	/**
 	 * 最后更新时间
 	 */
-    @Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "LAST_MODIFY_TIME")
+    @Temporal(TemporalType.DATE)
+    @Column(name = "LAST_MODIFY_TIME")
 	private Date lastModifyTime;
 
 	/**
@@ -47,7 +48,7 @@ public abstract class Actor extends SecurityAbstractEntity {
 	/**
 	 * 创建时间
 	 */
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
 	@Column(name = "CREATE_DATE")
 	private Date createDate = new Date();
 
@@ -135,7 +136,16 @@ public abstract class Actor extends SecurityAbstractEntity {
 
     public void changeLastModifyTime(){
         this.lastModifyTime = new Date();
-    };
+    }
+
+    public void terminateAuthorityInScope(Authority authority, Scope scope) {
+        Authorization authorization = Authorization.findByActorOfAuthorityInScope(this,authority,scope);
+        authorization.remove();
+    }
+
+    public static <T extends Actor> T  getActorBy(Long actorId) {
+        return (T)Actor.get(Actor.class,actorId);
+    }
 
 	protected static void checkArgumentIsNull(String nullMessage, String argument) {
 		if (StringUtils.isBlank(argument)) {
@@ -153,6 +163,8 @@ public abstract class Actor extends SecurityAbstractEntity {
 	public String[] businessKeys() {
 		return new String[] { "name" };
 	}
+
+    /*-------------- getter setter methods  ------------------*/
 
 	public String getName() {
 		return name;
@@ -185,10 +197,4 @@ public abstract class Actor extends SecurityAbstractEntity {
 	public Date getCreateDate() {
 		return createDate;
 	}
-
-    public void terminateAuthorityInScope(Authority authority, Scope scope) {
-        Authorization authorization = Authorization.findByActorOfAuthorityInScope(this,authority,scope);
-        authorization.remove();
-    }
-
 }

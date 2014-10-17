@@ -32,8 +32,8 @@ public abstract class Scope extends SecurityAbstractEntity {
         this.name = name;
     }
 
-    public static Scope getBy(Long scopeId) {
-		return Scope.get(Scope.class, scopeId);
+    public static <T extends Scope> T getBy(Long scopeId) {
+		return (T)Scope.get(Scope.class, scopeId);
 	}
 	
 	public boolean contains(Scope scope) {

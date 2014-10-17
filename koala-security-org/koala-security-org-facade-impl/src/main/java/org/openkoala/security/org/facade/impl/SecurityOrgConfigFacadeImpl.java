@@ -1,7 +1,9 @@
 package org.openkoala.security.org.facade.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -242,6 +244,16 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
     		results.add(pageElementResource);
     	}
     	SecurityResource.batchSave(results);
+
+//        // 删除授权权限。
+//        Iterator<PageElementResource> resultIterator = results.listIterator();
+//        while(resultIterator.hasNext()){
+//            PageElementResource result = resultIterator.next();
+//            if(result.getIdentifier().contains("GrantPermission")){
+//                resultIterator.remove();
+//            }
+//        }
+
         return results;
     }
 

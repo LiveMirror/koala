@@ -75,9 +75,6 @@ public class User extends Actor {
         this.password = userPassword;
     }
 
-    // ~ Methods
-    // ========================================================================================================
-
     public void disable() {
         disabled = true;
     }
@@ -102,8 +99,7 @@ public class User extends Actor {
 
     public void resetPassword() {
         User user = User.get(User.class, this.getId());
-        String userPassword = encryptPassword(INIT_PASSWORD);
-        user.password = userPassword;
+        user.password = encryptPassword(INIT_PASSWORD);
     }
 
     /**
@@ -139,6 +135,10 @@ public class User extends Actor {
         }
     }
 
+    /**
+     *  TODO 需要排序
+     * @return
+     */
     public Set<Role> findAllRoles() {
         List<Role> results = getRepository()//
                 .createNamedQuery("Authorization.findAuthoritiesByActor")//
@@ -148,6 +148,10 @@ public class User extends Actor {
         return Sets.newHashSet(results);
     }
 
+    /**
+     * TODO 需要排序
+     * @return
+     */
     public Set<Permission> findAllPermissions() {
         List<Permission> results = getRepository()//
                 .createNamedQuery("Authorization.findAuthoritiesByActor")//
@@ -319,16 +323,6 @@ public class User extends Actor {
         }
     }
 
-    /**
-     * 生成盐值
-     *
-     * @return
-     */
-    /*
-     * private String generateSalt() { SecureRandom random = new SecureRandom(); byte[] bytes = new byte[8];
-	 * random.nextBytes(bytes); try { return new String(bytes, "UTF-8"); } catch (UnsupportedEncodingException e) {
-	 * throw new RuntimeException(e); } }
-	 */
     @Override
     public String[] businessKeys() {
         return new String[]{"userAccount"};
@@ -336,12 +330,12 @@ public class User extends Actor {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)//
-                .append(getId())//
-                .append(userAccount)//
-                .append(email)//
-                .append(telePhone)//
-                .append(getName())//
+        return new ToStringBuilder(this)
+                .append(getId())
+                .append(getUserAccount())
+                .append(getEmail())
+                .append(getTelePhone())
+                .append(getName())
                 .build();
     }
 
@@ -368,6 +362,4 @@ public class User extends Actor {
     public String getSalt() {
         return salt;
     }
-
-
 }

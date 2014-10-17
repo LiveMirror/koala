@@ -42,12 +42,12 @@
 		var baseUrl = contextPath + '/auth/url/';
 		function initEditDialog(data, item, grid) {
 			dialog = $(data);
-			dialog.find('.modal-header').find('.modal-title').html( item ? '修改url信息' : '添加url');
+			dialog.find('.modal-header').find('.modal-title').html( item ? '修改URL访问资源信息' : '添加URL访问资源');
 			
 			var form = dialog.find("#url_form");
 			validate(form, dialog, item);
 			if(item){
-				/*TODO*/
+				/*TODO*/l
 				form.find("input[name='name']").val(item.name);
 				form.find("input[name='url']").val(item.url);
 				form.find("input[name='description']").val(item.description);
@@ -185,7 +185,7 @@
 					content : '<ks:hasSecurityResource identifier="roleManagerGrantUrlAccessResource"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"/>&nbsp;分配URL</button></ks:hasSecurityResource>',
 					action : 'assignUrl'
 				}, {
-					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove" />&nbsp;删除</button>',
+					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove" />&nbsp;撤销</button>',
 					action : 'removeUrlFromRole'
 				},{
                     content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search" />&nbsp;高级搜索&nbsp;<span class="caret" /></button>',
@@ -199,7 +199,7 @@
 					content : '<ks:hasSecurityResource identifier="urlAccessResourceManagerUpdate"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
 					action : 'modify'
 				}, {
-					content : '<ks:hasSecurityResource identifier="urlAccessResourceManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
+					content : '<ks:hasSecurityResource identifier="urlAccessResourceManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>撤销</button></ks:hasSecurityResource>',
 					action : 'delete'
 				},{
 					content: '<ks:hasSecurityResource identifier="urlAccessResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',

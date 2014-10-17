@@ -69,7 +69,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
     }
 
     public void grantActorToAuthority(Actor actor, Authority authority) {
-        actor.grant(authority, null);
+        actor.grant(authority);
     }
 
     public void grantActorToAuthorities(Actor actor, List<Authority> authorities) {

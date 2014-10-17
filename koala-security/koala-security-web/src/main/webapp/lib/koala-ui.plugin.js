@@ -777,10 +777,9 @@
 		 * 外部查询
 		 */
 		search : function(conditions) {
-			console.log(conditions);
-			for (var prop in conditions) {
-				this.searchCondition[prop] = conditions[prop];
-			}
+            for (var prop in conditions) {
+                this.searchCondition[prop] = conditions[prop];
+            }
 			this.pageNo = Grid.DEFAULTS.pageNo;
 			this._loadData();
 		},
@@ -1127,7 +1126,7 @@
 	+ '<div class="modal-content">' 
 	+ '<div class="modal-header">' 
 	+ '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' 
-	+ '<h4 class="modal-title">修改密码</h4>' 
+	+ '<h4 class="modal-title">更改密码</h4>'
 	+ '</div>' + '<div class="modal-body"> ' 
 	+ '<form class="form-horizontal" role="form">' 
 	+ '<div class="form-group">' 
