@@ -286,7 +286,7 @@
                                         data +="&organizationName=" + employeeOrgName;
                                     }
 
-                                    var url = contextPath+'auth/employeeUser/grantAuthorityToActorInScope.koala';
+                                    var url = contextPath+'/auth/employeeUser/grantAuthorityToActorInScope.koala';
 
                                     $.each(grantRolesToUserTableItems,function(index,grantRolesToUserTableItem){
                                         data += ("&authorityIds=" + grantRolesToUserTableItem.id + "&");
@@ -358,7 +358,7 @@
                                            if(employeeOrgNameValue == null){
                                                employeeOrgNameValue = employeeOrgName;
                                            }
-                                           return '<span id="selectemployeeOrgOfRole" onclick="selectemployeeOrg(event,\''+userId+'\',\''+item.id+'\');" style="cursor: pointer;">' + employeeOrgNameValue + '<span class="caret"></span></span>';
+                                           return '<span id="selectemployeeOrgOfRole" onclick="selectemployeeOrg(event,\''+userId+'\',\''+item.id+'\');" style="cursor: pointer;">' + employeeOrgNameValue +'&nbsp;&nbsp;&nbsp;'+ '<span class="glyphicon glyphicon-edit" style="color: green"></span></span>';
                                        }
                                     }];
 
@@ -527,7 +527,7 @@
                                             if(employeeOrgNameValue == null){
                                                 employeeOrgNameValue = employeeOrgName;
                                             }
-                                            return '<span style="cursor: pointer;" onclick="selectemployeeOrg(event,\''+userId+'\',\''+item.id+'\');">' + employeeOrgNameValue + '<span class="caret"></span></span>';
+                                            return '<span style="cursor: pointer;" onclick="selectemployeeOrg(event,\''+userId+'\',\''+item.id+'\');">' + employeeOrgNameValue +'&nbsp;&nbsp;&nbsp;'+ '<span class="glyphicon glyphicon-edit" style="color: green"></span></span>';
                                         }
                                     }];
 

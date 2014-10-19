@@ -1,5 +1,7 @@
-/**命令操作
- * @author luzhao
+/**
+ * 命令操作层。
+ *
+ * @author lucas
  *
  */
 package org.openkoala.security.facade.command;

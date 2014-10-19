@@ -2,6 +2,7 @@ package org.openkoala.security.application.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,9 +26,9 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 
     @Inject
     private SecurityConfigApplication securityConfigApplication;
-    
+
     private static SystemInit systemInit = SystemInitFactory.INSTANCE.getSystemInit();
-    
+
     @Override
     public User initUser() {
         User user = createUser();
@@ -49,23 +50,22 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 
     @Override
     public List<MenuResource> initMenuResources() {
-    	List<MenuResource> menuResources = new ArrayList<MenuResource>();
-    	for (SystemInit.MenuResource each : getParentMenuResources()) {
-    		MenuResource menuResource = transformMenuResourceEntity(each);
-    		securityConfigApplication.createSecurityResource(menuResource);
-    		menuResources.add(menuResource);
-    		createChildrenMenuResource(menuResource, each, menuResources);
-    	}
+        List<MenuResource> menuResources = new ArrayList<MenuResource>();
+        for (SystemInit.MenuResource each : getParentMenuResources()) {
+            MenuResource menuResource = transformMenuResourceEntity(each);
+            securityConfigApplication.createSecurityResource(menuResource);
+            menuResources.add(menuResource);
+            createChildrenMenuResource(menuResource, each, menuResources);
+        }
         return menuResources;
     }
 
     @Override
     public List<UrlAccessResource> initUrlAccessResources() {
-    	List<UrlAccessResource> results = new ArrayList<UrlAccessResource>();
-    	for (SystemInit.UrlAccessResource each : systemInit.getUrlAccessResource()) {
-    		UrlAccessResource urlAccessResource = new UrlAccessResource(each.getName(), each.getUrl());
-    		results.add(urlAccessResource);
-    	}
+        List<UrlAccessResource> results = new ArrayList<UrlAccessResource>();
+        for (SystemInit.UrlAccessResource each : systemInit.getUrlAccessResource()) {
+            results.add(new UrlAccessResource(each.getName(), each.getUrl()));
+        }
         SecurityResource.batchSave(results);
         return results;
     }
@@ -77,17 +77,26 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
 
     @Override
     public List<PageElementResource> initPageElementResources() {
-    	List<PageElementResource> results = new ArrayList<PageElementResource>();
-    	for (SystemInit.PageElementResource each : systemInit.getPageElementResource()) {
-    		PageElementResource pageElementResource = new PageElementResource(each.getName(), each.getUrl());
-    		results.add(pageElementResource);
-    	}
-    	SecurityResource.batchSave(results);
+        List<PageElementResource> results = new ArrayList<PageElementResource>();
+        for (SystemInit.PageElementResource each : systemInit.getPageElementResource()) {
+            results.add(new PageElementResource(each.getName(), each.getUrl()));
+        }
+        SecurityResource.batchSave(results);
+
+        // 删除授权权限。
+        Iterator<PageElementResource> resultIterator = results.listIterator();
+        while (resultIterator.hasNext()) {
+            PageElementResource result = resultIterator.next();
+            if (result.getIdentifier().contains("GrantPermission")) {
+                resultIterator.remove();
+            }
+        }
+
         return results;
     }
 
     private User createUser() {
-    	SystemInit.User initUser = systemInit.getUser();
+        SystemInit.User initUser = systemInit.getUser();
         User user = new User(initUser.getName(), initUser.getUsername());
         user.setCreateOwner(initUser.getCreateOwner());
         user.setDescription(initUser.getDescription());
@@ -95,39 +104,38 @@ public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication 
     }
 
     private Role createRole() {
-    	SystemInit.Role initRole = systemInit.getRole();
+        SystemInit.Role initRole = systemInit.getRole();
         Role role = new Role(initRole.getName());
         role.setDescription(initRole.getDescription());
         return role;
     }
 
-	private MenuResource transformMenuResourceEntity(SystemInit.MenuResource initMenuResource) {
-		MenuResource menuResource = new MenuResource(initMenuResource.getName());
-		menuResource.setDescription(initMenuResource.getDescription());
-		menuResource.setMenuIcon(initMenuResource.getMenuIcon());
-		menuResource.setUrl(initMenuResource.getUrl());
-		return menuResource;
-	}
-    
-    private void createChildrenMenuResource(MenuResource menuResource, SystemInit.MenuResource parentMenuResource, List<MenuResource> menuResources) {
-    	for (SystemInit.MenuResource each : systemInit.getMenuResource()) {
-    		if (Integer.valueOf(parentMenuResource.getId()).equals(each.getPid())) {
-    			MenuResource children = transformMenuResourceEntity(each);
-    			menuResources.add(children);
-    			securityConfigApplication.createChildToParent(children, menuResource.getId());
-    			createChildrenMenuResource(children, each, menuResources);
-    		}
-    	}
-	}
-
-	private List<SystemInit.MenuResource> getParentMenuResources() {
-    	List<SystemInit.MenuResource> parentMenuResources = new ArrayList<SystemInit.MenuResource>();
-    	for (SystemInit.MenuResource each : systemInit.getMenuResource()) {
-    		if (each.getPid() == null) {
-    			parentMenuResources.add(each);
-    		}
-    	}
-    	return parentMenuResources;
+    private MenuResource transformMenuResourceEntity(SystemInit.MenuResource initMenuResource) {
+        MenuResource menuResource = new MenuResource(initMenuResource.getName());
+        menuResource.setDescription(initMenuResource.getDescription());
+        menuResource.setMenuIcon(initMenuResource.getMenuIcon());
+        menuResource.setUrl(initMenuResource.getUrl());
+        return menuResource;
     }
 
+    private void createChildrenMenuResource(MenuResource menuResource, SystemInit.MenuResource parentMenuResource, List<MenuResource> menuResources) {
+        for (SystemInit.MenuResource each : systemInit.getMenuResource()) {
+            if (Integer.valueOf(parentMenuResource.getId()).equals(each.getPid())) {
+                MenuResource children = transformMenuResourceEntity(each);
+                menuResources.add(children);
+                securityConfigApplication.createChildToParent(children, menuResource.getId());
+                createChildrenMenuResource(children, each, menuResources);
+            }
+        }
+    }
+
+    private List<SystemInit.MenuResource> getParentMenuResources() {
+        List<SystemInit.MenuResource> parentMenuResources = new ArrayList<SystemInit.MenuResource>();
+        for (SystemInit.MenuResource each : systemInit.getMenuResource()) {
+            if (each.getPid() == null) {
+                parentMenuResources.add(each);
+            }
+        }
+        return parentMenuResources;
+    }
 }

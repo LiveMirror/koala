@@ -3,64 +3,47 @@
 	    <table class="table table-bordered table-hover">
 		<tr>
 			<td width="25%">
-			  <label class="col-lg-4 control-label">姓名:</label>
-			  </td>
-	          <td width="25%">
-	            <div class="col-lg-8 content" data-id="name"></div>
+			  <label>姓名:</label>
+	          <span data-id="name"></span>
 			</td>
-				<td width="25%">
-			   <label class="col-lg-4 control-label">用户名称:</label>
-			   </td>
-	          <td width="25%">
-	            <div class="col-lg-8 content" data-id="userAccount">
-	            </div>
+			<td width="25%">
+			   <label>用户名称:</label>
+	           <span data-id="userAccount"></span>
 			</td>
 		</tr>
 		<tr>
-			<td >
-			    <label class="col-lg-4 control-label">创建时间:</label>
-			    </td>
-	          <td >
-	            <div class="col-lg-8 content" data-id="createDate">
-	            </div>
+			<td>
+			    <label>创建时间:</label>
+	            <span data-id="createDate"></span>
 			</td>
-			<td >
-                    <label class="col-lg-4 control-label">描述:</label>
-                    </td>
-	          <td >
-                    <div class="col-lg-8 content" data-id="description" >
-
-                    </div>
-                </td>
+            <td>
+                <label>最后更改时间:</label>
+                <span data-id="lastModifyTime"></span>
+            </td>
 		</tr>
 		<tr>
-			<td >
-                <label class="col-lg-4 control-label">邮箱:</label>
-                </td>
-	          <td >
-                <div class="col-lg-8 content" data-id="email">
-                </div>
+			<td>
+                <label>邮箱:</label>
+                <span data-id="email"></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a data-target="#changeEmailOfUser" onclick="" class="glyphicon glyphicon-pencil">修改</a>
-			</td>
-			<td >
-			    <label class="col-lg-4 control-label">联系电话:</label>
-			    </td>
-	          <td >
-	            <div class="col-lg-8 content" data-id="telePhone">
-	            </div>
-	            <a  data-target="#changeTelePhoneOfUser" onclick="" class="glyphicon glyphicon-pencil">修改</a>
-			</td>
-		</tr>
+            </td>
+            <td>
+                <label>联系电话:</label>
+                <span data-id="telePhone"></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a data-target="#changeTelePhoneOfUser" onclick="" class="glyphicon glyphicon-pencil">修改</a>
+            </td>
+        </tr>
 		<tr>
-			<td >
-			    <label class="col-lg-4 control-label">是否可用:</label>
-			    </td>
-	          <td colspan="3">
-	            <div class="col-lg-8">
-	                <div class="col-lg-8 content" data-id="disabled" >
-	                </div>
-	            </div>
+			<td>
+			    <label>是否可用:</label>
+	            <span data-id="disabled" ></span>
 			</td>
+            <td>
+                <label>描述:</label>
+                <span data-id="description" ></span>
+            </td>
 		</tr>
 	</table>
 

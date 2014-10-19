@@ -1,7 +1,7 @@
 /**
- * Koala权限监听器
+ * 权限监听器。
  *
- * @author luzhao
+ * @author lucas
  *
  */
 package org.openkoala.security.listener;

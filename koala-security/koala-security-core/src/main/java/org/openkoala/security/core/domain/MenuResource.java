@@ -48,8 +48,8 @@ public class MenuResource extends SecurityResource {
 	private String url;
 
 	@ManyToOne
-	@JoinTable(name = "KS_MENU_RESOURCE_RELATION", //
-	joinColumns = @JoinColumn(name = "CHILD_ID"), //
+	@JoinTable(name = "KS_MENU_RESOURCE_RELATION",
+	joinColumns = @JoinColumn(name = "CHILD_ID"),
 	inverseJoinColumns = @JoinColumn(name = "PARENT_ID"))
 	private MenuResource parent;
 
@@ -91,10 +91,10 @@ public class MenuResource extends SecurityResource {
 
 	@Override
 	public SecurityResource findByName(String name) {
-		return getRepository()//
-				.createNamedQuery("SecurityResource.findByName")//
-				.addParameter("securityResourceType", MenuResource.class)//
-				.addParameter("name", name)//
+		return getRepository()
+				.createNamedQuery("SecurityResource.findByName")
+				.addParameter("securityResourceType", MenuResource.class)
+				.addParameter("name", name)
 				.singleResult();
 	}
 
@@ -103,17 +103,16 @@ public class MenuResource extends SecurityResource {
 	}
 
     public static List<MenuResource> findAllMenuResources() {
-        List<MenuResource> results = getRepository()//
-                .createNamedQuery("SecurityResource.findAllByType")//
-                .addParameter("securityResourceType", MenuResource.class)//
+        return getRepository()
+                .createNamedQuery("SecurityResource.findAllByType")
+                .addParameter("securityResourceType", MenuResource.class)
                 .list();
-        return results;
     }
 
 	public static List<MenuResource> findAllByIds(Long[] menuResourceIds) {
-		return getRepository()//
-				.createCriteriaQuery(MenuResource.class)//
-				.in("id", menuResourceIds)//
+		return getRepository()
+				.createCriteriaQuery(MenuResource.class)
+				.in("id", menuResourceIds)
 				.list();
 	}
 
@@ -125,12 +124,14 @@ public class MenuResource extends SecurityResource {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this)//
-				.append(getId())//
-				.append(getName())//
-				.append(getUrl())//
+		return new ToStringBuilder(this)
+				.append(getId())
+				.append(getName())
+				.append(getUrl())
 				.build();
 	}
+
+    /*-------------- getter setter methods  ------------------*/
 
 	public String getMenuIcon() {
 		return menuIcon;

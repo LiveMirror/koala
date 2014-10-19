@@ -70,10 +70,13 @@
 	</dependencies>
 	<build>
 		<plugins>
-          <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>cobertura-maven-plugin</artifactId>
-          </plugin>
+            <!--该插件采用的是JDK6版本，JDK7、8版本可能会出错。-->
+            <!--
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
+            -->
 		</plugins>
 	</build>
 </project>

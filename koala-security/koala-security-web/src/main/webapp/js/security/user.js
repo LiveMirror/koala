@@ -41,8 +41,8 @@ var userManager = function() {
 					content : '保存成功'
 				});
 				$(this).modal('hide');
-				dataGrid.grid('refresh');
-			}
+                dataGrid.grid('refresh');
+            }
 		});
 	}
 	/*

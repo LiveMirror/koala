@@ -10,7 +10,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
- * 权限初始化监听器
+ * 权限初始化监听器。
  * 
  * @author luzhao
  * 

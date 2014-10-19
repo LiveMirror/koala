@@ -19,7 +19,7 @@ public interface EncryptService {
 	/**
 	 * 获取加密次数
 	 * 
-	 * @return
+	 * @return 加密次数
 	 */
 	int getHashIterations();
 }

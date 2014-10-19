@@ -30,7 +30,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 
     @Override
     public <T extends Actor> T getActorById(Long actorId) {
-        return (T) Actor.get(Actor.class,actorId);
+        return Actor.getActorBy(actorId);
     }
 
     public User getUserByUserAccount(String userAccount) {
@@ -38,10 +38,9 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     }
 
     public List<MenuResource> findMenuResourceByUserAccount(String userAccount) {
-        User user = getUserByUserAccount(userAccount);
-        Set<Authority> authorities = Authorization.findAuthoritiesByActor(user);
-        List<MenuResource> result = Authority.findMenuResourceByAuthorities(authorities);
-        return result;
+        return Authority.findMenuResourceByAuthorities(
+                Authorization.findAuthoritiesByActor(
+                        getUserByUserAccount(userAccount)));
     }
 
     @Override
@@ -86,7 +85,7 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 
     @Override
     public <T extends Scope> T getScope(Long scopeId) {
-        return (T)Scope.getBy(scopeId);
+        return Scope.getBy(scopeId);
     }
 
     @Override
@@ -109,10 +108,10 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
         return MenuResource.findAllByIds(menuResourceIds);
     }
 
-	@Override
-	public boolean checkRoleByName(String roleName) {
-		return Role.checkName(roleName);
-	}
+    @Override
+    public boolean checkRoleByName(String roleName) {
+        return Role.checkName(roleName);
+    }
 
     @Override
     public <T extends Authority> T getAuthority(Long authorityId) {

@@ -43,12 +43,12 @@
 		var baseUrl = contextPath + '/auth/permission/';
 		function initEditDialog(data, item, grid) {
 			dialog = $(data);
-			dialog.find('.modal-header').find('.modal-tite').html( item ? '修改权限信息' : '添加权限');		
 			var form = dialog.find(".permisstion_form");
 			validate(form, dialog, item);
 			if(item){
-				form.find("input[name='name']").val(item.name);
-				form.find("input[name='identifier']").val(item.identifier);
+                dialog.find('.modal-header').find('.modal-title').html('修改权限信息');
+                form.find("input[name='name']").val(item.name);
+                form.find("input[name='identifier']").val(item.identifier).attr('disabled', 'disabled');
 				form.find("input[name='description']").val(item.description);
 			}
 			

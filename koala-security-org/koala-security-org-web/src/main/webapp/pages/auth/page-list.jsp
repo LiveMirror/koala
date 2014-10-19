@@ -43,14 +43,14 @@
 		
 		function initEditDialog(data, item, grid) {
 			dialog = $(data);
-			dialog.find('.modal-header').find('.modal-title').html( item ? '修改页面元素资源信息' : '添加页面元素资源信息');
-			
+
 			var form = dialog.find(".page_form");
 			validate(form, dialog, item);
 			
 			if(item){
-				form.find("input[name='name']").val(item.name);
-				form.find("input[name='identifier']").val(item.identifier);
+                dialog.find('.modal-header').find('.modal-title').html('修改页面元素资源信息');
+                form.find("input[name='name']").val(item.name);
+				form.find("input[name='identifier']").val(item.identifier).attr('disabled', 'disabled');;
 			    form.find("input[name='description']").val(item.description);
 			}
 

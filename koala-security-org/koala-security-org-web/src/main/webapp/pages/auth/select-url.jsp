@@ -15,7 +15,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">分配权限</h4>
+				<h4 class="modal-title">分配URL访问资源</h4>
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
                 <form id="selectUrlFrom" target="_self" class="form-inline searchCondition">
