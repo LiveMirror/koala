@@ -1,6 +1,5 @@
 package org.openkoala.businesslog.model;
 
-
 import org.dayatang.domain.Entity;
 import org.dayatang.domain.EntityRepository;
 import org.dayatang.domain.InstanceFactory;
@@ -10,169 +9,159 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * User: zjzhai
- * Date: 12/5/13
- * Time: 4:54 PM
+ * User: zjzhai Date: 12/5/13 Time: 4:54 PM
  */
 @MappedSuperclass
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
 public abstract class AbstractBusinessLog implements Entity {
 
-    private static final String ENTITY_REPOSITORY = "repository_businessLog";
+	private static final long serialVersionUID = -3614081808804897797L;
 
-   
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
-     private Long id;
+	private static final String ENTITY_REPOSITORY = "repository_businessLog";
 
-    
-    @Version
-    @Column(name = "VERSION")
-    private int version;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
+	private Long id;
 
-   
-    @Column(name = "LOG_CATEGORY")
-     private String category;
+	@Version
+	@Column(name = "VERSION")
+	private int version;
 
-    
-    @Column(name = "LOG_CONTENT")
-     private String log;
+	@Column(name = "LOG_CATEGORY")
+	private String category;
 
-    /**
-     * 获得实体的标识
-     *
-     * @return 实体的标识
-     */
-    public Long getId() {
-        return id;
-    }
+	@Column(name = "LOG_CONTENT")
+	private String log;
 
-    /**
-     * 设置实体的标识
-     *
-     * @param id 要设置的实体标识
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
+	/**
+	 * 获得实体的标识
+	 * 
+	 * @return 实体的标识
+	 */
+	public Long getId() {
+		return id;
+	}
 
-    public String getLog() {
-        return log;
-    }
+	/**
+	 * 设置实体的标识
+	 * 
+	 * @param id 要设置的实体标识
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setLog(String log) {
-        this.log = log;
-    }
+	public String getLog() {
+		return log;
+	}
 
-     public String getCategory() {
-        return category;
-    }
+	public void setLog(String log) {
+		this.log = log;
+	}
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+	public String getCategory() {
+		return category;
+	}
 
-    /**
-     * 获得实体的版本号。持久化框架以此实现乐观锁。
-     *
-     * @return 实体的版本号
-     */
-    public int getVersion() {
-        return version;
-    }
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
-    /**
-     * 设置实体的版本号。持久化框架以此实现乐观锁。
-     *
-     * @param version 要设置的版本号
-     */
-    public void setVersion(int version) {
-        this.version = version;
-    }
+	/**
+	 * 获得实体的版本号。持久化框架以此实现乐观锁。
+	 * 
+	 * @return 实体的版本号
+	 */
+	public int getVersion() {
+		return version;
+	}
 
- 
-    @Transient
-    public boolean isNew() {
-        return id == null || id.intValue() == 0;
-    }
+	/**
+	 * 设置实体的版本号。持久化框架以此实现乐观锁。
+	 * 
+	 * @param version 要设置的版本号
+	 */
+	public void setVersion(int version) {
+		this.version = version;
+	}
 
-  
-    public boolean existed() {
-        if (isNew()) {
-            return false;
-        }
-        return getRepository().exists(getClass(), id);
-    }
+	@Transient
+	public boolean isNew() {
+		return id == null || id.intValue() == 0;
+	}
 
-    
-    public boolean notExisted() {
-        return !existed();
-    }
+	public boolean existed() {
+		if (isNew()) {
+			return false;
+		}
+		return getRepository().exists(getClass(), id);
+	}
 
-   
-    public boolean existed(String propertyName, Object propertyValue) {
-    	
-        List<?> entities = getRepository().createCriteriaQuery(getClass()).eq(propertyName, propertyValue).list();
-        return !(entities.isEmpty());
-    }
+	public boolean notExisted() {
+		return !existed();
+	}
 
-    private static EntityRepository repository;
+	public boolean existed(String propertyName, Object propertyValue) {
+		List<?> entities = getRepository().createCriteriaQuery(getClass()).eq(propertyName, propertyValue).list();
+		return !(entities.isEmpty());
+	}
 
-    public static EntityRepository getRepository() {
-        if (repository == null) {
-            repository = InstanceFactory.getInstance(EntityRepository.class, ENTITY_REPOSITORY);
-        }
-        return repository;
-    }
+	private static EntityRepository repository;
 
-    public static void setRepository(EntityRepository repository) {
-        AbstractBusinessLog.repository = repository;
-    }
+	public static EntityRepository getRepository() {
+		if (repository == null) {
+			repository = InstanceFactory.getInstance(EntityRepository.class, ENTITY_REPOSITORY);
+		}
+		return repository;
+	}
 
-    public void save() {
-        getRepository().save(this);
-    }
+	public static void setRepository(EntityRepository repository) {
+		AbstractBusinessLog.repository = repository;
+	}
 
-    public void remove() {
-        getRepository().remove(this);
-    }
+	public void save() {
+		getRepository().save(this);
+	}
 
-    /**
-     * 请改用每个实体对象的实例方法的existed()方法。
-     *
-     * @param clazz
-     * @param id
-     * @return
-     */
-    @Deprecated
-    public static <T extends Entity> boolean exists(Class<T> clazz, Serializable id) {
-        return getRepository().exists(clazz, id);
-    }
+	public void remove() {
+		getRepository().remove(this);
+	}
 
-    public static <T extends Entity> T get(Class<T> clazz, Serializable id) {
-        return getRepository().get(clazz, id);
-    }
+	/**
+	 * 请改用每个实体对象的实例方法的existed()方法。
+	 * 
+	 * @param clazz
+	 * @param id
+	 * @return
+	 */
+	@Deprecated
+	public static <T extends Entity> boolean exists(Class<T> clazz, Serializable id) {
+		return getRepository().exists(clazz, id);
+	}
 
-    public static <T extends Entity> T getUnmodified(Class<T> clazz, T entity) {
-        return getRepository().getUnmodified(clazz, entity);
-    }
+	public static <T extends Entity> T get(Class<T> clazz, Serializable id) {
+		return getRepository().get(clazz, id);
+	}
 
-    public static <T extends Entity> T load(Class<T> clazz, Serializable id) {
-        return getRepository().load(clazz, id);
-    }
+	public static <T extends Entity> T getUnmodified(Class<T> clazz, T entity) {
+		return getRepository().getUnmodified(clazz, entity);
+	}
 
-    public static <T extends Entity> List<T> findAll(Class<T> clazz) {
-        return getRepository().findAll(clazz);
-    }
+	public static <T extends Entity> T load(Class<T> clazz, Serializable id) {
+		return getRepository().load(clazz, id);
+	}
 
+	public static <T extends Entity> List<T> findAll(Class<T> clazz) {
+		return getRepository().findAll(clazz);
+	}
 
-    @Override
-    public abstract int hashCode();
+	@Override
+	public abstract int hashCode();
 
-    @Override
-    public abstract boolean equals(Object other);
+	@Override
+	public abstract boolean equals(Object other);
 
-    @Override
-    public abstract String toString();
+	@Override
+	public abstract String toString();
 }

@@ -10,113 +10,106 @@ import java.util.Map;
 import static org.openkoala.businesslog.ContextKeyConstant.*;
 
 /**
- * User: zjzhai
- * Date: 12/12/13
- * Time: 11:23 AM
+ * User: zjzhai Date: 12/12/13 Time: 11:23 AM
  */
 @Entity
-@DiscriminatorValue(value = "default")
+@DiscriminatorValue(value = "DEFAULT")
 @Table(name = "KL_BUSSINESSLOGS")
 public class DefaultBusinessLog extends AbstractBusinessLog {
 
-   
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -6898675233659096041L;
 
 	@Column(name = "USERNAME")
-    private String user;
+	private String user;
 
 	@Column(name = "IP")
-     private String ip;
+	private String ip;
 
-	 @Temporal(TemporalType.TIMESTAMP)
-	  private Date time;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "RECORD_TIME")
+	private Date time;
 
-    
-    private Map<String, Object> context;
+	@Transient
+	private Map<String, Object> context;
 
-    public synchronized static DefaultBusinessLog createBy(BusinessLog businessLog) {
-        DefaultBusinessLog myBusinessLog = new DefaultBusinessLog();
-        Map<String, Object> context = businessLog.getContext();
+	public synchronized static DefaultBusinessLog createBy(BusinessLog businessLog) {
+		DefaultBusinessLog myBusinessLog = new DefaultBusinessLog();
+		Map<String, Object> context = businessLog.getContext();
 
-        if (context.get(BUSINESS_OPERATION_USER) != null) {
-            myBusinessLog.setUser((String) context.get(BUSINESS_OPERATION_USER));
-        }
+		if (context.get(BUSINESS_OPERATION_USER) != null) {
+			myBusinessLog.setUser((String) context.get(BUSINESS_OPERATION_USER));
+		}
 
-        if (context.get(BUSINESS_OPERATION_TIME) != null) {
-            myBusinessLog.setTime((Date) context.get(BUSINESS_OPERATION_TIME));
-        }
+		if (context.get(BUSINESS_OPERATION_TIME) != null) {
+			myBusinessLog.setTime((Date) context.get(BUSINESS_OPERATION_TIME));
+		}
 
-        if (context.get(BUSINESS_OPERATION_IP) != null) {
-            myBusinessLog.setIp((String) context.get(BUSINESS_OPERATION_IP));
-        }
+		if (context.get(BUSINESS_OPERATION_IP) != null) {
+			myBusinessLog.setIp((String) context.get(BUSINESS_OPERATION_IP));
+		}
 
-        myBusinessLog.setLog(businessLog.getLog());
-        myBusinessLog.setCategory(businessLog.getCategory());
+		myBusinessLog.setLog(businessLog.getLog());
+		myBusinessLog.setCategory(businessLog.getCategory());
 
-        context = Collections.unmodifiableMap(context);
+		context = Collections.unmodifiableMap(context);
 
-        return myBusinessLog;
+		return myBusinessLog;
+	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof DefaultBusinessLog))
+			return false;
 
-    }
+		DefaultBusinessLog that = (DefaultBusinessLog) o;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DefaultBusinessLog)) return false;
+		if (ip != null ? !ip.equals(that.ip) : that.ip != null)
+			return false;
+		if (time != null ? !time.equals(that.time) : that.time != null)
+			return false;
+		if (user != null ? !user.equals(that.user) : that.user != null)
+			return false;
 
-        DefaultBusinessLog that = (DefaultBusinessLog) o;
+		return true;
+	}
 
-        if (ip != null ? !ip.equals(that.ip) : that.ip != null) return false;
-        if (time != null ? !time.equals(that.time) : that.time != null) return false;
-        if (user != null ? !user.equals(that.user) : that.user != null) return false;
+	@Override
+	public int hashCode() {
+		int result = user != null ? user.hashCode() : 0;
+		result = 31 * result + (ip != null ? ip.hashCode() : 0);
+		result = 31 * result + (time != null ? time.hashCode() : 0);
+		return result;
+	}
 
-        return true;
-    }
+	@Override
+	public String toString() {
+		return "DefaultBusinessLog{" + "user='" + user + '\'' + ", ip='" + ip + '\'' + ", time=" + time + ", log="
+				+ getLog() + ", context=" + context + '}';
+	}
 
-    @Override
-    public int hashCode() {
-        int result = user != null ? user.hashCode() : 0;
-        result = 31 * result + (ip != null ? ip.hashCode() : 0);
-        result = 31 * result + (time != null ? time.hashCode() : 0);
-        return result;
-    }
+	public String getUser() {
+		return user;
+	}
 
-    @Override
-    public String toString() {
-        return "DefaultBusinessLog{" +
-                "user='" + user + '\'' +
-                ", ip='" + ip + '\'' +
-                ", time=" + time +
-                ", log=" + getLog() +
-                ", context=" + context +
-                '}';
-    }
+	public void setUser(String user) {
+		this.user = user;
+	}
 
-    public String getUser() {
-        return user;
-    }
+	public String getIp() {
+		return ip;
+	}
 
-    public void setUser(String user) {
-        this.user = user;
-    }
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 
-    public String getIp() {
-        return ip;
-    }
+	public Date getTime() {
+		return time;
+	}
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
+	public void setTime(Date time) {
+		this.time = time;
+	}
 }

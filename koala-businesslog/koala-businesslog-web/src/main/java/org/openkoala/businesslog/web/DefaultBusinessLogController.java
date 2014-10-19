@@ -1,4 +1,3 @@
-
 package org.openkoala.businesslog.web;
 
 import java.util.HashMap;
@@ -18,48 +17,43 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/log")
 public class DefaultBusinessLogController {
 
+	private BusinessLogApplication businessLogApplication;
 
-    private BusinessLogApplication businessLogApplication;
+	@ResponseBody
+	@RequestMapping("/list")
+	public Page<DefaultBusinessLogDTO> pageJson(DefaultBusinessLogDTO defaultBusinessLogDTO, @RequestParam int page,
+			@RequestParam int pagesize) {
+		Page<DefaultBusinessLogDTO> all = getBusinessLogApplication().pageQueryDefaultBusinessLog(
+				defaultBusinessLogDTO, page, pagesize);
+		return all;
+	}
 
+	@ResponseBody
+	@RequestMapping("/delete")
+	public Map<String, Object> delete(@RequestParam String ids) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String[] value = ids.split(",");
+		Long[] idArrs = new Long[value.length];
+		for (int i = 0; i < value.length; i++) {
+			idArrs[i] = Long.parseLong(value[i]);
+		}
+		getBusinessLogApplication().removeDefaultBusinessLogs(idArrs);
+		result.put("result", "success");
+		return result;
+	}
 
-    @ResponseBody
-    @RequestMapping("/list")
-    public Page pageJson(DefaultBusinessLogDTO defaultBusinessLogDTO,
-                                        @RequestParam int page, @RequestParam int pagesize) {
-        Page<DefaultBusinessLogDTO> all = getBusinessLogApplication().pageQueryDefaultBusinessLog(defaultBusinessLogDTO, page, pagesize);
-        return all;
-    }
+	@ResponseBody
+	@RequestMapping("/get/{id}")
+	public Map<String, Object> get(@PathVariable Long id) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("data", getBusinessLogApplication().getDefaultBusinessLog(id));
+		return result;
+	}
 
-
-    @ResponseBody
-    @RequestMapping("/delete")
-    public Map<String, Object> delete(@RequestParam String ids) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        String[] value = ids.split(",");
-        Long[] idArrs = new Long[value.length];
-        for (int i = 0; i < value.length; i++) {
-
-            idArrs[i] = Long.parseLong(value[i]);
-
-        }
-        getBusinessLogApplication().removeDefaultBusinessLogs(idArrs);
-        result.put("result", "success");
-        return result;
-    }
-
-    @ResponseBody
-    @RequestMapping("/get/{id}")
-    public Map<String, Object> get(@PathVariable Long id) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("data", getBusinessLogApplication().getDefaultBusinessLog(id));
-        return result;
-    }
-
-
-    public BusinessLogApplication getBusinessLogApplication() {
-        if (null == businessLogApplication) {
-            businessLogApplication = InstanceFactory.getInstance(BusinessLogApplication.class);
-        }
-        return businessLogApplication;
-    }
+	public BusinessLogApplication getBusinessLogApplication() {
+		if (null == businessLogApplication) {
+			businessLogApplication = InstanceFactory.getInstance(BusinessLogApplication.class);
+		}
+		return businessLogApplication;
+	}
 }
