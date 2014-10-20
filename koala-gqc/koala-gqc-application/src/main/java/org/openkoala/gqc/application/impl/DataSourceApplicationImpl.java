@@ -39,25 +39,16 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 		}
 	}
 
-	public void createDataSource(DataSource dataSource){
-			dataSource.create();
+	public void createDataSource(DataSource dataSource) {
+		dataSource.create();
 	}
 
 	public void updateDataSource(DataSource dataSource) {
-		if(checkDataSourceCanConnect(dataSource)){
+		if (checkDataSourceCanConnect(dataSource)) {
 			dataSource.save();
-		}else{
-			throw new RuntimeException("数据源无法连接");
+		} else {
+			throw new RuntimeException("数据源无法连接，更新失败");
 		}
-		
-/*		DataSource source = DataSource.get(DataSource.class, dataSource.getId());
-		try {
-			if(!checkDataSourceCanConnect(dataSource)){
-				BeanUtils.copyProperties(source, dataSource);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}*/
 	}
 
 	public void removeDataSource(Long id) {
@@ -103,7 +94,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 		Connection conn = null;
 		try {
 			dataSource = DataSource.get(DataSource.class, id);
-			conn = dataSource.generateConnection();	
+			conn = dataSource.generateConnection();
 			List<String> tableList = DatabaseUtils.getTables(conn);
 			return tableList;
 		} catch (Exception e) {
@@ -116,7 +107,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 					throw new RuntimeException("关闭自定义数据源连接失败", e);
 				}
 			}
-		}		
+		}
 	}
 
 	@Override
@@ -140,7 +131,7 @@ public class DataSourceApplicationImpl implements DataSourceApplication {
 			}
 		}
 	}
-	
+
 	/**
 	 * 非系统数据源的连接才需要close
 	 */

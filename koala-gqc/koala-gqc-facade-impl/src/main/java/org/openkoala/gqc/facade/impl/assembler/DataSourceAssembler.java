@@ -9,7 +9,7 @@ import org.openkoala.gqc.facade.dto.DataSourceDTO;
 
 public class DataSourceAssembler {
 
-	public static DataSource  toEntity(DataSourceDTO dto){
+	public static DataSource toEntity(DataSourceDTO dto){
 		DataSource result = new DataSource();
 		result.setConnectUrl(dto.getConnectUrl());
 		result.setDataSourceDescription(dto.getDataSourceDescription());

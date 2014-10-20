@@ -11,6 +11,7 @@ var dataSource = function(){
 	var dataSourceUserName = null;   //用户名
 	var dataSourcePassword = null; //密码
 	var dataGrid = null; //Grid对象
+	var dataSourceVersion = null
 	/*
 	 *新增
 	 */
@@ -121,11 +122,10 @@ var dataSource = function(){
 	var setData = function(id){
 		$.get(baseUrl+'get/'+id+'.koala')
 			.done(function(result){
-				//var data = result.data;
 				var data = result
-				console.log(data)
 				dataSourceType.setValue(data.dataSourceType).trigger('change').find('button').addClass('disabled');
 				dataSourceId.val(data.dataSourceId).attr('disabled',true);
+				dataSourceVersion = data.version;
 				if(data.dataSourceType == 'CUSTOM_DATA_SOURCE'){
 					dataSourceDescription.val(data.dataSourceDescription);
 					dataSourceJdbcDriver.val(data.jdbcDriver);
@@ -166,12 +166,19 @@ var dataSource = function(){
 		var data = {};
 		data.dataSourceType = dataSourceType.getValue();
 		data.dataSourceId = dataSourceId.val();
+		data.version = dataSourceVersion;
+		if(dataSourceVersion==null||dataSourceVersion==undefined||isNaN(dataSourceVersion)){
+			data.version = 0;
+		}
+		console.log("getAllData()=",data.version)
 		if(data.dataSourceType == 'CUSTOM_DATA_SOURCE'){
 			data.dataSourceDescription = dataSourceDescription.val();
 			data.jdbcDriver = dataSourceJdbcDriver.val();
 			data.connectUrl = dataSourceUrl.val();
 			data.username = dataSourceUserName.val();
 			data.password = dataSourcePassword.val();
+		}else{
+			data.dataSourceDescription = "System Build-In Data Source"
 		}
 		return data;
 	};

@@ -6,7 +6,7 @@
 $(function(){
     var cols = [
         {title:'数据源ID', name:'dataSourceId', width: '180'},
-        { title:'类型', name:'dataSourceTypeDesc' , width: '120'},
+        { title:'类型', name:'dataSourceType' , width: '120'},
         { title:'JdbcDriver', name:'jdbcDriver' , width: '320'},
         { title:'Url', name:'connectUrl' , width: '350'},
         { title:'UserName', name:'username', width: '120'},

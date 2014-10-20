@@ -116,7 +116,7 @@ public class DataSource extends AbstractGeneralQueryEntity {
 				if (connection != null) {
 					result = true;
 					// 系统数据源连接不能手动关闭，事务会把该连接放回到连接池中
-					// connection.close();
+					 connection.close();
 				}
 			} catch (SQLException e) {
 				throw new RuntimeException("获取系统数据源连接失败！", e);
@@ -184,6 +184,7 @@ public class DataSource extends AbstractGeneralQueryEntity {
 		if (DataSourceType.SYSTEM_DATA_SOURCE.equals(getDataSourceType())) {
 			DataSource sysDS = null;
 			sysDS = DataSource.getSystemDataSource(getDataSourceId());
+			sysDS.setDataSourceDescription(dataSourceDescription);
 			sysDS.save();
 		} else {
 			setId(null);

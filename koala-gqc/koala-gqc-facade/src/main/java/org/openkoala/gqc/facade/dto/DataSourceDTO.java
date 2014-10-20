@@ -46,8 +46,7 @@ public class DataSourceDTO implements Serializable {
      */
     private DataSourceType dataSourceType;
 
-    //类型描述
-    private String dataSourceTypeDesc;
+   
 
     /**
      * jdbc驱动
@@ -78,14 +77,6 @@ public class DataSourceDTO implements Serializable {
 
     public String getUsername() {
         return this.username;
-    }
-
-    public String getDataSourceTypeDesc() {
-        return dataSourceTypeDesc;
-    }
-
-    public void setDataSourceTypeDesc(String dataSourceTypeDesc) {
-        this.dataSourceTypeDesc = dataSourceTypeDesc;
     }
 
     public void setConnectUrl(String connectUrl) {

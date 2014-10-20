@@ -15,6 +15,7 @@ import org.openkoala.gqc.application.DataSourceApplication;
 import org.openkoala.gqc.core.DataSourceBeingUsedException;
 import org.openkoala.gqc.core.SystemDataSourceNotExistException;
 import org.openkoala.gqc.core.domain.DataSource;
+import org.openkoala.gqc.core.domain.DataSourceType;
 import org.openkoala.gqc.facade.DataSourceFacade;
 import org.openkoala.gqc.facade.dto.DataSourceDTO;
 import org.openkoala.gqc.facade.impl.assembler.DataSourceAssembler;
@@ -96,9 +97,13 @@ public class DataSourceFacadeImpl implements DataSourceFacade {
 		}
 	}
 
-	public InvokeResult updateDataSource(DataSourceDTO dataSourceDTO) {
+	public InvokeResult updateDataSource(DataSourceDTO dto) {
 		try {
-			dataSourceApplication.updateDataSource(DataSourceAssembler.toEntity(dataSourceDTO));
+			if(dto.getDataSourceType().toString().equals(DataSourceType.CUSTOM_DATA_SOURCE.toString())){
+				dataSourceApplication.updateDataSource(DataSourceAssembler.toEntity(dto));
+			}else{
+				dataSourceApplication.updateDataSource(dataSourceApplication.getById(dto.getId()));
+			}
 			return InvokeResult.success();
 		} catch (Exception e) {
 			return InvokeResult.failure(e.getMessage());
@@ -176,11 +181,6 @@ public class DataSourceFacadeImpl implements DataSourceFacade {
 					.setPage(currentPage, pageSize)
 					.pagedList();
 			 List<DataSourceDTO> result = DataSourceAssembler.toDTOs(pages.getData());
-/*			for (DataSource dataSource : pages.getData()) {
-				DataSourceDTO dataSourceDTO = DataSourceAssembler.toDTO(dataSource);
-				dataSourceDTO.setDataSourceTypeDesc(dataSourceDTO.getDataSourceType().getDescription());
-				result.add(dataSourceDTO);
-			}*/
 			return new Page<DataSourceDTO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 		} catch (Exception e) {
 			throw new RuntimeException("查询数据源列表失败！", e);
