@@ -20,57 +20,70 @@ public class GeneralQueryDTO implements Serializable {
 	private int version;
 
 	/**
-	 * 数据源
+	 * 数据源。
 	 */
 	private DataSourceDTO dataSourceDTO;
 
 	/**
-	 * 数据源主键id
+	 * 数据源主键id。
 	 */
-	private Long dsId;
+/*	private Long dsId;
 
 	private String dataSourceId;
-
+*/
 	/**
-	 * 查询名称
+	 * 查询名称。
 	 */
 
 	private String queryName;
 
 	/**
-	 * 表名
+	 * 表名。
 	 */
 	private String tableName;
 
 	/**
-	 * 描述
+	 * 描述。
 	 */
 	private String description;
 
 	/**
-	 * 创建日期
+	 * 创建日期。
 	 */
 	private Date createDate;
 
 	/**
-	 * 静态查询条件
+	 * 静态查询条件。
 	 */
 	private List<PreQueryConditionDTO> preQueryConditions = new ArrayList<PreQueryConditionDTO>();
 
 	/**
-	 * 动态查询条件
+	 * 动态查询条件。
 	 */
 	private List<DynamicQueryConditionDTO> dynamicQueryConditions = new ArrayList<DynamicQueryConditionDTO>();
 
 	/**
-	 * 查询结果要显示的字段
+	 * 查询结果要显示的字段。
 	 */
 	private List<FieldDetailDTO> fieldDetails = new ArrayList<FieldDetailDTO>();
-
+	/**
+	 * 获得可显示的静态条件
+	 * @return
+	 */
+	
+	public List<PreQueryConditionDTO> getVisiblePreQueryConditions() {
+		List<PreQueryConditionDTO> results = new ArrayList<PreQueryConditionDTO>(preQueryConditions.size());
+		for (PreQueryConditionDTO dto : preQueryConditions) {
+			if (dto.getVisible()) {
+				results.add(dto);
+			}
+		}
+		return results;
+	}
 	public GeneralQueryDTO() {
 
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -123,11 +136,7 @@ public class GeneralQueryDTO implements Serializable {
 		this.description = description;
 	}
 
-	public String getDataSourceId() {
-		return dataSourceId;
-	}
-
-	public Long getDsId() {
+	/*public Long getDsId() {
 		return dsId;
 	}
 
@@ -135,9 +144,13 @@ public class GeneralQueryDTO implements Serializable {
 		this.dsId = dsId;
 	}
 
+	public String getDataSourceId() {
+		return dataSourceId;
+	}
+
 	public void setDataSourceId(String dataSourceId) {
 		this.dataSourceId = dataSourceId;
-	}
+	}*/
 
 	public Date getCreateDate() {
 		return new Date(createDate.getTime());
@@ -145,6 +158,30 @@ public class GeneralQueryDTO implements Serializable {
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+
+	public List<PreQueryConditionDTO> getPreQueryConditions() {
+		return preQueryConditions;
+	}
+
+	public void setPreQueryConditions(List<PreQueryConditionDTO> preQueryConditions) {
+		this.preQueryConditions = preQueryConditions;
+	}
+
+	public List<DynamicQueryConditionDTO> getDynamicQueryConditions() {
+		return dynamicQueryConditions;
+	}
+
+	public void setDynamicQueryConditions(List<DynamicQueryConditionDTO> dynamicQueryConditions) {
+		this.dynamicQueryConditions = dynamicQueryConditions;
+	}
+
+	public List<FieldDetailDTO> getFieldDetails() {
+		return fieldDetails;
+	}
+
+	public void setFieldDetails(List<FieldDetailDTO> fieldDetails) {
+		this.fieldDetails = fieldDetails;
 	}
 
 	@Override
@@ -162,12 +199,6 @@ public class GeneralQueryDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "general query : " + tableName;
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

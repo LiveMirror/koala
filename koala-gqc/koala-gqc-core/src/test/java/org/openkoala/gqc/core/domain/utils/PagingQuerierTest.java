@@ -9,6 +9,7 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openkoala.gqc.core.SystemDataSourceNotExistException;
 import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.core.domain.DataSourceType;
 import org.openkoala.gqc.core.domain.DynamicQueryCondition;
@@ -16,7 +17,6 @@ import org.openkoala.gqc.core.domain.FieldDetail;
 import org.openkoala.gqc.core.domain.GeneralQuery;
 import org.openkoala.gqc.core.domain.PreQueryCondition;
 import org.openkoala.gqc.core.domain.QueryOperation;
-import org.openkoala.gqc.core.exception.SystemDataSourceNotExistException;
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 

@@ -26,21 +26,18 @@ import org.dayatang.domain.InstanceFactory;
  * 
  */
 @MappedSuperclass
-public abstract class GeneralQueryEntity implements Entity {
+public abstract class AbstractGeneralQueryEntity implements Entity {
 
 	private static final long serialVersionUID = 8882145540383345037L;
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
 	private Long id;
 
-	
 	@Version
 	@Column(name = "VERSION")
 	private int version;
-
 
 	/**
 	 * 获得实体的标识
@@ -111,7 +108,7 @@ public abstract class GeneralQueryEntity implements Entity {
 	}
 
 	public static void setRepository(EntityRepository repository) {
-		GeneralQueryEntity.repository = repository;
+		AbstractGeneralQueryEntity.repository = repository;
 	}
 
 	public void save() {

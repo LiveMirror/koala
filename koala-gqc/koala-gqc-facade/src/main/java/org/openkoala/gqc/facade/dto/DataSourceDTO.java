@@ -41,11 +41,10 @@ public class DataSourceDTO implements Serializable {
      */
     private String dataSourceDescription;
 
-    //（springmvc对枚举类型在页面和后台会分别自动转换为字符串和枚举）
-    private DataSourceTypeDTO dataSourceTypeDTO;
-
-    //类型字符串形式
-//    private String dataSourceTypeStr;
+    /**
+     * springmvc对枚举类型在页面和后台会分别自动转换为字符串和枚
+     */
+    private DataSourceType dataSourceType;
 
     //类型描述
     private String dataSourceTypeDesc;
@@ -121,12 +120,12 @@ public class DataSourceDTO implements Serializable {
         return this.dataSourceDescription;
     }
 
-    public DataSourceTypeDTO getDataSourceTypeDTO() {
-		return dataSourceTypeDTO;
+    public DataSourceType getDataSourceType() {
+		return dataSourceType;
 	}
 
-	public void setDataSourceTypeDTO(DataSourceTypeDTO dataSourceTypeDTO) {
-		this.dataSourceTypeDTO = dataSourceTypeDTO;
+	public void setDataSourceType(DataSourceType dataSourceType) {
+		this.dataSourceType = dataSourceType;
 	}
 
 	public void setJdbcDriver(String jdbcDriver) {

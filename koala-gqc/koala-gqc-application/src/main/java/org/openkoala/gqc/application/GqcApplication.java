@@ -1,11 +1,10 @@
 package org.openkoala.gqc.application;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.dayatang.utils.Page;
 import org.openkoala.gqc.core.domain.GeneralQuery;
-import org.openkoala.gqc.core.domain.GeneralQueryEntity;
 
 /**
  * 
@@ -20,63 +19,46 @@ public interface GqcApplication {
 	 * @param id 通用查询主键
 	 * @return
 	 */
-	<T extends GeneralQueryEntity> T getEntity(Class<T> clazz, Long id);
+	GeneralQuery getQuerier(Long id);
+
 	
 	/**
 	 * 保存用查询实例
-	 * @param entity
+	 * @param querier
 	 */
-	void saveEntity(GeneralQueryEntity entity);
+	void saveQuerier(GeneralQuery querier);
 	
 	/**
 	 * 更新用查询实例
-	 * @param entity
+	 * @param querier
 	 */
-	void updateEntity(GeneralQueryEntity entity);
+	void updateQuerier(GeneralQuery querier);
 
 	/**
 	 * 删除用查询实例
-	 * @param entity
+	 * @param querier
 	 */
-	void removeEntity(GeneralQueryEntity entity);
+	void removeQueier(Long id);
 	
 	/**
-	 * 删除用查询实例
-	 * @param entity
+	 * 根据ID删除用查询实例
+	 * @param querier
 	 */
-	void removeEntity(String ids);
+	void removeQueiers(Long[] ids);
 	
 	/**
-	 * 批量删除用查询实例
-	 * @param entities
-	 */
-	<T extends GeneralQueryEntity> void removeEntities(Set<T> entities);
-	
-	/**
-	 * 分页查询用查询实例
+	 * 用查询器查询数据
 	 * @param currentPage
 	 * @param pagesize
 	 * @return
 	 */
-//Page<GeneralQuery> pagingQueryGeneralQueries(int currentPage, int pagesize);
+	List<Map<String, Object>> pagingQuery(int currentPage, int pagesize, GeneralQuery querier);
 	
 	/**
-	 * 获取通用查询实例
-	 * @param id 主键
-	 * @return
-	 */
-	GeneralQuery getById(Long id);
-	
-	/**
-	 * 分页查询用查询实例
-	 * @param queryName 查询器名称
+	 * 用查询器查询数据
 	 * @param currentPage
 	 * @param pagesize
 	 * @return
 	 */
-	//Page<GeneralQuery> pagingQueryGeneralQueriesByQueryName(String queryName, int currentPage, int pagesize);
-	
-	Page<Map<String, Object>> pagingQuery(GeneralQuery generalQuery, int currentPage, int pagesize);
-	
-	void saveGeneralQuery(GeneralQuery generalQuery);
+	Page<Map<String, Object>> pagingQueryWithPage(GeneralQuery querier, int currentPage, int pagesize);
 }

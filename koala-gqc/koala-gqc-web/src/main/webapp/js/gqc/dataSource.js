@@ -36,7 +36,7 @@ var dataSource = function(){
 	var delGeneralQuery = function(ids, grid){
 		dataGrid = grid;
 		$.post(baseUrl + 'delete.koala', {ids:ids}).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dataGrid.message({
 					type: 'success',
 					content: '删除成功'
@@ -45,13 +45,13 @@ var dataSource = function(){
 			} else {
 				dataGrid.message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});
 			}
 		}).fail(function(data){
 				dataGrid.message({
 					type: 'error',
-					content: '删除失败'
+					content: data.errorMessage
 				});
 			});
 	};
@@ -95,11 +95,10 @@ var dataSource = function(){
 	 */
 	var testConnection = function(){
 		$.post(baseUrl+'checkDataSource.koala', getAllData()).done(function(data){
-			var result = data.result;
-			var type = data.result == '该数据源不可用' ? 'warning' : 'success';
+			var type = data.success ? 'success' : 'warning';
 			dialog.find('.modal-content').message({
 				type: type,
-				content: result
+				content: data.success ? "该数据源可用" : data.errorMessage
 			});
 		});
 	};
@@ -108,11 +107,11 @@ var dataSource = function(){
 	 */
 	var testConnectionById = function(id){
 		$.post(baseUrl+'checkDataSourceById.koala?id='+id).done(function(data){
-			var result = data.result;
-			var type = data.result == '该数据源可用' ? 'success' : 'warning';
+			var result = data.success;
+			var type = data.success ? 'success' : 'warning';
 			$('#dataSourceGrid').message({
 				type: type,
-				content: result
+				content: data.success ? "该数据源可用" : data.errorMessage
 			});
 		});
 	};
@@ -122,7 +121,9 @@ var dataSource = function(){
 	var setData = function(id){
 		$.get(baseUrl+'get/'+id+'.koala')
 			.done(function(result){
-				var data = result.data;
+				//var data = result.data;
+				var data = result
+				console.log(data)
 				dataSourceType.setValue(data.dataSourceType).trigger('change').find('button').addClass('disabled');
 				dataSourceId.val(data.dataSourceId).attr('disabled',true);
 				if(data.dataSourceType == 'CUSTOM_DATA_SOURCE'){
@@ -147,12 +148,12 @@ var dataSource = function(){
 			url =  baseUrl + 'update.koala?id='+id;
 		}
 		$.post(url,getAllData()).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dialog.trigger('complete');
 			}else {
 				dialog.message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});
 			}
 			dialog.find('#dataSourceSave').removeAttr('disabled');

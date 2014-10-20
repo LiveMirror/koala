@@ -1,14 +1,11 @@
 package org.openkoala.gqc.controller.datasource;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 
 import org.dayatang.utils.Page;
-import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.facade.DataSourceFacade;
 import org.openkoala.gqc.facade.dto.DataSourceDTO;
+import org.openkoala.koala.commons.InvokeResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,27 +29,13 @@ public class DataSourceController {
 	/**
 	 * 增加数据源
 	 * 
-	 * @param dataSourceVO
+	 * @param dsDTO
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/add")
-	public Map<String, Object> add(DataSourceDTO dataSourceVO) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-
-		try {
-			String errorMsg = dataSourceFacade.saveDataSource(dataSourceVO);
-			if (errorMsg == null) {
-				dataMap.put("result", "success");
-			} else {
-				dataMap.put("result", errorMsg);
-			}
-		} catch (Exception e) {
-			dataMap.put("result", "新增失败！");
-			e.printStackTrace();
-		}
-
-		return dataMap;
+	public InvokeResult add(DataSourceDTO dsDTO) {
+		return dataSourceFacade.createDataSource(dsDTO);
 	}
 
 	/**
@@ -63,21 +46,8 @@ public class DataSourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public Map<String, Object> update(DataSourceDTO dataSourceVO) {
-		// Json对象
-		Map<String, Object> dataMap = null;
-		try {
-			dataMap = new HashMap<String, Object>();
-
-			dataSourceFacade.updateDataSource(dataSourceVO);
-
-			dataMap.put("result", "success");
-		} catch (Exception e) {
-			if (dataMap != null) {
-				dataMap.put("result", "保存失败！");
-			}
-		}
-		return dataMap;
+	public InvokeResult update(DataSourceDTO dto) {
+		return dataSourceFacade.updateDataSource(dto);
 	}
 
 	/**
@@ -89,8 +59,7 @@ public class DataSourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/pageJson")
-	public Page pageJson(int page, int pagesize) {
-		// Json对象
+	public Page<DataSourceDTO> pageJson(int page, int pagesize) {
 		return dataSourceFacade.pageQueryDataSource(new DataSourceDTO(), page, pagesize);
 	}
 
@@ -102,26 +71,16 @@ public class DataSourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/delete")
-	public Map<String, Object> delete(String ids) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		try {
-			if (ids != null) {
-				String[] idArrs = ids.split(",");
-				Long[] idsLong = new Long[idArrs.length];
-				for (int i = 0; i < idArrs.length; i++) {
-					idsLong[i] = Long.parseLong(idArrs[i]);
-				}
-				dataSourceFacade.removeDataSources(idsLong);
-			}
-
-			dataMap.put("result", "success");
-		} catch (RuntimeException e) {
-			dataMap.put("result", e.getMessage());
-		} catch (Exception e) {
-			dataMap.put("result", "删除失败！");
-			e.printStackTrace();
+	public InvokeResult delete(String ids) {
+		if (ids == null) {
+			return InvokeResult.failure("数据源ID不能为空");
 		}
-		return dataMap;
+		String[] idArrs = ids.split(",");
+		Long[] idsLong = new Long[idArrs.length];
+		for (int i = 0; i < idArrs.length; i++) {
+			idsLong[i] = Long.parseLong(idArrs[i]);
+		}
+		return dataSourceFacade.removeDataSources(idsLong);
 	}
 
 	/**
@@ -132,73 +91,31 @@ public class DataSourceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/get/{id}")
-	public Map<String, Object> get(@PathVariable("id") Long id) {
-		// Json对象
-		Map<String, Object> dataMap = null;
-		try {
-			dataMap = new HashMap<String, Object>();
-
-			dataMap.put("data", dataSourceFacade.getDataSourceDTOById(id));
-		} catch (Exception e) {
-			if (dataMap != null) {
-				dataMap.put("error", "查询指定数据源失败！");
-			}
-		}
-		return dataMap;
+	public DataSourceDTO get(@PathVariable("id") Long id) {
+		return dataSourceFacade.getById(id);
 	}
 
 	/**
-	 * 检测数据源是否可用
+	 * 检测数据源是否可用，修改页面
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/checkDataSourceById")
-	public Map<String, Object> checkDataSourceById(Long id) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		try {
-			boolean result = dataSourceFacade.testConnection(id);
-			if (result) {
-				dataMap.put("result", "该数据源可用");
-			} else {
-				dataMap.put("result", "该数据源不可用");
-			}
-		} catch (RuntimeException e) {
-			dataMap.put("result", e.getMessage());
-		} catch (Exception e) {
-			dataMap.put("result", "检测数据源是否可用失败！");
-			e.printStackTrace();
-		}
-		return dataMap;
+	public InvokeResult checkDataSourceById(Long id) {
+		return dataSourceFacade.checkDataSourceCanConnect(id);
 	}
 
 	/**
-	 * 检测数据源是否可用
+	 * 检测数据源是否可用，新增页面
 	 * 
 	 * @param dataSourceVO
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("/checkDataSource")
-	public Map<String, Object> checkDataSource(DataSource dataSource) {
-		// Json对象
-		Map<String, Object> dataMap = null;
-		try {
-			dataMap = new HashMap<String, Object>();
-
-			boolean result = dataSourceFacade.checkDataSourceCanConnect(dataSource);
-			if (result) {
-				dataMap.put("result", "该数据源可用");
-			} else {
-				dataMap.put("result", "该数据源不可用");
-			}
-		} catch (Exception e) {
-			if (dataMap != null) {
-				dataMap.put("error", "检测数据源是否可用失败！");
-			}
-		}
-		return dataMap;
+	public InvokeResult checkDataSourceById(DataSourceDTO dataSourceDTO) {
+		return dataSourceFacade.checkDataSourceCanConnect(dataSourceDTO);
 	}
-
 }

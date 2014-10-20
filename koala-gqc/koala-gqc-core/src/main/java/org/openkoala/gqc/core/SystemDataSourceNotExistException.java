@@ -1,8 +1,9 @@
-package org.openkoala.gqc.core.exception;
+package org.openkoala.gqc.core;
 
 public class SystemDataSourceNotExistException extends GqcException {
+
 	private static final long serialVersionUID = -799753224561578269L;
-	
+
 	public SystemDataSourceNotExistException() {
 		super();
 	}

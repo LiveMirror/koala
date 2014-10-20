@@ -1,148 +1,68 @@
 package org.openkoala.gqc.application.impl;
 
-
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Named;
 
-import org.dayatang.domain.AbstractEntity;
-import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.QueryChannelService;
+import org.apache.commons.beanutils.BeanUtils;
 import org.dayatang.utils.Page;
 import org.openkoala.gqc.application.GqcApplication;
 import org.openkoala.gqc.core.domain.GeneralQuery;
-import org.openkoala.gqc.core.domain.GeneralQueryEntity;
 import org.springframework.transaction.annotation.Transactional;
-/**
- * 通用查询器应用层实现，提供增删改查功能
- *
- */
+
 @Named
-@Transactional(value="transactionManager_gqc")
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-//@Stateless(name = "GqcApplication")
-//@Remote
+@Transactional(value = "transactionManager_gqc")
 public class GqcApplicationImpl implements GqcApplication {
 
-	/**
-	 * 查询通道
-	 */
-	private static QueryChannelService queryChannel;
-
-	/**
-	 * 获取查询通道实例
-	 * @return
-	 */
-	private static QueryChannelService getQueryChannelService() {
-		if (queryChannel == null) {
-			queryChannel = InstanceFactory.getInstance(QueryChannelService.class, "queryChannel_gqc");
-		}
-		return queryChannel;
-	}
-	
-	public <T extends GeneralQueryEntity> T getEntity(Class<T> clazz, Long id) {
-		try {
-			return AbstractEntity.get(clazz, id);
-		} catch (Exception e) {
-			throw new RuntimeException("查询指定查询器失败！", e);
-		}
-	}
-	
-	public void saveEntity(GeneralQueryEntity entity) {
-	    try {
-			entity.save();
-		} catch (Exception e) {
-			throw new RuntimeException("保存查询器失败！", e);
-		}
-	}
-
-	public void updateEntity(GeneralQueryEntity entity) {
-	    try{
-	    	entity.save();}
-	    catch(Exception e) {
-	    	throw new RuntimeException("修改查询器失败！", e);
-	    }
-	}
-
-	public void removeEntity(String ids){
-		
-		  if(ids != null){
-	            String[] idArrs = ids.split(",");
-	            for (int i = 0; i < idArrs.length; i ++) {
-	            	GeneralQuery generalQuerie  =  GeneralQuery.get(GeneralQuery.class, Long.parseLong(idArrs[i]));
-	            	generalQuerie.remove();
-	            }
-	            
-	        }
-	        
-	}
-	
-	public void removeEntity(GeneralQueryEntity entity) {
-		try {
-			entity.remove();
-		} catch (Exception e) {
-			throw new RuntimeException("删除指定查询器失败！", e);
-		}
-	}
-
-	/*public Page<GeneralQuery> pagingQueryGeneralQueries(int currentPage, int pagesize) {
-	   	StringBuilder jpql = null;
-		List<Object> conditionVals = null;
-		try {
-			jpql = new StringBuilder("select _generalQuery from GeneralQuery _generalQuery");
-			conditionVals = new ArrayList<Object>();
-			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
-		} catch (Exception e) {
-			throw new RuntimeException("查询失败！", e);
-		}
-	}*/
-	
-	public GeneralQuery getById(Long id){
-	    try {
+	@Override
+	public GeneralQuery getQuerier(Long id) {
+		try{
 			return GeneralQuery.get(GeneralQuery.class, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("查询指定的查询器失败！", e);
+		}catch(Exception e){
+			throw new RuntimeException("获取查询器失败");
 		}
+	}
+
+	@Override
+	public void saveQuerier(GeneralQuery querier) {
+		querier.save();
+	}
+
+	@Override
+	public void updateQuerier(GeneralQuery querier) {
+		try{
+			BeanUtils.copyProperties(getQuerier(querier.getId()), querier);
+		}catch(Exception e){
+			throw new RuntimeException("修改查询器失败");
+		}
+	}
+
+	@Override
+	public void removeQueier(Long id) {
+			removeQueiers(new Long[]{id});
+	}
+
+	@Override
+	public void removeQueiers(Long[] ids) {
+		try{
+			for(Long id :ids)
+				getQuerier(id).remove();
+		}catch(Exception e){
+			throw new RuntimeException("删除查询器失败");
+		}
+	}
+
+	@Override
+	public List<Map<String, Object>> pagingQuery(int currentPage, int pagesize, GeneralQuery querier ) {
+		return querier.pagingQuery(currentPage, pagesize);
+	}
+
+	@Override
+	public Page<Map<String, Object>> pagingQueryWithPage(GeneralQuery querier, int currentPage, int pagesize) {
+		return querier.pagingQueryPage(currentPage, pagesize);
 	}
 	
-	public <T extends GeneralQueryEntity> void removeEntities(Set<T> entities) {
-		try {
-			for (GeneralQueryEntity entity : entities) {
-				removeEntity(entity);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException("批量删除失败！", e);
-		}
-	}
-
-	/*public Page<GeneralQuery> pagingQueryGeneralQueriesByQueryName(String queryName, int currentPage, int pagesize) {
-	   	StringBuilder jpql = null;
-		List<Object> conditionVals = null;
-		try {
-			jpql = new StringBuilder("select _generalQuery from GeneralQuery _generalQuery");
-			conditionVals = new ArrayList<Object>();
-			
-			if (queryName != null && !queryName.isEmpty()) {
-				jpql = jpql.append(" where _generalQuery.queryName like ?");
-				conditionVals.add("%" + queryName + "%");
-			}
-			return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("查询失败！", e);
-		}
-	}*/
-
-	@Override
-	public Page<Map<String, Object>> pagingQuery(GeneralQuery generalQuery, int currentPage, int pagesize) {
-		return generalQuery.pagingQueryPage(currentPage, pagesize);
-	}
-
-	@Override
-	public void saveGeneralQuery(GeneralQuery generalQuery) {
-		generalQuery.save();
-	}
+	
 	
 }

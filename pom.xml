@@ -210,7 +210,7 @@
         <jcaptcha.version>2.0-alpha-1</jcaptcha.version>
         <jstl.standard.version>1.1.2</jstl.standard.version>
 	</properties>
-
+	<!--
 	<profiles>
 		<profile>
 			<id>default</id>
@@ -234,10 +234,32 @@
 				<generateDdl>true</generateDdl>
 			</properties>
 		</profile>
-
-
 	</profiles>
-
+	-->
+	<profiles>
+		<!-- MYSQL DB -->
+		<profile>
+			<id>MySQL</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
+				<hibernate.show_sql>true</hibernate.show_sql>
+				<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
+				<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
+				<db.connectionURL>jdbc:mysql://172.16.1.222:3306/koala_security_org</db.connectionURL>
+				<db.username>root</db.username>
+				<db.password>koala</db.password>
+				<db.Type>MYSQL</db.Type>
+				<db.testsql>select 1</db.testsql>
+				<db.generateDdl>true</db.generateDdl>
+				<db.groupId>mysql</db.groupId>
+				<db.artifactId>mysql-connector-java</db.artifactId>
+			</properties>
+		</profile>
+	</profiles>	
+	
 	<dependencyManagement>
 
 		<dependencies>
