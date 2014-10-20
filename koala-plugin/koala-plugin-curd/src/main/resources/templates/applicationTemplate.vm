@@ -13,7 +13,7 @@ public interface ${applicationClass.name} {
 
 	public ${domainClass} get${domainClass}($applicationClass.entityModel.singleIDFieldModel.simpleType ${applicationClass.entityModel.singleIDFieldModel.name});
 	
-	public void save${domainClass}(${domainClass} ${variableName});
+	public void creat${domainClass}(${domainClass} ${variableName});
 	
 	public void update${domainClass}(${domainClass} ${variableName});
 	

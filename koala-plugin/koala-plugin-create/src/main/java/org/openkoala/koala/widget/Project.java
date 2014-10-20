@@ -28,13 +28,19 @@ public class Project implements Serializable {
 	
 	private Example example;
 	
+	private static final String SECURITY_ORG_PACKAGE="org.openkoala.security.core.domain";
+	
+	private static final String ORG_SECURITY_PACKAGE="org.openkoala.organisation.domain";
+	
+	private static final String EXAMPLE_PACKAGE="org.openkoala.example.domain";
+	
 	private static final String BUSINESS_LOG_PACKAGE="org.openkoala.businesslog.model";
 	
 	private static final String ORGANISATION_PACKAGE= "org.openkoala.organisation.domain";
 	
 	private static final String GENERATY_QUERY_PACKAGE= "org.openkoala.gqc.core.domain";
 	
-	private static final String SECURITY_PACKAGE= "org.openkoala.koala.auth.core.*";
+	private static final String SECURITY_PACKAGE= "org.openkoala.security.core.domain";
 	
 	private static final String MONITOR_DOMAIN_PCAKGE = "org.openkoala.koala.monitor.domain";
 	
@@ -307,7 +313,16 @@ public class Project implements Serializable {
 				if (mod.getBusinessLog() != null) {
 					packages.add(BUSINESS_LOG_PACKAGE);
 				}
+				
+				if (mod.getSecurityOrg() != null) {
+					packages.add(SECURITY_ORG_PACKAGE);
+					packages.add(ORG_SECURITY_PACKAGE);
+				}
+				
 			}
+		}
+		if(this.getExample() != null){
+			packages.add(EXAMPLE_PACKAGE);
 		}
 		return packages;
 	}

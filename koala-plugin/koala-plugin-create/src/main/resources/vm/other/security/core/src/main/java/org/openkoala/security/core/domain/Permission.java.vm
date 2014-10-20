@@ -14,10 +14,9 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
- * 权限。代表系统的一项操作或功能。
+ * 权限是一个抽象的概念，代表一项操作或责任，因此是授权的细粒度表现。
  * 
- * @author luzhao
- * 
+ * @author lucas
  */
 @Entity
 @DiscriminatorValue("PERMISSION")

@@ -18,14 +18,17 @@ public class PersonInfo extends KoalaAbstractEntity {
 	private static final long serialVersionUID = -8117884889431440517L;
 	
 	//姓名	
+	@Column(nullable=false)
 	private String name;
 	//年龄
 	private Integer age;
 	//性别
 	private String sex;
 	//身份证号码
+	@Column(name="identity_card_number",nullable=false)
 	private String identityCardNumber;
 	//出生日期	
+	@Temporal(TemporalType.DATE)
 	private Date birthday;
 	//是否已婚
 	private Boolean married;
@@ -35,8 +38,8 @@ public class PersonInfo extends KoalaAbstractEntity {
 	public PersonInfo() {}
 
 	public PersonInfo(String name, String sex,
-			String identityCardNumber, Date birthday, Boolean married,
-			Double proceeds) {
+			String identityCardNumber, Date birthday,
+			Boolean married,Double proceeds) {
 		super();
 		this.name = name;
 		this.sex = sex;
@@ -46,7 +49,6 @@ public class PersonInfo extends KoalaAbstractEntity {
 		this.proceeds = proceeds;
 	}
 
-	@Column(nullable=false)
 	public String getName() {
 		return name;
 	}
@@ -54,21 +56,14 @@ public class PersonInfo extends KoalaAbstractEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	@Transient
-	public Integer getAge() {		
-	   return getYear(new Date()) - getYear(birthday);
-	}
 
-	private int getYear(Date birthday) {
-		return birthday.getYear();
+	public Integer getAge() {		
+	   return this.age;
 	}
 
 	public void setAge(Integer age) {
 		this.age = age;
 	}
-
-	
 
 	public String getSex() {
 		return sex;
@@ -78,7 +73,6 @@ public class PersonInfo extends KoalaAbstractEntity {
 		this.sex = sex;
 	}
 
-	@Column(name="identity_card_number",nullable=false)
 	public String getIdentityCardNumber() {
 		return identityCardNumber;
 	}
@@ -87,7 +81,6 @@ public class PersonInfo extends KoalaAbstractEntity {
 		this.identityCardNumber = identityCardNumber;
 	}
 
-	@Temporal(TemporalType.DATE)
 	public Date getBirthday() {
 		return birthday;
 	}

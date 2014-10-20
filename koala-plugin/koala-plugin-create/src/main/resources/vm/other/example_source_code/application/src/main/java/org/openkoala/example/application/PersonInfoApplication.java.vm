@@ -1,22 +1,21 @@
-
 package org.openkoala.example.application;
 
 import java.util.List;
+
 import org.openkoala.example.domain.PersonInfo;
 
 public interface PersonInfoApplication {
 
-	public PersonInfo getPersonInfo(Long id);
+	 PersonInfo getPersonInfo(Long id);
 	
-	public PersonInfo savePersonInfo(PersonInfo personInfo);
+	 void savePersonInfo(PersonInfo personInfo);
 	
-	public void updatePersonInfo(PersonInfo personInfo);
+	 void updatePersonInfo(PersonInfo personInfo);
 	
-	public void removePersonInfo(Long id);
+	 void removePersonInfo(PersonInfo personInfo);
 	
-	public void removePersonInfos(Long[] ids);
+	 void removePersonInfos(List<PersonInfo> personInfos);
 	
-	public List<PersonInfo> findAllPersonInfo();
-
+	 List<PersonInfo> findAllPersonInfo();
 }
 

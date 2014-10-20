@@ -13,13 +13,20 @@ import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.application.SecurityDBInitApplication;
-import org.openkoala.security.core.*;
+import org.openkoala.security.core.CorrelationException;
+import org.openkoala.security.core.EmailIsExistedException;
+import org.openkoala.security.core.IdentifierIsExistedException;
+import org.openkoala.security.core.NameIsExistedException;
+import org.openkoala.security.core.NullArgumentException;
+import org.openkoala.security.core.TelePhoneIsExistedException;
+import org.openkoala.security.core.UrlIsExistedException;
+import org.openkoala.security.core.UserAccountIsExistedException;
+import org.openkoala.security.core.UserPasswordException;
 import org.openkoala.security.core.domain.Authority;
 import org.openkoala.security.core.domain.MenuResource;
 import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
-import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 import org.openkoala.security.facade.SecurityConfigFacade;
@@ -48,9 +55,11 @@ import org.openkoala.security.facade.impl.assembler.UrlAccessResourceAssembler;
 import org.openkoala.security.facade.impl.assembler.UserAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 
+@Transactional(value = "transactionManager_security")
 @Named
 public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
@@ -84,7 +93,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     public InvokeResult terminateUsers(Long[] userIds, String currentUserAccount) {
         InvokeResult result = null;
         for (Long userId : userIds) {
-            result = this.terminateUser(userId,currentUserAccount);
+            result = this.terminateUser(userId, currentUserAccount);
             if (!result.isSuccess()) {
                 break;
             }
@@ -95,7 +104,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     
     public InvokeResult terminateUser(Long userId, String currentUserAccount) {
         User user = securityAccessApplication.getUserById(userId);
-        if(user.getUserAccount().equals(currentUserAccount)){
+        if (user.getUserAccount().equals(currentUserAccount)) {
             return InvokeResult.failure("不能撤销自己！");
         }
         securityConfigApplication.terminateActor(user);
@@ -145,9 +154,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult terminateMenuResources(Long[] menuResourceIds) {
+    public InvokeResult terminateMenuResources(Long[] resourceIds) {
         InvokeResult result = null;
-        for (Long menuResourceId : menuResourceIds) {
+        for (Long menuResourceId : resourceIds) {
             result = terminateMenuResource(menuResourceId);
             if (!result.isSuccess()) {
                 break;
@@ -157,9 +166,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult terminateMenuResource(Long menuResourceId) {
+    public InvokeResult terminateMenuResource(Long resourceId) {
         try {
-            MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
+            MenuResource menuResource = securityAccessApplication.getMenuResourceBy(resourceId);
             securityConfigApplication.terminateSecurityResource(menuResource);
             return InvokeResult.success();
         } catch (CorrelationException e) {
@@ -168,36 +177,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("撤销菜单全线资源失败。");
-        }
-    }
-
-    
-    public void grantRoleToUserInScope(Long userId, Long roleId, Long scopeId) {
-        User user = securityAccessApplication.getUserById(userId);
-        Role role = securityAccessApplication.getRoleBy(roleId);
-        Scope scope = securityAccessApplication.getScope(scopeId);
-        securityConfigApplication.grantActorToAuthorityInScope(user, role, scope);
-    }
-
-    
-    public void grantRolesToUserInScope(Long userId, Long[] roleIds, Long scopeId) {
-        for (Long roleId : roleIds) {
-            this.grantRoleToUserInScope(userId, roleId, scopeId);
-        }
-    }
-
-    
-    public void grantPermissionToUserInScope(Long userId, Long permissionId, Long scopeId) {
-        User user = securityAccessApplication.getUserById(userId);
-        Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-        Scope scope = securityAccessApplication.getScope(scopeId);
-        securityConfigApplication.grantActorToAuthorityInScope(user, permission, scope);
-    }
-
-    
-    public void grantPermissionsToUserInScope(Long userId, Long[] permissionIds, Long scopeId) {
-        for (Long permissionId : permissionIds) {
-            this.grantPermissionToUserInScope(userId, permissionId, scopeId);
         }
     }
 
@@ -258,7 +237,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         User user = null;
         try {
             user = securityAccessApplication.getUserById(userId);
-            if(!user.isDisabled()){
+            if (!user.isDisabled()) {
                 return InvokeResult.failure("用户：" + user.getUserAccount() + "已经是激活状态，不需要再次激活！");
             }
             securityConfigApplication.activateUser(user);
@@ -274,7 +253,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         User user = null;
         try {
             user = securityAccessApplication.getUserById(userId);
-            if(user.isDisabled()){
+            if (user.isDisabled()) {
                 return InvokeResult.failure("用户：" + user.getUserAccount() + "已经是禁用状态，不需要再次禁用！");
             }
 
@@ -315,7 +294,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult terminateAuthorizationByUserInRole(Long userId, Long roleId) {
+    public InvokeResult terminateUserFromRole(Long userId, Long roleId) {
         try {
             Role role = securityAccessApplication.getRoleBy(roleId);
             User user = securityAccessApplication.getUserById(userId);
@@ -328,7 +307,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult terminateAuthorizationByUserInPermission(Long userId, Long permissionId) {
+    public InvokeResult terminateUserFromPermission(Long userId, Long permissionId) {
         try {
             User user = securityAccessApplication.getUserById(userId);
             Permission permission = securityAccessApplication.getPermissionBy(permissionId);
@@ -342,7 +321,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     // TODO 待优化。。。
     
-    public InvokeResult terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds) {
+    public InvokeResult terminateUserFromRoles(Long userId, Long[] roleIds) {
         try {
             User user = securityAccessApplication.getUserById(userId);
             for (Long roleId : roleIds) {
@@ -357,10 +336,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds) {
+    public InvokeResult terminateUserFromPermissions(Long userId, Long[] permissionIds) {
         try {
             for (Long permissionId : permissionIds) {
-                InvokeResult invokeResult = this.terminateAuthorizationByUserInPermission(userId, permissionId);
+                InvokeResult invokeResult = this.terminateUserFromPermission(userId, permissionId);
                 if (!invokeResult.isSuccess()) {
                     break;
                 }
@@ -444,12 +423,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public void grantMethodInvocationResourcesToRole(Long roleId, Long[] menuResourceIds) {
-        // TODO Auto-generated method stub
-
-    }
-
-    
     public InvokeResult grantPermissionsToRole(Long roleId, Long[] permissionIds) {
         Role role = securityAccessApplication.getRoleBy(roleId);
         for (Long permissionId : permissionIds) {
@@ -471,9 +444,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult terminateUrlAccessResources(Long[] urlAccessResourceIds) {
+    public InvokeResult terminateUrlAccessResources(Long[] resourceIds) {
         InvokeResult result = null;
-        for (Long urlAccessResourceId : urlAccessResourceIds) {
+        for (Long urlAccessResourceId : resourceIds) {
             result = this.terminateUrlAccessResource(urlAccessResourceId);
             if (!result.isSuccess()) {
                 break;
@@ -482,9 +455,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         return InvokeResult.success();
     }
 
-    public InvokeResult terminateUrlAccessResource(Long urlAccessResourceId) {
+    public InvokeResult terminateUrlAccessResource(Long resourceId) {
         try {
-            UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+            UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(resourceId);
             securityConfigApplication.terminateSecurityResource(urlAccessResource);
             return InvokeResult.success();
         } catch (CorrelationException e) {
@@ -507,21 +480,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public void grantUrlAccessResourceToPermission(Long urlAccessResourceId, Long permissionId) {
-        Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-        UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
-        securityConfigApplication.grantSecurityResourceToAuthority(urlAccessResource, permission);
-    }
-
-    
-    public void terminateUrlAccessResourceFromPermission(Long urlAccessResourceId, Long permissionId) {
-        Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-        UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
-        securityConfigApplication.terminateSecurityResourceFromAuthority(urlAccessResource, permission);
-    }
-
-    
-    public InvokeResult grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
+    public InvokeResult grantPermisssionToUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
         UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
         Permission permission = securityAccessApplication.getPermissionBy(permissionId);
         securityConfigApplication.grantAuthorityToSecurityResource(permission, urlAccessResource);
@@ -529,7 +488,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
+    public InvokeResult terminatePermissionFromUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
         UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
         Permission permission = securityAccessApplication.getPermissionBy(permissionId);
         securityConfigApplication.terminateAuthorityFromSecurityResource(permission, urlAccessResource);
@@ -537,7 +496,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId) {
+    public InvokeResult grantPermisssionToMenuResource(Long permissionId, Long menuResourceId) {
         MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
         Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
         securityConfigApplication.grantAuthorityToSecurityResource(permssion, menuResource);
@@ -546,7 +505,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId) {
+    public InvokeResult terminatePermissionFromMenuResource(Long permissionId, Long menuResourceId) {
         MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
         Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
         securityConfigApplication.terminateAuthorityFromSecurityResource(permssion, menuResource);
@@ -555,9 +514,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult terminatePageElementResources(Long[] pageElementResourceIds) {
+    public InvokeResult terminatePageElementResources(Long[] resourceIds) {
         InvokeResult result = null;
-        for (Long pageElementResourceId : pageElementResourceIds) {
+        for (Long pageElementResourceId : resourceIds) {
             result = this.terminatePageElementResource(pageElementResourceId);
             if (!result.isSuccess()) {
                 break;
@@ -566,9 +525,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         return result;
     }
 
-    public InvokeResult terminatePageElementResource(Long pageElementResourceId) {
+    public InvokeResult terminatePageElementResource(Long resourceId) {
         try {
-            PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+            PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(resourceId);
             securityConfigApplication.terminateSecurityResource(pageElementResource);
             return InvokeResult.success();
         } catch (CorrelationException e) {
@@ -592,7 +551,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult grantPermisssionsToPageElementResource(Long permissionId, Long pageElementResourceId) {
+    public InvokeResult grantPermisssionToPageElementResource(Long permissionId, Long pageElementResourceId) {
         PageElementResource pageElementResource = securityAccessApplication
                 .getPageElementResourceBy(pageElementResourceId);
         Permission permission = securityAccessApplication.getPermissionBy(permissionId);
@@ -601,7 +560,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public InvokeResult terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId) {
+    public InvokeResult terminatePermissionFromPageElementResource(Long permissionId, Long pageElementResourceId) {
         PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
         Permission permission = securityAccessApplication.getPermissionBy(permissionId);
         securityConfigApplication.terminateAuthorityFromSecurityResource(permission, pageElementResource);
@@ -609,13 +568,13 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     }
 
     
-    public boolean checkUserHasPageElementResource(String userAccount, String currentRoleName,String securityResourceIdentifier) {
+    public boolean checkUserHasPageElementResource(String userAccount, String roleNameOfUser, String resourceIdentifier) {
 
-        if (!securityAccessApplication.hasPageElementResource(securityResourceIdentifier)) {
+        if (!securityAccessApplication.hasPageElementResource(resourceIdentifier)) {
             return true;
         }
 
-        Role role = securityAccessApplication.getRoleBy(currentRoleName);
+        Role role = securityAccessApplication.getRoleBy(roleNameOfUser);
         Set<Permission> rolePermissions = role.getPermissions();
         List<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
 
@@ -624,12 +583,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         authorities.addAll(userPermissions);
         authorities.addAll(rolePermissions);
 
-        return securityConfigApplication.checkAuthoritiHasPageElementResource(authorities, securityResourceIdentifier);
+        return securityConfigApplication.checkAuthoritiHasPageElementResource(authorities, resourceIdentifier);
     }
 
     
     public void initSecuritySystem() {
-        if(securityAccessApplication.hasUserExisted()){
+        if (securityAccessApplication.hasUserExisted()) {
             return;
         }
         User user = securityDBInitApplication.initUser();
@@ -637,10 +596,10 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         List<MenuResource> menuResources = securityDBInitApplication.initMenuResources();
         List<PageElementResource> pageElementResources = securityDBInitApplication.initPageElementResources();
         List<UrlAccessResource> urlAccessResources = securityDBInitApplication.initUrlAccessResources();
-        securityConfigApplication.grantAuthorityToActor(role,user);
-        securityConfigApplication.grantSecurityResourcesToAuthority(menuResources,role);
-        securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResources,role);
-        securityConfigApplication.grantSecurityResourcesToAuthority(urlAccessResources,role);
+        securityConfigApplication.grantAuthorityToActor(role, user);
+        securityConfigApplication.grantSecurityResourcesToAuthority(menuResources, role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResources, role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(urlAccessResources, role);
     }
 
     
@@ -731,7 +690,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         try {
             UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(command.getId());
             securityConfigApplication.changeNameOfUrlAccessResource(urlAccessResource, command.getName());
-            securityConfigApplication.changeUrlOfUrlAccessResource(urlAccessResource, command.getUrl());
             urlAccessResource.setDescription(command.getDescription());
             securityConfigApplication.createSecurityResource(urlAccessResource);
             return InvokeResult.success();
@@ -741,9 +699,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         } catch (NameIsExistedException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("更新URL访问权限资源名称：" + command.getName() + "已经存在。");
-        } catch (UrlIsExistedException e) {
-            LOGGER.error(e.getMessage(), e);
-            return InvokeResult.failure("更新URL访问权限资源URL：" + command.getUrl() + "已经存在。");
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("更新URL访问权限资源失败。");
@@ -816,7 +771,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         try {
             Permission permission = securityAccessApplication.getPermissionBy(command.getId());
             securityConfigApplication.changeNameOfPermission(permission, command.getName());
-            securityConfigApplication.changeIdentifierOfPermission(permission, command.getIdentifier());
             permission.setDescription(command.getDescription());
             return InvokeResult.success();
         } catch (NullArgumentException e) {
@@ -825,9 +779,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         } catch (NameIsExistedException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("添加权限失败，权限名称：" + command.getName() + " 已经存在。");
-        } catch (IdentifierIsExistedException e) {
-            LOGGER.error(e.getMessage(), e);
-            return InvokeResult.failure("添加权限失败，权限标识：" + command.getIdentifier() + " 已经存在。");
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("更改权限失败。");
@@ -886,7 +837,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         try {
             PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(command.getId());
             securityConfigApplication.changeNameOfPageElementResouce(pageElementResource, command.getName());
-            securityConfigApplication.changeIdentifierOfPageElementResouce(pageElementResource, command.getIdentifier());
             pageElementResource.setDescription(command.getDescription());
             securityConfigApplication.createSecurityResource(pageElementResource);
             return InvokeResult.success();
@@ -896,9 +846,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         } catch (NameIsExistedException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("页面元素权限资源名称" + command.getName() + "已经存在");
-        } catch (IdentifierIsExistedException e) {
-            LOGGER.error(e.getMessage(), e);
-            return InvokeResult.failure("页面元素权限资源标识" + command.getIdentifier() + "已经存在");
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("更改页面元素权限资源失败。");

@@ -15,11 +15,10 @@ import org.openkoala.example.application.PersonInfoApplication;
 import org.openkoala.example.domain.PersonInfo;
 import org.openkoala.example.facade.PersonInfoFacade;
 import org.openkoala.example.facade.dto.PersonInfoDTO;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.openkoala.example.facade.impl.assembler.PersonInfoAssembler;
+import org.openkoala.koala.commons.InvokeResult;
 
 @Named
-@Transactional
 public class PersonInfofacadeImpl implements PersonInfoFacade {
 
 	@Inject
@@ -34,95 +33,93 @@ public class PersonInfofacadeImpl implements PersonInfoFacade {
      return queryChannel;
     }
 	
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersonInfoDTO getPersonInfo(Long id) {
+	public InvokeResult getPersonInfo(Long id) {
 		PersonInfo personInfo = personInfoApplication.getPersonInfo(id);
-		PersonInfoDTO dto = new PersonInfoDTO();
-		return dto.personInfoEntityToDTO(personInfo);
+		return InvokeResult.success(PersonInfoAssembler.toDTO(personInfo));
 	}
 	
-	public PersonInfoDTO savePersonInfo(PersonInfoDTO personInfoDTO) {
-		PersonInfo personInfo = personInfoDTO.personInfoDTOToEntity(personInfoDTO);
-		personInfo.save();
+	public InvokeResult savePersonInfo(PersonInfoDTO personInfoDTO) {
+		PersonInfo personInfo = PersonInfoAssembler.toEntity(personInfoDTO);
+		personInfoApplication.savePersonInfo(personInfo);
 		personInfoDTO.setId((java.lang.Long)personInfo.getId());
-		return personInfoDTO;
+		return InvokeResult.success(personInfoDTO);
 	}
 	
-	public void updatePersonInfo(PersonInfoDTO personInfoDTO) {
-		//PersonInfo personInfo = PersonInfo.get(PersonInfo.class, personInfoDTO.getId());
-		PersonInfo personInfo = personInfoDTO.personInfoDTOToEntity(personInfoDTO);
+	public InvokeResult updatePersonInfo(PersonInfoDTO personInfoDTO) {
+		PersonInfo personInfo = PersonInfoAssembler.toEntity(personInfoDTO);
 		personInfoApplication.updatePersonInfo(personInfo);
+		return InvokeResult.success();
 	}
 	
-	public void removePersonInfo(Long id) {
-		this.removePersonInfos(new Long[] { id });
-	}
-	
-	public void removePersonInfos(Long[] ids) {
-		for (int i = 0; i < ids.length; i++) {
-			personInfoApplication.removePersonInfo(ids[i]);
+	public InvokeResult removePersonInfo(Long id) {
+		PersonInfo personInfo = personInfoApplication.getPersonInfo(id);
+		if(personInfo == null){
+			return InvokeResult.failure("人员信息不存在！");
 		}
+		personInfoApplication.removePersonInfo(personInfo);
+		return InvokeResult.success("删除成功");
 	}
 	
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public InvokeResult removePersonInfos(Long[] ids) {
+		List<PersonInfo> personInfos = new ArrayList<PersonInfo>();
+		for (long id : ids) {
+			PersonInfo personInfo = personInfoApplication.getPersonInfo(id);
+			if(personInfo != null){
+				personInfos.add(personInfo);
+			}
+		}
+		personInfoApplication.removePersonInfos(personInfos);
+		return InvokeResult.success();
+	}
+	
 	public List<PersonInfoDTO> findAllPersonInfo() {
-		List<PersonInfoDTO> list = new ArrayList<PersonInfoDTO>();		
-		List<PersonInfo> all = personInfoApplication.findAllPersonInfo();
-		for (PersonInfo personInfo : all) {
-			PersonInfoDTO dto = new PersonInfoDTO();
-			list.add(dto.personInfoEntityToDTO(personInfo));
-		}
-		return list;
-	}
+		return PersonInfoAssembler.toDTOs(personInfoApplication.findAllPersonInfo());
+	}	
 	
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Page<PersonInfoDTO> pageQueryPersonInfo(PersonInfoDTO queryVo, int currentPage, int pageSize) {
+	public Page<PersonInfoDTO> pageQueryPersonInfo(PersonInfoDTO personInfoDTO, int currentPage, int pageSize) {
 		List<PersonInfoDTO> result = new ArrayList<PersonInfoDTO>();
 		List<Object> conditionVals = new ArrayList<Object>();
 	   	StringBuilder jpql = new StringBuilder("select _personInfo from PersonInfo _personInfo   where 1=1 ");
 	
 	
-	   	if (queryVo.getName() != null && !"".equals(queryVo.getName())) {
+	   	if (personInfoDTO.getName() != null && !"".equals(personInfoDTO.getName())) {
 	   		jpql.append(" and _personInfo.name like ?");
-	   		conditionVals.add(MessageFormat.format("%{0}%", queryVo.getName()));
+	   		conditionVals.add(MessageFormat.format("%{0}%", personInfoDTO.getName()));
 	   	}		
 	
 	
-	   	if (queryVo.getSex() != null && !"".equals(queryVo.getSex())) {
+	   	if (personInfoDTO.getSex() != null && !"".equals(personInfoDTO.getSex())) {
 	   		jpql.append(" and _personInfo.sex like ?");
-	   		conditionVals.add(MessageFormat.format("%{0}%", queryVo.getSex()));
+	   		conditionVals.add(MessageFormat.format("%{0}%", personInfoDTO.getSex()));
 	   	}		
 	
-	   	if (queryVo.getIdentityCardNumber() != null && !"".equals(queryVo.getIdentityCardNumber())) {
+	   	if (personInfoDTO.getIdentityCardNumber() != null && !"".equals(personInfoDTO.getIdentityCardNumber())) {
 	   		jpql.append(" and _personInfo.identityCardNumber like ?");
-	   		conditionVals.add(MessageFormat.format("%{0}%", queryVo.getIdentityCardNumber()));
+	   		conditionVals.add(MessageFormat.format("%{0}%", personInfoDTO.getIdentityCardNumber()));
 	   	}		
 	
-	   	if (queryVo.getBirthday() != null) {
+	   	if (personInfoDTO.getBirthday() != null) {
 	   		jpql.append(" and _personInfo.birthday between ? and ? ");
-	   		conditionVals.add(queryVo.getBirthday());
-	   		conditionVals.add(queryVo.getBirthdayEnd());
+	   		conditionVals.add(personInfoDTO.getBirthday());
+	   		conditionVals.add(personInfoDTO.getBirthdayEnd());
 	   	}	
 	
-	   	if (queryVo.getMarried() != null) {
+	   	if (personInfoDTO.getMarried() != null) {
 		   	jpql.append(" and _personInfo.married is ?");
-		   	conditionVals.add(queryVo.getMarried());
+		   	conditionVals.add(personInfoDTO.getMarried());
+	   	}	
+	   	
+	   	if (personInfoDTO.getProceeds() != null) {
+		   	jpql.append(" and _personInfo.proceeds is ?");
+		   	conditionVals.add(personInfoDTO.getProceeds());
 	   	}	
 	
         Page<PersonInfo> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
         for (PersonInfo personInfo : pages.getData()) {
-            PersonInfoDTO personInfoDTO = new PersonInfoDTO();
-            
-             // 将domain转成VO
-            /*try {
-            	personInfoDTO.personInfoEntityToDTO(personInfo);
-            	BeanUtils.copyProperties(personInfoDTO, personInfo);
-            } catch (Exception e) {
-            	e.printStackTrace();
-            } */
-            
-              result.add(personInfoDTO.personInfoEntityToDTO(personInfo));
+            result.add(PersonInfoAssembler.toDTO(personInfo));
         }
         return new Page<PersonInfoDTO>(pages.getPageIndex(), pages.getResultCount(), pageSize, result);
-	}	
+	}
+
+	
 }

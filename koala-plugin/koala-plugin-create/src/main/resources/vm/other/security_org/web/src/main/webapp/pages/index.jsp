@@ -14,13 +14,6 @@
     </style>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
-//
-//        $.ajaxSetup({
-//            url:contextPath+"/login",
-//            success: function(data){
-//                window.location.href=contextPath+"/index.koala";
-//            }
-//        });
 
         $(function(){
             var roleName = $('#roles').html();
@@ -253,10 +246,6 @@
                             dialog.find('.selectRoleGrid').grid({
                                 identity: 'id',
                                 columns: columns,
-                                querys: [{title: 'roleId', value: 'roleId'}],
-                                dataFilter:function(result){
-                                    return result.data;
-                                },
                                 url: contextPath + '/auth/currentUser/pagingQueryRolesOfUser.koala'
                             });
                         }

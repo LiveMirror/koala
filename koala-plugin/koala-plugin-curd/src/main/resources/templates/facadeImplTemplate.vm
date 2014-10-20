@@ -43,13 +43,12 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
      return queryChannel;
     }
 	
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public InvokeResult get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
 		return InvokeResult.success(${assembler}.toDTO(application.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name})));
 	}
 	
 	public InvokeResult save${domainClass}(${currntVO} ${currntVOVariable}) {
-		application.save${domainClass}(${assembler}.toEntity(${currntVOVariable}));
+		application.creat${domainClass}(${assembler}.toEntity(${currntVOVariable}));
 		return InvokeResult.success();
 	}
 	
@@ -72,14 +71,11 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 		return InvokeResult.success();
 	}
 	
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<${currntVO}> findAll${domainClass}() {
 		return ${assembler}.toDTOs(application.findAll${domainClass}());
 	}
 	
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Page<${currntVO}> pageQuery${domainClass}(${currntVO} queryVo, int currentPage, int pageSize) {
-		List<${currntVO}> result = new ArrayList<${currntVO}>();
 		List<Object> conditionVals = new ArrayList<Object>();
 #set($jpql = "select _${variableName} from ${domainClass} _${variableName} ")
 #foreach(${relation} in ${facadeClass.relations})
@@ -150,7 +146,6 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 #set($entityName = ${relationModel.entityModel.name})
 #set($relationName = ${relation.name.substring(0, 1).toUpperCase()} + ${relation.name.substring(1)})
 #if(${relationType} == "ManyToOne" || ${relationType} == "OneToOne")
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ${entityName}DTO find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
 		String jpql = "select e from ${domainClass} o right join o.${relation.name} e where o.${dtoClass.entityModel.singleIDFieldModel.name}=?";
 		${entityName} result = (${entityName}) getQueryChannelService().createJpqlQuery(jpql).setParameters(new Object[] { ${dtoClass.entityModel.singleIDFieldModel.name} }).singleResult();
@@ -167,7 +162,6 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 #end
 
 #if(${relationType} == "OneToMany" || ${relationType} == "ManyToMany")
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Page<${entityName}DTO> find${relationName}By${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}, int currentPage, int pageSize) {
 		List<${entityName}DTO> result = new ArrayList<${entityName}DTO>();
 		String jpql = "select e from ${domainClass} o right join o.${relation.name} e where o.${dtoClass.entityModel.singleIDFieldModel.name}=?";

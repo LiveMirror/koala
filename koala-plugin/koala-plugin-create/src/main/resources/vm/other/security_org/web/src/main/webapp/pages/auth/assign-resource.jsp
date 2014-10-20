@@ -10,7 +10,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">资源授权</h4>
+                <h4 class="modal-title">授权菜单资源</h4>
             </div>
             <div class="modal-body" style="padding-left:45px; padding-right:65px;">
               	 <ul class="resourceTree tree" style="height:280px;min-height:280px;margin-top: 2px;"></ul>

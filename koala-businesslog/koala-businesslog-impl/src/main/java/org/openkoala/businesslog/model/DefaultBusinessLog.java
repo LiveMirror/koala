@@ -34,7 +34,7 @@ public class DefaultBusinessLog extends AbstractBusinessLog {
 	 @Temporal(TemporalType.TIMESTAMP)
 	  private Date time;
 
-    
+    @Transient
     private Map<String, Object> context;
 
     public synchronized static DefaultBusinessLog createBy(BusinessLog businessLog) {
