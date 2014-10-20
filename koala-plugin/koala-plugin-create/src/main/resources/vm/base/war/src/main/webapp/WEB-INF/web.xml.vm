@@ -13,13 +13,21 @@
     <listener>
         <listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
     </listener>
+#if ($Module.security|| $Module.securityOrg)
 	<listener>
 		<listener-class>org.openkoala.security.listener.SecurityDBInitListener</listener-class>
 	</listener>
 	<listener>
 		<listener-class>org.openkoala.security.listener.SystemEvenmentListener</listener-class>
 	</listener>
-	
+#end
+<!--组织子系统的listener-->
+#if ($Module.organization || $Module.securityOrg)
+	<listener>
+		<listener-class>org.openkoala.organisation.web.context.OrganisationListener</listener-class>
+	</listener>
+#end
+
 	#if ($Module.monitor)
 	<!-- monitor config begin-->
      <listener>
@@ -52,7 +60,7 @@
 		</init-param>
 	</filter>
 	
-	   #if ($Module.security)
+	   #if ($Module.security || $Module.securityOrg)
 	<!-- shiro filter -->
 	<filter>
 		<filter-name>shiroFilter</filter-name>
@@ -101,15 +109,6 @@
 	</servlet-mapping>
 	
    #end
-
-	
-	<!--组织子系统的listener-->
-#if ($Module.organization)
-	<listener>
-		<listener-class>org.openkoala.organisation.web.context.OrganisationListener</listener-class>
-	</listener>
-#end
-
 	<session-config>
 		<session-timeout>120</session-timeout>
 	</session-config>
@@ -126,7 +125,7 @@
 	</filter-mapping>
     #end
     
-    #if($Project.mvcProtocol == "SpringMVC" || $Module.security || $Module.monitor || $Module.generalQuery)
+    #if($Project.mvcProtocol == "SpringMVC" || $Module.security || $Module.securityOrg|| $Module.monitor || $Module.generalQuery)
     	<!-- 加入SpringMVC -->
 	 <servlet>
 		<servlet-name>spring</servlet-name>
@@ -145,15 +144,7 @@
     #end
     
 #if ($Module.security)
-		#if ($Module.organization)
-	
-		#end
-		#if ($Module.businessLog)
-		<init-param>
-			<param-name>businessLog</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		#end
+
 	<error-page>
 		<error-code>405</error-code>
 		<location>/pages/errors/405.jsp</location>
@@ -167,7 +158,7 @@
  #if ($Module.businessLog)
      <filter>
         <filter-name>LogFilter</filter-name>
-        <filter-class>${Module.basePackage}.controller.businesslog.LogFilter</filter-class>
+        <filter-class>${Module.basePackage}.businesslog.LogFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>LogFilter</filter-name>

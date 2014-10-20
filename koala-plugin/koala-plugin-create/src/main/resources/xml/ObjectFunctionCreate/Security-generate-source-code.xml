@@ -24,7 +24,7 @@
 	</VelocityDirObject>
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/security/facadeImpl</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facadeImpl/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade-impl/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>

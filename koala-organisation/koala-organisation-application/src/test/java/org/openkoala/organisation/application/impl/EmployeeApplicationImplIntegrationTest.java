@@ -14,16 +14,16 @@ import javax.inject.Inject;
 import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.openkoala.organisation.EmployeeMustHaveAtLeastOnePostException;
 import org.openkoala.organisation.application.EmployeeApplication;
 import org.openkoala.organisation.application.impl.utils.OrganisationUtils;
-import org.openkoala.organisation.domain.Company;
-import org.openkoala.organisation.domain.Department;
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.EmployeePostHolding;
-import org.openkoala.organisation.domain.Job;
-import org.openkoala.organisation.domain.Person;
-import org.openkoala.organisation.domain.Post;
+import org.openkoala.organisation.core.EmployeeMustHaveAtLeastOnePostException;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.EmployeePostHolding;
+import org.openkoala.organisation.core.domain.Job;
+import org.openkoala.organisation.core.domain.Person;
+import org.openkoala.organisation.core.domain.Post;
 
 /**
  * 员工应用实现集成测试

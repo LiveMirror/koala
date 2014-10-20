@@ -15,11 +15,11 @@ import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.InvokeResult;
-import org.openkoala.organisation.NameExistException;
-import org.openkoala.organisation.SnIsExistException;
-import org.openkoala.organisation.TheJobHasPostAccountabilityException;
 import org.openkoala.organisation.application.BaseApplication;
-import org.openkoala.organisation.domain.Job;
+import org.openkoala.organisation.core.NameExistException;
+import org.openkoala.organisation.core.SnIsExistException;
+import org.openkoala.organisation.core.TheJobHasPostAccountabilityException;
+import org.openkoala.organisation.core.domain.Job;
 import org.openkoala.organisation.facade.JobFacade;
 import org.openkoala.organisation.facade.dto.JobDTO;
 import org.openkoala.organisation.facade.impl.assembler.JobAssembler;
@@ -39,6 +39,7 @@ public class JobFacadeImpl implements JobFacade {
 		return queryChannel;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Page<JobDTO> pagingQueryJobs(JobDTO jobSearchExample, int currentPage, int pageSize) {
 		List<Object> conditionVals = new ArrayList<Object>();

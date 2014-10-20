@@ -12,7 +12,7 @@ import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.organisation.NameExistException;
 import org.openkoala.organisation.SnIsExistException;

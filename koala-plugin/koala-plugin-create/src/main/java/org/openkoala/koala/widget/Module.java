@@ -32,7 +32,7 @@ public class Module implements Serializable {
 	
 	private Monitor monitor;
 	
-	
+	private SecurityOrg securityOrg;
 	
 	private GeneralQuery generalQuery;
 	
@@ -115,6 +115,14 @@ public class Module implements Serializable {
 
 	public void setMonitor(Monitor monitor) {
 		this.monitor = monitor;
+	}
+
+	public SecurityOrg getSecurityOrg() {
+		return securityOrg;
+	}
+
+	public void setSecurityOrg(SecurityOrg securityOrg) {
+		this.securityOrg = securityOrg;
 	}
 
 	public GeneralQuery getGeneralQuery() {

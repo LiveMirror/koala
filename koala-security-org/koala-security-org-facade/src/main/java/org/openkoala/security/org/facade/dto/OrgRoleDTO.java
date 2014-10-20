@@ -26,4 +26,8 @@ public class OrgRoleDTO extends RoleDTO {
     public void setEmployeeUserOrgName(String employeeUserOrgName) {
         this.employeeUserOrgName = employeeUserOrgName;
     }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 }

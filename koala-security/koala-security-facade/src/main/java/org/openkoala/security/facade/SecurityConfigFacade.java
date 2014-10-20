@@ -19,319 +19,444 @@ import org.openkoala.security.facade.command.CreateRoleCommand;
 import org.openkoala.security.facade.command.CreateUrlAccessResourceCommand;
 import org.openkoala.security.facade.command.CreateUserCommand;
 
+/**
+ * 权限配置门面，按照使用角色命名，一般都是系统管理员使用该接口，对用户进行权限配置。
+ * 参数都是以某某命令，返回结果都是调用结果{@link InvokeResult}。
+ * 好处：以命令的方式可以很清晰的表达出每一次的操作。不会与具体的领域对象耦合。不依赖特定的技术。
+ *
+ * @author lucas
+ */
 public interface SecurityConfigFacade {
 
-	/**
-	 * 创建用户
-	 * 
-	 * @param command
-	 */
-	InvokeResult createUser(CreateUserCommand command);
+    /**
+     * 创建用户。
+     *
+     * @param command 创建用户命令 {@link CreateUserCommand}
+     */
+    InvokeResult createUser(CreateUserCommand command);
 
-	/**
-	 * 创建权限
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult createPermission(CreatePermissionCommand command);
+    /**
+     * 创建权限。
+     *
+     * @param command 创建权限命令 {@link CreatePermissionCommand}
+     */
+    InvokeResult createPermission(CreatePermissionCommand command);
 
-	/**
-	 * 创建角色
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult createRole(CreateRoleCommand command);
+    /**
+     * 创建角色。
+     *
+     * @param command 创建角色命令 {@link CreateRoleCommand}
+     */
+    InvokeResult createRole(CreateRoleCommand command);
 
-	/**
-	 * 创建菜单权限资源
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult createMenuResource(CreateMenuResourceCommand command);
+    /**
+     * 创建菜单资源。
+     *
+     * @param command 创建菜单资源命令 {@link CreateMenuResourceCommand}
+     */
+    InvokeResult createMenuResource(CreateMenuResourceCommand command);
 
-	/**
-	 * 创建子菜单权限资源
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult createChildMenuResouceToParent(CreateChildMenuResourceCommand command);
+    /**
+     * 创建子菜单资源。
+     *
+     * @param command 创建子菜单资源命令 {@link CreateChildMenuResourceCommand}
+     */
+    InvokeResult createChildMenuResouceToParent(CreateChildMenuResourceCommand command);
 
-	/**
-	 * 创建页面元素
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult createPageElementResource(CreatePageElementResourceCommand command);
+    /**
+     * 创建页面元素资源。
+     *
+     * @param command 创建页面元素资源命令 {@link CreatePageElementResourceCommand}
+     */
+    InvokeResult createPageElementResource(CreatePageElementResourceCommand command);
 
-	/**
-	 * 创建URL访问资源
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult createUrlAccessResource(CreateUrlAccessResourceCommand command);
+    /**
+     * 创建URL访问资源
+     *
+     * @param command 创建URL访问资源命令 {@link CreateUrlAccessResourceCommand}
+     */
+    InvokeResult createUrlAccessResource(CreateUrlAccessResourceCommand command);
 
-	/**
-	 * 更改用户的一些属性。
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult changeUserProps(ChangeUserPropsCommand command);
+    /**
+     * 更改多个用户属性。
+     *
+     * @param command 更改用户属性命令 {@link ChangeUserPropsCommand}
+     */
+    InvokeResult changeUserProps(ChangeUserPropsCommand command);
 
-	/**
-	 * 更改用户账号
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult changeUserAccount(ChangeUserAccountCommand command);
+    /**
+     * 更改用户账号。
+     *
+     * @param command 更改用户账号命令 {@link ChangeUserAccountCommand}
+     */
+    InvokeResult changeUserAccount(ChangeUserAccountCommand command);
 
-	/**
-	 * 更改用户邮箱
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult changeUserEmail(ChangeUserEmailCommand command);
+    /**
+     * 更改用户邮箱。
+     *
+     * @param command 更改用户邮箱命令 {@link ChangeUserEmailCommand}
+     */
+    InvokeResult changeUserEmail(ChangeUserEmailCommand command);
 
-	/**
-	 * 更改用户联系电话
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command);
+    /**
+     * 更改用户联系电话。
+     *
+     * @param command 更改用户联系电话命令 {@link ChangeUserTelePhoneCommand}
+     */
+    InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command);
 
-	/**
-	 * 更改URL访问资源
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult changeUrlAccessResourceProps(ChangeUrlAccessResourcePropsCommand command);
+    /**
+     * 更改URL访问资源。
+     *
+     * @param command 更改URL访问资源命令 {@link ChangeUrlAccessResourcePropsCommand}
+     */
+    InvokeResult changeUrlAccessResourceProps(ChangeUrlAccessResourcePropsCommand command);
 
-	/**
-	 * 更改角色的一些属性
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult changeRoleProps(ChangeRolePropsCommand command);
-
-	/**
-	 * 更改权限的一些属性
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult changePermissionProps(ChangePermissionPropsCommand command);
-
-	/**
-	 * 更改页面元素的一些属性
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult changePageElementResourceProps(ChangePageElementResourcePropsCommand command);
-
-	/**
-	 * 更改菜单的一些属性。
-	 * 
-	 * @param command
-	 * @return
-	 */
-	InvokeResult changeMenuResourceProps(ChangeMenuResourcePropsCommand command);
-
-	/**
-	 * 更新用户密码
-	 * 
-	 * @param command
-	 *            TODO
-	 * 
-	 * @return
-	 */
-	InvokeResult changeUserPassword(ChangeUserPasswordCommand command);
-
-	/**
-	 * 重置用户密码
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	InvokeResult resetPassword(Long userId);
-
-	/**
-	 * 撤销用户
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	InvokeResult terminateUser(Long userId, String currentUserAccount);
-
-	/**
-	 * 批量撤销用户
-	 * 
-	 * @param userIds
-	 * @param currentUserAccount
+    /**
+     * 更改多个角色属性。
+     *
+     * @param command 更改多个角色属性命令 {@link ChangeRolePropsCommand}
      * @return
-	 */
-	InvokeResult terminateUsers(Long[] userIds, String currentUserAccount);
+     */
+    InvokeResult changeRoleProps(ChangeRolePropsCommand command);
 
-	/**
-	 * 撤销角色
-	 * 
-	 * @param roleId
-	 * @return
-	 */
-	InvokeResult terminateRole(Long roleId);
+    /**
+     * 更改多个权限属性。
+     *
+     * @param command 更改多个权限属性 {@link ChangePermissionPropsCommand}
+     */
+    InvokeResult changePermissionProps(ChangePermissionPropsCommand command);
 
-	/**
-	 * 批量撤销角色
-	 * 
-	 * @param roleIds
-	 * @return
-	 */
-	InvokeResult terminateRoles(Long[] roleIds);
+    /**
+     * 更改多个页面元素属性。
+     *
+     * @param command 更改多个页面元素属性 {@link ChangePageElementResourcePropsCommand}
+     */
+    InvokeResult changePageElementResourceProps(ChangePageElementResourcePropsCommand command);
 
-	/**
-	 * 撤销权限
-	 * 
-	 * @param permissionId
-	 * @return
-	 */
-	InvokeResult terminatePermission(Long permissionId);
+    /**
+     * 更改多个菜单属性。
+     *
+     * @param command 更改多个菜单属性命令 {@link ChangeMenuResourcePropsCommand}
+     * @return
+     */
+    InvokeResult changeMenuResourceProps(ChangeMenuResourcePropsCommand command);
 
-	/**
-	 * 批量撤销权限
-	 * 
-	 * @param permissionIds
-	 * @return
-	 */
-	InvokeResult terminatePermissions(Long[] permissionIds);
+    /**
+     * 更改用户密码。
+     *
+     * @param command 更改用户密码 {@link ChangeUserPasswordCommand}
+     * @return
+     */
+    InvokeResult changeUserPassword(ChangeUserPasswordCommand command);
 
-	/**
-	 * 撤销菜单权限资源
-	 * 
-	 * @param menuResourceId
-	 * @return
-	 */
-	InvokeResult terminateMenuResource(Long menuResourceId);
+    /**
+     * 根据用户ID重置用户密码。
+     *
+     * @param userId 用户ID
+     */
+    InvokeResult resetPassword(Long userId);
 
-	/**
-	 * 批量撤销菜单权限资源
-	 * 
-	 * @param menuResourceIds
-	 * @return
-	 */
-	InvokeResult terminateMenuResources(Long[] menuResourceIds);
+    /**
+     * 撤销用户，当前用户不能撤销自己。
+     *
+     * @param userId
+     * @return
+     */
+    InvokeResult terminateUser(Long userId, String currentUserAccount);
 
-	/**
-	 * 撤销URL访问权限资源
-	 * 
-	 * @param urlAccessResourceId
-	 * @return
-	 */
-	InvokeResult terminateUrlAccessResource(Long urlAccessResourceId);
+    /**
+     * 撤销多个用户，当前用户不能撤销自己。
+     *
+     * @param userIds            用户ID集合
+     * @param currentUserAccount 当前用户账号
+     */
+    InvokeResult terminateUsers(Long[] userIds, String currentUserAccount);
 
-	/**
-	 * 批量撤销URL访问权限资源
-	 * 
-	 * @param urlAccessResourceIds
-	 * @return
-	 */
-	InvokeResult terminateUrlAccessResources(Long[] urlAccessResourceIds);
+    /**
+     * 撤销角色。
+     *
+     * @param roleId 角色ID
+     */
+    InvokeResult terminateRole(Long roleId);
 
-	/**
-	 * 撤销页面元素权限资源。
-	 * 
-	 * @param pageElementResourceId
-	 * @return
-	 */
-	InvokeResult terminatePageElementResource(Long pageElementResourceId);
+    /**
+     * 撤销多个角色
+     *
+     * @param roleIds 角色ID集合
+     */
+    InvokeResult terminateRoles(Long[] roleIds);
 
-	/**
-	 * 批量撤销页面元素权限资源。
-	 * 
-	 * @param pageElementResourceIds
-	 * @return
-	 */
-	InvokeResult terminatePageElementResources(Long[] pageElementResourceIds);
+    /**
+     * 撤销权限。
+     *
+     * @param permissionId 权限ID
+     */
+    InvokeResult terminatePermission(Long permissionId);
 
-	void grantRoleToUserInScope(Long userId, Long roleId, Long scopeId);
+    /**
+     * 撤销多个权限。
+     *
+     * @param permissionIds 权限ID集合
+     */
+    InvokeResult terminatePermissions(Long[] permissionIds);
 
-	void grantRolesToUserInScope(Long userId, Long[] roleIds, Long scopeId);
+    /**
+     * 撤销菜单资源。
+     *
+     * @param resourceId 菜单资源ID
+     */
+    InvokeResult terminateMenuResource(Long resourceId);
 
-	void grantPermissionToUserInScope(Long userId, Long permissionId, Long scopeId);
+    /**
+     * 撤销多个菜单资源
+     *
+     * @param resourceIds 菜单资源ID集合
+     */
+    InvokeResult terminateMenuResources(Long[] resourceIds);
 
-	void grantPermissionsToUserInScope(Long userId, Long[] permissionIds, Long scopeId);
+    /**
+     * 撤销URL访问资源。
+     *
+     * @param resourceId URL访问资源ID
+     */
+    InvokeResult terminateUrlAccessResource(Long resourceId);
 
-	InvokeResult grantRoleToUser(Long userId, Long roleId);
+    /**
+     * 撤销多个URL访问资源
+     *
+     * @param resourceIds URL访问资源ID集合
+     * @return
+     */
+    InvokeResult terminateUrlAccessResources(Long[] resourceIds);
 
-	InvokeResult grantRolesToUser(Long userId, Long[] roleIds);
+    /**
+     * 撤销页面元素资源。
+     *
+     * @param resourceId 页面元素资源ID
+     */
+    InvokeResult terminatePageElementResource(Long resourceId);
 
-	InvokeResult grantPermissionToUser(Long userId, Long permissionId);
+    /**
+     * 撤销多个页面元素资源。
+     *
+     * @param resourceIds 页面元素资源ID集合
+     */
+    InvokeResult terminatePageElementResources(Long[] resourceIds);
 
-	InvokeResult grantPermissionsToUser(Long userId, Long[] permissionIds);
+    /**
+     * 为用户分配角色。
+     *
+     * @param userId 用户ID
+     * @param roleId 角色ID
+     */
+    InvokeResult grantRoleToUser(Long userId, Long roleId);
 
-	InvokeResult activate(Long userId);
+    /**
+     * 为用户分配多个角色。
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色ID集合
+     * @return
+     */
+    InvokeResult grantRolesToUser(Long userId, Long[] roleIds);
 
-	InvokeResult suspend(Long[] userId, String currentUserAccount);
+    /**
+     * 为用户分配权限。
+     *
+     * @param userId       用户ID
+     * @param permissionId 权限ID
+     */
+    InvokeResult grantPermissionToUser(Long userId, Long permissionId);
 
-	InvokeResult activate(Long[] userIds);
+    /**
+     * 为用户分配多个权限。
+     *
+     * @param userId        用户ID
+     * @param permissionIds 权限ID集合
+     */
+    InvokeResult grantPermissionsToUser(Long userId, Long[] permissionIds);
 
-	InvokeResult suspend(Long userIds,String currentUserAccount);
+    /**
+     * 激活用户。
+     *
+     * @param userId 用户ID
+     */
+    InvokeResult activate(Long userId);
 
-	InvokeResult terminateAuthorizationByUserInRole(Long userId, Long roleId);
+    /**
+     * 挂起用户，当前用户不能让自己挂起。
+     *
+     * @param userId             用户ID
+     * @param currentUserAccount 当前用户账号
+     */
+    InvokeResult suspend(Long[] userId, String currentUserAccount);
 
-    InvokeResult terminateAuthorizationByUserInPermission(Long userId, Long permissionId);
+    /**
+     * 激活多个用户。
+     *
+     * @param userIds 用户ID集合
+     */
+    InvokeResult activate(Long[] userIds);
 
-	InvokeResult terminateAuthorizationByUserInRoles(Long userId, Long[] roleIds);
+    /**
+     * 挂起多个用户，当前用户不能挂起自己。
+     *
+     * @param userIds            用户ID
+     * @param currentUserAccount 当前用户账号
+     */
+    InvokeResult suspend(Long userIds, String currentUserAccount);
 
-    InvokeResult terminateAuthorizationByUserInPermissions(Long userId, Long[] permissionIds);
+    /**
+     * 从角色中撤销与用户的关系。
+     *
+     * @param userId 用户ID
+     * @param roleId 角色ID
+     */
+    InvokeResult terminateUserFromRole(Long userId, Long roleId);
 
-	InvokeResult grantMenuResourcesToRole(Long roleId, Long[] menuResourceIds);
+    /**
+     * 从多个角色中撤销与用户的关系。
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色ID集合
+     */
+    InvokeResult terminateUserFromRoles(Long userId, Long[] roleIds);
 
-	InvokeResult grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds);
+    /**
+     * 从权限中撤销与用户的关系。
+     *
+     * @param userId       用户ID
+     * @param permissionId 权限ID
+     */
+    InvokeResult terminateUserFromPermission(Long userId, Long permissionId);
 
-	InvokeResult grantUrlAccessResourcesToRole(Long roleId, Long[] menuResourceIds);
+    /**
+     * 从多个权限中撤销与用户的关系。
+     *
+     * @param userId        用户ID
+     * @param permissionIds 权限ID集合
+     */
+    InvokeResult terminateUserFromPermissions(Long userId, Long[] permissionIds);
 
-	void grantMethodInvocationResourcesToRole(Long roleId, Long[] menuResourceIds);
+    /**
+     * 为角色分配多个菜单资源。
+     *
+     * @param roleId          角色ID
+     * @param menuResourceIds 菜单资源ID集合
+     */
+    InvokeResult grantMenuResourcesToRole(Long roleId, Long[] menuResourceIds);
 
-	InvokeResult grantPermissionsToRole(Long roleId, Long[] permissionIds);
+    /**
+     * 为角色分配多个页面元素资源。
+     *
+     * @param roleId                 角色ID
+     * @param pageElementResourceIds 页面元素资源ID
+     */
+    InvokeResult grantPageElementResourcesToRole(Long roleId, Long[] pageElementResourceIds);
 
-	InvokeResult terminatePermissionsFromRole(Long roleId, Long[] permssionIds);
+    /**
+     * 为角色分配多个URL访问资源。
+     *
+     * @param roleId      角色ID
+     * @param resourceIds URL访问资源ID集合
+     */
+    InvokeResult grantUrlAccessResourcesToRole(Long roleId, Long[] resourceIds);
 
-	InvokeResult terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds);
+    /**
+     * 为角色分配多个权限。
+     *
+     * @param roleId        角色ID
+     * @param permissionIds 权限ID集合
+     */
+    InvokeResult grantPermissionsToRole(Long roleId, Long[] permissionIds);
 
-	void grantUrlAccessResourceToPermission(Long urlAccessResourceId, Long permissionId);
+    /**
+     * 从角色中撤销与权限的关系。
+     *
+     * @param roleId       角色ID
+     * @param permssionIds 权限ID
+     */
+    InvokeResult terminatePermissionsFromRole(Long roleId, Long[] permssionIds);
 
-	void terminateUrlAccessResourceFromPermission(Long urlAccessResourceId, Long permissionId);
+    /**
+     * 从角色中撤销与多个URL访问资源的关系。
+     *
+     * @param roleId               角色ID
+     * @param urlAccessResourceIds URL访问资源集合
+     */
+    InvokeResult terminateUrlAccessResourcesFromRole(Long roleId, Long[] urlAccessResourceIds);
 
-	InvokeResult grantPermisssionsToUrlAccessResource(Long permissionId, Long urlAccessResourceId);
+    /**
+     * 从角色中撤销与多个页面元素资源的关系。
+     *
+     * @param roleId                 角色ID
+     * @param pageElementResourceIds 页面元素资源ID集合
+     */
+    InvokeResult terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds);
 
-	InvokeResult terminatePermissionsFromUrlAccessResource(Long permissionId, Long urlAccessResourceId);
+    /**
+     * 为URL访问资源分配权限。
+     *
+     * @param permissionId        权限ID
+     * @param urlAccessResourceId URL访问资源ID
+     */
+    InvokeResult grantPermisssionToUrlAccessResource(Long permissionId, Long urlAccessResourceId);
 
-	InvokeResult grantPermisssionsToMenuResource(Long permissionId, Long menuResourceId);
+    /**
+     * 为菜单资源分配权限。
+     *
+     * @param permissionId   权限ID
+     * @param menuResourceId 菜单资源ID
+     */
+    InvokeResult grantPermisssionToMenuResource(Long permissionId, Long menuResourceId);
 
-	InvokeResult terminatePermissionsFromMenuResource(Long permissionId, Long menuResourceId);
+    /**
+     * 为页面元素资源分配权限。
+     *
+     * @param permissionId          权限ID
+     * @param pageElementResourceId 页面元素资源ID
+     */
+    InvokeResult grantPermisssionToPageElementResource(Long permissionId, Long pageElementResourceId);
 
-	InvokeResult terminatePageElementResourcesFromRole(Long roleId, Long[] pageElementResourceIds);
+    /**
+     * 从URL访问资源中撤销与权限的关系。
+     *
+     * @param permissionId        权限ID
+     * @param urlAccessResourceId URL访问资源ID
+     */
+    InvokeResult terminatePermissionFromUrlAccessResource(Long permissionId, Long urlAccessResourceId);
 
-	InvokeResult grantPermisssionsToPageElementResource(Long permissionId, Long pageElementResourceId);
+    /**
+     * 从菜单资源中撤销与权限的关系。
+     *
+     * @param permissionId   权限ID
+     * @param menuResourceId 菜单资源ID
+     * @return
+     */
+    InvokeResult terminatePermissionFromMenuResource(Long permissionId, Long menuResourceId);
 
-	InvokeResult terminatePermissionsFromPageElementResource(Long permissionId, Long pageElementResourceId);
+    /**
+     * 从页面元素资源中撤销与权限的关系。
+     *
+     * @param permissionId          权限ID
+     * @param pageElementResourceId 页面元素资源ID
+     * @return
+     */
+    InvokeResult terminatePermissionFromPageElementResource(Long permissionId, Long pageElementResourceId);
 
-	boolean checkUserHasPageElementResource(String userAccount, String currentRoleName, String securityResourceIdentifier);
+    /**
+     * 检查用户是否拥有页面元素资源。
+     *
+     * @param userAccount        用户账号
+     * @param roleNameOfUser     用户的角色
+     * @param resourceIdentifier 资源标识符
+     */
+    boolean checkUserHasPageElementResource(String userAccount, String roleNameOfUser, String resourceIdentifier);
 
-	/**
-	 * 初始化系统权限资源。
-	 */
-	public void initSecuritySystem();
+    /**
+     * 初始化系统权限资源。
+     */
+    public void initSecuritySystem();
 
 }

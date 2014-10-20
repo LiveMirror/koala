@@ -18,7 +18,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title">分配页面</h4>
+				<h4 class="modal-title">分配页面元素资源</h4>
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
                 <form id=“selectPageFrom” target="_self" class="form-inline searchCondition">

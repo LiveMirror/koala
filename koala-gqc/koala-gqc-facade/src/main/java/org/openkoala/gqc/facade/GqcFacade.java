@@ -3,6 +3,7 @@ package org.openkoala.gqc.facade;
 import java.util.Map;
 
 import org.dayatang.utils.Page;
+
 import org.openkoala.gqc.facade.dto.GeneralQueryDTO;
 import org.openkoala.koala.commons.InvokeResult;
 /**

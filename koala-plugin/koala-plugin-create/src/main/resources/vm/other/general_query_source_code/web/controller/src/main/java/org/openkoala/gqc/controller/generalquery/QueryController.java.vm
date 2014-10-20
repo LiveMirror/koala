@@ -8,7 +8,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.gqc.core.domain.DynamicQueryCondition;
 import org.openkoala.gqc.facade.GqcFacade;
 import org.openkoala.gqc.facade.assembler.GqcAssembler;

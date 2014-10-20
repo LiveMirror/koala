@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<XmlParse>
+
+	<property name="description">Koala-Security-Org-General-Source-Code</property>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/controller</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/confxml</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-conf/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/webxml</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+	</VelocityDirObject>	
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/application</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-application/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/facade</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/facadeImpl</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade-impl/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/core</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-core/</property>
+	</VelocityDirObject>
+	<!-- 复制权限代码 -->
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/security/application</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-application/</property>
+	</VelocityDirObject>
+	
+	<CopyFiles>
+		<property name="srcDir">vm/other/security/conf/</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.appName}-conf/</property>
+	</CopyFiles>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/security/web/controller</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/security/web/shiro</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+	</VelocityDirObject>
+	<VelocityDirObject>	
+		<property name="vmDir">vm/other/security/web/taglibs</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>	
+		<property name="vmDir">vm/other/security/core</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-core/</property>
+	</VelocityDirObject>
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/security/facade</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade/</property>
+	</VelocityDirObject>
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/security/facadeImpl</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade-impl/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/security/infra</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-infra/</property>
+	</VelocityDirObject>
+
+<!-- 复制权限集成组织代码 -->
+
+	<VelocityDirObject>	
+		<property name="vmDir">vm/other/security_org/core</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-core/</property>
+	</VelocityDirObject>
+	
+	<CopyFiles>
+		<property name="srcDir">vm/other/security_org/conf/</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.appName}-conf/</property>
+	</CopyFiles>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/security_org/facade</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade/</property>
+	</VelocityDirObject>
+	
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/security_org/facade-impl</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade-impl/</property>
+	</VelocityDirObject>
+
+	</XmlParse>

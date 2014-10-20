@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/auth/role")
+@SuppressWarnings("unused")
 public class RoleController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RoleController.class);

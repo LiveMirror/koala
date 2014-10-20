@@ -6,7 +6,7 @@
     <input type="hidden" class="form-control" name="page" value="0">
     <input type="hidden" class="form-control" name="pagesize" value="10">
 
-    <div id="permissionManagerQueryDivId" class="panel" hidden="true">
+    <div id="permissionManagerQueryDivId" hidden="true">
         <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td>
@@ -42,15 +42,15 @@
 	$(function(){
 		var baseUrl = contextPath + '/auth/permission/';
 		function initEditDialog(data, item, grid) {
-			dialog = $(data);
-			dialog.find('.modal-header').find('.modal-tite').html( item ? '修改权限信息' : '添加权限');		
-			var form = dialog.find(".permisstion_form");
-			validate(form, dialog, item);
-			if(item){
-				form.find("input[name='name']").val(item.name);
-				form.find("input[name='identifier']").val(item.identifier);
-				form.find("input[name='description']").val(item.description);
-			}
+            dialog = $(data);
+            var form = dialog.find(".permisstion_form");
+            validate(form, dialog, item);
+            if(item){
+                dialog.find('.modal-header').find('.modal-title').html('修改权限信息');
+                form.find("input[name='name']").val(item.name);
+                form.find("input[name='identifier']").val(item.identifier).attr('disabled', 'disabled');
+                form.find("input[name='description']").val(item.description);
+            }
 			
 			dialog.modal({
 				keyboard : false
@@ -99,7 +99,6 @@
 	            	 */
 	            	if(result){
 	            		var data = form.serialize();
-	            		console.log(data);
 	            		var url = baseUrl + 'add.koala';
 	        			if (item) {
 	        				url = baseUrl + 'update.koala';
@@ -267,25 +266,25 @@
 				});
 			},
         	'modify': function(event, data){
-        		var indexs = data.data;
-	            var grid = $(this);
-	            if(indexs.length == 0){
-	                grid.message({
-	                    type: 'warning',
-	                    content: '请选择一条记录进行修改'
-	                });
-	                return;
-	            }
-	            if(indexs.length > 1){
-	                grid.message({
-	                    type: 'warning',
-	                    content: '只能选择一条记录进行修改'
-	                });
-	                return;
-	            }
-	            $.get(contextPath + '/pages/auth/permission-template.jsp').done(function(dialog) {
-					initEditDialog(dialog, data.item[0], grid);
-				});
+                var indexs = data.data;
+                var grid = $(this);
+                if(indexs.length == 0){
+                    grid.message({
+                        type: 'warning',
+                        content: '请选择一条记录进行修改'
+                    });
+                    return;
+                }
+                if(indexs.length > 1){
+                    grid.message({
+                        type: 'warning',
+                        content: '只能选择一条记录进行修改'
+                    });
+                    return;
+                }
+                $.get(contextPath + '/pages/auth/permission-template.jsp').done(function(dialog){
+                    initEditDialog(dialog, data.item[0], grid);
+                });
         	},
         	'delete': function(event, data){
         		var indexs = data.data;
@@ -922,6 +921,7 @@
 				});
 			}
         });
+
         var form = $('#'+'${formId}');
         form.find('#permissionManagerSearch').on('click', function(){
             var params = {};

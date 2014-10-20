@@ -2,14 +2,18 @@ package org.openkoala.organisation.facade.impl.assembler;
 
 import java.util.Date;
 
-import org.openkoala.organisation.domain.Job;
-import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.Post;
+import org.openkoala.organisation.core.domain.Job;
+import org.openkoala.organisation.core.domain.Organization;
+import org.openkoala.organisation.core.domain.Post;
 import org.openkoala.organisation.facade.dto.PostDTO;
 
 public class PostAssembler {
 
 	public static Post toEntity(PostDTO postDTO) {
+        if (postDTO == null ){
+            return null;
+        }
+
 		Post result = new Post(postDTO.getName());
 		result.setId(postDTO.getId());
 

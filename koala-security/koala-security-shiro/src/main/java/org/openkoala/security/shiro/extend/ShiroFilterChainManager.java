@@ -11,7 +11,6 @@ import javax.inject.Named;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.NamedFilterList;
 import org.openkoala.security.facade.SecurityAccessFacade;
-import org.openkoala.security.facade.dto.UrlAccessResourceDTO;
 import org.openkoala.security.facade.dto.UrlAuthorityDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

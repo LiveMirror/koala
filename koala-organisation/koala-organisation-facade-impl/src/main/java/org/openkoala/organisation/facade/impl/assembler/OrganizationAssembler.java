@@ -3,15 +3,19 @@ package org.openkoala.organisation.facade.impl.assembler;
 import java.util.Date;
 import java.util.List;
 
-import org.openkoala.organisation.domain.Company;
-import org.openkoala.organisation.domain.Department;
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.organisation.facade.dto.OrganizationDTO;
 
 public class OrganizationAssembler {
 
 	public static OrganizationDTO toDTO(Organization organization) {
+        if (organization == null) {
+            return null;
+        }
+
 		OrganizationDTO dto = new OrganizationDTO(organization.getId(), organization.getName());
 		dto.setSn(organization.getSn());
 		dto.setCreateDate(organization.getCreateDate());
@@ -39,6 +43,10 @@ public class OrganizationAssembler {
 	}
 
 	public static Organization toEntity(OrganizationDTO organizationDTO) {
+        if (organizationDTO == null) {
+            return null;
+        }
+
 		Organization result = null;
 		if (organizationDTO.getOrganizationType().equals(OrganizationDTO.COMPANY)) {
 			result = new Company(organizationDTO.getName(), organizationDTO.getSn());

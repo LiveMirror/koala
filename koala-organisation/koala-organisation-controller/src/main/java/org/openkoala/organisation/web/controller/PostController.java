@@ -1,7 +1,6 @@
 package org.openkoala.organisation.web.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -45,35 +44,35 @@ public class PostController extends BaseController {
     /**
      * 创建一个岗位
      *
-     * @param post
+     * @param postDto
+     * @param organizationId
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public InvokeResult createPost(PostDTO postDTO, Long organizationId) {
-    	postDTO.setOrganizationId(organizationId);
-        return postFacade.createPost(postDTO);
+    public InvokeResult createPost(PostDTO postDto, Long organizationId) {
+    	postDto.setOrganizationId(organizationId);
+        return postFacade.createPost(postDto);
     }
 
 	/**
 	 * 更新岗位信息
-	 * 
-	 * @param post
+	 *
+     * @param postDto
+     * @param organizationId
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public InvokeResult updatePost(PostDTO postDTO, Long organizationId) {
-		postDTO.setOrganizationId(organizationId);
-		return postFacade.updatePostInfo(postDTO);
+	public InvokeResult updatePost(PostDTO postDto, Long organizationId) {
+		postDto.setOrganizationId(organizationId);
+		return postFacade.updatePostInfo(postDto);
 	}
 
     @ResponseBody
     @RequestMapping("/query-post-by-org")
-    public Map<String, Object> queryPostsOfOrganization(Long organizationId) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("result", postFacade.findPostsByOrganizationId(organizationId));
-        return dataMap;
+    public Set<PostDTO> queryPostsOfOrganization(Long organizationId) {
+        return postFacade.findPostsByOrganizationId(organizationId);
     }
 
     @ResponseBody
@@ -90,15 +89,8 @@ public class PostController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/get/{id}")
-    public Map<String, Object> get(@PathVariable("id") Long id) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
-        try {
-            dataMap.put("data", postFacade.getPostById(id));
-        } catch (Exception e) {
-            dataMap.put("error", "查询指定岗位失败！");
-            e.printStackTrace();
-        }
-        return dataMap;
+    public PostDTO get(@PathVariable("id") Long id) {
+        return postFacade.getPostById(id);
     }
 
     /**
@@ -109,20 +101,20 @@ public class PostController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/terminate", method = RequestMethod.POST)
-    public InvokeResult terminatePost(PostDTO postDTO) {
-        return postFacade.terminatePost(postDTO);
+    public InvokeResult terminatePost(PostDTO postDto) {
+        return postFacade.terminatePost(postDto);
     }
 
     /**
      * 同时撤销多个职务
      *
-     * @param postDTOs
+     * @param postDtos
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/terminate-posts", method = RequestMethod.POST)
-    public InvokeResult terminatePosts(@RequestBody PostDTO[] postDTOs) {
-        return postFacade.terminatePosts(postDTOs);
+    public InvokeResult terminatePosts(@RequestBody PostDTO[] postDtos) {
+        return postFacade.terminatePosts(postDtos);
     }
     
 }

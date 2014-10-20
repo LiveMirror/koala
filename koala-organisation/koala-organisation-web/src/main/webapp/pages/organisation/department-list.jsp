@@ -82,7 +82,7 @@
     <div style="clear:both;"></div>
 </div>
 <script type="text/javascript" src="<c:url value='/js/organisation/department.js' />"></script>
-<script type="text/javascript" src="<c:url value='/js/organisation/selectEmployee.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/organisation/select-employee.js' />"></script>
 
 <script>
     $(function(){

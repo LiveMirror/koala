@@ -24,6 +24,7 @@ var userManager = function() {
      */
 	var add = function(grid) {
 		dataGrid = grid;
+        console.log(dataGrid);
 		$.get(contextPath + '/pages/auth/user-template.jsp').done(function(data) {
 			addInit(data);
 		});
@@ -52,7 +53,7 @@ var userManager = function() {
 					content : '保存成功'
 				});
 				$(this).modal('hide');
-				dataGrid.grid('refresh');
+                dataGrid.grid('refresh');
 			}
 		});
 	}
@@ -384,4 +385,7 @@ var userManager = function() {
 		available : available,
 		forbidden : forbidden
 	};
-}; 
+};
+
+
+

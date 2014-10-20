@@ -13,16 +13,16 @@ import javax.inject.Named;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.koala.commons.InvokeResult;
-import org.openkoala.organisation.NameExistException;
-import org.openkoala.organisation.SnIsExistException;
-import org.openkoala.organisation.TerminateNotEmptyOrganizationException;
-import org.openkoala.organisation.TerminateRootOrganizationException;
 import org.openkoala.organisation.application.BaseApplication;
 import org.openkoala.organisation.application.OrganizationApplication;
-import org.openkoala.organisation.domain.Company;
-import org.openkoala.organisation.domain.Department;
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.core.NameExistException;
+import org.openkoala.organisation.core.SnIsExistException;
+import org.openkoala.organisation.core.TerminateNotEmptyOrganizationException;
+import org.openkoala.organisation.core.TerminateRootOrganizationException;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.organisation.facade.OrganizationFacade;
 import org.openkoala.organisation.facade.dto.EmployeeDTO;
 import org.openkoala.organisation.facade.dto.OrganizationDTO;
@@ -78,8 +78,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 
 	@Override
 	public OrganizationDTO getParentOfOrganization(OrganizationDTO organizationDTO, Date date) {
-		Organization organization = organizationApplication.getParentOfOrganization(OrganizationAssembler.toEntity(organizationDTO), date);
-		return organization == null ? null : OrganizationAssembler.toDTO(organization);
+		return OrganizationAssembler.toDTO(organizationApplication.getParentOfOrganization(OrganizationAssembler.toEntity(organizationDTO), date));
 	}
 
 	@Override
@@ -152,8 +151,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 
 	@Override
 	public OrganizationDTO getOrganizationById(Long id) {
-		Organization organization = baseApplication.getEntity(Organization.class, id);
-		return organization == null ? null : OrganizationAssembler.toDTO(organization);
+		return OrganizationAssembler.toDTO(baseApplication.getEntity(Organization.class, id));
 	}
 
 	@Override

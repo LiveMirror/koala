@@ -204,6 +204,10 @@
 #end
 
  #if ($Module.moduleType == "facade")
+ 		<dependency> 
+            <groupId>org.dayatang.dddlib</groupId>  
+            <artifactId>dddlib-utils</artifactId>
+       	 </dependency>  
   	     <dependency>
 			<groupId>org.dayatang.dddlib</groupId>
 			<artifactId>dddlib-query-channel</artifactId>
@@ -221,6 +225,10 @@
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
 			<artifactId>koala-commons-exception</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-facade</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.koalacommons</groupId>
@@ -358,6 +366,12 @@
 	<artifactId>${Project.appName}-infra</artifactId>
 	<version>$Project.version</version>
   </dependency>
+   <dependency> 
+            <groupId>$Project.groupId</groupId>  
+            <artifactId>${Project.appName}-facade-impl</artifactId>  
+            <version>$Project.version</version> 
+            <scope>runtime</scope>
+        </dependency>  
    <dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>

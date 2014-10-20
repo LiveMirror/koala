@@ -15,15 +15,15 @@ import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.InvokeResult;
-import org.openkoala.organisation.NameExistException;
-import org.openkoala.organisation.OrganizationHasPrincipalYetException;
-import org.openkoala.organisation.PostExistException;
-import org.openkoala.organisation.SnIsExistException;
-import org.openkoala.organisation.TerminateHasEmployeePostException;
 import org.openkoala.organisation.application.BaseApplication;
 import org.openkoala.organisation.application.PostApplication;
-import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.Post;
+import org.openkoala.organisation.core.NameExistException;
+import org.openkoala.organisation.core.OrganizationHasPrincipalYetException;
+import org.openkoala.organisation.core.PostExistException;
+import org.openkoala.organisation.core.SnIsExistException;
+import org.openkoala.organisation.core.TerminateHasEmployeePostException;
+import org.openkoala.organisation.core.domain.Organization;
+import org.openkoala.organisation.core.domain.Post;
 import org.openkoala.organisation.facade.PostFacade;
 import org.openkoala.organisation.facade.dto.PostDTO;
 import org.openkoala.organisation.facade.impl.assembler.PostAssembler;
@@ -72,28 +72,28 @@ public class PostFacadeImpl implements PostFacade {
 		return queryResult(example, jpql, "_post", conditionVals, currentPage, pagesize);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Page<PostDTO> queryResult(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals, int currentPage, int pagesize) {
 		assembleJpqlAndConditionValues(example, jpql, conditionPrefix, conditionVals);
 		Page<Post> postPage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
-
 		return new Page<PostDTO>(postPage.getStart(), postPage.getResultCount(), pagesize, transformToDtos(postPage.getData()));
 	}
 
 	private void assembleJpqlAndConditionValues(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals) {
 		String andCondition = " and " + conditionPrefix;
 		if (!StringUtils.isBlank(example.getName())) {
-			jpql.append(andCondition);
-			jpql.append(".name like ?");
+			jpql.append(andCondition)
+			    .append(".name like ?");
 			conditionVals.add(MessageFormat.format("%{0}%", example.getName()));
 		}
 		if (!StringUtils.isBlank(example.getSn())) {
-			jpql.append(andCondition);
-			jpql.append(".sn like ?");
+			jpql.append(andCondition)
+			    .append(".sn like ?");
 			conditionVals.add(MessageFormat.format("%{0}%", example.getSn()));
 		}
 		if (!StringUtils.isBlank(example.getDescription())) {
-			jpql.append(andCondition);
-			jpql.append(".description like ?");
+			jpql.append(andCondition)
+			    .append(".description like ?");
 			conditionVals.add(MessageFormat.format("%{0}%", example.getDescription()));
 		}
 	}
@@ -108,8 +108,7 @@ public class PostFacadeImpl implements PostFacade {
 
 	@Override
 	public PostDTO getPostById(Long id) {
-		Post post = baseApplication.getEntity(Post.class, id);
-		return post == null ? null : PostAssembler.toDTO(post);
+		return PostAssembler.toDTO(baseApplication.getEntity(Post.class, id));
 	}
 
 	@Override

@@ -151,8 +151,8 @@ $(function (){
 	        });
 	        dialog.find('#save').on('click',{grid: grid}, function(e){
 	              if(!Validator.Validate(dialog.find('form')[0],3))return;
-	              $.post('${pageContext.request.contextPath}/PersonInfo/add.koala', dialog.find('form').serialize()).done(function(result){
-	                   if(result.result == 'success'){
+	              $.post('${pageContext.request.contextPath}/PersonInfo/add.koala', dialog.find('form').serialize()).done(function(data){
+	                   if(data.success){
 	                        dialog.modal('hide');
 	                        e.data.grid.data('koala.grid').refresh();
 	                        e.data.grid.message({
@@ -196,7 +196,7 @@ $(function (){
 	                dialog.find('#save').on('click',{grid: grid}, function(e){
 	                    if(!Validator.Validate(dialog.find('form')[0],3))return;
 	                    $.post('${pageContext.request.contextPath}/PersonInfo/update.koala?id='+id, dialog.find('form').serialize()).done(function(result){
-	                        if(result.result == 'success'){
+	                        if(result.success){
 	                            dialog.modal('hide');
 	                            e.data.grid.data('koala.grid').refresh();
 	                            e.data.grid.message({
@@ -236,7 +236,7 @@ $(function (){
 	    remove: function(ids, grid){
 	    	var data = [{ name: 'ids', value: ids.join(',') }];
 	    	$.post('${pageContext.request.contextPath}/PersonInfo/delete.koala', data).done(function(result){
-	                        if(result.result == 'success'){
+	                        if(result.success){
 	                            grid.data('koala.grid').refresh();
 	                            grid.message({
 	                                type: 'success',

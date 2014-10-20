@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.dayatang.utils.Page;
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.core.domain.Permission;
@@ -59,6 +59,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
                 Organization organization = employeeUser.getEmployee().getOrganization(new Date());
                 if(organization != null){
                     result.setEmployeeOrgName(organization.getName());
+                    result.setEmployeeOrgId(organization.getId());
                 }
             }
             results.add(result);
@@ -144,6 +145,11 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
             jpql.append(andCondition);
             jpql.append(".telePhone LIKE :telePhone");
             conditionVals.put("telePhone", MessageFormat.format("%{0}%", queryEmployeeUserCondition.getTelePhone()));
+        }
+        if (!StringUtils.isBlank(queryEmployeeUserCondition.getDescription())) {
+            jpql.append(andCondition);
+            jpql.append(".description LIKE :description");
+            conditionVals.put("description", MessageFormat.format("%{0}%", queryEmployeeUserCondition.getDescription()));
         }
         if (!StringUtils.isBlank(queryEmployeeUserCondition.getEmployeeName())) {
             jpql.append("AND .employee.name LIKE :employeeName");

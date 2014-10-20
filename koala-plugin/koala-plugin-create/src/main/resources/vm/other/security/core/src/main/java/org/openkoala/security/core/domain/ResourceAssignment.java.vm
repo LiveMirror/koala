@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 资源分配
- * Created by luzhao on 14-8-19.
+ * 资源分配，它表示系统中将要在权限资源的基础上进行授权的控制。
+ *
+ * @author lucas
  */
 @Entity
 @Table(name = "KS_RESOURCEASSIGNMENTS")

@@ -33,7 +33,7 @@ public class JobController extends BaseController {
 	 * 
 	 * @param page
 	 * @param pagesize
-	 * @param job
+	 * @param jobDto
 	 * @return
 	 */
 	@ResponseBody
@@ -56,7 +56,7 @@ public class JobController extends BaseController {
 	/**
 	 * 创建一个职务
 	 * 
-	 * @param job
+	 * @param jobDto
 	 * @return
 	 */
 	@ResponseBody
@@ -68,13 +68,13 @@ public class JobController extends BaseController {
 	/**
 	 * 更新职务信息
 	 * 
-	 * @param job
+	 * @param jobDto
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public InvokeResult updateJob(JobDTO jobDTO) {
-		return jobFacade.updateJobInfo(jobDTO);
+	public InvokeResult updateJob(JobDTO jobDto) {
+		return jobFacade.updateJobInfo(jobDto);
 	}
 
 	/**
@@ -92,19 +92,19 @@ public class JobController extends BaseController {
 	/**
 	 * 撤销某个职务
 	 * 
-	 * @param jobDTO
+	 * @param jobDto
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
-	public InvokeResult  terminateJob(JobDTO jobDTO) {
-		return jobFacade.terminateJob(jobDTO);
+	public InvokeResult  terminateJob(JobDTO jobDto) {
+		return jobFacade.terminateJob(jobDto);
 	}
 
 	/**
 	 * 同时撤销多个职务
 	 * 
-	 * @param jobs
+	 * @param jobDtos
 	 * @return
 	 */
 	@ResponseBody

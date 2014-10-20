@@ -5,20 +5,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openkoala.security.core.NullArgumentException;
 
 /**
- * <pre>
- * 	参与者,抽象概念。
- * 	是 <code>User<code> 和 <code>UserGroup(未实现)</code> 的共同基类，
- * 	扩展可以继承该类。
- * 	可以对 {@link Actor} 授予角色 {@link Role} 与权限 {@link Permission}。
- * </pre>
- * 
- * @author luzhao
- * 
+ * 参与者, 它是一个抽象的概念。
+ * 是 {@link User} 和  <code>UserGroup </code>的共同基类。
+ * 可以对该类进行扩展，以达到您所希望的业务。
+ * 可以对其授予角色 {@link Role} 和 权限 {@link Permission}。
+ *
+ * @author lucas
  */
 @Entity
 @Table(name = "KS_ACTORS")
@@ -38,7 +36,7 @@ public abstract class Actor extends SecurityAbstractEntity {
 	 * 最后更新时间
 	 */
     @Temporal(TemporalType.DATE)
-	@Column(name = "LAST_MODIFY_TIME")
+    @Column(name = "LAST_MODIFY_TIME")
 	private Date lastModifyTime;
 
 	/**
@@ -138,7 +136,16 @@ public abstract class Actor extends SecurityAbstractEntity {
 
     public void changeLastModifyTime(){
         this.lastModifyTime = new Date();
-    };
+    }
+
+    public void terminateAuthorityInScope(Authority authority, Scope scope) {
+        Authorization authorization = Authorization.findByActorOfAuthorityInScope(this,authority,scope);
+        authorization.remove();
+    }
+
+    public static <T extends Actor> T  getActorBy(Long actorId) {
+        return (T)Actor.get(Actor.class,actorId);
+    }
 
 	protected static void checkArgumentIsNull(String nullMessage, String argument) {
 		if (StringUtils.isBlank(argument)) {
@@ -156,6 +163,8 @@ public abstract class Actor extends SecurityAbstractEntity {
 	public String[] businessKeys() {
 		return new String[] { "name" };
 	}
+
+    /*-------------- getter setter methods  ------------------*/
 
 	public String getName() {
 		return name;
@@ -188,10 +197,4 @@ public abstract class Actor extends SecurityAbstractEntity {
 	public Date getCreateDate() {
 		return createDate;
 	}
-
-    public void terminateAuthorityInScope(Authority authority, Scope scope) {
-        Authorization authorization = Authorization.findByActorOfAuthorityInScope(this,authority,scope);
-        authorization.remove();
-    }
-
 }

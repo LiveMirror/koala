@@ -1,4 +1,4 @@
-package ${Module.basePackage}.controller.businesslog;
+package ${Module.basePackage}.businesslog;
 
 import org.openkoala.businesslog.utils.BusinessLogServletFilter;
 

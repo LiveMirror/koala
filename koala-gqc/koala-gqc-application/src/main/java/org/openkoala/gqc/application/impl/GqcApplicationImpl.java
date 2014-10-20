@@ -17,9 +17,9 @@ public class GqcApplicationImpl implements GqcApplication {
 
 	@Override
 	public GeneralQuery getQuerier(Long id) {
-		try{
+		try {
 			return GeneralQuery.get(GeneralQuery.class, id);
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw new RuntimeException("获取查询器失败");
 		}
 	}
@@ -31,30 +31,30 @@ public class GqcApplicationImpl implements GqcApplication {
 
 	@Override
 	public void updateQuerier(GeneralQuery querier) {
-		try{
+		try {
 			BeanUtils.copyProperties(getQuerier(querier.getId()), querier);
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw new RuntimeException("修改查询器失败");
 		}
 	}
 
 	@Override
 	public void removeQueier(Long id) {
-			removeQueiers(new Long[]{id});
+		removeQueiers(new Long[] { id });
 	}
 
 	@Override
 	public void removeQueiers(Long[] ids) {
-		try{
-			for(Long id :ids)
+		try {
+			for (Long id : ids)
 				getQuerier(id).remove();
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw new RuntimeException("删除查询器失败");
 		}
 	}
 
 	@Override
-	public List<Map<String, Object>> pagingQuery(int currentPage, int pagesize, GeneralQuery querier ) {
+	public List<Map<String, Object>> pagingQuery(int currentPage, int pagesize, GeneralQuery querier) {
 		return querier.pagingQuery(currentPage, pagesize);
 	}
 
@@ -62,7 +62,14 @@ public class GqcApplicationImpl implements GqcApplication {
 	public Page<Map<String, Object>> pagingQueryWithPage(GeneralQuery querier, int currentPage, int pagesize) {
 		return querier.pagingQueryPage(currentPage, pagesize);
 	}
-	
-	
-	
+
+	@Override
+	public Page<Map<String, Object>> pagingQuery(GeneralQuery generalQuery, int currentPage, int pagesize) {
+		return generalQuery.pagingQueryPage(currentPage, pagesize);
+	}
+
+	@Override
+	public void saveGeneralQuery(GeneralQuery generalQuery) {
+		generalQuery.save();
+	}
 }

@@ -7,6 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+/**
+ * 页面元素全权限资源，它用于页面上的元素（按钮Button，标题title等等）。
+ *
+ * @author lucas
+ */
 @Entity
 @DiscriminatorValue("PAGE_ELEMENT_RESOURCE")
 public class PageElementResource extends SecurityResource {

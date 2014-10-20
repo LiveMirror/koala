@@ -3,16 +3,20 @@ package org.openkoala.organisation.facade.impl.assembler;
 import java.util.Date;
 import java.util.List;
 
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.Gender;
-import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.Person;
-import org.openkoala.organisation.domain.Post;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.Gender;
+import org.openkoala.organisation.core.domain.Organization;
+import org.openkoala.organisation.core.domain.Person;
+import org.openkoala.organisation.core.domain.Post;
 import org.openkoala.organisation.facade.dto.EmployeeDTO;
 
 public class EmployeeAssembler {
 
 	public static Employee toEntity(EmployeeDTO employeeDTO) {
+        if (employeeDTO == null ){
+            return null;
+        }
+
 		Person person = new Person(employeeDTO.getName());
 		person.setId(employeeDTO.getPersonId());
 		person.setVersion(employeeDTO.getPersonVersion());

@@ -21,14 +21,7 @@ public interface GqcApplication {
 	 */
 	GeneralQuery getQuerier(Long id);
 
-	
-	/**
-	 * 保存用查询实例
-	 * @param querier
-	 */
-	void saveQuerier(GeneralQuery querier);
-	
-	/**
+    /**
 	 * 更新用查询实例
 	 * @param querier
 	 */
@@ -61,4 +54,12 @@ public interface GqcApplication {
 	 * @return
 	 */
 	Page<Map<String, Object>> pagingQueryWithPage(GeneralQuery querier, int currentPage, int pagesize);
+
+	//Page<GeneralQuery> pagingQueryGeneralQueriesByQueryName(String queryName, int currentPage, int pagesize);
+	
+	Page<Map<String, Object>> pagingQuery(GeneralQuery generalQuery, int currentPage, int pagesize);
+
+	void saveGeneralQuery(GeneralQuery generalQuery);
+
+	void saveQuerier(GeneralQuery entity);
 }

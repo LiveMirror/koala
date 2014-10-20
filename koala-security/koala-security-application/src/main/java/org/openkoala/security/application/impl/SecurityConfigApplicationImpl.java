@@ -16,7 +16,6 @@ import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Sets;
 
@@ -70,7 +69,7 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
     }
 
     public void grantActorToAuthority(Actor actor, Authority authority) {
-        actor.grant(authority, null);
+        actor.grant(authority);
     }
 
     public void grantActorToAuthorities(Actor actor, List<Authority> authorities) {

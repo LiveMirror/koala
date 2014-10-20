@@ -1,10 +1,9 @@
 package org.openkoala.security.core.domain;
 
 /**
- * 密码加密服务
+ * 密码加密服务。
  * 
- * @author luzhao
- * 
+ * @author lucas
  */
 public interface EncryptService {
 
@@ -20,7 +19,7 @@ public interface EncryptService {
 	/**
 	 * 获取加密次数
 	 * 
-	 * @return
+	 * @return 加密次数
 	 */
 	int getHashIterations();
 }

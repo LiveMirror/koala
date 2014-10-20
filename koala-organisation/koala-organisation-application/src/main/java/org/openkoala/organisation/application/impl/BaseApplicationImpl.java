@@ -4,14 +4,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.openkoala.organisation.application.BaseApplication;
-import org.openkoala.organisation.domain.OrganizationAbstractEntity;
-import org.openkoala.organisation.domain.Party;
+import org.openkoala.organisation.core.domain.OrganizationAbstractEntity;
+import org.openkoala.organisation.core.domain.Party;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named

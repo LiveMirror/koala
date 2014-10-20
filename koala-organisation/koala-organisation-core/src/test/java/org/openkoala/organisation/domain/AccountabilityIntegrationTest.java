@@ -9,6 +9,15 @@ import java.util.List;
 import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.openkoala.organisation.core.domain.Accountability;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.EmployeePostHolding;
+import org.openkoala.organisation.core.domain.Job;
+import org.openkoala.organisation.core.domain.OrganizationLineManagement;
+import org.openkoala.organisation.core.domain.Person;
+import org.openkoala.organisation.core.domain.Post;
 import org.openkoala.organisation.utils.OrganisationUtils;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 

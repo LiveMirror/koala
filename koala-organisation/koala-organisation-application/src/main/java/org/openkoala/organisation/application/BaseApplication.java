@@ -3,8 +3,8 @@ package org.openkoala.organisation.application;
 import java.util.List;
 import java.util.Set;
 
-import org.openkoala.organisation.domain.OrganizationAbstractEntity;
-import org.openkoala.organisation.domain.Party;
+import org.openkoala.organisation.core.domain.OrganizationAbstractEntity;
+import org.openkoala.organisation.core.domain.Party;
 
 /**
  * 组织系统基础应用接口，提供了一些通用的应用服务

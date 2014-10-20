@@ -10,8 +10,13 @@ import java.util.Set;
 import org.dayatang.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.openkoala.organisation.TerminateNotEmptyOrganizationException;
-import org.openkoala.organisation.TerminateRootOrganizationException;
+import org.openkoala.organisation.core.TerminateNotEmptyOrganizationException;
+import org.openkoala.organisation.core.TerminateRootOrganizationException;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Job;
+import org.openkoala.organisation.core.domain.Organization;
+import org.openkoala.organisation.core.domain.Post;
 import org.openkoala.organisation.utils.OrganisationUtils;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 

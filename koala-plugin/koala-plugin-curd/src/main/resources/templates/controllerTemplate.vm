@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.dayatang.querychannel.Page;
-import ${applicationClass.packageName.replaceAll("impl","")}${applicationClass.name};
 import ${dtoClass.packageName}.*;
 import ${dtoClass.packageName.replaceAll("dto","")}${facadeImplClass.name.replaceAll("Impl","")};
+import org.openkoala.koala.commons.InvokeResult;
 
 @Controller
 @RequestMapping("/${controllerClass.name.substring(0, 1).toUpperCase()}${controllerClass.name.substring(1, ${controllerClass.name.indexOf("Controller")})}")
 public class ${controllerClass.name} {
-	#set($applicationName = ${applicationClass.name.substring(0, 1).toLowerCase()} + ${applicationClass.name.substring(1)})
+	#set($applicationName = ${facadeClass.name.substring(0, 1).toLowerCase()} + ${facadeClass.name.substring(1)})
 	#set($voType = ${applicationClass.name.substring(0, ${applicationClass.name.indexOf("Application")}).concat("DTO")})
 	#set($voName = ${voType.substring(0, 1).toLowerCase()} + ${voType.substring(1)})
 	#set($domainClass = ${applicationClass.name.substring(0, ${applicationClass.name.indexOf("Application")})})
@@ -27,20 +27,14 @@ public class ${controllerClass.name} {
 	
 	@ResponseBody
 	@RequestMapping("/add")
-	public Map<String, Object> add(${voType} ${voName}) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		${applicationName}.save${domainClass}(${voName});
-		result.put("result", "success");
-		return result;
+	public InvokeResult add(${voType} ${voName}) {
+		return ${applicationName}.save${domainClass}(${voName});
 	}
 	
 	@ResponseBody
 	@RequestMapping("/update")
-	public Map<String, Object> update(${voType} ${voName}) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		${applicationName}.update${domainClass}(${voName});
-		result.put("result", "success");
-		return result;
+	public InvokeResult update(${voType} ${voName}) {
+		return ${applicationName}.update${domainClass}(${voName});
 	}
 	
 	@ResponseBody
@@ -52,12 +46,10 @@ public class ${controllerClass.name} {
 	
 	@ResponseBody
 	@RequestMapping("/delete")
-	public Map<String, Object> delete(@RequestParam String ${dtoClass.entityModel.singleIDFieldModel.name}s) {
-		Map<String, Object> result = new HashMap<String, Object>();
+	public InvokeResult remove(@RequestParam String ${dtoClass.entityModel.singleIDFieldModel.name}s) {
 		String[] value = ${dtoClass.entityModel.singleIDFieldModel.name}s.split(",");
         ${dtoClass.entityModel.singleIDFieldModel.simpleType}[] idArrs = new ${dtoClass.entityModel.singleIDFieldModel.simpleType}[value.length];
         for (int i = 0; i < value.length; i ++) {
-        	
         	#if(${dtoClass.entityModel.singleIDFieldModel.simpleType} == "String")
 				idArrs[i] = value[i];
 			#end
@@ -67,19 +59,14 @@ public class ${controllerClass.name} {
 			#if(${dtoClass.entityModel.singleIDFieldModel.simpleType} == "Integer" )
 				idArrs[i] = Integer.parseInt(value[i]);
 			#end
-        	
         }
-        ${applicationName}.remove${domainClass}s(idArrs);
-		result.put("result", "success");
-		return result;
+        return ${applicationName}.remove${domainClass}s(idArrs);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/get/{${dtoClass.entityModel.singleIDFieldModel.name}}")
-	public Map<String, Object> get(@PathVariable ${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("data", ${applicationName}.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name}));
-		return result;
+	public InvokeResult get(@PathVariable ${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
+		return ${applicationName}.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name});
 	}
 	
 	#foreach(${relation} in ${applicationClass.relations})
