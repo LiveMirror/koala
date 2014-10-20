@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.example.application.PersonInfoApplication;
 import org.openkoala.example.domain.PersonInfo;
