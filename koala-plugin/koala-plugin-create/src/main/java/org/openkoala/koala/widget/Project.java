@@ -28,10 +28,8 @@ public class Project implements Serializable {
 	
 	private Example example;
 	
-	private static final String SECURITY_ORG_PACKAGE="org.openkoala.security.core.domain";
-	
-	private static final String ORG_SECURITY_PACKAGE="org.openkoala.organisation.domain";
-	
+	private static final String SECURITY_ORG_PACKAGE="org.openkoala.security.org.core.domain";
+
 	private static final String EXAMPLE_PACKAGE="org.openkoala.example.domain";
 	
 	private static final String BUSINESS_LOG_PACKAGE="org.openkoala.businesslog.model";
@@ -315,8 +313,10 @@ public class Project implements Serializable {
 				}
 				
 				if (mod.getSecurityOrg() != null) {
+					packages.add(SECURITY_PACKAGE);
+					packages.add(ORGANISATION_PACKAGE);
 					packages.add(SECURITY_ORG_PACKAGE);
-					packages.add(ORG_SECURITY_PACKAGE);
+					
 				}
 				
 			}

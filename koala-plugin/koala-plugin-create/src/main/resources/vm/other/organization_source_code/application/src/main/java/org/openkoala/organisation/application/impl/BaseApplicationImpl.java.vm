@@ -4,10 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.openkoala.organisation.application.BaseApplication;
 import org.openkoala.organisation.domain.OrganizationAbstractEntity;
