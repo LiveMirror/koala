@@ -1,77 +1,122 @@
 package org.openkoala.security.shiro.realm;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.dayatang.domain.InstanceFactory;
+import org.openkoala.koala.commons.InvokeResult;
+import org.openkoala.security.facade.SecurityAccessFacade;
+import org.openkoala.security.facade.dto.PermissionDTO;
+import org.openkoala.security.facade.dto.RoleDTO;
+
+import com.google.common.collect.Sets;
 
 /**
- * Shiro用户，主要是让Shiro能够支持多字段的方式登录系统。
- * 目前实现账号、联系电话、和邮箱三种登录方式。
- * 如果还不能满足需求可以扩展该类。
- *
+ * Shiro用户，主要是让Shiro能够支持多字段的方式登录系统。 目前实现账号、联系电话、和邮箱三种登录方式。 如果还不能满足需求可以扩展该类。
+ * 
  * @author lucas
  */
 public class ShiroUser implements Serializable {
 
-    private static final long serialVersionUID = 573154901435223916L;
+	private static final long serialVersionUID = 573154901435223916L;
 
-    private String userAccount;
+	private SecurityAccessFacade securityAccessFacade;
 
-    private String name;
+	private String userAccount;
 
-    private String roleName;
+	private String name;
 
-    private String email;
+	private String roleName;
 
-    private String telePhone;
+	private String email;
 
-    public ShiroUser(String userAccount, String name, String roleName) {
-        super();
-        this.userAccount = userAccount;
-        this.name = name;
-        this.roleName = roleName;
-    }
+	private String telePhone;
 
-    public String getUserAccount() {
-        return userAccount;
-    }
+	public ShiroUser(String userAccount, String name, String roleName) {
+		super();
+		this.userAccount = userAccount;
+		this.name = name;
+		this.roleName = roleName;
+	}
+	
+	public ShiroUser(String userAccount, String name) {
+		super();
+		this.userAccount = userAccount;
+		this.name = name;
+		this.roleName = getRoleNameByUserAccount();
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Set<String> getRoles() {
+		return Sets.newHashSet(roleName);
+	}
 
-    public String getRoleName() {
-        return roleName;
-    }
+	public Set<String> getPermissions() {
+		Set<String> results = new HashSet<String>();
+		Set<PermissionDTO> permissions = getSecurityAccessFacade().findPermissionsByUserAccountAndRoleName(userAccount, roleName);
+		for (PermissionDTO permission : permissions) {
+			results.add(permission.getIdentifier());
+		}
+		return results;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getRoleNameByUserAccount() {
+		InvokeResult result = getSecurityAccessFacade().findRolesByUserAccount(userAccount);
+		if (result.isSuccess()) {
+			List<RoleDTO> roles = (List<RoleDTO>) result.getData();
+			if (!roles.isEmpty()) {
+				return roles.get(0).getName();
+			}
+			return "暂未分配角色"; 
+		}
+		return "暂未分配角色";
+	}
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
+	public String getUserAccount() {
+		return userAccount;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public String getRoleName() {
+		return roleName;
+	}
 
-    public String getTelePhone() {
-        return telePhone;
-    }
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 
-    public void setTelePhone(String telePhone) {
-        this.telePhone = telePhone;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append(getUserAccount())
-                .append(getName())
-                .append(getRoleName())
-                .append(getTelePhone())
-                .append(getEmail())
-                .build();
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelePhone() {
+		return telePhone;
+	}
+
+	public void setTelePhone(String telePhone) {
+		this.telePhone = telePhone;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append(getUserAccount()).append(getName()).append(getRoleName()).append(getTelePhone()).append(getEmail()).build();
+	}
+
+	public SecurityAccessFacade getSecurityAccessFacade() {
+		if (securityAccessFacade == null) {
+			securityAccessFacade = InstanceFactory.getInstance(SecurityAccessFacade.class);
+		}
+		return securityAccessFacade;
+	}
+	
 }
