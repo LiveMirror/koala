@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.inject.Named;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.dayatang.utils.Page;
 import org.openkoala.gqc.application.GqcApplication;
 import org.openkoala.gqc.core.domain.GeneralQuery;
@@ -17,11 +16,7 @@ public class GqcApplicationImpl implements GqcApplication {
 
 	@Override
 	public GeneralQuery getQuerier(Long id) {
-		try {
-			return GeneralQuery.get(GeneralQuery.class, id);
-		} catch (Exception e) {
-			throw new RuntimeException("获取查询器失败");
-		}
+		return GeneralQuery.get(GeneralQuery.class, id);
 	}
 
 	@Override
@@ -31,11 +26,7 @@ public class GqcApplicationImpl implements GqcApplication {
 
 	@Override
 	public void updateQuerier(GeneralQuery querier) {
-		try {
-			BeanUtils.copyProperties(getQuerier(querier.getId()), querier);
-		} catch (Exception e) {
-			throw new RuntimeException("修改查询器失败");
-		}
+		querier.save();
 	}
 
 	@Override
@@ -45,12 +36,8 @@ public class GqcApplicationImpl implements GqcApplication {
 
 	@Override
 	public void removeQueiers(Long[] ids) {
-		try {
-			for (Long id : ids)
-				getQuerier(id).remove();
-		} catch (Exception e) {
-			throw new RuntimeException("删除查询器失败");
-		}
+		for (Long id : ids)
+			getQuerier(id).remove();
 	}
 
 	@Override
