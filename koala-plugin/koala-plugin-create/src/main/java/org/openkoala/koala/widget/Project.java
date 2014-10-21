@@ -34,7 +34,7 @@ public class Project implements Serializable {
 	
 	private static final String GENERATY_QUERY_PACKAGE= "org.openkoala.gqc.core.domain";
 	
-	private static final String SECURITY_PACKAGE= "org.openkoala.koala.auth.core.*";
+	private static final String SECURITY_PACKAGE= "org.openkoala.security.core.domain";
 	
 	private static final String MONITOR_DOMAIN_PCAKGE = "org.openkoala.koala.monitor.domain";
 	

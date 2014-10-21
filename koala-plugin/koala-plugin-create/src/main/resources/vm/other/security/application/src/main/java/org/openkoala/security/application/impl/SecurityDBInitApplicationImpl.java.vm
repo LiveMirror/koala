@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 
 @Named
+@Transactional(value = "transactionManager_security")
 public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication {
 
     public static final String MENU_ICON = "glyphicon  glyphicon-list-alt";

@@ -166,7 +166,7 @@
  #if ($Module.businessLog)
      <filter>
         <filter-name>LogFilter</filter-name>
-        <filter-class>${Module.basePackage}.controller.businesslog.LogFilter</filter-class>
+        <filter-class>${Module.basePackage}.businesslog.LogFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>LogFilter</filter-name>
