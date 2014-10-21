@@ -16,9 +16,9 @@ import java.util.Set;
 @Entity
 @Table(name = "KS_RESOURCEASSIGNMENTS")
 @NamedQueries({
-        @NamedQuery(name = "ResourceAssignment.findSecurityResourcesByAuthorities",query = "SELECT _resource FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority in (:authorities) AND TYPE(_resource)= :resourceType GROUP BY _resource.id ORDER BY _resource.id"),
-        @NamedQuery(name = "ResourceAssignment.findSecurityResourcesByAuthority",query = "SELECT _resource FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority = :authority AND TYPE(_resource)= :resourceType AND TYPE(_authority) = :authorityType GROUP BY _resource.id ORDER BY _resource.id"),
-        @NamedQuery(name = "ResourceAssignment.findAuthoritiesBySecurityResource",query = "SELECT _authority FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource = :resource AND TYPE(_authority)= :authorityType GROUP BY _authority.id ORDER BY _authority.id"),
+        @NamedQuery(name = "ResourceAssignment.findSecurityResourcesByAuthorities", query = "SELECT _resource FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority in (:authorities) AND TYPE(_resource)= :resourceType GROUP BY _resource.id ORDER BY _resource.id"),
+        @NamedQuery(name = "ResourceAssignment.findSecurityResourcesByAuthority", query = "SELECT _resource FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority = :authority AND TYPE(_resource)= :resourceType AND TYPE(_authority) = :authorityType GROUP BY _resource.id ORDER BY _resource.id"),
+        @NamedQuery(name = "ResourceAssignment.findAuthoritiesBySecurityResource", query = "SELECT _authority FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource = :resource AND TYPE(_authority)= :authorityType GROUP BY _authority.id ORDER BY _authority.id"),
         @NamedQuery(name = "ResourceAssignment.checkHasSecurityResource", query = "SELECT _resourceAssignment FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority IN (:authorities) AND TYPE(_resource) = :securityResourceType  AND _resource.identifier = :identifier")
 })
 public class ResourceAssignment extends SecurityAbstractEntity {
@@ -31,9 +31,10 @@ public class ResourceAssignment extends SecurityAbstractEntity {
     @JoinColumn(name = "SECURITYRESOURCE_ID")
     private SecurityResource resource;
 
-    protected ResourceAssignment() { }
+    protected ResourceAssignment() {
+    }
 
-    public ResourceAssignment( Authority authority,SecurityResource resource) {
+    public ResourceAssignment(Authority authority, SecurityResource resource) {
         if (authority == null) {
             throw new NullArgumentException("authority");
         }
@@ -48,7 +49,7 @@ public class ResourceAssignment extends SecurityAbstractEntity {
 
     @Override
     public void save() {
-        if(existed(authority,resource)){
+        if (existed(authority, resource)) {
             return;
         }
         super.save();
@@ -71,13 +72,14 @@ public class ResourceAssignment extends SecurityAbstractEntity {
         Set<Authority> authorities = getAuthoritiesByAuthority(authority);
         return getRepository()//
                 .createCriteriaQuery(ResourceAssignment.class)//
-                .in("authority",authorities)//
+                .in("authority", authorities)//
                 .asc("id")//
                 .list();
     }
 
     /**
      * TODO 很奇怪~ 排序规则是变化的，所以强制使用id升序返回。
+     *
      * @param resource
      * @return
      */
@@ -100,12 +102,12 @@ public class ResourceAssignment extends SecurityAbstractEntity {
     }
 
     public static List<MenuResource> findMenuResourceByAuthority(Authority authority) {
-        Set<Authority> authorities =  getAuthoritiesByAuthority(authority);
+        Set<Authority> authorities = getAuthoritiesByAuthority(authority);
         return findMenuResourceByAuthorities(authorities);
     }
 
-    public static List<UrlAccessResource> findUrlAccessResourcesByAuthority(Authority authority){
-        Set<Authority> authorities =  getAuthoritiesByAuthority(authority);
+    public static List<UrlAccessResource> findUrlAccessResourcesByAuthority(Authority authority) {
+        Set<Authority> authorities = getAuthoritiesByAuthority(authority);
         return findUrlAccessResourcesByAuthorities(authorities);
     }
 
@@ -117,44 +119,43 @@ public class ResourceAssignment extends SecurityAbstractEntity {
                 .list();
     }
 
-    public static List<Role> findRoleBySecurityResource(SecurityResource resource){
+    public static List<Role> findRoleBySecurityResource(SecurityResource resource) {
         return getRepository().createNamedQuery("ResourceAssignment.findAuthoritiesBySecurityResource")
-                .addParameter("resource",resource)
-                .addParameter("authorityType",Role.class)//
+                .addParameter("resource", resource)
+                .addParameter("authorityType", Role.class)//
                 .list();
     }
 
-    public static List<Permission> findPermissionBySecurityResource(SecurityResource resource){
+    public static List<Permission> findPermissionBySecurityResource(SecurityResource resource) {
         return getRepository().createNamedQuery("ResourceAssignment.findAuthoritiesBySecurityResource")
-                .addParameter("resource",resource)
-                .addParameter("authorityType",Permission.class)//
+                .addParameter("resource", resource)
+                .addParameter("authorityType", Permission.class)//
                 .list();
     }
 
     /**
-     *
      * @param resourceAssignmentId id for ResourceAssignment cannot null.
      * @return
      */
     public static ResourceAssignment getById(Long resourceAssignmentId) {
-        if(resourceAssignmentId == null || resourceAssignmentId < 0){
+        if (resourceAssignmentId == null || resourceAssignmentId < 0) {
             throw new NullArgumentException("resourceAssignmentId");
         }
-        return ResourceAssignment.get(ResourceAssignment.class,resourceAssignmentId);
+        return ResourceAssignment.get(ResourceAssignment.class, resourceAssignmentId);
     }
 
     private static Set<Authority> getAuthoritiesByAuthority(Authority authority) {
         Set<Authority> results = new HashSet<Authority>();
         results.add(authority);
-        if(authority instanceof Role){
-            Role role = (Role)authority;
+        if (authority instanceof Role) {
+            Role role = (Role) authority;
             results.addAll(role.getPermissions());
         }
         return results;
     }
 
-    private boolean existed(Authority authority,SecurityResource resource){
-       return findByResourceInAuthority(authority, resource) != null;
+    private boolean existed(Authority authority, SecurityResource resource) {
+        return findByResourceInAuthority(authority, resource) != null;
     }
 
     @Override

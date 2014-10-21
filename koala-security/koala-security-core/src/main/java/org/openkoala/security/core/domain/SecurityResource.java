@@ -49,7 +49,8 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    protected SecurityResource() {}
+    protected SecurityResource() {
+    }
 
     public SecurityResource(String name) {
         checkArgumentIsNull("name", name);

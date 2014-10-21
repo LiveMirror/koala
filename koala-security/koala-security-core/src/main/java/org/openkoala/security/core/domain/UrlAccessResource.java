@@ -17,46 +17,47 @@ import java.util.List;
 @DiscriminatorValue("URL_ACCESS_RESOURCE")
 public class UrlAccessResource extends SecurityResource {
 
-	private static final long serialVersionUID = -9116913523532845475L;
+    private static final long serialVersionUID = -9116913523532845475L;
 
-	@Column(name = "URL")
-	private String url;
+    @Column(name = "URL")
+    private String url;
 
-	protected UrlAccessResource() {}
+    protected UrlAccessResource() {
+    }
 
-	public UrlAccessResource(String name, String url) {
-		super(name);
-		checkArgumentIsNull("url", url);
-		isExistUrl(url);
-		this.url = url;
-	}
+    public UrlAccessResource(String name, String url) {
+        super(name);
+        checkArgumentIsNull("url", url);
+        isExistUrl(url);
+        this.url = url;
+    }
 
-	@Override
-	public void save() {
-		super.save();
-	}
+    @Override
+    public void save() {
+        super.save();
+    }
 
-	@Override
-	public SecurityResource findByName(String name) {
-		return getRepository()//
-				.createNamedQuery("SecurityResource.findByName")
-				.addParameter("securityResourceType", UrlAccessResource.class)
-				.addParameter("name", name)
-				.singleResult();
-	}
+    @Override
+    public SecurityResource findByName(String name) {
+        return getRepository()//
+                .createNamedQuery("SecurityResource.findByName")
+                .addParameter("securityResourceType", UrlAccessResource.class)
+                .addParameter("name", name)
+                .singleResult();
+    }
 
-	public void changeUrl(String url) {
-		checkArgumentIsNull("url", url);
-		if (!url.equals(this.getUrl())) {
-			isExistUrl(url);
-			this.url = url;
-			this.save();
-		}
-	}
+    public void changeUrl(String url) {
+        checkArgumentIsNull("url", url);
+        if (!url.equals(this.getUrl())) {
+            isExistUrl(url);
+            this.url = url;
+            this.save();
+        }
+    }
 
-	public static UrlAccessResource getBy(Long id) {
-		return UrlAccessResource.get(UrlAccessResource.class, id);
-	}
+    public static UrlAccessResource getBy(Long id) {
+        return UrlAccessResource.get(UrlAccessResource.class, id);
+    }
 
     public static List<UrlAccessResource> findAllUrlAccessResources() {
         return getRepository()
@@ -65,40 +66,39 @@ public class UrlAccessResource extends SecurityResource {
                 .list();
     }
 
-   public static List<Role> findRoleBySecurityResource(UrlAccessResource resource){
+    public static List<Role> findRoleBySecurityResource(UrlAccessResource resource) {
         return ResourceAssignment.findRoleBySecurityResource(resource);
-   }
+    }
 
-   public static List<Permission> findPermissionBySecurityResource(UrlAccessResource resource){
+    public static List<Permission> findPermissionBySecurityResource(UrlAccessResource resource) {
         return ResourceAssignment.findPermissionBySecurityResource(resource);
-   }
+    }
 
-	/**
-	 * @param url url of the UrlAccessResource, can't be null.
-     *
-	 * @return
-	 */
-	protected UrlAccessResource findByUrl(String url) {
-		checkArgumentIsNull("url", url);
-		return getRepository()
-				.createCriteriaQuery(UrlAccessResource.class)
-				.eq("url", url)
-				.singleResult();
-	}
+    /**
+     * @param url url of the UrlAccessResource, can't be null.
+     * @return
+     */
+    protected UrlAccessResource findByUrl(String url) {
+        checkArgumentIsNull("url", url);
+        return getRepository()
+                .createCriteriaQuery(UrlAccessResource.class)
+                .eq("url", url)
+                .singleResult();
+    }
 
-	private void isExistUrl(String url) {
-		if (findByUrl(url) != null) {
-			throw new UrlIsExistedException("url is existed.");
-		}
-	}
+    private void isExistUrl(String url) {
+        if (findByUrl(url) != null) {
+            throw new UrlIsExistedException("url is existed.");
+        }
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	@Override
-	public String[] businessKeys() {
-		return new String[] { "name", "url" };
-	}
+    @Override
+    public String[] businessKeys() {
+        return new String[]{"name", "url"};
+    }
 
 }

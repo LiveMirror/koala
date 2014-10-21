@@ -164,7 +164,6 @@ public abstract class Authority extends SecurityAbstractEntity {
     }
 
 
-
     @Override
     public String[] businessKeys() {
         return new String[]{"name"};

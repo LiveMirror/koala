@@ -2,6 +2,7 @@ package org.openkoala.security.infra.credential;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openkoala.security.AbstractInfrantegrationTestCase;
 import org.openkoala.security.core.domain.User;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 

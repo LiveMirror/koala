@@ -1,4 +1,4 @@
-package org.openkoala.security.infra.credential;
+package org.openkoala.security;
 
 import org.openkoala.koala.util.KoalaBaseSpringTestCase;
 import org.springframework.test.context.ContextConfiguration;
