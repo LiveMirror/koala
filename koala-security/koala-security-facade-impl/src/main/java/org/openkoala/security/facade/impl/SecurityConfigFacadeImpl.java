@@ -614,6 +614,8 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Override
     public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
+
+
         User user = securityAccessApplication.getUserById(command.getId());
         securityConfigApplication.changeUserAccount(user, command.getUserAccount(), command.getUserPassword());
         securityConfigApplication.changeLastModifyTimeOfUser(user);

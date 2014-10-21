@@ -9,20 +9,20 @@ import java.util.Set;
 
 /**
  * 组织机构范围。
- * 
- * @author luzhao
+ * 支持数据权限。
  *
+ * @author lucas
  */
 @Entity
 @DiscriminatorValue("ORGANIZATION_SCOPE")
-@NamedQueries(@NamedQuery(name="OrganisationScope.hasOrganizationOfScope",query = "FROM OrganisationScope _scope WHERE _scope.organization = :organization"))
+@NamedQueries(@NamedQuery(name = "OrganisationScope.hasOrganizationOfScope", query = "FROM OrganisationScope _scope WHERE _scope.organization = :organization"))
 public class OrganisationScope extends Scope {
 
-	private static final long serialVersionUID = 4668728765272500424L;
+    private static final long serialVersionUID = 4668728765272500424L;
 
-	@OneToOne
-	@JoinColumn(name = "ORGANIZATION_ID")
-	private Organization organization;
+    @OneToOne
+    @JoinColumn(name = "ORGANIZATION_ID")
+    private Organization organization;
 
     @Transient
     @Override
@@ -36,7 +36,8 @@ public class OrganisationScope extends Scope {
         return null;
     }
 
-    protected OrganisationScope() {}
+    protected OrganisationScope() {
+    }
 
     public OrganisationScope(String name, Organization organization) {
         super(name);

@@ -2,6 +2,7 @@ package org.openkoala.security.core.domain;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.InstanceFactory;
+import org.hibernate.id.UUIDHexGenerator;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
@@ -64,15 +66,15 @@ public class User extends Actor {
     }
 
     /**
-     * TODO 验证规则，账号，邮箱，电话。
+     * TODO 验证规则，账号。
      */
     public User(String name, String userAccount) {
         super(name);
         checkArgumentIsNull("userAccount", userAccount);
         isExistUserAccount(userAccount);
         this.userAccount = userAccount;
-        String userPassword = encryptPassword(this.getPassword());
-        this.password = userPassword;
+        this.salt = UUID.randomUUID().toString();
+        this.password = encryptPassword(INIT_PASSWORD);
     }
 
     public void disable() {
@@ -136,27 +138,29 @@ public class User extends Actor {
     }
 
     /**
-     *  TODO 需要排序
+     * TODO 需要排序
+     *
      * @return
      */
     public Set<Role> findAllRoles() {
-        List<Role> results = getRepository()//
-                .createNamedQuery("Authorization.findAuthoritiesByActor")//
-                .addParameter("actor", this)//
-                .addParameter("authorityType", Role.class)//
+        List<Role> results = getRepository()
+                .createNamedQuery("Authorization.findAuthoritiesByActor")
+                .addParameter("actor", this)
+                .addParameter("authorityType", Role.class)
                 .list();
         return Sets.newHashSet(results);
     }
 
     /**
      * TODO 需要排序
+     *
      * @return
      */
     public Set<Permission> findAllPermissions() {
-        List<Permission> results = getRepository()//
-                .createNamedQuery("Authorization.findAuthoritiesByActor")//
-                .addParameter("actor", this)//
-                .addParameter("authorityType", Permission.class)//
+        List<Permission> results = getRepository()
+                .createNamedQuery("Authorization.findAuthoritiesByActor")
+                .addParameter("actor", this)
+                .addParameter("authorityType", Permission.class)
                 .list();
         return Sets.newHashSet(results);
     }
@@ -185,10 +189,10 @@ public class User extends Actor {
      * @return
      */
     public static List<Role> findAllRolesBy(String userAccount) {
-        List<Role> results = getRepository()//
-                .createNamedQuery("Authority.findAllAuthoritiesByUserAccount")//
-                .addParameter("userAccount", userAccount)//
-                .addParameter("authorityType", Role.class)//
+        List<Role> results = getRepository()
+                .createNamedQuery("Authority.findAllAuthoritiesByUserAccount")
+                .addParameter("userAccount", userAccount)
+                .addParameter("authorityType", Role.class)
                 .list();
         if (results.isEmpty()) {
             throw new UserNotHasRoleException("user do have not a role");
@@ -203,10 +207,10 @@ public class User extends Actor {
      * @return
      */
     public static List<Permission> findAllPermissionsBy(String userAccount) {
-        return getRepository()//
-                .createNamedQuery("Authority.findAllAuthoritiesByUserAccount")//
-                .addParameter("userAccount", userAccount)//
-                .addParameter("authorityType", Permission.class)//
+        return getRepository()
+                .createNamedQuery("Authority.findAllAuthoritiesByUserAccount")
+                .addParameter("userAccount", userAccount)
+                .addParameter("authorityType", Permission.class)
                 .list();
     }
 
@@ -222,11 +226,10 @@ public class User extends Actor {
      */
     public static User getByUserAccount(String userAccount) {
         checkArgumentIsNull("userAccount", userAccount);
-        User result = getRepository()//
-                .createCriteriaQuery(User.class)//
-                .eq("userAccount", userAccount) //
+        return getRepository()
+                .createCriteriaQuery(User.class)
+                .eq("userAccount", userAccount)
                 .singleResult();
-        return result;
     }
 
     /**
@@ -237,11 +240,10 @@ public class User extends Actor {
      */
     public static User getByEmail(String email) {
         checkArgumentIsNull("email", email);
-        User result = getRepository()//
-                .createCriteriaQuery(User.class)//
-                .eq("email", email) //
+        return getRepository()
+                .createCriteriaQuery(User.class)
+                .eq("email", email)
                 .singleResult();
-        return result;
     }
 
     /**
@@ -252,9 +254,9 @@ public class User extends Actor {
      */
     public static User getByTelePhone(String telePhone) {
         checkArgumentIsNull("telePhone", telePhone);
-        User result = getRepository()//
-                .createCriteriaQuery(User.class)//
-                .eq("telePhone", telePhone) //
+        User result = getRepository()
+                .createCriteriaQuery(User.class)
+                .eq("telePhone", telePhone)
                 .singleResult();
         return result;
     }
@@ -265,8 +267,8 @@ public class User extends Actor {
      * @return
      */
     public static boolean hasUserExisted() {
-        Long result = getRepository()//
-                .createNamedQuery("User.count")//
+        Long result = getRepository()
+                .createNamedQuery("User.count")
                 .singleResult();
         return result > 0;
     }
@@ -275,7 +277,7 @@ public class User extends Actor {
 
     protected static EncryptService getPasswordEncryptService() {
         if (passwordEncryptService == null) {
-            passwordEncryptService = InstanceFactory.getInstance(EncryptService.class, "encryptService");
+            passwordEncryptService = InstanceFactory.getInstance(EncryptService.class);
         }
         return passwordEncryptService;
     }
@@ -284,16 +286,15 @@ public class User extends Actor {
         User.passwordEncryptService = passwordEncryptService;
     }
 
-    protected static String encryptPassword(String password) {
-        checkArgumentIsNull("password", password);
-        return getPasswordEncryptService().encryptPassword(password, null);
+    protected  String encryptPassword(String password) {
+        return getPasswordEncryptService().encryptPassword(password, salt + userAccount);
     }
 
 	/*------------- Private helper methods  -----------------*/
 
     private void isExistTelePhone(String telePhone) {
-        User user = getRepository().createCriteriaQuery(User.class)//
-                .eq("telePhone", telePhone)//
+        User user = getRepository().createCriteriaQuery(User.class)
+                .eq("telePhone", telePhone)
                 .singleResult();
         if (user != null) {
             throw new TelePhoneIsExistedException("user telePhone is existed.");
@@ -301,8 +302,8 @@ public class User extends Actor {
     }
 
     private void isExistEmail(String email) {
-        User user = getRepository().createCriteriaQuery(User.class)//
-                .eq("email", email)//
+        User user = getRepository().createCriteriaQuery(User.class)
+                .eq("email", email)
                 .singleResult();
         if (user != null) {
             throw new EmailIsExistedException("user email is existed.");
@@ -316,8 +317,6 @@ public class User extends Actor {
     }
 
     private void verifyPassword(String userPassword) {
-        checkArgumentIsNull("userPassword", userPassword);
-
         if (!encryptPassword(userPassword).equals(this.getPassword())) {
             throw new UserPasswordException("user password is not right.");
         }

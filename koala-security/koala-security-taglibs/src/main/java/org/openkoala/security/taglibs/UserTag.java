@@ -12,11 +12,17 @@ import org.openkoala.security.shiro.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserTag extends AbstractAuthorizationTag{
+/**
+ * 大部分都直接是使用shiro中的代码。
+ * property这里可以看做是{@link org.openkoala.security.shiro.realm.ShiroUser}。
+ *
+ * @author lucas
+ */
+public class UserTag extends AbstractAuthorizationTag {
 
-	private static final long serialVersionUID = 1012006811404857600L;
+    private static final long serialVersionUID = 1012006811404857600L;
 
-	private static final Logger log = LoggerFactory.getLogger(UserTag.class);
+    private static final Logger log = LoggerFactory.getLogger(UserTag.class);
 
     /**
      * The type of principal to be retrieved, or null if the default principal should be used.
@@ -122,7 +128,7 @@ public class UserTag extends AbstractAuthorizationTag{
 
         return strValue;
     }
-    
+
     public String getType() {
         return type;
     }
