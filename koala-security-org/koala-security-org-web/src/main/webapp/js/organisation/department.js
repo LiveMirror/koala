@@ -110,7 +110,7 @@ var department = function(){
 				$(this).remove();
 			},
 			'complete': function(event, data){
-				var type = data.type
+				var type = data.type;
 				$('#departmentDetail').message({
 					type: 'success',
 					content: '保存成功'
@@ -352,7 +352,12 @@ var department = function(){
 						 .addClass('glyphicon-folder-open');
         		});
         	}else{
-        		$('#departmentTree').find('.tree-folder-header:first').click();
+                if ($('#departmentTree').find('.tree-folder-header:first').length != 0) {
+                    $('#departmentTree').find('.tree-folder-header:first').click();
+                } else {
+                    $('#departmentTree').find('.tree-item:first').click();
+                }
+
         	}
         });
 	};

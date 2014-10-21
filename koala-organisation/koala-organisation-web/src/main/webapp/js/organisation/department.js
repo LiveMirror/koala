@@ -352,7 +352,12 @@ var department = function(){
 						 .addClass('glyphicon-folder-open');
         		});
         	}else{
-        		$('#departmentTree').find('.tree-folder-header:first').click();
+                if ($('#departmentTree').find('.tree-folder-header:first').length != 0) {
+                    $('#departmentTree').find('.tree-folder-header:first').click();
+                } else {
+                    $('#departmentTree').find('.tree-item:first').click();
+                }
+
         	}
         });
 	};
