@@ -15,40 +15,41 @@ import java.util.*;
 
 /**
  * 权限是一个抽象的概念，代表一项操作或责任，因此是授权的细粒度表现。
- * 
+ *
  * @author lucas
  */
 @Entity
 @DiscriminatorValue("PERMISSION")
 public class Permission extends Authority {
 
-	private static final long serialVersionUID = 4631351008490511334L;
+    private static final long serialVersionUID = 4631351008490511334L;
 
-	/**
-	 * 权限标识符 例如：user:create
-	 */
-	@NotNull
-	@Column(name = "IDENTIFIER")
-	private String identifier;
+    /**
+     * 权限标识符 例如：user:create
+     */
+    @NotNull
+    @Column(name = "IDENTIFIER")
+    private String identifier;
 
-	@ManyToMany(mappedBy = "permissions")
-	private Set<Role> roles = new HashSet<Role>();
+    @ManyToMany(mappedBy = "permissions")
+    private Set<Role> roles = new HashSet<Role>();
 
-	protected Permission() {}
+    protected Permission() {
+    }
 
-	public Permission(String name, String identifier) {
-		super(name);
-		checkArgumentIsNull("identifier", identifier);
-		isIdentifierExisted(identifier);
-		this.identifier = identifier;
-	}
+    public Permission(String name, String identifier) {
+        super(name);
+        checkArgumentIsNull("identifier", identifier);
+        isIdentifierExisted(identifier);
+        this.identifier = identifier;
+    }
 
-	public Permission getPermissionBy(String identifier) {
-		return getRepository()//
-				.createCriteriaQuery(Permission.class)//
-				.eq("identifier", identifier)//
-				.singleResult();
-	}
+    public Permission getPermissionBy(String identifier) {
+        return getRepository()//
+                .createCriteriaQuery(Permission.class)//
+                .eq("identifier", identifier)//
+                .singleResult();
+    }
 
     public static List<String> getIdentifiers(Set<Authority> authorities) {
         List<String> results = new ArrayList<String>();
@@ -62,89 +63,89 @@ public class Permission extends Authority {
 
 
     @Override
-	public Authority getBy(String name) {
-		return getRepository()//
-				.createNamedQuery("Authority.getAuthorityByName")//
-				.addParameter("authorityType", Permission.class)//
-				.addParameter("name", name)//
-				.singleResult();
+    public Authority getBy(String name) {
+        return getRepository()//
+                .createNamedQuery("Authority.getAuthorityByName")//
+                .addParameter("authorityType", Permission.class)//
+                .addParameter("name", name)//
+                .singleResult();
 
-	}
+    }
 
-	public static Permission getBy(Long id) {
-		return Permission.get(Permission.class, id);
-	}
+    public static Permission getBy(Long id) {
+        return Permission.get(Permission.class, id);
+    }
 
-	private void isIdentifierExisted(String identifier) {
-		Permission permission = getPermissionBy(identifier);
-		if (permission != null) {
-			throw new IdentifierIsExistedException("permission.identifier.existed");
-		}
+    private void isIdentifierExisted(String identifier) {
+        Permission permission = getPermissionBy(identifier);
+        if (permission != null) {
+            throw new IdentifierIsExistedException("permission.identifier.existed");
+        }
 
-	}
+    }
 
-	public void changeIdentifier(String identifier) {
-		checkArgumentIsNull("identifier", identifier);
-		if(!identifier.equals(this.getIdentifier())){
-			isIdentifierExisted(identifier);
-			this.identifier = identifier;
-			this.save();
-		}
-	}
-	
-	public void addRole(Role role){
-		this.roles.add(role);
-		this.save();
-	}
-	
-	public void addRoles(Set<Role> roles){
-		this.roles.addAll(roles);
-		this.save();
-	}
-	
-	public void terminateRole(Role role){
-		this.roles.remove(role);
-		this.save();
-	}
-	
-	public void terminateRoles(Set<Role> roles){
-		this.roles.removeAll(roles);
-		this.save();
-	}
-	
-	@Override
-	public void remove() {
-		
-		if(!this.getRoles().isEmpty()){
-			throw new CorrelationException("permission has role, so can't remove it.");
-		}
-		super.remove();
-	}
+    public void changeIdentifier(String identifier) {
+        checkArgumentIsNull("identifier", identifier);
+        if (!identifier.equals(this.getIdentifier())) {
+            isIdentifierExisted(identifier);
+            this.identifier = identifier;
+            this.save();
+        }
+    }
 
-	public String[] businessKeys() {
-		return new String[] { "name", "identifier" };
-	}
+    public void addRole(Role role) {
+        this.roles.add(role);
+        this.save();
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this)//
-				.append(getName())//
-				.append(identifier)//
-				.append(getDescription())//
-				.build();
-	}
+    public void addRoles(Set<Role> roles) {
+        this.roles.addAll(roles);
+        this.save();
+    }
 
-	public Set<Role> getRoles() {
-		return Collections.unmodifiableSet(roles);
-	}
+    public void terminateRole(Role role) {
+        this.roles.remove(role);
+        this.save();
+    }
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+    public void terminateRoles(Set<Role> roles) {
+        this.roles.removeAll(roles);
+        this.save();
+    }
 
-	public String getIdentifier() {
-		return identifier;
-	}
+    @Override
+    public void remove() {
+
+        if (!this.getRoles().isEmpty()) {
+            throw new CorrelationException("permission has role, so can't remove it.");
+        }
+        super.remove();
+    }
+
+    public String[] businessKeys() {
+        return new String[]{"name", "identifier"};
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)//
+                .append(getName())//
+                .append(identifier)//
+                .append(getDescription())//
+                .build();
+    }
+
+    public Set<Role> getRoles() {
+        return Collections.unmodifiableSet(roles);
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
 
     public Set<PageElementResource> findPageElementResources() {
         List<PageElementResource> results = getRepository()//

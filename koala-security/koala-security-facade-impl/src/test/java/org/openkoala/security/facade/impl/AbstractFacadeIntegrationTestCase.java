@@ -7,10 +7,10 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 /**
  * 权限集成测试基类
  * 
- * @author luzhao
+ * @author lucas
  * 
  */
-@ContextConfiguration(locations = {"classpath*:META-INF/spring/security-root.xml"})
+@ContextConfiguration(locations = {"classpath*:META-INF/spring/security-root.xml","classpath*:META-INF/spring/security-extend.xml"})
 @TransactionConfiguration(transactionManager = "transactionManager_security", defaultRollback = true)
 public abstract class AbstractFacadeIntegrationTestCase extends KoalaBaseSpringTestCase {
 	

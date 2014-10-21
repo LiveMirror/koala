@@ -14,16 +14,6 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
     <!-- 权限的一些灵活配置-->
-    <!--验证码-->
-    <bean id="jCaptchaValidateFilter" class="org.openkoala.security.shiro.jcaptcha.JCaptchaValidateFilter">
-        <!-- 是否启用验证码 从属性配置文件中读取，可以灵活配置-->
-        <property name="jCaptchaDisabled" value="${security.jCaptchaDisabled}"/>
-        <!-- 页面输入的验证码-->
-        <property name="jCaptchaCode" value="jCaptchaCode"/>
-        <!-- 验证失败  -->
-        <property name="failureKeyAttribute" value="shiroLoginFailure"/>
-    </bean>
-
     <!-- 加密服务 -->
     <bean id="encryptService" class="org.openkoala.security.infra.credential.MD5EncryptService">
         <!-- 是否启用盐值加密 -->

@@ -286,7 +286,7 @@ public class User extends Actor {
         User.passwordEncryptService = passwordEncryptService;
     }
 
-    protected  String encryptPassword(String password) {
+    protected String encryptPassword(String password) {
         return getPasswordEncryptService().encryptPassword(password, salt + userAccount);
     }
 

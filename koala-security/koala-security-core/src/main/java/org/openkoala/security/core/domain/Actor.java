@@ -24,177 +24,174 @@ import org.openkoala.security.core.NullArgumentException;
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
 public abstract class Actor extends SecurityAbstractEntity {
 
-	private static final long serialVersionUID = -6279345771754150467L;
+    private static final long serialVersionUID = -6279345771754150467L;
 
-	/**
-	 * 名称
-	 */
-	@Column(name = "NAME")
-	private String name;
+    /**
+     * 名称
+     */
+    @Column(name = "NAME")
+    private String name;
 
-	/**
-	 * 最后更新时间
-	 */
+    /**
+     * 最后更新时间
+     */
     @Temporal(TemporalType.DATE)
     @Column(name = "LAST_MODIFY_TIME")
-	private Date lastModifyTime;
+    private Date lastModifyTime;
 
-	/**
-	 * 创建者
-	 */
-	@Column(name = "CREATE_OWNER")
-	private String createOwner;
+    /**
+     * 创建者
+     */
+    @Column(name = "CREATE_OWNER")
+    private String createOwner;
 
-	/**
-	 * 创建时间
-	 */
+    /**
+     * 创建时间
+     */
     @Temporal(TemporalType.DATE)
-	@Column(name = "CREATE_DATE")
-	private Date createDate = new Date();
+    @Column(name = "CREATE_DATE")
+    private Date createDate = new Date();
 
-	/**
-	 * 描述
-	 */
-	@Column(name = "DESCRIPTION")
-	private String description;
+    /**
+     * 描述
+     */
+    @Column(name = "DESCRIPTION")
+    private String description;
 
-	public Actor() {
-	}
+    public Actor() {
+    }
 
-	public Actor(String name) {
-		checkArgumentIsNull("name", name);
-		this.name = name;
-	}
+    public Actor(String name) {
+        checkArgumentIsNull("name", name);
+        this.name = name;
+    }
 
-	/**
-	 * 撤销~级联撤销{@link Authorization }
-	 */
-	@Override
-	public void remove() {
-		for (Authorization authorization : Authorization.findByActor(this)) {
-			authorization.remove();
-		}
-		super.remove();
-	}
+    /**
+     * 撤销~级联撤销{@link Authorization }
+     */
+    @Override
+    public void remove() {
+        for (Authorization authorization : Authorization.findByActor(this)) {
+            authorization.remove();
+        }
+        super.remove();
+    }
 
-	/**
-	 * 在某个范围下{@link Scope}为参与者{@link Actor}授权可授权体{@link Authority}
-	 * 
-	 * @param authority
-	 *            可授权体
-	 * @param scope
-	 *            范围
-	 */
-	public void grant(Authority authority, Scope scope) {
+    /**
+     * 在某个范围下{@link Scope}为参与者{@link Actor}授权可授权体{@link Authority}
+     *
+     * @param authority 可授权体
+     * @param scope     范围
+     */
+    public void grant(Authority authority, Scope scope) {
         // 有可能授权的时候已经是有了，所以是需要修改的。
-        if(Authorization.exists(this,authority)){
-            Authorization authorization = Authorization.findByActorInAuthority(this,authority);
+        if (Authorization.exists(this, authority)) {
+            Authorization authorization = Authorization.findByActorInAuthority(this, authority);
             authorization.changeScope(scope);
         }
-		if (Authorization.exists(this, authority, scope)) {
-			return;
-		}
-		new Authorization(this, authority, scope).save();
-	}
+        if (Authorization.exists(this, authority, scope)) {
+            return;
+        }
+        new Authorization(this, authority, scope).save();
+    }
 
-	/**
-	 * 为参与者授权可授权体。
-	 * 
-	 * @param authority
-	 */
-	public void grant(Authority authority) {
-		if (Authorization.exists(this, authority)) {
-			return;
-		}
-		new Authorization(this, authority).save();
-	}
+    /**
+     * 为参与者授权可授权体。
+     *
+     * @param authority
+     */
+    public void grant(Authority authority) {
+        if (Authorization.exists(this, authority)) {
+            return;
+        }
+        new Authorization(this, authority).save();
+    }
 
-	public void terminate(Authority authority) {
-		Authorization authorization = Authorization.findByActorInAuthority(this, authority);
-		authorization.remove();
-	}
-	
-	/**
-	 * 得到在某个范围下{@link Scope}参与者{@link Actor}的所有权限{@link Permission}
-	 * 
-	 * @param scope
-	 *            范围
-	 * @return
-	 */
-	public Set<Permission> getPermissions(Scope scope) {
-		Set<Permission> results = new HashSet<Permission>();
-		for (Authority authority : getAuthorities(scope)) {
-			if (authority instanceof Permission) {
-				results.add((Permission) authority);
-			} else {
-				Role role = (Role) authority;
-				results.addAll(role.getPermissions());
-			}
-		}
-		return results;
-	}
+    public void terminate(Authority authority) {
+        Authorization authorization = Authorization.findByActorInAuthority(this, authority);
+        authorization.remove();
+    }
 
-    public void changeLastModifyTime(){
+    /**
+     * 得到在某个范围下{@link Scope}参与者{@link Actor}的所有权限{@link Permission}
+     *
+     * @param scope 范围
+     * @return
+     */
+    public Set<Permission> getPermissions(Scope scope) {
+        Set<Permission> results = new HashSet<Permission>();
+        for (Authority authority : getAuthorities(scope)) {
+            if (authority instanceof Permission) {
+                results.add((Permission) authority);
+            } else {
+                Role role = (Role) authority;
+                results.addAll(role.getPermissions());
+            }
+        }
+        return results;
+    }
+
+    public void changeLastModifyTime() {
         this.lastModifyTime = new Date();
     }
 
     public void terminateAuthorityInScope(Authority authority, Scope scope) {
-        Authorization authorization = Authorization.findByActorOfAuthorityInScope(this,authority,scope);
+        Authorization authorization = Authorization.findByActorOfAuthorityInScope(this, authority, scope);
         authorization.remove();
     }
 
-    public static <T extends Actor> T  getActorBy(Long actorId) {
-        return (T)Actor.get(Actor.class,actorId);
+    public static <T extends Actor> T getActorBy(Long actorId) {
+        return (T) Actor.get(Actor.class, actorId);
     }
 
-	protected static void checkArgumentIsNull(String nullMessage, String argument) {
-		if (StringUtils.isBlank(argument)) {
-			throw new NullArgumentException(nullMessage);
-		}
-	}
+    protected static void checkArgumentIsNull(String nullMessage, String argument) {
+        if (StringUtils.isBlank(argument)) {
+            throw new NullArgumentException(nullMessage);
+        }
+    }
 
 	/*------------- Private helper methods  -----------------*/
 
-	private Set<Authority> getAuthorities(Scope scope) {
-		return Authorization.findAuthoritiesByActorInScope(this, scope);
-	}
+    private Set<Authority> getAuthorities(Scope scope) {
+        return Authorization.findAuthoritiesByActorInScope(this, scope);
+    }
 
-	@Override
-	public String[] businessKeys() {
-		return new String[] { "name" };
-	}
+    @Override
+    public String[] businessKeys() {
+        return new String[]{"name"};
+    }
 
     /*-------------- getter setter methods  ------------------*/
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Date getLastModifyTime() {
-		return lastModifyTime;
-	}
+    public Date getLastModifyTime() {
+        return lastModifyTime;
+    }
 
-	public String getCreateOwner() {
-		return createOwner;
-	}
+    public String getCreateOwner() {
+        return createOwner;
+    }
 
-	public void setCreateOwner(String createOwner) {
-		this.createOwner = createOwner;
-	}
+    public void setCreateOwner(String createOwner) {
+        this.createOwner = createOwner;
+    }
 
-	public Date getCreateDate() {
-		return createDate;
-	}
+    public Date getCreateDate() {
+        return createDate;
+    }
 }
