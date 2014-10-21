@@ -190,7 +190,7 @@
         $(function(){
             // ------------ switchOverRoleOfUser start ---------------
             $('#userManager').find("li[data-target=#rolesToggle]").click(function(){
-                $.get(contextPath + '/pages/auth/toggle-role.jsp').done(function(data){
+                $.get(contextPath + '/pages/auth/role-switch.jsp').done(function(data){
                     var dialog = $(data);
                     dialog.find('#toggle').on('click',function(){
                         var items = dialog.find('.selectRoleGrid').data('koala.grid').selectedRows();

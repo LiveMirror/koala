@@ -305,7 +305,7 @@
 			//TODO MENU
 			'assignPermissionForMenu': function(event, data){
         		var grid = $(this);
-        		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/permission-select.jsp').done(function(data){
         			var dialog = $(data);
                     // 搜索功能
                     dialog.find('#search').on('click', function(){
@@ -462,7 +462,7 @@
 			//TODO Page
 			'assignPermissionForPage': function(event, data){
         		var grid = $(this);
-        		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/permission-select.jsp').done(function(data){
         			var dialog = $(data);
                     //搜索功能
                     dialog.find('#search').on('click', function(){
@@ -615,7 +615,7 @@
 			//TODO Url
 			'assignPermissionForUrl': function(event, data){
         		var grid = $(this);
-        		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/permission-select.jsp').done(function(data){
         			var dialog = $(data);
 
                     dialog.find('#search').on('click', function(){
@@ -772,7 +772,7 @@
 			//@TODO
 			'assignPermissionForRole':function(event, data){
         		var grid = $(this);
-        		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/permission-select.jsp').done(function(data){
         			var dialog = $(data);
 
                     dialog.find('#search').on('click', function(){

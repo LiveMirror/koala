@@ -176,7 +176,14 @@
 				title : "权限描述",
 				name : "description",
 				width : 150
-			}];
+			},{
+                title : "查看",
+                name : "operate",
+                width : 200,
+                render: function(item, name, index){
+                   return '<a href="#" onclick="showUserDetail('+item.id+', \''+item.name+'\')"><span class="glyphicon glyphicon glyphicon-eye-open"></span>&nbsp;详细</a>';
+                }
+            }];
 		
 		var buttons = (function(){
 			if(menuId){
@@ -306,7 +313,7 @@
 			//TODO MENU
 			'assignPermissionForMenu': function(event, data){
         		var grid = $(this);
-        		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/permission-select.jsp').done(function(data){
         			var dialog = $(data);
 
                     dialog.find('#search').on('click', function(){
@@ -465,7 +472,7 @@
 			//TODO Page
 			'assignPermissionForPage': function(event, data){
         		var grid = $(this);
-        		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/permission-select.jsp').done(function(data){
         			var dialog = $(data);
 
                     dialog.find('#search').on('click', function(){
@@ -620,7 +627,7 @@
 			//TODO Url
 			'assignPermissionForUrl': function(event, data){
         		var grid = $(this);
-        		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/permission-select.jsp').done(function(data){
         			var dialog = $(data);
 
                     dialog.find('#search').on('click', function(){
@@ -778,7 +785,7 @@
 			//@TODO
 			'assignPermissionForRole':function(event, data){
         		var grid = $(this);
-        		$.get(contextPath + '/pages/auth/select-permission.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/permission-select.jsp').done(function(data){
         			var dialog = $(data);
 
                     dialog.find('#search').on('click', function(){
@@ -935,4 +942,18 @@
            $('[data-role="permissionGrid"]').getGrid().search(params);
         });
 });
+
+    /**
+     * 显示详细信息
+     * @param id
+     * @param userName
+     */
+    var showUserDetail = function(id, name){
+        var thiz 	= $(this);
+        var  mark 	= thiz.attr('mark');
+        mark = openTab('/pages/auth/permission-detail.jsp', name, mark,id);
+        if(mark){
+            thiz.attr("mark",mark);
+        }
+    };
 </script>
