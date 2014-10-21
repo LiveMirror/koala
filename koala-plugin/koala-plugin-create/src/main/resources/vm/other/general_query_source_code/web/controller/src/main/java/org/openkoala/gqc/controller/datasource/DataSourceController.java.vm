@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.gqc.core.domain.DataSource;
 import org.openkoala.gqc.facade.DataSourceFacade;
 import org.openkoala.gqc.facade.dto.DataSourceDTO;

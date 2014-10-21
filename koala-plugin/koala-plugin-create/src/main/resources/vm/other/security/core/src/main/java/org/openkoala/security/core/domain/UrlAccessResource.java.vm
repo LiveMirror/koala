@@ -8,6 +8,11 @@ import org.openkoala.security.core.UrlIsExistedException;
 
 import java.util.List;
 
+/**
+ * URL访问权限资源，他表示页面请求服务端的URL。
+ *
+ * @author lucas
+ */
 @Entity
 @DiscriminatorValue("URL_ACCESS_RESOURCE")
 public class UrlAccessResource extends SecurityResource {
@@ -34,16 +39,14 @@ public class UrlAccessResource extends SecurityResource {
 	@Override
 	public SecurityResource findByName(String name) {
 		return getRepository()//
-				.createNamedQuery("SecurityResource.findByName")//
-				.addParameter("securityResourceType", UrlAccessResource.class)//
-				.addParameter("name", name)//
+				.createNamedQuery("SecurityResource.findByName")
+				.addParameter("securityResourceType", UrlAccessResource.class)
+				.addParameter("name", name)
 				.singleResult();
 	}
 
 	public void changeUrl(String url) {
-
 		checkArgumentIsNull("url", url);
-
 		if (!url.equals(this.getUrl())) {
 			isExistUrl(url);
 			this.url = url;
@@ -55,13 +58,12 @@ public class UrlAccessResource extends SecurityResource {
 		return UrlAccessResource.get(UrlAccessResource.class, id);
 	}
 
-	public static List<UrlAccessResource> findAllUrlAccessResources() {
-		List<UrlAccessResource> results = getRepository()//
-				.createNamedQuery("SecurityResource.findAllByType")//
-				.addParameter("securityResourceType", UrlAccessResource.class)//
-				.list();
-		return results;
-	}
+    public static List<UrlAccessResource> findAllUrlAccessResources() {
+        return getRepository()
+                .createNamedQuery("SecurityResource.findAllByType")
+                .addParameter("securityResourceType", UrlAccessResource.class)
+                .list();
+    }
 
    public static List<Role> findRoleBySecurityResource(UrlAccessResource resource){
         return ResourceAssignment.findRoleBySecurityResource(resource);
@@ -72,15 +74,15 @@ public class UrlAccessResource extends SecurityResource {
    }
 
 	/**
-	 * 
 	 * @param url url of the UrlAccessResource, can't be null.
+     *
 	 * @return
 	 */
 	protected UrlAccessResource findByUrl(String url) {
 		checkArgumentIsNull("url", url);
-		return getRepository()//
-				.createCriteriaQuery(UrlAccessResource.class)//
-				.eq("url", url)//
+		return getRepository()
+				.createCriteriaQuery(UrlAccessResource.class)
+				.eq("url", url)
 				.singleResult();
 	}
 

@@ -17,13 +17,12 @@ import ${entity.className};
 @Named
 public class ${applicationClass.name} implements ${applicationClass.name.replaceAll("Impl","")} {
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ${domainClass} get${domainClass}(${applicationClass.entityModel.singleIDFieldModel.simpleType} ${applicationClass.entityModel.singleIDFieldModel.name}) {
 		return ${domainClass}.get(${domainClass}.class, ${applicationClass.entityModel.singleIDFieldModel.name});
 	}
 	
-	public void save${domainClass}(${domainClass} ${variableName}) {
-		${variableName}.save();
+	public void creat${domainClass}(${domainClass} ${variableName}) {
+		${variableName}.creat();
 	}
 	
 	public void update${domainClass}(${domainClass} ${variableName}) {
@@ -42,7 +41,6 @@ public class ${applicationClass.name} implements ${applicationClass.name.replace
 		}
 	}
 	
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<${domainClass}> findAll${domainClass}() {
 		return ${domainClass}.findAll(${domainClass}.class);
 	}

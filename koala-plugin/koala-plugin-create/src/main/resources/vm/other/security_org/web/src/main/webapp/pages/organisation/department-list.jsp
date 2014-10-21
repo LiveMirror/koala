@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@include file="/commons/taglibs.jsp"%>
+
 
 <style>
     .department-detail .row > .form-group{
@@ -71,18 +72,18 @@
         </table>
        
         <div class="btn-group buttons pull-right">
-            <button id="addCompany"type="button" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span>&nbsp;创建分公司</button>
-            <button id="addDepartment"type="button" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span>&nbsp;创建下级部门</button>
-            <button id="employeeListBtn" class="btn btn-info" type="button"><span class="glyphicon glyphicon-user"></span>&nbsp;员工列表</button>   
-            <button id="updateDepartment" type="button" class="btn btn-success"><span class="glyphicon glyphicon-wrench"></span>&nbsp;修改</button>
-            <button id="updateCompany" type="button" class="btn btn-success"><span class="glyphicon glyphicon-wrench"></span>&nbsp;修改</button>
-            <button id="delete" class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"></span>&nbsp;撤销</button>
+           	<ks:hasSecurityResource identifier="organizationManagerAddCompany"><button id="addCompany"type="button" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span>&nbsp;创建分公司</button></ks:hasSecurityResource>
+            <ks:hasSecurityResource identifier="organizationManagerAddDepartment"><button id="addDepartment"type="button" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span>&nbsp;创建下级部门</button></ks:hasSecurityResource>
+            <ks:hasSecurityResource identifier="organizationManagerEmployeeListBtn"><button id="employeeListBtn" class="btn btn-info" type="button"><span class="glyphicon glyphicon-user"></span>&nbsp;员工列表</button></ks:hasSecurityResource>
+           	<ks:hasSecurityResource identifier="organizationManagerUpdateDepartment"><button id="updateDepartment" type="button" class="btn btn-success"><span class="glyphicon glyphicon-wrench"></span>&nbsp;修改</button></ks:hasSecurityResource>
+            <ks:hasSecurityResource identifier="organizationManagerUpdateCompany"><button id="updateCompany" type="button" class="btn btn-success"><span class="glyphicon glyphicon-wrench"></span>&nbsp;修改</button></ks:hasSecurityResource>
+            <ks:hasSecurityResource identifier="organizationManagerDelete"><button id="delete" class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"></span>&nbsp;撤销</button></ks:hasSecurityResource>
         </div>
     </div>
     <div style="clear:both;"></div>
 </div>
 <script type="text/javascript" src="<c:url value='/js/organisation/department.js' />"></script>
-<script type="text/javascript" src="<c:url value='/js/organisation/selectEmployee.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/organisation/select-employee.js' />"></script>
 
 <script>
     $(function(){
@@ -110,8 +111,8 @@
                 content: '确定要撤销该机构吗?',
                 callBack: function(){
                 	var id = $('.right-content').find('[data-role="id"]').val();
-                	$.get( contextPath + '/organization/getOrg.koala?id='+id).done(function(data){
-            			var org = data.org;
+                	$.get( contextPath + '/organization/get.koala?id='+id).done(function(data){
+            			var org = data;
                         var type = org.organizationType;
             			delete org.children;
                         delete org.organizationType;

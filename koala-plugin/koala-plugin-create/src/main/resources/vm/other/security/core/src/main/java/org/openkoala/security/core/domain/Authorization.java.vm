@@ -12,10 +12,9 @@ import org.openkoala.security.core.AuthorizationIsNotExisted;
 import org.openkoala.security.core.NullArgumentException;
 
 /**
- * 授权，在指定范围内将某种权限（Permission）或权限集合（Role）授予Actor
+ * 授权中心，在指定范围{@link Scope}将授权{@link Authority}授予参与者{@link Actor}。
  * 
- * @author luzhao
- * 
+ * @author lucas
  */
 @Entity
 @Table(name = "KS_AUTHORIZATIONS")
@@ -73,14 +72,14 @@ public class Authorization extends SecurityAbstractEntity {
     }
 
 	public static List<Authorization> findByActor(Actor actor) {
-		return getRepository().createCriteriaQuery(Authorization.class) //
-				.eq("actor", actor) //
+		return getRepository().createCriteriaQuery(Authorization.class)
+				.eq("actor", actor)
 				.list();
 	}
 
 	public static List<Authorization> findByAuthority(Authority authority) {
-		return getRepository().createCriteriaQuery(Authorization.class)//
-				.eq("authority", authority)//
+		return getRepository().createCriteriaQuery(Authorization.class)
+				.eq("authority", authority)
 				.list();
 	}
 
@@ -92,7 +91,6 @@ public class Authorization extends SecurityAbstractEntity {
 				results.add(authorization.getAuthority());
 			}
 		}
-
 		return results;
 	}
 	
@@ -114,15 +112,13 @@ public class Authorization extends SecurityAbstractEntity {
 	 * @param authority
 	 * @return
 	 */
-	public static Authorization findByActorInAuthority(Actor actor, Authority authority) {
-		Authorization result = getRepository()//
-				.createCriteriaQuery(Authorization.class)//
-				.eq("actor", actor)//
-				.eq("authority", authority)//
-				.singleResult();
-
-		return result;
-	}
+    public static Authorization findByActorInAuthority(Actor actor, Authority authority) {
+        return getRepository()
+                .createCriteriaQuery(Authorization.class)
+                .eq("actor", actor)
+                .eq("authority", authority)
+                .singleResult();
+    }
 
 	public static void checkAuthorization(Actor actor, Authority authority) {
 		if (!exists(actor, authority)) {
@@ -136,6 +132,15 @@ public class Authorization extends SecurityAbstractEntity {
 		}
 	}
 
+    public static Authorization findByActorOfAuthorityInScope(Actor actor, Authority authority, Scope scope) {
+        return getRepository()
+                .createCriteriaQuery(Authorization.class)
+                .eq("actor", actor)
+                .eq("authority", authority)
+                .eq("scope", scope)
+                .singleResult();
+    }
+
 	/**
 	 * 判断参与者actor是否已经被授予了在某个范围scope下得authority权限
 	 * 
@@ -145,14 +150,12 @@ public class Authorization extends SecurityAbstractEntity {
 	 * @return
 	 */
 	protected static boolean exists(Actor actor, Authority authority, Scope scope) {
-
 		CriteriaQuery criteriaQuery = new CriteriaQuery(getRepository(), Authorization.class);
 		criteriaQuery.eq("actor", actor);
 		criteriaQuery.eq("authority", authority);
 		if (scope != null) {
 			criteriaQuery.eq("scope", scope);
 		}
-
 		return criteriaQuery.singleResult() != null;
 	}
 	
@@ -162,12 +165,11 @@ public class Authorization extends SecurityAbstractEntity {
 
 	private static Set<Authorization> findAuthorizationsByActor(Actor actor) {
 		Set<Authorization> results = new HashSet<Authorization>();
-		List<Authorization> authorizations = getRepository().createCriteriaQuery(Authorization.class)//
-				.eq("actor", actor)//
+		List<Authorization> authorizations = getRepository().createCriteriaQuery(Authorization.class)
+				.eq("actor", actor)
 				.list();
 
 		results.addAll(authorizations);
-
 		return results;
 	}
 
@@ -178,10 +180,10 @@ public class Authorization extends SecurityAbstractEntity {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this)//
-				.append(actor)//
-				.append(authority)//
-				.append(scope)//
+		return new ToStringBuilder(this)
+				.append(actor)
+				.append(authority)
+				.append(scope)
 				.build();
 	}
 	
@@ -196,14 +198,4 @@ public class Authorization extends SecurityAbstractEntity {
 	public Scope getScope() {
 		return scope;
 	}
-
-    public static Authorization findByActorOfAuthorityInScope(Actor actor, Authority authority, Scope scope) {
-        return getRepository()//
-                .createCriteriaQuery(Authorization.class)//
-                .eq("actor", actor)//
-                .eq("authority", authority)//
-                .eq("scope", scope)//
-                .singleResult();
-    }
-
 }

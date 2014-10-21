@@ -3,7 +3,7 @@ package org.openkoala.security.controller;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;

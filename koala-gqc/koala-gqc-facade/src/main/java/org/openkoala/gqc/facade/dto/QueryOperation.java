@@ -1,6 +1,6 @@
 package org.openkoala.gqc.facade.dto;
 
-public enum QueryOperationDTO {
+public enum QueryOperation {
 	
 	EQ("="),
 	GE(">="),
@@ -17,7 +17,7 @@ public enum QueryOperationDTO {
 	 */
 	private String operator;
 	
-	private QueryOperationDTO(String operator) {
+	private QueryOperation(String operator) {
 		this.operator = operator;
 	}
 	

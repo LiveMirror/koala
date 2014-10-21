@@ -11,11 +11,13 @@
 			
 			var form = dialog.find(".menu_form");
 			validate(form, dialog, item, opreate);
-			if(item != null){
-				form.find("input[name='parentId']").val(item.parentName);			    	        
+            form.find(".parentName").hide();
+			if(item != null){//添加菜单的时候不选中记录，那么就不显示父菜单。
+				form.find("input[name='parentId']").val(item.name);
 			}
-			if(item && opreate == "modify"){					
-				form.find("input[name='name']").val(item.name);
+			if(item && opreate == "modify"){
+                form.find("input[name='parentId']").val(item.parentName);
+                form.find("input[name='name']").val(item.name);
 				form.find("input[name='url']").val(item.url);
 				form.find("input[name='menuIcon']").val(item.menuIcon);
 			    form.find("input[name='description']").val(item.description);
@@ -200,7 +202,7 @@
 					content: '<ks:hasSecurityResource identifier="menuResourceManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
 					action: 'delete'
 				},{
-					content: '<ks:hasSecurityResource identifier="menuResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
+					content: '<ks:hasSecurityResource identifier="menuResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>分配权限</button></ks:hasSecurityResource>',
 					action: 'permissionAssign'
 				}];
 		

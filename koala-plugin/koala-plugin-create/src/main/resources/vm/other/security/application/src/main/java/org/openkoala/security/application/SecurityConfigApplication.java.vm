@@ -13,295 +13,382 @@ import org.openkoala.security.core.domain.Scope;
 import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
-import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * 权限配置应用，按照角色命名，一般都是系统管理员使用该接口，对用户进行权限配置。
+ *
+ * @author lucas
+ */
 public interface SecurityConfigApplication {
 
-	/**
-	 * @param actor
-	 */
-	void terminateActor(Actor actor);
+    /**
+     * 撤销参与者。
+     *
+     * @param actor 撤销的参与者
+     */
+    void terminateActor(Actor actor);
 
-	/**
-	 *
-	 * @param user
-	 */
-	void suspendUser(User user);
+    /**
+     * 挂起用户，让用户不能被使用。
+     *
+     * @param user 挂起的用户
+     */
+    void suspendUser(User user);
 
-	/**
-	 * 
-	 * @param user
-	 */
-	void activateUser(User user);
+    /**
+     * 激活用户，让用户能够再次被使用。
+     *
+     * @param user 激活的用户
+     */
+    void activateUser(User user);
 
-	/**
-	 * 
-	 * @param authority
-	 */
-	void createAuthority(Authority authority);
+    /**
+     * 创建授权，可以是角色和权限。
+     *
+     * @param authority 创建的授权
+     */
+    void createAuthority(Authority authority);
 
-	/**
-	 * 
-	 * @param authority
-	 */
-	void terminateAuthority(Authority authority);
+    /**
+     * 撤销授权，可以是角色和权限。
+     *
+     * @param authority 撤销的授权
+     */
+    void terminateAuthority(Authority authority);
 
-	/**
-	 * 
-	 * @param securityResource
-	 */
-	void createSecurityResource(SecurityResource securityResource);
+    /**
+     * 创建权限资源，可以是菜单资源，页面元素资源，方法调用资源，URL访问资源。
+     *
+     * @param securityResource 创建的权限资源
+     */
+    void createSecurityResource(SecurityResource securityResource);
 
-	/**
-	 * 
-	 * @param securityResource
-	 */
-	void terminateSecurityResource(SecurityResource securityResource);
+    /**
+     * 撤销权限资源，可以是菜单资源，页面元素资源，方法调用资源，URL访问资源。
+     *
+     * @param securityResource 撤销的权限资源
+     */
+    void terminateSecurityResource(SecurityResource securityResource);
 
-	/**
-	 * 
-	 * @param authority
-	 * @param securityResource
-	 */
-	void grantAuthorityToSecurityResource(Authority authority, SecurityResource securityResource);
+    /**
+     * 为权限资源分配授权，即为权限资源分配权限和角色。
+     *
+     * @param authority        授权
+     * @param securityResource 权限资源
+     */
+    void grantAuthorityToSecurityResource(Authority authority, SecurityResource securityResource);
 
-	/**
-	 * 
-	 * @param authority
-	 * @param securityResources
-	 */
-	void grantAuthorityToSecurityResources(Authority authority, List<? extends SecurityResource> securityResources);
+    /**
+     * 为多个权限资源分配授权，即为多个权限资源分配权限和角色。
+     *
+     * @param authority         授权
+     * @param securityResources 权限资源集合
+     */
+    void grantAuthorityToSecurityResources(Authority authority, List<? extends SecurityResource> securityResources);
 
-	/**
-	 * 
-	 * @param role
-	 * @param permission
-	 */
-	void grantRoleToPermission(Role role, Permission permission);
+    /**
+     * 为权限分配角色。
+     *
+     * @param role       角色
+     * @param permission 权限
+     */
+    void grantRoleToPermission(Role role, Permission permission);
 
-	/**
-	 * 
-	 * @param role
-	 * @param permission
-	 */
-	void grantRoleToPermissions(Role role, List<Permission> permission);
+    /**
+     * 为多个权限分配角色
+     *
+     * @param role       角色
+     * @param permission 权限集合
+     */
+    void grantRoleToPermissions(Role role, List<Permission> permission);
 
-	/**
-	 *
-	 * @param roles
-	 * @param permission
-	 */
-	void grantRolesToPermission(List<Role> roles, Permission permission);
+    /**
+     * 为权限分配多个角色。
+     *
+     * @param roles      角色集合
+     * @param permission 权限
+     */
+    void grantRolesToPermission(List<Role> roles, Permission permission);
 
-	/**
-	 * 
-	 * @param actor
-	 * @param authorities
-	 */
-	void grantActorToAuthorities(Actor actor, List<Authority> authorities);
+    /**
+     * 为多个授权分配参与者(用户、用户组)。
+     *
+     * @param actor       参与者
+     * @param authorities 授权集合
+     */
+    void grantActorToAuthorities(Actor actor, List<Authority> authorities);
 
-	/**
-	 * 
-	 * @param actors
-	 * @param authority
-	 */
-	void grantActorsToAuthority(List<Actor> actors, Authority authority);
+    /**
+     * 为授权分配多个参与者(用户、用户组)。
+     *
+     * @param actors    参与者集合
+     * @param authority 授权
+     */
+    void grantActorsToAuthority(List<Actor> actors, Authority authority);
 
-	/**
-	 * 
-	 * @param securityResource
-	 * @param authority
-	 */
-	void terminateSecurityResourceFromAuthority(SecurityResource securityResource, Authority authority);
+    /**
+     * 从授权中撤销权限资源。
+     *
+     * @param securityResource 权限资源
+     * @param authority        授权
+     */
+    void terminateSecurityResourceFromAuthority(SecurityResource securityResource, Authority authority);
 
-	/**
-	 * 
-	 * @param securityResources
-	 * @param authority
-	 */
-	void terminateSecurityResourcesFromAuthority(List<? extends SecurityResource> securityResources, Authority authority);
+    /**
+     * 从授权中撤销多个权限资源。
+     *
+     * @param securityResources 权限资源集合
+     * @param authority         授权
+     */
+    void terminateSecurityResourcesFromAuthority(List<? extends SecurityResource> securityResources, Authority authority);
 
-	/**
-	 * 
-	 * @param authorities
-	 * @param securityResource
-	 */
-	void terminateAuthoritiesFromSecurityResource(List<Authority> authorities, SecurityResource securityResource);
+    /**
+     * 从权限资源中撤销多个授权。
+     *
+     * @param authorities      授权集合
+     * @param securityResource 权限资源
+     */
+    void terminateAuthoritiesFromSecurityResource(List<Authority> authorities, SecurityResource securityResource);
 
-	/**
-	 * 
-	 * @param authority
-	 * @param securityResource
-	 */
-	void terminateAuthorityFromSecurityResource(Authority authority, SecurityResource securityResource);
+    /**
+     * 从权限资源中撤销授权。
+     *
+     * @param authority        授权
+     * @param securityResource 权限资源
+     */
+    void terminateAuthorityFromSecurityResource(Authority authority, SecurityResource securityResource);
 
-	/**
-	 * 
-	 * @param permission
-	 * @param role
-	 */
-	void terminatePermissionFromRole(Permission permission, Role role);
+    /**
+     * 从角色中撤销权限。
+     *
+     * @param permission 权限
+     * @param role       角色
+     */
+    void terminatePermissionFromRole(Permission permission, Role role);
 
-	/**
-	 * 
-	 * @param permissions
-	 * @param role
-	 */
-	void terminatePermissionsFromRole(List<Permission> permissions, Role role);
+    /**
+     * 从角色中撤销多个权限。
+     *
+     * @param permissions 权限集合
+     * @param role        角色
+     */
+    void terminatePermissionsFromRole(List<Permission> permissions, Role role);
 
-	/**
-	 * 
-	 * @param roles
-	 * @param permission
-	 */
-	void terminateRolesFromPermission(List<Role> roles, Permission permission);
+    /**
+     * 从权限中撤销多个角色。
+     *
+     * @param roles      角色集合
+     * @param permission 权限
+     */
+    void terminateRolesFromPermission(List<Role> roles, Permission permission);
 
-	/**
-	 * 
-	 * @param actor
-	 * @param authority
-	 */
-	void terminateActorFromAuthority(Actor actor, Authority authority);
+    /**
+     * 从授权中撤销参与者。
+     *
+     * @param actor     参与者
+     * @param authority 权限
+     */
+    void terminateActorFromAuthority(Actor actor, Authority authority);
 
-	/**
-	 * 
-	 * @param authorities
-	 * @param actor
-	 */
-	void terminateAuthoritiesFromActor(List<Authority> authorities, Actor actor);
+    /**
+     * 从参与者中撤销多个授权。
+     *
+     * @param authorities 授权集合
+     * @param actor       参与者
+     */
+    void terminateAuthoritiesFromActor(List<Authority> authorities, Actor actor);
 
-	/***
-	 * 创建参与者
-	 * 
-	 * @param actor
-	 */
-	void createActor(Actor actor);
+    /**
+     * 创建参与者。
+     *
+     * @param actor 参与者
+     */
+    void createActor(Actor actor);
 
-	/**
-	 * 创建范围
-	 * 
-	 * @param scope
-	 */
-	void createScope(Scope scope);
+    /**
+     * 创建范围。
+     *
+     * @param scope 范围
+     */
+    void createScope(Scope scope);
 
-	/**
-	 * 在某个范围下对Actor进行authority的授权
-	 * 
-	 * @param actor
-	 * @param authority
-	 * @param scope
-	 */
-	void grantActorToAuthorityInScope(Actor actor, Authority authority, Scope scope);
+    /**
+     * 在某个范围下对参与者分配授权。
+     *
+     * @param actor
+     * @param authority
+     * @param scope
+     */
+    void grantActorToAuthorityInScope(Actor actor, Authority authority, Scope scope);
 
-	/**
-	 * 重置密码
-	 * 
-	 * @param user
-	 */
-	void resetPassword(User user);
+    /**
+     * 重置用户的密码。
+     *
+     * @param user 用户
+     */
+    void resetPassword(User user);
 
-	/**
-	 * @param child
-	 * @param parentId
-	 */
-	void createChildToParent(MenuResource child, Long parentId);
+    /**
+     * TODO 是否需要修改为直接传递为对象。
+     * <p/>
+     * 为菜单创建子菜单。
+     *
+     * @param child    子菜单
+     * @param parentId 父菜单ID
+     */
+    void createChildToParent(MenuResource child, Long parentId);
 
-	/**
-	 * 为可授权体:Authority授予多个权限资源:SecurityResources。
-	 * 
-	 * @param securityResources
-	 * @param authority
-	 */
-	void grantSecurityResourcesToAuthority(List<? extends SecurityResource> securityResources, Authority authority);
+    /**
+     * 为授权分配多个权限资源。
+     *
+     * @param securityResources 权限资源集合
+     * @param authority         授权
+     */
+    void grantSecurityResourcesToAuthority(List<? extends SecurityResource> securityResources, Authority authority);
 
-	/**
-	 * 为可授权体:Authority授予一个权限资源:SecurityResources。
-	 * 
-	 * @param securityResource
-	 * @param authority
-	 */
-	void grantSecurityResourceToAuthority(SecurityResource securityResource, Authority authority);
+    /**
+     * 为授权分配权限资源。
+     *
+     * @param securityResource 权限资源
+     * @param authority        授权
+     */
+    void grantSecurityResourceToAuthority(SecurityResource securityResource, Authority authority);
 
-	/**
-	 * 为角色授予一个权限。
-	 * 
-	 * @param permission
-	 *            权限
-	 * @param role
-	 *            角色
-	 */
-	void grantPermissionToRole(Permission permission, Role role);
+    /**
+     * 为角色分配权限。
+     *
+     * @param permission 权限
+     * @param role       角色
+     */
+    void grantPermissionToRole(Permission permission, Role role);
 
-	/**
-	 * 为角色授权多个权限Permission
-	 * 
-	 * @param permissions
-	 * @param role
-	 */
-	void grantPermissionsToRole(List<Permission> permissions, Role role);
+    /**
+     * 为角色授权多个权限。
+     *
+     * @param permissions 权限集合
+     * @param role        角色
+     */
+    void grantPermissionsToRole(List<Permission> permissions, Role role);
 
-	boolean checkAuthoritiHasPageElementResource(Set<Authority> authorities, String identifier);
+    /**
+     * 检查授权是否拥有页面元素资源。
+     *
+     * @param authorities 授权集合
+     * @param identifier  页面元素资源标识符
+     * @return 如果返回<code>true</code>，授权拥有页面元素资源，如果返回<code>false</code>，就相反
+     */
+    boolean checkAuthoritiHasPageElementResource(Set<Authority> authorities, String identifier);
 
-	/**
-	 * 为参与者授权授权体
-	 * 
-	 * @param authority
-	 * @param actor
-	 */
-	void grantAuthorityToActor(Authority authority, Actor actor);
+    /**
+     * 为参与者分配授权。
+     *
+     * @param authority 授权
+     * @param actor     参与者
+     */
+    void grantAuthorityToActor(Authority authority, Actor actor);
 
-	/**
-	 * 更改用户账号
-	 * 
-	 * @param user
-	 * @param userAccount
-	 * @param userPassword
-	 */
-	void changeUserAccount(User user, String userAccount, String userPassword);
+    /**
+     * 更改用户账号，需要用户密码进行确认。
+     *
+     * @param user         用户
+     * @param userAccount  更改的用户账号
+     * @param userPassword 用户密码
+     */
+    void changeUserAccount(User user, String userAccount, String userPassword);
 
-	/**
-	 * 更改用户邮箱
-	 * 
-	 * @param user
-	 * @param email
-	 * @param userPassword
-	 */
-	void changeUserEmail(User user, String email, String userPassword);
+    /**
+     * 更改用户邮箱，需要用户密码进行确认。
+     *
+     * @param user         用户
+     * @param email        更改的邮箱
+     * @param userPassword 用户密码
+     */
+    void changeUserEmail(User user, String email, String userPassword);
 
-	/**
-	 * 更改用户联系电话
-	 * 
-	 * @param user
-	 * @param telePhone
-	 * @param userPassword
-	 */
-	void changeUserTelePhone(User user, String telePhone, String userPassword);
+    /**
+     * 更改用户联系电话，需要用户密码进行确认。
+     *
+     * @param user         用户
+     * @param telePhone    更改的联系电话
+     * @param userPassword 用户密码
+     */
+    void changeUserTelePhone(User user, String telePhone, String userPassword);
 
-	/**
-	 * 
-	 * @param urlAccessResource
-	 * @param name
-	 */
-	void changeNameOfUrlAccessResource(UrlAccessResource urlAccessResource, String name);
+    /**
+     * 更改URL访问资源的名称。
+     *
+     * @param urlAccessResource URL访问资源
+     * @param name              需要更改的URL访问资源名称
+     */
+    void changeNameOfUrlAccessResource(UrlAccessResource urlAccessResource, String name);
 
-	void changeUrlOfUrlAccessResource(UrlAccessResource urlAccessResource, String url);
+    /**
+     * 更改URL访问资源的URL属性，URL属性一般不应该随意更改。
+     *
+     * @param urlAccessResource URL访问资源
+     * @param url               需要更改的URL访问资源URL
+     */
+    void changeUrlOfUrlAccessResource(UrlAccessResource urlAccessResource, String url);
 
-	void changeNameOfRole(Role role, String name);
+    /**
+     * 更改角色的名称。
+     *
+     * @param role 角色
+     * @param name 需要更改的角色名称
+     */
+    void changeNameOfRole(Role role, String name);
 
-	void changeNameOfPermission(Permission permission, String name);
+    /**
+     * 更改权限的名称。
+     *
+     * @param permission 权限
+     * @param name       需要更改的权限名称
+     */
+    void changeNameOfPermission(Permission permission, String name);
 
-	void changeIdentifierOfPermission(Permission permission, String identifier);
+    /**
+     * 更改权限的标识符。
+     *
+     * @param permission 权限
+     * @param identifier 需要更改的权限标识符
+     */
+    void changeIdentifierOfPermission(Permission permission, String identifier);
 
-	void changeNameOfPageElementResouce(PageElementResource pageElementResource, String name);
+    /**
+     * 更改页面元素资源的名称。
+     *
+     * @param pageElementResource 页面元素资源
+     * @param name                需要更改的页面元素资源名称
+     */
+    void changeNameOfPageElementResouce(PageElementResource pageElementResource, String name);
 
-	void changeIdentifierOfPageElementResouce(PageElementResource pageElementResource, String identifier);
+    /**
+     * 更改页面元素资源的标识符。
+     *
+     * @param pageElementResource 页面元素资源
+     * @param identifier          需要更改的页面元素资源标识符
+     */
+    void changeIdentifierOfPageElementResouce(PageElementResource pageElementResource, String identifier);
 
-	void changeNameOfMenuResource(MenuResource menuResource, String name);
+    /**
+     * 更改菜单资源的名称。
+     *
+     * @param menuResource 菜单资源
+     * @param name         需要更改的菜单资源的名称
+     */
+    void changeNameOfMenuResource(MenuResource menuResource, String name);
 
+    /**
+     * 在某个范围下，从授权中撤销参与者。
+     *
+     * @param actor     参与者
+     * @param authority 授权
+     * @param scope     范围
+     */
     void terminateActorFromAuthorityInScope(Actor actor, Authority authority, Scope scope);
 
     /**
-     * 更改用户的最后修改时间
+     * 更改用户的最后修改时间。
      *
      * @param user 用户
      */

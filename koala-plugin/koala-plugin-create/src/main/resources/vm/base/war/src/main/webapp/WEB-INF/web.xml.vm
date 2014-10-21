@@ -13,7 +13,15 @@
     <listener>
         <listener-class>org.dayatang.ioc.spring.webapp.DayatangContextLoaderListener</listener-class>
     </listener>
-#if ($Module.security|| $Module.securityOrg)
+ #if ( $Module.securityOrg)
+    <listener>
+		<listener-class>org.openkoala.security.org.listener.SecurityOrgDBInitListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.openkoala.security.listener.SystemEvenmentListener</listener-class>
+	</listener>
+ #end   
+#if ($Module.security)
 	<listener>
 		<listener-class>org.openkoala.security.listener.SecurityDBInitListener</listener-class>
 	</listener>
@@ -144,15 +152,7 @@
     #end
     
 #if ($Module.security)
-		#if ($Module.organization)
-	
-		#end
-		#if ($Module.businessLog)
-		<init-param>
-			<param-name>businessLog</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		#end
+
 	<error-page>
 		<error-code>405</error-code>
 		<location>/pages/errors/405.jsp</location>

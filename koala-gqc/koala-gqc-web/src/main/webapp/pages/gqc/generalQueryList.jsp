@@ -8,10 +8,10 @@
        var cols = [
             {title:'查询器名称', name:'queryName', width: '150px'},
             { title:'描述', name:'description' , width: '150px'},
-            { title:'数据源', name:'dataSourceId', width: '150px'},
+            { title:'数据源', name:'dataSourceId', width: '150px', render: function(item, name, index){return item.dataSource.dataSourceId;}},
             { title:'查询表', name:'tableName' , width: '250px'},
             { title:'预览', name:'preview' , width: 'auto', render: function(item, name, index){
-                return '<a href="#" onclick="generalQuery().preview('+item.id+', '+item.dsId+')"><i class="glyphicon glyphicon-eye-open"></i>&nbsp;预览</a>';
+                return '<a href="#" onclick="generalQuery().preview('+'\''+item.id+'\''+', '+'\''+item.dataSource.id+'\''+')"><i class="glyphicon glyphicon-eye-open"></i>&nbsp;预览</a>';
             }}
         ];
         var buttons = [

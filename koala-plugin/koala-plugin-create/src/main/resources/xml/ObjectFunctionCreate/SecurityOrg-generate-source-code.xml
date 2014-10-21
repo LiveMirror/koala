@@ -30,7 +30,7 @@
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
-		<property name="vmDir">vm/other/organization_source_code/facadeImpl</property>
+		<property name="vmDir">vm/other/organization_source_code/facadeImpl/</property>
 		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade-impl/</property>
 	</VelocityDirObject>
 	
@@ -72,7 +72,7 @@
 		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade/</property>
 	</VelocityDirObject>
 	<VelocityDirObject>
-		<property name="vmDir">vm/other/security/facadeImpl</property>
+		<property name="vmDir">vm/other/security/facadeImpl/</property>
 		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade-impl/</property>
 	</VelocityDirObject>
 	
@@ -99,7 +99,7 @@
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
-		<property name="vmDir">vm/other/security_org/facade-impl</property>
+		<property name="vmDir">vm/other/security_org/facade-impl/</property>
 		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade-impl/</property>
 	</VelocityDirObject>
 

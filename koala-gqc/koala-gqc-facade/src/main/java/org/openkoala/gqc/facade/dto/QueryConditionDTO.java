@@ -8,7 +8,7 @@ public abstract class QueryConditionDTO implements Serializable {
 	
 	private String fieldName;
 	
-	private QueryOperationDTO queryOperationDTO;
+	private QueryOperation queryOperationDTO;
 	
 	private Integer fieldType;
 	
@@ -22,11 +22,11 @@ public abstract class QueryConditionDTO implements Serializable {
 		this.fieldName = fieldName;
 	}
 
-	public QueryOperationDTO getQueryOperationDTO() {
+	public QueryOperation getQueryOperation() {
 		return queryOperationDTO;
 	}
 
-	public void setQueryOperationDTO(QueryOperationDTO queryOperationDTO) {
+	public void setQueryOperation(QueryOperation queryOperationDTO) {
 		this.queryOperationDTO = queryOperationDTO;
 	}
 

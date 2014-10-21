@@ -1,15 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@include file="/commons/taglibs.jsp"%>
-<%@ page import="java.util.Date"%>
-<% String formId = "form_" + new Date().getTime();
-   String gridId = "grid_" + new Date().getTime();
-   String path = request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);
-%>
+
 <!-- strat form -->
-<form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
+<form name="pageListForm" id="${formId}" target="_self" class="form-horizontal searchCondition">
 <input type="hidden" class="form-control" name="page" value="0">
 <input type="hidden"  class="form-control"  name="pagesize" value="10">
-<div id = "pageElementResourceManagerQueryDivId" class="panel" hidden="true" >
+<div id="pageElementResourceManagerQueryDivId" hidden="true" >
     <table border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td>
@@ -30,7 +26,7 @@
                         <input name="description" class="form-control" type="text" style="width:180px;"/>
                     </div>
                     <td style="vertical-align: bottom;">
-                        <button id="pageElementResourceManagerSearch" type="button" style="position:relative; margin-left:35px; top: -15px"
+                        <button id="pageManagersearch" type="button" style="position:relative; margin-left:35px; top: -15px"
                                 class="btn btn-success glyphicon glyphicon-search"></button>
                     </td>
                 </div>
@@ -47,14 +43,14 @@
 		
 		function initEditDialog(data, item, grid) {
 			dialog = $(data);
-			dialog.find('.modal-header').find('.modal-title').html( item ? '修改页面元素资源信息' : '添加页面元素资源信息');
-			
+
 			var form = dialog.find(".page_form");
 			validate(form, dialog, item);
 			
 			if(item){
-				form.find("input[name='name']").val(item.name);
-				form.find("input[name='identifier']").val(item.identifier);
+                dialog.find('.modal-header').find('.modal-title').html('修改页面元素资源信息');
+                form.find("input[name='name']").val(item.name);
+				form.find("input[name='identifier']").val(item.identifier).attr('disabled', 'disabled');;
 			    form.find("input[name='description']").val(item.description);
 			}
 
@@ -164,8 +160,7 @@
 	
 		var tabData = $('.tab-pane.active').data();
 		var pageId = tabData.pageId;
-		console.log(pageId);
-		
+
 		var columns = [{
 				title : "页面元素名称",
 				name : "name",
@@ -286,7 +281,6 @@
 				}
 				
 				var page = items[0];
-                   console.log(page.id);
 				openTab('/pages/auth/permission-list.jsp', page.name+'的权限管理', 'roleManager_' + page.id, page.id, {pageId : page.id});
         	},
         	"assignPageFromRole" : function(event, data){
@@ -418,7 +412,6 @@
 						for (var i = 0, j = data.item.length; i < j; i++) {
 							params += ("&pageElementResourceIds=" + data.item[i].id);
 						}
-						console.log(data.item[0].id);
 						$.post(url, params).done(function(data){
 							if(data.success){
 								grid.message({
@@ -442,17 +435,19 @@
 				});
 			}
         });
-		var formId = $("#<%=formId%>");
-		formId.find('#pageElementResourceManagerSearch').on('click', function(){
+
+        var form = $('#'+'${formId}');
+        form.find('#pageManagersearch').on('click',function(){
             var params = {};
-            formId.find('.form-control').each(function(){
+            form.find('.form-control').each(function(){
                 var $this = $(this);
                 var name = $this.attr('name');
-                 if(name){
+                if(name){
                     params[name] = $this.val();
                 }
             });
-           $('[data-role="pageGrid"]').getGrid().search(params);
+            $('[data-role="pageGrid"]').getGrid().search(params);
         });
+
 });
 </script>

@@ -46,7 +46,7 @@ public class ${controllerClass.name} {
 	
 	@ResponseBody
 	@RequestMapping("/delete")
-	public InvokeResult delete(@RequestParam String ${dtoClass.entityModel.singleIDFieldModel.name}s) {
+	public InvokeResult remove(@RequestParam String ${dtoClass.entityModel.singleIDFieldModel.name}s) {
 		String[] value = ${dtoClass.entityModel.singleIDFieldModel.name}s.split(",");
         ${dtoClass.entityModel.singleIDFieldModel.simpleType}[] idArrs = new ${dtoClass.entityModel.singleIDFieldModel.simpleType}[value.length];
         for (int i = 0; i < value.length; i ++) {

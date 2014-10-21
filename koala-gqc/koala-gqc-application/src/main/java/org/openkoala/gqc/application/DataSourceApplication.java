@@ -1,4 +1,3 @@
-
 package org.openkoala.gqc.application;
 
 import java.util.List;
@@ -8,93 +7,94 @@ import org.openkoala.gqc.core.domain.DataSource;
 
 /**
  * 数据源应用层接口，处理数据源的增删改查
+ * 
+ * @author xmfang
  *
  */
 public interface DataSourceApplication {
 
 	/**
 	 * 查询数据源
-	 * @param id 主键id
+	 * 
+	 * @param id
+	 *            主键id
 	 * @return
 	 */
-	public DataSource getDataSourceById(Long id);
-	
+	DataSource getById(Long id);
+
 	/**
 	 * 查询数据源
-	 * @param dataSourceId 数据源id
+	 * 
+	 * @param dataSourceId
+	 *            数据源id
 	 * @return
 	 */
-	public DataSource getDataSourceByDataSourceId(String dataSourceId);
-	
+	DataSource getByDataSourceId(String dataSourceId);
+
 	/**
 	 * 保存数据源
-	 * @param dataSource 待保存的数据源
+	 * 
+	 * @param dataSource
+	 *            待保存的数据源
 	 * @return
 	 */
-	public String saveDataSource(DataSource dataSource);
-	
+	void createDataSource(DataSource dataSource);
+
 	/**
 	 * 更新数据源
-	 * @param dataSource 待更新的数据源
+	 * 
+	 * @param dataSource
+	 *            待更新的数据源
 	 */
-	public void updateDataSource(DataSource dataSource);
-	
+	void updateDataSource(DataSource dataSource);
+
 	/**
 	 * 删除数据源
-	 * @param id 主键id
+	 * 
+	 * @param id
+	 *            主键id
 	 */
-	public void removeDataSource(Long id);
-	
+	void removeDataSource(Long id);
+
 	/**
 	 * 批量删除数据源
-	 * @param ids 数据源主键数组
+	 * 
+	 * @param ids
+	 *            数据源主键数组
 	 */
 	public void removeDataSources(Long[] ids);
-	
+
 	/**
 	 * 查询所有数据源
+	 * 
 	 * @return
 	 */
-	public List<DataSource> findAllDataSource();
-	
+	List<DataSource> findAllDataSource();
+
+	boolean checkDataSourceCanConnect(DataSource dataSource);
+
 	/**
-	 * 查询所有表
-	 * @param id 数据源主键
+	 * 测试数据源连接，列表页面修改数据源时候使用
+	 * 
+	 * @param id
+	 *            数据源主键
 	 * @return
 	 */
-	public List<String> findAllTable(Long id);
+	boolean checkDataSourceCanConnect(Long id);
 	
 	/**
-	 * 查询所有列
-	 * @param id 数据源主键
-	 * @param tableName 表名
-	 * @return
+	 * 
+	 * @param id
+	 * @return 查找某个查询器下面的tables
 	 */
-	public Map<String, Integer> findAllColumn(Long id, String tableName);
+	List<String> findAllTable(Long id);
 	
 	/**
-	 * 分页查询数据源
-	 * @param dataSource 查询条件
-	 * @param currentPage 当前页
-	 * @param pageSize 页面大小
-	 * @return
-	 *//*
-	public Page<DataSourceVO> pageQueryDataSource(DataSourceVO dataSource, int currentPage, int pageSize);
-	*/
-	/**
-	 * 检测数据源是否可用
-	 * @param dataSource
-	 * @return
+	 * 
+	 * @param id
+	 * @param tableName
+	 * @return 查找某个table下的所有columns
 	 */
-	public boolean checkDataSourceCanConnect(DataSource dataSource);
-	
-	/**
-	 * 测试数据源连接
-	 * @param id 数据源主键
-	 * @return
-	 */
-	public boolean testConnection(Long id);
-	
+	Map<String, Integer> findAllColumn(Long id, String tableName);
 
 }
-

@@ -10,15 +10,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-
-
-
-
-
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.gqc.application.DataSourceApplication;
 import org.openkoala.gqc.core.domain.DataSource;

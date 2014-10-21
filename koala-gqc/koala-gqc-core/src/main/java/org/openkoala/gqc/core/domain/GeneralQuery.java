@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.dayatang.domain.CriteriaQuery;
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.gqc.core.domain.utils.PagingQuerier;
 import org.openkoala.gqc.core.domain.utils.QueryAllQuerier;
 import org.openkoala.gqc.core.domain.utils.SqlStatmentMode;
@@ -31,7 +31,7 @@ import org.openkoala.gqc.core.domain.utils.SqlStatmentMode;
  */
 @Entity
 @Table(name = "KG_GENERAL_QUERYS")
-public class GeneralQuery extends GeneralQueryEntity {
+public class GeneralQuery extends AbstractGeneralQueryEntity {
 	
 	private static final long serialVersionUID = -3088017969475345884L;
 
@@ -170,8 +170,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 		return dynamicQueryConditions;
 	}
 
-	public void setDynamicQueryConditions(
-			List<DynamicQueryCondition> dynamicQueryConditions) {
+	public void setDynamicQueryConditions(List<DynamicQueryCondition> dynamicQueryConditions) {
 		this.dynamicQueryConditions = dynamicQueryConditions;
 	}
 
@@ -210,7 +209,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	}
 
 	/**
-	 * 执行分页查询，返回查询结果。
+	 * 通过某个查询器来执行分页查询，返回查询结果。
 	 * @param startNumber
 	 * @param pagesize
 	 * @return 
@@ -221,7 +220,7 @@ public class GeneralQuery extends GeneralQueryEntity {
 	}
 	
 	/**
-	 * 执行分页查询，返回page对象。
+	 * 通过某个查询器来执行执行分页查询，返回page对象。
 	 * @param currentPage
 	 * @param pagesize
 	 * @return

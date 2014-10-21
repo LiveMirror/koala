@@ -4,8 +4,11 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import org.dayatang.domain.AbstractEntity;
-
+/**
+ * 代表某种范围，例如组织机构范围。
+ *
+ * @author lucas
+ */
 @Entity
 @Table(name = "KS_SCOPES")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -29,8 +32,8 @@ public abstract class Scope extends SecurityAbstractEntity {
         this.name = name;
     }
 
-    public static Scope getBy(Long scopeId) {
-		return Scope.get(Scope.class, scopeId);
+    public static <T extends Scope> T getBy(Long scopeId) {
+		return (T)Scope.get(Scope.class, scopeId);
 	}
 	
 	public boolean contains(Scope scope) {

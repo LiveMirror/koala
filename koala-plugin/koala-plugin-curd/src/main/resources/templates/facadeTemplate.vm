@@ -13,7 +13,7 @@ public interface ${facadeClass.name} {
 
 	public InvokeResult get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name});
 	
-	public InvokeResult save${domainClass}(${currntVO} ${variableName});
+	public InvokeResult creat${domainClass}(${currntVO} ${variableName});
 	
 	public InvokeResult update${domainClass}(${currntVO} ${variableName});
 	

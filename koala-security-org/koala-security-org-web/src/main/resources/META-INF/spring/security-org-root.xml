@@ -6,6 +6,7 @@
 
     <import resource="classpath*:META-INF/spring/security-org-base-context.xml" />
 
+    <import resource="classpath*:META-INF/spring/security-extend.xml" />
 
     <import resource="classpath*:META-INF/spring/security-org-standalone-persistence.xml" />
 

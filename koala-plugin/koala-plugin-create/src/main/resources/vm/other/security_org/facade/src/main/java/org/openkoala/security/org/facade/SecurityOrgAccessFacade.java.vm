@@ -1,6 +1,6 @@
 package org.openkoala.security.org.facade;
 
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.openkoala.security.org.facade.dto.EmployeeUserDTO;
 import org.openkoala.security.org.facade.dto.OrgPermissionDTO;
 import org.openkoala.security.org.facade.dto.OrgRoleDTO;

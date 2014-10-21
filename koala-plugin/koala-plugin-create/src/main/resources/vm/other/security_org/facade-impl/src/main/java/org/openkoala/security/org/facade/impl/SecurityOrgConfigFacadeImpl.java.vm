@@ -1,6 +1,13 @@
 package org.openkoala.security.org.facade.impl;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.koala.commons.InvokeResult;
@@ -13,25 +20,38 @@ import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.application.SecurityDBInitApplication;
 import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.UserAccountIsExistedException;
-import org.openkoala.security.core.domain.*;
-import org.openkoala.security.org.core.domain.OrganisationScope;
-import org.openkoala.security.org.facade.command.*;
+import org.openkoala.security.core.domain.Actor;
+import org.openkoala.security.core.domain.Authority;
+import org.openkoala.security.core.domain.MenuResource;
+import org.openkoala.security.core.domain.PageElementResource;
+import org.openkoala.security.core.domain.Permission;
+import org.openkoala.security.core.domain.Role;
+import org.openkoala.security.core.domain.Scope;
+import org.openkoala.security.core.domain.SecurityResource;
+import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.org.core.domain.EmployeeUser;
+import org.openkoala.security.org.core.domain.OrganisationScope;
 import org.openkoala.security.org.facade.SecurityOrgConfigFacade;
+import org.openkoala.security.org.facade.command.ChangeEmployeeUserPropsCommand;
+import org.openkoala.security.org.facade.command.CreateEmpolyeeUserCommand;
+import org.openkoala.security.org.facade.command.TerminateUserFromPermissionInScopeCommand;
+import org.openkoala.security.org.facade.command.TerminateUserFromRoleInScopeCommand;
 import org.openkoala.security.org.facade.dto.AuthorizationCommand;
 import org.openkoala.security.org.facade.impl.assembler.EmployeeUserAssembler;
+import org.openkoala.security.org.facade.impl.systeminit.SystemInit;
+import org.openkoala.security.org.facade.impl.systeminit.SystemInitFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.List;
-
+@Transactional(value = "transactionManager_security")
 @Named
 public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityOrgConfigFacadeImpl.class);
 
+	private static SystemInit systemInit = SystemInitFactory.INSTANCE.getSystemInit();
+	
     @Inject
     private BaseApplication baseApplication;
 
@@ -108,7 +128,6 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
     
     public InvokeResult grantRolesToUserInScope(AuthorizationCommand command) {
         Actor actor = securityAccessApplication.getActorById(command.getActorId());
-        Authority authority = securityAccessApplication.getAuthority(command.getAuthorityId());
 
         Organization organization = organizationApplication.getOrganizationById(command.getOrganizationId());
         Scope scope = findOrganizationScope(organization);
@@ -118,7 +137,10 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
             securityConfigApplication.createScope(scope);
         }
 
-        securityConfigApplication.grantActorToAuthorityInScope(actor,authority,scope);
+        for(Long authorityId : command.getAuthorityIds()){
+            Authority authority = securityAccessApplication.getAuthority(authorityId);
+            securityConfigApplication.grantActorToAuthorityInScope(actor,authority,scope);
+        }
 
         return InvokeResult.success();
     }
@@ -142,6 +164,9 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
             }
             employeeUser.setName(command.getName());
             employeeUser.setDescription(command.getDescription());
+
+            securityConfigApplication.changeLastModifyTimeOfUser(employeeUser);
+
             securityConfigApplication.createActor(employeeUser);
             return InvokeResult.success();
         } catch (NullArgumentException e) {
@@ -161,60 +186,114 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
         if(securityAccessApplication.hasUserExisted()){
             return;
         }
-        EmployeeUser employeeUser = createEmployeeUser();
-        securityDBInitApplication.initActor(employeeUser);
+        EmployeeUser employeeUser = intiEmployeeUser();
         Role role = securityDBInitApplication.initRole();
-        List<MenuResource> menuResources = securityDBInitApplication.initMenuResources();
-        List<PageElementResource> pageElementResources = securityDBInitApplication.initPageElementResources();
-        List<UrlAccessResource> urlAccessResources = securityDBInitApplication.initUrlAccessResources();
-        List<MenuResource> orgMenuResources = createOrgMenuResource();
+        List<MenuResource> menuResources = initMenuResources();
+        List<PageElementResource> pageElementResources = initPageElementResources();
+        List<UrlAccessResource> urlAccessResources = initUrlAccessResources();
         securityConfigApplication.grantAuthorityToActor(role,employeeUser);
         securityConfigApplication.grantSecurityResourcesToAuthority(menuResources,role);
         securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResources,role);
         securityConfigApplication.grantSecurityResourcesToAuthority(urlAccessResources,role);
-        securityConfigApplication.grantSecurityResourcesToAuthority(orgMenuResources,role);
-
+    }
+    
+    
+    public InvokeResult grantAuthorityToActorInScope(AuthorizationCommand command) {
+        Actor actor = securityAccessApplication.getActorById(command.getActorId());
+        for(Long authorityId : command.getAuthorityIds()) {
+            Authority authority = securityAccessApplication.getAuthority(authorityId);
+            if(command.getOrganizationId() != null) {
+                Organization organization = organizationApplication.getOrganizationById(command.getOrganizationId());
+                Scope scope = findOrganizationScope(organization);
+                if(scope == null){
+                    scope = new OrganisationScope(command.getOrganizationName(),organization);
+                    securityConfigApplication.createScope(scope);
+                }
+                securityConfigApplication.grantActorToAuthorityInScope(actor,authority,scope);
+            }else{
+                securityConfigApplication.grantAuthorityToActor(authority,actor);
+            }
+        }
+        return InvokeResult.success();
     }
 
-    private EmployeeUser createEmployeeUser() {
-        EmployeeUser employeeUser = new EmployeeUser("张三", "zhangsan");
-        employeeUser.setCreateOwner("admin");
-        employeeUser.setDescription("普通用户");
+    private EmployeeUser intiEmployeeUser() {
+    	SystemInit.User initEmployeeUser= systemInit.getUser();
+        EmployeeUser employeeUser = new EmployeeUser(initEmployeeUser.getName(), initEmployeeUser.getUsername());
+        employeeUser.setCreateOwner(initEmployeeUser.getCreateOwner());
+        employeeUser.setDescription(initEmployeeUser.getDescription());
+        securityConfigApplication.createActor(employeeUser);
         return employeeUser;
     }
+    
+    public List<MenuResource> initMenuResources() {
+    	List<MenuResource> menuResources = new ArrayList<MenuResource>();
+    	for (SystemInit.MenuResource each : getParentMenuResources()) {
+    		MenuResource menuResource = transformMenuResourceEntity(each);
+    		securityConfigApplication.createSecurityResource(menuResource);
+    		menuResources.add(menuResource);
+    		createChildrenMenuResource(menuResource, each, menuResources);
+    	}
+        return menuResources;
+    }
+    
+    public List<PageElementResource> initPageElementResources() {
+    	List<PageElementResource> results = new ArrayList<PageElementResource>();
+    	for (SystemInit.PageElementResource each : systemInit.getPageElementResource()) {
+    		PageElementResource pageElementResource = new PageElementResource(each.getName(), each.getUrl());
+    		results.add(pageElementResource);
+    	}
+    	SecurityResource.batchSave(results);
 
-    private List<MenuResource> createOrgMenuResource() {
-        String menuIcon = "glyphicon  glyphicon-list-alt";
-        MenuResource rootMenuResouce = new MenuResource("组织机构管理");
-        rootMenuResouce.setMenuIcon(menuIcon);
-        rootMenuResouce.setDescription("组织机构管理菜单");
-        rootMenuResouce.save();
+//        // 删除授权权限。
+//        Iterator<PageElementResource> resultIterator = results.listIterator();
+//        while(resultIterator.hasNext()){
+//            PageElementResource result = resultIterator.next();
+//            if(result.getIdentifier().contains("GrantPermission")){
+//                resultIterator.remove();
+//            }
+//        }
 
-        MenuResource departmentMenuResouce = new MenuResource("机构管理");
-        departmentMenuResouce.setUrl("/pages/organisation/departmentList.jsp");
-        departmentMenuResouce.setMenuIcon(menuIcon);
-        rootMenuResouce.addChild(departmentMenuResouce);
+        return results;
+    }
 
-        MenuResource jobMenuResouce = new MenuResource("职务管理");
-        jobMenuResouce.setUrl("/pages/organisation/jobList.jsp");
-        jobMenuResouce.setMenuIcon(menuIcon);
-        rootMenuResouce.addChild(jobMenuResouce);
+    public List<UrlAccessResource> initUrlAccessResources() {
+    	List<UrlAccessResource> results = new ArrayList<UrlAccessResource>();
+    	for (SystemInit.UrlAccessResource each : systemInit.getUrlAccessResource()) {
+    		UrlAccessResource urlAccessResource = new UrlAccessResource(each.getName(), each.getUrl());
+    		results.add(urlAccessResource);
+    	}
+        SecurityResource.batchSave(results);
+        return results;
+    }
+    
+    private MenuResource transformMenuResourceEntity(SystemInit.MenuResource initMenuResource) {
+		MenuResource menuResource = new MenuResource(initMenuResource.getName());
+		menuResource.setDescription(initMenuResource.getDescription());
+		menuResource.setMenuIcon(initMenuResource.getMenuIcon());
+		menuResource.setUrl(initMenuResource.getUrl());
+		return menuResource;
+	}
+    
+    private void createChildrenMenuResource(MenuResource menuResource, SystemInit.MenuResource parentMenuResource, List<MenuResource> menuResources) {
+    	for (SystemInit.MenuResource each : systemInit.getMenuResource()) {
+    		if (Integer.valueOf(parentMenuResource.getId()).equals(each.getPid())) {
+    			MenuResource children = transformMenuResourceEntity(each);
+    			menuResources.add(children);
+    			securityConfigApplication.createChildToParent(children, menuResource.getId());
+    			createChildrenMenuResource(children, each, menuResources);
+    		}
+    	}
+	}
 
-        MenuResource positionMenuResouce = new MenuResource("岗位管理");
-        positionMenuResouce.setUrl("/pages/organisation/positionList.jsp");
-        positionMenuResouce.setMenuIcon(menuIcon);
-        rootMenuResouce.addChild(positionMenuResouce);
-
-        MenuResource employeeMenuResouce = new MenuResource("人员管理");
-        employeeMenuResouce.setUrl("/pages/organisation/employeeList.jsp");
-        employeeMenuResouce.setMenuIcon(menuIcon);
-        rootMenuResouce.addChild(employeeMenuResouce);
-
-        return Lists.newArrayList(rootMenuResouce,//
-                departmentMenuResouce,//
-                jobMenuResouce,//
-                positionMenuResouce,//
-                employeeMenuResouce);
+    private List<SystemInit.MenuResource> getParentMenuResources() {
+    	List<SystemInit.MenuResource> parentMenuResources = new ArrayList<SystemInit.MenuResource>();
+    	for (SystemInit.MenuResource each : systemInit.getMenuResource()) {
+    		if (each.getPid() == null) {
+    			parentMenuResources.add(each);
+    		}
+    	}
+    	return parentMenuResources;
     }
 
 }

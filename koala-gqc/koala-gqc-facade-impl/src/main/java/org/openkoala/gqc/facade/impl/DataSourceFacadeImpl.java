@@ -1,7 +1,5 @@
 package org.openkoala.gqc.facade.impl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,50 +8,34 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-
-
-
-
-
-
-import org.apache.commons.beanutils.BeanUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
 import org.dayatang.querychannel.QueryChannelService;
+import org.dayatang.utils.Page;
 import org.openkoala.gqc.application.DataSourceApplication;
+import org.openkoala.gqc.core.DataSourceBeingUsedException;
+import org.openkoala.gqc.core.SystemDataSourceNotExistException;
 import org.openkoala.gqc.core.domain.DataSource;
+import org.openkoala.gqc.core.domain.DataSourceType;
 import org.openkoala.gqc.facade.DataSourceFacade;
-import org.openkoala.gqc.facade.assembler.DataSourceAssembler;
 import org.openkoala.gqc.facade.dto.DataSourceDTO;
+import org.openkoala.gqc.facade.impl.assembler.DataSourceAssembler;
+import org.openkoala.koala.commons.InvokeResult;
 
 /**
  * 数据源应用层实现，处理数据源的增删改查
  *
  */
 
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-//@Stateless(name = "DataSourceApplication")
-//@Remote
 @Named
 public class DataSourceFacadeImpl implements DataSourceFacade {
 
 	@Inject
-	private DataSourceApplication dataSourceApplication ;
-	
-	/**
-	 * 查询通道
-	 */
+	private DataSourceApplication dataSourceApplication;
+
 	private static QueryChannelService queryChannel;
-	
-	/**
-	 * 锁对象
-	 */
+
 	private static byte[] lock = new byte[0];
 
-	/**
-	 * 获取查询通道实例
-	 * @return
-	 */
 	private static QueryChannelService getQueryChannelService() {
 		if (queryChannel == null) {
 			synchronized (lock) {
@@ -64,66 +46,107 @@ public class DataSourceFacadeImpl implements DataSourceFacade {
 		}
 		return queryChannel;
 	}
+
+	@Override
+	public InvokeResult checkDataSourceCanConnect(DataSourceDTO dataSourceDTO) {
+		DataSource ds = DataSourceAssembler.toEntity(dataSourceDTO);
+			try{
+				if (dataSourceApplication.checkDataSourceCanConnect(ds)) {
+					return InvokeResult.success();
+				}else{
+					return InvokeResult.failure("该数据源无法连接");
+				}
+			}catch(SystemDataSourceNotExistException e) {
+				return InvokeResult.failure(e.getMessage());
+			} catch (RuntimeException e) {
+				return InvokeResult.failure(e.getMessage());
+			}
 	
-	
-	public DataSourceDTO getDataSourceDTOById(Long id) {
-		return	DataSourceAssembler.getDTO(dataSourceApplication.getDataSourceById(id));
 	}
 
-	public DataSourceDTO getDataSourceDTOByDataSourceId(String dataSourceId) {
-		return  DataSourceAssembler.getDTO( dataSourceApplication.getDataSourceByDataSourceId(dataSourceId));
+	@Override
+	public InvokeResult checkDataSourceCanConnect(Long id) {
+		try {
+			if (dataSourceApplication.checkDataSourceCanConnect(id)){
+				return InvokeResult.success();
+			}else{
+				return InvokeResult.failure("该数据源无法连接");
+			}
+		} catch(SystemDataSourceNotExistException e) {
+			return InvokeResult.failure(e.getMessage());
+		} catch (RuntimeException e) {
+			return InvokeResult.failure(e.getMessage());
+		}
 	}
 
-	public String saveDataSource(DataSourceDTO dataSourceDTO) {
-		DataSource dataSource = DataSourceAssembler.getEntity(dataSourceDTO);
-		return  dataSourceApplication.saveDataSource(dataSource);
-		
+	public DataSourceDTO getById(Long id) {
+		return DataSourceAssembler.toDTO(dataSourceApplication.getById(id));
 	}
 
-	public void updateDataSource(DataSourceDTO dataSourceDTO) {
-		dataSourceApplication.updateDataSource(DataSourceAssembler.getEntity(dataSourceDTO));
+	public DataSourceDTO getByDataSourceId(String dataSourceId) {
+		return DataSourceAssembler.toDTO(dataSourceApplication.getByDataSourceId(dataSourceId));
 	}
 
-	public void removeDataSource(Long id) {
-		dataSourceApplication.removeDataSource(id);
+	public InvokeResult createDataSource(DataSourceDTO dataSourceDTO) {
+		DataSource dataSource = DataSourceAssembler.toEntity(dataSourceDTO);
+		try {
+			dataSourceApplication.createDataSource(dataSource);
+			return InvokeResult.success();
+		}catch (RuntimeException e) {
+			return InvokeResult.failure(e.getMessage());
+		}
 	}
 
-	public void removeDataSources(Long[] ids) {
-		dataSourceApplication.removeDataSources(ids);
+	public InvokeResult updateDataSource(DataSourceDTO dto) {
+		try {
+			if(dto.getDataSourceType().toString().equals(DataSourceType.CUSTOM_DATA_SOURCE.toString())){
+				dataSourceApplication.updateDataSource(DataSourceAssembler.toEntity(dto));
+			}else{
+				dataSourceApplication.updateDataSource(dataSourceApplication.getById(dto.getId()));
+			}
+			return InvokeResult.success();
+		} catch (Exception e) {
+			return InvokeResult.failure(e.getMessage());
+		}
+	}
+
+	public InvokeResult removeDataSource(Long id) {
+		return this.removeDataSources(new Long[] { id });
+	}
+
+	public InvokeResult removeDataSources(Long[] ids) {
+		try {
+			dataSourceApplication.removeDataSources(ids);
+			return InvokeResult.success();
+		} catch (DataSourceBeingUsedException e) {
+			return InvokeResult.failure("数据源已被使用");
+		} catch (Exception e) {
+			return InvokeResult.failure("删除数据源失败");
+		}
 	}
 
 	public List<DataSourceDTO> findAllDataSource() {
-			List<DataSourceDTO> list = new ArrayList<DataSourceDTO>();
-			for (DataSource dataSource : dataSourceApplication.findAllDataSource()) {
-				list.add(DataSourceAssembler.getDTO(dataSource));
-			}
-			return list;
+		List<DataSourceDTO> list = new ArrayList<DataSourceDTO>();
+		for (DataSource dataSource : dataSourceApplication.findAllDataSource()) {
+			list.add(DataSourceAssembler.toDTO(dataSource));
+		}
+		return list;
 	}
 
-	public List<String> findAllTable(Long id) {
-		return dataSourceApplication.findAllTable(id);
-	}
-
-	public Map<String, Integer> findAllColumn(Long id, String tableName) {
-		return dataSourceApplication.findAllColumn(id, tableName);
-	}
-	
-	public Page<DataSourceDTO> pageQueryDataSource(DataSourceDTO queryVo, int currentPage,
-			int pageSize) {
+	@SuppressWarnings("unchecked")
+	public Page<DataSourceDTO> pageQueryDataSource(DataSourceDTO queryVo, int currentPage, int pageSize) {
 		try {
-			List<DataSourceDTO> result = new ArrayList<DataSourceDTO>();
+			
 			List<Object> conditionVals = new ArrayList<Object>();
 
-			StringBuilder jpql = new StringBuilder(
-					" select _dataSource from DataSource _dataSource where 1=1 ");
+			StringBuilder jpql = new StringBuilder(" select _dataSource from DataSource _dataSource where 1=1 ");
 
 			if (queryVo.getDataSourceId() != null && !"".equals(queryVo.getDataSourceId())) {
 				jpql.append(" and _dataSource.dataSourceId like ?");
 				conditionVals.add(MessageFormat.format("%{0}%", queryVo.getDataSourceId()));
 			}
 
-			if (queryVo.getDataSourceDescription() != null
-					&& !"".equals(queryVo.getDataSourceDescription())) {
+			if (queryVo.getDataSourceDescription() != null && !"".equals(queryVo.getDataSourceDescription())) {
 				jpql.append(" and _dataSource.dataSourceDescription like ?");
 				conditionVals.add(MessageFormat.format("%{0}%", queryVo.getDataSourceDescription()));
 			}
@@ -153,47 +176,23 @@ public class DataSourceFacadeImpl implements DataSourceFacade {
 				conditionVals.add(MessageFormat.format("%{0}%", queryVo.getPassword()));
 			}
 
-			Page<DataSource> pages = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
-			for (DataSource dataSource : pages.getData()) {
-				DataSourceDTO dataSourceDTO = new DataSourceDTO();
-				// 将domain转成VO
-				try {
-					BeanUtils.copyProperties(dataSourceDTO, dataSource);
-				} catch (Exception e) {
-				}
-
-				dataSourceDTO.setDataSourceTypeDesc(dataSourceDTO.getDataSourceType().getDescription());
-
-				result.add(dataSourceDTO);
-			}
-			
-			return new Page<DataSourceDTO>(pages.getStart(), pages.getResultCount(),
-					pages.getPageSize(), result);
+			Page<DataSource> pages = getQueryChannelService().createJpqlQuery(jpql.toString())
+					.setParameters(conditionVals)
+					.setPage(currentPage, pageSize)
+					.pagedList();
+			 List<DataSourceDTO> result = DataSourceAssembler.toDTOs(pages.getData());
+			return new Page<DataSourceDTO>(pages.getStart(), pages.getResultCount(), pages.getPageSize(), result);
 		} catch (Exception e) {
 			throw new RuntimeException("查询数据源列表失败！", e);
 		}
 	}
-	
-	public boolean checkDataSourceCanConnect(DataSource dataSource) {
-		return dataSourceApplication.checkDataSourceCanConnect(dataSource);
+
+	public List<String> findAllTable(Long id) {
+		return dataSourceApplication.findAllTable(id);
 	}
-	
-	/**
-	 * 测试数据源连接
-	 * 
-	 * @return
-	 */
-	public boolean testConnection(Long id) {
-		return dataSourceApplication.testConnection(id);
+
+	public Map<String, Integer> findAllColumn(Long id, String tableName) {
+		return dataSourceApplication.findAllColumn(id, tableName);
 	}
-	
-	/**
-	 * 非系统数据源的连接才需要close
-	 * @param dataSource
-	 * @param conn
-	 * @throws SQLException
-	 */
-	private void closeConnection(DataSource dataSource, Connection conn){
-		dataSourceApplication.checkDataSourceCanConnect(dataSource);
-	}
+
 }
