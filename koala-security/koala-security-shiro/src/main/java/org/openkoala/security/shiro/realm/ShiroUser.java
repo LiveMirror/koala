@@ -74,5 +74,4 @@ public class ShiroUser implements Serializable {
                 .append(getEmail())
                 .build();
     }
-
 }

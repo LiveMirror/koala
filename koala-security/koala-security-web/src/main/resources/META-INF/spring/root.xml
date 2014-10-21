@@ -8,6 +8,7 @@
 
     <import resource="classpath*:META-INF/spring/security-base-context.xml" />
 
+    <import resource="classpath*:META-INF/spring/security-extend.xml" />
 
     <import resource="classpath*:META-INF/spring/security-standalone-persistence.xml" />
 

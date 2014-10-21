@@ -200,7 +200,7 @@
 					content: '<ks:hasSecurityResource identifier="menuResourceManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
 					action: 'delete'
 				},{
-					content: '<ks:hasSecurityResource identifier="menuResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
+					content: '<ks:hasSecurityResource identifier="menuResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>分配权限</button></ks:hasSecurityResource>',
 					action: 'permissionAssign'
 				}];
 		

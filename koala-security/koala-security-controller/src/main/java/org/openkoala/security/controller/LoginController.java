@@ -53,7 +53,7 @@ public class LoginController {
 		if(!invokeResult.isSuccess()){
 			return invokeResult;
 		}else{
-			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(//
+			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
 					command.getUsername(),
 					command.getPassword(),
 					command.getRememberMe());

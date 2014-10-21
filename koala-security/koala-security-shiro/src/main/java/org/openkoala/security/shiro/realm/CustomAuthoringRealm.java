@@ -21,6 +21,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.core.domain.EncryptService;
 import org.openkoala.security.facade.SecurityAccessFacade;
@@ -76,12 +77,13 @@ public class CustomAuthoringRealm extends AuthorizingRealm implements RoleHandle
 			toToken = (UsernamePasswordToken) token;
 		}
 		String username = (String) toToken.getPrincipal();
-		String userPassword = getUserPassword(toToken);
+//		String userPassword = getUserPassword(toToken);
 		UserDTO user = findUser(username);
 		checkUserStatus(user);
-		checkUserPassword(userPassword, user);
+//		checkUserPassword(userPassword, user);
 		String roleName = getRoleName(user);
 		ShiroUser shiroUser = new ShiroUser(user.getUserAccount(), user.getName(), roleName);
+
 
         if(StringUtils.isBlank(user.getEmail())){
             shiroUser.setEmail("您还没有邮箱，请添加邮箱！");
@@ -95,12 +97,11 @@ public class CustomAuthoringRealm extends AuthorizingRealm implements RoleHandle
             shiroUser.setTelePhone(user.getTelePhone());
         }
 
-		SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(//
-				shiroUser, //
-				user.getUserPassword(),//
-				getName());
-
-		return result;
+        SimpleAuthenticationInfo result = new SimpleAuthenticationInfo(shiroUser, user.getUserPassword(),getName());
+        if (!passwordEncryptService.saltDisabled()){
+            result.setCredentialsSalt(ByteSource.Util.bytes(user.getSalt()+shiroUser.getUserAccount()));
+        }
+        return result;
 	}
 
 	/**

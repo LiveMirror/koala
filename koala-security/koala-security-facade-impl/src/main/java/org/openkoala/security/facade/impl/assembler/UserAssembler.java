@@ -32,6 +32,7 @@ public class UserAssembler {
 		result.setCreateOwner(user.getCreateOwner());
 		result.setLastModifyTime(user.getLastModifyTime());
 		result.setDisabled(user.isDisabled());
+        result.setSalt(user.getSalt());
 		return result;
 	}
 
