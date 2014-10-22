@@ -116,11 +116,6 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.openkoala.organisation</groupId>
-			<artifactId>koala-organisation-applicationImpl</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.openkoala.bpm.core</groupId>

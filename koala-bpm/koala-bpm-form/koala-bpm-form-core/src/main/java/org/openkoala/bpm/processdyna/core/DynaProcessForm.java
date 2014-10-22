@@ -254,14 +254,13 @@ public class DynaProcessForm extends BpmFormEntity {
 		List<DynaProcessForm> result = DynaProcessForm.getRepository().createNamedQuery("queryDynaProcessFormByProcessId").setParameters(processId).list();
 		return result;
 	}
-
 	private static TemplateContent templateContent;
 	
 	public static void setTemplateContent(TemplateContent templateContent) {
 		DynaProcessForm.templateContent = templateContent;
 	}
 
-	@Transient
+	
 	public TemplateContent getTemplateContent(){
 		if(templateContent==null){
 			templateContent = InstanceFactory.getInstance(TemplateContent.class);
