@@ -492,11 +492,11 @@
     * @param userName
     */
 	var showUserDetail = function(id, userName){
-    	  var thiz 	= $(this);
-          var  mark 	= thiz.attr('mark');
-   		  mark = openTab('/pages/auth/user-detail.jsp', userName, mark,id);
-          if(mark){
-              thiz.attr("mark",mark);
-          }
+        var thiz = $(this);
+        var mark = thiz.attr('mark');
+        mark = openTab('/pages/auth/user-detail.jsp', userName, mark, id);
+        if (mark) {
+            thiz.attr("mark", mark);
+        }
 	};
 </script>

@@ -288,7 +288,7 @@
 				/*
 				获取选中项的信息
 				*/
-        		$.get(contextPath + '/pages/auth/page-list.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/page-select.jsp').done(function(data){
         			var dialog = $(data);
 
                     dialog.find('#search').on('click', function(){

@@ -17,7 +17,7 @@
 
         $(function(){
             var roleName = $('#roles').html();
-            var url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
+            var url = contextPath + "/auth/currentUser/findAllMenusByUserAsRole.koala?"+new Date().getTime();
             $.get(url, {'roleName':roleName},function(data){
                 $.each(data.data,function(){
                 var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.menuIcon+'"></span>&nbsp;'+this.name+'&nbsp;'+
@@ -289,7 +289,7 @@
 	        </a>
 	        <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <div class="btn-group navbar-right">
-                    <img class="dropdown-toggle" data-toggle="dropdown" id='btn1'  src =${contextPath}/images/systemFunction.png />
+                    <img class="dropdown-toggle" data-toggle="dropdown" id='btn1'  src =${contextPath}/images/systemFunction.png  style="width: 35px; height: 35px; margin-top: 5px;" />
                     <ul class="dropdown-menu" id="userManager" style="min-width: 0">
                         <li data-target="loginOut"><a href="#" class="glyphicon glyphicon-off">&nbsp;注销</a></li>
                         <li data-target="modifyPwd"><a href="#" class="glyphicon glyphicon-pencil">&nbsp;更改密码</a></li>
@@ -302,7 +302,7 @@
                 <!--角色信息-->
                 <div class="btn-group navbar-right">
                     <label for = "roles" class = "user_name">角色: </label>
-	            	<span id="roles"><ks:user property="roleName" /></span>
+	            	<span id="roles" style="font-size: 12px"><ks:user property="roleName" /></span>
                     &nbsp;
                     <ul class="dropdown-menu" id="allRolesId"></ul>
                 </div>
@@ -311,7 +311,7 @@
                     <span>
                         <!-- 为了不改变页面布局-->
                     </span>
-                    <a href="#" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px"  title="查看个人信息"  >&nbsp;<ks:user property="name" />
+                    <a href="#" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; -moz-osx-font-smoothing:none;top:-1px;font-weight: bold; font-size: 12px;"  title="查看个人信息"  >&nbsp;<ks:user property="name" />
                     </a>
                     &nbsp; &nbsp;
                 </div>

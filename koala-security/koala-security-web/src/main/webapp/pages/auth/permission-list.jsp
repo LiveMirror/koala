@@ -949,11 +949,11 @@
      * @param userName
      */
     var showUserDetail = function(id, name){
-        var thiz 	= $(this);
-        var  mark 	= thiz.attr('mark');
-        mark = openTab('/pages/auth/permission-detail.jsp', name, mark,id);
-        if(mark){
-            thiz.attr("mark",mark);
+        var thiz = $(this);
+        var mark = thiz.attr('mark');
+        mark = openTab('/pages/auth/permission-detail.jsp', name, mark, id);
+        if (mark) {
+            thiz.attr("mark", mark);
         }
     };
 </script>

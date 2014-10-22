@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div class="userDetial" id="userDetial">
-<div class="col-lg-8 content" data-id="userID"></div>
-<!-- 
+<!--
 	========================用户详细信息=========================
 	 -->
 	    <table class="table table-bordered table-hover">

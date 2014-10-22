@@ -174,7 +174,6 @@
 					});
 					return;
 				}
-				//roleManager().pageAssign($(this), items[0].roleId);
 				var page = items[0];
 				openTab('/pages/auth/page-list.jsp', page.name+'的page管理', 'roleManager_' + page.id, page.id, {pageId : page.id});
 			},
