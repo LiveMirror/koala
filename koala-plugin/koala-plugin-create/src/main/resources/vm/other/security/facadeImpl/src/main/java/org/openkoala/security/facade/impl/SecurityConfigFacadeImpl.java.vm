@@ -594,11 +594,11 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         User user = securityDBInitApplication.initUser();
         Role role = securityDBInitApplication.initRole();
         List<MenuResource> menuResources = securityDBInitApplication.initMenuResources();
-        List<PageElementResource> pageElementResources = securityDBInitApplication.initPageElementResources();
+        List<PageElementResource> pageElementResource = securityDBInitApplication.initPageElementResources();
         List<UrlAccessResource> urlAccessResources = securityDBInitApplication.initUrlAccessResources();
         securityConfigApplication.grantAuthorityToActor(role, user);
         securityConfigApplication.grantSecurityResourcesToAuthority(menuResources, role);
-        securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResources, role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResource, role);
         securityConfigApplication.grantSecurityResourcesToAuthority(urlAccessResources, role);
     }
 

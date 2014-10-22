@@ -925,9 +925,9 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
         }
     }
 
-	private List<PageElementResourceDTO> transformToPageElementResources(Set<PageElementResource> pageElementResources) {
+	private List<PageElementResourceDTO> transformToPageElementResources(Set<PageElementResource> pageElementResource) {
 		List<PageElementResourceDTO> results = new ArrayList<PageElementResourceDTO>();
-		for (PageElementResource pageElementResource : pageElementResources) {
+		for (PageElementResource pageElementResource : pageElementResource) {
 			results.add(PageElementResourceAssembler.toPageElementResourceDTO(pageElementResource));
 		}
 		return results;

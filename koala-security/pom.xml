@@ -24,6 +24,7 @@
 		<module>koala-security-controller</module>
 		<module>koala-security-web</module>
 	</modules>
+    <!--
 	<properties>
 		<db.groupId>mysql</db.groupId>
 		<db.artifactId>mysql-connector-java</db.artifactId>
@@ -32,12 +33,13 @@
 		<hibernate.show_sql>true</hibernate.show_sql>
 		<hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
 		<db.jdbcDriver>com.mysql.jdbc.Driver</db.jdbcDriver>
-		<db.connectionURL>jdbc:mysql://172.16.1.222:3306/koala_security?useUnicode=true&amp;characterEncoding=UTF-8</db.connectionURL>
+		<db.connectionURL>jdbc:mysql://localhost:3306/koala_security?useUnicode=true&amp;characterEncoding=UTF-8</db.connectionURL>
 		<db.username>root</db.username>
-		<db.password>koala</db.password>
+		<db.password>root</db.password>
 		<db.Type>MYSQL</db.Type>
 		<generateDdl>true</generateDdl>
 	</properties>
+	-->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -91,5 +93,15 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+        <!--可以把各个模块API合并在一起-->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <aggregate>true</aggregate>
+                </configuration>
+            </plugin>
+        </plugins>
 	</build>
 </project>

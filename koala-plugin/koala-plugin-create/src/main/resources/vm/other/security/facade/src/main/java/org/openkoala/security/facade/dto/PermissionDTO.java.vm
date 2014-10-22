@@ -27,7 +27,7 @@ public class PermissionDTO {
 
     private List<UrlAccessResourceDTO> urlAccessResources = new ArrayList<UrlAccessResourceDTO>();
 
-    private  List<PageElementResourceDTO> pageElementResources = new ArrayList<PageElementResourceDTO>();
+    private  List<PageElementResourceDTO> pageElementResource = new ArrayList<PageElementResourceDTO>();
 
 	protected PermissionDTO() {}
 
@@ -119,11 +119,11 @@ public class PermissionDTO {
     }
 
     public List<PageElementResourceDTO> getPageElementResources() {
-        return pageElementResources;
+        return pageElementResource;
     }
 
-    public void setPageElementResources(List<PageElementResourceDTO> pageElementResources) {
-        this.pageElementResources = pageElementResources;
+    public void setPageElementResources(List<PageElementResourceDTO> pageElementResource) {
+        this.pageElementResource = pageElementResource;
     }
 
     @Override

@@ -20,7 +20,6 @@
 <script  src="${contextPath}/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script  src="${contextPath}/lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <script  src="${contextPath}/lib/validate.js"></script>
-<script  src="${contextPath}/js/security/menu.js"></script>
 <script  src="${contextPath}/js/security/role.js" ></script>
 <script  src="${contextPath}/js/security/user.js" ></script>
 <script  src="${contextPath}/js/main.js" ></script>
