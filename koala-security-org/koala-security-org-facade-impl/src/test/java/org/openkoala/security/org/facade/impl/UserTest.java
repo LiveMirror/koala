@@ -7,9 +7,6 @@ import org.openkoala.security.facade.command.CreateUserCommand;
 
 import javax.inject.Inject;
 
-/**
- * Created by luzhao on 14-9-10.
- */
 public class UserTest extends AbstractOrgFacadeIntegrationTestCase {
 
     @Inject

@@ -16,9 +16,6 @@ import org.openkoala.security.org.core.domain.EmployeeUser;
 import org.openkoala.security.org.facade.SecurityOrgAccessFacade;
 import org.openkoala.security.org.facade.dto.EmployeeUserDTO;
 
-/**
- * Created by luzhao on 14-8-29.
- */
 public class SecurityOrgAccessFacadeTest extends AbstractOrgFacadeIntegrationTestCase{
 
     @Inject
