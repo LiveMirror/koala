@@ -26,11 +26,7 @@ import org.dayatang.domain.InstanceFactory;
  * 
  */
 @MappedSuperclass
-<<<<<<< HEAD:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/AbstractGeneralQueryEntity.java.vm
 public abstract class AbstractGeneralQueryEntity implements Entity {
-=======
-public abstract class GeneralQueryEntity implements Entity {
->>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/GeneralQueryEntity.java.vm
 
 	private static final long serialVersionUID = 8882145540383345037L;
 
@@ -43,19 +39,11 @@ public abstract class GeneralQueryEntity implements Entity {
 	@Column(name = "VERSION")
 	private int version;
 
-<<<<<<< HEAD:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/AbstractGeneralQueryEntity.java.vm
-=======
-
->>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/GeneralQueryEntity.java.vm
 	/**
 	 * 获得实体的标识
 	 * 
 	 * @return 实体的标识
 	 */
-<<<<<<< HEAD:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/AbstractGeneralQueryEntity.java.vm
-=======
-	
->>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/GeneralQueryEntity.java.vm
 	public Long getId() {
 		return id;
 	}
@@ -75,10 +63,6 @@ public abstract class GeneralQueryEntity implements Entity {
 	 * 
 	 * @return 实体的版本号
 	 */
-<<<<<<< HEAD:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/AbstractGeneralQueryEntity.java.vm
-=======
-	
->>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/GeneralQueryEntity.java.vm
 	public int getVersion() {
 		return version;
 	}
@@ -118,21 +102,13 @@ public abstract class GeneralQueryEntity implements Entity {
 
 	public static EntityRepository getRepository() {
 		if (repository == null) {
-<<<<<<< HEAD:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/AbstractGeneralQueryEntity.java.vm
 			repository = InstanceFactory.getInstance(EntityRepository.class,"repository_gqc");
-=======
-			repository = InstanceFactory.getInstance(EntityRepository.class,"repository");
->>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/GeneralQueryEntity.java.vm
 		}
 		return repository;
 	}
 
 	public static void setRepository(EntityRepository repository) {
-<<<<<<< HEAD:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/AbstractGeneralQueryEntity.java.vm
 		AbstractGeneralQueryEntity.repository = repository;
-=======
-		GeneralQueryEntity.repository = repository;
->>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179:koala-plugin/koala-plugin-create/src/main/resources/vm/other/general_query_source_code/core/src/main/java/org/openkoala/gqc/core/domain/GeneralQueryEntity.java.vm
 	}
 
 	public void save() {

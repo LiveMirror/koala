@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.inject.Named;
-import org.springframework.transaction.annotation.Transactional;
 
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.core.domain.Actor;
@@ -19,7 +18,6 @@ import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 
 @Named
-@Transactional(value = "transactionManager_security")
 public class SecurityAccessApplicationImpl implements SecurityAccessApplication {
 
     public List<Role> findAllRolesByUserAccount(String userAccount) {

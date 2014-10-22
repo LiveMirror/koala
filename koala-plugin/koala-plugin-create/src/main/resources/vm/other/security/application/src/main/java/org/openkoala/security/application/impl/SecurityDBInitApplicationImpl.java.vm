@@ -22,7 +22,6 @@ import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.core.domain.User;
 
 @Named
-@Transactional(value = "transactionManager_security")
 public class SecurityDBInitApplicationImpl implements SecurityDBInitApplication {
 
     @Inject

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.inject.Named;
-import org.springframework.transaction.annotation.Transactional;
 
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.core.domain.Actor;
@@ -21,7 +20,6 @@ import org.openkoala.security.core.domain.User;
 import com.google.common.collect.Sets;
 
 @Named
-@Transactional(value = "transactionManager_security")
 public class SecurityConfigApplicationImpl implements SecurityConfigApplication {
 
     public void createActor(Actor actor) {
