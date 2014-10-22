@@ -4,15 +4,15 @@
 	<property name="description">security-org</property>
 	<CopyFiles>
 		<property name="srcDir">vm/other/security_org/web/src/main/webapp/</property>
-		<property name="destDir">${Project.path}/${Project.appName}/${Project.appName}-web/src/main/webapp/</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/src/main/webapp/</property>
 	</CopyFiles>
 	<CopyFiles>
 		<property name="srcDir">vm/other/security_org/web/src/main/resources/</property>
-		<property name="destDir">${Project.path}/${Project.appName}/${Project.appName}-web/src/main/resources/</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/src/main/resources/</property>
 	</CopyFiles>
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/security_org/web/src/main/java/</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/src/main/java/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/src/main/java/</property>
 	</VelocityDirObject>
 	<XmlAdd>
 		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/resources/META-INF/spring/root.xml</property>
@@ -33,7 +33,7 @@
 	</XmlAdd>
 	
 	<XmlAdd>
-		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.appName}-infra/pom.xml</property>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.infraModule.moduleName}/pom.xml</property>
 		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
 		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
 		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='org.apache.shiro' and xmlns:artifactId='shiro-core']]]></property>

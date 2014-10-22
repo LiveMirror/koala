@@ -20,14 +20,16 @@ public class Test {
 		//Organization organization =	new Organization();
 		//organization.setOrganizationGenerateSourceCode(true);
 		//GeneralQuery gq = new GeneralQuery();
-		SecurityOrg s = new SecurityOrg();
+		/*SecurityOrg s = new SecurityOrg();
 		for(Module module : pro.getModule()){
 			System.out.println(module.getModuleType());
 			if(module.getModuleType()=="war"){
 				//module.setOrganization(organization);
 				module.setSecurityOrg(s);
 			}
-		}
+		}*/Example e = new Example();
+		e.setExampleGenerateSourceCode(true);
+		pro.setExample(e);
 		kpc.createProject(pro);
 	}
 

@@ -1,0 +1,920 @@
+2014-10-08 14:18:43,397 - Initializing Velocity, Calling init()...
+2014-10-08 14:18:43,397 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2014-10-08 14:18:43,397 - Default Properties File: forkoala\org\apache\velocity\runtime\defaults\velocity.properties
+2014-10-08 14:18:43,397 - Trying to use logger class forkoala.org.apache.velocity.runtime.log.AvalonLogChute
+2014-10-08 14:18:43,397 - Couldn't find class forkoala.org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at forkoala.org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:73)
+	at forkoala.org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:105)
+	at forkoala.org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:155)
+	at forkoala.org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:270)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:872)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:263)
+	at forkoala.org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at forkoala.org.apache.velocity.app.Velocity.init(Velocity.java:75)
+	at org.openkoala.koala.action.velocity.VelocityUtil.evaluateEl(VelocityUtil.java:78)
+	at org.openkoala.koala.action.velocity.VelocityUtil.getPath(VelocityUtil.java:121)
+	at org.openkoala.koala.action.velocity.VelocityUtil.velocityObjectParse(VelocityUtil.java:110)
+	at org.openkoala.koala.actionvo.VelocityFileObject.process(VelocityFileObject.java:26)
+	at org.openkoala.koala.action.XmlParse.parse(XmlParse.java:73)
+	at org.openkoala.koala.action.XmlParseUtil.parseXmlAction(XmlParseUtil.java:51)
+	at org.openkoala.koala.action.XmlParseUtil.parseXml(XmlParseUtil.java:26)
+	at org.openkoala.koala.annotation.parse.ParseObjectFunctionCreate.process(ParseObjectFunctionCreate.java:39)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.dealWithAnnotations(ProjectCreateParse.java:93)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.parseClass(ProjectCreateParse.java:58)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.parse(ProjectCreateParse.java:48)
+	at org.openkoala.koala.mojo.KoalaProjectCreate.createProject(KoalaProjectCreate.java:27)
+	at org.openkoala.koala.mojo.Test.main(Test.java:31)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 23 more
+2014-10-08 14:18:43,397 - Trying to use logger class forkoala.org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-08 14:18:43,397 - Using logger class forkoala.org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-08 14:18:43,413 - ResourceLoader instantiated: forkoala.org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-08 14:18:43,413 - Do unicode file recognition:  false
+2014-10-08 14:18:43,413 - FileResourceLoader : adding path '.'
+2014-10-08 14:18:43,428 - ResourceCache: initialized (class forkoala.org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2014-10-08 14:18:43,428 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Stop
+2014-10-08 14:18:43,428 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Define
+2014-10-08 14:18:43,428 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Break
+2014-10-08 14:18:43,428 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Evaluate
+2014-10-08 14:18:43,428 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Literal
+2014-10-08 14:18:43,428 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Macro
+2014-10-08 14:18:43,428 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Parse
+2014-10-08 14:18:43,444 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Include
+2014-10-08 14:18:43,444 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Foreach
+2014-10-08 14:18:43,475 - Created '20' parsers.
+2014-10-08 14:18:43,475 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2014-10-08 14:18:43,475 - Velocimacro : Default library not found.
+2014-10-08 14:18:43,475 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2014-10-08 14:18:43,475 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2014-10-08 14:18:43,475 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2014-10-08 14:18:43,475 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2014-10-08 14:18:43,491 - Log4JLogChute initialized using file 'velocity.log'
+2014-10-08 14:18:43,491 - Initializing Velocity, Calling init()...
+2014-10-08 14:18:43,491 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2014-10-08 14:18:43,491 - Default Properties File: forkoala\org\apache\velocity\runtime\defaults\velocity.properties
+2014-10-08 14:18:43,491 - Trying to use logger class forkoala.org.apache.velocity.runtime.log.AvalonLogChute
+2014-10-08 14:18:43,491 - Couldn't find class forkoala.org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at forkoala.org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:73)
+	at forkoala.org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:105)
+	at forkoala.org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:155)
+	at forkoala.org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:270)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:872)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:263)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:647)
+	at forkoala.org.apache.velocity.app.VelocityEngine.init(VelocityEngine.java:117)
+	at org.openkoala.koala.action.velocity.VelocityHelper.getVelocityEngine(VelocityHelper.java:28)
+	at org.openkoala.koala.action.velocity.VelocityUtil.vmToFile(VelocityUtil.java:60)
+	at org.openkoala.koala.action.velocity.VelocityUtil.velocityObjectParse(VelocityUtil.java:110)
+	at org.openkoala.koala.actionvo.VelocityFileObject.process(VelocityFileObject.java:26)
+	at org.openkoala.koala.action.XmlParse.parse(XmlParse.java:73)
+	at org.openkoala.koala.action.XmlParseUtil.parseXmlAction(XmlParseUtil.java:51)
+	at org.openkoala.koala.action.XmlParseUtil.parseXml(XmlParseUtil.java:26)
+	at org.openkoala.koala.annotation.parse.ParseObjectFunctionCreate.process(ParseObjectFunctionCreate.java:39)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.dealWithAnnotations(ProjectCreateParse.java:93)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.parseClass(ProjectCreateParse.java:58)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.parse(ProjectCreateParse.java:48)
+	at org.openkoala.koala.mojo.KoalaProjectCreate.createProject(KoalaProjectCreate.java:27)
+	at org.openkoala.koala.mojo.Test.main(Test.java:31)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 23 more
+2014-10-08 14:18:43,491 - Trying to use logger class forkoala.org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-08 14:18:43,491 - Using logger class forkoala.org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-08 14:18:43,491 - ResourceLoader instantiated: forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,491 - ResourceCache: initialized (class forkoala.org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2014-10-08 14:18:43,491 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Stop
+2014-10-08 14:18:43,491 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Define
+2014-10-08 14:18:43,491 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Break
+2014-10-08 14:18:43,491 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Evaluate
+2014-10-08 14:18:43,491 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Literal
+2014-10-08 14:18:43,491 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Macro
+2014-10-08 14:18:43,491 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Parse
+2014-10-08 14:18:43,491 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Include
+2014-10-08 14:18:43,491 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Foreach
+2014-10-08 14:18:43,506 - Created '20' parsers.
+2014-10-08 14:18:43,506 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2014-10-08 14:18:43,506 - Could not load resource 'VM_global_library.vm' from ResourceLoader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader: ClasspathResourceLoader Error: cannot find resource VM_global_library.vm
+2014-10-08 14:18:43,506 - Velocimacro : Default library not found.
+2014-10-08 14:18:43,506 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2014-10-08 14:18:43,506 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2014-10-08 14:18:43,506 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2014-10-08 14:18:43,506 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2014-10-08 14:18:43,522 - ResourceManager : found vm/base/project.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 224, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 230, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 236, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 242, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 248, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 254, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 260, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 267, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 273, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 279, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 285, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 291, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 297, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 303, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 309, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 315, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 321, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 327, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 333, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 339, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 345, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 351, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 357, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 363, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 369, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 375, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 381, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 386, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 391, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 435, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:18:43,522 - Null reference [template 'vm/base/project.pom.xml.vm', line 440, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 445, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 450, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 480, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 486, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 492, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 498, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 504, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 551, column 26] : ${quartz.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 681, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 686, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 691, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 717, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 723, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 729, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 735, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 742, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/project.pom.xml.vm', line 748, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,537 - ResourceManager : found vm/base/conf/pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/conf/pom.xml.vm', line 24, column 34] : ${db.groupId} cannot be resolved.
+2014-10-08 14:18:43,537 - Null reference [template 'vm/base/conf/pom.xml.vm', line 25, column 37] : ${db.artifactId} cannot be resolved.
+2014-10-08 14:18:43,537 - ResourceManager : found vm/base/conf/src/main/resources/log4j.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,553 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/base-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,553 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/db-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,600 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 40, column 66] : ${database.Type} cannot be resolved.
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 41, column 65] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 42, column 69] : ${generateDdl} cannot be resolved.
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 43, column 74] : ${db.jdbc.dialect} cannot be resolved.
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 61, column 48] : ${db.jdbc.driver} cannot be resolved.
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 62, column 51] : ${db.jdbc.connection.url} cannot be resolved.
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 63, column 46] : ${db.jdbc.username} cannot be resolved.
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 64, column 50] : ${db.jdbc.password} cannot be resolved.
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 66, column 64] : ${maximumConnectionCount} cannot be resolved.
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 67, column 64] : ${minimumConnectionCount} cannot be resolved.
+2014-10-08 14:18:43,600 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 68, column 61] : ${db.jdbc.testsql} cannot be resolved.
+2014-10-08 14:18:43,615 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/root.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,615 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/springEjbIntercepter.properties.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,615 - ResourceManager : found vm/base/conf/src/test/resources/log4j.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,615 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/props/database.properties.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,615 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 1, column 16] : ${db.jdbcDriver} cannot be resolved.
+2014-10-08 14:18:43,615 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 2, column 24] : ${db.connectionURL} cannot be resolved.
+2014-10-08 14:18:43,615 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 3, column 18] : ${db.username} cannot be resolved.
+2014-10-08 14:18:43,615 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 4, column 18] : ${db.password} cannot be resolved.
+2014-10-08 14:18:43,615 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 5, column 17] : ${hibernate.dialect} cannot be resolved.
+2014-10-08 14:18:43,615 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 6, column 17] : ${db.testsql} cannot be resolved.
+2014-10-08 14:18:43,615 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 7, column 24] : ${hibernate.hbm2ddl.auto} cannot be resolved.
+2014-10-08 14:18:43,615 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 8, column 20] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:18:43,615 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 9, column 15] : ${db.Type} cannot be resolved.
+2014-10-08 14:18:43,615 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 10, column 13] : ${db.generateDdl} cannot be resolved.
+2014-10-08 14:18:43,615 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/base-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,631 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/db-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,631 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 40, column 66] : ${database.Type} cannot be resolved.
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 41, column 65] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 42, column 69] : ${generateDdl} cannot be resolved.
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 43, column 74] : ${db.jdbc.dialect} cannot be resolved.
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 61, column 48] : ${db.jdbc.driver} cannot be resolved.
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 62, column 51] : ${db.jdbc.connection.url} cannot be resolved.
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 63, column 46] : ${db.jdbc.username} cannot be resolved.
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 64, column 50] : ${db.jdbc.password} cannot be resolved.
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 66, column 64] : ${maximumConnectionCount} cannot be resolved.
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 67, column 64] : ${minimumConnectionCount} cannot be resolved.
+2014-10-08 14:18:43,631 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 68, column 61] : ${db.jdbc.testsql} cannot be resolved.
+2014-10-08 14:18:43,647 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/root.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,678 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,678 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,678 - Null reference [template 'vm/base/module.pom.xml.vm', line 78, column 18] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,756 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,756 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,756 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,756 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,756 - Null reference [template 'vm/base/module.pom.xml.vm', line 118, column 18] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,804 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,804 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,804 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,804 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,850 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,850 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,850 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,850 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,850 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,850 - Null reference [template 'vm/base/module.pom.xml.vm', line 239, column 18] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,897 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,897 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,960 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,960 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:18:43,960 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,960 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:18:43,960 - Null reference [template 'vm/base/module.pom.xml.vm', line 375, column 34] : ${jcaptcha.version} cannot be resolved.
+2014-10-08 14:18:43,960 - Null reference [template 'vm/base/module.pom.xml.vm', line 380, column 34] : ${jcaptcha.version} cannot be resolved.
+2014-10-08 14:18:43,991 - ResourceManager : found vm/other/koala-spring-servlet.xml with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,991 - ResourceManager : found vm/base/war/.web.koala.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,991 - ResourceManager : found vm/base/war/src/main/resources/META-INF/props/database.properties.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:43,991 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 1, column 16] : ${db.jdbcDriver} cannot be resolved.
+2014-10-08 14:18:43,991 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 2, column 24] : ${db.connectionURL} cannot be resolved.
+2014-10-08 14:18:43,991 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 3, column 18] : ${db.username} cannot be resolved.
+2014-10-08 14:18:43,991 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 4, column 18] : ${db.password} cannot be resolved.
+2014-10-08 14:18:43,991 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 5, column 17] : ${hibernate.dialect} cannot be resolved.
+2014-10-08 14:18:43,991 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 6, column 17] : ${db.testsql} cannot be resolved.
+2014-10-08 14:18:43,991 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 7, column 24] : ${hibernate.hbm2ddl.auto} cannot be resolved.
+2014-10-08 14:18:43,991 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 8, column 20] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:18:43,991 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 9, column 15] : ${db.Type} cannot be resolved.
+2014-10-08 14:18:43,991 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 10, column 13] : ${db.generateDdl} cannot be resolved.
+2014-10-08 14:18:43,991 - ResourceManager : found vm/base/war/src/main/resources/META-INF/spring/root.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,006 - ResourceManager : found vm/base/war/src/main/webapp/pages/common/header.jsp.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,006 - ResourceManager : found vm/base/war/src/main/webapp/WEB-INF/k.tld.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,006 - ResourceManager : found vm/base/war/src/main/webapp/WEB-INF/template/NULL.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,006 - ResourceManager : found vm/base/war/src/main/webapp/WEB-INF/web.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,038 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/CurrentUserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,053 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/IndexController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,053 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LoginController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,053 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LogoutController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,053 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/MenuResourceController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,053 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PageElementController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,069 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PermissionController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,069 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/RoleController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,069 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UrlAccessController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,069 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,084 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SecurityDBInitListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,084 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SystemEvenmentListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,084 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/CurrentUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,100 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomDefaultFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,100 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomPathMatchingFilterChainResolver.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,100 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/ShiroFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,100 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/AnyRoleAuthorizationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,116 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/CustomFormAuthenticationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,116 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/jcaptcha/JCaptchaValidateFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,116 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/CustomAuthoringRealm.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,116 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/ShiroUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,131 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/RoleHandle.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,131 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AbstractAuthorizationTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,131 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/Authz.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,147 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AuthzImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,147 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/PermissionTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,147 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/RoleTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,147 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/SecurityResourceTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,147 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/UserTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,162 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/CurrentUserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,178 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/IndexController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,178 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LoginController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,178 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LogoutController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,178 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/MenuResourceController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,178 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PageElementController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,178 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PermissionController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,194 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/RoleController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,194 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UrlAccessController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,194 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,194 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SecurityDBInitListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,194 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SystemEvenmentListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,209 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/CurrentUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,209 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomDefaultFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,209 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomPathMatchingFilterChainResolver.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,209 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/ShiroFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,209 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/AnyRoleAuthorizationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,225 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/CustomFormAuthenticationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,225 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/jcaptcha/JCaptchaValidateFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,225 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/CustomAuthoringRealm.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,225 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/ShiroUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,225 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/RoleHandle.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,240 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AbstractAuthorizationTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,240 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/Authz.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,240 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AuthzImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,240 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/PermissionTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,256 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/RoleTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,256 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/SecurityResourceTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,256 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/UserTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+y.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,225 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/jcaptcha/JCaptchaValidateFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,225 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/CustomAuthoringRealm.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,225 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/ShiroUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,225 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/RoleHandle.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,240 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AbstractAuthorizationTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,240 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/Authz.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,240 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AuthzImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,240 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/PermissionTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,256 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/RoleTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,256 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/SecurityResourceTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:18:44,256 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/UserTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,758 - Log4JLogChute initialized using file 'velocity.log'
+2014-10-08 14:19:20,758 - Initializing Velocity, Calling init()...
+2014-10-08 14:19:20,758 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2014-10-08 14:19:20,758 - Default Properties File: forkoala\org\apache\velocity\runtime\defaults\velocity.properties
+2014-10-08 14:19:20,758 - Trying to use logger class forkoala.org.apache.velocity.runtime.log.AvalonLogChute
+2014-10-08 14:19:20,758 - Couldn't find class forkoala.org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at forkoala.org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:73)
+	at forkoala.org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:105)
+	at forkoala.org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:155)
+	at forkoala.org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:270)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:872)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:263)
+	at forkoala.org.apache.velocity.runtime.RuntimeSingleton.init(RuntimeSingleton.java:113)
+	at forkoala.org.apache.velocity.app.Velocity.init(Velocity.java:75)
+	at org.openkoala.koala.action.velocity.VelocityUtil.evaluateEl(VelocityUtil.java:78)
+	at org.openkoala.koala.action.velocity.VelocityUtil.getPath(VelocityUtil.java:121)
+	at org.openkoala.koala.action.velocity.VelocityUtil.velocityObjectParse(VelocityUtil.java:110)
+	at org.openkoala.koala.actionvo.VelocityFileObject.process(VelocityFileObject.java:26)
+	at org.openkoala.koala.action.XmlParse.parse(XmlParse.java:73)
+	at org.openkoala.koala.action.XmlParseUtil.parseXmlAction(XmlParseUtil.java:51)
+	at org.openkoala.koala.action.XmlParseUtil.parseXml(XmlParseUtil.java:26)
+	at org.openkoala.koala.annotation.parse.ParseObjectFunctionCreate.process(ParseObjectFunctionCreate.java:39)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.dealWithAnnotations(ProjectCreateParse.java:93)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.parseClass(ProjectCreateParse.java:58)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.parse(ProjectCreateParse.java:48)
+	at org.openkoala.koala.mojo.KoalaProjectCreate.createProject(KoalaProjectCreate.java:27)
+	at org.openkoala.koala.mojo.Test.main(Test.java:31)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 23 more
+2014-10-08 14:19:20,758 - Trying to use logger class forkoala.org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-08 14:19:20,758 - Using logger class forkoala.org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-08 14:19:20,758 - ResourceLoader instantiated: forkoala.org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2014-10-08 14:19:20,773 - Do unicode file recognition:  false
+2014-10-08 14:19:20,773 - FileResourceLoader : adding path '.'
+2014-10-08 14:19:20,789 - ResourceCache: initialized (class forkoala.org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2014-10-08 14:19:20,789 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Stop
+2014-10-08 14:19:20,789 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Define
+2014-10-08 14:19:20,789 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Break
+2014-10-08 14:19:20,789 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Evaluate
+2014-10-08 14:19:20,789 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Literal
+2014-10-08 14:19:20,789 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Macro
+2014-10-08 14:19:20,789 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Parse
+2014-10-08 14:19:20,805 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Include
+2014-10-08 14:19:20,805 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Foreach
+2014-10-08 14:19:20,836 - Created '20' parsers.
+2014-10-08 14:19:20,836 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2014-10-08 14:19:20,836 - Velocimacro : Default library not found.
+2014-10-08 14:19:20,836 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2014-10-08 14:19:20,836 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2014-10-08 14:19:20,836 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2014-10-08 14:19:20,836 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2014-10-08 14:19:20,851 - Log4JLogChute initialized using file 'velocity.log'
+2014-10-08 14:19:20,851 - Log4JLogChute initialized using file 'velocity.log'
+2014-10-08 14:19:20,851 - Initializing Velocity, Calling init()...
+2014-10-08 14:19:20,851 - Initializing Velocity, Calling init()...
+2014-10-08 14:19:20,851 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2014-10-08 14:19:20,851 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2014-10-08 14:19:20,851 - Default Properties File: forkoala\org\apache\velocity\runtime\defaults\velocity.properties
+2014-10-08 14:19:20,851 - Default Properties File: forkoala\org\apache\velocity\runtime\defaults\velocity.properties
+2014-10-08 14:19:20,851 - Trying to use logger class forkoala.org.apache.velocity.runtime.log.AvalonLogChute
+2014-10-08 14:19:20,851 - Trying to use logger class forkoala.org.apache.velocity.runtime.log.AvalonLogChute
+2014-10-08 14:19:20,851 - Couldn't find class forkoala.org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at forkoala.org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:73)
+	at forkoala.org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:105)
+	at forkoala.org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:155)
+	at forkoala.org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:270)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:872)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:263)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:647)
+	at forkoala.org.apache.velocity.app.VelocityEngine.init(VelocityEngine.java:117)
+	at org.openkoala.koala.action.velocity.VelocityHelper.getVelocityEngine(VelocityHelper.java:28)
+	at org.openkoala.koala.action.velocity.VelocityUtil.vmToFile(VelocityUtil.java:60)
+	at org.openkoala.koala.action.velocity.VelocityUtil.velocityObjectParse(VelocityUtil.java:110)
+	at org.openkoala.koala.actionvo.VelocityFileObject.process(VelocityFileObject.java:26)
+	at org.openkoala.koala.action.XmlParse.parse(XmlParse.java:73)
+	at org.openkoala.koala.action.XmlParseUtil.parseXmlAction(XmlParseUtil.java:51)
+	at org.openkoala.koala.action.XmlParseUtil.parseXml(XmlParseUtil.java:26)
+	at org.openkoala.koala.annotation.parse.ParseObjectFunctionCreate.process(ParseObjectFunctionCreate.java:39)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.dealWithAnnotations(ProjectCreateParse.java:93)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.parseClass(ProjectCreateParse.java:58)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.parse(ProjectCreateParse.java:48)
+	at org.openkoala.koala.mojo.KoalaProjectCreate.createProject(KoalaProjectCreate.java:27)
+	at org.openkoala.koala.mojo.Test.main(Test.java:31)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 23 more
+2014-10-08 14:19:20,851 - Couldn't find class forkoala.org.apache.velocity.runtime.log.AvalonLogChute or necessary supporting classes in classpath.
+java.lang.NoClassDefFoundError: org/apache/log/format/Formatter
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:270)
+	at forkoala.org.apache.velocity.util.ClassUtils.getClass(ClassUtils.java:73)
+	at forkoala.org.apache.velocity.util.ClassUtils.getNewInstance(ClassUtils.java:105)
+	at forkoala.org.apache.velocity.runtime.log.LogManager.createLogChute(LogManager.java:155)
+	at forkoala.org.apache.velocity.runtime.log.LogManager.updateLog(LogManager.java:270)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.initializeLog(RuntimeInstance.java:872)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:263)
+	at forkoala.org.apache.velocity.runtime.RuntimeInstance.init(RuntimeInstance.java:647)
+	at forkoala.org.apache.velocity.app.VelocityEngine.init(VelocityEngine.java:117)
+	at org.openkoala.koala.action.velocity.VelocityHelper.getVelocityEngine(VelocityHelper.java:28)
+	at org.openkoala.koala.action.velocity.VelocityUtil.vmToFile(VelocityUtil.java:60)
+	at org.openkoala.koala.action.velocity.VelocityUtil.velocityObjectParse(VelocityUtil.java:110)
+	at org.openkoala.koala.actionvo.VelocityFileObject.process(VelocityFileObject.java:26)
+	at org.openkoala.koala.action.XmlParse.parse(XmlParse.java:73)
+	at org.openkoala.koala.action.XmlParseUtil.parseXmlAction(XmlParseUtil.java:51)
+	at org.openkoala.koala.action.XmlParseUtil.parseXml(XmlParseUtil.java:26)
+	at org.openkoala.koala.annotation.parse.ParseObjectFunctionCreate.process(ParseObjectFunctionCreate.java:39)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.dealWithAnnotations(ProjectCreateParse.java:93)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.parseClass(ProjectCreateParse.java:58)
+	at org.openkoala.koala.parseImpl.ProjectCreateParse.parse(ProjectCreateParse.java:48)
+	at org.openkoala.koala.mojo.KoalaProjectCreate.createProject(KoalaProjectCreate.java:27)
+	at org.openkoala.koala.mojo.Test.main(Test.java:31)
+Caused by: java.lang.ClassNotFoundException: org.apache.log.format.Formatter
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	... 23 more
+2014-10-08 14:19:20,851 - Trying to use logger class forkoala.org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-08 14:19:20,851 - Trying to use logger class forkoala.org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-08 14:19:20,851 - Using logger class forkoala.org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-08 14:19:20,851 - Using logger class forkoala.org.apache.velocity.runtime.log.Log4JLogChute
+2014-10-08 14:19:20,851 - ResourceLoader instantiated: forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,851 - ResourceLoader instantiated: forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,851 - ResourceCache: initialized (class forkoala.org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2014-10-08 14:19:20,851 - ResourceCache: initialized (class forkoala.org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Stop
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Stop
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Define
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Define
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Break
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Break
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Evaluate
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Evaluate
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Literal
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Literal
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Macro
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Macro
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Parse
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Parse
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Include
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Include
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Foreach
+2014-10-08 14:19:20,867 - Loaded System Directive: forkoala.org.apache.velocity.runtime.directive.Foreach
+2014-10-08 14:19:20,867 - Created '20' parsers.
+2014-10-08 14:19:20,867 - Created '20' parsers.
+2014-10-08 14:19:20,867 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2014-10-08 14:19:20,867 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2014-10-08 14:19:20,867 - Could not load resource 'VM_global_library.vm' from ResourceLoader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader: ClasspathResourceLoader Error: cannot find resource VM_global_library.vm
+2014-10-08 14:19:20,867 - Could not load resource 'VM_global_library.vm' from ResourceLoader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader: ClasspathResourceLoader Error: cannot find resource VM_global_library.vm
+2014-10-08 14:19:20,867 - Velocimacro : Default library not found.
+2014-10-08 14:19:20,867 - Velocimacro : Default library not found.
+2014-10-08 14:19:20,867 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2014-10-08 14:19:20,867 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2014-10-08 14:19:20,867 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2014-10-08 14:19:20,867 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2014-10-08 14:19:20,867 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2014-10-08 14:19:20,867 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2014-10-08 14:19:20,867 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2014-10-08 14:19:20,867 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2014-10-08 14:19:20,883 - ResourceManager : found vm/base/project.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,883 - ResourceManager : found vm/base/project.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 224, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 224, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 230, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 230, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 236, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 236, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 242, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 242, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 248, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 248, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 254, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 254, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 260, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 260, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 267, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 267, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 273, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 273, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 279, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 279, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 285, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 285, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 291, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 291, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 297, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 297, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 303, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 303, column 26] : ${dddlib.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 309, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 309, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 315, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 315, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 321, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 321, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 327, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 327, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 333, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 333, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 339, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 339, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 345, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 345, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 351, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 351, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 357, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 357, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 363, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 363, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 369, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 369, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 375, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 375, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 381, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 381, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 386, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 386, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 391, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 391, column 26] : ${spring.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 435, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 435, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 440, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 440, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 445, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 445, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 450, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 450, column 26] : ${struts2.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 480, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 480, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 486, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 486, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 492, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 492, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 498, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 498, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 504, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 504, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 551, column 26] : ${quartz.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 551, column 26] : ${quartz.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 681, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 681, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 686, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 686, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 691, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 691, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 717, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 717, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 723, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 723, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 729, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 729, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 735, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 735, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 742, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 742, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 748, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/project.pom.xml.vm', line 748, column 26] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,898 - ResourceManager : found vm/base/conf/pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,898 - ResourceManager : found vm/base/conf/pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/conf/pom.xml.vm', line 24, column 34] : ${db.groupId} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/conf/pom.xml.vm', line 24, column 34] : ${db.groupId} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/conf/pom.xml.vm', line 25, column 37] : ${db.artifactId} cannot be resolved.
+2014-10-08 14:19:20,898 - Null reference [template 'vm/base/conf/pom.xml.vm', line 25, column 37] : ${db.artifactId} cannot be resolved.
+2014-10-08 14:19:20,898 - ResourceManager : found vm/base/conf/src/main/resources/log4j.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,898 - ResourceManager : found vm/base/conf/src/main/resources/log4j.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/base-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/base-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/db-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/db-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 40, column 66] : ${database.Type} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 40, column 66] : ${database.Type} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 41, column 65] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 41, column 65] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 42, column 69] : ${generateDdl} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 42, column 69] : ${generateDdl} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 43, column 74] : ${db.jdbc.dialect} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 43, column 74] : ${db.jdbc.dialect} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 61, column 48] : ${db.jdbc.driver} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 61, column 48] : ${db.jdbc.driver} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 62, column 51] : ${db.jdbc.connection.url} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 62, column 51] : ${db.jdbc.connection.url} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 63, column 46] : ${db.jdbc.username} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 63, column 46] : ${db.jdbc.username} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 64, column 50] : ${db.jdbc.password} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 64, column 50] : ${db.jdbc.password} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 66, column 64] : ${maximumConnectionCount} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 66, column 64] : ${maximumConnectionCount} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 67, column 64] : ${minimumConnectionCount} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 67, column 64] : ${minimumConnectionCount} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 68, column 61] : ${db.jdbc.testsql} cannot be resolved.
+2014-10-08 14:19:20,914 - Null reference [template 'vm/base/conf/src/main/resources/META-INF/spring/persistence-context.xml.vm', line 68, column 61] : ${db.jdbc.testsql} cannot be resolved.
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/root.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/spring/root.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/springEjbIntercepter.properties.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/main/resources/META-INF/springEjbIntercepter.properties.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/test/resources/log4j.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/test/resources/log4j.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/props/database.properties.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,914 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/props/database.properties.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 1, column 16] : ${db.jdbcDriver} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 1, column 16] : ${db.jdbcDriver} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 2, column 24] : ${db.connectionURL} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 2, column 24] : ${db.connectionURL} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 3, column 18] : ${db.username} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 3, column 18] : ${db.username} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 4, column 18] : ${db.password} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 4, column 18] : ${db.password} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 5, column 17] : ${hibernate.dialect} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 5, column 17] : ${hibernate.dialect} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 6, column 17] : ${db.testsql} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 6, column 17] : ${db.testsql} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 7, column 24] : ${hibernate.hbm2ddl.auto} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 7, column 24] : ${hibernate.hbm2ddl.auto} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 8, column 20] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 8, column 20] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 9, column 15] : ${db.Type} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 9, column 15] : ${db.Type} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 10, column 13] : ${db.generateDdl} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/props/database.properties.vm', line 10, column 13] : ${db.generateDdl} cannot be resolved.
+2014-10-08 14:19:20,929 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/base-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,929 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/base-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,929 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/db-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,929 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/db-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,929 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,929 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 40, column 66] : ${database.Type} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 40, column 66] : ${database.Type} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 41, column 65] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 41, column 65] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 42, column 69] : ${generateDdl} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 42, column 69] : ${generateDdl} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 43, column 74] : ${db.jdbc.dialect} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 43, column 74] : ${db.jdbc.dialect} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 61, column 48] : ${db.jdbc.driver} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 61, column 48] : ${db.jdbc.driver} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 62, column 51] : ${db.jdbc.connection.url} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 62, column 51] : ${db.jdbc.connection.url} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 63, column 46] : ${db.jdbc.username} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 63, column 46] : ${db.jdbc.username} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 64, column 50] : ${db.jdbc.password} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 64, column 50] : ${db.jdbc.password} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 66, column 64] : ${maximumConnectionCount} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 66, column 64] : ${maximumConnectionCount} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 67, column 64] : ${minimumConnectionCount} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 67, column 64] : ${minimumConnectionCount} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 68, column 61] : ${db.jdbc.testsql} cannot be resolved.
+2014-10-08 14:19:20,929 - Null reference [template 'vm/base/conf/src/test/resources/META-INF/spring/persistence-context.xml.vm', line 68, column 61] : ${db.jdbc.testsql} cannot be resolved.
+2014-10-08 14:19:20,929 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/root.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,929 - ResourceManager : found vm/base/conf/src/test/resources/META-INF/spring/root.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,961 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,961 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:20,961 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,961 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:20,961 - Null reference [template 'vm/base/module.pom.xml.vm', line 78, column 18] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:20,961 - Null reference [template 'vm/base/module.pom.xml.vm', line 78, column 18] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,023 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,023 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,023 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:21,023 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:21,023 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,023 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,023 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,023 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,023 - Null reference [template 'vm/base/module.pom.xml.vm', line 118, column 18] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,023 - Null reference [template 'vm/base/module.pom.xml.vm', line 118, column 18] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,055 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,055 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,055 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:21,055 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:21,055 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,055 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,055 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,055 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,102 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,102 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,102 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:21,102 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:21,102 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,102 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,102 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,102 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,102 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,102 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,102 - Null reference [template 'vm/base/module.pom.xml.vm', line 239, column 18] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,102 - Null reference [template 'vm/base/module.pom.xml.vm', line 239, column 18] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,133 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,133 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,133 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:21,133 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:21,164 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,164 - ResourceManager : found vm/base/module.pom.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,164 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:21,164 - Null reference [template 'vm/base/module.pom.xml.vm', line 36, column 34] : ${koala.version} cannot be resolved.
+2014-10-08 14:19:21,164 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,164 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,164 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,164 - Null reference [template 'vm/base/module.pom.xml.vm', line 46, column 24] : ${project.parent.version} cannot be resolved.
+2014-10-08 14:19:21,164 - Null reference [template 'vm/base/module.pom.xml.vm', line 375, column 34] : ${jcaptcha.version} cannot be resolved.
+2014-10-08 14:19:21,164 - Null reference [template 'vm/base/module.pom.xml.vm', line 375, column 34] : ${jcaptcha.version} cannot be resolved.
+2014-10-08 14:19:21,164 - Null reference [template 'vm/base/module.pom.xml.vm', line 380, column 34] : ${jcaptcha.version} cannot be resolved.
+2014-10-08 14:19:21,164 - Null reference [template 'vm/base/module.pom.xml.vm', line 380, column 34] : ${jcaptcha.version} cannot be resolved.
+2014-10-08 14:19:21,180 - ResourceManager : found vm/other/koala-spring-servlet.xml with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,180 - ResourceManager : found vm/other/koala-spring-servlet.xml with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,180 - ResourceManager : found vm/base/war/.web.koala.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,180 - ResourceManager : found vm/base/war/.web.koala.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,180 - ResourceManager : found vm/base/war/src/main/resources/META-INF/props/database.properties.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,180 - ResourceManager : found vm/base/war/src/main/resources/META-INF/props/database.properties.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 1, column 16] : ${db.jdbcDriver} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 1, column 16] : ${db.jdbcDriver} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 2, column 24] : ${db.connectionURL} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 2, column 24] : ${db.connectionURL} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 3, column 18] : ${db.username} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 3, column 18] : ${db.username} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 4, column 18] : ${db.password} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 4, column 18] : ${db.password} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 5, column 17] : ${hibernate.dialect} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 5, column 17] : ${hibernate.dialect} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 6, column 17] : ${db.testsql} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 6, column 17] : ${db.testsql} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 7, column 24] : ${hibernate.hbm2ddl.auto} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 7, column 24] : ${hibernate.hbm2ddl.auto} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 8, column 20] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 8, column 20] : ${hibernate.show_sql} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 9, column 15] : ${db.Type} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 9, column 15] : ${db.Type} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 10, column 13] : ${db.generateDdl} cannot be resolved.
+2014-10-08 14:19:21,180 - Null reference [template 'vm/base/war/src/main/resources/META-INF/props/database.properties.vm', line 10, column 13] : ${db.generateDdl} cannot be resolved.
+2014-10-08 14:19:21,180 - ResourceManager : found vm/base/war/src/main/resources/META-INF/spring/root.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,180 - ResourceManager : found vm/base/war/src/main/resources/META-INF/spring/root.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,196 - ResourceManager : found vm/base/war/src/main/webapp/pages/common/header.jsp.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,196 - ResourceManager : found vm/base/war/src/main/webapp/pages/common/header.jsp.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,196 - ResourceManager : found vm/base/war/src/main/webapp/WEB-INF/k.tld.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,196 - ResourceManager : found vm/base/war/src/main/webapp/WEB-INF/k.tld.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,196 - ResourceManager : found vm/base/war/src/main/webapp/WEB-INF/template/NULL.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,196 - ResourceManager : found vm/base/war/src/main/webapp/WEB-INF/template/NULL.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,196 - ResourceManager : found vm/base/war/src/main/webapp/WEB-INF/web.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,196 - ResourceManager : found vm/base/war/src/main/webapp/WEB-INF/web.xml.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,211 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/CurrentUserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,211 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/CurrentUserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,211 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/IndexController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,211 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/IndexController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LoginController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LoginController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LogoutController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LogoutController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/MenuResourceController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/MenuResourceController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PageElementController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PageElementController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PermissionController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PermissionController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/RoleController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/RoleController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UrlAccessController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,227 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UrlAccessController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SecurityDBInitListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SecurityDBInitListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SystemEvenmentListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SystemEvenmentListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/CurrentUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/CurrentUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomDefaultFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomDefaultFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomPathMatchingFilterChainResolver.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomPathMatchingFilterChainResolver.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/ShiroFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/ShiroFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/AnyRoleAuthorizationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,242 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/AnyRoleAuthorizationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/CustomFormAuthenticationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/CustomFormAuthenticationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/jcaptcha/JCaptchaValidateFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/jcaptcha/JCaptchaValidateFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/CustomAuthoringRealm.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/CustomAuthoringRealm.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/ShiroUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/ShiroUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/RoleHandle.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/RoleHandle.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AbstractAuthorizationTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AbstractAuthorizationTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/Authz.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/Authz.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AuthzImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AuthzImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/PermissionTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,258 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/PermissionTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,274 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/RoleTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,274 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/RoleTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,274 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/SecurityResourceTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,274 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/SecurityResourceTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,274 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/UserTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,274 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/UserTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,352 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/impl/SecurityAccessApplicationImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,352 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/impl/SecurityAccessApplicationImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,352 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/impl/SecurityConfigApplicationImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,352 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/impl/SecurityConfigApplicationImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,352 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/impl/SecurityDBInitApplicationImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,352 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/impl/SecurityDBInitApplicationImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,367 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/SecurityAccessApplication.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,367 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/SecurityAccessApplication.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,367 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/SecurityConfigApplication.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,367 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/SecurityConfigApplication.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,367 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/SecurityDBInitApplication.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,367 - ResourceManager : found vm/other/security/application/src/main/java/org/openkoala/security/application/SecurityDBInitApplication.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/CurrentUserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/CurrentUserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/IndexController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/IndexController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LoginController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LoginController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LogoutController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/LogoutController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/MenuResourceController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/MenuResourceController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PageElementController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PageElementController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PermissionController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,383 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/PermissionController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/RoleController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/RoleController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UrlAccessController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UrlAccessController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/controller/UserController.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SecurityDBInitListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SecurityDBInitListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SystemEvenmentListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/controller/src/main/java/org/openkoala/security/listener/SystemEvenmentListener.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/CurrentUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/CurrentUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomDefaultFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,398 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomDefaultFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomPathMatchingFilterChainResolver.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/CustomPathMatchingFilterChainResolver.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/ShiroFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/extend/ShiroFilterChainManager.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/AnyRoleAuthorizationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/AnyRoleAuthorizationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/CustomFormAuthenticationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/filter/CustomFormAuthenticationFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/jcaptcha/JCaptchaValidateFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/jcaptcha/JCaptchaValidateFilter.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/CustomAuthoringRealm.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/CustomAuthoringRealm.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/ShiroUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/realm/ShiroUser.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/RoleHandle.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,414 - ResourceManager : found vm/other/security/web/shiro/src/main/java/org/openkoala/security/shiro/RoleHandle.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AbstractAuthorizationTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AbstractAuthorizationTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/Authz.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/Authz.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AuthzImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/AuthzImpl.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/PermissionTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/PermissionTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/RoleTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/RoleTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/SecurityResourceTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,430 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/SecurityResourceTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,445 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/UserTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-08 14:19:21,445 - ResourceManager : found vm/other/security/web/taglibs/src/main/java/org/openkoala/security/taglibs/UserTag.java.vm with loader forkoala.org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+2014-10-21 14:36:36,082 - Log4JLogChute initialized using file 'velocity.log'
