@@ -1,93 +1,121 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<div class="userDetial" id="userDetial">
-    <div class="col-lg-8 content" data-id="userID"></div>
+<div id="permissionDetail">
     <!--
         ========================权限详细信息=========================
          -->
     <table class="table table-bordered table-hover">
         <tr>
-            <td colspan="4">
-                <label style="font-size:20px;">①用户详细信息</label>
+            <td colspan="3">
+                <label style="font-size:20px;">①权限详细信息</label>
             </td>
         </tr>
         <tr>
-            <td width="50%" colspan="2">
-                <label class="control-label">姓名:</label>
-                <span class="" data-id="name" ></span>
+            <td width="33.333%">
+                <label class="control-label">权限名称:</label>
+                <span class="" data-id="permName"></span>
             </td>
-            <td width="50%" colspan="2">
-                <label class="control-label">用户名称:</label>
-                <span class="" data-id="userAccount" ></span>
+            <td width="33.333%">
+                <label class="control-label">权限标识:</label>
+                <span class="" data-id="permIdentifier" ></span>
             </td>
-        </tr>
-        <tr>
-            <td width="50%" colspan="2">
-                <label>创建时间:</label>
-                <span data-id="createDate"></span>
-            </td>
-            <td width="50%" colspan="2">
-                <label>描述:</label>
-                <span data-id="description" ></span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="4">
-                <label>是否可用:</label>
-                <span data-id="disabled"></span>
+            <td width="33.333%">
+                <label class="control-label">权限描述:</label>
+                <span class="" data-id="permDescription"></span>
             </td>
         </tr>
     </table>
     <!--
     ========================菜单=========================
      -->
-    <table id="userDetialtoRoles" class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover">
         <tr>
-            <td colspan="2">
-                <label style="font-size:20px; ">②所有角色</label>
+            <td colspan="3">
+                <label style="font-size:20px; ">②菜单资源</label>
             </td>
         </tr>
         <tr>
-            <td width="50%"> <label>角色名称</label></td>
-            <td width="50%"><label>角色描述</label></td>
+            <td width="33.333%">
+                <label class="control-label">菜单名称:</label>
+                <span class="" data-id="menuName"></span>
+            </td>
+            <td width="33.333%">
+                <label class="control-label">菜单URL:</label>
+                <span class="" data-id="menuUrl" ></span>
+            </td>
+            <td width="33.333%">
+                <label class="control-label">菜单描述:</label>
+                <span class="" data-id="menuDescription"></span>
+            </td>
         </tr>
     </table>
-    <!--
-    ========================URL访问资源=========================
-     -->
-    <table id="userDetialtoPermissions"  class="table table-bordered table-hover">
+    <!-- ========================  URL访问资源  ========================= -->
+    <table class="table table-bordered table-hover">
         <tr>
-            <td colspan="2"><label style="font-size:20px;">③所有权限</label></td>
+            <td colspan="3">
+                <label style="font-size:20px; ">③URL访问资源</label>
+            </td>
         </tr>
         <tr>
-            <td width="50%"><label>权限名称</label></td>
-            <td width="50%"><label>权限描述</label></td>
+            <td width="33.333%">
+                <label class="control-label">URL名称:</label>
+                <span class="" data-id="urlName"></span>
+            </td>
+            <td width="33.333%">
+                <label class="control-label">URL路径:</label>
+                <span class="" data-id="urlPath" ></span>
+            </td>
+            <td width="33.333%">
+                <label class="control-label">URL描述:</label>
+                <span class="" data-id="urlDescription"></span>
+            </td>
+        </tr>
+    </table>
+
+    <table class="table table-bordered table-hover">
+        <tr>
+            <td colspan="3">
+                <label style="font-size:20px; ">④菜单资源</label>
+            </td>
+        </tr>
+        <tr>
+            <td width="33.333%">
+                <label class="control-label">页面元素名称:</label>
+                <span class="" data-id="pageName"></span>
+            </td>
+            <td width="33.333%">
+                <label class="control-label">页面元素标识:</label>
+                <span class="" data-id="pageIdentifier" ></span>
+            </td>
+            <td width="33.333%">
+                <label class="control-label">页面元素描述:</label>
+                <span class="" data-id="pageDescription"></span>
+            </td>
         </tr>
     </table>
 
 </div>
 <script>
     $(function() {
-        var userId = $('.userDetial').parent().attr('data-value');
-        $.get(contextPath + '/auth/user/findInfoOfUser.koala?userId='+userId).done(function(result) {
-            var user = result.data;
-            var userDetial = $('.userDetial');
-            userDetial.find('[data-id="name"]').text(user.name);
-            userDetial.find('[data-id="userAccount"]').text(user.userAccount);
-            userDetial.find('[data-id="createDate"]').text(user.createDate);
-            userDetial.find('[data-id="description"]').text(user.description==null?"":user.description);
-            userDetial.find('[data-id="disabled"]').text(user.disabled?"不可用":"可用");
-            /* ↓============迭代角色数据============↓ */
-            var roles = result.data.roles;
-            $.each(roles, function(){
-                var $tr = $('<tr><td width="50%"><div>'+this.name+'</div></td><td width="50%"><div>'+this.description+'</div></td></tr>');
-                $tr.appendTo($("#userDetialtoRoles"));
-            });
-            /* ↓============迭代权限数据============↓ */
-            var roles = result.data.permissions;
-            $.each(roles, function(){
-                var $tr = $(' <tr><td width="50%"><div>'+this.name+'</div></td><td width="50%"><div>'+this.description+'</div></td><tr>');
-                $tr.appendTo($("#userDetialtoPermissions"));
-            });
+        var permissionId = $('#permissionDetail').parent().attr('data-value')
+        $.get(contextPath + '/auth/permission/findInfoOfPermission.koala?permissionId=' + permissionId).done(function (result) {
+            var permission = result.data;
+            var permissionDetail = $('#permissionDetail');
+            permissionDetail.find('[data-id="permName"]').text(permission.name);
+            permissionDetail.find('[data-id="permIdentifier"]').text(permission.identifier);
+            permissionDetail.find('[data-id="permDescription"]').text(permission.description==null?"":permission.description);
+
+            permissionDetail.find('[data-id="menuName"]').text(permission.menuResource.name);
+            permissionDetail.find('[data-id="menuUrl"]').text(permission.menuResource.url);
+            permissionDetail.find('[data-id="menuDescription"]').text(permission.menuResource.description==null?"":permission.menuResource.description);
+
+            permissionDetail.find('[data-id="urlName"]').text(permission.urlAccessResource.name);
+            permissionDetail.find('[data-id="urlPath"]').text(permission.urlAccessResource.url);
+            permissionDetail.find('[data-id="urlDescription"]').text(permission.urlAccessResource.description==null?"":permission.urlAccessResource.description);
+
+            permissionDetail.find('[data-id="pageName"]').text(permission.pageElementResource.name);
+            permissionDetail.find('[data-id="pageIdentifier"]').text(permission.pageElementResource.identifier);
+            permissionDetail.find('[data-id="pageDescription"]').text(permission.pageElementResource.description==null?"":permission.pageElementResource.description);
+
         });
     });
 </script>

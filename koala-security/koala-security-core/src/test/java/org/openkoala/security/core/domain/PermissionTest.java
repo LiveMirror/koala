@@ -6,6 +6,8 @@ import org.openkoala.security.core.IdentifierIsExistedException;
 import org.openkoala.security.core.NameIsExistedException;
 import org.openkoala.security.core.NullArgumentException;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.openkoala.security.core.util.EntitiesHelper.*;
 
@@ -145,5 +147,18 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 		Authority authority = permission.getBy(permission.getName());
 		assertNotNull(authority);
 	}
-	
+
+    @Test
+    public void testFindResources() throws Exception{
+        Permission permission = initPermission();
+        permission.save();
+        MenuResource menuResource = initMenuResource();
+        menuResource.save();
+        permission.addSecurityResource(menuResource);
+        permission.save();
+        List<SecurityResource> securityResources =  permission.findResources();
+        assertFalse(securityResources.isEmpty());
+        assertTrue(securityResources.size() == 1);
+
+    }
 }

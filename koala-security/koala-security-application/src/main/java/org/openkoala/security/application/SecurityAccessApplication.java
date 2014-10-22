@@ -220,28 +220,12 @@ public interface SecurityAccessApplication {
     Set<PageElementResource> findPageElementResourcesOfRole(Role role);
 
     /**
-     * 查找权限拥有的所有不重复的菜单资源集合。
+     * 查找权限拥有的所有不重复的资源集合。
      *
      * @param permission 权限
-     * @return 菜单资源集合
+     * @return 资源集合
      */
-    Set<PageElementResource> findPageElementResourcesOfPermission(Permission permission);
-
-    /**
-     * 查找权限拥有的所有不重复的URL访问资源集合。
-     *
-     * @param permission 权限
-     * @return URL访问资源集合
-     */
-    Set<UrlAccessResource> findUrlAccessResourcesOfPermission(Permission permission);
-
-    /**
-     * 查找权限拥有的所有不重复的菜单资源集合。
-     *
-     * @param permission 权限
-     * @return 菜单资源集合
-     */
-    Set<MenuResource> findMenuResourcesOfPermission(Permission permission);
+    List<SecurityResource> findResourcesByPermission(Permission permission);
 
     /**
      * 判断仓储中用户是否存在。

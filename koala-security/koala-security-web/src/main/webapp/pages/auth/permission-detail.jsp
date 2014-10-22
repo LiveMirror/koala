@@ -27,48 +27,69 @@
     <!--
     ========================菜单=========================
      -->
-    <table id="userDetialtoRoles" class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover">
         <tr>
             <td colspan="3">
                 <label style="font-size:20px; ">②菜单资源</label>
             </td>
         </tr>
         <tr>
-            <td width="30%" colspan="1">
+            <td width="33.333%">
                 <label class="control-label">菜单名称:</label>
                 <span class="" data-id="menuName"></span>
             </td>
-            <td width="30%" colspan="1">
+            <td width="33.333%">
                 <label class="control-label">菜单URL:</label>
                 <span class="" data-id="menuUrl" ></span>
             </td>
-            <td colspan="2">
+            <td width="33.333%">
                 <label class="control-label">菜单描述:</label>
                 <span class="" data-id="menuDescription"></span>
             </td>
         </tr>
     </table>
-    <!--
-    ========================URL访问资源=========================
-     -->
-    <table id="userDetialtoPermissions"  class="table table-bordered table-hover">
+    <!-- ========================  URL访问资源  ========================= -->
+    <table class="table table-bordered table-hover">
         <tr>
-            <td colspan="3"><label style="font-size:20px;">③URL访问资源</label></td>
+            <td colspan="3">
+                <label style="font-size:20px; ">③URL访问资源</label>
+            </td>
         </tr>
         <tr>
-            <td><label>URL名称</label></td>
-            <td><label>URL路径</label></td>
-            <td><label>URL描述</label></td>
+            <td width="33.333%">
+                <label class="control-label">URL名称:</label>
+                <span class="" data-id="urlName"></span>
+            </td>
+            <td width="33.333%">
+                <label class="control-label">URL路径:</label>
+                <span class="" data-id="urlPath" ></span>
+            </td>
+            <td width="33.333%">
+                <label class="control-label">URL描述:</label>
+                <span class="" data-id="urlDescription"></span>
+            </td>
         </tr>
     </table>
 
-    <table id="useDetialtoPermissions"  class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover">
         <tr>
-            <td colspan="2"><label style="font-size:20px;">④页面元素资源</label></td>
+            <td colspan="3">
+                <label style="font-size:20px; ">④菜单资源</label>
+            </td>
         </tr>
         <tr>
-            <td width="50%"><label>权限名称</label></td>
-            <td width="50%"><label>权限描述</label></td>
+            <td width="33.333%">
+                <label class="control-label">页面元素名称:</label>
+                <span class="" data-id="pageName"></span>
+            </td>
+            <td width="33.333%">
+                <label class="control-label">页面元素标识:</label>
+                <span class="" data-id="pageIdentifier" ></span>
+            </td>
+            <td width="33.333%">
+                <label class="control-label">页面元素描述:</label>
+                <span class="" data-id="pageDescription"></span>
+            </td>
         </tr>
     </table>
 
@@ -86,6 +107,14 @@
             permissionDetail.find('[data-id="menuName"]').text(permission.menuResource.name);
             permissionDetail.find('[data-id="menuUrl"]').text(permission.menuResource.url);
             permissionDetail.find('[data-id="menuDescription"]').text(permission.menuResource.description==null?"":permission.menuResource.description);
+
+            permissionDetail.find('[data-id="urlName"]').text(permission.urlAccessResource.name);
+            permissionDetail.find('[data-id="urlPath"]').text(permission.urlAccessResource.url);
+            permissionDetail.find('[data-id="urlDescription"]').text(permission.urlAccessResource.description==null?"":permission.urlAccessResource.description);
+
+            permissionDetail.find('[data-id="pageName"]').text(permission.pageElementResource.name);
+            permissionDetail.find('[data-id="pageIdentifier"]').text(permission.pageElementResource.identifier);
+            permissionDetail.find('[data-id="pageDescription"]').text(permission.pageElementResource.description==null?"":permission.pageElementResource.description);
 
         });
     });

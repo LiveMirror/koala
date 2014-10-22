@@ -207,10 +207,10 @@
 			} else if(urlId){
 				//@TODO
 				return [{
-					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为url分配权限</button>',
+					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为URL分配权限</button>',
 					action : 'assignPermissionForUrl'
 				}, {
-					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除url权限</button>',
+					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除URL权限</button>',
 					action : 'removePermissionForUrl'
 				}];
 			}else if(roleId){

@@ -6,16 +6,7 @@ import java.util.Set;
 import javax.inject.Named;
 
 import org.openkoala.security.application.SecurityAccessApplication;
-import org.openkoala.security.core.domain.Actor;
-import org.openkoala.security.core.domain.Authority;
-import org.openkoala.security.core.domain.Authorization;
-import org.openkoala.security.core.domain.MenuResource;
-import org.openkoala.security.core.domain.PageElementResource;
-import org.openkoala.security.core.domain.Permission;
-import org.openkoala.security.core.domain.Role;
-import org.openkoala.security.core.domain.Scope;
-import org.openkoala.security.core.domain.UrlAccessResource;
-import org.openkoala.security.core.domain.User;
+import org.openkoala.security.core.domain.*;
 
 @Named
 public class SecurityAccessApplicationImpl implements SecurityAccessApplication {
@@ -144,18 +135,8 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     }
 
     @Override
-    public Set<PageElementResource> findPageElementResourcesOfPermission(Permission permission) {
-        return permission.findPageElementResources();
-    }
-
-    @Override
-    public Set<UrlAccessResource> findUrlAccessResourcesOfPermission(Permission permission) {
-        return permission.findUrlAccessResources();
-    }
-
-    @Override
-    public Set<MenuResource> findMenuResourcesOfPermission(Permission permission) {
-        return permission.findMenuResources();
+    public List<SecurityResource> findResourcesByPermission(Permission permission) {
+        return permission.findResources();
     }
 
     @Override

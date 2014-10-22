@@ -176,7 +176,14 @@
 				title : "权限描述",
 				name : "description",
 				width : 150
-			}];
+			},{
+            title : "查看",
+            name : "operate",
+            width : 200,
+            render: function(item, name, index){
+                return '<a href="#" onclick="showUserDetail('+item.id+', \''+item.name+'\')"><span class="glyphicon glyphicon glyphicon-eye-open"></span>&nbsp;详细</a>';
+            }
+        }];
 		
 		var buttons = (function(){
 			if(menuId){
@@ -200,10 +207,10 @@
 			} else if(urlId){
 				//@TODO
 				return [{
-					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为url分配权限</button>',
+					content : '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为URL分配权限</button>',
 					action : 'assignPermissionForUrl'
 				}, {
-					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除url权限</button>',
+					content : '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除URL权限</button>',
 					action : 'removePermissionForUrl'
 				}];
 			}else if(roleId){
@@ -928,4 +935,18 @@
             $('[data-role="permissionGrid"]').getGrid().search(params);
         });
 });
+
+    /**
+     * 显示详细信息
+     * @param id
+     * @param userName
+     */
+    var showUserDetail = function(id, name){
+        var thiz = $(this);
+        var mark = thiz.attr('mark');
+        mark = openTab('/pages/auth/permission-detail.jsp', name, mark, id);
+        if (mark) {
+            thiz.attr("mark", mark);
+        }
+    };
 </script>
