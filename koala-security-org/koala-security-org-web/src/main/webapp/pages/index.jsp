@@ -298,7 +298,6 @@
                         <li data-toggle='modal' data-target="#rolesToggle"><a href="#" class="glyphicon glyphicon-repeat">&nbsp;切换角色</a></li>
                     </ul>
                 </div>
-
                 <!--角色信息-->
                 <div class="btn-group navbar-right">
                     <label for = "roles" class = "user_name">角色: </label>
