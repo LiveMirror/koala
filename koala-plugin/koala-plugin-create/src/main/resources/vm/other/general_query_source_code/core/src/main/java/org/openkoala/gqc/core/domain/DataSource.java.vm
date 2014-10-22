@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.dbutils.DbUtils;
 import org.dayatang.domain.InstanceFactory;
+<<<<<<< HEAD
 import org.openkoala.gqc.core.DataSourceBeingUsedException;
 import org.openkoala.gqc.core.DataSourceIDExistException;
 import org.openkoala.gqc.core.SystemDataSourceNotExistException;
@@ -19,11 +20,18 @@ import org.openkoala.gqc.core.SystemDataSourceNotExistException;
 /**
  * 查询数据源。
  * 
+=======
+import org.openkoala.gqc.core.exception.SystemDataSourceNotExistException;
+
+/**
+ * 查询数据源
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
  * @author xmfang
  *
  */
 @Entity
 @Table(name = "KG_DATA_SOURCES")
+<<<<<<< HEAD
 public class DataSource extends AbstractGeneralQueryEntity {
 
 	private static final long serialVersionUID = 7435451055102038439L;
@@ -200,6 +208,56 @@ public class DataSource extends AbstractGeneralQueryEntity {
 	}
 	
 
+=======
+public class DataSource extends GeneralQueryEntity {
+
+	private static final long serialVersionUID = 7435451055102038439L;
+	
+	/**
+	 * 数据源类型
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name = "DATA_SOURCE_TYPE")
+	private DataSourceType dataSourceType;
+	
+	/**
+	 * 数据源ID
+	 */
+	@Column(name = "DATA_SOURCE_ID")
+	private String dataSourceId;
+
+	/**
+	 * 数据源描述
+	 */
+	@Column(name = "DATA_SOURCE_DESCRIPTION")
+	private String dataSourceDescription;
+	
+	/**
+	 * 连接URL
+	 */
+	@Column(name = "CONNECT_URL")
+	private String connectUrl;
+	
+	/**
+	 * 数据源驱动
+	 */
+	@Column(name = "JDBC_DRIVER")
+	private String jdbcDriver;
+	
+	/**
+	 * 用户名
+	 */
+	@Column(name = "USERNAME")
+	private String username;
+	
+	/**
+	 * 密码
+	 */
+	@Column(name = "PASSWORD")
+	private String password;
+
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public DataSourceType getDataSourceType() {
 		return dataSourceType;
 	}
@@ -208,6 +266,10 @@ public class DataSource extends AbstractGeneralQueryEntity {
 		this.dataSourceType = dataSourceType;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getDataSourceId() {
 		return dataSourceId;
 	}
@@ -216,6 +278,10 @@ public class DataSource extends AbstractGeneralQueryEntity {
 		this.dataSourceId = dataSourceId;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getDataSourceDescription() {
 		return dataSourceDescription;
 	}
@@ -224,6 +290,10 @@ public class DataSource extends AbstractGeneralQueryEntity {
 		this.dataSourceDescription = dataSourceDescription;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getConnectUrl() {
 		return connectUrl;
 	}
@@ -235,6 +305,10 @@ public class DataSource extends AbstractGeneralQueryEntity {
 		this.connectUrl = connectUrl.trim();
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getJdbcDriver() {
 		return jdbcDriver;
 	}
@@ -243,6 +317,10 @@ public class DataSource extends AbstractGeneralQueryEntity {
 		this.jdbcDriver = jdbcDriver;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getUsername() {
 		return username;
 	}
@@ -251,6 +329,10 @@ public class DataSource extends AbstractGeneralQueryEntity {
 		this.username = username;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getPassword() {
 		return password;
 	}
@@ -258,18 +340,143 @@ public class DataSource extends AbstractGeneralQueryEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+<<<<<<< HEAD
 
+=======
+	
+	/**
+	 * 获取系统数据源
+	 * @return
+	 * @throws SQLException 
+	 */
+	public static DataSource getSystemDataSource(String dataSourceId) throws Exception {
+		DataSource result = null;
+		Connection conn = null;
+		javax.sql.DataSource dataSource = null;
+		
+		try {
+			dataSource = InstanceFactory.getInstance(javax.sql.DataSource.class, dataSourceId);
+		} catch (Exception e) {
+			throw new RuntimeException("该系统数据源不存在！",e);
+		}
+		
+		try {
+			conn = dataSource.getConnection();
+		    result = new DataSource();
+		    result.setDataSourceId(dataSourceId);
+		    result.setDataSourceType(DataSourceType.SYSTEM_DATA_SOURCE);
+			result.setConnectUrl(conn.getMetaData().getURL());
+			result.setUsername(conn.getMetaData().getUserName());
+		} catch (Exception e) {
+			throw new RuntimeException("获取系统数据源失败！",e);
+		}finally{
+			if(conn != null){
+				conn.close();
+			}
+		}
+		
+		return result;
+	}
+
+
+	/**
+	 * 测试数据源连接
+	 * @return
+	 */
+	public boolean testConnection() {
+		boolean result = false;
+        Connection connection = null;
+		
+		if (dataSourceType.equals(DataSourceType.SYSTEM_DATA_SOURCE)) {
+		    javax.sql.DataSource dataSource = null;
+			try {
+				dataSource = InstanceFactory.getInstance(
+						javax.sql.DataSource.class, dataSourceId);
+			} catch (Exception e) {
+				throw new SystemDataSourceNotExistException("系统数据源不存在！",e);
+			}
+			
+		    try {
+                connection = dataSource.getConnection();
+                if (connection != null) {
+                    result = true;
+                    //系统数据源连接不能手动关闭，事务会把该连接放回到连接池中
+                    //connection.close();
+                }
+            } catch (SQLException e) {
+            	throw new RuntimeException("获取系统数据源连接失败！",e);
+            }
+		    
+		    return result;
+		}
+		
+        DbUtils.loadDriver(jdbcDriver);
+        try {
+            connection = DriverManager.getConnection(connectUrl, username, password);
+            if (connection != null) {
+            	result = true;
+            }
+        } catch (SQLException e) {
+        	throw new RuntimeException("获取自定义数据源连接失败！",e);
+        } finally {
+            DbUtils.closeQuietly(connection);
+        }
+		
+        return result;
+	}
+	
+	/**
+     * 获取数据源连接
+     * @return
+     */
+    public Connection generateConnection() {
+        Connection connection = null;
+        
+        if (dataSourceType.equals(DataSourceType.SYSTEM_DATA_SOURCE)) {
+            javax.sql.DataSource dataSource;
+			try {
+				dataSource = InstanceFactory.getInstance(
+						javax.sql.DataSource.class, dataSourceId);
+			} catch (Exception e) {
+				throw new SystemDataSourceNotExistException("系统数据源不存在！",e);
+			}
+            try {
+                connection = dataSource.getConnection();
+            } catch (SQLException e) {
+            	throw new RuntimeException("获取系统数据源连接失败！",e);
+            }
+        }else{
+            DbUtils.loadDriver(jdbcDriver);
+            try {
+                connection = DriverManager.getConnection(connectUrl, username, password);
+            } catch (SQLException e) {
+            	throw new RuntimeException("获取自定义数据源连接失败！",e);
+            }
+        }
+        
+        return connection;
+    }
+    
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+<<<<<<< HEAD
 		result = prime * result + ((connectUrl == null) ? 0 : connectUrl.hashCode());
 		result = prime * result + ((dataSourceId == null) ? 0 : dataSourceId.hashCode());
+=======
+		result = prime * result
+				+ ((connectUrl == null) ? 0 : connectUrl.hashCode());
+		result = prime * result
+				+ ((dataSourceId == null) ? 0 : dataSourceId.hashCode());
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
+<<<<<<< HEAD
 		if (this == obj) {
 			return true;
 		}
@@ -277,10 +484,20 @@ public class DataSource extends AbstractGeneralQueryEntity {
 			return false;
 		}
 		if (getClass() != obj.getClass()) {
+=======
+		if (this == obj){
+			return true;
+		}
+		if (obj == null){
+			return false;
+		}
+		if (getClass() != obj.getClass()){
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 			return false;
 		}
 		DataSource other = (DataSource) obj;
 		if (connectUrl == null) {
+<<<<<<< HEAD
 			if (other.connectUrl != null) {
 				return false;
 			}
@@ -292,6 +509,19 @@ public class DataSource extends AbstractGeneralQueryEntity {
 				return false;
 			}
 		} else if (!dataSourceId.equals(other.dataSourceId)) {
+=======
+			if (other.connectUrl != null){
+				return false;
+			}
+		} else if (!connectUrl.equals(other.connectUrl)){
+			return false;
+		}
+		if (dataSourceId == null) {
+			if (other.dataSourceId != null){
+				return false;
+			}
+		} else if (!dataSourceId.equals(other.dataSourceId)){
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 			return false;
 		}
 		return true;

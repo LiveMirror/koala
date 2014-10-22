@@ -24,6 +24,7 @@
 		<module>koala-security-controller</module>
 		<module>koala-security-web</module>
 	</modules>
+	<!--
 	<properties>
 		<db.groupId>mysql</db.groupId>
 		<db.artifactId>mysql-connector-java</db.artifactId>
@@ -38,6 +39,7 @@
 		<db.Type>MYSQL</db.Type>
 		<generateDdl>true</generateDdl>
 	</properties>
+	-->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

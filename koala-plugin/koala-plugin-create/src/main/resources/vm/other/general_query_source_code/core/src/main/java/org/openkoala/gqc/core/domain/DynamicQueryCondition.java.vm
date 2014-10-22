@@ -59,6 +59,10 @@ public class DynamicQueryCondition extends QueryCondition {
 		this.setFieldName(fieldName);
 	}
 	
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getLabel() {
 		return label;
 	}
@@ -67,6 +71,10 @@ public class DynamicQueryCondition extends QueryCondition {
 		this.label = label;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public WidgetType getWidgetType() {
 		return widgetType;
 	}
@@ -75,6 +83,10 @@ public class DynamicQueryCondition extends QueryCondition {
 		this.widgetType = widgetType;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getValue() {
 		return value;
 	}
@@ -83,6 +95,10 @@ public class DynamicQueryCondition extends QueryCondition {
 		this.value = value;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getStartValue() {
 		return startValue;
 	}
@@ -91,6 +107,10 @@ public class DynamicQueryCondition extends QueryCondition {
 		this.startValue = startValue;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getEndValue() {
 		return endValue;
 	}

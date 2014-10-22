@@ -301,7 +301,7 @@ var userManager = function() {
      * 选择员工
      */
     var selectEmployees = function() {
-        $.get(contextPath + '/pages/auth/select-employee.jsp').done(function(data) {
+        $.get(contextPath + '/pages/auth/employee-select.jsp').done(function(data) {
             var dialog = $(data);
             //显示对话框数据
             dialog.modal({

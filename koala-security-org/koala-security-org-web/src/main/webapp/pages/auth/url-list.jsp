@@ -284,7 +284,7 @@
         	},
 			"assignUrl" : function(event, data){
 				var grid = $(this);
-        		$.get(contextPath + '/pages/auth/select-url.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/url-select.jsp').done(function(data){
         			var dialog = $(data);
 
                     var formId = dialog.find("#selectUrlFrom");

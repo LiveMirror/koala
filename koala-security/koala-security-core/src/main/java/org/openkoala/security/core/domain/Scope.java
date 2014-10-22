@@ -15,43 +15,44 @@ import javax.persistence.*;
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
 public abstract class Scope extends SecurityAbstractEntity {
 
-	private static final long serialVersionUID = -7219997981491797461L;
+    private static final long serialVersionUID = -7219997981491797461L;
 
     @Column(name = "NAME")
     private String name;
 
-	@Transient
-	public abstract Scope getParent();
+    @Transient
+    public abstract Scope getParent();
 
-	@Transient
-	public abstract Set<? extends Scope> getChildren();
+    @Transient
+    public abstract Set<? extends Scope> getChildren();
 
-	protected Scope() {}
+    protected Scope() {
+    }
 
     public Scope(String name) {
         this.name = name;
     }
 
     public static <T extends Scope> T getBy(Long scopeId) {
-		return (T)Scope.get(Scope.class, scopeId);
-	}
-	
-	public boolean contains(Scope scope) {
+        return (T) Scope.get(Scope.class, scopeId);
+    }
 
-		if (scope == null) {
-			return false;
-		}
+    public boolean contains(Scope scope) {
 
-		if (equals(scope)) {
-			return true;
-		}
+        if (scope == null) {
+            return false;
+        }
 
-		if (getChildren().contains(scope)) {
-			return true;
-		}
+        if (equals(scope)) {
+            return true;
+        }
 
-		return contains(scope.getParent());
-	}
+        if (getChildren().contains(scope)) {
+            return true;
+        }
+
+        return contains(scope.getParent());
+    }
 
     public String getName() {
         return name;

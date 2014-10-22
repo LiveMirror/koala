@@ -41,8 +41,14 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
     private Integer fieldType;
 	
 	@Transient
+<<<<<<< HEAD
 	private DataSource dataSource;
     
+=======
+    private DataSource dataSource;
+    
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getFieldName() {
 		return fieldName;
 	}
@@ -51,6 +57,10 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 		this.fieldName = fieldName;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public QueryOperation getQueryOperation() {
 		return queryOperation;
 	}
@@ -59,7 +69,12 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 		this.queryOperation = queryOperation;
 	}
 	
+<<<<<<< HEAD
 	public Integer getFieldType() {
+=======
+	
+    public Integer getFieldType() {
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
         return fieldType;
     }
 
@@ -67,6 +82,10 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
         this.fieldType = fieldType;
     }
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public DataSource getDataSource() {
 		return dataSource;
 	}

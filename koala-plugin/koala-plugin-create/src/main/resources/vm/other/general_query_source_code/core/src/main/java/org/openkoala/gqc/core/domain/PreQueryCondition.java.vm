@@ -24,19 +24,31 @@ public class PreQueryCondition extends QueryCondition {
 	/**
 	 * 查询开始值，用于区间查询
 	 */
+<<<<<<< HEAD
 	@Column(name = "START_VALUE")
+=======
+	@Column(name = "VISIBLE")
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	private String startValue;
 	
 	/**
 	 * 查询值结束值，用于区间查询
 	 */
+<<<<<<< HEAD
 	@Column(name = "END_VALUE")
+=======
+	@Column(name = "START_VALUE")
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	private String endValue;
 
 	/**
 	 * 该条件是否显示在查询页面上
 	 */
+<<<<<<< HEAD
 	@Column(name = "VISIBLE")
+=======
+	@Column(name = "END_VALUE")
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	private Boolean visible = false;
 	
 	public PreQueryCondition() {
@@ -47,6 +59,10 @@ public class PreQueryCondition extends QueryCondition {
 		this.setFieldName(fieldName);
 	}
 	
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getValue() {
 		return value;
 	}
@@ -55,6 +71,10 @@ public class PreQueryCondition extends QueryCondition {
 		this.value = value;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public Boolean getVisible() {
 		return visible;
 	}
@@ -63,6 +83,10 @@ public class PreQueryCondition extends QueryCondition {
 		this.visible = visible;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getStartValue() {
 		return startValue;
 	}
@@ -71,6 +95,10 @@ public class PreQueryCondition extends QueryCondition {
 		this.startValue = startValue;
 	}
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getEndValue() {
 		return endValue;
 	}
