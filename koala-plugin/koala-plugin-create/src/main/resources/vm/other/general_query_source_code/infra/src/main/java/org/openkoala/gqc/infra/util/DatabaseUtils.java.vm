@@ -41,6 +41,7 @@ public class DatabaseUtils {
 				result.add(rs.getString("TABLE_NAME"));
 			}
 		} catch (Exception e) {
+			throw new RuntimeException("查询表异常");
 		} finally {
 			try {
 				if(rs != null){
@@ -53,6 +54,7 @@ public class DatabaseUtils {
 					conn.close();
 				}
 			} catch (SQLException e) {
+				throw new RuntimeException("查询表异常");
 			}
 		}
 		return result;

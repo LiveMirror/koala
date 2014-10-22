@@ -1,8 +1,8 @@
 $(function() {
-//	var id = window.location.search.split('=')[1];
 	var id = $('#id').val();
 	$.get(contextPath + '/preview/' + id + '.koala').done(function(data) {
-		init(data.generalQuery);
+		init(data);
+		
 	});
 	var init = function(data) {
 		var previewQuery = $('#previewQuery');
@@ -29,10 +29,10 @@ $(function() {
 		var flag = false;
 		for (var i = 0, j = dynamicQueryConditions.length; i < j; i++) {
 			var dynamicQueryCondition = dynamicQueryConditions[i];
-			trHtml.push('<tr data-role="dynamicQueryCondition" class="dynamicQueryCondition"><input data-role="widgetType" type="hidden" value="' + dynamicQueryCondition.widgetType + '"/>');
+			trHtml.push('<tr data-role="dynamicQueryCondition" class="dynamicQueryCondition"><input data-role="widgetType" type="hidden" value="' + dynamicQueryCondition.widgetTypeDTO + '"/>');
 			trHtml.push('<td class="column-name">' + dynamicQueryCondition.label + '<input data-role="fieldName" type="hidden" value="' + dynamicQueryCondition.fieldName + '"></td>')
 			trHtml.push('<td class="query-condition">' + showQueryCondition(dynamicQueryCondition.queryOperation) + '<input data-role="queryOperation" type="hidden" value="' + dynamicQueryCondition.queryOperation + '"/></td>')
-			if (dynamicQueryCondition.widgetType == 'TEXT') {
+			if (dynamicQueryCondition.widgetTypeDTO == 'TEXT') {
 				if (dynamicQueryCondition.queryOperation == 'BETWEEN') {
 					flag = true;
 					trHtml.push('<td class="query-value"><input data-role="startValue" class="form-control" style="display:inline;"/><span>&nbsp;&nbsp;AND&nbsp;&nbsp;<span><input data-role="endValue" class="form-control" required="true" style="display:inline;"/></td>');

@@ -71,8 +71,8 @@
         </table>
        
         <div class="btn-group buttons pull-right">
-            <button id="addCompany"type="button" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span>&nbsp;创建分公司</button>
-            <button id="addDepartment"type="button" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span>&nbsp;创建下级部门</button>
+           	<button id="addCompany"type="button" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span>&nbsp;创建分公司</button>
+           	<button id="addDepartment"type="button" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span>&nbsp;创建下级部门</button>
             <button id="employeeListBtn" class="btn btn-info" type="button"><span class="glyphicon glyphicon-user"></span>&nbsp;员工列表</button>   
             <button id="updateDepartment" type="button" class="btn btn-success"><span class="glyphicon glyphicon-wrench"></span>&nbsp;修改</button>
             <button id="updateCompany" type="button" class="btn btn-success"><span class="glyphicon glyphicon-wrench"></span>&nbsp;修改</button>

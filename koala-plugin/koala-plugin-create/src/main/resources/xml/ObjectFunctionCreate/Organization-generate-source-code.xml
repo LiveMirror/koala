@@ -7,7 +7,7 @@
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/organization_source_code/controller</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
@@ -17,27 +17,27 @@
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/organization_source_code/webxml</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
 	</VelocityDirObject>	
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/organization_source_code/application</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-application/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.applicationModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/organization_source_code/facade</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.facadeModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
-		<property name="vmDir">vm/other/organization_source_code/facadeImpl</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade-impl/</property>
+		<property name="vmDir">vm/other/organization_source_code/impl</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.facadeImplModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/organization_source_code/core</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-core/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	

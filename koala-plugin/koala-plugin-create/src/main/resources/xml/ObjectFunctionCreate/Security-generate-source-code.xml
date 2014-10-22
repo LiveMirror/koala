@@ -6,7 +6,7 @@
 
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/security/application</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-application/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.applicationModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<CopyFiles>
@@ -16,34 +16,34 @@
 	
 	<VelocityDirObject>	
 		<property name="vmDir">vm/other/security/core</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-core/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/</property>
 	</VelocityDirObject>
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/security/facade</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.facadeModule.moduleName}/</property>
 	</VelocityDirObject>
 	<VelocityDirObject>
-		<property name="vmDir">vm/other/security/facadeImpl</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade-impl/</property>
+		<property name="vmDir">vm/other/security/impl</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.facadeImplModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/security/infra</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-infra/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.infraModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/security/web/controller</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/security/web/shiro</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
 	</VelocityDirObject>
 	<VelocityDirObject>	
 		<property name="vmDir">vm/other/security/web/taglibs</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
 	</VelocityDirObject>
 
 

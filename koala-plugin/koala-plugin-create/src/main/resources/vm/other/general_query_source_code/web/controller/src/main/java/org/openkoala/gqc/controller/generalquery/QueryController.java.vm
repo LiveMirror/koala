@@ -1,19 +1,13 @@
 package org.openkoala.gqc.controller.generalquery;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.dayatang.utils.Page;
-import org.openkoala.gqc.core.domain.DynamicQueryCondition;
 import org.openkoala.gqc.facade.GqcFacade;
-import org.openkoala.gqc.facade.assembler.GqcAssembler;
 import org.openkoala.gqc.facade.dto.GeneralQueryDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,19 +24,19 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class QueryController {
-	
+
+	/**
+	 * 查询通道应用层接口实例
+	 */
+	@Inject
+	private GqcFacade gqcFacade;
+
 	@RequestMapping("/previewTemplate/{id}")
 	public ModelAndView previewTemplate(@PathVariable Long id, Map<String, Object> map) {
 		map.put("id", id);
 		return new ModelAndView("gqc/previewTemplate");
 	}
 
-	/**
-	 * 查询通道应用层接口实例
-	 */
-    @Inject
-	private GqcFacade gqcFacade;
-	
 	/**
 	 * 生成查询页面
 	 * 
@@ -52,12 +46,12 @@ public class QueryController {
 	 */
 	@RequestMapping("/query/{id}")
 	public String queryPage(@PathVariable Long id, ModelMap modelMap) {
-		GeneralQueryDTO generalQuery = gqcFacade.getById(id);
+		GeneralQueryDTO generalQuery = gqcFacade.getQuerier(id);
 		modelMap.addAttribute("gq", generalQuery);
 		modelMap.addAttribute("gqId", id);
 		return "query";
 	}
-	
+
 	/**
 	 * 生成查询页面
 	 * 
@@ -65,12 +59,13 @@ public class QueryController {
 	 * @param modelMap
 	 * @return
 	 */
-    @ResponseBody
+	@ResponseBody
 	@RequestMapping("/preview/{id}")
-	public Map<String, Object> preview(@PathVariable Long id) {
-    	Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("generalQuery", gqcFacade.getById(id));
-		return dataMap;
+	public GeneralQueryDTO preview(@PathVariable Long id) {
+		return gqcFacade.getQuerier(id);
+/*		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("generalQuery", gqcFacade.getQuerier(id));
+		return dataMap;*/
 	}
 
 	/**
@@ -85,46 +80,9 @@ public class QueryController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping("/search/{id}")
-	public Page search(@PathVariable Long id, @RequestParam int page,
-			@RequestParam int pagesize, HttpServletRequest request) {
-		GeneralQueryDTO generalQuery = gqcFacade.getById(id);
+	public Page<Map<String, Object>> search(@PathVariable Long id, @RequestParam int page, @RequestParam int pagesize, HttpServletRequest request) {
 		Map<String, Object[]> params = request.getParameterMap();
-		String startValueTag = "Start@";
-		String endValueTag = "End@";
-		
-		Set<Entry<String,Object[]>> keyValues = params.entrySet();
-		for(Entry<String,Object[]> keyValue: keyValues){
-			String key = keyValue.getKey();
-			if (!"page".equals(key) && !"pagesize".equals(key)) {
-				DynamicQueryCondition dqc = null;
-				if (key.endsWith(startValueTag)) {
-					String fieldName = key.replace(startValueTag, "");
-					dqc = GqcAssembler.getEntity(generalQuery).getDynamicQueryConditionByFieldName(fieldName);
-					if (dqc != null) {
-						dqc.setStartValue((String) keyValue.getValue()[0]);
-					}
-					continue;
-				}
-				
-				if (key.endsWith(endValueTag)) {
-					String fieldName = key.replace(endValueTag, "");
-					dqc = GqcAssembler.getEntity(generalQuery).getDynamicQueryConditionByFieldName(fieldName);
-					if (dqc != null) {
-						dqc.setEndValue((String) keyValue.getValue()[0]);
-					}
-					continue;
-				}
-				
-				dqc = GqcAssembler.getEntity(generalQuery).getDynamicQueryConditionByFieldName(key);
-				if (dqc != null) {
-					dqc.setValue((String) keyValue.getValue()[0]);
-				}
-			}
-		}
-		
-		Page<Map<String, Object>> data = gqcFacade.pagingQuery(generalQuery, page, pagesize);
-
-		return data;
+		return gqcFacade.queryWithQuerier(id, params, page, pagesize);
 	}
 
 }

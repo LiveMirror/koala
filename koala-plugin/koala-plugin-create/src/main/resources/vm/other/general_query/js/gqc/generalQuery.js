@@ -36,7 +36,7 @@ var generalQuery = function(){
 	var delDataResource = function(ids, grid){
 		dataGrid = grid;
 		$.post(baseUrl + 'delete.koala', {ids:ids}).done(function(data){
-			 if(data.result == 'success'){
+			 if(data.success){
 				dataGrid.message({
 					 type: 'success',
 					 content: '删除成功'
@@ -119,7 +119,7 @@ var generalQuery = function(){
 	 */
 	var fillSelectData = function(id){
 		$.get(baseUrl + 'findAllDataSource.koala' + "?" + new Date().getTime()).done(function(data){
-			var dataSourceList = data.dataSourceList;
+			var dataSourceList = data;
 			var contents = new Array();
 			for(var i=0, j=dataSourceList.length; i<j; i++){
 				var dataSource = dataSourceList[i];
@@ -136,12 +136,12 @@ var generalQuery = function(){
 						if(data.result){
 							dialog.message({
 								type: 'error',
-								content: data.result
+								content: data.errorMessage
 							});
 							$(this).find('[data-toggle="item"]').text('请选择');
 							return;
 						}
-						var tableList = data.tableList;
+						var tableList = data;
 						var contents = new Array();
 						for(var i=0, j=tableList.length; i<j; i++){
 							contents.push({value: tableList[i], title: tableList[i]});
@@ -163,7 +163,7 @@ var generalQuery = function(){
 				var url = baseUrl + 'findAllColumn.koala?id='+id+'&tableName='+tableName;
 				$.get(url).done(function(data){
 					clearSelectedItem();
-					fillLeftTable(data.tableMap, data.tableMap);
+					fillLeftTable(data, data);
 					dialog.trigger('tableSelectComplete.koala');
 				});
 		});
@@ -174,8 +174,8 @@ var generalQuery = function(){
 	var setData = function(id){
 		$.get(baseUrl + 'getById.koala?id='+id)
 			.done(function(data){
-				generalQueryObject = data.generalQuery;
-				dataSourceSelect.setValue(generalQueryObject.dataSource.id).find('button').off().addClass('disabled');
+				generalQueryObject = data;
+				dataSourceSelect.setValue(generalQueryObject.dataSourceDTO.id).find('button').off().addClass('disabled');
 				dialog.on('dataSourceSelectComplete.koala',  function(){
 					tableSelect.setValue(generalQueryObject.tableName).find('button').off().addClass('disabled');
 					var queryConditionColumns = data.queryConditionColumns;
@@ -338,7 +338,7 @@ var generalQuery = function(){
 				'<td class="query-operation"><div class="btn-group select" data-role="queryOperation"></div></td><td class="delete-btn"><a data-role="delete" data-value="'+fieldName+'"><span class="glyphicon glyphicon-remove">删除</span></a></td></tr>');
 			var widgetType = row.find('[data-role="widgetType"]');
 			fillWidgetTypeSelect(widgetType);
-			widgetType.setValue(dynamicQueryCondition.widgetType);
+			widgetType.setValue(dynamicQueryCondition.widgetTypeDTO);
 			var queryOperation = row.find('[data-role="queryOperation"]');
 			fillQueryOperationSelect(queryOperation);
 			queryOperation.setValue(dynamicQueryCondition.queryOperation);
@@ -426,16 +426,16 @@ var generalQuery = function(){
 		if(id){
 			url =  baseUrl + 'update.koala';
 			params.id = id;
-			params['dataSource.dataSourceId'] =  generalQueryObject.dataSource.dataSourceId;
+			params['dataSourceDTO.dataSourceId'] =  generalQueryObject.dataSourceDTO.dataSourceId;
 			params.version = generalQueryObject.version;
 		}
 		$.post(url, params).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dialog.trigger('complete');
 			}else{
 				dialog.find('.modal-content').message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});
 			}
 			dialog.find('#generalQuerySave').removeAttr('disabled');
@@ -499,7 +499,7 @@ var generalQuery = function(){
 	};
 	var getAllData = function(){
 		var data = {};
-		data['dataSource.id'] = dataSourceSelect.getValue();
+		data['dataSourceDTO.id'] = dataSourceSelect.getValue();
 		data.tableName =  tableSelect.getValue();
 		data.queryName = dialog.find('#generalQuery_queryName').val();
 		data.description = dialog.find('#generalQuery_description').val();
@@ -526,7 +526,7 @@ var generalQuery = function(){
 			data['dynamicQueryConditions['+index+'].fieldType'] = $tr.find('input[data-role="fieldType"]').val();
 			data['dynamicQueryConditions['+index+'].label'] = $tr.find('input[data-role="label"]').val();
 			data['dynamicQueryConditions['+index+'].queryOperation'] = $tr.find('[data-role="queryOperation"]').getValue();
-			data['dynamicQueryConditions['+index+'].widgetType'] = $tr.find('[data-role="widgetType"]').getValue();
+			data['dynamicQueryConditions['+index+'].widgetTypeDTO'] = $tr.find('[data-role="widgetType"]').getValue();
 		});
 		showColumnRightTable.find('tr').each(function(index,tr){
 			var $tr = $(tr);
@@ -537,13 +537,13 @@ var generalQuery = function(){
 	};
 	var preview = function(id, dataSourceId){
 		$.get(contextPath + "/dataSource/checkDataSourceById.koala?id=" + dataSourceId).done(function(data){
-			if (data.result == "该数据源可用") {
+			if (data.success) {
 				var previewWindow = window.open(contextPath + '/previewTemplate/'+id+'.koala', '预览');
 				previewWindow.resizeTo(previewWindow.screen.width, previewWindow.screen.height);
 			} else {
 				$('#generalQueryGrid').message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});
 			}
 		});

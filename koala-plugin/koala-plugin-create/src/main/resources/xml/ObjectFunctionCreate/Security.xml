@@ -15,7 +15,7 @@
 	</CopyFiles>
 	
 	<XmlAdd>
-		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.appName}-core/pom.xml</property>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/pom.xml</property>
 		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
 		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
 		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='com.google.guava' and xmlns:artifactId='shiro-core']]]></property>
@@ -38,7 +38,7 @@
 	</XmlAdd>
 	
 	<XmlAdd>
-		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.appName}-infra/pom.xml</property>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.infraModule.moduleName}/pom.xml</property>
 		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
 		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
 		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='org.apache.shiro' and xmlns:artifactId='shiro-core']]]></property>

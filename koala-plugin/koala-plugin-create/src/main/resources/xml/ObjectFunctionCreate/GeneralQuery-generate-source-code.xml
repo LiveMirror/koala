@@ -6,34 +6,40 @@
 
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/general_query_source_code/application</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-application/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.applicationModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/general_query_source_code/core</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-core/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/</property>
 	</VelocityDirObject>
+	
+	<CopyFiles>
+		<property name="srcDir">vm/other/general_query_source_code/conf</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.appName}-conf/</property>
+	</CopyFiles>
+	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/general_query_source_code/facade</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.facadeModule.moduleName}/</property>
 	</VelocityDirObject>
 	<VelocityDirObject>
-		<property name="vmDir">vm/other/general_query_source_code/facadeImpl</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-facade-impl/</property>
+		<property name="vmDir">vm/other/general_query_source_code/impl</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.facadeImplModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/general_query_source_code/infra</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-infra/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.infraModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/general_query_source_code/web/controller</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.appName}-web/</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
 	</VelocityDirObject>
 	
 	<XmlAdd>
-		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.appName}-core/pom.xml</property>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/pom.xml</property>
 		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
 		<property name="parentSearch"><![CDATA[/xmlns:project/xmlns:dependencies]]></property>
 		<property name="selfSearch"><![CDATA[/xmlns:project/xmlns:dependencies/xmlns:dependency[xmlns:groupId='org.openkoala' and xmlns:artifactId='koala-core']]]></property>

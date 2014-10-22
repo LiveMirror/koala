@@ -18,12 +18,20 @@ public class FieldDetail implements ValueObject, Comparable<FieldDetail> {
 	/**
 	 * 字段名称
 	 */
+<<<<<<< HEAD
+	
+=======
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	@Column(name = "FIELD_NAME")
 	private String fieldName;
 	
 	/**
 	 * 显示名称
 	 */
+<<<<<<< HEAD
+	
+=======
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	@Column(name = "LABEL")
 	private String label;
 
@@ -35,7 +43,10 @@ public class FieldDetail implements ValueObject, Comparable<FieldDetail> {
 		this.fieldName = fieldName;
 	}
 	
+<<<<<<< HEAD
+=======
 	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getFieldName() {
 		return fieldName;
 	}
@@ -44,7 +55,10 @@ public class FieldDetail implements ValueObject, Comparable<FieldDetail> {
 		this.fieldName = fieldName;
 	}
 
+<<<<<<< HEAD
+=======
 	
+>>>>>>> c338e9fec5949e21535b31a2297a0dc0c79fb179
 	public String getLabel() {
 		return label;
 	}

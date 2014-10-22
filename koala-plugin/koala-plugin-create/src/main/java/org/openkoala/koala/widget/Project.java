@@ -25,24 +25,24 @@ public class Project implements Serializable {
 	private String version = "1.0-SNAPSHOT";
 
 	private List<Module> module;
-	
+
 	private Example example;
 	
-	private static final String SECURITY_ORG_PACKAGE="org.openkoala.security.org.core.domain";
+	private static final String SECURITY_ORG_PACKAGE = "org.openkoala.security.org.core.domain";
 
-	private static final String EXAMPLE_PACKAGE="org.openkoala.example.domain";
-	
-	private static final String BUSINESS_LOG_PACKAGE="org.openkoala.businesslog.model";
-	
-	private static final String ORGANISATION_PACKAGE= "org.openkoala.organisation.domain";
-	
-	private static final String GENERATY_QUERY_PACKAGE= "org.openkoala.gqc.core.domain";
-	
-	private static final String SECURITY_PACKAGE= "org.openkoala.security.core.domain";
-	
+	private static final String EXAMPLE_PACKAGE = "org.openkoala.example.domain";
+
+	private static final String BUSINESS_LOG_PACKAGE = "org.openkoala.businesslog.model";
+
+	private static final String ORGANISATION_PACKAGE = "org.openkoala.organisation.domain";
+
+	private static final String GENERATY_QUERY_PACKAGE = "org.openkoala.gqc.core.domain";
+
+	private static final String SECURITY_PACKAGE = "org.openkoala.security.core.domain";
+
 	private static final String MONITOR_DOMAIN_PCAKGE = "org.openkoala.koala.monitor.domain";
-	
-	private static final String MONITOR_CONFIG_PCAKAGE= "org.openkoala.koala.config.domain";
+
+	private static final String MONITOR_CONFIG_PCAKAGE = "org.openkoala.koala.config.domain";
 
 	/**
 	 * //数据库实现协议，支持JPA以及Mybatis两种协议 默认为JPA实现
@@ -207,7 +207,8 @@ public class Project implements Serializable {
 		bizModel.setModuleType("bizModel");
 		bizModel.setModuleName("core");
 		bizModel.setProjectName(appName);
-		bizModel.setBasePackage(getGroupId() + "." + getPackageName() + ".core.domain");
+		bizModel.setBasePackage(getGroupId() + "." + getPackageName()
+				+ ".core.domain");
 		getModule().add(bizModel);
 
 		// 初始化一个接口层
@@ -215,45 +216,33 @@ public class Project implements Serializable {
 		application.setModuleType("applicationInterface");
 		application.setModuleName("application");
 		application.setProjectName(appName);
-		application.setBasePackage(getGroupId() + "."
-				+ getPackageName() + ".application"+".impl");
+		application.setBasePackage(getGroupId() + "." + getPackageName()
+				+ ".application" + ".impl");
 		application.getDependencies().add("core");
 		application.getDependencies().add("infra");
 		getModule().add(application);
-		
+
 		// 初始化一个门面层
-		Module  facade= new Module();
+		Module facade = new Module();
 		facade.setModuleType("facade");
 		facade.setModuleName("facade");
 		facade.setProjectName(appName);
-		facade.setBasePackage(getGroupId() + "."
-				+ getPackageName() + ".facade.dto");
+		facade.setBasePackage(getGroupId() + "." + getPackageName()
+				+ ".facade.dto");
 		facade.getDependencies().add("core");
 		facade.getDependencies().add("application");
 		getModule().add(facade);
 		// 初始化一个门面层的实现
-				Module  facadeImpl= new Module();
-				facadeImpl.setModuleType("facadeImpl");
-				facadeImpl.setModuleName("facade-impl");
-				facadeImpl.setProjectName(appName);
-				facadeImpl.setBasePackage(getGroupId() + "."
-						+ getPackageName() + ".facade.impl");
-				facadeImpl.getDependencies().add("application");
-				facadeImpl.getDependencies().add("core");
-				facadeImpl.getDependencies().add("facade");
-				getModule().add(facadeImpl);				
-		// 初始化一个实现层
-		/*Module applicationImpl = new Module();
-		applicationImpl.setModuleName("applicationImpl");
-		applicationImpl.setProjectName(appName);
-		applicationImpl.setModuleType("applicationImpl");
-		applicationImpl.setBasePackage(getGroupId() + "." + getPackageName()
-				+ ".application.impl");
-		applicationImpl.getDependencies().add("application");
-		applicationImpl.getDependencies().add("core");
-		applicationImpl.getDependencies().add("infra");
-		getModule().add(applicationImpl);*/
-
+		Module facadeImpl = new Module();
+		facadeImpl.setModuleType("facadeImpl");
+		facadeImpl.setModuleName("facade-impl");
+		facadeImpl.setProjectName(appName);
+		facadeImpl.setBasePackage(getGroupId() + "." + getPackageName()
+				+ ".facade.impl");
+		facadeImpl.getDependencies().add("application");
+		facadeImpl.getDependencies().add("core");
+		facadeImpl.getDependencies().add("facade");
+		getModule().add(facadeImpl);
 		// 初始化一个infra层
 		Module infra = new Module();
 		infra.setModuleType("infra");
@@ -266,7 +255,8 @@ public class Project implements Serializable {
 		Module war = new Module();
 		war.setModuleName("web");
 		war.setProjectName(appName);
-		war.setBasePackage(getGroupId() + "." + getPackageName() + ".web"+".controller");
+		war.setBasePackage(getGroupId() + "." + getPackageName() + ".web"
+				+ ".controller");
 		war.setModuleType("war");
 		// war.getFunctions().add("");
 		war.getDependencies().add("facade");
@@ -295,15 +285,17 @@ public class Project implements Serializable {
 				if (mod.getSecurity() != null) {
 					packages.add(SECURITY_PACKAGE);
 				}
-				
+
 				if (mod.getMonitor() != null
 						&& "all".equals(mod.getMonitor().getInstallType())) {
 					packages.add(MONITOR_DOMAIN_PCAKGE);
 					packages.add(MONITOR_CONFIG_PCAKAGE);
 				}
+				
 				if (mod.getGeneralQuery() != null) {
 					packages.add(GENERATY_QUERY_PACKAGE);
 				}
+				
 				if (mod.getOrganization() != null) {
 					packages.add(ORGANISATION_PACKAGE);
 				}
@@ -311,20 +303,82 @@ public class Project implements Serializable {
 				if (mod.getBusinessLog() != null) {
 					packages.add(BUSINESS_LOG_PACKAGE);
 				}
-				
+
 				if (mod.getSecurityOrg() != null) {
 					packages.add(SECURITY_PACKAGE);
 					packages.add(ORGANISATION_PACKAGE);
 					packages.add(SECURITY_ORG_PACKAGE);
-					
 				}
-				
 			}
 		}
-		if(this.getExample() != null){
+		
+		if (this.getExample() != null) {
 			packages.add(EXAMPLE_PACKAGE);
 		}
 		return packages;
 	}
 
+	public Module getApplicationModule() {
+		for (Module each : getModule()) {
+			if ("applicationInterface".equals(each.getModuleType())) {
+				return each;
+			}
+		}
+		return null;
+	}
+	
+	public Module getConfModule() {
+		for (Module each : getModule()) {
+			if ("conf".equals(each.getModuleType())) {
+				return each;
+			}
+		}
+		return null;
+	}
+	
+	public Module getCoreModule() {
+		for (Module each : getModule()) {
+			if ("bizModel".equals(each.getModuleType())) {
+				return each;
+			}
+		}
+		return null;
+	}
+	
+	public Module getFacadeModule() {
+		for (Module each : getModule()) {
+			if ("facade".equals(each.getModuleType())) {
+				return each;
+			}
+		}
+		return null;
+	}
+	
+	public Module getFacadeImplModule() {
+		for (Module each : getModule()) {
+			if ("facadeImpl".equals(each.getModuleType())) {
+				return each;
+			}
+		}
+		return null;
+	}
+	
+	public Module getInfraModule() {
+		for (Module each : getModule()) {
+			if ("infra".equals(each.getModuleType())) {
+				return each;
+			}
+		}
+		return null;
+	}
+	
+	public Module getWebModule() {
+		for (Module each : getModule()) {
+			if ("war".equals(each.getModuleType())) {
+				return each;
+			}
+		}
+		return null;
+	}
+	
 }

@@ -1,13 +1,11 @@
 package org.openkoala.gqc.facade;
 
 import java.util.Map;
-import java.util.Set;
 
 import org.dayatang.utils.Page;
-import org.openkoala.gqc.core.domain.GeneralQuery;
-import org.openkoala.gqc.core.domain.GeneralQueryEntity;
-import org.openkoala.gqc.facade.dto.GeneralQueryDTO;
 
+import org.openkoala.gqc.facade.dto.GeneralQueryDTO;
+import org.openkoala.koala.commons.InvokeResult;
 /**
  * 
  * 通用查询器应用层接口，提供增删改查功能
@@ -16,65 +14,67 @@ import org.openkoala.gqc.facade.dto.GeneralQueryDTO;
 public interface GqcFacade {
 
 	/**
-	 * 获取通用查询实例
-	 * @param clazz
+	 * 获取Querier实例
+	 * @param GeneralQueryDTO
 	 * @param id 通用查询主键
 	 * @return
 	 */
-	<T extends GeneralQueryEntity> T getEntity(Class<T> clazz, Long id);
+	GeneralQueryDTO getQuerier(Long id);
+
 	
 	/**
-	 * 保存用查询实例
-	 * @param entity
+	 * 获取Querier实例
+	 * @param GeneralQueryDTO
+	 * @param id 通用查询主键
+	 * @return
 	 */
-	void saveEntity(GeneralQueryEntity entity);
+	Map<String, Object> getForDisplay(Long id);	
 	
 	/**
-	 * 更新用查询实例
-	 * @param entity
+	 * 创建Querier实例
+	 * @param GeneralQueryDTO
 	 */
-	void updateEntity(GeneralQueryEntity entity);
+	InvokeResult createQuerier(GeneralQueryDTO generalQueryDTO);
+	
+	/**
+	 * 更新Querier实例
+	 * @param GeneralQueryDTO
+	 */
+	InvokeResult updateQuerier(GeneralQueryDTO GeneralQueryDTO);
 
 	/**
-	 * 删除用查询实例
-	 * @param entity
+	 * 根据GeneralQueryDTO对象，删除Querier实例
+	 * @param GeneralQueryDTO.
 	 */
-	void removeEntity(GeneralQueryEntity entity);
-	
-	
-	void removeEntity(String ids);
+	InvokeResult removeQuerier(Long id);
 	
 	/**
-	 * 批量删除用查询实例
-	 * @param entities
+	 * 根据id，删除Querier实例
+	 * @param GeneralQueryDTO.
 	 */
-	<T extends GeneralQueryEntity> void removeEntities(Set<T> entities);
+	InvokeResult removeQueriers(Long[] ids);
+	
 	
 	/**
-	 * 分页查询用查询实例
+	 * 分页查询Querier实例
 	 * @param currentPage
 	 * @param pagesize
 	 * @return
 	 */
-	Page<GeneralQuery> pagingQueryGeneralQueries(int currentPage, int pagesize);
+	Page<GeneralQueryDTO> getQueriers(int currentPage, int pagesize);
 	
 	/**
-	 * 获取通用查询实例
-	 * @param id 主键
-	 * @return
-	 */
-	GeneralQueryDTO getById(Long id);
-	
-	/**
-	 * 分页查询用查询实例
-	 * @param queryName 查询器名称
+	 * 分页查询Querier实例
 	 * @param currentPage
 	 * @param pagesize
 	 * @return
 	 */
-	Page<GeneralQuery> pagingQueryGeneralQueriesByQueryName(String queryName, int currentPage, int pagesize);
+	Page<GeneralQueryDTO> getQueriersByName(String queryName, int currentPage, int pagesize);
 	
-	Page<Map<String, Object>> pagingQuery(GeneralQueryDTO generalQuery, int currentPage, int pagesize);
 	
-	void saveGeneralQuery(GeneralQueryDTO generalQuery);
+	/**
+	 * 通过Querier进行具体的查询
+	 */
+	Page<Map<String, Object>> queryWithQuerier(long querierID, Map<String, Object[]> params, int currentPage, int pagesize);
+
 }
