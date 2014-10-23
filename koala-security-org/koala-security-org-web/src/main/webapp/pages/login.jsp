@@ -141,7 +141,7 @@ body {
 			<FORM id="loginFormId" class="form-horizontal" action="login" method="post">
 				<div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                    <input type="text" class="form-control" placeholder="用户名"  name="username" id="j_username" value="zhangsan">
+                    <input type="text" class="form-control" placeholder="用户名"  name="username" id="j_username" value="koala">
 				</div>
                 <div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
