@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<systemInit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/systemInit systemInit.xsd">
+<systemInit xmlns="http://www.example.org/systemInit" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/systemInit systemInit.xsd ">
 
 	<user name="考拉" username="koala" description="" createOwner="system" />
 	<role name="超级管理员" description="拥有系统所有权限" />
