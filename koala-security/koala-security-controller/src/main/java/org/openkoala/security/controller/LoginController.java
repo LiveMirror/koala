@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 登陆用户控制器
+ * 登陆用户控制器。
  * 
- * @author luzhao
+ * @author lucas
  * 
  */
 @Controller

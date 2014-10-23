@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 权限控制器
+ * 权限控制器。
+ * 分页都将采用POST请求方式，因GET请求搜索时携带中文会导致乱码。
  * 
- * @author luzhao
- * 
+ * @author lucas
  */
 @Controller
 @RequestMapping("/auth/permission")
@@ -77,7 +77,7 @@ public class PermissionController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
+	@RequestMapping(value = "/pagingQuery", method = RequestMethod.POST)
 	public Page<PermissionDTO> pagingQuery(int page, int pagesize, PermissionDTO queryPermissionCondition) {
 		return securityAccessFacade.pagingQueryPermissions(page, pagesize,queryPermissionCondition);
 	}

@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * URL访问资源控制器。
+ * 分页都将采用POST请求方式，因GET请求搜索时携带中文会导致乱码。
  *
- * @author luzhao
+ * @author lucas
  */
 @Controller
 @RequestMapping("/auth/url")
@@ -67,7 +68,7 @@ public class UrlAccessController {
      * 根据条件分页查询URL访问权限资源。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQuery", method = RequestMethod.POST)
     public Page<UrlAccessResourceDTO> pagingQuery(int page, int pagesize, UrlAccessResourceDTO queryUrlAccessResourceCondition) {
         return securityAccessFacade.pagingQueryUrlAccessResources(page, pagesize, queryUrlAccessResourceCondition);
     }
@@ -96,7 +97,7 @@ public class UrlAccessController {
      * 通过URL访问权限资源分页查询已经授权的权限。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryGrantPermissionsByUrlAccessResourceId", method = RequestMethod.POST)
     public Page<PermissionDTO> pagingQueryGrantPermissionsByUrlAccessResourceId(int page, int pagesize,
                                                                                 Long urlAccessResourceId) {
         return securityAccessFacade.pagingQueryGrantPermissionsByUrlAccessResourceId(page,
@@ -107,7 +108,7 @@ public class UrlAccessController {
      * 通过URL访问权限资源分页查询还未授权的权限。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryNotGrantPermissionsByUrlAccessResourceId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryNotGrantPermissionsByUrlAccessResourceId", method = RequestMethod.POST)
     public Page<PermissionDTO> pagingQueryNotGrantPermissionsByUrlAccessResourceId(int page, int pagesize, Long urlAccessResourceId, PermissionDTO queryPermissionCondition) {
         return securityAccessFacade.pagingQueryNotGrantPermissionsByUrlAccessResourceId(page, pagesize, urlAccessResourceId, queryPermissionCondition);
     }

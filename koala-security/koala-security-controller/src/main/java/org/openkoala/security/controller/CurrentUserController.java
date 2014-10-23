@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 当前用户控制器。
+ * 分页都将采用POST请求方式，因GET请求搜索时携带中文会导致乱码。
  *
  * @author lucas
  */
@@ -90,7 +91,7 @@ public class CurrentUserController {
      * 分页查询用户的角色
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryRolesOfUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryRolesOfUser", method = RequestMethod.POST)
     public Page<RoleDTO> pagingQueryRolesOfUser(int page, int pagesize) {
         String userAccount = CurrentUser.getUserAccount();
         return securityAccessFacade.pagingQueryRolesOfUser(page, pagesize, userAccount);

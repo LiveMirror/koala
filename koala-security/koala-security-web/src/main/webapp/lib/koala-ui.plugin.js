@@ -40,7 +40,7 @@
 		autoLoad : true, //是否表格准备好时加载数据
 		isShowPages : true, //是否显示分页
 		isUserLocalData : false, //是否使用本地数据源
-		method : 'GET', //请求数据方式
+		method : 'POST', //请求数据方式
 		identity : 'id', //主键
 		lockWidth : false,
 		pageSize : 10,

@@ -15,21 +15,20 @@ import org.openkoala.security.org.facade.dto.EmployeeUserDTO;
 import org.openkoala.security.org.facade.dto.OrgPermissionDTO;
 import org.openkoala.security.org.facade.dto.OrgRoleDTO;
 import org.openkoala.security.shiro.CurrentUser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 更改属性，撤销、重置密码，激活、挂起、都在UserController中。
+ * 用户员工控制器。
+ * 分页都将采用POST请求方式，因GET请求搜索时携带中文会导致乱码。
+ *
+ * @author lucas
  */
 @Controller
 @RequestMapping("/auth/employeeUser")
 public class EmployeeUserController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeUserController.class);
 
     @Inject
     private SecurityOrgConfigFacade securityOrgConfigFacade;
@@ -39,9 +38,6 @@ public class EmployeeUserController {
 
     /**
      * 添加用户
-     *
-     * @param command
-     * @return
      */
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -52,15 +48,15 @@ public class EmployeeUserController {
     }
 
     @ResponseBody
-    @RequestMapping(value =  "/update", method = RequestMethod.POST)
-    public InvokeResult update(ChangeEmployeeUserPropsCommand command){
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public InvokeResult update(ChangeEmployeeUserPropsCommand command) {
         return securityOrgConfigFacade.changeEmployeeUserProps(command);
     }
 
     // ~ 授权
 
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryGrantRoleByUserId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryGrantRoleByUserId", method = RequestMethod.POST)
     public Page<OrgRoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
         return securityOrgAccessFacade.pagingQueryGrantRolesByUserId(page, pagesize, userId);
     }
@@ -68,31 +64,25 @@ public class EmployeeUserController {
 
     /**
      * 根据用户ID分页查询已经授权的权限
-     *
-     * @param page
-     * @param pagesize
-     * @param userId
-     * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryGrantPermissionByUserId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryGrantPermissionByUserId", method = RequestMethod.POST)
     public Page<OrgPermissionDTO> pagingQueryGrantPermissionByUserId(int page, int pagesize, Long userId) {
-        return  securityOrgAccessFacade.pagingQueryGrantPermissionsByUserId(page, pagesize, userId);
+        return securityOrgAccessFacade.pagingQueryGrantPermissionsByUserId(page, pagesize, userId);
     }
 
     @ResponseBody
     @RequestMapping(value = "/grantAuthorityToActorInScope", method = RequestMethod.POST)
-    public InvokeResult grantAuthorityToActorInScope(AuthorizationCommand command){
+    public InvokeResult grantAuthorityToActorInScope(AuthorizationCommand command) {
         return securityOrgConfigFacade.grantAuthorityToActorInScope(command);
     }
 
     @Deprecated
     @ResponseBody
     @RequestMapping(value = "/grantRolesToUserInScope", method = RequestMethod.POST)
-    public InvokeResult grantRolesToUserInScope(AuthorizationCommand command){
+    public InvokeResult grantRolesToUserInScope(AuthorizationCommand command) {
         return securityOrgConfigFacade.grantRolesToUserInScope(command);
     }
-
 
     @ResponseBody
     @RequestMapping(value = "/terminateUserFromRoleInScope", method = RequestMethod.POST)
@@ -107,9 +97,8 @@ public class EmployeeUserController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQuery", method = RequestMethod.POST)
     public Page<EmployeeUserDTO> pagingQuery(int page, int pagesize, EmployeeUserDTO queryEmployeeUserCondition) {
-        return securityOrgAccessFacade.pagingQueryEmployeeUsers(page,pagesize,queryEmployeeUserCondition);
+        return securityOrgAccessFacade.pagingQueryEmployeeUsers(page, pagesize, queryEmployeeUserCondition);
     }
-
 }

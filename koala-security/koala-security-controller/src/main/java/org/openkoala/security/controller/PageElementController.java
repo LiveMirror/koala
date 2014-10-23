@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 页面元素权限资源控制器
+ * 页面元素权限资源控制器。
+ * 分页都将采用POST请求方式，因GET请求搜索时携带中文会导致乱码。
  *
- * @author luzhao
+ * @author lucas
  */
 @Controller
 @RequestMapping("/auth/page")
@@ -81,7 +82,7 @@ public class PageElementController {
      * 分页查询页面元素权限资源， 可根据页面元素权限资源{@link org.openkoala.security.facade.dto.PageElementResourceDTO}条件进行查询。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQuery", method = RequestMethod.POST)
     public Page<PageElementResourceDTO> pagingQuery(int page, int pagesize, PageElementResourceDTO queryPageElementResourceCondition) {
         return securityAccessFacade.pagingQueryPageElementResources(page, pagesize, queryPageElementResourceCondition);
     }
@@ -90,7 +91,7 @@ public class PageElementController {
      * 根据页面元素权限资源ID分页查询已经授权的权限Permission。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryGrantPermissionsByPageElementResourceId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryGrantPermissionsByPageElementResourceId", method = RequestMethod.POST)
     public Page<PermissionDTO> pagingQueryGrantPermissionsByPageElementResourceId(int page, int pagesize, Long pageElementResourceId) {
         return securityAccessFacade.pagingQueryGrantPermissionsByPageElementResourceId(page, pagesize, pageElementResourceId);
     }
@@ -99,7 +100,7 @@ public class PageElementController {
      * 根据页面元素权限资源ID分页查询还未授权的权限Permission。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryNotGrantPermissionsByPageElementResourceId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryNotGrantPermissionsByPageElementResourceId", method = RequestMethod.POST)
     public Page<PermissionDTO> pagingQueryNotGrantPermissionsByPageElementResourceId(int page, int pagesize,
                                                                                      Long pageElementResourceId, PermissionDTO queryPermissionCondition) {
         return securityAccessFacade.pagingQueryNotGrantPermissionsByPageElementResourceId(page,

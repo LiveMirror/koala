@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 菜单权限资源控制器。
+ * 分页都将采用POST请求方式，因GET请求搜索时携带中文会导致乱码。
  *
- * @author luzhao
+ * @author lucas
  */
 @Controller
 @RequestMapping("/auth/menu")
@@ -73,7 +74,7 @@ public class MenuResourceController {
      * 查找菜单树。
      */
     @ResponseBody
-    @RequestMapping(value = "/findAllMenusTree", method = RequestMethod.GET)
+    @RequestMapping(value = "/findAllMenusTree", method = RequestMethod.POST)
     public InvokeResult findAllMenusTree() {
         return securityAccessFacade.findAllMenusTree();
     }
@@ -100,7 +101,7 @@ public class MenuResourceController {
      * 通过菜单权限资源ID分页查询已经授权的Permission。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryGrantPermissionsByMenuResourceId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryGrantPermissionsByMenuResourceId", method = RequestMethod.POST)
     public Page<PermissionDTO> pagingQueryGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId) {
         return securityAccessFacade.pagingQueryGrantPermissionsByMenuResourceId(page, pagesize, menuResourceId);
     }
@@ -109,7 +110,7 @@ public class MenuResourceController {
      * 通过菜单权限资源ID分页查询还未授权的Permission。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryNotGrantPermissionsByMenuResourceId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryNotGrantPermissionsByMenuResourceId", method = RequestMethod.POST)
     public Page<PermissionDTO> pagingQueryNotGrantPermissionsByMenuResourceId(int page, int pagesize, Long menuResourceId, PermissionDTO queryPermissionCondition) {
         return securityAccessFacade.pagingQueryNotGrantPermissionsByMenuResourceId(page, pagesize, menuResourceId, queryPermissionCondition);
     }
