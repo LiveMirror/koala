@@ -9,13 +9,6 @@
 		<property name="pathDir">${Project.path}/${Project.appName}/${Project.applicationModule.moduleName}/</property>
 	</VelocityDirObject>
 	
-	<VelocityDirObject>
-		<property name="express"><![CDATA[$Project.webModule.generalQuery]]></property>
-		<property name="vmDir">vm/other/security/org_source/</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.applicationModule.moduleName}/src/main/resources/META-INF/systemInit/</property>
-	</VelocityDirObject>
-	
-	
 	<CopyFiles>
 		<property name="srcDir">vm/other/security/conf/</property>
 		<property name="destDir">${Project.path}/${Project.appName}/${Project.appName}-conf/</property>

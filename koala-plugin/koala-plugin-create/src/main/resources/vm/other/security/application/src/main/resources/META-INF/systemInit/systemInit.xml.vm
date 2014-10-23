@@ -10,6 +10,20 @@
 	<menuResource id="50" pid="40" name="菜单管理" url="/pages/auth/menu-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
 	<menuResource id="60" pid="40" name="URL访问管理" url="/pages/auth/url-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
 	<menuResource id="70" pid="40" name="页面元素管理" url="/pages/auth/page-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	#if ($Module.generalQuery)
+	
+	<menuResource id="200" name="通用查询" description="通用查询配置、数据源查询配置" menuIcon="glyphicon  glyphicon-list-alt" />
+	<menuResource id="210" pid="200" name="通用查询配置" url="/pages/gqc/generalQueryList.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	<menuResource id="220" pid="200" name="数据源查询配置" url="/pages/gqc/dataSourceList.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	#end
+	#if ($Module.organization)
+	
+	<menuResource id="80" name="组织机构管理" description="机构管理、职务管理、岗位管理、人员管理" menuIcon="glyphicon  glyphicon-list-alt" />
+	<menuResource id="90" pid="80" name="机构管理" url="/pages/organisation/department-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	<menuResource id="100" pid="80" name="职务管理" url="/pages/organisation/job-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	<menuResource id="110" pid="80" name="岗位管理" url="/pages/organisation/position-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	<menuResource id="120" pid="80" name="人员管理" url="/pages/organisation/employee-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	#end
 	
 	<urlAccessResource name="用户管理-所有" url="/auth/user/**" />
 	<urlAccessResource name="用户管理-添加" url="/auth/user/add.koala" />

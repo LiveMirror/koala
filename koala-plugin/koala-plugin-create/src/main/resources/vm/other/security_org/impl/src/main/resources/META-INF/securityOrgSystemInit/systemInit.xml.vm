@@ -15,6 +15,12 @@
 	<menuResource id="100" pid="80" name="职务管理" url="/pages/organisation/job-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
 	<menuResource id="110" pid="80" name="岗位管理" url="/pages/organisation/position-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
 	<menuResource id="120" pid="80" name="人员管理" url="/pages/organisation/employee-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	#if ($Module.generalQuery)
+	
+	<menuResource id="200" name="通用查询" description="通用查询配置、数据源查询配置" menuIcon="glyphicon  glyphicon-list-alt" />
+	<menuResource id="210" pid="200" name="通用查询配置" url="/pages/gqc/generalQueryList.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	<menuResource id="220" pid="200" name="数据源查询配置" url="/pages/gqc/dataSourceList.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+	#end
 	
 	<urlAccessResource name="用户管理-所有" url="/auth/employeeUser/**" />
 	<urlAccessResource name="用户管理-添加" url="/auth/employeeUser/add.koala" />
