@@ -27,18 +27,21 @@
 						<attribute name="menuIcon" type="string" fixed="glyphicon  glyphicon-list-alt" />
 						<attribute name="url" type="string" />
 						<attribute name="pid" type="int" />
+						<attribute name="notGrant" type="boolean" fixed="true" />
 					</complexType>
 				</element>
 				<element name="urlAccessResource" maxOccurs="unbounded">
 					<complexType>
 						<attribute name="name" type="string" use="required" />
 						<attribute name="url" type="string" use="required" />
+						<attribute name="notGrant" type="boolean" fixed="true" />
 					</complexType>
 				</element>
 				<element name="pageElementResource" maxOccurs="unbounded">
 					<complexType>
 						<attribute name="name" type="string" use="required" />
 						<attribute name="url" type="string" use="required" />
+						<attribute name="notGrant" type="boolean" fixed="true" />
 					</complexType>
 				</element>
 			</sequence>

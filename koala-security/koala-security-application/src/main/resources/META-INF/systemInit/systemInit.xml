@@ -11,7 +11,7 @@
 	<menuResource id="60" pid="40" name="URL访问管理" url="/pages/auth/url-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
 	<menuResource id="70" pid="40" name="页面元素管理" url="/pages/auth/page-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
 	
-	<urlAccessResource name="用户管理-所有" url="/auth/user/**" />
+	<urlAccessResource name="用户管理-所有" url="/auth/user/**"  />
 	<urlAccessResource name="用户管理-添加" url="/auth/user/add.koala" />
 	<urlAccessResource name="用户管理-更新" url="/auth/user/update.koala" />
 	<urlAccessResource name="用户管理-撤销" url="/auth/user/terminate.koala" />
