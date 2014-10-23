@@ -1,9 +1,11 @@
 package org.openkoala.security.application.systeminit;
 
+import org.junit.Test;
+import org.openkoala.security.application.systeminit.SystemInit;
+import org.openkoala.security.application.systeminit.SystemInitFactory;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
 
 public class SystemInitFactoryTest {
 
