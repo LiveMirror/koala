@@ -22,7 +22,7 @@ public class ${applicationClass.name} implements ${applicationClass.name.replace
 	}
 	
 	public void creat${domainClass}(${domainClass} ${variableName}) {
-		${variableName}.creat();
+		${variableName}.save();
 	}
 	
 	public void update${domainClass}(${domainClass} ${variableName}) {

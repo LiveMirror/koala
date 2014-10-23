@@ -22,9 +22,4 @@ public class DataSourceBeingUsedException extends RuntimeException {
 		super(message, cause);
 	}
 
-	public DataSourceBeingUsedException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
-
 }

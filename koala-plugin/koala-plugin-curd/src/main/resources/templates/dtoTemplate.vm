@@ -8,11 +8,6 @@ import $import;
 #end
 import java.io.Serializable;
 #if (${project.mvcType} == "SpringMVC")
-import ${entity.className};
-import org.springframework.format.annotation.DateTimeFormat;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.openkoala.koala.springmvc.JsonTimestampSerializer;
-import org.openkoala.koala.springmvc.JsonDateSerializer;
 
 #end
 

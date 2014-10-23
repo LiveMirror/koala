@@ -17,7 +17,7 @@ import javax.inject.Named;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.querychannel.Page;
+import org.dayatang.utils.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.koala.commons.InvokeResult;
 import ${dtoClass.packageName}.*;
@@ -47,7 +47,7 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 		return InvokeResult.success(${assembler}.toDTO(application.get${domainClass}(${dtoClass.entityModel.singleIDFieldModel.name})));
 	}
 	
-	public InvokeResult save${domainClass}(${currntVO} ${currntVOVariable}) {
+	public InvokeResult creat${domainClass}(${currntVO} ${currntVOVariable}) {
 		application.creat${domainClass}(${assembler}.toEntity(${currntVOVariable}));
 		return InvokeResult.success();
 	}
