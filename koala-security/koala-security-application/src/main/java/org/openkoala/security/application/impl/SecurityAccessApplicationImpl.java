@@ -61,12 +61,12 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
 
     @Override
     public UrlAccessResource getUrlAccessResourceBy(Long urlAccessResourceId) {
-        return UrlAccessResource.get(UrlAccessResource.class, urlAccessResourceId);
+        return UrlAccessResource.getBy(urlAccessResourceId);
     }
 
     @Override
     public PageElementResource getPageElementResourceBy(Long pageElementResourceId) {
-        return PageElementResource.get(PageElementResource.class, pageElementResourceId);
+        return PageElementResource.getBy(pageElementResourceId);
     }
 
     @Override

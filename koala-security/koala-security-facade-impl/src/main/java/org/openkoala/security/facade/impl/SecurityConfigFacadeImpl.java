@@ -481,10 +481,18 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Override
     public InvokeResult grantPermisssionToUrlAccessResource(Long permissionId, Long urlAccessResourceId) {
-        UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
-        Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-        securityConfigApplication.grantAuthorityToSecurityResource(permission, urlAccessResource);
-        return InvokeResult.success();
+        try {
+            UrlAccessResource urlAccessResource = securityAccessApplication.getUrlAccessResourceBy(urlAccessResourceId);
+            Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+            securityConfigApplication.grantAuthorityToSecurityResource(permission, urlAccessResource);
+            return InvokeResult.success();
+        } catch (CorrelationException e) {
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("该权限已经被授权给其他的URL访问资源。");
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("系统错误");
+        }
     }
 
     @Override
@@ -497,11 +505,18 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Override
     public InvokeResult grantPermisssionToMenuResource(Long permissionId, Long menuResourceId) {
-        MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
-        Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
-        securityConfigApplication.grantAuthorityToSecurityResource(permssion, menuResource);
-        return InvokeResult.success();
-
+        try{
+            MenuResource menuResource = securityAccessApplication.getMenuResourceBy(menuResourceId);
+            Permission permssion = securityAccessApplication.getPermissionBy(permissionId);
+            securityConfigApplication.grantAuthorityToSecurityResource(permssion, menuResource);
+            return InvokeResult.success();
+        } catch (CorrelationException e) {
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("该权限已经被授权给其他的菜单资源。");
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("系统错误");
+        }
     }
 
     @Override
@@ -552,11 +567,18 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Override
     public InvokeResult grantPermisssionToPageElementResource(Long permissionId, Long pageElementResourceId) {
-        PageElementResource pageElementResource = securityAccessApplication
-                .getPageElementResourceBy(pageElementResourceId);
-        Permission permission = securityAccessApplication.getPermissionBy(permissionId);
-        securityConfigApplication.grantAuthorityToSecurityResource(permission, pageElementResource);
-        return InvokeResult.success();
+        try {
+            PageElementResource pageElementResource = securityAccessApplication.getPageElementResourceBy(pageElementResourceId);
+            Permission permission = securityAccessApplication.getPermissionBy(permissionId);
+            securityConfigApplication.grantAuthorityToSecurityResource(permission, pageElementResource);
+            return InvokeResult.success();
+        } catch (CorrelationException e) {
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("该权限已经被授权给其他的页面元素资源。");
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("系统错误");
+        }
     }
 
     @Override

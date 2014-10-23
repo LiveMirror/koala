@@ -1,7 +1,5 @@
 package org.openkoala.security.core.domain;
 
-import com.google.common.collect.Sets;
-
 import org.junit.Test;
 import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.NameIsExistedException;
@@ -9,7 +7,6 @@ import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.UrlIsExistedException;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.openkoala.security.core.util.EntitiesHelper.*;
@@ -204,8 +201,8 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 
 	}
 
-	@Test
-	public void testGetPermissionIdentifiers() throws Exception {
+	@Test(expected = CorrelationException.class)
+	public void testGrantPermissions() throws Exception {
 		UrlAccessResource urlAccessResource = initUrlAccessResource();
 		urlAccessResource.save();
 		Authority permission1 = initPermission();
@@ -215,14 +212,34 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 
 		permission1.addSecurityResource(urlAccessResource);
 		permission2.addSecurityResource(urlAccessResource);
-        List<Permission> permissions = UrlAccessResource.findPermissionBySecurityResource(urlAccessResource);
-
-        assertFalse(permissions.isEmpty());
-
-		assertTrue(permissions.size() == 2);
 	}
 
-	@Test
+    @Test(expected = CorrelationException.class)
+    public void testGrantUrlAccessResources() throws Exception {
+        UrlAccessResource urlAccessResource = initUrlAccessResource();
+        urlAccessResource.save();
+        UrlAccessResource urlAccessResource1 = new UrlAccessResource("testGrantUrlAccessResources","/testGrantUrlAccessResources");
+        urlAccessResource1.save();
+
+        Authority permission1 = initPermission();
+        permission1.save();
+        permission1.addSecurityResource(urlAccessResource);
+        permission1.addSecurityResource(urlAccessResource1);
+    }
+
+    @Test
+    public void testGrantUrlAccessResource() throws Exception {
+        UrlAccessResource urlAccessResource = initUrlAccessResource();
+        urlAccessResource.save();
+        Authority permission1 = initPermission();
+        permission1.save();
+        permission1.addSecurityResource(urlAccessResource);
+        List<UrlAccessResource> resources =  permission1.findUrlAccessResourceByAuthority();
+        assertFalse(resources.isEmpty());
+        assertTrue(resources.size() == 1);
+    }
+
+    @Test
 	public void testFindAllUrlAccessResources() throws Exception {
 		UrlAccessResource urlAccessResource = initUrlAccessResource();
 		urlAccessResource.save();

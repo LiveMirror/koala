@@ -55,6 +55,11 @@ public class UrlAccessResource extends SecurityResource {
         }
     }
 
+    /**
+     * TODO IllegalArgumentException hibernate 本身就有 直接捕获？
+     * @param id
+     * @return
+     */
     public static UrlAccessResource getBy(Long id) {
         return UrlAccessResource.get(UrlAccessResource.class, id);
     }

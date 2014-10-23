@@ -20,7 +20,8 @@ import java.util.Set;
         @NamedQuery(name = "ResourceAssignment.findSecurityResourcesByAuthority", query = "SELECT _resource FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority = :authority AND TYPE(_resource)= :resourceType AND TYPE(_authority) = :authorityType GROUP BY _resource.id ORDER BY _resource.id"),
         @NamedQuery(name = "ResourceAssignment.findSecurityResourcesByAuthorityNoResourcesType", query = "SELECT _resource FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority = :authority GROUP BY _resource.id ORDER BY _resource.id"),
         @NamedQuery(name = "ResourceAssignment.findAuthoritiesBySecurityResource", query = "SELECT _authority FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _resource = :resource AND TYPE(_authority)= :authorityType GROUP BY _authority.id ORDER BY _authority.id"),
-        @NamedQuery(name = "ResourceAssignment.checkHasSecurityResource", query = "SELECT _resourceAssignment FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority IN (:authorities) AND TYPE(_resource) = :securityResourceType  AND _resource.identifier = :identifier")
+        @NamedQuery(name = "ResourceAssignment.checkHasSecurityResource", query = "SELECT _resourceAssignment FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE _authority IN (:authorities) AND TYPE(_resource) = :securityResourceType  AND _resource.identifier = :identifier"),
+        @NamedQuery(name = "ResourceAssignment.findByResourceTypeAndAuthority", query = "SELECT _resourceAssignment FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource WHERE TYPE(_resource) = :resourceType AND TYPE(_authority) = :authorityType")
 })
 public class ResourceAssignment extends SecurityAbstractEntity {
 
@@ -62,33 +63,33 @@ public class ResourceAssignment extends SecurityAbstractEntity {
     }
 
     public static ResourceAssignment findByResourceInAuthority(Authority authority, SecurityResource resource) {
-        return getRepository()//
-                .createCriteriaQuery(ResourceAssignment.class)//
-                .eq("authority", authority)//
-                .eq("resource", resource)//
+        return getRepository()
+                .createCriteriaQuery(ResourceAssignment.class)
+                .eq("authority", authority)
+                .eq("resource", resource)
                 .singleResult();
     }
 
     public static List<ResourceAssignment> findByAuthority(Authority authority) {
         Set<Authority> authorities = getAuthoritiesByAuthority(authority);
-        return getRepository()//
-                .createCriteriaQuery(ResourceAssignment.class)//
-                .in("authority", authorities)//
-                .asc("id")//
+        return getRepository()
+                .createCriteriaQuery(ResourceAssignment.class)
+                .in("authority", authorities)
+                .asc("id")
                 .list();
     }
 
     /**
-     * TODO 很奇怪~ 排序规则是变化的，所以强制使用id升序返回。
+     * 很奇怪~ 排序规则是变化的，所以强制使用id升序返回。
      *
      * @param resource
      * @return
      */
     public static List<ResourceAssignment> findByResource(SecurityResource resource) {
-        return getRepository()//
-                .createCriteriaQuery(ResourceAssignment.class)//
-                .eq("resource", resource)//
-                .asc("id")//
+        return getRepository()
+                .createCriteriaQuery(ResourceAssignment.class)
+                .eq("resource", resource)
+                .asc("id")
                 .list();
     }
 

@@ -68,7 +68,22 @@ public class Permission extends Authority {
                 .addParameter("authorityType", Permission.class)//
                 .addParameter("name", name)//
                 .singleResult();
+    }
 
+    /**
+     * 由于permission 是细粒度权限。因此需要判断Permission 是否已经分配给SecurityResource子类，如果已经分配就不能再分配
+     */
+    @Override
+    public void addSecurityResource(SecurityResource securityResource) {
+        ResourceAssignment resourceAssignment = getRepository()
+                .createNamedQuery("ResourceAssignment.findByResourceTypeAndAuthority")
+                .addParameter("resourceType", securityResource.getClass()) // 能够拿到真实类型，例如传递的是menuResource 那么securityResource就是MenuResource类型。
+                .addParameter("authorityType", this.getClass())
+                .singleResult();
+        if (resourceAssignment != null) {
+            throw new CorrelationException("Permission canot grant twice SecurityResources that kind of children.");
+        }
+        new ResourceAssignment(this, securityResource).save();
     }
 
     public static Permission getBy(Long id) {

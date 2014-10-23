@@ -76,7 +76,6 @@ public abstract class Authority extends SecurityAbstractEntity {
     public abstract Authority getBy(String name);
 
     /**
-     * 维护多对多关联 为可授权体添加一个权限资源， 需要显示的调用update方法。
      *
      * @param securityResource
      */
@@ -85,7 +84,6 @@ public abstract class Authority extends SecurityAbstractEntity {
     }
 
     /**
-     * 为可授权体添加多个权限资源，需要显示的调用update方法。
      *
      * @param securityResources
      */
