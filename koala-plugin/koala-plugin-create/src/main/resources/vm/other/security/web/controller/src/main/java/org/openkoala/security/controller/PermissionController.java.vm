@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/auth/permission")
+@SuppressWarnings("unused")
 public class PermissionController {
 
 	@Inject

@@ -20,106 +20,89 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 当前用户的一些操作
- * 
- * @author luzhao
- * 
+ * 当前用户控制器。
+ *
+ * @author lucas
  */
 @Controller
 @RequestMapping("/auth/currentUser")
+@SuppressWarnings("unused")
 public class CurrentUserController {
 
-	@Inject
-	private SecurityConfigFacade securityConfigFacade;
+    @Inject
+    private SecurityConfigFacade securityConfigFacade;
 
     @Inject
     private SecurityAccessFacade securityAccessFacade;
 
     @Inject
     private RoleHandle roleHandle;
-	
-	/**
-	 * 更改用户账号。
-	 * 
-	 * @param command
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/changeUserAccount", method = RequestMethod.POST)
-	public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
-		return  securityConfigFacade.changeUserAccount(command);
 
-	}
+    /**
+     * 更改用户账号。
+     */
+    @ResponseBody
+    @RequestMapping(value = "/changeUserAccount", method = RequestMethod.POST)
+    public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
+        return securityConfigFacade.changeUserAccount(command);
 
-	/**
-	 * 更改用户邮箱。
-	 * 
-	 * @param command
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/changeUserEmail", method = RequestMethod.POST)
-	public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
+    }
+
+    /**
+     * 更改用户邮箱。
+     */
+    @ResponseBody
+    @RequestMapping(value = "/changeUserEmail", method = RequestMethod.POST)
+    public InvokeResult changeUserEmail(ChangeUserEmailCommand command) {
         command.setUserAccount(CurrentUser.getUserAccount());
-		InvokeResult result =  securityConfigFacade.changeUserEmail(command);
-        if(result.isSuccess()){
-             CurrentUser.getPrincipal().setEmail(command.getEmail());
+        InvokeResult result = securityConfigFacade.changeUserEmail(command);
+        if (result.isSuccess()) {
+            CurrentUser.getPrincipal().setEmail(command.getEmail());
         }
         return result;
-	}
+    }
 
-	/**
-	 * 更改用户联系电话。
-	 * 
-	 * @param command
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/changeUserTelePhone", method = RequestMethod.POST)
-	public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
+    /**
+     * 更改用户联系电话。
+     */
+    @ResponseBody
+    @RequestMapping(value = "/changeUserTelePhone", method = RequestMethod.POST)
+    public InvokeResult changeUserTelePhone(ChangeUserTelePhoneCommand command) {
         command.setUserAccount(CurrentUser.getUserAccount());
-		InvokeResult result =  securityConfigFacade.changeUserTelePhone(command);
-        if(result.isSuccess()){
+        InvokeResult result = securityConfigFacade.changeUserTelePhone(command);
+        if (result.isSuccess()) {
             CurrentUser.getPrincipal().setTelePhone(command.getTelePhone());
         }
         return result;
-	}
-	
-	/**
-	 * 更新用户密码。
-	 * 
-	 * @param command
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-	public InvokeResult changeUserPassword(ChangeUserPasswordCommand command) {
-		command.setUserAccount(CurrentUser.getUserAccount());
-		return securityConfigFacade.changeUserPassword(command);
-	}
+    }
 
-    /**分页查询用户的角色
-     *
-     * @param page 当前页
-     * @param pagesize
-     * @return
+    /**
+     * 更新用户密码。
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    public InvokeResult changeUserPassword(ChangeUserPasswordCommand command) {
+        command.setUserAccount(CurrentUser.getUserAccount());
+        return securityConfigFacade.changeUserPassword(command);
+    }
+
+    /**
+     * 分页查询用户的角色
      */
     @ResponseBody
     @RequestMapping(value = "/pagingQueryRolesOfUser", method = RequestMethod.GET)
-    public Page<RoleDTO> pagingQueryRolesOfUser(int page,int pagesize){
+    public Page<RoleDTO> pagingQueryRolesOfUser(int page, int pagesize) {
         String userAccount = CurrentUser.getUserAccount();
-        return securityAccessFacade.pagingQueryRolesOfUser(page,pagesize,userAccount);
+        return securityAccessFacade.pagingQueryRolesOfUser(page, pagesize, userAccount);
     }
 
     /**
      * 切换角色
-     * @param roleName
-     * @return
      */
     @ResponseBody
     @RequestMapping(value = "/switchOverRoleOfUser", method = RequestMethod.POST)
-    public InvokeResult switchOverRoleOfUser(String roleName){
-    	if (StringUtils.isBlank(roleName)) {
+    public InvokeResult switchOverRoleOfUser(String roleName) {
+        if (StringUtils.isBlank(roleName)) {
             return InvokeResult.failure("角色名为空。");
         }
         // 角色名相同 不做任何处理
@@ -130,21 +113,32 @@ public class CurrentUserController {
             return InvokeResult.failure("角色名不存在。");
         }
         if (!securityAccessFacade.checkUserIsHaveRole(CurrentUser.getUserAccount(), roleName)) {
-        	return InvokeResult.failure("该角色未分配当前用户");
+            return InvokeResult.failure("该角色未分配当前用户");
         }
         try {
-			roleHandle.switchOverRoleOfUser(roleName);
-			return InvokeResult.success();
-		} catch (Exception e) {
-			return InvokeResult.failure("角色切换失败。");
-		}
+            roleHandle.switchOverRoleOfUser(roleName);
+            return InvokeResult.success();
+        } catch (Exception e) {
+            return InvokeResult.failure("角色切换失败。");
+        }
     }
 
+    /**
+     * 根据用户账户查询用户详细
+     */
     @ResponseBody
-    @RequestMapping(value="/getUserDetail", method = RequestMethod.GET)
-    public InvokeResult getUserDetail(){
+    @RequestMapping(value = "/getUserDetail", method = RequestMethod.GET)
+    public InvokeResult getUserDetail() {
         String userAccount = CurrentUser.getUserAccount();
         return securityAccessFacade.getuserDetail(userAccount);
     }
 
+    /**
+     * 查找用户在某个角色下得所有菜单权限资源。
+     */
+    @ResponseBody
+    @RequestMapping(value = "/findAllMenusByUserAsRole", method = RequestMethod.GET)
+    public InvokeResult findAllMenusByUserAsRole() {
+        return securityAccessFacade.findMenuResourceByUserAsRole(CurrentUser.getUserAccount(), CurrentUser.getRoleName());
+    }
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping
+@SuppressWarnings("unused")
 public class IndexController {
 
 	@RequestMapping(value="/index",method = RequestMethod.GET)

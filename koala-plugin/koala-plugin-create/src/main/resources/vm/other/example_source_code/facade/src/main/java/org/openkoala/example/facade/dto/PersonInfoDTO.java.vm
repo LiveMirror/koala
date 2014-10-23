@@ -3,9 +3,6 @@ package org.openkoala.example.facade.dto;
 import java.util.Date;
 import java.io.Serializable;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-
 public class PersonInfoDTO implements Serializable {
 
 	private static final long serialVersionUID = 1428864474382580128L;
@@ -14,10 +11,8 @@ public class PersonInfoDTO implements Serializable {
 
 	private Double proceeds;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birthday;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birthdayEnd;
 		
 	private String sex;

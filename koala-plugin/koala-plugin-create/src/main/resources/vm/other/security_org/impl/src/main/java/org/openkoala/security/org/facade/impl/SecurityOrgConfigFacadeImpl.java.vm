@@ -189,11 +189,11 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
         EmployeeUser employeeUser = intiEmployeeUser();
         Role role = securityDBInitApplication.initRole();
         List<MenuResource> menuResources = initMenuResources();
-        List<PageElementResource> pageElementResource = initPageElementResources();
+        List<PageElementResource> pageElementResources = initPageElementResources();
         List<UrlAccessResource> urlAccessResources = initUrlAccessResources();
         securityConfigApplication.grantAuthorityToActor(role,employeeUser);
         securityConfigApplication.grantSecurityResourcesToAuthority(menuResources,role);
-        securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResource,role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResources,role);
         securityConfigApplication.grantSecurityResourcesToAuthority(urlAccessResources,role);
     }
     

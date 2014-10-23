@@ -24,19 +24,6 @@
 	</properties>
 	<dependencies>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
-		 <dependency>
-			<groupId>org.openkoala.koalacommons</groupId>
-			<artifactId>koala-commons-test-support</artifactId>
-			<version>${koala.version}</version>
-			<scope>test</scope>
-		</dependency>
-		
   #foreach ($_moduleName in $Module.dependencies )
     #foreach ( $_Module in $Project.module)
       #if ($_moduleName == $_Module.moduleName)
@@ -51,6 +38,19 @@
 
   
         #if ($Module.moduleType == "bizModel")
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		 <dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-test-support</artifactId>
+			<version>${koala.version}</version>
+			<scope>test</scope>
+		</dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>  
@@ -77,6 +77,18 @@
        #end
  
   #if ($Module.moduleType == "applicationInterface")
+ 	 <dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		 <dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-test-support</artifactId>
+			<version>${koala.version}</version>
+			<scope>test</scope>
+		</dependency>
   		<dependency> 
             <groupId>org.openkoala.koalacommons</groupId>  
             <artifactId>koala-commons-exception</artifactId> 
@@ -123,6 +135,19 @@
         </dependency>  
   #end
 #if ($Module.moduleType == "facadeImpl")
+
+	<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		 <dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-test-support</artifactId>
+			<version>${koala.version}</version>
+			<scope>test</scope>
+		</dependency>
  	
    <dependency>
   	<groupId>$Project.groupId</groupId>
@@ -144,6 +169,19 @@
   </dependency>
   #end
 #if ($Module.moduleType == "war")
+
+<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		 <dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-test-support</artifactId>
+			<version>${koala.version}</version>
+			<scope>test</scope>
+		</dependency>
 
   <dependency>
   	<groupId>$Project.groupId</groupId>
@@ -199,6 +237,7 @@
 
 #if ($Module.moduleType == "war")
    #if($Project.mvcProtocol=="Struts2MVC")
+   
     <!-- 加入Struts2 MVC的支持 -->
 		<dependency>
 			<groupId>org.apache.struts</groupId>

@@ -17,8 +17,8 @@
 
         $(function(){
             var roleName = $('#roles').html();
-            var url = contextPath + "/auth/menu/findAllMenusByUserAsRole.koala?"+new Date().getTime();
-            $.get(url, {'roleName':roleName},function(data){
+            var url = contextPath + "/auth/currentUser/findAllMenusByUserAsRole.koala?"+new Date().getTime();
+            $.get(url,function(data){
                 $.each(data.data,function(){
                 var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.menuIcon+'"></span>&nbsp;'+this.name+'&nbsp;'+
                             '<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu in"></ul></li>');
@@ -190,7 +190,7 @@
         $(function(){
             // ------------ switchOverRoleOfUser start ---------------
             $('#userManager').find("li[data-target=#rolesToggle]").click(function(){
-                $.get(contextPath + '/pages/auth/toggle-role.jsp').done(function(data){
+                $.get(contextPath + '/pages/auth/role-switch.jsp').done(function(data){
                     var dialog = $(data);
                     dialog.find('#toggle').on('click',function(){
                         var items = dialog.find('.selectRoleGrid').data('koala.grid').selectedRows();
@@ -210,7 +210,6 @@
                         }
                         $.post(contextPath + '/auth/currentUser/switchOverRoleOfUser.koala', "roleName=" + items[0].name,function(data){
                             if(data.success){
-                                // TODO 停留时间
                                 dialog.find('.selectRoleGrid').message({
                                     type:'success',
                                     content:'切换角色成功！'
@@ -290,7 +289,7 @@
 	        </a>
 	        <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <div class="btn-group navbar-right">
-                    <img class="dropdown-toggle" data-toggle="dropdown" id='btn1'  src =${contextPath}/images/systemFunction.png />
+                    <img class="dropdown-toggle" data-toggle="dropdown" id='btn1'  src =${contextPath}/images/systemFunction.png  style="width: 35px; height: 35px; margin-top: 5px;" />
                     <ul class="dropdown-menu" id="userManager" style="min-width: 0">
                         <li data-target="loginOut"><a href="#" class="glyphicon glyphicon-off">&nbsp;注销</a></li>
                         <li data-target="modifyPwd"><a href="#" class="glyphicon glyphicon-pencil">&nbsp;更改密码</a></li>
@@ -299,11 +298,10 @@
                         <li data-toggle='modal' data-target="#rolesToggle"><a href="#" class="glyphicon glyphicon-repeat">&nbsp;切换角色</a></li>
                     </ul>
                 </div>
-
                 <!--角色信息-->
                 <div class="btn-group navbar-right">
                     <label for = "roles" class = "user_name">角色: </label>
-	            	<span id="roles"><ks:user property="roleName" /></span>
+	            	<span id="roles" style="font-size: 12px"><ks:user property="roleName" /></span>
                     &nbsp;
                     <ul class="dropdown-menu" id="allRolesId"></ul>
                 </div>
@@ -312,7 +310,7 @@
                     <span>
                         <!-- 为了不改变页面布局-->
                     </span>
-                    <a href="#" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; font-weight: 700; font-size: 14px"  title="查看个人信息"  >&nbsp;<ks:user property="name" />
+                    <a href="#" id="userInfo"  onclick="showDetail()" class="glyphicon glyphicon-user" style="color: #fff;text-decoration: none; -moz-osx-font-smoothing:none;top:-1px;font-weight: bold; font-size: 12px;"  title="查看个人信息"  >&nbsp;<ks:user property="name" />
                     </a>
                     &nbsp; &nbsp;
                 </div>

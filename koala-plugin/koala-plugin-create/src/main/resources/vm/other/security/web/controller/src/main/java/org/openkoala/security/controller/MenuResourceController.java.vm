@@ -79,15 +79,6 @@ public class MenuResourceController {
     }
 
     /**
-     * 查找用户在某个角色下得所有菜单权限资源。
-     */
-    @ResponseBody
-    @RequestMapping(value = "/findAllMenusByUserAsRole", method = RequestMethod.GET)
-    public InvokeResult findAllMenusByUserAsRole(String roleName) {
-        return securityAccessFacade.findMenuResourceByUserAsRole(CurrentUser.getUserAccount(), roleName);
-    }
-
-    /**
      * 为菜单权限资源资源授予权限Permission。
      */
     @ResponseBody

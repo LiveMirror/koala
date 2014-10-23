@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/auth/role")
+@SuppressWarnings("unused")
 public class RoleController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RoleController.class);
@@ -247,8 +248,8 @@ public class RoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByRoleId", method = RequestMethod.GET)
-	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId) {
-		return securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize,	roleId);
+	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId, PermissionDTO queryPermissionCondition) {
+		return securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize,	roleId, queryPermissionCondition);
 	}
 
 	/**
@@ -299,10 +300,10 @@ public class RoleController {
 	 * @param roleId
 	 * @return
 	 */
-	@ResponseBody
-	@RequestMapping(value = "/pagingQueryNotGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
-	public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize,
-			Long roleId) {
-		return securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(page, pagesize, roleId);
-	}
+    @ResponseBody
+    @RequestMapping(value = "/pagingQueryNotGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
+    public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize,
+                                                                                        Long roleId, PageElementResourceDTO queryPageElementResourceCondition) {
+        return securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(page, pagesize, roleId, queryPageElementResourceCondition);
+    }
 }

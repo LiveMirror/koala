@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@SuppressWarnings("unused")
 public class LogoutController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LogoutController.class);

@@ -229,8 +229,6 @@ public class Project implements Serializable {
 		facade.setProjectName(appName);
 		facade.setBasePackage(getGroupId() + "." + getPackageName()
 				+ ".facade.dto");
-		facade.getDependencies().add("core");
-		facade.getDependencies().add("application");
 		getModule().add(facade);
 		// 初始化一个门面层的实现
 		Module facadeImpl = new Module();
