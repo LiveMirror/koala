@@ -138,7 +138,7 @@ public class CurrentUserController {
      */
     @ResponseBody
     @RequestMapping(value = "/findAllMenusByUserAsRole", method = RequestMethod.GET)
-    public InvokeResult findAllMenusByUserAsRole(String roleName) {
-        return securityAccessFacade.findMenuResourceByUserAsRole(CurrentUser.getUserAccount(), roleName);
+    public InvokeResult findAllMenusByUserAsRole() {
+        return securityAccessFacade.findMenuResourceByUserAsRole(CurrentUser.getUserAccount(), CurrentUser.getRoleName());
     }
 }

@@ -18,7 +18,7 @@
         $(function(){
             var roleName = $('#roles').html();
             var url = contextPath + "/auth/currentUser/findAllMenusByUserAsRole.koala?"+new Date().getTime();
-            $.get(url, {'roleName':roleName},function(data){
+            $.get(url,function(data){
                 $.each(data.data,function(){
                 var $li = $('<li class="folder"><a data-toggle="collapse" href="#menuMark'+this.id+'"><span class="'+this.menuIcon+'"></span>&nbsp;'+this.name+'&nbsp;'+
                             '<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a><ul id="menuMark'+this.id+'" class="second-level-menu in"></ul></li>');
