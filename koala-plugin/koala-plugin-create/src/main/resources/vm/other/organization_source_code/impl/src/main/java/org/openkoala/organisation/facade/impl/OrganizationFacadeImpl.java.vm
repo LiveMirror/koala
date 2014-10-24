@@ -12,32 +12,29 @@ import javax.inject.Named;
 
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.querychannel.QueryChannelService;
-import org.openkoala.organisation.NameExistException;
-import org.openkoala.organisation.SnIsExistException;
-import org.openkoala.organisation.TerminateNotEmptyOrganizationException;
-import org.openkoala.organisation.TerminateRootOrganizationException;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.application.BaseApplication;
 import org.openkoala.organisation.application.OrganizationApplication;
-import org.openkoala.organisation.domain.Company;
-import org.openkoala.organisation.domain.Department;
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.core.NameExistException;
+import org.openkoala.organisation.core.SnIsExistException;
+import org.openkoala.organisation.core.TerminateNotEmptyOrganizationException;
+import org.openkoala.organisation.core.TerminateRootOrganizationException;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.organisation.facade.OrganizationFacade;
 import org.openkoala.organisation.facade.dto.EmployeeDTO;
-import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.OrganizationDTO;
-import org.openkoala.organisation.facade.impl.assembler.EmployeeDtoAssembler;
-import org.openkoala.organisation.facade.impl.assembler.OrganizationDtoAssembler;
-import org.springframework.transaction.annotation.Transactional;
+import org.openkoala.organisation.facade.impl.assembler.EmployeeAssembler;
+import org.openkoala.organisation.facade.impl.assembler.OrganizationAssembler;
 
 /**
  * 组织机构应用实现层类
  * 
  */
+@SuppressWarnings("unchecked")
 @Named
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-//@Stateless(name = "OrganizationApplication")
-//@Remote
 public class OrganizationFacadeImpl implements OrganizationFacade {
 
 	@Inject
@@ -53,7 +50,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 
     
 	public void createAsTopOrganization(OrganizationDTO company) {
-    	organizationApplication.createAsTopOrganization((Company) OrganizationDtoAssembler.assemEntity(company));
+    	organizationApplication.createAsTopOrganization((Company) OrganizationAssembler.toEntity(company));
 	}
 
 	
@@ -61,7 +58,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 		Company parent = baseApplication.getEntity(Company.class, parentId);
 		try {
 			return InvokeResult.success(organizationApplication.createCompany(parent, 
-					(Company) OrganizationDtoAssembler.assemEntity(companyDTO)).getId());
+					(Company) OrganizationAssembler.toEntity(companyDTO)).getId());
 		} catch (SnIsExistException exception) {
     		return InvokeResult.failure("机构编码: " + companyDTO.getSn() + " 已被使用！");
     	} catch (NameExistException exception) {
@@ -75,66 +72,26 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 
 	
 	public void assignChildOrganization(OrganizationDTO parent, OrganizationDTO child, Date date) {
-		organizationApplication.assignChildOrganization(OrganizationDtoAssembler.assemEntity(parent), 
-				OrganizationDtoAssembler.assemEntity(child), date);
+		organizationApplication.assignChildOrganization(OrganizationAssembler.toEntity(parent), 
+				OrganizationAssembler.toEntity(child), date);
 	}
 
 	
 	public OrganizationDTO getParentOfOrganization(OrganizationDTO organizationDTO, Date date) {
-		Organization organization = organizationApplication.getParentOfOrganization(OrganizationDtoAssembler.assemEntity(organizationDTO), date);
-		return organization == null ? null : OrganizationDtoAssembler.assemDto(organization);
+		return OrganizationAssembler.toDTO(organizationApplication.getParentOfOrganization(OrganizationAssembler.toEntity(organizationDTO), date));
 	}
 
 	
 	public List<OrganizationDTO> findChildrenOfOrganization(OrganizationDTO organizationDTO, Date date) {
 		List<OrganizationDTO> results = new ArrayList<OrganizationDTO>();
-		for (Organization organization : organizationApplication.findChildrenOfOrganization(OrganizationDtoAssembler.assemEntity(organizationDTO), date)) {
-			results.add(OrganizationDtoAssembler.assemDto(organization));
+		for (Organization organization : organizationApplication.findChildrenOfOrganization(OrganizationAssembler.toEntity(organizationDTO), date)) {
+			results.add(OrganizationAssembler.toDTO(organization));
 		}
 		return results;
 	}
 
 	
 	public OrganizationDTO getOrganizationTree() {
-		// Organization organization = Organization.getTopOrganization();
-		// OrganizationDTO top = OrganizationDTO.generateDtoBy(organization);
-		// findChildrenOfOrganization(top, organization);
-
-		OrganizationDTO top = _getOrganizationTree();
-		return top;
-	}
-
-	
-	public InvokeResult createDepartment(Long parentId, OrganizationDTO departmentDTO) {
-		Organization parent = baseApplication.getEntity(Organization.class, parentId);
-		try {
-			return InvokeResult.success(organizationApplication.createDepartment(parent, 
-					(Department) OrganizationDtoAssembler.assemEntity(departmentDTO)).getId());
-		} catch (SnIsExistException exception) {
-    		return InvokeResult.failure("机构编码: " + departmentDTO.getSn() + " 已被使用！");
-    	} catch (NameExistException exception) {
-    		return InvokeResult.failure(parent.getName() + "下已经存在名称为: " + departmentDTO.getName() + "的机构！");
-    	} catch (Exception exception) {
-    		return InvokeResult.failure("创建部门失败！");
-    	}
-	}
-
-	
-	public void terminateEmployeeOrganizationRelation(Long organizationId, EmployeeDTO[] employeeDtos) {
-		Set<Employee> employees = new HashSet<Employee>();
-		for (EmployeeDTO employeeDTO : employeeDtos) {
-			employees.add(EmployeeDtoAssembler.assemEntity(employeeDTO));
-		}
-		organizationApplication.terminateEmployeeOrganizationRelation(baseApplication.getEntity(Organization.class, organizationId), employees);
-	}
-
-	
-	public OrganizationDTO getOrganizationById(Long id) {
-		Organization organization = baseApplication.getEntity(Organization.class, id);
-		return organization == null ? null : OrganizationDtoAssembler.assemDto(organization);
-	}
-
-	private OrganizationDTO _getOrganizationTree() {
 		StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.organisation.facade.dto.OrganizationDTO"
 				+ "(r.id, olm.commissioner.id, r.name, r.sn, r.createDate, r.terminateDate, r.description, r.category, r.version) "
 				+ "FROM OrganizationLineManagement olm LEFT JOIN olm.responsible r "
@@ -146,7 +103,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 				+ "(r.id, olm.commissioner.id, r.name, r.sn, r.createDate, r.terminateDate, r.description, r.category, r.version) "
 				+ "FROM OrganizationLineManagement olm LEFT JOIN olm.responsible r "
 				+ "WHERE olm.commissioner is not null AND  olm.toDate > :queryDate AND olm.fromDate <= :queryDate ORDER BY r.id ASC");
-		@SuppressWarnings("unchecked")
+
 		List<OrganizationDTO> all = queryChannel.createJpqlQuery(jpql.toString()).addParameter("queryDate", new Date()).list();
 		LinkedHashMap<Long, OrganizationDTO> map = new LinkedHashMap<Long, OrganizationDTO>();
 		for (OrganizationDTO organizationDTO : all) {
@@ -160,24 +117,47 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 			}
 			map.get(pid).getChildren().add(organizationDTO);
 		}
-
-		// _findChildrenOfOrganization(top, all);
 		return top;
 	}
 
-	private void _findChildrenOfOrganization(OrganizationDTO parent, List<OrganizationDTO> all) {
-		for (OrganizationDTO organizationDTO : all) {
-			if (organizationDTO.getPid() == parent.getId()) {
-				parent.getChildren().add(organizationDTO);
-				_findChildrenOfOrganization(organizationDTO, all);
+	
+	public InvokeResult createDepartment(Long parentId, OrganizationDTO departmentDTO) {
+		Organization parent = baseApplication.getEntity(Organization.class, parentId);
+		try {
+			return InvokeResult.success(organizationApplication.createDepartment(parent, 
+					(Department) OrganizationAssembler.toEntity(departmentDTO)).getId());
+		} catch (SnIsExistException exception) {
+    		return InvokeResult.failure("机构编码: " + departmentDTO.getSn() + " 已被使用！");
+    	} catch (NameExistException exception) {
+    		return InvokeResult.failure(parent.getName() + "下已经存在名称为: " + departmentDTO.getName() + "的机构！");
+    	} catch (Exception exception) {
+    		return InvokeResult.failure("创建部门失败！");
+    	}
+	}
+
+	
+	public InvokeResult terminateEmployeeOrganizationRelation(Long organizationId, EmployeeDTO[] employeeDtos) {
+		try {
+			Set<Employee> employees = new HashSet<Employee>();
+			for (EmployeeDTO employeeDTO : employeeDtos) {
+				employees.add(EmployeeAssembler.toEntity(employeeDTO));
 			}
+			organizationApplication.terminateEmployeeOrganizationRelation(baseApplication.getEntity(Organization.class, organizationId), employees);
+			return InvokeResult.success();
+		} catch (Exception e) {
+			return InvokeResult.failure(e.getMessage());
 		}
+	}
+
+	
+	public OrganizationDTO getOrganizationById(Long id) {
+		return OrganizationAssembler.toDTO(baseApplication.getEntity(Organization.class, id));
 	}
 
 	
 	public InvokeResult updateOrganization(OrganizationDTO organizationDTO) {
 		try {
-			baseApplication.updateParty(OrganizationDtoAssembler.assemEntity(organizationDTO));
+			baseApplication.updateParty(OrganizationAssembler.toEntity(organizationDTO));
 			return InvokeResult.success();
 		} catch (SnIsExistException exception) {
     		return InvokeResult.failure("机构编码: " + organizationDTO.getSn() + " 已被使用！");
@@ -192,7 +172,7 @@ public class OrganizationFacadeImpl implements OrganizationFacade {
 	
 	public InvokeResult terminateOrganization(OrganizationDTO organizationDTO) {
 		try {
-			baseApplication.terminateParty(OrganizationDtoAssembler.assemEntity(organizationDTO));
+			baseApplication.terminateParty(OrganizationAssembler.toEntity(organizationDTO));
 			return InvokeResult.success();
 		} catch (TerminateRootOrganizationException exception) {
 			return InvokeResult.failure("不能撤销根机构！");

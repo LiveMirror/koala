@@ -12,28 +12,23 @@ import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.utils.Page;
 import org.dayatang.querychannel.QueryChannelService;
-import org.openkoala.organisation.NameExistException;
-import org.openkoala.organisation.OrganizationHasPrincipalYetException;
-import org.openkoala.organisation.PostExistException;
-import org.openkoala.organisation.SnIsExistException;
-import org.openkoala.organisation.TerminateHasEmployeePostException;
+import org.dayatang.utils.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.application.BaseApplication;
 import org.openkoala.organisation.application.PostApplication;
-import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.Post;
+import org.openkoala.organisation.core.NameExistException;
+import org.openkoala.organisation.core.OrganizationHasPrincipalYetException;
+import org.openkoala.organisation.core.PostExistException;
+import org.openkoala.organisation.core.SnIsExistException;
+import org.openkoala.organisation.core.TerminateHasEmployeePostException;
+import org.openkoala.organisation.core.domain.Organization;
+import org.openkoala.organisation.core.domain.Post;
 import org.openkoala.organisation.facade.PostFacade;
-import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.PostDTO;
-import org.openkoala.organisation.facade.impl.assembler.PostDtoAssembler;
-import org.springframework.transaction.annotation.Transactional;
+import org.openkoala.organisation.facade.impl.assembler.PostAssembler;
 
 @Named
-//@Transactional(value = "transactionManager_org")
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-//@Stateless(name = "PostApplication")
-//@Remote
 public class PostFacadeImpl implements PostFacade {
 
 	@Inject
@@ -77,28 +72,28 @@ public class PostFacadeImpl implements PostFacade {
 		return queryResult(example, jpql, "_post", conditionVals, currentPage, pagesize);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Page<PostDTO> queryResult(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals, int currentPage, int pagesize) {
 		assembleJpqlAndConditionValues(example, jpql, conditionPrefix, conditionVals);
 		Page<Post> postPage = getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pagesize).pagedList();
-
 		return new Page<PostDTO>(postPage.getStart(), postPage.getResultCount(), pagesize, transformToDtos(postPage.getData()));
 	}
 
 	private void assembleJpqlAndConditionValues(PostDTO example, StringBuilder jpql, String conditionPrefix, List<Object> conditionVals) {
 		String andCondition = " and " + conditionPrefix;
 		if (!StringUtils.isBlank(example.getName())) {
-			jpql.append(andCondition);
-			jpql.append(".name like ?");
+			jpql.append(andCondition)
+			    .append(".name like ?");
 			conditionVals.add(MessageFormat.format("%{0}%", example.getName()));
 		}
 		if (!StringUtils.isBlank(example.getSn())) {
-			jpql.append(andCondition);
-			jpql.append(".sn like ?");
+			jpql.append(andCondition)
+			    .append(".sn like ?");
 			conditionVals.add(MessageFormat.format("%{0}%", example.getSn()));
 		}
 		if (!StringUtils.isBlank(example.getDescription())) {
-			jpql.append(andCondition);
-			jpql.append(".description like ?");
+			jpql.append(andCondition)
+			    .append(".description like ?");
 			conditionVals.add(MessageFormat.format("%{0}%", example.getDescription()));
 		}
 	}
@@ -106,22 +101,21 @@ public class PostFacadeImpl implements PostFacade {
 	private List<PostDTO> transformToDtos(List<Post> posts) {
 		List<PostDTO> results = new ArrayList<PostDTO>();
 		for (Post post : posts) {
-			results.add(PostDtoAssembler.assemDto(post));
+			results.add(PostAssembler.toDTO(post));
 		}
 		return results;
 	}
 
 	
 	public PostDTO getPostById(Long id) {
-		Post post = baseApplication.getEntity(Post.class, id);
-		return post == null ? null : PostDtoAssembler.assemDto(post);
+		return PostAssembler.toDTO(baseApplication.getEntity(Post.class, id));
 	}
 
 	
 	public Set<PostDTO> findPostsByOrganizationId(Long organizationId) {
 		Set<PostDTO> results = new HashSet<PostDTO>();
 		for (Post post : postApplication.findPostsByOrganizationId(organizationId)) {
-			results.add(PostDtoAssembler.assemDto(post));
+			results.add(PostAssembler.toDTO(post));
 		}
 		return results;
 	}
@@ -129,7 +123,7 @@ public class PostFacadeImpl implements PostFacade {
 	
 	public InvokeResult createPost(PostDTO postDTO) {
 		try {
-			baseApplication.saveParty(PostDtoAssembler.assemEntity(postDTO));
+			baseApplication.saveParty(PostAssembler.toEntity(postDTO));
 			return InvokeResult.success();
 		} catch (NameExistException exception) {
 			return InvokeResult.failure("岗位名称: " + postDTO.getName() + " 已经存在！");
@@ -148,7 +142,7 @@ public class PostFacadeImpl implements PostFacade {
 	
 	public InvokeResult updatePostInfo(PostDTO postDTO) {
 		try {
-			baseApplication.updateParty(PostDtoAssembler.assemEntity(postDTO));
+			baseApplication.updateParty(PostAssembler.toEntity(postDTO));
 			return InvokeResult.success();
 		} catch (PostExistException exception) {
 			return InvokeResult.failure("请不要在相同机构中创建相同职务的岗位！");
@@ -167,7 +161,7 @@ public class PostFacadeImpl implements PostFacade {
 	
 	public InvokeResult terminatePost(PostDTO postDTO) {
 		try {
-			baseApplication.terminateParty(PostDtoAssembler.assemEntity(postDTO));
+			baseApplication.terminateParty(PostAssembler.toEntity(postDTO));
 			return InvokeResult.success();
 		} catch (TerminateHasEmployeePostException exception) {
             return InvokeResult.failure("还有员工在此岗位上任职，不能撤销！");
@@ -181,7 +175,7 @@ public class PostFacadeImpl implements PostFacade {
 	public InvokeResult terminatePosts(PostDTO[] postDtos) {
 		Set<Post> posts = new HashSet<Post>();
 		for (PostDTO postDTO : postDtos) {
-			posts.add(PostDtoAssembler.assemEntity(postDTO));
+			posts.add(PostAssembler.toEntity(postDTO));
 		}
 		
 		try {

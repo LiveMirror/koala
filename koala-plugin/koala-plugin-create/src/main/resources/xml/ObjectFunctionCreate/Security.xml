@@ -78,7 +78,7 @@
 <!-- 	验证码 -->
 		<dependency>
 			<groupId>com.octo.captcha</groupId>
-			<artifactId>jcaptcha</artifactId>
+			<artifactId>jcaptcha-api</artifactId>
 			<version>${jcaptcha.version}</version>
 		</dependency>
 		<dependency>
@@ -96,6 +96,25 @@
          ]]>
 		</property>
 	</XmlAdd>
+	
+	<XmlAdd>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/resources/META-INF/spring/root.xml</property>
+		<property name="uri">http://www.springframework.org/schema/beans</property>
+		<property name="parentSearch"><![CDATA[/xmlns:beans]]></property>
+		<property name="selfSearch"><![CDATA[/xmlns:beans/xmlns:import[@resource='classpath:META-INF/spring/koala-security-http.xml']]]></property>
+		<property name="xmlContent">
+         <![CDATA[
+		    <?xml version="1.0" encoding="UTF-8"?>
+		    <root>
+				<import resource="classpath*:META-INF/spring/persistence-context.xml" />
+				<import resource="classpath:META-INF/spring/security-shiro.xml" />
+			    <import resource="classpath*:META-INF/spring/security-shared-persistence.xml" />
+			     <import resource="classpath*:META-INF/spring/security-extend.xml" />
+			</root>
+			  ]]>
+		</property>
+	</XmlAdd>
+	
 	
 	
 </XmlParse> 

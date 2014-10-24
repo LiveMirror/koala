@@ -23,7 +23,14 @@
         </dependency>
         <dependency> 
             <groupId>org.openkoala.gqc</groupId>  
-            <artifactId>koala-gqc-applicationImpl</artifactId>
+            <artifactId>koala-gqc-facade</artifactId>
+            <version>${koala.version}</version>
+        </dependency>
+        <dependency> 
+            <groupId>org.openkoala.gqc</groupId>  
+            <artifactId>koala-gqc-facade-impl</artifactId>
+            <version>${koala.version}</version>
+			<scope>runtime</scope>
         </dependency>
     	<dependency> 
             <groupId>org.openkoala.gqc</groupId>  

@@ -34,7 +34,7 @@ public class Project implements Serializable {
 
 	private static final String BUSINESS_LOG_PACKAGE = "org.openkoala.businesslog.model";
 
-	private static final String ORGANISATION_PACKAGE = "org.openkoala.organisation.domain";
+	private static final String ORGANISATION_PACKAGE = "org.openkoala.organisation.core.domain";
 
 	private static final String GENERATY_QUERY_PACKAGE = "org.openkoala.gqc.core.domain";
 

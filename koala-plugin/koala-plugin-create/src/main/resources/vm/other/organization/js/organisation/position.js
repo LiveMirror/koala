@@ -18,7 +18,7 @@ var position = function(){
 	 */
 	var add = function(grid){
 		dataGrid = grid;
-		$.get( contextPath + '/pages/organisation/positionTemplate.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/position-template.jsp').done(function(data){
 			init(data);
 		});
 	};
@@ -27,7 +27,7 @@ var position = function(){
 	 */
 	var modify = function(id, grid){
 		dataGrid = grid;
-		$.get( contextPath + '/pages/organisation/positionTemplate.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/position-template.jsp').done(function(data){
 			init(data, id);
 		});
 	};
@@ -51,7 +51,7 @@ var position = function(){
 		    'data': JSON.stringify(objects),
 		    'dataType': 'json'
 		 }).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dataGrid.message({
 					type: 'success',
 					content: '撤销成功'
@@ -60,13 +60,13 @@ var position = function(){
 			}else{
 				dataGrid.message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});
 			}
 		}).fail(function(data){
 				dataGrid.message({
 					type: 'error',
-					content: data.result
+					content: '删除失败'
 				});
 			});
 	};
@@ -114,7 +114,7 @@ var position = function(){
 	 * 部门选择
 	 */
 	var selectDepartments = function(){
-		$.get( contextPath + '/pages/organisation/selectDepartmentTemplate.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/select-department-template.jsp').done(function(data){
 			var departmentTreeDialog = $(data);
             departmentTreeDialog.find('.modal-body').css({height:'325px'});
 			departmentTree = departmentTreeDialog.find('.tree');
@@ -125,13 +125,13 @@ var position = function(){
 				positionDepartment.find('[data-toggle="item"]').html(departmentName);
 				positionDepartment.trigger('keydown');
 			}).end().modal({
-					backdrop: false,
-					keyboard: false
-				}).on({
-					'hidden.bs.modal': function(){
-						$(this).remove();
-					}
-				});
+				backdrop: false,
+				keyboard: false
+			}).on({
+				'hidden.bs.modal': function(){
+					$(this).remove();
+				}
+			});
 		});
 	};
 	/**
@@ -141,7 +141,7 @@ var position = function(){
 		departmentTree.parent().loader({
 			opacity: 0
 		});
-        $.get(contextPath  + '/organization/orgTree.koala').done(function(data){
+        $.get(contextPath  + '/organization/org-tree.koala').done(function(data){
            departmentTree.parent().loader('hide');
            var zNodes = new Array();
             $.each(data, function(){
@@ -168,16 +168,16 @@ var position = function(){
                 multiSelect: false,
                 cacheItems: true
             }).on({
-                    'selectParent': function(event, data){
-                        var data = data.data;
-                        departmentId = data.id;
-                        departmentName = data.name;
-                    },
-                    'selectChildren': function(event, data){
-                        departmentId = data.id;
-                        departmentName = data.name;
-                    }
-                });
+                'selectParent': function(event, data){
+                    var data = data.data;
+                    departmentId = data.id;
+                    departmentName = data.name;
+                },
+                'selectChildren': function(event, data){
+                    departmentId = data.id;
+                    departmentName = data.name;
+                }
+            });
         });
 	};
     var getChildrenData = function(nodes, items){
@@ -203,7 +203,7 @@ var position = function(){
 	 */
 	var loadJobList = function(id){
 		$.get( contextPath + '/job/query-all.koala').done(function(data){
-			var items = data.data;
+			var items = data;
 			var contents = new Array();
 			for(var i= 0, j=items.length; i<j; i++){
 				var item = items[i];
@@ -229,7 +229,7 @@ var position = function(){
 	var setData = function(id){
 		$.get(baseUrl+'get/'+id+'.koala')
 			.done(function(result){
-				positionDto = result.data;
+				positionDto = result;
 				positionSn.val(positionDto.sn);
 				departmentInput.val(positionDto.organizationId);
 				positionName.val(positionDto.name);
@@ -257,12 +257,12 @@ var position = function(){
 			url =  baseUrl + 'update.koala?organizationId='+departmentInput.val();
 		}
 		$.post(url, getAllData(id)).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dialog.trigger('complete');
 			}else {
 				dialog.find('.modal-content').message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});
 				refreshToken(dialog.find('input[name="koala.token"]'));
 			}

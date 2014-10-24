@@ -1,7 +1,7 @@
 package org.openkoala.security.org.core.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.openkoala.organisation.domain.Employee;
+import org.openkoala.organisation.core.domain.Employee;
 import org.openkoala.security.core.domain.User;
 
 import javax.persistence.DiscriminatorValue;

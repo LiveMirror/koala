@@ -24,6 +24,7 @@ var userManager = function() {
      */
 	var add = function(grid) {
 		dataGrid = grid;
+        console.log(dataGrid);
 		$.get(contextPath + '/pages/auth/user-template.jsp').done(function(data) {
 			addInit(data);
 		});
@@ -52,7 +53,7 @@ var userManager = function() {
 					content : '保存成功'
 				});
 				$(this).modal('hide');
-				dataGrid.grid('refresh');
+                dataGrid.grid('refresh');
 			}
 		});
 	}
@@ -300,7 +301,7 @@ var userManager = function() {
      * 选择员工
      */
     var selectEmployees = function() {
-        $.get(contextPath + '/pages/auth/select-employee.jsp').done(function(data) {
+        $.get(contextPath + '/pages/auth/employee-select.jsp').done(function(data) {
             var dialog = $(data);
             //显示对话框数据
             dialog.modal({
@@ -384,4 +385,7 @@ var userManager = function() {
 		available : available,
 		forbidden : forbidden
 	};
-}; 
+};
+
+
+

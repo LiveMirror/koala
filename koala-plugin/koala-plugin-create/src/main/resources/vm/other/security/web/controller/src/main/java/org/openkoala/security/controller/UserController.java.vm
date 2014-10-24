@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 用户控制器。
+ * 分页都将采用POST请求方式，因GET请求搜索时携带中文会导致乱码。
  *
- * @author luzhao
+ * @author lucas
  */
 @Controller
 @RequestMapping("/auth/user")
@@ -186,13 +187,13 @@ public class UserController {
      * 根据条件分页查询用户。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQuery", method = RequestMethod.POST)
     public Page<UserDTO> pagingQuery(int page, int pagesize, UserDTO queryUserCondition) {
         return securityAccessFacade.pagingQueryUsers(page, pagesize, queryUserCondition);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/findInfoOfUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/findInfoOfUser", method = RequestMethod.POST)
     public InvokeResult findInfoOfUser(Long userId) {
         return securityAccessFacade.findInfoOfUser(userId);
     }
@@ -201,7 +202,7 @@ public class UserController {
      * 根据用户ID分页查找已经授权的角色。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryGrantRoleByUserId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryGrantRoleByUserId", method = RequestMethod.POST)
     public Page<RoleDTO> pagingQueryRolesByUserId(int page, int pagesize, Long userId) {
         return securityAccessFacade.pagingQueryGrantRolesByUserId(page, pagesize, userId);
     }
@@ -210,7 +211,7 @@ public class UserController {
      * 根据用户ID分页查询已经授权的权限
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryGrantPermissionByUserId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryGrantPermissionByUserId", method = RequestMethod.POST)
     public Page<PermissionDTO> pagingQueryGrantPermissionByUserId(int page, int pagesize, Long userId) {
         return securityAccessFacade.pagingQueryGrantPermissionByUserId(page, pagesize, userId);
     }
@@ -219,7 +220,7 @@ public class UserController {
      * 根据条件分页查询还未授权的角色
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryNotGrantRoles", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryNotGrantRoles", method = RequestMethod.POST)
     public Page<RoleDTO> pagingQueryNotGrantRoles(int page, int pagesize, Long userId, RoleDTO queryRoleCondition) {
         return securityAccessFacade.pagingQueryNotGrantRoles(page, pagesize, queryRoleCondition, userId);
     }
@@ -228,7 +229,7 @@ public class UserController {
      * 根据用户ID分页查找还未授权的权限。
      */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryNotGrantPermissions", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryNotGrantPermissions", method = RequestMethod.POST)
     public Page<PermissionDTO> pagingQueryNotGrantPermissions(int page, int pagesize, PermissionDTO queryPermissionCondition, Long userId) {
         return securityAccessFacade.pagingQueryNotGrantPermissionsByUserId(page, pagesize, queryPermissionCondition, userId);
     }

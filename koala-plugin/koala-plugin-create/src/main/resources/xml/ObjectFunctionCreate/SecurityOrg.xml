@@ -27,6 +27,8 @@
 		<import resource="classpath:META-INF/spring/security-shiro.xml" />
 		<import resource="classpath*:META-INF/spring/organisation-shared-persistence.xml"></import>
 	    <import resource="classpath*:META-INF/spring/security-shared-persistence.xml" />
+	     <import resource="classpath*:META-INF/spring/security-extend.xml" />
+	    
 	</root>
          ]]>
 		</property>
@@ -73,7 +75,7 @@
 <!-- 	验证码 -->
 		<dependency>
 			<groupId>com.octo.captcha</groupId>
-			<artifactId>jcaptcha</artifactId>
+			<artifactId>jcaptcha-api</artifactId>
 			<version>${jcaptcha.version}</version>
 		</dependency>
 		<dependency>

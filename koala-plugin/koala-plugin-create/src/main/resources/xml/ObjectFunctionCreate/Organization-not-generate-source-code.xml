@@ -4,13 +4,6 @@
 
 	<property name="description">Koala-Organization-not-generate-source-code</property>
 
-
-	<VelocityDirObject>
-		<property name="vmDir">vm/other/organization_action</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/java/org/openkoala/organisation/web/controller
-		</property>
-	</VelocityDirObject>
-
 	<XmlAdd>
 		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/pom.xml</property>
 		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
@@ -27,13 +20,24 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.organisation</groupId>
+			<artifactId>koala-organisation-conf</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.organisation</groupId>
 			<artifactId>koala-organisation-application</artifactId>
 			<version>${koala.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openkoala.organisation</groupId>
-			<artifactId>koala-organisation-applicationImpl</artifactId>
+			<artifactId>koala-organisation-facade</artifactId>
 			<version>${koala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.organisation</groupId>
+			<artifactId>koala-organisation-facade-impl</artifactId>
+			<version>${koala.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 	</root>
          ]]>

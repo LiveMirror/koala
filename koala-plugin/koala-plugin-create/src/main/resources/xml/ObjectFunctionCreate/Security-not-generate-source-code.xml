@@ -3,6 +3,7 @@
 <XmlParse>
 
 	<property name="description">Koala-Security-Not-General-Source-Code</property>
+	
 <XmlAdd>
 		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/pom.xml</property>
 		<property name="uri">http://maven.apache.org/POM/4.0.0</property>
@@ -22,10 +23,20 @@
 			<artifactId>koala-security-application</artifactId>
 			<version>${koala.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-core</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-conf</artifactId>
+			<version>${koala.version}</version>
+		</dependency>
 		 <dependency>
 			<groupId>org.openkoala.security</groupId>
 			<artifactId>koala-security-facade</artifactId>
-			<version>${project.parent.version}</version>
+			<version>${koala.version}</version>
 		</dependency>
 		 <dependency>
 			<groupId>org.openkoala.security</groupId>
