@@ -285,7 +285,7 @@
 	    <nav class="navbar navbar-default">
 	        <a class="navbar-brand" href="#">
 	        	<img src="${contextPath}/images/global.logo.png"/>
-	        	<span style="font-weight:800;vertical-align: 55%;">Koala权限系统</span>
+	        	<span style="font-weight:800;">Koala权限系统</span>
 	        </a>
 	        <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <div class="btn-group navbar-right">
