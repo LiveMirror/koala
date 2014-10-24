@@ -1,9 +1,6 @@
 package org.openkoala.security.org.facade.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,8 +14,8 @@ import org.openkoala.organisation.core.domain.Employee;
 import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
-import org.openkoala.security.application.SecurityDBInitApplication;
-import org.openkoala.security.core.NullArgumentException;
+import org.openkoala.security.application.systeminit.SystemInit;
+import org.openkoala.security.application.systeminit.SystemInitFactory;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
@@ -27,7 +24,6 @@ import org.openkoala.security.core.domain.PageElementResource;
 import org.openkoala.security.core.domain.Permission;
 import org.openkoala.security.core.domain.Role;
 import org.openkoala.security.core.domain.Scope;
-import org.openkoala.security.core.domain.SecurityResource;
 import org.openkoala.security.core.domain.UrlAccessResource;
 import org.openkoala.security.org.core.domain.EmployeeUser;
 import org.openkoala.security.org.core.domain.OrganisationScope;
@@ -38,8 +34,6 @@ import org.openkoala.security.org.facade.command.TerminateUserFromPermissionInSc
 import org.openkoala.security.org.facade.command.TerminateUserFromRoleInScopeCommand;
 import org.openkoala.security.org.facade.dto.AuthorizationCommand;
 import org.openkoala.security.org.facade.impl.assembler.EmployeeUserAssembler;
-import org.openkoala.security.org.facade.impl.systeminit.SystemInit;
-import org.openkoala.security.org.facade.impl.systeminit.SystemInitFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +42,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Named
 public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityOrgConfigFacadeImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityOrgConfigFacadeImpl.class);
 
-	private static SystemInit systemInit = SystemInitFactory.INSTANCE.getSystemInit();
-	
     @Inject
     private BaseApplication baseApplication;
 
@@ -64,9 +56,6 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
     @Inject
     private OrganizationApplication organizationApplication;
 
-    @Inject
-    private SecurityDBInitApplication securityDBInitApplication;
-
     private QueryChannelService queryChannelService;
 
     public QueryChannelService getQueryChannelService() {
@@ -76,28 +65,28 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
         return queryChannelService;
     }
 
-	@Override
-	public InvokeResult createEmployeeUser(CreateEmpolyeeUserCommand command) {
-		try {
-			EmployeeUser employeeUser = EmployeeUserAssembler.toEmployeeUser(command);
+    @Override
+    public InvokeResult createEmployeeUser(CreateEmpolyeeUserCommand command) {
+        try {
+            EmployeeUser employeeUser = EmployeeUserAssembler.toEmployeeUser(command);
             // 可能不选择员工。
-            if(command.getEmployeeId() != null){
-                Employee employee =  baseApplication.getEntity(Employee.class,command.getEmployeeId());
+            if (command.getEmployeeId() != null) {
+                Employee employee = baseApplication.getEntity(Employee.class, command.getEmployeeId());
                 employeeUser.setEmployee(employee);
             }
             securityConfigApplication.createActor(employeeUser);
             return InvokeResult.success();
-		} catch (NullArgumentException e) {
-			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("名称或者账户不能为空。");
-		} catch (UserAccountIsExistedException e) {
-			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("账号已经存在。");
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("添加用户失败。");
-		}
-	}
+        } catch (IllegalArgumentException e) {
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("名称或者账户不能为空。");
+        } catch (UserAccountIsExistedException e) {
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("账号已经存在。");
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return InvokeResult.failure("添加用户失败。");
+        }
+    }
 
     @Override
     public InvokeResult terminateUserFromRoleInScope(Long userId, TerminateUserFromRoleInScopeCommand[] commands) {
@@ -132,23 +121,23 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
         Organization organization = organizationApplication.getOrganizationById(command.getOrganizationId());
         Scope scope = findOrganizationScope(organization);
 
-        if(scope == null){
-            scope = new OrganisationScope(command.getOrganizationName(),organization);
+        if (scope == null) {
+            scope = new OrganisationScope(command.getOrganizationName(), organization);
             securityConfigApplication.createScope(scope);
         }
 
-        for(Long authorityId : command.getAuthorityIds()){
+        for (Long authorityId : command.getAuthorityIds()) {
             Authority authority = securityAccessApplication.getAuthority(authorityId);
-            securityConfigApplication.grantActorToAuthorityInScope(actor,authority,scope);
+            securityConfigApplication.grantActorToAuthorityInScope(actor, authority, scope);
         }
 
         return InvokeResult.success();
     }
 
-    private OrganisationScope findOrganizationScope(Organization organization){
-       OrganisationScope organisationScope = (OrganisationScope) getQueryChannelService()//
-                .createNamedQuery("OrganisationScope.hasOrganizationOfScope")//
-                .addParameter("organization",organization)//
+    private OrganisationScope findOrganizationScope(Organization organization) {
+        OrganisationScope organisationScope = (OrganisationScope) getQueryChannelService()
+                .createNamedQuery("OrganisationScope.hasOrganizationOfScope")
+                .addParameter("organization", organization)
                 .singleResult();
         return organisationScope;
     }
@@ -158,8 +147,8 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
         try {
             EmployeeUser employeeUser = securityAccessApplication.getActorById(command.getId());
             // 可能不选择员工。
-            if(command.getEmployeeId() != null){
-                Employee employee =  baseApplication.getEntity(Employee.class,command.getEmployeeId());
+            if (command.getEmployeeId() != null) {
+                Employee employee = baseApplication.getEntity(Employee.class, command.getEmployeeId());
                 employeeUser.setEmployee(employee);
             }
             employeeUser.setName(command.getName());
@@ -169,7 +158,7 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 
             securityConfigApplication.createActor(employeeUser);
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("名称或者账户不能为空。");
         } catch (UserAccountIsExistedException e) {
@@ -183,117 +172,46 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 
     @Override
     public void initSecurityOrgSystem() {
-        if(securityAccessApplication.hasUserExisted()){
+        if (securityAccessApplication.hasUserExisted()) {
             return;
         }
-        EmployeeUser employeeUser = intiEmployeeUser();
-        Role role = securityDBInitApplication.initRole();
-        List<MenuResource> menuResources = initMenuResources();
-        List<PageElementResource> pageElementResources = initPageElementResources();
-        List<UrlAccessResource> urlAccessResources = initUrlAccessResources();
-        securityConfigApplication.grantAuthorityToActor(role,employeeUser);
-        securityConfigApplication.grantSecurityResourcesToAuthority(menuResources,role);
-        securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResources,role);
-        securityConfigApplication.grantSecurityResourcesToAuthority(urlAccessResources,role);
+        SystemInit init = SystemInitFactory.INSTANCE.getSystemInit("/META-INF/securityOrgSystemInit/systemInit.xml");
+        EmployeeUser employeeUser = intiEmployeeUser(init.getUser());
+        Role role = init.createRole();
+        List<MenuResource> menuResources = init.createMenuResourceAndReturnNeedGrant();
+        List<PageElementResource> pageElementResources = init.createPageElementResources();
+        List<UrlAccessResource> urlAccessResources = init.createUrlAccessResources();
+        securityConfigApplication.grantAuthorityToActor(role, employeeUser);
+        securityConfigApplication.grantSecurityResourcesToAuthority(menuResources, role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResources, role);
+        securityConfigApplication.grantSecurityResourcesToAuthority(urlAccessResources, role);
     }
-    
+
     @Override
     public InvokeResult grantAuthorityToActorInScope(AuthorizationCommand command) {
         Actor actor = securityAccessApplication.getActorById(command.getActorId());
-        for(Long authorityId : command.getAuthorityIds()) {
+        for (Long authorityId : command.getAuthorityIds()) {
             Authority authority = securityAccessApplication.getAuthority(authorityId);
-            if(command.getOrganizationId() != null) {
+            if (command.getOrganizationId() != null) {
                 Organization organization = organizationApplication.getOrganizationById(command.getOrganizationId());
                 Scope scope = findOrganizationScope(organization);
-                if(scope == null){
-                    scope = new OrganisationScope(command.getOrganizationName(),organization);
+                if (scope == null) {
+                    scope = new OrganisationScope(command.getOrganizationName(), organization);
                     securityConfigApplication.createScope(scope);
                 }
-                securityConfigApplication.grantActorToAuthorityInScope(actor,authority,scope);
-            }else{
-                securityConfigApplication.grantAuthorityToActor(authority,actor);
+                securityConfigApplication.grantActorToAuthorityInScope(actor, authority, scope);
+            } else {
+                securityConfigApplication.grantAuthorityToActor(authority, actor);
             }
         }
         return InvokeResult.success();
     }
 
-    private EmployeeUser intiEmployeeUser() {
-    	SystemInit.User initEmployeeUser= systemInit.getUser();
-        EmployeeUser employeeUser = new EmployeeUser(initEmployeeUser.getName(), initEmployeeUser.getUsername());
-        employeeUser.setCreateOwner(initEmployeeUser.getCreateOwner());
-        employeeUser.setDescription(initEmployeeUser.getDescription());
+    private EmployeeUser intiEmployeeUser(SystemInit.User initUser) {
+        EmployeeUser employeeUser = new EmployeeUser(initUser.getName(), initUser.getUsername());
+        employeeUser.setCreateOwner(initUser.getCreateOwner());
+        employeeUser.setDescription(initUser.getDescription());
         securityConfigApplication.createActor(employeeUser);
         return employeeUser;
     }
-    
-    public List<MenuResource> initMenuResources() {
-    	List<MenuResource> menuResources = new ArrayList<MenuResource>();
-    	for (SystemInit.MenuResource each : getParentMenuResources()) {
-    		MenuResource menuResource = transformMenuResourceEntity(each);
-    		securityConfigApplication.createSecurityResource(menuResource);
-    		menuResources.add(menuResource);
-    		createChildrenMenuResource(menuResource, each, menuResources);
-    	}
-        return menuResources;
-    }
-    
-    public List<PageElementResource> initPageElementResources() {
-    	List<PageElementResource> results = new ArrayList<PageElementResource>();
-    	for (SystemInit.PageElementResource each : systemInit.getPageElementResource()) {
-    		PageElementResource pageElementResource = new PageElementResource(each.getName(), each.getUrl());
-    		results.add(pageElementResource);
-    	}
-    	SecurityResource.batchSave(results);
-
-//        // 删除授权权限。
-//        Iterator<PageElementResource> resultIterator = results.listIterator();
-//        while(resultIterator.hasNext()){
-//            PageElementResource result = resultIterator.next();
-//            if(result.getIdentifier().contains("GrantPermission")){
-//                resultIterator.remove();
-//            }
-//        }
-
-        return results;
-    }
-
-    public List<UrlAccessResource> initUrlAccessResources() {
-    	List<UrlAccessResource> results = new ArrayList<UrlAccessResource>();
-    	for (SystemInit.UrlAccessResource each : systemInit.getUrlAccessResource()) {
-    		UrlAccessResource urlAccessResource = new UrlAccessResource(each.getName(), each.getUrl());
-    		results.add(urlAccessResource);
-    	}
-        SecurityResource.batchSave(results);
-        return results;
-    }
-    
-    private MenuResource transformMenuResourceEntity(SystemInit.MenuResource initMenuResource) {
-		MenuResource menuResource = new MenuResource(initMenuResource.getName());
-		menuResource.setDescription(initMenuResource.getDescription());
-		menuResource.setMenuIcon(initMenuResource.getMenuIcon());
-		menuResource.setUrl(initMenuResource.getUrl());
-		return menuResource;
-	}
-    
-    private void createChildrenMenuResource(MenuResource menuResource, SystemInit.MenuResource parentMenuResource, List<MenuResource> menuResources) {
-    	for (SystemInit.MenuResource each : systemInit.getMenuResource()) {
-    		if (Integer.valueOf(parentMenuResource.getId()).equals(each.getPid())) {
-    			MenuResource children = transformMenuResourceEntity(each);
-    			menuResources.add(children);
-    			securityConfigApplication.createChildToParent(children, menuResource.getId());
-    			createChildrenMenuResource(children, each, menuResources);
-    		}
-    	}
-	}
-
-    private List<SystemInit.MenuResource> getParentMenuResources() {
-    	List<SystemInit.MenuResource> parentMenuResources = new ArrayList<SystemInit.MenuResource>();
-    	for (SystemInit.MenuResource each : systemInit.getMenuResource()) {
-    		if (each.getPid() == null) {
-    			parentMenuResources.add(each);
-    		}
-    	}
-    	return parentMenuResources;
-    }
-
 }

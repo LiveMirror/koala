@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/systemInit"
-	xmlns:tns="http://www.example.org/systemInit" elementFormDefault="qualified">
+        elementFormDefault="qualified">
 
 	<element name="systemInit">
 		<complexType>
 			<sequence>
-				<element name="User">
+				<element name="user">
 					<complexType>
 						<attribute name="name" type="string" use="required" />
 						<attribute name="username" type="string" use="required" />
@@ -27,18 +27,21 @@
 						<attribute name="menuIcon" type="string" fixed="glyphicon  glyphicon-list-alt" />
 						<attribute name="url" type="string" />
 						<attribute name="pid" type="int" />
+						<attribute name="notGrant" type="boolean" fixed="true" />
 					</complexType>
 				</element>
 				<element name="urlAccessResource" maxOccurs="unbounded">
 					<complexType>
 						<attribute name="name" type="string" use="required" />
 						<attribute name="url" type="string" use="required" />
+						<attribute name="notGrant" type="boolean" fixed="true" />
 					</complexType>
 				</element>
 				<element name="pageElementResource" maxOccurs="unbounded">
 					<complexType>
 						<attribute name="name" type="string" use="required" />
 						<attribute name="url" type="string" use="required" />
+						<attribute name="notGrant" type="boolean" fixed="true" />
 					</complexType>
 				</element>
 			</sequence>
