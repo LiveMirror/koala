@@ -2,8 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <form id="jobSearchForm" target="_self" class="form-horizontal searchCondition">
-<input type="hidden" class="form-control" name="page" value="0">
-<input type="hidden"  class="form-control"  name="pagesize" value="10">
 	<div id="jobQueryDiv" hidden="true">
 	<table border="0" cellspacing="0" cellpadding="0">
 	  <tr>

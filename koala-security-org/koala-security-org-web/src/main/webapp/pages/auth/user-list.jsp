@@ -2,8 +2,6 @@
 <%@include file="/commons/taglibs.jsp"%>
 
 <form name="userListForm" id="${formId}" target="_self" class="form-horizontal searchCondition">
-<input type="hidden" class="form-control" name="page" value="0">
-<input type="hidden"  class="form-control"  name="pagesize" value="10">
 <div id="userManagerQueryDivId" class="panel" hidden="true">
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
@@ -323,7 +321,7 @@
                                 $.post(contextPath + '/auth/user/terminateAuthorizationByUserInRoles.koala', data).done(function(data) {
                                     if(data.success){
                                         dialog.find('#grantAuthorityToUserMessage').message({
-                                            type: 'error',
+                                            type: 'success',
                                             content: '撤销用户的角色成功！'
                                         });
                                         dialog.find('#notGrantAuthoritiesToUserGrid').grid('refresh');
@@ -344,7 +342,7 @@
                                     var hasGrantRoleColumns = [{
                                         title : "角色名称",
                                         name : "name",
-                                        width : 100
+                                        width : 80
                                     }, {
                                         title : "角色描述",
                                         name : "description",
@@ -352,7 +350,7 @@
                                     }, {
                                        title : "组织机构",
                                        name : "employeeUserOrgName",
-                                       width : 150,
+                                       width : 100,
                                        render: function(item){
                                            var employeeOrgNameValue = item.employeeUserOrgName;
                                            if(employeeOrgNameValue == null){
@@ -365,7 +363,7 @@
                                     var notGrantRolecolumns = [{
                                         title : "角色名称",
                                         name : "name",
-                                        width : 100
+                                        width : 80
                                     }, {
                                         title : "角色描述",
                                         name : "description",
@@ -373,7 +371,7 @@
                                     }, {
                                        title : "组织机构",
                                        name : "employeeOrgName",
-                                       width : 150,
+                                       width : 100,
                                        render: function(){
                                             return '<span>' + employeeOrgName + '</span>';
                                        }
@@ -611,7 +609,7 @@
          */
         var selectemployeeOrg = function (event, actorId, authorityId) {
             // 阻止事件冒泡和捕捉
-            event.stopPropagation();
+            event.cancelBubble = true;
 
             /**
              * 部门选择

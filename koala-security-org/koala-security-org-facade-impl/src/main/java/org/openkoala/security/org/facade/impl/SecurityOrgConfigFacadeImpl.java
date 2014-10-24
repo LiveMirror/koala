@@ -1,7 +1,5 @@
 package org.openkoala.security.org.facade.impl;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -14,17 +12,11 @@ import org.openkoala.organisation.core.domain.Employee;
 import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
+
 import org.openkoala.security.application.systeminit.SystemInit;
 import org.openkoala.security.application.systeminit.SystemInitFactory;
 import org.openkoala.security.core.UserAccountIsExistedException;
-import org.openkoala.security.core.domain.Actor;
-import org.openkoala.security.core.domain.Authority;
-import org.openkoala.security.core.domain.MenuResource;
-import org.openkoala.security.core.domain.PageElementResource;
-import org.openkoala.security.core.domain.Permission;
-import org.openkoala.security.core.domain.Role;
-import org.openkoala.security.core.domain.Scope;
-import org.openkoala.security.core.domain.UrlAccessResource;
+import org.openkoala.security.core.domain.*;
 import org.openkoala.security.org.core.domain.EmployeeUser;
 import org.openkoala.security.org.core.domain.OrganisationScope;
 import org.openkoala.security.org.facade.SecurityOrgConfigFacade;
@@ -37,6 +29,8 @@ import org.openkoala.security.org.facade.impl.assembler.EmployeeUserAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional(value = "transactionManager_security")
 @Named
