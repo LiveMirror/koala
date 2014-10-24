@@ -199,7 +199,7 @@
 							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
 							action: 'delete'
 						},{
-							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>授权权限</button></ks:hasSecurityResource>',
+							content: '<ks:hasSecurityResource identifier="pageElementResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>分配权限</button></ks:hasSecurityResource>',
 							action: 'permissionAssignForPage'
 						},{
 							content : '<ks:hasSecurityResource identifier="pageElementResourceManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
@@ -288,7 +288,7 @@
 				/*
 				获取选中项的信息
 				*/
-        		$.get(contextPath + '/pages/auth/select-page.jsp').done(function(data){
+        		$.get(contextPath + '/pages/auth/page-select.jsp').done(function(data){
         			var dialog = $(data);
 
                     dialog.find('#search').on('click', function(){

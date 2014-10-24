@@ -15,7 +15,7 @@
 		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/src/main/java/</property>
 	</VelocityDirObject>
 	<XmlAdd>
-		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/resources/META-INF/spring/root.xml</property>
+		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.appName}-conf/src/main/resources/META-INF/spring/db-context.xml</property>
 		<property name="uri">http://www.springframework.org/schema/beans</property>
 		<property name="parentSearch"><![CDATA[/xmlns:beans]]></property>
 		<property name="selfSearch"><![CDATA[/xmlns:beans/xmlns:import[@resource='classpath:META-INF/spring/koala-security-http.xml']]]></property>
@@ -23,12 +23,8 @@
          <![CDATA[
     <?xml version="1.0" encoding="UTF-8"?>
     <root>
-		<import resource="classpath*:META-INF/spring/persistence-context.xml" />
-		<import resource="classpath:META-INF/spring/security-shiro.xml" />
 		<import resource="classpath*:META-INF/spring/organisation-shared-persistence.xml"></import>
 	    <import resource="classpath*:META-INF/spring/security-shared-persistence.xml" />
-	     <import resource="classpath*:META-INF/spring/security-extend.xml" />
-	    
 	</root>
          ]]>
 		</property>

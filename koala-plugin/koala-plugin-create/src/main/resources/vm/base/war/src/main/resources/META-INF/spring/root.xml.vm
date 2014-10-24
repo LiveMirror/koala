@@ -5,4 +5,9 @@
 <context:property-placeholder location="classpath*:META-INF/props/*.properties"
 		ignore-unresolvable="true" />
     
+    <import resource="classpath*:META-INF/spring/sys-root.xml"></import>
+     #if($Module.security || $Module.securityOrg)
+    <import resource="classpath:META-INF/spring/security-shiro.xml"></import>
+    <import resource="classpath:META-INF/spring/security-extend.xml"></import>
+    #end
 </beans>

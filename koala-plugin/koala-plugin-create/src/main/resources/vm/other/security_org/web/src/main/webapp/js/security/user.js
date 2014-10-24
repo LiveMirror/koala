@@ -328,7 +328,7 @@ var userManager = function() {
                         { title:'所属机构', name:'organizationName', width: 210},
                         { title:'岗位', name:'postName', width: 180},
                         { title:'兼职岗位', name:'additionalPostNames', width: 180}
-                    ];<!-- definition columns end -->
+                    ];
 
                     //查询出当前表单所需要得数据。
                     dialog.find('.selectEmployeeGrid').grid({
@@ -338,7 +338,7 @@ var userManager = function() {
                     });
 
                 }
-            });<!-- 显示对话框数据结束-->
+            });
 
             dialog.find('#selectEmployeeGridSave').on('click',function(){
                 var items = dialog.find('.selectEmployeeGrid').data('koala.grid').selectedRows();
@@ -375,7 +375,7 @@ var userManager = function() {
             }
 
         });
-    };<!-- 选择员工结束-->
+    };
 
 	return {
 		add : add,
