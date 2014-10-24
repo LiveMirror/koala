@@ -114,25 +114,14 @@
 #end
 
  #if ($Module.moduleType == "facade")
- 		<dependency> 
+ 	<dependency> 
             <groupId>org.dayatang.dddlib</groupId>  
-            <artifactId>dddlib-query-channel</artifactId>  
-            <exclusions> 
-                <exclusion> 
-                    <groupId>org.hibernate</groupId>  
-                    <artifactId>hibernate-core</artifactId> 
-                </exclusion>  
-                <exclusion> 
-                    <groupId>org.javassist</groupId>  
-                    <artifactId>javassist</artifactId> 
-                </exclusion> 
-            </exclusions> 
+            <artifactId>dddlib-utils</artifactId>  
         </dependency>  
         <dependency> 
             <groupId>org.openkoala.koalacommons</groupId>  
-            <artifactId>koala-commons-facade</artifactId> 
-            <version>${koala.version}</version> 
-        </dependency>  
+            <artifactId>koala-commons-facade</artifactId>  
+        </dependency> 
   #end
 #if ($Module.moduleType == "facadeImpl")
 
@@ -165,7 +154,7 @@
 <dependency>
   	<groupId>$Project.groupId</groupId>
 	<artifactId>${Project.appName}-core</artifactId>
-	<version>$Project.version</version>
+	<version>${project.parent.version}</version>
   </dependency>
   #end
 #if ($Module.moduleType == "war")
@@ -211,13 +200,10 @@
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>taglibs</groupId>

@@ -238,7 +238,6 @@ public class Project implements Serializable {
 		facadeImpl.setBasePackage(getGroupId() + "." + getPackageName()
 				+ ".facade.impl");
 		facadeImpl.getDependencies().add("application");
-		facadeImpl.getDependencies().add("core");
 		facadeImpl.getDependencies().add("facade");
 		getModule().add(facadeImpl);
 		// 初始化一个infra层
