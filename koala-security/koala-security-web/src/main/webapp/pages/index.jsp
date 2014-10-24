@@ -16,7 +16,6 @@
         var contextPath = '${pageContext.request.contextPath}';
 
         $(function(){
-            var roleName = $('#roles').html();
             var url = contextPath + "/auth/currentUser/findAllMenusByUserAsRole.koala?"+new Date().getTime();
             $.get(url,function(data){
                 $.each(data.data,function(){

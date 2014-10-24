@@ -16,7 +16,7 @@ public class SystemInitFactory {
 	public SystemInit getSystemInit() {
 		JAXBContext jc;
 		try {
-			jc = JAXBContext.newInstance("org.openkoala.security.application.systeminit");
+			jc = JAXBContext.newInstance("org.openkoala.security.application.systemInit");
 			Unmarshaller u = jc.createUnmarshaller();
 			return (SystemInit) u.unmarshal(getSystemInitXml());
 		} catch (Exception e) {
