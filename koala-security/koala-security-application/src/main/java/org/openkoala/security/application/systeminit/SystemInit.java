@@ -293,7 +293,7 @@ public class SystemInit {
         @XmlAttribute(name = "pid")
         protected Integer pid;
         @XmlAttribute(name = "notGrant")
-        protected Boolean notGrant;
+        protected Boolean notGrant = false;
 
         /**
          * Gets the value of the id property.
@@ -494,7 +494,7 @@ public class SystemInit {
         @XmlAttribute(name = "url", required = true)
         protected String url;
         @XmlAttribute(name = "notGrant")
-        protected Boolean notGrant;
+        protected Boolean notGrant = false;
 
         /**
          * Gets the value of the name property.
@@ -681,7 +681,7 @@ public class SystemInit {
         @XmlAttribute(name = "url", required = true)
         protected String url;
         @XmlAttribute(name = "notGrant")
-        protected Boolean notGrant;
+        protected Boolean notGrant = false;
 
         /**
          * Gets the value of the name property.

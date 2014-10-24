@@ -3,7 +3,6 @@ package org.openkoala.security.core.domain;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openkoala.security.core.EmailIsExistedException;
-import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.AbstractInfrantegrationTestCase;
@@ -101,7 +100,7 @@ public class UserTest extends AbstractInfrantegrationTestCase {
         user2.changeEmail(email, password);
     }
 
-    @Test(expected = NullArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testChangeTelePhoneAndPasswordIsNull() throws Exception {
         String telePhone = "17654321987";
         String password = "888888";
@@ -168,7 +167,7 @@ public class UserTest extends AbstractInfrantegrationTestCase {
         assertUser(user, result);
     }
 
-    @Test(expected = NullArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testUpdatePasswordAndOldPasswordIsNull() throws Exception {
         String userPassword = "999999";
         User user = initUser();

@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import org.dayatang.utils.Assert;
 import org.openkoala.security.core.UrlIsExistedException;
 
 import java.util.List;
@@ -27,9 +28,13 @@ public class UrlAccessResource extends SecurityResource {
 
     public UrlAccessResource(String name, String url) {
         super(name);
-        checkArgumentIsNull("url", url);
+        checkUrl(url);
         isExistUrl(url);
         this.url = url;
+    }
+
+    private void checkUrl(String url) {
+        Assert.notBlank(url, "url cannot be empty.");
     }
 
     @Override
@@ -37,17 +42,8 @@ public class UrlAccessResource extends SecurityResource {
         super.save();
     }
 
-    @Override
-    public SecurityResource findByName(String name) {
-        return getRepository()//
-                .createNamedQuery("SecurityResource.findByName")
-                .addParameter("securityResourceType", UrlAccessResource.class)
-                .addParameter("name", name)
-                .singleResult();
-    }
-
     public void changeUrl(String url) {
-        checkArgumentIsNull("url", url);
+        checkUrl(url);
         if (!url.equals(this.getUrl())) {
             isExistUrl(url);
             this.url = url;
@@ -75,16 +71,12 @@ public class UrlAccessResource extends SecurityResource {
         return ResourceAssignment.findRoleBySecurityResource(resource);
     }
 
-    public static List<Permission> findPermissionBySecurityResource(UrlAccessResource resource) {
-        return ResourceAssignment.findPermissionBySecurityResource(resource);
-    }
-
     /**
      * @param url url of the UrlAccessResource, can't be null.
      * @return
      */
     protected UrlAccessResource findByUrl(String url) {
-        checkArgumentIsNull("url", url);
+        checkUrl(url);
         return getRepository()
                 .createCriteriaQuery(UrlAccessResource.class)
                 .eq("url", url)
@@ -93,7 +85,7 @@ public class UrlAccessResource extends SecurityResource {
 
     private void isExistUrl(String url) {
         if (findByUrl(url) != null) {
-            throw new UrlIsExistedException("url is existed.");
+            throw new UrlIsExistedException("url existed.");
         }
     }
 

@@ -6,7 +6,6 @@ import static org.openkoala.security.core.util.EntitiesHelper.*;
 import java.util.List;
 
 import org.junit.Test;
-import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.UserNotHasRoleException;
 
@@ -15,7 +14,7 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
     // ~ User Save Test
     // ========================================================================================================
 
-    @Test(expected = NullArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testSaveUserAccountIsNull() throws Exception {
         new User("测试000000000000000002", null);
     }
@@ -104,5 +103,4 @@ public class UserTest extends AbstractDomainIntegrationTestCase {
         user.save();
         User.hasUserExisted();
     }
-
 }

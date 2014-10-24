@@ -17,9 +17,7 @@ public class MD5EncryptService implements EncryptService {
 
     @Override
     public String encryptPassword(String password, String salt) throws IllegalArgumentException {
-
-        Assert.notBlank(password, "加密密码不能为空。");
-
+        Assert.notBlank(password, "password cannot be empty.");
         if (saltDisabled) {
             salt = null;
         }

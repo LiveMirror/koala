@@ -82,22 +82,18 @@ public final class EntitiesHelper {
 	}
 
 	public static PageElementResource initPageElementResource() {
-		PageElementResource result = new PageElementResource("用户添加0000000000","userAdd");
-		return result;
+		return new PageElementResource("用户添加0000000000","userAdd");
 	}
 
 	public static UrlAccessResource initUrlAccessResource() {
-		UrlAccessResource result = new UrlAccessResource("测试管理0000000000", "/auth/test/**********");
-		return result;
+		return new UrlAccessResource("测试管理0000000000", "/auth/test/**********");
 	}
 
-	public static Authorization initAuthorization(Actor actor, Authority authority) {
-		Authorization result = new Authorization(actor, authority);
-		return result;
-	}
+    public static Authorization initAuthorization(Actor actor, Authority authority) {
+        return new Authorization(actor, authority);
+    }
 
-	public static Authorization initAuthorization(Actor actor, Authority authority, Scope scope) {
-		Authorization result = new Authorization(actor, authority, scope);
-		return result;
-	}
+    public static Authorization initAuthorization(Actor actor, Authority authority, Scope scope) {
+        return new Authorization(actor, authority, scope);
+    }
 }

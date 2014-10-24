@@ -11,27 +11,27 @@
 	    </tr>
 		<tr>
 			<td width="50%" colspan="2">
-			  <label class="control-label">姓名:</label>
+			  <label class="control-label">用户名称：</label>
 	          <span class="" data-id="name" ></span>
 			</td>
 			<td width="50%" colspan="2">
-			   <label class="control-label">用户名称:</label>
+			   <label class="control-label">用户账号：</label>
 	            <span class="" data-id="userAccount" ></span>
 			</td>
 		</tr>
 		<tr>
 			<td width="50%" colspan="2">
-			    <label>创建时间:</label>
+			    <label>创建时间：</label>
 	            <span data-id="createDate"></span>
 			</td>
 			<td width="50%" colspan="2">
-                <label>描述:</label>
+                <label>描述：</label>
                 <span data-id="description" ></span>
             </td>
 		</tr>
 		<tr>
 			<td colspan="4">
-			    <label>是否可用:</label>
+			    <label>是否可用：</label>
 	            <span data-id="disabled"></span>
 			</td>
 		</tr>

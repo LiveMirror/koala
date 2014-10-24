@@ -80,33 +80,14 @@ public class MenuResource extends SecurityResource {
         child.remove();
     }
 
-    /**
-     * TODO 可能删除对象不存在。
-     */
     @Override
     public void remove() {
         removeChildren();
         super.remove();
     }
 
-    @Override
-    public SecurityResource findByName(String name) {
-        return getRepository()
-                .createNamedQuery("SecurityResource.findByName")
-                .addParameter("securityResourceType", MenuResource.class)
-                .addParameter("name", name)
-                .singleResult();
-    }
-
     public static MenuResource getBy(Long id) {
         return MenuResource.get(MenuResource.class, id);
-    }
-
-    public static List<MenuResource> findAllMenuResources() {
-        return getRepository()
-                .createNamedQuery("SecurityResource.findAllByType")
-                .addParameter("securityResourceType", MenuResource.class)
-                .list();
     }
 
     public static List<MenuResource> findAllByIds(Long[] menuResourceIds) {

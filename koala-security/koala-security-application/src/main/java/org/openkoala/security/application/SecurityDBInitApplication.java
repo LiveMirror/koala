@@ -26,13 +26,6 @@ public interface SecurityDBInitApplication {
     Role initRole();
 
     /**
-     * 初始化权限
-     *
-     * @return 返回初始化权限的集合
-     */
-    List<Permission> initPermissions();
-
-    /**
      * 初始化菜单资源
      *
      * @return 返回初始化菜单资源的集合
@@ -52,11 +45,4 @@ public interface SecurityDBInitApplication {
      * @return 返回初始化URL访问资源的集合
      */
     List<UrlAccessResource> initUrlAccessResources();
-
-    /**
-     * 初始化参与者(即用户，用户组)。
-     *
-     * @param actor 返回初始化的参与者
-     */
-    void initActor(Actor actor);
 }

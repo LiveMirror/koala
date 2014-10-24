@@ -7,8 +7,7 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.persistence.Entity;
 
-import org.apache.commons.lang3.StringUtils;
-import org.openkoala.security.core.NullArgumentException;
+import org.dayatang.utils.Assert;
 
 /**
  * 参与者, 它是一个抽象的概念。
@@ -62,12 +61,13 @@ public abstract class Actor extends SecurityAbstractEntity {
     }
 
     public Actor(String name) {
-        checkArgumentIsNull("name", name);
+        checkName(name);
         this.name = name;
     }
 
     /**
-     * 撤销~级联撤销{@link Authorization }
+     * 撤销~级联撤销{@link Authorization }。
+     * 因为参与者都已经被撤销，那么Authorization中只要有参与者就应该被撤销。
      */
     @Override
     public void remove() {
@@ -78,27 +78,40 @@ public abstract class Actor extends SecurityAbstractEntity {
     }
 
     /**
-     * 在某个范围下{@link Scope}为参与者{@link Actor}授权可授权体{@link Authority}
+     * 在某个范围下{@link Scope}为参与者{@link Actor}分配授权{@link Authority}。
+     * 如果Authorization中已经存在Actor和Authority,就不需要授权，如果范围不为空，那么就更改范围。
+     * 不存在就直接创建Authorization并保存。
      *
      * @param authority 可授权体
      * @param scope     范围
      */
     public void grant(Authority authority, Scope scope) {
-        // 有可能授权的时候已经是有了，所以是需要修改的。
         if (Authorization.exists(this, authority)) {
-            Authorization authorization = Authorization.findByActorInAuthority(this, authority);
-            authorization.changeScope(scope);
-        }
-        if (Authorization.exists(this, authority, scope)) {
+            if (scope != null) {
+                Authorization authorization = Authorization.findByActorInAuthority(this, authority);
+                authorization.changeScope(scope);
+            }
             return;
         }
         new Authorization(this, authority, scope).save();
     }
 
     /**
-     * 为参与者授权可授权体。
+     * 从参与者中撤销在某个范围下的授权。即撤销授权中心 {@link Authorization}。
      *
-     * @param authority
+     * @param authority 授权 {@like Authority}
+     * @param scope     范围 {@link Scope}
+     */
+    public void terminateAuthorityInScope(Authority authority, Scope scope) {
+        Authorization authorization = Authorization.findByActorOfAuthorityInScope(this, authority, scope);
+        authorization.remove();
+    }
+
+    /**
+     * 为参与者分配授权。
+     * 如果存在就直接返回，不存在就创建一个Authorization并保存。
+     *
+     * @param authority 授权 {@like Authority}
      */
     public void grant(Authority authority) {
         if (Authorization.exists(this, authority)) {
@@ -107,16 +120,21 @@ public abstract class Actor extends SecurityAbstractEntity {
         new Authorization(this, authority).save();
     }
 
+    /**
+     * 从参与者中撤销授权，即撤销授权中心 {@link Authorization}。
+     *
+     * @param authority 授权 {@like Authority}
+     */
     public void terminate(Authority authority) {
         Authorization authorization = Authorization.findByActorInAuthority(this, authority);
         authorization.remove();
     }
 
     /**
-     * 得到在某个范围下{@link Scope}参与者{@link Actor}的所有权限{@link Permission}
+     * 得到在某个范围下{@link Scope}参与者{@link Actor}的所有不重复的权限集合{@link Permission}
      *
      * @param scope 范围
-     * @return
+     * @return 不重复的权限集合 {@link Permission}
      */
     public Set<Permission> getPermissions(Scope scope) {
         Set<Permission> results = new HashSet<Permission>();
@@ -131,27 +149,36 @@ public abstract class Actor extends SecurityAbstractEntity {
         return results;
     }
 
+    /**
+     * 更改最后修改时间。
+     */
     public void changeLastModifyTime() {
         this.lastModifyTime = new Date();
     }
 
-    public void terminateAuthorityInScope(Authority authority, Scope scope) {
-        Authorization authorization = Authorization.findByActorOfAuthorityInScope(this, authority, scope);
-        authorization.remove();
-    }
-
+    /**
+     * 根据参与者ID得到参与者
+     *
+     * @param actorId 参与者ID
+     * @param <T>     继承参与者
+     * @return 参与者或者其子类
+     */
     public static <T extends Actor> T getActorBy(Long actorId) {
         return (T) Actor.get(Actor.class, actorId);
     }
 
-    protected static void checkArgumentIsNull(String nullMessage, String argument) {
-        if (StringUtils.isBlank(argument)) {
-            throw new NullArgumentException(nullMessage);
-        }
+    protected void checkName(String name) {
+        Assert.notBlank(name, "name cannot be empty.");
     }
 
 	/*------------- Private helper methods  -----------------*/
 
+    /**
+     * 根据范围获取到所有不重复的授权集合。
+     *
+     * @param scope 范围 {@link Scope}
+     * @return 不重复的授权集合 {@link Authorization}
+     */
     private Set<Authority> getAuthorities(Scope scope) {
         return Authorization.findAuthoritiesByActorInScope(this, scope);
     }

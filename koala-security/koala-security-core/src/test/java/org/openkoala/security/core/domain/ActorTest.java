@@ -80,5 +80,4 @@ public class ActorTest extends AbstractDomainIntegrationTestCase {
 		assertNotNull(permissions);
 		assertEquals(1, permissions.size());
 	}
-	
 }

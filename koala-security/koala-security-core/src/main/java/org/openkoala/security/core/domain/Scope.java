@@ -38,19 +38,15 @@ public abstract class Scope extends SecurityAbstractEntity {
     }
 
     public boolean contains(Scope scope) {
-
         if (scope == null) {
             return false;
         }
-
         if (equals(scope)) {
             return true;
         }
-
         if (getChildren().contains(scope)) {
             return true;
         }
-
         return contains(scope.getParent());
     }
 

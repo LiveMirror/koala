@@ -200,5 +200,4 @@ public abstract class SecurityAbstractEntity implements Entity {
         }
         return builder.isEquals();
     }
-
 }

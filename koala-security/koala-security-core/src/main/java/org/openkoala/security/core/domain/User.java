@@ -1,23 +1,19 @@
 package org.openkoala.security.core.domain;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.InstanceFactory;
-import org.hibernate.id.UUIDHexGenerator;
+import org.dayatang.utils.Assert;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.UserNotHasRoleException;
 import org.openkoala.security.core.UserPasswordException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 位于系统外部，与系统交互的人，是使用软件的人。
@@ -30,12 +26,11 @@ import org.slf4j.LoggerFactory;
 @DiscriminatorValue("USER")
 @NamedQueries({
         @NamedQuery(name = "User.loginByUserAccount", query = "SELECT _user FROM User _user WHERE _user.userAccount = :userAccount AND _user.password = :password"),
-        @NamedQuery(name = "User.count", query = "SELECT COUNT(_user.id) FROM User _user")})
+        @NamedQuery(name = "User.count", query = "SELECT COUNT(_user.id) FROM User _user")
+})
 public class User extends Actor {
 
     private static final long serialVersionUID = 7849700468353029794L;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(User.class);
 
     private static final String INIT_PASSWORD = "888888";
 
@@ -70,12 +65,13 @@ public class User extends Actor {
      */
     public User(String name, String userAccount) {
         super(name);
-        checkArgumentIsNull("userAccount", userAccount);
+        checkUserAccount(userAccount);
         isExistUserAccount(userAccount);
         this.userAccount = userAccount;
         this.salt = UUID.randomUUID().toString();
         this.password = encryptPassword(INIT_PASSWORD);
     }
+
 
     public void disable() {
         disabled = true;
@@ -110,9 +106,8 @@ public class User extends Actor {
      * @param userAccount
      */
     public void changeUserAccount(String userAccount, String userPassword) {
-
+        checkUserAccount(userAccount);
         verifyPassword(userPassword);
-
         if (!this.getUserAccount().equals(userAccount)) {
             isExistUserAccount(userAccount);
             this.userAccount = userAccount;
@@ -126,9 +121,8 @@ public class User extends Actor {
      * @param email
      */
     public void changeEmail(String email, String userPassword) {
-
         verifyPassword(userPassword);
-
+        checkEmail(email);
         // TODO 邮箱验证规则。
         if (!email.equals(this.getEmail())) {
             isExistEmail(email);
@@ -137,32 +131,23 @@ public class User extends Actor {
         }
     }
 
-    /**
-     * TODO 需要排序
-     *
-     * @return
-     */
-    public Set<Role> findAllRoles() {
-        List<Role> results = getRepository()
-                .createNamedQuery("Authorization.findAuthoritiesByActor")
+    public List<Role> findAllRoles() {
+        return findAuthorityConditions()
                 .addParameter("actor", this)
                 .addParameter("authorityType", Role.class)
                 .list();
-        return Sets.newHashSet(results);
     }
 
-    /**
-     * TODO 需要排序
-     *
-     * @return
-     */
-    public Set<Permission> findAllPermissions() {
-        List<Permission> results = getRepository()
-                .createNamedQuery("Authorization.findAuthoritiesByActor")
-                .addParameter("actor", this)
+    public List<Permission> findAllPermissions() {
+        return findAuthorityConditions()
                 .addParameter("authorityType", Permission.class)
                 .list();
-        return Sets.newHashSet(results);
+    }
+
+    private org.dayatang.domain.NamedQuery findAuthorityConditions() {
+        return getRepository()
+                .createNamedQuery("Authorization.findAuthoritiesByActor")
+                .addParameter("actor", this);
     }
 
     /**
@@ -171,7 +156,7 @@ public class User extends Actor {
      * @param telePhone
      */
     public void changeTelePhone(String telePhone, String userPassword) {
-
+        checkTelePhone(telePhone);
         verifyPassword(userPassword);
 
         // TODO 联系电话验证
@@ -225,7 +210,6 @@ public class User extends Actor {
      * @return
      */
     public static User getByUserAccount(String userAccount) {
-        checkArgumentIsNull("userAccount", userAccount);
         return getRepository()
                 .createCriteriaQuery(User.class)
                 .eq("userAccount", userAccount)
@@ -239,7 +223,6 @@ public class User extends Actor {
      * @return
      */
     public static User getByEmail(String email) {
-        checkArgumentIsNull("email", email);
         return getRepository()
                 .createCriteriaQuery(User.class)
                 .eq("email", email)
@@ -253,12 +236,10 @@ public class User extends Actor {
      * @return
      */
     public static User getByTelePhone(String telePhone) {
-        checkArgumentIsNull("telePhone", telePhone);
-        User result = getRepository()
+        return getRepository()
                 .createCriteriaQuery(User.class)
                 .eq("telePhone", telePhone)
                 .singleResult();
-        return result;
     }
 
     /**
@@ -320,6 +301,18 @@ public class User extends Actor {
         if (!encryptPassword(userPassword).equals(this.getPassword())) {
             throw new UserPasswordException("user password is not right.");
         }
+    }
+
+    private void checkUserAccount(String userAccount) {
+        Assert.notBlank(userAccount, "userAccount cannot be empty.");
+    }
+
+    private void checkEmail(String email) {
+        Assert.notBlank(email, "email cannot be empty.");
+    }
+
+    private void checkTelePhone(String telePhone) {
+        Assert.notBlank(telePhone,"telePhone cannot be empty.");
     }
 
     @Override

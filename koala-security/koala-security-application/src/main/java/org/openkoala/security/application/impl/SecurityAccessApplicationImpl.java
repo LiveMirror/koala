@@ -110,27 +110,27 @@ public class SecurityAccessApplicationImpl implements SecurityAccessApplication 
     }
 
     @Override
-    public Set<Role> findRolesOfUser(User user) {
+    public List<Role> findRolesOfUser(User user) {
         return user.findAllRoles();
     }
 
     @Override
-    public Set<Permission> findPermissionsOfUser(User user) {
+    public List<Permission> findPermissionsOfUser(User user) {
         return user.findAllPermissions();
     }
 
     @Override
-    public Set<MenuResource> findMenuResourcesOfRole(Role role) {
+    public List<MenuResource> findMenuResourcesOfRole(Role role) {
         return role.findMenuResources();
     }
 
     @Override
-    public Set<UrlAccessResource> findUrlAccessResourcesOfRole(Role role) {
+    public List<UrlAccessResource> findUrlAccessResourcesOfRole(Role role) {
         return role.findUrlAccessResources();
     }
 
     @Override
-    public Set<PageElementResource> findPageElementResourcesOfRole(Role role) {
+    public List<PageElementResource> findPageElementResourcesOfRole(Role role) {
         return role.findPageElementResources();
     }
 

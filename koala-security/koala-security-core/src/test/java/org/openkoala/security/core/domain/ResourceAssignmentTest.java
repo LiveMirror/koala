@@ -3,7 +3,6 @@ package org.openkoala.security.core.domain;
 import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
-import org.openkoala.security.core.NullArgumentException;
 
 import java.util.List;
 
@@ -72,12 +71,12 @@ public class ResourceAssignmentTest extends AbstractDomainIntegrationTestCase {
 
     }
 
-    @Test(expected = NullArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testSaveAuthorityIsNull() throws Exception {
         new ResourceAssignment(null, urlAccessResource1);
     }
 
-    @Test(expected = NullArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testSaveResourceIsNull() throws Exception {
         new ResourceAssignment(role1, null);
     }
@@ -281,12 +280,7 @@ public class ResourceAssignmentTest extends AbstractDomainIntegrationTestCase {
         assertNotNull(permission.getId());
     }
 
-    @Test(expected = NullArgumentException.class)
-    public void testGetByIdLllegal() {
-        ResourceAssignment.getById(-1l);
-    }
-
-    @Test(expected = NullArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testGetByIdIsNull() {
         ResourceAssignment.getById(null);
     }

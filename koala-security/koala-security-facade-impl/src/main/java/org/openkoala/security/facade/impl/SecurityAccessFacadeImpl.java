@@ -1,13 +1,7 @@
 package org.openkoala.security.facade.impl;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -107,13 +101,14 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	public InvokeResult findMenuResourceByUserAsRole(String userAccount, String roleName) {
 
 		Set<Authority> authorities = new HashSet<Authority>();
-		Role role = securityAccessApplication.getRoleBy(roleName);
-		// securityAccessApplication.checkAuthorization(userAccount, role);
-	    //TODO 检查
-		if (role != null) {
-			authorities.add(role);
-			authorities.addAll(role.getPermissions());
-		}
+        // 可能用户并没有分配角色。因此需要对其获取异常。
+        try{
+            Role role = securityAccessApplication.getRoleBy(roleName);
+            authorities.add(role);
+            authorities.addAll(role.getPermissions());
+        }catch(IllegalArgumentException e){
+            // do not something.
+        }
 		authorities.addAll(User.findAllPermissionsBy(userAccount));
 		// 1、User 的角色、2、User本身的Permission 3、角色所关联的Permission。
 		List<MenuResourceDTO> results = findTopMenuResourceDTOByUserAccountAsRole(authorities);
@@ -524,8 +519,8 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public InvokeResult findInfoOfUser(Long userId) {
 		User user = securityAccessApplication.getUserById(userId);
-		Set<Role> roles = securityAccessApplication.findRolesOfUser(user);
-		Set<Permission> permissions = securityAccessApplication.findPermissionsOfUser(user);
+		List<Role> roles = securityAccessApplication.findRolesOfUser(user);
+		List<Permission> permissions = securityAccessApplication.findPermissionsOfUser(user);
 
 		List<RoleDTO> roleDTOs = transformToRoleDTOs(roles);
 		List<PermissionDTO> permissionDTO = transformToPermissionDTOs(permissions);
@@ -846,17 +841,17 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
      * @return
      */
     private List<MenuResourceDTO> findAllMenuResourceDTOByUserAccountAsRole(Set<Authority> authorities) {
-        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id,_resource.name, _resource.url, _resource.menuIcon, _resource.description, _resource.parent.id,_resource.level)");
-        jpql.append(" FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource");
-        jpql.append(" WHERE TYPE(_resource) = MenuResource");
-        jpql.append(" AND _authority IN (:authorities)");// 用户拥有的Authority
-        jpql.append(" AND _resource.level > :level");//
-        jpql.append(" GROUP BY _resource.id");
+        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id,_resource.name, _resource.url, _resource.menuIcon, _resource.description, _resource.parent.id,_resource.level)")
+            .append(" FROM ResourceAssignment _resourceAssignment JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource")
+            .append(" WHERE TYPE(_resource) = MenuResource")
+            .append(" AND _authority IN (:authorities)")   // 用户拥有的Authority
+            .append(" AND _resource.level > :level")
+            .append(" GROUP BY _resource.id");
 
-        List<MenuResourceDTO> result = getQueryChannelService()//
-                .createJpqlQuery(jpql.toString())//
-                .addParameter("authorities", authorities)//
-                .addParameter("level", 0)//
+        List<MenuResourceDTO> result = getQueryChannelService()
+                .createJpqlQuery(jpql.toString())
+                .addParameter("authorities", authorities)
+                .addParameter("level", 0)
                 .list();
 
         return result;
@@ -876,29 +871,27 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
     }
 
     private List<MenuResourceDTO> findChidrenMenuResource() {
-        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id,_resource.name, _resource.url, _resource.menuIcon, _resource.description,"
-                + "_resource.parent.id,_resource.level,_resource.parent.name) FROM MenuResource _resource");
-        jpql.append(" WHERE _resource.level > :level");//
-        jpql.append(" GROUP BY _resource.id");//
+        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id,_resource.name, _resource.url, _resource.menuIcon, _resource.description, _resource.parent.id,_resource.level,_resource.parent.name) FROM MenuResource _resource")
+            .append(" WHERE _resource.level > :level")
+            .append(" GROUP BY _resource.id");
 
-        List<MenuResourceDTO> results = getQueryChannelService()//
-                .createJpqlQuery(jpql.toString())//
-                .addParameter("level", 0)//
+        List<MenuResourceDTO> results = getQueryChannelService()
+                .createJpqlQuery(jpql.toString())
+                .addParameter("level", 0)
                 .list();
 
         return results;
     }
 
     private List<MenuResourceDTO> findTopMenuResource() {
-        StringBuilder jpql = new StringBuilder(
-                "SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id, _resource.name, _resource.url, _resource.menuIcon, _resource.description, _resource.parent.id,_resource.level) FROM MenuResource _resource");
-        jpql.append(" WHERE _resource.parent IS NULL");// 顶级
-        jpql.append(" AND _resource.level = :level");//
-        jpql.append(" GROUP BY _resource.id");
+        StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id, _resource.name, _resource.url, _resource.menuIcon, _resource.description, _resource.parent.id,_resource.level) FROM MenuResource _resource")
+                .append(" WHERE _resource.parent IS NULL")
+                .append(" AND _resource.level = :level")
+                .append(" GROUP BY _resource.id");
 
-        List<MenuResourceDTO> results = getQueryChannelService()//
-                .createJpqlQuery(jpql.toString())//
-                .addParameter("level", 0)//
+        List<MenuResourceDTO> results = getQueryChannelService()
+                .createJpqlQuery(jpql.toString())
+                .addParameter("level", 0)
                 .list();
         return results;
     }
@@ -916,7 +909,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
         }
     }
 
-	private List<PageElementResourceDTO> transformToPageElementResources(Set<PageElementResource> pageElementResources) {
+	private List<PageElementResourceDTO> transformToPageElementResources(Collection<PageElementResource> pageElementResources) {
 		List<PageElementResourceDTO> results = new ArrayList<PageElementResourceDTO>();
 		for (PageElementResource pageElementResource : pageElementResources) {
 			results.add(PageElementResourceAssembler.toPageElementResourceDTO(pageElementResource));
@@ -924,7 +917,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return results;
 	}
 
-	private List<UrlAccessResourceDTO> transformToUrlAccessResources(Set<UrlAccessResource> urlAccessResources) {
+	private List<UrlAccessResourceDTO> transformToUrlAccessResources(Collection<UrlAccessResource> urlAccessResources) {
 		List<UrlAccessResourceDTO> results = new ArrayList<UrlAccessResourceDTO>();
 		for (UrlAccessResource urlAccessResource : urlAccessResources) {
 			results.add(UrlAccessResourceAssembler.toUrlAccessResourceDTO(urlAccessResource));
@@ -932,7 +925,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return results;
 	}
 
-	private List<MenuResourceDTO> transformToMenuResourceDTOs(Set<MenuResource> menuResources) {
+	private List<MenuResourceDTO> transformToMenuResourceDTOs(Collection<MenuResource> menuResources) {
 		List<MenuResourceDTO> results = new ArrayList<MenuResourceDTO>();
 		for (MenuResource menuResource : menuResources) {
 			results.add(MenuResourceAssembler.toMenuResourceDTO(menuResource));
@@ -940,7 +933,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return results;
 	}
 
-	private List<PermissionDTO> transformToPermissionDTOs(Set<Permission> permissions) {
+	private List<PermissionDTO> transformToPermissionDTOs(Collection<Permission> permissions) {
 		List<PermissionDTO> results = new ArrayList<PermissionDTO>();
 		for (Permission permission : permissions) {
 			results.add(PermissionAssembler.toPermissionDTO(permission));
@@ -948,7 +941,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 		return results;
 	}
 
-	private List<RoleDTO> transformToRoleDTOs(Set<Role> roles) {
+	private List<RoleDTO> transformToRoleDTOs(Collection<Role> roles) {
 		List<RoleDTO> results = new ArrayList<RoleDTO>();
 		for (Role role : roles) {
 			results.add(RoleAssembler.toRoleDTO(role));
@@ -996,9 +989,8 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
      * @return
      */
     private StringBuilder fromResourceAssigment(StringBuilder jpql) {
-        jpql.append(" FROM ResourceAssignment _resourceAssignment  JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource");
-        jpql.append(" WHERE TYPE(_resource) = :resourceType");
-        return jpql;
+        return jpql.append(" FROM ResourceAssignment _resourceAssignment  JOIN _resourceAssignment.authority _authority JOIN _resourceAssignment.resource _resource")
+                   .append(" WHERE TYPE(_resource) = :resourceType");
     }
 
     /**

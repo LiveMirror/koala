@@ -141,7 +141,6 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
     @Override
     public void grantAuthorityToSecurityResource(Authority authority, SecurityResource securityResource) {
         authority.addSecurityResource(securityResource);
-
     }
 
     @Override

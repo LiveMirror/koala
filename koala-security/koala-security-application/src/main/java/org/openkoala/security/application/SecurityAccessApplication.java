@@ -1,7 +1,6 @@
 package org.openkoala.security.application;
 
 import java.util.List;
-import java.util.Set;
 
 import org.openkoala.security.core.domain.*;
 
@@ -185,7 +184,7 @@ public interface SecurityAccessApplication {
      * @param user 用户
      * @return 角色集合
      */
-    Set<Role> findRolesOfUser(User user);
+    List<Role> findRolesOfUser(User user);
 
     /**
      * 查找用户拥有的所有不重复的权限集合。
@@ -193,7 +192,7 @@ public interface SecurityAccessApplication {
      * @param user 用户
      * @return 权限集合
      */
-    Set<Permission> findPermissionsOfUser(User user);
+    List<Permission> findPermissionsOfUser(User user);
 
     /**
      * 查找角色拥有的所有不重复的菜单资源集合。
@@ -201,7 +200,7 @@ public interface SecurityAccessApplication {
      * @param role 角色
      * @return 菜单资源集合
      */
-    Set<MenuResource> findMenuResourcesOfRole(Role role);
+    List<MenuResource> findMenuResourcesOfRole(Role role);
 
     /**
      * 查找角色拥有的所有不重复的URL访问资源集合。
@@ -209,7 +208,7 @@ public interface SecurityAccessApplication {
      * @param role 角色
      * @return URL访问资源集合
      */
-    Set<UrlAccessResource> findUrlAccessResourcesOfRole(Role role);
+    List<UrlAccessResource> findUrlAccessResourcesOfRole(Role role);
 
     /**
      * 查找角色拥有的所有不重复的页面元素资源集合。
@@ -217,7 +216,7 @@ public interface SecurityAccessApplication {
      * @param role 角色
      * @return 页面元素资源集合
      */
-    Set<PageElementResource> findPageElementResourcesOfRole(Role role);
+    List<PageElementResource> findPageElementResourcesOfRole(Role role);
 
     /**
      * 查找权限拥有的所有不重复的资源集合。

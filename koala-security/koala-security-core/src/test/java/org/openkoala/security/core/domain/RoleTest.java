@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.NameIsExistedException;
-import org.openkoala.security.core.NullArgumentException;
 
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,7 @@ import static org.openkoala.security.core.util.EntitiesHelper.*;
 
 public class RoleTest extends AbstractDomainIntegrationTestCase {
 
-    @Test(expected = NullArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
 	public void testSaveNameIsNull() throws Exception {
 		Role role = new Role(null);
 		role.save();
@@ -63,7 +62,7 @@ public class RoleTest extends AbstractDomainIntegrationTestCase {
 		role.remove();
 	}
 
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testChangeNameIsNull() throws Exception {
 		Role role = initRole();
 		role.save();

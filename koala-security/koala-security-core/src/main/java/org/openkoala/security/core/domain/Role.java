@@ -1,8 +1,9 @@
 package org.openkoala.security.core.domain;
 
-import com.google.common.collect.Sets;
+import org.dayatang.domain.NamedQuery;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.*;
 
 /**
@@ -21,8 +22,8 @@ public class Role extends Authority {
      * 查询Role需要级联的查询出Permission
      */
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "KS_ROLE_PERMISSION_MAP", //
-            joinColumns = @JoinColumn(name = "ROLE_ID"), //
+    @JoinTable(name = "KS_ROLE_PERMISSION_MAP",
+            joinColumns = @JoinColumn(name = "ROLE_ID"),
             inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID"))
     private Set<Permission> permissions = new HashSet<Permission>();
 
@@ -35,16 +36,6 @@ public class Role extends Authority {
 
     public static boolean checkName(String roleName) {
         return getRoleBy(roleName) != null;
-    }
-
-    public static List<String> getNames(Set<Authority> authorities) {
-        List<String> results = new ArrayList<String>();
-        for (Authority authority : authorities) {
-            if (authority instanceof Role) {
-                results.add(((Role) authority).getName().trim());
-            }
-        }
-        return results;
     }
 
     public static Set<Role> findByUser(User user) {
@@ -98,26 +89,42 @@ public class Role extends Authority {
         return Role.findAll(Role.class);
     }
 
-    // TODO 名称应该放在基类上面。
     public static Role getRoleBy(String name) {
-        return getRepository()//
-                .createCriteriaQuery(Role.class)//
-                .eq("name", name)//
+        return getRepository()
+                .createCriteriaQuery(Role.class)
+                .eq("name", name)
                 .singleResult();
     }
 
-    @Override
-    public Authority getBy(String name) {
-        return getRepository()//
-                .createNamedQuery("Authority.getAuthorityByName")//
-                .addParameter("authorityType", Role.class)//
-                .addParameter("name", name)//
-                .singleResult();
+    public List<MenuResource> findMenuResources() {
+        return findResourceConditions()
+                .addParameter("resourceType", MenuResource.class)
+                .list();
+    }
+
+    public List<UrlAccessResource> findUrlAccessResources() {
+        return findResourceConditions()
+                .addParameter("resourceType", UrlAccessResource.class)
+                .list();
+    }
+
+    public List<PageElementResource> findPageElementResources() {
+        return findResourceConditions()
+                .addParameter("resourceType", PageElementResource.class)
+                .list();
     }
 
     public static Role getBy(Long id) {
         return Role.get(Role.class, id);
     }
+
+    private NamedQuery findResourceConditions() {
+        return getRepository().createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthority")
+                .addParameter("authority", this)
+                .addParameter("authorityType", this.getClass());
+    }
+
+    /*-------------- getter setter methods  ------------------*/
 
     public Set<Permission> getPermissions() {
         return Collections.unmodifiableSet(permissions);
@@ -125,37 +132,5 @@ public class Role extends Authority {
 
     public void setPermissions(Set<Permission> permissions) {
         this.permissions = permissions;
-    }
-
-    public Set<MenuResource> findMenuResources() {
-        List<MenuResource> results = getRepository()//
-                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthority")//
-                .addParameter("authority", this)//
-                .addParameter("resourceType", MenuResource.class)//
-                .addParameter("authorityType", Role.class)//
-                .list();
-        return Sets.newHashSet(results);
-
-    }
-
-    public Set<UrlAccessResource> findUrlAccessResources() {
-        List<UrlAccessResource> results = getRepository()//
-                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthority")//
-                .addParameter("authority", this)//
-                .addParameter("resourceType", UrlAccessResource.class)//
-                .addParameter("authorityType", Role.class)//
-                .list();
-        return Sets.newHashSet(results);
-    }
-
-    public Set<PageElementResource> findPageElementResources() {
-        List<PageElementResource> results = getRepository()//
-                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthority")//
-                .addParameter("authority", this)//
-                .addParameter("resourceType", PageElementResource.class)//
-                .addParameter("authorityType", Role.class)//
-                .list();
-        return Sets.newHashSet(results);
-
     }
 }

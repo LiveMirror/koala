@@ -3,7 +3,6 @@ package org.openkoala.security.core.domain;
 import org.junit.Test;
 import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.NameIsExistedException;
-import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.UrlIsExistedException;
 
 import java.util.List;
@@ -12,9 +11,6 @@ import static org.junit.Assert.*;
 import static org.openkoala.security.core.util.EntitiesHelper.*;
 
 public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
-
-	// ~ UrlAccessResource Save Test
-	// ========================================================================================================
 
 	@Test
 	public void testSave() throws Exception {
@@ -25,7 +21,7 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		assertUrlAccessResource(expected, actual);
 	}
 
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testSaveNameIsNull() throws Exception {
 		new UrlAccessResource(null, "/auth/test/**********");
 	}
@@ -38,7 +34,7 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		urlAccessResource2.save();
 	}
 
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testSaveUrlIsNull() throws Exception {
 		UrlAccessResource urlAccessResource = initUrlAccessResource();
 		urlAccessResource.save();
@@ -54,7 +50,7 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		urlAccessResource2.save();
 	}
 
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testChangeUrlIsNull() throws Exception {
 		UrlAccessResource urlAccessResource = initUrlAccessResource();
 		urlAccessResource.save();
@@ -93,9 +89,7 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
         // not do something.
 	}
 
-
-
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testChangeNameIsNull() throws Exception {
 		UrlAccessResource expected = initUrlAccessResource();
 		expected.save();
@@ -167,7 +161,7 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		assertNotNull(loadUrlAccessResource);
 	}
 
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetByUrlIsNull() throws Exception {
 		UrlAccessResource expected = initUrlAccessResource();
 		expected.save();
@@ -252,5 +246,4 @@ public class UrlAccessResourceTest extends AbstractDomainIntegrationTestCase {
 		urlAccessResources = UrlAccessResource.findAllUrlAccessResources();
 		assertTrue(urlAccessResources.size() == 2);
 	}
-
 }

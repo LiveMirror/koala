@@ -1,9 +1,6 @@
 package org.openkoala.security.facade.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,7 +14,6 @@ import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.IdentifierIsExistedException;
 import org.openkoala.security.core.NameIsExistedException;
-import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.TelePhoneIsExistedException;
 import org.openkoala.security.core.UrlIsExistedException;
 import org.openkoala.security.core.UserAccountIsExistedException;
@@ -596,15 +592,19 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             return true;
         }
 
-        Role role = securityAccessApplication.getRoleBy(roleNameOfUser);
-        Set<Permission> rolePermissions = role.getPermissions();
-        List<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
-
         Set<Authority> authorities = new HashSet<Authority>();
-        authorities.add(role);
-        authorities.addAll(userPermissions);
-        authorities.addAll(rolePermissions);
+        // 可能用户并没有分配角色。因此需要对其获取异常。
+        try{
+            Role role = securityAccessApplication.getRoleBy(roleNameOfUser);
+            Set<Permission> rolePermissions = role.getPermissions();
+            authorities.add(role);
+            authorities.addAll(rolePermissions);
+        }catch(IllegalArgumentException e){
+            // do not something.
+        }
 
+        List<Permission> userPermissions = User.findAllPermissionsBy(userAccount);
+        authorities.addAll(userPermissions);
         return securityConfigApplication.checkAuthoritiHasPageElementResource(authorities, resourceIdentifier);
     }
 
@@ -651,7 +651,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             securityConfigApplication.changeUserEmail(user, command.getEmail(), command.getUserPassword());
             securityConfigApplication.changeLastModifyTimeOfUser(user);
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("邮箱或者密码不能为空！");
         } catch (UserPasswordException e) {
@@ -676,7 +676,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             securityConfigApplication.changeUserTelePhone(user, command.getTelePhone(), command.getUserPassword());
             securityConfigApplication.changeLastModifyTimeOfUser(user);
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("电话或者密码不能为空！");
         } catch (UserPasswordException e) {
@@ -717,7 +717,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             urlAccessResource.setDescription(command.getDescription());
             securityConfigApplication.createSecurityResource(urlAccessResource);
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("名称或者URL为空。");
         } catch (NameIsExistedException e) {
@@ -735,7 +735,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             Role role = RoleAssembler.toRole(command);
             securityConfigApplication.createAuthority(role);
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage());
             return InvokeResult.failure("添加角色名称不能为空。");
         } catch (NameIsExistedException e) {
@@ -756,7 +756,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             securityConfigApplication.createAuthority(role);
 
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage());
             return InvokeResult.failure("更改角色名称不能为空。");
         } catch (NameIsExistedException e) {
@@ -774,7 +774,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             Permission permission = PermissionAssembler.toPermission(command);
             securityConfigApplication.createAuthority(permission);
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("权限名称或者标识不能为空。");
         } catch (NameIsExistedException e) {
@@ -797,7 +797,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             securityConfigApplication.changeNameOfPermission(permission, command.getName());
             permission.setDescription(command.getDescription());
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("权限名称或者标识不能为空。");
         } catch (NameIsExistedException e) {
@@ -841,7 +841,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             PageElementResource pageElementResource = PageElementResourceAssembler.toPageElementResource(command);
             securityConfigApplication.createSecurityResource(pageElementResource);
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("名称和标识不能为空。");
         } catch (NameIsExistedException e) {
@@ -864,7 +864,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             pageElementResource.setDescription(command.getDescription());
             securityConfigApplication.createSecurityResource(pageElementResource);
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("名称和标识不能为空。");
         } catch (NameIsExistedException e) {
@@ -882,7 +882,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             MenuResource menuResource = MenuResourceAssembler.toMenuResource(command);
             securityConfigApplication.createSecurityResource(menuResource);
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("添加菜单权限资源名称不能为空。");
         } catch (NameIsExistedException e) {
@@ -900,7 +900,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             MenuResource menuResource = MenuResourceAssembler.toMenuResource(command);
             securityConfigApplication.createChildToParent(menuResource, command.getParentId());
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("添加菜单权限资源名称不能为空。");
         } catch (NameIsExistedException e) {
@@ -921,7 +921,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
             menuResource.setMenuIcon(command.getMenuIcon());
             menuResource.setDescription(command.getDescription());
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("菜单权限资源名称不能为空。");
         } catch (NameIsExistedException e) {

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<div class="user-info" id="user-info">
+<div id="user-info">
 	    <table class="table table-bordered table-hover">
 		<tr>
 			<td width="25%">
@@ -50,12 +50,21 @@
 </div>
 <script>
 $(function(){
-	var script = document.createElement('script');
-    script.src = contextPath + '/js/security/user-info.js';
-    document.getElementById('user-info').parentNode.appendChild(script);
-    
-    
-   /* -------------------修改邮箱--------------------  */ 
+
+    $.get(contextPath + '/auth/currentUser/getUserDetail.koala').done(function(result) {
+        var data = result.data;
+        var userInfo = $('#user-info');
+        userInfo.find('[data-id="name"]').text(data.name);
+        userInfo.find('[data-id="userAccount"]').text(data.userAccount);
+        userInfo.find('[data-id="createDate"]').text(data.createDate);
+        userInfo.find('[data-id="lastModifyTime"]').text(data.lastModifyTime == null ? "" : data.lastModifyTime);
+        userInfo.find('[data-id="email"]').text(data.email==null ? "您还没有邮箱，请添加邮箱！" : data.email);
+        userInfo.find('[data-id="description"]').text(data.description==null ? "" : data.description);
+        userInfo.find('[data-id="telePhone"]').text(data.telePhone==null ? "您还没有联系电话，请添加电话！" : data.telePhone);
+        userInfo.find('[data-id="disabled"]').text(data.disabled ? "不可用":"可用");
+    });
+
+   /* -------------------修改邮箱--------------------  */
     $('#user-info').find("a[data-target=#changeEmailOfUser]").click(function(){
     	 $.get(contextPath + '/pages/auth/user-changeEmail.jsp').done(function(data){
              var dialog  = $(data);

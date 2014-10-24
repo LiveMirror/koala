@@ -8,8 +8,8 @@ import javax.persistence.*;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.dayatang.domain.CriteriaQuery;
+import org.dayatang.utils.Assert;
 import org.openkoala.security.core.AuthorizationIsNotExisted;
-import org.openkoala.security.core.NullArgumentException;
 
 /**
  * 授权中心，在指定范围{@link Scope}将授权{@link Authority}授予参与者{@link Actor}。
@@ -41,24 +41,22 @@ public class Authorization extends SecurityAbstractEntity {
     }
 
     public Authorization(Actor actor, Authority authority) {
-        if (actor == null) {
-            throw new NullArgumentException("actor");
-        }
-        if (authority == null) {
-            throw new NullArgumentException("authority");
-        }
+        Assert.notNull(actor, "actor cannot be empty.");
+        Assert.notNull(authority, "authority cannot be empty.");
         this.actor = actor;
         this.authority = authority;
     }
 
     public Authorization(Actor actor, Authority authority, Scope scope) {
         this(actor, authority);
-        if (scope == null) {
-            throw new NullArgumentException("scope");
-        }
+        Assert.notNull(scope, "scope cannot be empty.");
         this.scope = scope;
     }
 
+    /**
+     * 保存授权中心。
+     * 如果存在就直接返回。
+     */
     @Override
     public void save() {
         if (exists(actor, authority, scope)) {
@@ -67,7 +65,13 @@ public class Authorization extends SecurityAbstractEntity {
         super.save();
     }
 
+    /**
+     * 更改授权中心的范围。
+     *
+     * @param scope 范围
+     */
     public void changeScope(Scope scope) {
+        Assert.notNull(scope,null);
         this.scope = scope;
         this.save();
     }
@@ -108,11 +112,6 @@ public class Authorization extends SecurityAbstractEntity {
         return results;
     }
 
-    /**
-     * @param actor
-     * @param authority
-     * @return
-     */
     public static Authorization findByActorInAuthority(Actor actor, Authority authority) {
         return getRepository()
                 .createCriteriaQuery(Authorization.class)
@@ -127,12 +126,6 @@ public class Authorization extends SecurityAbstractEntity {
         }
     }
 
-    public static void checkAuthorization(Actor actor, Authority authority, Scope scope) {
-        if (!exists(actor, authority, scope)) {
-            throw new AuthorizationIsNotExisted();
-        }
-    }
-
     public static Authorization findByActorOfAuthorityInScope(Actor actor, Authority authority, Scope scope) {
         return getRepository()
                 .createCriteriaQuery(Authorization.class)
@@ -143,12 +136,7 @@ public class Authorization extends SecurityAbstractEntity {
     }
 
     /**
-     * 判断参与者actor是否已经被授予了在某个范围scope下得authority权限
-     *
-     * @param actor
-     * @param authority
-     * @param scope
-     * @return
+     * 判断参与者是否已经被授予了在某个范围下的授权。
      */
     protected static boolean exists(Actor actor, Authority authority, Scope scope) {
         CriteriaQuery criteriaQuery = new CriteriaQuery(getRepository(), Authorization.class);
@@ -169,7 +157,6 @@ public class Authorization extends SecurityAbstractEntity {
         List<Authorization> authorizations = getRepository().createCriteriaQuery(Authorization.class)
                 .eq("actor", actor)
                 .list();
-
         results.addAll(authorizations);
         return results;
     }

@@ -1,7 +1,7 @@
 package org.openkoala.security.core.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.openkoala.security.core.NullArgumentException;
+import org.dayatang.utils.Assert;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -37,16 +37,10 @@ public class ResourceAssignment extends SecurityAbstractEntity {
     }
 
     public ResourceAssignment(Authority authority, SecurityResource resource) {
-        if (authority == null) {
-            throw new NullArgumentException("authority");
-        }
-
-        if (resource == null) {
-            throw new NullArgumentException("resource");
-        }
+        Assert.notNull(authority, "authority cannot be empty.");
+        Assert.notNull(resource, "resource cannot be empty.");
         this.authority = authority;
         this.resource = resource;
-
     }
 
     @Override
@@ -81,9 +75,6 @@ public class ResourceAssignment extends SecurityAbstractEntity {
 
     /**
      * 很奇怪~ 排序规则是变化的，所以强制使用id升序返回。
-     *
-     * @param resource
-     * @return
      */
     public static List<ResourceAssignment> findByResource(SecurityResource resource) {
         return getRepository()
@@ -93,13 +84,11 @@ public class ResourceAssignment extends SecurityAbstractEntity {
                 .list();
     }
 
-    //~ 查询
-
     public static List<MenuResource> findMenuResourceByAuthorities(Set<? extends Authority> authorities) {
-        return getRepository()//
-                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthorities")//
-                .addParameter("authorities", authorities)//
-                .addParameter("resourceType", MenuResource.class)//
+        return getRepository()
+                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthorities")
+                .addParameter("authorities", authorities)
+                .addParameter("resourceType", MenuResource.class)
                 .list();
     }
 
@@ -114,35 +103,31 @@ public class ResourceAssignment extends SecurityAbstractEntity {
     }
 
     public static List<UrlAccessResource> findUrlAccessResourcesByAuthorities(Set<? extends Authority> authorities) {
-        return getRepository()//
-                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthorities")//
-                .addParameter("authorities", authorities)//
-                .addParameter("resourceType", UrlAccessResource.class)//
+        return getRepository()
+                .createNamedQuery("ResourceAssignment.findSecurityResourcesByAuthorities")
+                .addParameter("authorities", authorities)
+                .addParameter("resourceType", UrlAccessResource.class)
                 .list();
     }
 
     public static List<Role> findRoleBySecurityResource(SecurityResource resource) {
         return getRepository().createNamedQuery("ResourceAssignment.findAuthoritiesBySecurityResource")
                 .addParameter("resource", resource)
-                .addParameter("authorityType", Role.class)//
+                .addParameter("authorityType", Role.class)
                 .list();
     }
 
     public static List<Permission> findPermissionBySecurityResource(SecurityResource resource) {
         return getRepository().createNamedQuery("ResourceAssignment.findAuthoritiesBySecurityResource")
                 .addParameter("resource", resource)
-                .addParameter("authorityType", Permission.class)//
+                .addParameter("authorityType", Permission.class)
                 .list();
     }
 
     /**
      * @param resourceAssignmentId id for ResourceAssignment cannot null.
-     * @return
      */
     public static ResourceAssignment getById(Long resourceAssignmentId) {
-        if (resourceAssignmentId == null || resourceAssignmentId < 0) {
-            throw new NullArgumentException("resourceAssignmentId");
-        }
         return ResourceAssignment.get(ResourceAssignment.class, resourceAssignmentId);
     }
 
@@ -167,9 +152,9 @@ public class ResourceAssignment extends SecurityAbstractEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)//
-                .append(resource)//
-                .append(authority)//
+        return new ToStringBuilder(this)
+                .append(resource)
+                .append(authority)
                 .toString();
     }
 

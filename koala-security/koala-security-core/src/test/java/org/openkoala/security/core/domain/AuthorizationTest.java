@@ -9,19 +9,18 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.openkoala.security.core.AuthorizationIsNotExisted;
-import org.openkoala.security.core.NullArgumentException;
 
 public class AuthorizationTest extends AbstractDomainIntegrationTestCase {
 
 	
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testSaveAndUserIsNull() throws Exception {
 		Role role = initRole();
 		role.save();
 		initAuthorization(null, role);
 	}
 	
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testSaveAndRoleIsNull() throws Exception {
 		User user = initUser();
 		user.save();
@@ -118,5 +117,4 @@ public class AuthorizationTest extends AbstractDomainIntegrationTestCase {
 		authorization.save();
 		Authorization.checkAuthorization(user2, role);
 	}
-
 }

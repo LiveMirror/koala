@@ -1,6 +1,7 @@
 package org.openkoala.security.core.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.dayatang.utils.Assert;
 import org.openkoala.security.core.IdentifierIsExistedException;
 
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ public class PageElementResource extends SecurityResource {
 
     public PageElementResource(String name, String identifier) {
         super(name);
-        checkArgumentIsNull("identifier", identifier);
+        Assert.notEmpty(identifier, "identifier cannot be empty.");
         isIdentifierExisted(identifier);
         this.identifier = identifier;
     }
@@ -37,7 +38,7 @@ public class PageElementResource extends SecurityResource {
     }
 
     public void changeIdentifier(String identifier) {
-        checkArgumentIsNull("identifier", identifier);
+        Assert.notEmpty(identifier, "identifier cannot be empty.");
         if (!identifier.equals(this.getIdentifier())) {
             isIdentifierExisted(identifier);
             this.identifier = identifier;
@@ -45,18 +46,9 @@ public class PageElementResource extends SecurityResource {
         }
     }
 
-    @Override
-    public SecurityResource findByName(String name) {
-        return getRepository()//
-                .createNamedQuery("SecurityResource.findByName")//
-                .addParameter("securityResourceType", PageElementResource.class)//
-                .addParameter("name", name)//
-                .singleResult();
-    }
-
     public static PageElementResource getBy(String securityResourceName) {
-        return getRepository().createCriteriaQuery(PageElementResource.class)//
-                .eq("name", securityResourceName)//
+        return getRepository().createCriteriaQuery(PageElementResource.class)
+                .eq("name", securityResourceName)
                 .singleResult();
     }
 
@@ -69,31 +61,28 @@ public class PageElementResource extends SecurityResource {
     }
 
     private static PageElementResource getby(String identifier) {
-        PageElementResource result = getRepository()//
-                .createCriteriaQuery(PageElementResource.class)//
-                .eq("identifier", identifier)//
+        return getRepository()
+                .createCriteriaQuery(PageElementResource.class)
+                .eq("identifier", identifier)
                 .singleResult();
-        return result;
     }
-
 
     private void isIdentifierExisted(String identifier) {
         if (null != getby(identifier)) {
-            throw new IdentifierIsExistedException("pageElemntResource identifier is existed.");
+            throw new IdentifierIsExistedException("pageElemntResource identifier existed.");
         }
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)//
-                .append(getName())//
-                .append(getIdentifier())//
-                .append(getDescription())//
+        return new ToStringBuilder(this)
+                .append(getName())
+                .append(getIdentifier())
+                .append(getDescription())
                 .build();
     }
 
     public String getIdentifier() {
         return identifier;
     }
-
 }

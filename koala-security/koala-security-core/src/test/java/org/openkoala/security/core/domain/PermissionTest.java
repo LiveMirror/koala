@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.IdentifierIsExistedException;
 import org.openkoala.security.core.NameIsExistedException;
-import org.openkoala.security.core.NullArgumentException;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import static org.openkoala.security.core.util.EntitiesHelper.*;
 
 public class PermissionTest extends AbstractDomainIntegrationTestCase {
 
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testSaveNameIsNull() throws Exception {
 		new Permission(null, "testPermission000002");
 	}
@@ -25,7 +24,7 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 		permission.save();
 	}
 	
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testSaveIdentifierIsNull() throws Exception {
 		new Permission("测试权限000002", null);
 	}
@@ -57,7 +56,7 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 		assertPermission(permission, loadPermission);
 	}
 
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testChangeNameIsNull() throws Exception {
 		Permission permission = initPermission();
 		permission.save();
@@ -75,7 +74,7 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
 		permission.changeName(name);
 	}
 
-	@Test(expected = NullArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testChangeIdentifierIsNull() throws Exception {
 		Permission permission = initPermission();
 		permission.save();
@@ -155,10 +154,8 @@ public class PermissionTest extends AbstractDomainIntegrationTestCase {
         MenuResource menuResource = initMenuResource();
         menuResource.save();
         permission.addSecurityResource(menuResource);
-        permission.save();
         List<SecurityResource> securityResources =  permission.findResources();
         assertFalse(securityResources.isEmpty());
         assertTrue(securityResources.size() == 1);
-
     }
 }
