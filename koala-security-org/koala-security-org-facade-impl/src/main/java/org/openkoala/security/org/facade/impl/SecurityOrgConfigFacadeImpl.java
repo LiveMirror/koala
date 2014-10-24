@@ -18,7 +18,6 @@ import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
 import org.openkoala.security.application.SecurityDBInitApplication;
-import org.openkoala.security.core.NullArgumentException;
 import org.openkoala.security.core.UserAccountIsExistedException;
 import org.openkoala.security.core.domain.Actor;
 import org.openkoala.security.core.domain.Authority;
@@ -87,13 +86,10 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
             }
             securityConfigApplication.createActor(employeeUser);
             return InvokeResult.success();
-		} catch (NullArgumentException e) {
+		} catch (RuntimeException e) {
 			LOGGER.error(e.getMessage(), e);
 			return InvokeResult.failure("名称或者账户不能为空。");
-		} catch (UserAccountIsExistedException e) {
-			LOGGER.error(e.getMessage(), e);
-			return InvokeResult.failure("账号已经存在。");
-		} catch (Exception e) {
+		}catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return InvokeResult.failure("添加用户失败。");
 		}
@@ -169,9 +165,6 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
 
             securityConfigApplication.createActor(employeeUser);
             return InvokeResult.success();
-        } catch (NullArgumentException e) {
-            LOGGER.error(e.getMessage(), e);
-            return InvokeResult.failure("名称或者账户不能为空。");
         } catch (UserAccountIsExistedException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("账号已经存在。");
