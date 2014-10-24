@@ -114,7 +114,7 @@
                                     type : 'success',
                                     content : '更改联系电话成功!'
                                 });
-                                window.location.href=contextPath+"/index.koala";
+                                dialog.modal('hide');
                             }else{
                                 dialog.find('#changeTelePhoneOfUserMessage').message({
                                     type : 'error',
@@ -127,6 +127,13 @@
                     }).on({
                         'hidden.bs.modal' : function() {
                             $(this).remove();
+                        },
+                        'complete': function(){
+                            dialog.message({
+                                type: 'success',
+                                content: '更改联系电话成功!'
+                            });
+                            $(this).modal('hide');
                         }
                     });
                     //兼容IE8 IE9
@@ -160,7 +167,7 @@
                                     type : 'success',
                                     content : '更改邮箱成功!'
                                 });
-                               window.location.href=contextPath+"/index.koala";
+                                dialog.modal('hide');
                             }else{
                                 dialog.find('#changeEmailOfUserMessage').message({
                                     type : 'error',
@@ -173,6 +180,13 @@
                     }).on({
                         'hidden.bs.modal' : function() {
                             $(this).remove();
+                        },
+                        'complete': function(){
+                            dialog.message({
+                                type: 'success',
+                                content: '更改邮箱成功'
+                            });
+                            $(this).modal('hide');
                         }
                     });
                     //兼容IE8 IE9

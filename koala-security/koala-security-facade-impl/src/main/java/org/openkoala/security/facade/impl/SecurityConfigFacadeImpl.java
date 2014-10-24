@@ -32,7 +32,6 @@ import org.openkoala.security.facade.command.ChangePageElementResourcePropsComma
 import org.openkoala.security.facade.command.ChangePermissionPropsCommand;
 import org.openkoala.security.facade.command.ChangeRolePropsCommand;
 import org.openkoala.security.facade.command.ChangeUrlAccessResourcePropsCommand;
-import org.openkoala.security.facade.command.ChangeUserAccountCommand;
 import org.openkoala.security.facade.command.ChangeUserEmailCommand;
 import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserPropsCommand;
@@ -115,8 +114,9 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
     @Override
     public InvokeResult changeUserPassword(ChangeUserPasswordCommand command) {
         User user = securityAccessApplication.getUserByUserAccount(command.getUserAccount());
-        boolean message = securityAccessApplication.updatePassword(user, command.getUserPassword(), command.getOldUserPassword());
-        return message ? InvokeResult.success() : InvokeResult.failure("原始密码输入不正确!");
+        return securityAccessApplication.updatePassword(user, command.getUserPassword(), command.getOldUserPassword())
+                ? InvokeResult.success()
+                : InvokeResult.failure("原始密码输入不正确!");
     }
 
     @Override
@@ -628,17 +628,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         User user = securityAccessApplication.getUserById(command.getId());
         user.setName(command.getName());
         user.setDescription(command.getDescription());
-        securityConfigApplication.createActor(user);// 显示调用。
-        securityConfigApplication.changeLastModifyTimeOfUser(user);
-        return InvokeResult.success();
-    }
-
-    @Override
-    public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
-
-
-        User user = securityAccessApplication.getUserById(command.getId());
-        securityConfigApplication.changeUserAccount(user, command.getUserAccount(), command.getUserPassword());
+        securityConfigApplication.createActor(user);
         securityConfigApplication.changeLastModifyTimeOfUser(user);
         return InvokeResult.success();
     }
@@ -656,7 +646,7 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         } catch (UserPasswordException e) {
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("输入密码错误！");
-        } catch (ConstraintViolationException e) {
+        } catch (ConstraintViolationException e) { // TODO 获取不到
             LOGGER.error(e.getMessage(), e);
             return InvokeResult.failure("邮箱不合法，请重新输入！");
         } catch (EmailIsExistedException e) {

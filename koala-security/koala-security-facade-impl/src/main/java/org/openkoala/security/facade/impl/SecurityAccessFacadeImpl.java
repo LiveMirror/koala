@@ -493,7 +493,7 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	@Override
 	public InvokeResult getuserDetail(String userAccount) {
 		return InvokeResult.success(
-                UserAssembler.toUserDTONotPassword( // 转换
+                UserAssembler.toUserDTONotPassword(
                         securityAccessApplication.getUserByUserAccount(userAccount)));
     }
 
