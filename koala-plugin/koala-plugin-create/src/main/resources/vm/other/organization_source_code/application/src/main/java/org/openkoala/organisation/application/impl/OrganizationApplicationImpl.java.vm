@@ -7,17 +7,19 @@ import java.util.Set;
 import javax.inject.Named;
 
 import org.openkoala.organisation.application.OrganizationApplication;
-import org.openkoala.organisation.domain.Company;
-import org.openkoala.organisation.domain.Department;
-import org.openkoala.organisation.domain.Employee;
-import org.openkoala.organisation.domain.EmployeePostHolding;
-import org.openkoala.organisation.domain.Organization;
-import org.openkoala.organisation.domain.OrganizationAbstractEntity;
-import org.openkoala.organisation.domain.OrganizationLineManagement;
+import org.openkoala.organisation.core.domain.Company;
+import org.openkoala.organisation.core.domain.Department;
+import org.openkoala.organisation.core.domain.Employee;
+import org.openkoala.organisation.core.domain.EmployeePostHolding;
+import org.openkoala.organisation.core.domain.Organization;
+import org.openkoala.organisation.core.domain.OrganizationAbstractEntity;
+import org.openkoala.organisation.core.domain.OrganizationLineManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 组织机构应用实现层类
+ * 
+ * @author xmfang
  * 
  */
 @Named
@@ -25,10 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrganizationApplicationImpl implements OrganizationApplication {
 
 	public boolean isTopOrganizationExists() {
-		return Organization.getTopOrganization() == null ? false : true;
+		return Organization.getTopOrganization() != null;
 	}
 
-    
+	
 	public void createAsTopOrganization(Company company) {
 		company.createAsTopOrganization();
 	}
@@ -41,8 +43,7 @@ public class OrganizationApplicationImpl implements OrganizationApplication {
 
 	
 	public void assignChildOrganization(Organization parent, Organization child, Date date) {
-		OrganizationLineManagement organizationLineManagement = new OrganizationLineManagement(parent, child, date);
-		organizationLineManagement.save();
+        new OrganizationLineManagement(parent, child, date).save();
 	}
 
 	public Organization getParentOfOrganization(Organization organization, Date date) {
@@ -73,5 +74,5 @@ public class OrganizationApplicationImpl implements OrganizationApplication {
 	public void updateOrganization(Organization organization) {
 		organization.update();
 	}
-	
+
 }

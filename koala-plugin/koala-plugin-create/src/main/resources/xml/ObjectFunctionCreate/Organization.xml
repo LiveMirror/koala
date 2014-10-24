@@ -4,6 +4,11 @@
 
 	<property name="description">Koala-Organization</property>
 
+	<VelocityDirObject>
+		<property name="vmDir">vm/other/organization_source_code/controller</property>
+		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
+	</VelocityDirObject>
+
 	<CopyFiles>
 		<property name="srcDir">vm/other/organization/</property>
 		<property name="destDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/webapp/

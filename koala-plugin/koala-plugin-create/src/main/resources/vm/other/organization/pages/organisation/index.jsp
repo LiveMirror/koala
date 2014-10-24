@@ -43,10 +43,10 @@
             <li>
                 <a data-toggle="collapse" href="#userRight"><i class="glyphicon glyphicon-home"></i>&nbsp;主菜单&nbsp;<i class="glyphicon glyphicon-chevron-left" style=" float: right;font-size: 12px;position: relative;right: 8px;top: 3px;"></i></a>
                 <ul id="userRight" class="second-level-menu in">
-                   <li class="submenu" data-role="openTab" data-target="/pages/organisation/departmentList.jsp" openTree=true data-title="机构管理" data-mark="departmentList" ><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;机构管理</a></li>
-                   <li class="submenu" data-role="openTab" data-target="/pages/organisation/jobList.jsp" data-title="职务管理" data-mark="jobList" ><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;职务管理</a></li>
-                   <li class="submenu" data-role="openTab" data-target="/pages/organisation/positionList.jsp" data-title="岗位管理" data-mark="positionList" ><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;岗位管理</a></li>
-                   <li class="submenu" data-role="openTab" data-target="/pages/organisation/employeeList.jsp" data-title="人员管理" data-mark="employeeList"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;人员管理</a></li>
+                   <li class="submenu" data-role="openTab" data-target="/pages/organisation/department-list.jsp" openTree=true data-title="机构管理" data-mark="departmentList" ><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;机构管理</a></li>
+                   <li class="submenu" data-role="openTab" data-target="/pages/organisation/job-list.jsp" data-title="职务管理" data-mark="jobList" ><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;职务管理</a></li>
+                   <li class="submenu" data-role="openTab" data-target="/pages/organisation/position-list.jsp" data-title="岗位管理" data-mark="positionList" ><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;岗位管理</a></li>
+                   <li class="submenu" data-role="openTab" data-target="/pages/organisation/employee-list.jsp" data-title="人员管理" data-mark="employeeList"><a><i class="glyphicon glyphicon-list-alt"></i>&nbsp;人员管理</a></li>
                 </ul>
             </li>
         </ul>

@@ -30,7 +30,7 @@ var employee = function(){
 	var add = function(grid){
 		dataGrid = grid;
 		operateType = 'add';
-		$.get( contextPath + '/pages/organisation/employeeTemplate.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/employee-template.jsp').done(function(data){
 			init(data);
 		});
 	};
@@ -40,7 +40,7 @@ var employee = function(){
 	var modify = function(id, grid){
 		dataGrid = grid;
 		operateType = 'update';
-		$.get( contextPath + '/pages/organisation/employee-updater.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/employee-update.jsp').done(function(data){
 			init(data, id);
 			setData(id);
 		});
@@ -61,7 +61,7 @@ var employee = function(){
 		    'data': JSON.stringify(objects),
 		    'dataType': 'json'
 		 }).done(function(data){
-			if(data.result == 'success'){
+			if(data.success){
 				dataGrid.message({
 					type: 'success',
 					content: '解雇成功'
@@ -70,15 +70,15 @@ var employee = function(){
 			}else{
 				dataGrid.message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});
 			}
 		}).fail(function(data){
-				dataGrid.message({
-					type: 'error',
-					content: '解雇失败'
-				});
+			dataGrid.message({
+				type: 'error',
+				content: '解雇失败'
 			});
+		});
 	};
 	/**
 	 * 初始化
@@ -110,17 +110,17 @@ var employee = function(){
 		}).end().modal({
 			keyboard: false
 		}).on({
-				'hidden.bs.modal': function(){
-					$(this).remove();
-				},
-				'complete': function(){
-					$('body').message({
-						type: 'success',
-						content: '保存成功'
-					});
-					$(this).modal('hide');
-					dataGrid.grid('refresh');
-				}
+			'hidden.bs.modal': function(){
+				$(this).remove();
+			},
+			'complete': function(){
+				$('body').message({
+					type: 'success',
+					content: '保存成功'
+				});
+				$(this).modal('hide');
+				dataGrid.grid('refresh');
+			}
 		});
 	};
 	/**
@@ -128,7 +128,7 @@ var employee = function(){
 	 */
 	var  fillGenders = function(){
 		$.get( contextPath + '/employee/genders.koala').done(function(data){
-			var items = data.data;
+			var items = data;
 			var contents = new Array();
 			for(var prop in items){
 				contents.push({value: prop, title: items[prop]});
@@ -148,7 +148,7 @@ var employee = function(){
 	 * 部门选择
 	 */
     var selectDepartments = function(){
-		$.get( contextPath + '/pages/organisation/selectDepartmentTemplate.jsp').done(function(data){
+		$.get( contextPath + '/pages/organisation/select-department-template.jsp').done(function(data){
 			var departmentTreeDialog = $(data);
 			departmentTreeDialog.find('.modal-body').css({height:'325px'});
 			departmentTree = departmentTreeDialog.find('.tree');
@@ -176,7 +176,7 @@ var employee = function(){
     	departmentTree.parent().loader({
 			opacity: 0
 		});
-        $.get(contextPath  + '/organization/orgTree.koala').done(function(data){
+        $.get(contextPath  + '/organization/org-tree.koala').done(function(data){
             departmentTree.parent().loader('hide');
             var zNodes = new Array();
             $.each(data, function(){
@@ -203,16 +203,16 @@ var employee = function(){
                 multiSelect: false,
                 cacheItems: true
             }).on({
-                    'selectParent': function(event, data){
-                        var data = data.data;
-                        departmentId = data.id;
-                        departmentName = data.name;
-                    },
-                    'selectChildren': function(event, data){
-                        departmentId = data.id;
-                        departmentName = data.name;
-                    }
-                });
+                'selectParent': function(event, data){
+                    var data = data.data;
+                    departmentId = data.id;
+                    departmentName = data.name;
+                },
+                'selectChildren': function(event, data){
+                    departmentId = data.id;
+                    departmentName = data.name;
+                }
+            });
         });
     };
     var getChildrenData = function(nodes, items){
@@ -237,7 +237,7 @@ var employee = function(){
 	 */
 	var  fillPosts = function(organizationId){
 		$.get( contextPath + '/post/query-post-by-org.koala?organizationId='+organizationId).done(function(data){
-			 var items = data.result;
+			 var items = data;
 			 var contents = new Array();
 			 for(var i= 0, j=items.length; i<j; i++){
 				 var item = items[i];
@@ -275,7 +275,7 @@ var employee = function(){
 	var setData = function(id){
 		$.get(baseUrl+'get/'+id+'.koala')
 			.done(function(result){
-				var data = result.data;
+				var data = result;
 				employeeId = data.id;
 				personId = data.personId;
 				personVersion = data.personVersion;
@@ -307,15 +307,13 @@ var employee = function(){
 		}else{
 			url = baseUrl + 'create.koala?postId='+post.getValue();
 		}
-		$.post(url, getAllData()).done(function(data){
-			if(data.result == 'success'){
+		$.post(url, getAllData(id)).done(function(data){
+			if(data.success){
 				dialog.trigger('complete');
-			} else if(data.result == '该职务已存在'){
-				showErrorMessage(dataSourceId, '该职务已存在');
-			} else {
+			}else{
 				dialog.find('.modal-content').message({
 					type: 'error',
-					content: data.result
+					content: data.errorMessage
 				});
 			}
 			dialog.find('#save').removeAttr('disabled');
@@ -436,7 +434,7 @@ var employee = function(){
 	 * 显示详细信息
 	 */
 	var showDetail = function(id, employeeName){
-		openTab('/pages/organisation/employeeDetail.jsp', employeeName, 'employeeDetail', id);
+		openTab('/pages/organisation/employee-detail.jsp', employeeName, 'employeeDetail', id);
 	};
 	return {
 		add: add,

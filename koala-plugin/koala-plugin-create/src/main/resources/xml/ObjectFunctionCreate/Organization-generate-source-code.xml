@@ -3,12 +3,6 @@
 <XmlParse>
 
 	<property name="description">Koala-Organization-generate-source-code</property>
-
-	
-	<VelocityDirObject>
-		<property name="vmDir">vm/other/organization_source_code/controller</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
-	</VelocityDirObject>
 	
 	<VelocityDirObject>
 		<property name="vmDir">vm/other/organization_source_code/confxml</property>

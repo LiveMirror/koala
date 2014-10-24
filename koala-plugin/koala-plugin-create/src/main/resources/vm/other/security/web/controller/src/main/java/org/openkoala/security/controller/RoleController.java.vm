@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 角色控制器
+ * 角色控制器。
+ * 分页都将采用POST请求方式，因GET请求搜索时携带中文会导致乱码。
  *
- * @author luzhao
- *
+ * @author lucas
  */
 @Controller
 @RequestMapping("/auth/role")
@@ -99,7 +99,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/pagingQuery", method = RequestMethod.GET)
+	@RequestMapping(value = "/pagingQuery", method = RequestMethod.POST)
 	public Page<RoleDTO> pagingQuery(int page, int pagesize, RoleDTO roleDTO) {
 		return securityAccessFacade.pagingQueryRoles(page, pagesize, roleDTO);
 	}
@@ -179,7 +179,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/pagingQueryGrantUrlAccessResourcesByRoleId", method = RequestMethod.GET)
+	@RequestMapping(value = "/pagingQueryGrantUrlAccessResourcesByRoleId", method = RequestMethod.POST)
 	public Page<UrlAccessResourceDTO> pagingQueryGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId, UrlAccessResourceDTO queryUrlAccessResourceCondition) {
         return securityAccessFacade.pagingQueryGrantUrlAccessResourcesByRoleId(page, pagesize, roleId, queryUrlAccessResourceCondition);
     }
@@ -193,7 +193,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/pagingQueryNotGrantUrlAccessResourcesByRoleId", method = RequestMethod.GET)
+	@RequestMapping(value = "/pagingQueryNotGrantUrlAccessResourcesByRoleId", method = RequestMethod.POST)
 	public Page<UrlAccessResourceDTO> pagingQueryNotGrantUrlAccessResourcesByRoleId(int page, int pagesize, Long roleId, UrlAccessResourceDTO queryUrlAccessResourceCondition) {
 		return securityAccessFacade.pagingQueryNotGrantUrlAccessResourcesByRoleId(page,	pagesize, roleId,queryUrlAccessResourceCondition);
 	}
@@ -233,7 +233,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/pagingQueryGrantPermissionsByRoleId", method = RequestMethod.GET)
+	@RequestMapping(value = "/pagingQueryGrantPermissionsByRoleId", method = RequestMethod.POST)
 	public Page<PermissionDTO> pagingQueryPermissionsByRoleId(int page, int pagesize, Long roleId, PermissionDTO queryPermissionCondition) {
 		return securityAccessFacade.pagingQueryGrantPermissionsByRoleId(page, pagesize, roleId, queryPermissionCondition);
 	}
@@ -247,7 +247,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByRoleId", method = RequestMethod.GET)
+	@RequestMapping(value = "/pagingQueryNotGrantPermissionsByRoleId", method = RequestMethod.POST)
 	public Page<PermissionDTO> pagingQueryNotGrantPermissionsByRoleId(int page, int pagesize, Long roleId, PermissionDTO queryPermissionCondition) {
 		return securityAccessFacade.pagingQueryNotGrantPermissionsByRoleId(page, pagesize,	roleId, queryPermissionCondition);
 	}
@@ -287,7 +287,7 @@ public class RoleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/pagingQueryGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
+	@RequestMapping(value = "/pagingQueryGrantPageElementResourcesByRoleId", method = RequestMethod.POST)
 	public Page<PageElementResourceDTO> pagingQueryGrantPageElementResourcesByRoleId(int page, int pagesize, Long roleId, PageElementResourceDTO queryPageElementResourceCondition) {
 		return securityAccessFacade.pagingQueryGrantPageElementResourcesByRoleId(page,	pagesize, roleId, queryPageElementResourceCondition);
 	}
@@ -301,7 +301,7 @@ public class RoleController {
 	 * @return
 	 */
     @ResponseBody
-    @RequestMapping(value = "/pagingQueryNotGrantPageElementResourcesByRoleId", method = RequestMethod.GET)
+    @RequestMapping(value = "/pagingQueryNotGrantPageElementResourcesByRoleId", method = RequestMethod.POST)
     public Page<PageElementResourceDTO> pagingQueryNotGrantPageElementResourcesByRoleId(int page, int pagesize,
                                                                                         Long roleId, PageElementResourceDTO queryPageElementResourceCondition) {
         return securityAccessFacade.pagingQueryNotGrantPageElementResourcesByRoleId(page, pagesize, roleId, queryPageElementResourceCondition);

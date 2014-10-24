@@ -39,9 +39,10 @@ public class JobDTO implements Serializable {
 		this.description = description;
 	}
 
-	public JobDTO(Long id, String name) {
+	public JobDTO(Long id, String name, String sn) {
 		this.id = id;
 		this.name = name;
+		this.sn = sn;
 	}
 
 	public Long getId() {

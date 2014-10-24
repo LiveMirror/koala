@@ -40,7 +40,7 @@
 		autoLoad : true, //是否表格准备好时加载数据
 		isShowPages : true, //是否显示分页
 		isUserLocalData : false, //是否使用本地数据源
-		method : 'GET', //请求数据方式
+		method : 'POST', //请求数据方式
 		identity : 'id', //主键
 		lockWidth : false,
 		pageSize : 10,
@@ -777,10 +777,9 @@
 		 * 外部查询
 		 */
 		search : function(conditions) {
-			console.log(conditions);
-			for (var prop in conditions) {
-				this.searchCondition[prop] = conditions[prop];
-			}
+            for (var prop in conditions) {
+                this.searchCondition[prop] = conditions[prop];
+            }
 			this.pageNo = Grid.DEFAULTS.pageNo;
 			this._loadData();
 		},
@@ -892,7 +891,7 @@
 	$.fn.getGrid = function() {
 		return $(this).data('koala.grid');
 	};
-	Grid.DEFAULTS.TEMPLATE = '<div class="table-responsive"><table class="table table-responsive table-bordered grid"><thead><tr><th><div class="btn-group buttons" style = "width:100%;"></div><div class="search"><div class="btn-group select " data-role="condition"></div><div class="input-group" style="width:180px;"><input type="text" class="input-medium form-control" placeholder="Search" data-role="searchValue"><div class="input-group-btn"><button type="button" class="btn btn-default" data-role="searchBtn"><span class="glyphicon glyphicon-search"></span></button></div></div></div></th></tr></thead><tbody><tr><td><div class="colResizePointer"></div><div class="grid-body"><div class="grid-table-head"><table class="table table-bordered"></table></div><div class="grid-table-body"><table class="table table-responsive table-bordered table-hover table-striped"></table></div></div></td></tr></tbody><tfoot><tr><td><div class="records">显示:<span data-role="start-record">1</span>-<span data-role="end-record">10</span>, 共<span data-role="total-record">0</span>条记录。&nbsp;每页显示:<div class="btn-group select " data-role="pageSizeSelect"></div>条</div><div><div class="btn-group pages"><ul class="pagination"></ul></div></div></td></tr></tfoot></table></div>';
+	Grid.DEFAULTS.TEMPLATE = '<div class="table-responsive"><table class="table table-responsive table-bordered grid"><thead><tr><th><div class="btn-group buttons"></div><div class="search"><div class="btn-group select " data-role="condition"></div><div class="input-group" style="width:180px;"><input type="text" class="input-medium form-control" placeholder="Search" data-role="searchValue"><div class="input-group-btn"><button type="button" class="btn btn-default" data-role="searchBtn"><span class="glyphicon glyphicon-search"></span></button></div></div></div></th></tr></thead><tbody><tr><td><div class="colResizePointer"></div><div class="grid-body"><div class="grid-table-head"><table class="table table-bordered"></table></div><div class="grid-table-body"><table class="table table-responsive table-bordered table-hover table-striped"></table></div></div></td></tr></tbody><tfoot><tr><td><div class="records">显示:<span data-role="start-record">1</span>-<span data-role="end-record">10</span>, 共<span data-role="total-record">0</span>条记录。&nbsp;每页显示:<div class="btn-group select " data-role="pageSizeSelect"></div>条</div><div><div class="btn-group pages"><ul class="pagination"></ul></div></div></td></tr></tfoot></table></div>';
 	var old = $.fn.grid;
 	$.fn.grid = function(option) {
 		return this.each(function() {
@@ -1127,7 +1126,7 @@
 	+ '<div class="modal-content">' 
 	+ '<div class="modal-header">' 
 	+ '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' 
-	+ '<h4 class="modal-title">修改密码</h4>' 
+	+ '<h4 class="modal-title">更改密码</h4>'
 	+ '</div>' + '<div class="modal-body"> ' 
 	+ '<form class="form-horizontal" role="form">' 
 	+ '<div class="form-group">' 

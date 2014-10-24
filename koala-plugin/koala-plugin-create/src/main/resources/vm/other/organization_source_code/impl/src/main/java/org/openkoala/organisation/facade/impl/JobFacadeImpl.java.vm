@@ -12,23 +12,19 @@ import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.utils.Page;
 import org.dayatang.querychannel.QueryChannelService;
-import org.openkoala.organisation.NameExistException;
-import org.openkoala.organisation.SnIsExistException;
-import org.openkoala.organisation.TheJobHasPostAccountabilityException;
+import org.dayatang.utils.Page;
+import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.organisation.application.BaseApplication;
-import org.openkoala.organisation.domain.Job;
+import org.openkoala.organisation.core.NameExistException;
+import org.openkoala.organisation.core.SnIsExistException;
+import org.openkoala.organisation.core.TheJobHasPostAccountabilityException;
+import org.openkoala.organisation.core.domain.Job;
 import org.openkoala.organisation.facade.JobFacade;
-import org.openkoala.organisation.facade.dto.InvokeResult;
 import org.openkoala.organisation.facade.dto.JobDTO;
-import org.openkoala.organisation.facade.impl.assembler.JobDtoAssembler;
-import org.springframework.transaction.annotation.Transactional;
+import org.openkoala.organisation.facade.impl.assembler.JobAssembler;
 
 @Named
-//@Interceptors(value = org.openkoala.koala.util.SpringEJBIntercepter.class)
-//@Stateless(name = "JobApplication")
-//@Remote
 public class JobFacadeImpl implements JobFacade {
 
 	@Inject
@@ -43,6 +39,7 @@ public class JobFacadeImpl implements JobFacade {
 		return queryChannel;
 	}
 
+	@SuppressWarnings("unchecked")
 	
 	public Page<JobDTO> pagingQueryJobs(JobDTO jobSearchExample, int currentPage, int pageSize) {
 		List<Object> conditionVals = new ArrayList<Object>();
@@ -64,7 +61,7 @@ public class JobFacadeImpl implements JobFacade {
 		}
 		if (!StringUtils.isBlank(jobSearchExample.getDescription())) {
 			jpql.append(" and _job.description like ?");
-			conditionVals.add(MessageFormat.format("%{0}%", jobSearchExample.getSn()));
+			conditionVals.add(MessageFormat.format("%{0}%", jobSearchExample.getDescription()));
 		}
 
 		return getQueryChannelService().createJpqlQuery(jpql.toString()).setParameters(conditionVals).setPage(currentPage, pageSize).pagedList();
@@ -74,7 +71,7 @@ public class JobFacadeImpl implements JobFacade {
 	public List<JobDTO> findAllJobs() {
 		List<JobDTO> results = new ArrayList<JobDTO>();
 		for (Job job : baseApplication.findAll(Job.class)) {
-			results.add(JobDtoAssembler.assemDto(job));
+			results.add(JobAssembler.toDTO(job));
 		}
 		return results;
 	}
@@ -82,7 +79,7 @@ public class JobFacadeImpl implements JobFacade {
 	
 	public InvokeResult createJob(JobDTO jobDto) {
 		try {
-			baseApplication.saveParty(JobDtoAssembler.assemEntity(jobDto));
+			baseApplication.saveParty(JobAssembler.toEntity(jobDto));
 			return InvokeResult.success();
 		} catch (SnIsExistException exception) {
 			return InvokeResult.failure("职务编码: " + jobDto.getSn() + " 已被使用！");
@@ -97,7 +94,7 @@ public class JobFacadeImpl implements JobFacade {
 	
 	public InvokeResult updateJobInfo(JobDTO jobDTO) {
 		try {
-			baseApplication.updateParty(JobDtoAssembler.assemEntity(jobDTO));
+			baseApplication.updateParty(JobAssembler.toEntity(jobDTO));
 			return InvokeResult.success();
 		} catch (SnIsExistException exception) {
 			return InvokeResult.failure("职务编码: " + jobDTO.getSn() + " 已被使用！");
@@ -111,16 +108,16 @@ public class JobFacadeImpl implements JobFacade {
 
 	
 	public JobDTO getJobById(Long id) {
-		return JobDtoAssembler.assemDto(baseApplication.getEntity(Job.class, id));
+		return JobAssembler.toDTO(baseApplication.getEntity(Job.class, id));
 	}
 
 	
 	public InvokeResult terminateJob(JobDTO jobDTO) {
 		try {
-			baseApplication.terminateParty(JobDtoAssembler.assemEntity(jobDTO));
+			baseApplication.terminateParty(JobAssembler.toEntity(jobDTO));
 			return InvokeResult.success();
 		} catch (TheJobHasPostAccountabilityException e) {
-			return InvokeResult.failure("职务：" + jobDTO.getName() + "已经被相关关联岗位，不能被撤销！");
+			return InvokeResult.failure("该职务已被使用!");
 		}
 	}
 
@@ -128,13 +125,13 @@ public class JobFacadeImpl implements JobFacade {
 	public InvokeResult terminateJobs(JobDTO[] jobDtos) {
 		Set<Job> jobs = new HashSet<Job>();
 		for (JobDTO jobDTO : jobDtos) {
-			jobs.add(JobDtoAssembler.assemEntity(jobDTO));
+			jobs.add(JobAssembler.toEntity(jobDTO));
 		}
 		try {
 			baseApplication.terminateParties(jobs);
 			return InvokeResult.success();
 		} catch (TheJobHasPostAccountabilityException e) {
-			return InvokeResult.failure("该职务已经被相关关联岗位，不能被撤销！");
+			return InvokeResult.failure("该职务已被使用!");
 		}
 	}
 

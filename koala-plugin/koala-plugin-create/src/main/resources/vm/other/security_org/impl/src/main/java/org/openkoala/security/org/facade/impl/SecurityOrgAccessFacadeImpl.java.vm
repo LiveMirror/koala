@@ -5,7 +5,7 @@ import org.dayatang.domain.InstanceFactory;
 import org.dayatang.utils.Page;
 import org.dayatang.querychannel.QueryChannelService;
 import org.openkoala.koala.commons.InvokeResult;
-import org.openkoala.organisation.domain.Organization;
+import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.core.domain.Authorization;
 import org.openkoala.security.core.domain.Permission;
