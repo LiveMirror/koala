@@ -49,9 +49,6 @@ public class RoleController {
 
 	/**
 	 * 添加角色
-	 *
-	 * @param command
-	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -61,9 +58,6 @@ public class RoleController {
 
 	/**
 	 * 更新角色
-	 *
-	 * @param command
-	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -79,11 +73,6 @@ public class RoleController {
         return result;
 	}
 
-	/**
-	 * TODO 支持批量撤销,待优化。
-	 *
-	 * @param roleIds
-	 */
 	@ResponseBody
 	@RequestMapping(value = "/terminate", method = RequestMethod.POST)
 	public InvokeResult terminate(Long[] roleIds) {
@@ -103,12 +92,6 @@ public class RoleController {
 	public Page<RoleDTO> pagingQuery(int page, int pagesize, RoleDTO roleDTO) {
 		return securityAccessFacade.pagingQueryRoles(page, pagesize, roleDTO);
 	}
-
-    @ResponseBody
-    @RequestMapping(value = "findInfoOfRole" , method = RequestMethod.GET)
-    public InvokeResult findInfoOfRole(Long roleId){
-        return securityAccessFacade.findInfOfRole(roleId);
-    }
 
 	/**
 	 * 根据角色ID查询菜单权限资源树带有已经选中项。
