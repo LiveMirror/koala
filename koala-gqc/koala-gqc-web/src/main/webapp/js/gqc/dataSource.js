@@ -189,9 +189,9 @@ var dataSource = function(){
 		dialog.find('#dataSourceType').select({
 			title: '选择数据源类型',
 			contents: [
-				{value: 'SYSTEM_DATA_SOURCE', title: '系统数据源'},
-				{value: 'CUSTOM_DATA_SOURCE', title: '自定义数据源', selected: true}
-			]
+						{value: 'SYSTEM_DATA_SOURCE', title: '系统数据源'},
+						{value: 'CUSTOM_DATA_SOURCE', title: '自定义数据源', selected: true}
+					]
 		}).on('change', function(){
 				if($(this).getValue() == 'SYSTEM_DATA_SOURCE'){
 					dataSourceDescription.closest('.form-group').hide();
