@@ -43,8 +43,8 @@
                             <div id="notGrantAuthoritiesToUserGrid"></div>
                         </div>
                         <div class="middle ">
-                            <button class="btn btn-danger glyphicon glyphicon-chevron-right" id="notGrantAuthorityToUserButton">&nbsp;撤权</button><br/><br/><br/><br/>
-                            <button class="btn btn-success glyphicon glyphicon-chevron-left" id="grantAuthorityToUserButton">&nbsp;授权</button><br/><br/><br/><br/>
+                            <button class="btn btn-danger glyphicon glyphicon-chevron-left" id="notGrantAuthorityToUserButton">&nbsp;撤权</button><br/><br/><br/><br/>
+                            <button class="btn btn-success glyphicon glyphicon-chevron-right" id="grantAuthorityToUserButton">&nbsp;授权</button><br/><br/><br/><br/>
                             <div id="grantAuthorityToUserMessage"></div>
                         </div>
                         <div class="right">

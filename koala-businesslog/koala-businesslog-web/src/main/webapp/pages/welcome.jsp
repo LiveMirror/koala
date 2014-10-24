@@ -6,15 +6,6 @@
     <meta charset="UTF-8">
     <title></title>
     <style>
-        html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form,input, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
-            background: none repeat scroll 0 0 transparent;
-            border: 0 none;
-            font-size: 100%;
-            margin: 0;
-            outline: 0 none;
-            padding: 0;
-            font-family:arial, helvetica, sans-serif,“微软雅黑”;
-        }
         ul,li{list-style:none;margin:0;padding:0;}
         .box{ width: 800px; margin: auto;}
         .nav_link{ margin-top: 15px; overflow: hidden;}
@@ -40,7 +31,7 @@
         </ul>
     </div>
     <div class="main_ten">
-        <h1>核心功能：</h1>
+        <h4>核心功能：</h4>
         <ul>
             <li><img src="images/openci_icon.png"/><p>向导式创建、导入项目，集成版本控制 (GIT/SVN)、项目管理(Trac/Redmine)、代码质量(Sonar)、持续集成(Jenkins)</p></li>
             <li><img src="images/koalaui_icon.png"/><p>基于Bootstrap3、基于开源的或定制实现的JS组件，简化前端开发。</p></li>

@@ -22,7 +22,6 @@
 <script  src="${contextPath}/lib/validate.js"></script>
 <script  src="${contextPath}/js/security/role.js" ></script>
 <script  src="${contextPath}/js/security/user.js" ></script>
-<script  src="${contextPath}/js/security/user-info.js" ></script>
 <script  src="${contextPath}/js/main.js" ></script>
 <script  src="${contextPath}/lib/validateForm/validateForm.js"></script>
 <script>

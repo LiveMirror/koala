@@ -269,7 +269,7 @@
                                     data += ("&roleIds=" + grantRolesToUserTableItem.id + "&");
                                 });
                                 data = data.substring(0, data.length-1);
-                                $.post(contextPath + '/auth/user/grantRolesToUser.koala', data).done(function(data) {
+                                $.post(contextPath + '/auth/user/grantRolesToUser.koala?time=' + new Date().getTime(), data).done(function(data) {
                                     if(data.success){
                                         dialog.find('#grantAuthorityToUserMessage').message({
                                             type: 'success',
@@ -300,7 +300,7 @@
                                 $.post(contextPath + '/auth/user/terminateAuthorizationByUserInRoles.koala', data).done(function(data) {
                                     if(data.success){
                                         dialog.find('#grantAuthorityToUserMessage').message({
-                                            type: 'error',
+                                            type: 'success',
                                             content: '撤销用户的角色成功！'
                                         });
                                         dialog.find('#notGrantAuthoritiesToUserGrid').grid('refresh');
@@ -309,7 +309,7 @@
                                 });
 
                             });
-
+                            
                             dialog.modal({
                                 keyboard: false,
                                 backdrop: false
@@ -318,29 +318,29 @@
                                     $(this).remove();
                                 },
                                 'shown.bs.modal' : function(){
-                                    var columns = [{
-                                        title : "角色名称",
-                                        name : "name",
-                                        width : 100
-                                    }, {
-                                        title : "角色描述",
-                                        name : "description",
-                                        width : 100
-                                    }];
-
-                                    dialog.find('#notGrantAuthoritiesToUserGrid').grid({
-                                        identity: 'id',
-                                        columns: columns,
-                                        url: contextPath + '/auth/user/pagingQueryNotGrantRoles.koala?userId='+userId
-                                    });
-
-                                    dialog.find('#grantAuthoritiesToUserGrid').grid({
-                                        identity: 'id',
-                                        columns: columns,
-                                        url: contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId='+userId
-                                    });
+                                
                                 }
 
+                            });
+                            var columns = [{
+                                title : "角色名称",
+                                name : "name",
+                                width : 100
+                            }, {
+                                title : "角色描述",
+                                name : "description",
+                                width : 100
+                            }];
+                            dialog.find('#notGrantAuthoritiesToUserGrid').grid({
+                                identity: 'id',
+                                columns: columns,
+                                url: contextPath + '/auth/user/pagingQueryNotGrantRoles.koala?userId='+userId+'&time='+new Date().getTime()
+                            });
+
+                            dialog.find('#grantAuthoritiesToUserGrid').grid({
+                                identity: 'id',
+                                columns: columns,
+                                url: contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId='+userId
                             });
                         });
 
