@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
-import org.openkoala.security.application.SecurityDBInitApplication;
 import org.openkoala.security.facade.SecurityConfigFacade;
 import org.openkoala.security.facade.impl.assembler.UserAssembler;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -28,9 +27,6 @@ public class SecurityConfigFacadeMockTest {
 	@Mock
 	private SecurityAccessApplication securityAccessApplication;
 
-	@Mock
-	private SecurityDBInitApplication securityDBInitApplication;
-	
 	private SecurityConfigFacade securityConfigFacade = new SecurityConfigFacadeImpl();
 
 	/*@Test

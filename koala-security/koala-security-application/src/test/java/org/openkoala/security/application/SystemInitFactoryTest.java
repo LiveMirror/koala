@@ -1,8 +1,8 @@
 package org.openkoala.security.application;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.openkoala.security.application.AbstractApplicationIntegrationTestCase;
 import org.openkoala.security.application.systeminit.SystemInit;
 import org.openkoala.security.application.systeminit.SystemInitFactory;
 import org.openkoala.security.core.domain.*;
@@ -12,6 +12,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 
+@Ignore
 public class SystemInitFactoryTest extends AbstractApplicationIntegrationTestCase{
 
     private SystemInit init;

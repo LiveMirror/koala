@@ -83,5 +83,4 @@ public class ObjectFactory {
     public SystemInit.PageElementResource createSystemInitPageElementResource() {
         return new SystemInit.PageElementResource();
     }
-
 }

@@ -11,7 +11,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
  * 
  */
 @ContextConfiguration(locations = {"classpath*:META-INF/spring/security-root.xml","classpath*:META-INF/spring/security-extend.xml"})
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@TransactionConfiguration(transactionManager = "transactionManager_security", defaultRollback = true)
 public abstract class AbstractApplicationIntegrationTestCase extends KoalaBaseSpringTestCase {
 	
 }

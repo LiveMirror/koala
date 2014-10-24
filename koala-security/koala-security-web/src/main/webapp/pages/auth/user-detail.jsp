@@ -67,7 +67,7 @@
 <script>
 $(function() {
 	var userId = $('.userDetial').parent().attr('data-value');
-	$.get(contextPath + '/auth/user/findInfoOfUser.koala?userId='+userId).done(function(result) {
+    $.get(contextPath + '/auth/user/findInfoOfUser.koala?userId=' + userId).done(function (result) {
 		var user = result.data;
 		var userDetial = $('.userDetial');
 		userDetial.find('[data-id="name"]').text(user.name);

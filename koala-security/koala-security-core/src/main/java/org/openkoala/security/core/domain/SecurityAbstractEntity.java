@@ -92,7 +92,6 @@ public abstract class SecurityAbstractEntity implements Entity {
     }
 
     public boolean existed(String propertyName, Object propertyValue) {
-
         List<?> entities = getRepository().createCriteriaQuery(getClass()).eq(propertyName, propertyValue).list();
         return !(entities.isEmpty());
     }

@@ -11,6 +11,12 @@
 	<menuResource id="50" pid="40" name="菜单管理" url="/pages/auth/menu-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
 	<menuResource id="60" pid="40" name="URL访问管理" url="/pages/auth/url-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
 	<menuResource id="70" pid="40" name="页面元素管理" url="/pages/auth/page-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+
+    <menuResource id="80" name="组织机构管理" description="机构管理、职务管理、岗位管理、人员管理" menuIcon="glyphicon  glyphicon-list-alt" />
+    <menuResource id="90" pid="80" name="机构管理" url="/pages/organisation/department-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+    <menuResource id="100" pid="80" name="职务管理" url="/pages/organisation/job-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+    <menuResource id="110" pid="80" name="岗位管理" url="/pages/organisation/position-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
+    <menuResource id="120" pid="80" name="人员管理" url="/pages/organisation/employee-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
 	
 	<urlAccessResource name="用户管理-所有" url="/auth/user/**"  />
 	<urlAccessResource name="用户管理-添加" url="/auth/user/add.koala" />
@@ -92,8 +98,49 @@
 	<urlAccessResource name="页面元素-撤销权限" url="/auth/page/terminatePermissionsFromPageElementResource.koala" notGrant="true"/>
 	<urlAccessResource name="页面元素-查询已授权的权限" url="/auth/page/pagingQueryGrantPermissionsByUrlAccessResourceId.koala" notGrant="true"/>
 	<urlAccessResource name="页面元素-查询未授权的权限" url="/auth/page/pagingQueryNotGrantPermissionsByPageElementResourceId.koala" notGrant="true"/>
-	
-	<pageElementResource name="用户管理-添加" url="userManagerAdd" />
+
+    <urlAccessResource name="组织机构管理-所有" url="/organization/**" />
+    <urlAccessResource name="组织机构管理-在某个公司下创建一个分公司" url="/organization/create-company.koala" />
+    <urlAccessResource name="组织机构管理-在某个机构下创建一个部门" url="/organization/create-department.koala" />
+    <urlAccessResource name="组织机构管理-更新公司信息" url="/organization/update-company.koala" />
+    <urlAccessResource name="组织机构管理-更新部门信息" url="/organization/update-department.koala" />
+    <urlAccessResource name="组织机构管理-获取组织机构树" url="/organization/org-tree.koala" />
+    <urlAccessResource name="组织机构管理-根据ID获得机构" url="/organization/get.koala" />
+    <urlAccessResource name="组织机构管理-撤销某个机构与某些员工的责任关系" url="/organization/terminate-eo-relations.koala" />
+    <urlAccessResource name="组织机构管理-撤销一个公司" url="/organization/terminate-company.koala" />
+    <urlAccessResource name="组织机构管理-撤销一个部门" url="/organization/terminate-department.koala" />
+
+    <urlAccessResource name="职务管理-所有" url="/job/**" />
+    <urlAccessResource name="职务管理-分页查询职务" url="/job/pagingquery.koala" />
+    <urlAccessResource name="职务管理-查询所有职务" url="/job/query-all.koala" />
+    <urlAccessResource name="职务管理-创建一个职务" url="/job/create.koala" />
+    <urlAccessResource name="职务管理-更新职务信息" url="/job/update.koala" />
+    <urlAccessResource name="职务管理-根据ID获得" url="/job/get/{id}.koala" />
+    <urlAccessResource name="职务管理-撤销某个职务" url="/job/terminate.koala" />
+    <urlAccessResource name="职务管理-撤销多个职务" url="/job/terminate-jobs.koala" />
+
+    <urlAccessResource name="岗位管理-所有" url="/post/**" />
+    <urlAccessResource name="岗位管理-创建一个岗位" url="/post/create.koala" />
+    <urlAccessResource name="岗位管理-更新岗位信息" url="/post/update.koala" />
+    <urlAccessResource name="岗位管理-根据机构查询岗位" url="/post/query-post-by-org.koala" />
+    <urlAccessResource name="岗位管理-根据机构分页查询岗位" url="/post/paging-query-post-by-org.koala" />
+    <urlAccessResource name="岗位管理-根据ID获得" url="/post/get/{id}.koala" />
+    <urlAccessResource name="岗位管理-撤销某个岗位" url="/post/terminate.koala" />
+    <urlAccessResource name="岗位管理-撤销多个岗位" url="/post/terminate-posts.koala" />
+
+    <urlAccessResource name="员工管理-所有" url="/employee/**" />
+    <urlAccessResource name="员工管理-分页查询" url="/employee/pagingquery.koala" />
+    <urlAccessResource name="员工管理-分页查询某个机构下的员工" url="/employee/pagingquery-by-org.koala" />
+    <urlAccessResource name="员工管理-调整某个员工的任职信息" url="/employee/transform-post.koala" />
+    <urlAccessResource name="员工管理-创建一个员工" url="/employee/create.koala" />
+    <urlAccessResource name="员工管理-更新某个员工的信息" url="/employee/update.koala" />
+    <urlAccessResource name="员工管理-根据ID获得" url="/employee/get/{id}.koala" />
+    <urlAccessResource name="员工管理-获得性别" url="/employee/genders.koala" />
+    <urlAccessResource name="员工管理-获得某个员工的任职信息" url="/employee/get-posts-by-employee.koala" />
+    <urlAccessResource name="员工管理-解雇员工" url="/employee/terminate.koala" />
+    <urlAccessResource name="员工管理-同时解雇多名员工" url="/employee/terminate-employees.koala" />
+
+    <pageElementResource name="用户管理-添加" url="userManagerAdd" />
 	<pageElementResource name="用户管理-修改" url="userManagerUpdate" />
 	<pageElementResource name="用户管理-撤销" url="userManagerTerminate" />
 	<pageElementResource name="用户管理-分配角色" url="userManagerGrantRole" />
@@ -128,5 +175,27 @@
 	<pageElementResource name="页面元素资源管理-撤销" url="pageElementResourceManagerTerminate" />
 	<pageElementResource name="页面元素资源管理-授权权限" url="pageElementResourceManagerGrantPermission" notGrant="true"/>
 	<pageElementResource name="页面元素资源管理-高级查询" url="pageElementResourceManagerQuery" />
+
+    <pageElementResource name="机构管理-创建分公司" url="organizationManagerAddCompany" />
+    <pageElementResource name="机构管理-创建下级部门" url="organizationManagerAddDepartment" />
+    <pageElementResource name="机构管理-员工列表" url="organizationManagerEmployeeListBtn" />
+    <pageElementResource name="机构管理-修改部门" url="organizationManagerUpdateDepartment" />
+    <pageElementResource name="机构管理-修改公司" url="organizationManagerUpdateCompany" />
+    <pageElementResource name="机构管理-撤销" url="organizationManagerDelete" />
+
+    <pageElementResource name="职务管理-创建" url="jobManagerCreate" />
+    <pageElementResource name="职务管理-修改" url="jobManagerUpdate" />
+    <pageElementResource name="职务管理-撤销" url="jobManagerDelete" />
+    <pageElementResource name="职务管理-高级搜索" url="jobManagerQuery" />
+
+    <pageElementResource name="岗位管理-创建" url="postManagerCreate" />
+    <pageElementResource name="岗位管理-修改" url="postManagerUpdate" />
+    <pageElementResource name="岗位管理-撤销" url="postManagerDelete" />
+    <pageElementResource name="岗位管理-高级搜索" url="postManagerQuery" />
+
+    <pageElementResource name="人员管理-创建" url="employeeManagerCreate" />
+    <pageElementResource name="人员管理-修改" url="employeeManagerUpdate" />
+    <pageElementResource name="人员管理-撤销" url="employeeManagerDelete" />
+    <pageElementResource name="人员管理-高级搜索" url="employeeManagerQuery" />
 	
 </systemInit>

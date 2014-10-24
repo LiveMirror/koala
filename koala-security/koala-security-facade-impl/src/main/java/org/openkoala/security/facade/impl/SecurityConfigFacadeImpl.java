@@ -9,7 +9,8 @@ import javax.validation.ConstraintViolationException;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.application.SecurityConfigApplication;
-import org.openkoala.security.application.SecurityDBInitApplication;
+import org.openkoala.security.application.systeminit.SystemInit;
+import org.openkoala.security.application.systeminit.SystemInitFactory;
 import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.EmailIsExistedException;
 import org.openkoala.security.core.IdentifierIsExistedException;
@@ -66,9 +67,6 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
     @Inject
     private SecurityAccessApplication securityAccessApplication;
-
-    @Inject
-    private SecurityDBInitApplication securityDBInitApplication;
 
     @Override
     public InvokeResult createUser(CreateUserCommand command) {
@@ -613,11 +611,12 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
         if (securityAccessApplication.hasUserExisted()) {
             return;
         }
-        User user = securityDBInitApplication.initUser();
-        Role role = securityDBInitApplication.initRole();
-        List<MenuResource> menuResources = securityDBInitApplication.initMenuResources();
-        List<PageElementResource> pageElementResources = securityDBInitApplication.initPageElementResources();
-        List<UrlAccessResource> urlAccessResources = securityDBInitApplication.initUrlAccessResources();
+        SystemInit init = SystemInitFactory.INSTANCE.getSystemInit("/META-INF/systemInit/systemInit.xml");
+        User user = init.createUser();
+        Role role = init.createRole();
+        List<MenuResource> menuResources = init.createMenuResourceAndReturnNeedGrant();
+        List<PageElementResource> pageElementResources = init.createPageElementResources();
+        List<UrlAccessResource> urlAccessResources = init.createUrlAccessResources();
         securityConfigApplication.grantAuthorityToActor(role, user);
         securityConfigApplication.grantSecurityResourcesToAuthority(menuResources, role);
         securityConfigApplication.grantSecurityResourcesToAuthority(pageElementResources, role);

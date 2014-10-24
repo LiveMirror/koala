@@ -11,22 +11,23 @@ import org.openkoala.koalacommons.resourceloader.impl.classpath.ClassPathResourc
 
 public class SystemInitFactory {
 
-	public static final SystemInitFactory INSTANCE = new SystemInitFactory();
+    public static final SystemInitFactory INSTANCE = new SystemInitFactory();
+    private static final String CONTEXT_PATH = "org.openkoala.security.application.systeminit";
 
-	public SystemInit getSystemInit() {
-		JAXBContext jc;
-		try {
-			jc = JAXBContext.newInstance("org.openkoala.security.application.systeminit");
-			Unmarshaller u = jc.createUnmarshaller();
-			return (SystemInit) u.unmarshal(getSystemInitXml());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public SystemInit getSystemInit(String xmlPath) {
+        JAXBContext jc;
+        try {
+            jc = JAXBContext.newInstance(CONTEXT_PATH);
+            Unmarshaller u = jc.createUnmarshaller();
+            return (SystemInit) u.unmarshal(getSystemInitXml(xmlPath));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	private InputStream getSystemInitXml() throws IOException {
-		Resource resource = new ClassPathResource("/META-INF/systemInit/systemInit.xml", SystemInitFactory.class);
-		return resource.getInputStream();
-	}
+    private InputStream getSystemInitXml(String xmlPath) throws IOException {
+        Resource resource = new ClassPathResource(xmlPath, SystemInitFactory.class);
+        return resource.getInputStream();
+    }
 }
