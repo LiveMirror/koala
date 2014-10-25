@@ -24,10 +24,10 @@ $(function(){
 
     var buttons = function(){
         return [{
-            content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为角色分配页面</button>',
+            content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>分配页面元素</button>',
             action: 'assignPageFromRole'
         }, {
-            content: '<button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"><span>为删除角色分配页面</button>',
+            content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-th-large"><span>撤销页面元素</button>',
             action: 'removePageFromRole'
         }, {
             content : '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search" />&nbsp;高级搜索&nbsp;<span class="caret" /></button>',

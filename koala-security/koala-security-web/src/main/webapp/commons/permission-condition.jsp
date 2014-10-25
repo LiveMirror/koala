@@ -10,15 +10,10 @@
                         <div style="margin-left:15px;float:left;">
                             <input name="name" class="form-control" type="text" style="width:180px;"/>
                         </div>
-                        <label class="control-label" style="width:100px;float:left;">菜单标识:&nbsp;</label>
+                        <label class="control-label" style="width:100px;float:left;">权限标识:&nbsp;</label>
 
                         <div style="margin-left:15px;float:left;">
                             <input name="identifier" class="form-control" type="text" style="width:180px;"/>
-                        </div>
-                        <label class="control-label" style="width:100px;float:left;">权限描述:&nbsp;</label>
-
-                        <div style="margin-left:15px;float:left;">
-                            <input name="description" class="form-control" type="text" style="width:180px;"/>
                         </div>
                     </div>
                 </td>

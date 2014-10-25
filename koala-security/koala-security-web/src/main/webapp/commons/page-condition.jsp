@@ -6,20 +6,15 @@
                 <td>
                     <div class="form-group">
                         <label class="control-label" style="width:100px;float:left;">页面名称:&nbsp;</label>
-
                         <div style="margin-left:15px;float:left;">
                             <input name="name" class="form-control" type="text" style="width:180px;"/>
                         </div>
-                        <label class="control-label" style="width:100px;float:left;">页面标识:&nbsp;</label>
 
+                        <label class="control-label" style="width:100px;float:left;">页面标识:&nbsp;</label>
                         <div style="margin-left:15px;float:left;">
                             <input name="identifier" class="form-control" type="text" style="width:180px;"/>
                         </div>
-                        <label class="control-label" style="width:100px;float:left;">页面描述:&nbsp;</label>
 
-                        <div style="margin-left:15px;float:left;">
-                            <input name="description" class="form-control" type="text" style="width:180px;"/>
-                        </div>
                         <td style="vertical-align: bottom;">
                             <button id="pageManagersearch" type="button" style="position:relative; margin-left:35px; top: -15px"
                                     class="btn btn-success glyphicon glyphicon-search"></button>

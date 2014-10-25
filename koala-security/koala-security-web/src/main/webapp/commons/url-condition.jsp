@@ -15,10 +15,6 @@
                             <input name="url" class="form-control" type="text" style="width:180px;"/>
                         </div>
 
-                        <label class="control-label" style="width:100px;float:left;">URL描述:&nbsp;</label>
-                        <div style="margin-left:15px;float:left;">
-                            <input name="description" class="form-control" type="text" style="width:180px;"/>
-                        </div>
                     </div>
                 </td>
                 <td style="vertical-align: bottom;">

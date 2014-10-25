@@ -28,7 +28,7 @@ $(function() {
                 content: '<ks:hasSecurityResource identifier="roleManagerGrantUrlAccessResource"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-th-large"/>&nbsp;分配URL</button></ks:hasSecurityResource>',
                 action: 'assignUrl'
             }, {
-                content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove" />&nbsp;撤销</button>',
+                content: '<button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove" />&nbsp;撤销URL</button>',
                 action: 'removeUrlFromRole'
             }, {
                 content: '<button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search" />&nbsp;高级搜索&nbsp;<span class="caret" /></button>',

@@ -3,7 +3,7 @@
 <html lang="en-ZH">
     <head>
         <style>
-            .modal-body {
+            .userGrantAuthority{
                 display: block;
                 text-align: center;
             }
@@ -37,7 +37,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title center" >授权角色</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="userGrantAuthority modal-body">
                         <div class="left">
                             <div class="right-modal-body">未授权角色</div>
                             <div id="notGrantAuthoritiesToUserGrid"></div>

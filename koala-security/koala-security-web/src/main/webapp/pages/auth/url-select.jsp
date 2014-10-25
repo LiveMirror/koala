@@ -32,9 +32,6 @@
 
                                         <label class="control-label">URL路径:&nbsp;</label>
                                         <input name="url" class="form-control" type="text"/>
-
-                                        <label class="control-label">URL描述:&nbsp;</label>
-                                        <input name="description" class="form-control" type="text"/>
                                     </div>
                                 </td>
                                 <td style="vertical-align: bottom; padding: 0 5px;" >

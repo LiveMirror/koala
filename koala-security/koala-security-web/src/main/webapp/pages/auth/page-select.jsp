@@ -29,14 +29,12 @@
                             <tr>
                                 <td>
                                     <div class="form-group">
-                                        <label class="control-label">页面名称:&nbsp;</label>
+                                        <label class="control-label">页面元素名称:&nbsp;</label>
                                         <input name="name" class="form-control" type="text" style="width:180px;"/>
 
-                                        <label class="control-label">页面标识:&nbsp;</label>
+                                        <label class="control-label">页面元素标识:&nbsp;</label>
                                         <input name="identifier" class="form-control" type="text" style="width:180px;"/>
 
-                                        <label class="control-label" >页面描述:&nbsp;</label>
-                                        <input name="description" class="form-control" type="text"/>
                                         <td>
                                             <button id="search" type="button" class="btn btn-success glyphicon glyphicon-search"></button>
                                         </td>

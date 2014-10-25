@@ -169,8 +169,7 @@
 				});
 			});
 		};
-		
-		
+
 		var columns = [{
 				title : "菜单名称",
 				name : "name",
@@ -183,7 +182,7 @@
 					return '<span class="'+item[name]+'"></span>';
 				}
 			},{
-				title : "菜单url",
+				title : "菜单URL",
 				name : "url",
 				width : 250
 			},{
