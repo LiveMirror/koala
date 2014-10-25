@@ -15,9 +15,6 @@ public interface SecurityOrgConfigFacade {
 
     InvokeResult terminateUserFromPermissionInScope(Long userId, TerminateUserFromPermissionInScopeCommand[] commands);
 
-    @Deprecated
-    InvokeResult grantRolesToUserInScope(AuthorizationCommand command);
-
     InvokeResult changeEmployeeUserProps(ChangeEmployeeUserPropsCommand command);
 
     void initSecurityOrgSystem();

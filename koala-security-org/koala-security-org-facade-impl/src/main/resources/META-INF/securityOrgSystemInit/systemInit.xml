@@ -19,10 +19,10 @@
     <menuResource id="120" pid="80" name="人员管理" url="/pages/organisation/employee-list.jsp" menuIcon="glyphicon  glyphicon-list-alt" />
 	
 	<urlAccessResource name="用户管理-所有" url="/auth/user/**"  />
-	<urlAccessResource name="用户管理-添加" url="/auth/user/add.koala" />
-	<urlAccessResource name="用户管理-更新" url="/auth/user/update.koala" />
+	<urlAccessResource name="用户管理-添加" url="/auth/employeeUser/add.koala" />
+	<urlAccessResource name="用户管理-更新" url="/auth/employeeUser/update.koala" />
 	<urlAccessResource name="用户管理-撤销" url="/auth/user/terminate.koala" />
-	<urlAccessResource name="用户管理-分页查询" url="/auth/user/pagingQuery.koala" />
+	<urlAccessResource name="用户管理-分页查询" url="/auth/employeeUser/pagingQuery.koala" />
 	<urlAccessResource name="用户管理-更新密码" url="/auth/user/updatePassword.koala" />
 	<urlAccessResource name="用户管理-重置密码" url="/auth/user/resetPassword.koala" />
 	<urlAccessResource name="用户管理-授权多个角色" url="/auth/user/grantRoles.koala" />
@@ -36,12 +36,18 @@
 	<urlAccessResource name="用户管理-激活" url="/auth/user/activate.koala" />
 	<urlAccessResource name="用户管理-激动所有" url="/auth/user/activates.koala" />
 	<urlAccessResource name="用户管理-挂起所有" url="/auth/user/suspends.koala" />
-	<urlAccessResource name="用户管理-查找授权的角色" url="/auth/user/pagingQueryGrantRoleByUserId.koala" />
+	<urlAccessResource name="用户管理-查找授权的角色" url="/auth/employeeUser/pagingQueryGrantRoleByUserId.koala" />
 	<urlAccessResource name="用户管理-查找没有授权的角色" url="/auth/user/pagingQueryNotGrantRoles.koala" />
-	<urlAccessResource name="用户管理-查找授权的权限" url="/auth/user/pagingQueryGrantPermissionByUserId.koala" notGrant="true"/>
+	<urlAccessResource name="用户管理-查找授权的权限" url="/auth/employeeUser/pagingQueryGrantPermissionByUserId.koala" notGrant="true"/>
 	<urlAccessResource name="用户管理-查找没有授权的权限" url="/auth/user/pagingQueryNotGrantPermissions.koala" notGrant="true"/>
-	
-	<urlAccessResource name="角色管理-所有" url="/auth/role/**" />
+    <urlAccessResource name="用户管理-查找用户详细" url="/auth/user/findInfoOfUser.koala"/>
+    <urlAccessResource name="用户管理-在某个范围下分配授权" url="/auth/employeeUser/grantAuthorityToActorInScope.koala" />
+    <urlAccessResource name="用户管理-在某个范围下撤销角色" url="/auth/employeeUser/terminateUserFromRoleInScope.koala" />
+    <urlAccessResource name="用户管理-在某个范围下撤销权限" url="/auth/employeeUser/terminateUserFromPermissionInScope.koala" />
+
+
+
+    <urlAccessResource name="角色管理-所有" url="/auth/role/**" />
 	<urlAccessResource name="角色管理-添加" url="/auth/role/add.koala" />
 	<urlAccessResource name="角色管理-修改" url="/auth/role/update.koala" />
 	<urlAccessResource name="角色管理-撤销" url="/auth/role/terminate.koala" />

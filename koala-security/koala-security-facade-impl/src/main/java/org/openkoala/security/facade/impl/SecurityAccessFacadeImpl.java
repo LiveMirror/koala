@@ -101,14 +101,12 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
 	public InvokeResult findMenuResourceByUserAsRole(String userAccount, String roleName) {
 
 		Set<Authority> authorities = new HashSet<Authority>();
-        // 可能用户并没有分配角色。因此需要对其获取异常。
-        try{
-            Role role = securityAccessApplication.getRoleBy(roleName);
+        Role role = securityAccessApplication.getRoleBy(roleName);
+        if (role != null) {
             authorities.add(role);
             authorities.addAll(role.getPermissions());
-        }catch(IllegalArgumentException e){
-            // do not something.
         }
+
 		authorities.addAll(User.findAllPermissionsBy(userAccount));
 		List<MenuResourceDTO> results = findTopMenuResourceByUserAccountAsRole(authorities);
 		List<MenuResourceDTO> childrenMenuResources = findAllMenuResourceByUserAccountAsRole(authorities);

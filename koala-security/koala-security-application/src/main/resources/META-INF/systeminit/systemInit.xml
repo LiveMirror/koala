@@ -34,6 +34,7 @@
 	<urlAccessResource name="用户管理-查找没有授权的角色" url="/auth/user/pagingQueryNotGrantRoles.koala" />
 	<urlAccessResource name="用户管理-查找授权的权限" url="/auth/user/pagingQueryGrantPermissionByUserId.koala" notGrant="true"/>
 	<urlAccessResource name="用户管理-查找没有授权的权限" url="/auth/user/pagingQueryNotGrantPermissions.koala" notGrant="true"/>
+    <urlAccessResource name="用户管理-查找用户详细" url="/auth/user/findInfoOfUser.koala"/>
 	
 	<urlAccessResource name="角色管理-所有" url="/auth/role/**" />
 	<urlAccessResource name="角色管理-添加" url="/auth/role/add.koala" />

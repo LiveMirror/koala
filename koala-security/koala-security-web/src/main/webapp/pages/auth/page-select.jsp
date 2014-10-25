@@ -22,8 +22,6 @@
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
                 <form id=“selectPageFrom” target="_self" class="form-inline searchCondition">
-                    <input type="hidden" class="form-control" name="page" value="0">
-                    <input type="hidden"  class="form-control"  name="pagesize" value="10">
                     <div class="panel">
                         <table border="0" cellspacing="0" cellpadding="0">
                             <tr>

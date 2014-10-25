@@ -242,6 +242,5 @@
             });
            $('[data-role="urlGrid"]').getGrid().search(params);
         });
-
 	});
 </script>
