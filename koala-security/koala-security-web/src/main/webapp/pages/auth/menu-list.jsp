@@ -285,7 +285,7 @@
 				}
 				
 				var menu = items[0];
-				openTab('/pages/auth/permission-list.jsp', menu.name+'的权限管理', 'roleManager_' + menu.id, menu.id, {menuId : menu.id});
+				openTab('/pages/auth/menu-grant-permission.jsp', menu.name+'的权限管理', 'menuGrantPermissionManager_' + menu.id, menu.id, {menuId : menu.id});
         	}
 		});
 		

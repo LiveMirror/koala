@@ -812,7 +812,8 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
             .append(" WHERE TYPE(_resource) = MenuResource")
             .append(" AND _authority IN (:authorities)")   // 用户拥有的Authority
             .append(" AND _resource.level > :level")
-            .append(" GROUP BY _resource.id");
+            .append(" GROUP BY _resource.id")
+            .append(" ORDER BY _resource.id"); // 必须有排序
 
         return getQueryChannelService()
                 .createJpqlQuery(jpql.toString())
@@ -837,7 +838,8 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
     private List<MenuResourceDTO> findChidrenMenuResource() {
         StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id,_resource.name, _resource.url, _resource.menuIcon, _resource.description, _resource.parent.id,_resource.level,_resource.parent.name) FROM MenuResource _resource")
             .append(" WHERE _resource.level > :level")
-            .append(" GROUP BY _resource.id");
+            .append(" GROUP BY _resource.id")
+            .append(" ORDER BY _resource.id"); // 必须有排序
 
         return getQueryChannelService()
                 .createJpqlQuery(jpql.toString())
@@ -849,7 +851,8 @@ public class SecurityAccessFacadeImpl implements SecurityAccessFacade {
         StringBuilder jpql = new StringBuilder("SELECT NEW org.openkoala.security.facade.dto.MenuResourceDTO(_resource.id, _resource.name, _resource.url, _resource.menuIcon, _resource.description, _resource.parent.id,_resource.level) FROM MenuResource _resource")
                 .append(" WHERE _resource.parent IS NULL")
                 .append(" AND _resource.level = :level")
-                .append(" GROUP BY _resource.id");
+                .append(" GROUP BY _resource.id")
+                .append(" ORDER BY _resource.id"); // 必须有排序
 
         return getQueryChannelService()
                 .createJpqlQuery(jpql.toString())
