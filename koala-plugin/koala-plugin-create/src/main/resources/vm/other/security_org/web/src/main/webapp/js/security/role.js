@@ -193,7 +193,7 @@ var roleManager = function(){
 	 * 资源授权
 	 */ 
 	var assignResource = function(grid, roleId){
-		$.get(contextPath + '/pages/auth/assign-resource.jsp').done(function(data){
+		$.get(contextPath + '/pages/auth/menu-select.jsp').done(function(data){
 			var dialog = $(data);
             initResourceTree(dialog, roleId);
             dialog.find('.save').on('click',function(){

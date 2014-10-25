@@ -61,7 +61,7 @@
     </div>
 </div>
 <div id="footer" class="g-foot">
-    <span>Copyright © 2011-2013 Koala</span>
+    <span>Copyright © 2011-2014 Koala</span>
 </div>
 <script type="text/javascript" src="<c:url value='/lib/jquery-1.8.3.min.js' />"></script>
 <script type="text/javascript" src="<c:url value='/lib/bootstrap/js/bootstrap.min.js' />"></script>

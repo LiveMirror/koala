@@ -16,7 +16,6 @@
         var contextPath = '${pageContext.request.contextPath}';
 
         $(function(){
-            var roleName = $('#roles').html();
             var url = contextPath + "/auth/currentUser/findAllMenusByUserAsRole.koala?"+new Date().getTime();
             $.get(url,function(data){
                 $.each(data.data,function(){
@@ -114,7 +113,7 @@
                                     type : 'success',
                                     content : '更改联系电话成功!'
                                 });
-                                window.location.href=contextPath+"/index.koala";
+                                dialog.modal('hide');
                             }else{
                                 dialog.find('#changeTelePhoneOfUserMessage').message({
                                     type : 'error',
@@ -127,6 +126,13 @@
                     }).on({
                         'hidden.bs.modal' : function() {
                             $(this).remove();
+                        },
+                        'complete': function(){
+                            dialog.message({
+                                type: 'success',
+                                content: '更改联系电话成功!'
+                            });
+                            $(this).modal('hide');
                         }
                     });
                     //兼容IE8 IE9
@@ -160,7 +166,7 @@
                                     type : 'success',
                                     content : '更改邮箱成功!'
                                 });
-                               window.location.href=contextPath+"/index.koala";
+                                dialog.modal('hide');
                             }else{
                                 dialog.find('#changeEmailOfUserMessage').message({
                                     type : 'error',
@@ -173,6 +179,13 @@
                     }).on({
                         'hidden.bs.modal' : function() {
                             $(this).remove();
+                        },
+                        'complete': function(){
+                            dialog.message({
+                                type: 'success',
+                                content: '更改邮箱成功!'
+                            });
+                            $(this).modal('hide');
                         }
                     });
                     //兼容IE8 IE9
@@ -285,7 +298,7 @@
 	    <nav class="navbar navbar-default">
 	        <a class="navbar-brand" href="#">
 	        	<img src="${contextPath}/images/global.logo.png"/>
-	        	<span style="font-weight:800;vertical-align: 55%;">Koala权限系统</span>
+	        	<span style="font-weight:800;">Koala权限系统</span>
 	        </a>
 	        <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <div class="btn-group navbar-right">

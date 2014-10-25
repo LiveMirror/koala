@@ -14,8 +14,6 @@ import java.util.Set;
 import java.text.MessageFormat;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
 import org.dayatang.domain.InstanceFactory;
 import org.dayatang.utils.Page;
 import org.dayatang.querychannel.QueryChannelService;
@@ -28,7 +26,6 @@ import ${applicationClass.packageName.replaceAll("impl","")}${applicationClass.n
 import ${entity.className.substring(0, ${entity.className.lastIndexOf(".")})}.*;
 
 @Named
-@Transactional
 public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAll("Impl","")} {
 
 	@Inject
@@ -121,23 +118,8 @@ public class ${facadeImplClass.name} implements ${facadeImplClass.name.replaceAl
 		   .setParameters(conditionVals)
 		   .setPage(currentPage, pageSize)
 		   .pagedList();
-       /** for (${domainClass} ${variableName} : pages.getData()) {
-           // 将domain转成VO 
-                  
-         ${currntVO} ${currntVOVariable} = ${assembler}.EntityToDto(${variableName});       
-      #foreach($view in ${facadeImplClass.entityViewUI.listModel.views})
-        #set($property = ${view.relative.substring(0, 1).toUpperCase()} + ${view.relative.substring(1)})
-        #set($express = ${view.express.substring(0, 1).toUpperCase()} + ${view.express.substring(1)})
-        #if(${view.viewType} == "RelativeReadOnlyView")
-		  if(${variableName}.get$property() != null) {	
-			   ${currntVOVariable}.set$property$express(${variableName}.get$property().get$express());
-		  }
-         #end
-       #end
-        result.add(${currntVOVariable});
-        }**/
-        return new Page<${currntVO}>(pages.getStart(), pages.getResultCount(),
-         pageSize, ${assembler}.toDTOs(pages.getData()));
+		   
+        return new Page<${currntVO}>(pages.getStart(), pages.getResultCount(),pageSize, ${assembler}.toDTOs(pages.getData()));
 	}
 	
 #foreach(${relation} in ${facadeClass.relations})

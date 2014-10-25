@@ -127,7 +127,7 @@ body {
 </head>
 <% response.setHeader("login","login"); %>
 <body>
-	<div class="head"></div>
+	<div class="head login"></div>
 	<div class="logo">
 		<img src="images/background/logo.gif" />
 		<div>Koala系统</div>
@@ -141,11 +141,11 @@ body {
 			<FORM id="loginFormId" class="form-horizontal" action="login" method="post">
 				<div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                    <input type="text" class="form-control" placeholder="用户名"  name="username" id="j_username" value="">
+                    <input type="text" class="form-control" placeholder="用户名"  name="username" id="j_username" value="koala">
 				</div>
                 <div class="form-group input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                    <input type="password" name="password" id="j_password" class="form-control" placeholder="密码"/>
+                    <input type="password" name="password" id="j_password" class="form-control" placeholder="密码" value="888888"/>
                 </div>
                 
                 <c:if test="${!jCaptchaDisabled}">
@@ -163,7 +163,7 @@ body {
 			</FORM>
 		</div>
 	</div>
-	<div class="login_footer">Koala 版权信息 2013</div>
+	<div class="login_footer">Koala 版权信息 2014</div>
 	<script>
     $(function(){
      	var btnLogin = $('#loginBtn');

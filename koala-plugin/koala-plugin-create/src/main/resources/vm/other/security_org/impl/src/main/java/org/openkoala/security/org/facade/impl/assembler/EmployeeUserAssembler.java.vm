@@ -8,6 +8,8 @@ public class EmployeeUserAssembler {
 
     public static EmployeeUser toEmployeeUser(CreateEmpolyeeUserCommand command) {
         EmployeeUser employeeUser = new EmployeeUser(command.getName(), command.getUserAccount());
+        employeeUser.setCreateOwner(command.getCreateOwner());
+        employeeUser.setDescription(command.getDescription());
         return employeeUser;
     }
 

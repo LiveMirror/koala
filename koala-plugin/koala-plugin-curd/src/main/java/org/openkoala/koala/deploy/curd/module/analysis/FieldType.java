@@ -23,6 +23,11 @@ public enum FieldType {
             return "主键";
         }
     },
+    VERSION {
+        public String toString() {
+            return "版本";
+        }
+    },
     EmbeddedId{
         public String toString() {
             return "联合主键";

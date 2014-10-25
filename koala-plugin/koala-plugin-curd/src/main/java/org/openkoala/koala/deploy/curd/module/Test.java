@@ -17,12 +17,14 @@ package org.openkoala.koala.deploy.curd.module;
 
 import java.util.List;
 
+import org.openkoala.koala.deploy.curd.generator.CodeGenerator;
 import org.openkoala.koala.deploy.curd.module.analysis.CURDCoreAnalysis;
 import org.openkoala.koala.deploy.curd.module.analysis.CURDDefaultUIView;
 import org.openkoala.koala.deploy.curd.module.analysis.CURDFileCreateAnalysis;
 import org.openkoala.koala.deploy.curd.module.core.EntityModel;
 import org.openkoala.koala.deploy.curd.module.pojo.NewFile;
 import org.openkoala.koala.deploy.curd.module.ui.model.EntityViewUI;
+import org.openkoala.koala.pojo.MavenProject;
 
 /**
  * 类    名：Test.java
@@ -46,20 +48,25 @@ public class Test {
      */
     public static void main(String[] args) {
         //第一步，选中领域对象，获得到此领域对象的绝对路径
-        String path = "F:/runtime-EclipseApplication/ttt/ttt-core/src/main/java/org/openkoala/ttt/core/domain/UserInfo2 .java";
+        String path = "E:/workspaces/runtime-EclipseApplication/demo/demo-core/src/main/java/org/openkoala/demo/core/domain/Address.java";
         //分析获得到此领域对象的建模
         CURDCoreAnalysis util = CURDCoreAnalysis.getInstance();
         EntityModel entity = util.analysis(path);
         
         //分析获得到此领域对象的默认UI显示
         EntityViewUI entityViewUI = CURDDefaultUIView.getDefaultEntityViewUI(entity);
+        MavenProject project = util.getProject();
+
        
         //分析获取到此领域对象需要生成的对象列表
         List<NewFile> createFiles = CURDFileCreateAnalysis.getCreateFileList(util.getProject(), entityViewUI);
         
-        for(NewFile newFile:createFiles){
-            newFile.process();
-        }
+        try {
+			CodeGenerator.generateCode(entityViewUI, project, createFiles);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         //下一步
         //根据UI显示，及对象列表结果，进行生成
         //TODO 生成VO列表

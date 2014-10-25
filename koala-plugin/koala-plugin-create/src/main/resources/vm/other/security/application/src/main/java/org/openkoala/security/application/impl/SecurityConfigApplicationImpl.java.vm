@@ -138,119 +138,118 @@ public class SecurityConfigApplicationImpl implements SecurityConfigApplication 
         actor.grant(authority, scope);
     }
 
-    
+    @Override
     public void grantAuthorityToSecurityResource(Authority authority, SecurityResource securityResource) {
         authority.addSecurityResource(securityResource);
-
     }
 
-    
+    @Override
     public void grantAuthorityToSecurityResources(Authority authority, List<? extends SecurityResource> securityResources) {
         authority.addSecurityResources(securityResources);
     }
 
-    
+    @Override
     public void resetPassword(User user) {
         user.resetPassword();
     }
 
-    
+    @Override
     public void createChildToParent(MenuResource child, Long parentId) {
         MenuResource parent = MenuResource.get(MenuResource.class, parentId);
         parent.addChild(child);
     }
 
-    
+    @Override
     public void grantSecurityResourcesToAuthority(List<? extends SecurityResource> securityResources, Authority authority) {
         authority.addSecurityResources(securityResources);
     }
 
-    
+    @Override
     public void grantPermissionToRole(Permission permission, Role role) {
         role.addPermission(permission);
     }
 
-    
+    @Override
     public void grantSecurityResourceToAuthority(SecurityResource securityResource, Authority authority) {
         authority.addSecurityResource(securityResource);
     }
 
-    
+    @Override
     public void grantPermissionsToRole(List<Permission> permissions, Role role) {
         role.addPermissions(permissions);
     }
 
-    
+    @Override
     public boolean checkAuthoritiHasPageElementResource(Set<Authority> authorities, String identifier) {
         return Authority.checkHasPageElementResource(authorities, identifier);
     }
 
-    
+    @Override
     public void grantAuthorityToActor(Authority authority, Actor actor) {
         actor.grant(authority);
     }
 
-    
+    @Override
     public void changeUserAccount(User user, String userAccount, String userPassword) {
         user.changeUserAccount(userAccount, userPassword);
     }
 
-    
+    @Override
     public void changeUserEmail(User user, String email, String userPassword) {
         user.changeEmail(email, userPassword);
     }
 
-    
+    @Override
     public void changeUserTelePhone(User user, String telePhone, String userPassword) {
         user.changeTelePhone(telePhone, userPassword);
     }
 
-    
+    @Override
     public void changeNameOfUrlAccessResource(UrlAccessResource urlAccessResource, String name) {
         urlAccessResource.changeName(name);
     }
 
-    
+    @Override
     public void changeUrlOfUrlAccessResource(UrlAccessResource urlAccessResource, String url) {
         urlAccessResource.changeUrl(url);
     }
 
-    
+    @Override
     public void changeNameOfRole(Role role, String name) {
         role.changeName(name);
     }
 
-    
+    @Override
     public void changeNameOfPermission(Permission permission, String name) {
         permission.changeName(name);
     }
 
-    
+    @Override
     public void changeIdentifierOfPermission(Permission permission, String identifier) {
         permission.changeIdentifier(identifier);
     }
 
-    
+    @Override
     public void changeNameOfPageElementResouce(PageElementResource pageElementResource, String name) {
         pageElementResource.changeName(name);
     }
 
-    
+    @Override
     public void changeIdentifierOfPageElementResouce(PageElementResource pageElementResource, String identifier) {
         pageElementResource.changeIdentifier(identifier);
     }
 
-    
+    @Override
     public void changeNameOfMenuResource(MenuResource menuResource, String name) {
         menuResource.changeName(name);
     }
 
-    
+    @Override
     public void terminateActorFromAuthorityInScope(Actor actor, Authority authority, Scope scope) {
         actor.terminateAuthorityInScope(authority, scope);
     }
 
-    
+    @Override
     public void changeLastModifyTimeOfUser(User user) {
         user.changeLastModifyTime();
     }

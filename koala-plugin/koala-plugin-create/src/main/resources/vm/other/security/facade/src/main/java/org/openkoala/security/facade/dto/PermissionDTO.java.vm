@@ -4,155 +4,153 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PermissionDTO {
 
-	private Long id;
-	
-	private int version;
+    private Long id;
 
-	private String name;
-	
-	private String userAccount;
+    private int version;
 
-	private String identifier;
+    private String name;
 
-	private String description;
+    private String userAccount;
 
-	private String url;
+    private String identifier;
 
-    private List<MenuResourceDTO> menuResources = new ArrayList<MenuResourceDTO>();
+    private String description;
 
-    private List<UrlAccessResourceDTO> urlAccessResources = new ArrayList<UrlAccessResourceDTO>();
+    private String url;
 
-    private  List<PageElementResourceDTO> pageElementResource = new ArrayList<PageElementResourceDTO>();
+    private MenuResourceDTO menuResource;
 
-	protected PermissionDTO() {}
+    private UrlAccessResourceDTO urlAccessResource;
 
-	public PermissionDTO(Long id, String name, String identifier, String description) {
-		this.id = id;
-		this.name = name;
-		this.identifier = identifier;
-		this.description = description;
-	}
+    private PageElementResourceDTO pageElementResource;
 
-	public PermissionDTO(Long id, String name, String identifier, String description, String url) {
-		this.id = id;
-		this.name = name;
-		this.identifier = identifier;
-		this.description = description;
-		this.url = url;
-	}
-
-	public int getVersion() {
-		return version;
-	}
-
-	public void setVersion(int version) {
-		this.version = version;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String permissionName) {
-		this.name = permissionName;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long permissionId) {
-		this.id = permissionId;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
-
-	public String getUserAccount() {
-		return userAccount;
-	}
-
-	public void setUserAccount(String userAccount) {
-		this.userAccount = userAccount;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-    public List<MenuResourceDTO> getMenuResources() {
-        return menuResources;
+    protected PermissionDTO() {
     }
 
-    public void setMenuResources(List<MenuResourceDTO> menuResources) {
-        this.menuResources = menuResources;
+    public PermissionDTO(Long id, String name, String identifier, String description) {
+        this.id = id;
+        this.name = name;
+        this.identifier = identifier;
+        this.description = description;
     }
 
-    public List<UrlAccessResourceDTO> getUrlAccessResources() {
-        return urlAccessResources;
+    public PermissionDTO(Long id, String name, String identifier, String description, String url) {
+        this.id = id;
+        this.name = name;
+        this.identifier = identifier;
+        this.description = description;
+        this.url = url;
     }
 
-    public void setUrlAccessResources(List<UrlAccessResourceDTO> urlAccessResources) {
-        this.urlAccessResources = urlAccessResources;
+    public int getVersion() {
+        return version;
     }
 
-    public List<PageElementResourceDTO> getPageElementResources() {
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String permissionName) {
+        this.name = permissionName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long permissionId) {
+        this.id = permissionId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public MenuResourceDTO getMenuResource() {
+        return menuResource;
+    }
+
+    public void setMenuResource(MenuResourceDTO menuResource) {
+        this.menuResource = menuResource;
+    }
+
+    public UrlAccessResourceDTO getUrlAccessResource() {
+        return urlAccessResource;
+    }
+
+    public void setUrlAccessResource(UrlAccessResourceDTO urlAccessResource) {
+        this.urlAccessResource = urlAccessResource;
+    }
+
+    public PageElementResourceDTO getPageElementResource() {
         return pageElementResource;
     }
 
-    public void setPageElementResources(List<PageElementResourceDTO> pageElementResource) {
+    public void setPageElementResource(PageElementResourceDTO pageElementResource) {
         this.pageElementResource = pageElementResource;
     }
 
     @Override
-	public int hashCode() {
-		return new HashCodeBuilder()//
-				.append(name)//
-				.append(identifier)//
-				.toHashCode();
-	}
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(name)
+                .append(identifier)
+                .toHashCode();
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (!(other instanceof PermissionDTO)) {
-			return false;
-		}
-		PermissionDTO that = (PermissionDTO) other;
-		return new EqualsBuilder()//
-				.append(this.getName(), that.getName())//
-				.append(this.getIdentifier(), that.getIdentifier())//
-				.isEquals();
-	}
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof PermissionDTO)) {
+            return false;
+        }
+        PermissionDTO that = (PermissionDTO) other;
+        return new EqualsBuilder()
+                .append(this.getName(), that.getName())
+                .append(this.getIdentifier(), that.getIdentifier())
+                .isEquals();
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this)//
-				.append(getId())//
-				.append(getName())//
-				.append(getIdentifier())//
-				.append(getDescription())//
-				.build();
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append(getId())
+                .append(getName())
+                .append(getIdentifier())
+                .append(getDescription())
+                .build();
+    }
 }

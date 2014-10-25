@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <XmlParse>
-
 	<property name="description">Koala-Security-Not-General-Source-Code</property>
 <XmlAdd>
 		<property name="xmlFile">${Project.path}/${Project.appName}/${Module.moduleName}/pom.xml</property>
@@ -58,7 +57,6 @@
 			<artifactId>koala-commons-facade</artifactId>
 			<version>${koala.version}</version>
 		</dependency>
-		  <!-- 集成组织 -->
 		   <dependency>
             <groupId>org.openkoala.organisation</groupId>
             <artifactId>koala-organisation-core</artifactId>

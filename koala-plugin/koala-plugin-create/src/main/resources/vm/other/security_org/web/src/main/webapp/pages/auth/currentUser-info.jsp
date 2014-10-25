@@ -50,10 +50,18 @@
 </div>
 <script>
     $(function(){
-        var script = document.createElement('script');
-        script.src = contextPath + '/js/security/user-info.js';
-        document.getElementById('user-info').parentNode.appendChild(script);
-
+        $.get(contextPath + '/auth/currentUser/getUserDetail.koala').done(function(result) {
+            var data = result.data;
+            var userInfo = $('#user-info');
+            userInfo.find('[data-id="name"]').text(data.name);
+            userInfo.find('[data-id="userAccount"]').text(data.userAccount);
+            userInfo.find('[data-id="createDate"]').text(data.createDate);
+            userInfo.find('[data-id="lastModifyTime"]').text(data.lastModifyTime == null ? "" : data.lastModifyTime);
+            userInfo.find('[data-id="email"]').text(data.email==null ? "您还没有邮箱，请添加邮箱！" : data.email);
+            userInfo.find('[data-id="description"]').text(data.description==null ? "" : data.description);
+            userInfo.find('[data-id="telePhone"]').text(data.telePhone==null ? "您还没有联系电话，请添加电话！" : data.telePhone);
+            userInfo.find('[data-id="disabled"]').text(data.disabled ? "不可用":"可用");
+        });
 
         /* -------------------修改邮箱--------------------  */
         $('#user-info').find("a[data-target=#changeEmailOfUser]").click(function(){
@@ -72,7 +80,8 @@
                                 type : 'success',
                                 content : '更改邮箱成功!'
                             });
-                            window.location.href=contextPath+"/index.koala";
+                            $('#user-info').find('[data-id="email"]').text(newEmail.val());
+                            dialog.modal('hide');
                         }else{
                             dialog.find('#changeEmailOfUserMessage').message({
                                 type : 'error',
@@ -85,6 +94,13 @@
                 }).on({
                     'hidden.bs.modal' : function() {
                         $(this).remove();
+                    },
+                    'complete': function(){
+                        dialog.message({
+                            type: 'success',
+                            content: '更改邮箱成功!'
+                        });
+                        $(this).modal('hide');
                     }
                 });
                 //兼容IE8 IE9
@@ -116,7 +132,8 @@
                                 type : 'success',
                                 content : '更改联系电话成功!'
                             });
-                            window.location.href=contextPath+"/index.koala";
+                            $('#user-info').find('[data-id="telePhone"]').text(newTelePhone.val());
+                            dialog.modal('hide');
                         }else{
                             dialog.find('#changeTelePhoneOfUserMessage').message({
                                 type : 'error',
@@ -129,6 +146,13 @@
                 }).on({
                     'hidden.bs.modal' : function() {
                         $(this).remove();
+                    },
+                    'complete': function(){
+                        dialog.message({
+                            type: 'success',
+                            content: '更改联系电话成功!'
+                        });
+                        $(this).modal('hide');
                     }
                 });
                 //兼容IE8 IE9

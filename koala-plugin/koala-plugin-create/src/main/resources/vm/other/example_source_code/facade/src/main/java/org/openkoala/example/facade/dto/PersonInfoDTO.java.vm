@@ -8,6 +8,8 @@ public class PersonInfoDTO implements Serializable {
 	private static final long serialVersionUID = 1428864474382580128L;
 
 	private Long id;
+	
+	private int version;
 
 	private Double proceeds;
 	
@@ -85,6 +87,14 @@ public class PersonInfoDTO implements Serializable {
 	
 	public Long getId() {
 		return id;
+	}
+
+    public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
     @Override

@@ -46,7 +46,8 @@ public interface SecurityAccessFacade {
     List<MenuResourceDTO> findMenuResourceByUserAccount(String userAccount);
 
     /**
-     * 根据用户账号查询某个角色下用户的菜单资源。
+     * 根据用户账号查询用户的菜单资源。
+     * 包含用户的权限拥有的菜单资源、角色拥有的菜单资源、角色的权限拥有的菜单资源
      *
      * @param userAccount 用户账号
      * @param roleName    角色名称
@@ -148,13 +149,6 @@ public interface SecurityAccessFacade {
      * @param userId 用户ID
      */
     InvokeResult findInfoOfUser(Long userId);
-
-    /**
-     * 根据角色ID查找角色信息：包含角色本身信息，权限信息，权限资源信息（菜单资源、URL访问资源、页面元素资源）
-     *
-     * @param roleId 角色ID
-     */
-    InvokeResult findInfOfRole(Long roleId);
 
     /**
      * 根据权限ID查询权限信息包含权限授权信息即菜单资源、页面元素资源、URL访问资源。

@@ -7,7 +7,6 @@ import org.dayatang.utils.Page;
 import org.openkoala.koala.commons.InvokeResult;
 import org.openkoala.security.facade.SecurityAccessFacade;
 import org.openkoala.security.facade.SecurityConfigFacade;
-import org.openkoala.security.facade.command.ChangeUserAccountCommand;
 import org.openkoala.security.facade.command.ChangeUserEmailCommand;
 import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserTelePhoneCommand;
@@ -38,16 +37,6 @@ public class CurrentUserController {
 
     @Inject
     private RoleHandle roleHandle;
-
-    /**
-     * 更改用户账号。
-     */
-    @ResponseBody
-    @RequestMapping(value = "/changeUserAccount", method = RequestMethod.POST)
-    public InvokeResult changeUserAccount(ChangeUserAccountCommand command) {
-        return securityConfigFacade.changeUserAccount(command);
-
-    }
 
     /**
      * 更改用户邮箱。
@@ -98,7 +87,9 @@ public class CurrentUserController {
     }
 
     /**
-     * 切换角色
+     * 切换角色。
+     * 角色名称不能为空.
+     * 如果是相当角色就不做任何处理。
      */
     @ResponseBody
     @RequestMapping(value = "/switchOverRoleOfUser", method = RequestMethod.POST)
@@ -106,7 +97,6 @@ public class CurrentUserController {
         if (StringUtils.isBlank(roleName)) {
             return InvokeResult.failure("角色名为空。");
         }
-        // 角色名相同 不做任何处理
         if (CurrentUser.getRoleName().equals(roleName)) {
             return InvokeResult.success();
         }

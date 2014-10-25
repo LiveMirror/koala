@@ -1,10 +1,19 @@
 package org.openkoala.security.org.facade.impl;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.commons.lang3.StringUtils;
 import org.dayatang.domain.InstanceFactory;
-import org.dayatang.utils.Page;
 import org.dayatang.querychannel.QueryChannelService;
-import org.openkoala.koala.commons.InvokeResult;
+import org.dayatang.utils.Page;
 import org.openkoala.organisation.core.domain.Organization;
 import org.openkoala.security.application.SecurityAccessApplication;
 import org.openkoala.security.core.domain.Authorization;
@@ -17,13 +26,7 @@ import org.openkoala.security.org.facade.SecurityOrgAccessFacade;
 import org.openkoala.security.org.facade.dto.EmployeeUserDTO;
 import org.openkoala.security.org.facade.dto.OrgPermissionDTO;
 import org.openkoala.security.org.facade.dto.OrgRoleDTO;
-import org.openkoala.security.org.facade.dto.OrganizationScopeDTO;
 import org.openkoala.security.org.facade.impl.assembler.EmployeeUserAssembler;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.text.MessageFormat;
-import java.util.*;
 
 @Named
 public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
@@ -31,7 +34,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
     @Inject
     private SecurityAccessApplication securityAccessApplication;
 
-
+    @Override
     public Page<EmployeeUserDTO> pagingQueryEmployeeUsers(int pageIndex, int pageSize, EmployeeUserDTO queryEmployeeUserCondition) {
         Map<String, Object> conditionVals = new HashMap<String, Object>();
         StringBuilder jpql = new StringBuilder("FROM EmployeeUser _user where 1=1");
@@ -56,6 +59,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
                 Organization organization = employeeUser.getEmployee().getOrganization(new Date());
                 if(organization != null){
                     result.setEmployeeOrgName(organization.getName());
+                    result.setEmployeeOrgId(organization.getId());
                 }
             }
             results.add(result);
@@ -142,13 +146,18 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
             jpql.append(".telePhone LIKE :telePhone");
             conditionVals.put("telePhone", MessageFormat.format("%{0}%", queryEmployeeUserCondition.getTelePhone()));
         }
+        if (!StringUtils.isBlank(queryEmployeeUserCondition.getDescription())) {
+            jpql.append(andCondition);
+            jpql.append(".description LIKE :description");
+            conditionVals.put("description", MessageFormat.format("%{0}%", queryEmployeeUserCondition.getDescription()));
+        }
         if (!StringUtils.isBlank(queryEmployeeUserCondition.getEmployeeName())) {
             jpql.append("AND .employee.name LIKE :employeeName");
             conditionVals.put("employeeName", MessageFormat.format("%{0}%", queryEmployeeUserCondition.getEmployeeName()));
         }
     }
 
-
+    @Override
     public Page<OrgRoleDTO> pagingQueryGrantRolesByUserId(int pageIndex, int pageSize, Long userId) {
 
         User user = securityAccessApplication.getUserById(userId);
@@ -170,7 +179,7 @@ public class SecurityOrgAccessFacadeImpl implements SecurityOrgAccessFacade {
      * @param userId
      * @return
      */
-
+    @Override
     public Page<OrgPermissionDTO> pagingQueryGrantPermissionsByUserId(int pageIndex, int pageSize, Long userId) {
         User user = securityAccessApplication.getUserById(userId);
         Page<Authorization> results = getQueryChannelService()//

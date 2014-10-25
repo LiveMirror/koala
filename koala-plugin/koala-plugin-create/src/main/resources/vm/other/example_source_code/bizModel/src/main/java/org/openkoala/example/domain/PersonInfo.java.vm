@@ -1,38 +1,46 @@
 package org.openkoala.example.domain;
 
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 import org.openkoala.koala.commons.domain.KoalaAbstractEntity;
 
 @Entity
-@Table(name="Person_Info")
+@Table(name="PERSON_INFO")
 public class PersonInfo extends KoalaAbstractEntity {
 
 	private static final long serialVersionUID = -8117884889431440517L;
 	
 	//姓名	
-	@Column(nullable=false)
+	@Column(name = "NAME", nullable=false)
 	private String name;
+	
 	//年龄
+	@Column(name = "AGE")
 	private Integer age;
+	
 	//性别
+	@Column(name = "SEX")
 	private String sex;
+	
 	//身份证号码
-	@Column(name="identity_card_number",nullable=false)
+	@Column(name="IDENTITY_CARD_NUMBER", nullable=false)
 	private String identityCardNumber;
+	
 	//出生日期	
 	@Temporal(TemporalType.DATE)
+	@Column(name = "BIRTHDAY")
 	private Date birthday;
+	
 	//是否已婚
+	@Column(name = "MARRIED")
 	private Boolean married;
+	
 	//收入
+	@Column(name = "PROCEEDS")
 	private Double proceeds;
 	
 	public PersonInfo() {}

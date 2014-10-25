@@ -15,6 +15,8 @@ public class ${dtoClass.name} implements Serializable {
 
 	private ${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name};
 
+	private ${dtoClass.entityModel.versionFieldModel.simpleType} ${dtoClass.entityModel.versionFieldModel.name};
+
 #foreach($entry in ${dtoClass.fieldMap.entrySet()})
 	#if($entry.value.indexOf(".") == -1)
 		#if(${entry.value} == "int" || ${entry.value}=="Integer")
@@ -116,14 +118,21 @@ public class ${dtoClass.name} implements Serializable {
 	}
 #end
 #end
+	
+	public ${dtoClass.entityModel.singleIDFieldModel.simpleType} get${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}() {
+		return ${dtoClass.entityModel.singleIDFieldModel.name};
+	}
 
 	public void set${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}(${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name}) {
 		this.${dtoClass.entityModel.singleIDFieldModel.name} = ${dtoClass.entityModel.singleIDFieldModel.name};
 	}
 	
-	public ${dtoClass.entityModel.singleIDFieldModel.simpleType} get${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}() {
-		
-		return ${dtoClass.entityModel.singleIDFieldModel.name};
+	public ${dtoClass.entityModel.versionFieldModel.simpleType} get${dtoClass.entityModel.versionFieldModel.nameToFirstLetterUpper}() {
+		return ${dtoClass.entityModel.versionFieldModel.name};
+	}
+
+	public void set${dtoClass.entityModel.versionFieldModel.nameToFirstLetterUpper}(${dtoClass.entityModel.versionFieldModel.simpleType} ${dtoClass.entityModel.versionFieldModel.name}) {
+		this.${dtoClass.entityModel.versionFieldModel.name} = ${dtoClass.entityModel.versionFieldModel.name};
 	}
 
     @Override

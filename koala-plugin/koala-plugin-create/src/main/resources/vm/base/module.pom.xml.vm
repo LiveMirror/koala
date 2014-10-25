@@ -576,10 +576,9 @@
 
 	</dependencies>
 	
+#if ($Module.moduleType == "war")
 	<build>
-	
 		<plugins>
-		   #if ($Module.moduleType == "war")
 			<!-- 配置加入jetty服务器，开发时我们一般使用jetty服务器 -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -592,7 +591,13 @@
 					</webApp>
 				</configuration>
 			</plugin>
-			#end
+		</plugins>
+	</build>
+#end
+
+#if ($Module.functions.length > 0)
+	<build>
+		<plugins>
 			#foreach($function in $Module.functions)
 			#if ($function == "excel")
 			<plugin>
@@ -609,4 +614,6 @@
 			#end
 		</plugins>
 	</build>
+#end
+		
 </project>

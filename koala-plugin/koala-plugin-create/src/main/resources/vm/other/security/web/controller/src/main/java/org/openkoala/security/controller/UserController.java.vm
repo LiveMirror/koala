@@ -193,7 +193,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/findInfoOfUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/findInfoOfUser", method = RequestMethod.GET)
     public InvokeResult findInfoOfUser(Long userId) {
         return securityAccessFacade.findInfoOfUser(userId);
     }

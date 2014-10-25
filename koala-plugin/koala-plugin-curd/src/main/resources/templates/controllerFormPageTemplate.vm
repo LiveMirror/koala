@@ -8,37 +8,40 @@
 </head>
 <body>
 <form class="form-horizontal">
+	<input type="hidden" id="${pageParams.entityModel.singleIDFieldModel.name}ID" name="${pageParams.entityModel.singleIDFieldModel.name}" /> 
+	<input type="hidden" id="${pageParams.entityModel.versionFieldModel.name}ID" name="${pageParams.entityModel.versionFieldModel.name}" /> 
+	
 #foreach( $view in $pageParams.formWidgets)
 #if(${view.express} !='id')
 	           <div class="form-group">
                     <label class="col-lg-3 control-label">${view.name}:</label>
-#if($view.type.indexOf("oolean") > 0)
+	#if($view.type.indexOf("oolean") > 0)
                     <div class="col-lg-9">
                            <div class="btn-group select" id="${view.express}ID"></div>
-	                       <input type="hidden" id="${view.express}ID_" name="${view.express}" ${view.validateAttrs}/>                    </div>
-#elseif($view.widgetType == 'text')
+	                       <input type="hidden" id="${view.express}ID_" name="${view.express}" ${view.validateAttrs}/>
+	#elseif($view.widgetType == 'text')
                     <div class="col-lg-9">
                            <input name="${view.express}" style="display:inline; width:94%;" class="form-control"  type="text" ${view.validateAttrs} id="${view.express}ID" />
-#elseif ($view.widgetType == 'date')
+	#elseif ($view.widgetType == 'date')
                  <div class="col-lg-9">
                     <div class="input-group date form_datetime" style="width:160px;float:left;" >
                         <input type="text" class="form-control" style="width:160px;" name="${view.express}" id="${view.express}ID" ${view.validateAttrs}>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                      </div>
-#elseif ($view.widgetType == 'textArea')
+	#elseif ($view.widgetType == 'textArea')
                 <div class="col-lg-9">
                     <textarea class="form-control" style="display:inline; width:94%;" rows="3" id="${view.express}ID" name="${view.express}" ${view.validateAttrs} ></textarea>
-#elseif ($view.widgetType == 'staticDropdown')
+	#elseif ($view.widgetType == 'staticDropdown')
                     <div class="col-lg-9">
                            <div class="btn-group select" id="${view.express}ID"></div>
 	                       <input type="hidden" id="${view.express}ID_"  name="${view.express}" ${view.validateAttrs}/>
-#elseif ($view.widgetType == 'queryDropdown')
+	#elseif ($view.widgetType == 'queryDropdown')
            //未实现
-#end
-#if ($view.required)<span class="required">*</span>#end
-    </div>
-</div>
-#end
+	#end
+	#if ($view.required)<span class="required">*</span>#end
+	    </div>
+	</div>
+	#end
 #end
 </form>
 <script type="text/javascript">
@@ -47,8 +50,8 @@
     #if ($view.type.indexOf("oolean") > 0)
     selectItems['${view.express}ID'] = [
                    {title: '请选择', value: ''},
-                   {title: '是', value: '1'},
-                   {title: '否', value: '0'}
+                   {title: '是', value: 'true'},
+                   {title: '否', value: 'false'}
                 ];
     #elseif ($view.widgetType == 'staticDropdown')
     var contents = [{title:'请选择', value: ''}];
