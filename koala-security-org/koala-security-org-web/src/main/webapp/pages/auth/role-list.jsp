@@ -3,7 +3,7 @@
 
 <!-- strat form -->
 <form name="roleListForm" id="${formId}" target="_self" class="form-horizontal searchCondition">
-<div id ="roleManagerQueryDivId" hidden="true" >
+<div  id="roleManagerQueryDivId" hidden="true" >
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
       <td>
@@ -29,9 +29,6 @@
 <script>
 
 	$(function() {
-		var tabData 	= $('[data-role="roleGrid"]').closest('.tab-pane.active').data();
-		var userId 		= tabData.userId;
-		var form;
 		var columns = [{
 			title : "角色名称",
 			name : "name",
@@ -72,10 +69,7 @@
 		})();
 		
 		var url = contextPath + '/auth/role/pagingQuery.koala';
-		if (userId) {
-			url = contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId=' + userId;
-		}
-		
+
 		$('[data-role="roleGrid"]').grid({
 			identity : 'id',
 			columns : columns,
@@ -136,7 +130,9 @@
 				}
 				
 				var role = items[0];
-				openTab('/pages/auth/url-list.jsp', role.name+'的url管理', 'roleManager_' + role.id, role.id, {roleId : role.id});
+                console.log(role);
+				/*打开url表格*/
+				openTab('/pages/auth/role-grant-url.jsp', role.name+'的URL访问资源管理', 'roleGrantUrlManager_' + role.id, role.id, {roleId : role.id});
 			},
 			"menuAssign" : function(event, data) {
 				var items = data.item;
@@ -174,9 +170,8 @@
 					});
 					return;
 				}
-				//roleManager().pageAssign($(this), items[0].roleId);
 				var page = items[0];
-                openTab('/pages/auth/page-list.jsp', page.name+'的page管理', 'roleManager_' + page.id, page.id, {pageId : page.id});
+				openTab('/pages/auth/role-grant-page.jsp', page.name+'的页面元素资源管理', 'roleGrantPageManager_' + page.id, page.id, {pageId : page.id});
 			},
 			'permissionAssign' : function(event, data) {
 				var items = data.item;
@@ -195,11 +190,29 @@
 					});
 					return;
 				}
-				var permissions = items[0];
-				openTab('/pages/auth/permission-list.jsp', permissions.name+'的权限管理', 'roleManager_' + permissions.id, permissions.id, {permissionsId : permissions.id});
+				var permission = items[0];
+				openTab('/pages/auth/role-grant-permission.jsp', permission.name+'的权限管理', 'roleGrantPermissionManager_' + permission.id, permission.id, {permissionId : permission.id});
+			},
+			'assignResource' : function(event, data) {
+				var indexs = data.data;
+				var $this = $(this);
+				if (indexs.length == 0) {
+					$this.message({
+						type : 'warning',
+						content : '请选择一条记录进行操作'
+					});
+					return;
+				}
+				if (indexs.length > 1) {
+					$this.message({
+						type : 'warning',
+						content : '只能选择一条记录进行操作'
+					});
+					return;
+				}
+				roleManager().assignResource($(this), data.data[0]);
 			}
 		});
-
         var form = $('#'+'${formId}');
 		form.find('#roleManagerSearch').on('click', function(){
 	            var params = {};

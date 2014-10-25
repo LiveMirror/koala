@@ -2,7 +2,7 @@
 <div class="modal fade select-role">
 	<style>
 		.select-role .modal-body {
-			height: 420px;
+			height: 400px;
 		}
 		.select-role .grid-table-body {
 			height: 250px;
@@ -29,20 +29,19 @@
                                     <div class="form-group">
                                         <label class="control-label">URL名称:&nbsp;</label>
                                         <input name="name" class="form-control" type="text"/>
+
                                         <label class="control-label">URL路径:&nbsp;</label>
                                         <input name="url" class="form-control" type="text"/>
-                                        <label class="control-label">URL描述:&nbsp;</label>
-                                        <input name="description" class="form-control" type="text"/>
                                     </div>
                                 </td>
                                 <td style="vertical-align: bottom; padding: 0 5px;" >
-                                    <button id="search" type="button" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button>
+                                    <button id="selectUrlsearch" type="button" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button>
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </form>
-                <div id="selectUrlGrid" data-role="selectUrlGrid"></div>
+				<div id="selectUrlGrid" data-role="selectUrlGrid"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
