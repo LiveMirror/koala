@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="${contextPath}/css/main.css"/>
 <link rel="stylesheet" href="${contextPath}/css/security.css"/>
 <link rel="stylesheet" href="${contextPath}/lib/validateForm/css/style.css"/>
+<link rel="stylesheet" href="${contextPath}/css/organisation.css"/>
+<link rel="stylesheet" href="${contextPath}/css/gqc.css"/>
 
 <%-- js 默认就有 type="text/javascript" --%>
 <script  src="${contextPath}/lib/jquery-1.8.3.min.js"></script>

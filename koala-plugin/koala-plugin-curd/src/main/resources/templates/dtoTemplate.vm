@@ -7,9 +7,6 @@ import $import;
 
 #end
 import java.io.Serializable;
-#if (${project.mvcType} == "SpringMVC")
-
-#end
 
 public class ${dtoClass.name} implements Serializable {
 
@@ -35,27 +32,21 @@ public class ${dtoClass.name} implements Serializable {
 			#set($simpleTypeName = "Character")
 			#elseif(${entry.value} == "byte" || ${entry.value}=="Byte")
 			#set($simpleTypeName = "Byte")
-			
 		#end
 	#else
 		#set($index = ${entry.value.lastIndexOf(".")} + 1)
 		#set($simpleTypeName = ${entry.value.substring($index)})
 	#end
-#if($simpleTypeName.indexOf("Boolean") > 0)
+	
+	#if($simpleTypeName.indexOf("Boolean") > 0)
 	private Boolean ${entry.key};
-#else
-
-#if(${dtoClass.isDateType(${entry.value})} && ${project.mvcType} == "SpringMVC")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-#end
+	#else
 	private ${simpleTypeName} ${entry.key};
-#end	
-#if(${dtoClass.isDateType(${entry.value})} && ${project.mvcType} == "SpringMVC")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-#end
-#if(${dtoClass.isDateType(${entry.value})})
+	#end
+	
+	#if(${dtoClass.isDateType(${entry.value})})
 	private ${simpleTypeName} ${entry.key}End;
-#end
+	#end
 #end
 #foreach($entry in ${dtoClass.fieldMap.entrySet()})
 	#if($entry.value.indexOf(".") == -1)
@@ -76,13 +67,13 @@ public class ${dtoClass.name} implements Serializable {
 			#elseif(${entry.value} == "byte" || ${entry.value}=="Byte")
 			#set($simpleTypeName = "Byte")
 		#end
-		#else
+	#else
 		#set($index = ${entry.value.lastIndexOf(".")} + 1)
 		#set($simpleTypeName = ${entry.value.substring($index)})
 	#end
 	#set($propertyName = ${entry.key.substring(0, 1).toUpperCase()} + ${entry.key.substring(1)})
 
-#if($simpleTypeName.indexOf("Boolean") > 0)
+	#if($simpleTypeName.indexOf("Boolean") > 0)
 	public Boolean get${propertyName}() {
 		return ${entry.key};
 	}
@@ -90,33 +81,26 @@ public class ${dtoClass.name} implements Serializable {
 	public void set${propertyName}(Boolean ${entry.key}) { 
 		this.${entry.key} = ${entry.key};
 	}
-	
-#else
+	#else
 
 	public void set${propertyName}($simpleTypeName ${entry.key}) { 
 		this.${entry.key} = ${entry.key};
 	}
 
-#if(${dtoClass.isDateType(${entry.value})} && ${project.mvcType} == "SpringMVC")
-	@JsonSerialize(using = JsonDateSerializer.class)
-#end
 	public ${simpleTypeName} get${propertyName}() {
 		return this.${entry.key};
 	}
-#end
+	#end
 	
-#if(${dtoClass.isDateType(${entry.value})})
+	#if(${dtoClass.isDateType(${entry.value})})
 	public void set${propertyName}End($simpleTypeName ${entry.key}End) { 
 		this.${entry.key}End = ${entry.key}End;
 	}
 
-#if(${dtoClass.isDateType(${entry.value})} && ${project.mvcType} == "SpringMVC")
-	@JsonSerialize(using = JsonDateSerializer.class)
-#end	
 	public ${simpleTypeName} get${propertyName}End() {
 		return this.${entry.key}End;
 	}
-#end
+	#end
 #end
 	
 	public ${dtoClass.entityModel.singleIDFieldModel.simpleType} get${dtoClass.entityModel.singleIDFieldModel.nameToFirstLetterUpper}() {

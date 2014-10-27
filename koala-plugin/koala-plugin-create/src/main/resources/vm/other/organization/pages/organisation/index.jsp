@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="k" uri="http://www.openkoala.com/token"%>
 <%@ page import="java.util.Date"%>
 <%Long time = new Date().getTime();%>
 <!DOCTYPE html>
@@ -21,20 +22,6 @@
 <div class="g-head">
     <nav class="navbar navbar-default">
         <a class="navbar-brand" href="#"><img src="<c:url value='/images/global.logo.png'/>"/>组织系统</a>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <div class="btn-group navbar-right">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <i class="glyphicon glyphicon-user"></i>
-                    <span>&nbsp;Admin</span>
-                    <span class="caret"></span>
-                </button>
-               <ul class="dropdown-menu" id="userManager">
-	                    <li data-target="modifyPwd"><a href="#">修改密码</a></li>
-	                    <li data-target="switchUser"><a href="#">切换用户</a></li>
-	                    <li data-target="loginOut"><a href="#">注销</a></li>
-	           </ul>
-            </div>
-        </div>
     </nav>
 </div>
 <div class="g-body">
@@ -69,8 +56,11 @@
 <script type="text/javascript" src="<c:url value='/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' />"></script>
 <script type="text/javascript" src="<c:url value='/lib/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js' />"></script>
 <script type="text/javascript" src="<c:url value='/lib/koala-ui.plugin.js' />?time=<%=time%>"></script>
-    <script type="text/javascript" src="<c:url value='/lib/koala-tree.js' />?time=<%=time%>"></script>
+<script type="text/javascript" src="<c:url value='/lib/koala-tree.js' />?time=<%=time%>"></script>
 <script type="text/javascript" src="<c:url value='/js/main.js' />?time=<%=time%>"></script>
 <script type="text/javascript" src="<c:url value='/lib/validate.js' />?time=<%=time%>"></script>
+<script>
+	$.ajaxSetup({cache:false});
+</script>
 </body>
 </html>

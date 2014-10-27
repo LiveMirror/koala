@@ -220,9 +220,7 @@ public class CURDCoreAnalysis {
              entity.getFields().add(fieldModel);
              
          } else if(fieldType.equals(FieldType.VERSION)){
-        	 //将版本的基本类型转换成对应的封装类型
         	 String type = field.getType().getName();
-        	 type = convertPrimitive(type);
              FieldModel fieldModel = new VersionFieldModel(field.getName(),type);
              entity.getFields().add(fieldModel);
              

@@ -21,20 +21,6 @@
             <div class="g-head">
                 <nav class="navbar navbar-default">
                      <a class="navbar-brand" href="http://openkoala.org/display/koala/Home" target="_blank"><img src="<c:url value='/images/global.logo.png'/>"/>Koala通用查询</a>
-                     <div class="collapse navbar-collapse navbar-ex1-collapse">
-                           <div class="btn-group navbar-right" style="display:none;">
-                               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                   <i class="glyphicon glyphicon-user"></i>
-                                   <span>&nbsp;Admin</span>
-                                   <span class="caret"></span>
-                               </button>
-                               <ul class="dropdown-menu" id="userManager">
-                                   <li data-target="modifyPwd"><a href="#">修改密码</a></li>
-                                   <li data-target="switchUser"><a href="#">切换用户</a></li>
-                                   <li data-target="loginOut"><a href="#">注销</a></li>
-                               </ul>
-                           </div>
-                       </div>
                 </nav>
             </div>
 		    <div class="g-body">
