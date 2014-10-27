@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Named;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
 import ${applicationClass.packageName.replaceAll("impl","")}${applicationClass.name.replaceAll("Impl","")};
 import ${entity.className};
 
 @Named
+@Transactional
 public class ${applicationClass.name} implements ${applicationClass.name.replaceAll("Impl","")} {
 
 	public ${domainClass} get${domainClass}(${applicationClass.entityModel.singleIDFieldModel.simpleType} ${applicationClass.entityModel.singleIDFieldModel.name}) {

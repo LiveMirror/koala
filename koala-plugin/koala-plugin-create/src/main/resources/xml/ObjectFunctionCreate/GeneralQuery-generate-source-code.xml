@@ -47,31 +47,24 @@
          <![CDATA[
     <?xml version="1.0" encoding="UTF-8"?>
     <root>
-          <dependency>
+        <dependency>
 			<groupId>commons-dbutils</groupId>
 			<artifactId>commons-dbutils</artifactId>
 			<version>1.5</version>
 		</dependency>
-         <dependency>
+        <dependency>
         	<groupId>com.oracle</groupId>
         	<artifactId>ojdbc14</artifactId>
         	<version>10.2.0.4.0</version>
         </dependency>
         <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>3.2.6.RELEASE</version>
-          </dependency>
-        <dependency>
-                <groupId>org.dayatang.dddlib</groupId>
-                <artifactId>dddlib-query-channel</artifactId>
-                <version>${dddlib.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.dayatang.dddlib</groupId>
-                <artifactId>dddlib-query-channel</artifactId>
-                <version>${dddlib.version}</version>
-            </dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+    	<dependency>
+            <groupId>org.dayatang.dddlib</groupId>
+            <artifactId>dddlib-query-channel</artifactId>
+        </dependency>
 	</root>
          ]]>
 		</property>

@@ -16,7 +16,11 @@ public class ${entity.name}Assembler {
     	${dtoClass.name} result  = new ${dtoClass.name}();
 #foreach($field in  ${entity.fields} )
 #set($propertyName = ${field.name.substring(0, 1).toUpperCase()} + ${field.name.substring(1)})
-        result.set${propertyName} (${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}.get${propertyName}());
+	#if ($field.type == "boolean")
+        result.set${propertyName} (${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}.is${propertyName}());
+    #else
+    	result.set${propertyName} (${entity.name.substring(0, 1).toLowerCase()}${entity.name.substring(1)}.get${propertyName}());
+    #end
  #end
 	    return result;
 	 }

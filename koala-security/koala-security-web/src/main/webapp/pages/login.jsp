@@ -163,7 +163,7 @@ body {
 			</FORM>
 		</div>
 	</div>
-	<div class="login_footer">Koala 版权信息 2013</div>
+	<div class="login_footer">Koala 版权信息 2014</div>
 	<script>
     $(function(){
      	var btnLogin = $('#loginBtn');

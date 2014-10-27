@@ -6,7 +6,6 @@ import org.openkoala.security.facade.command.ChangePageElementResourcePropsComma
 import org.openkoala.security.facade.command.ChangePermissionPropsCommand;
 import org.openkoala.security.facade.command.ChangeRolePropsCommand;
 import org.openkoala.security.facade.command.ChangeUrlAccessResourcePropsCommand;
-import org.openkoala.security.facade.command.ChangeUserAccountCommand;
 import org.openkoala.security.facade.command.ChangeUserEmailCommand;
 import org.openkoala.security.facade.command.ChangeUserPasswordCommand;
 import org.openkoala.security.facade.command.ChangeUserPropsCommand;
@@ -83,13 +82,6 @@ public interface SecurityConfigFacade {
      * @param command 更改用户属性命令 {@link ChangeUserPropsCommand}
      */
     InvokeResult changeUserProps(ChangeUserPropsCommand command);
-
-    /**
-     * 更改用户账号。
-     *
-     * @param command 更改用户账号命令 {@link ChangeUserAccountCommand}
-     */
-    InvokeResult changeUserAccount(ChangeUserAccountCommand command);
 
     /**
      * 更改用户邮箱。

@@ -49,11 +49,10 @@ public class UserAssembler {
 		return result;
 	}
 
-    public static UserDTO toUserDTOThisOftenUsed(User user) {
+    public static UserDTO toUserDTOThatDetail(User user) {
 		UserDTO result = new UserDTO(user.getUserAccount(),user.getCreateDate(),user.getDescription());
 		result.setId(user.getId());
 		result.setName(user.getName());
-		result.setVersion(user.getVersion());
 		result.setCreateOwner(user.getCreateOwner());
 		result.setLastModifyTime(user.getLastModifyTime());
 		result.setDisabled(user.isDisabled());

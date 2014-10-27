@@ -108,26 +108,6 @@ public class SecurityOrgConfigFacadeImpl implements SecurityOrgConfigFacade {
         return InvokeResult.success();
     }
 
-    @Override
-    public InvokeResult grantRolesToUserInScope(AuthorizationCommand command) {
-        Actor actor = securityAccessApplication.getActorById(command.getActorId());
-
-        Organization organization = organizationApplication.getOrganizationById(command.getOrganizationId());
-        Scope scope = findOrganizationScope(organization);
-
-        if (scope == null) {
-            scope = new OrganisationScope(command.getOrganizationName(), organization);
-            securityConfigApplication.createScope(scope);
-        }
-
-        for (Long authorityId : command.getAuthorityIds()) {
-            Authority authority = securityAccessApplication.getAuthority(authorityId);
-            securityConfigApplication.grantActorToAuthorityInScope(actor, authority, scope);
-        }
-
-        return InvokeResult.success();
-    }
-
     private OrganisationScope findOrganizationScope(Organization organization) {
         OrganisationScope organisationScope = (OrganisationScope) getQueryChannelService()
                 .createNamedQuery("OrganisationScope.hasOrganizationOfScope")

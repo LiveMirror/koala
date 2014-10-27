@@ -77,13 +77,6 @@ public class EmployeeUserController {
         return securityOrgConfigFacade.grantAuthorityToActorInScope(command);
     }
 
-    @Deprecated
-    @ResponseBody
-    @RequestMapping(value = "/grantRolesToUserInScope", method = RequestMethod.POST)
-    public InvokeResult grantRolesToUserInScope(AuthorizationCommand command) {
-        return securityOrgConfigFacade.grantRolesToUserInScope(command);
-    }
-
     @ResponseBody
     @RequestMapping(value = "/terminateUserFromRoleInScope", method = RequestMethod.POST)
     public InvokeResult terminateUserFromRoleInScope(Long userId, TerminateUserFromRoleInScopeCommand[] commands) {

@@ -20,6 +20,9 @@ public class UserAssembler {
 	}
 	
 	public static UserDTO toUserDTO(User user) {
+        if(user == null){
+            return null;
+        }
 		UserDTO result = new UserDTO(user.getUserAccount(),user.getPassword(),user.getCreateDate(),user.getDescription());
 		result.setId(user.getId());
 		result.setName(user.getName());
@@ -29,6 +32,7 @@ public class UserAssembler {
 		result.setCreateOwner(user.getCreateOwner());
 		result.setLastModifyTime(user.getLastModifyTime());
 		result.setDisabled(user.isDisabled());
+        result.setSalt(user.getSalt());
 		return result;
 	}
 
@@ -45,11 +49,10 @@ public class UserAssembler {
 		return result;
 	}
 
-    public static UserDTO toUserDTOThisOftenUsed(User user) {
+    public static UserDTO toUserDTOThatDetail(User user) {
 		UserDTO result = new UserDTO(user.getUserAccount(),user.getCreateDate(),user.getDescription());
 		result.setId(user.getId());
 		result.setName(user.getName());
-		result.setVersion(user.getVersion());
 		result.setCreateOwner(user.getCreateOwner());
 		result.setLastModifyTime(user.getLastModifyTime());
 		result.setDisabled(user.isDisabled());

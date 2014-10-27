@@ -74,7 +74,7 @@
     <table class="table table-bordered table-hover">
         <tr>
             <td colspan="3">
-                <label style="font-size:20px; ">④菜单资源</label>
+                <label style="font-size:20px; ">④页面元素资源</label>
             </td>
         </tr>
         <tr>
@@ -105,7 +105,7 @@
             permissionDetail.find('[data-id="permDescription"]').text(permission.description==null?"":permission.description);
 
             permissionDetail.find('[data-id="menuName"]').text(permission.menuResource.name);
-            permissionDetail.find('[data-id="menuUrl"]').text(permission.menuResource.url);
+            permissionDetail.find('[data-id="menuUrl"]').text(permission.menuResource.url == null ? "" : permission.menuResource.url);
             permissionDetail.find('[data-id="menuDescription"]').text(permission.menuResource.description==null?"":permission.menuResource.description);
 
             permissionDetail.find('[data-id="urlName"]').text(permission.urlAccessResource.name);

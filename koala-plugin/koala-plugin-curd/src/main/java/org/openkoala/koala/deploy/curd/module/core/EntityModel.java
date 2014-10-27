@@ -7,6 +7,7 @@ import org.openkoala.koala.deploy.curd.module.core.model.ObjectValueFieldModel;
 import org.openkoala.koala.deploy.curd.module.core.model.PKFieldModel;
 import org.openkoala.koala.deploy.curd.module.core.model.PersistenceFieldModel;
 import org.openkoala.koala.deploy.curd.module.core.model.RelationFieldModel;
+import org.openkoala.koala.deploy.curd.module.core.model.VersionFieldModel;
 
 /**
  * 
@@ -81,7 +82,20 @@ public class EntityModel {
         }
         return models;
     }
-    
+
+    /**
+     * 获取version字段
+     * @return
+     */
+    public VersionFieldModel getVersionFieldModel(){
+        for(FieldModel fieldModel:this.getFields()){
+            if(fieldModel instanceof VersionFieldModel){
+                return (VersionFieldModel) fieldModel;
+            }
+        }
+        return null;
+    }
+
     public PKFieldModel getSingleIDFieldModel() {
     	return getIDFieldModel().get(0);
     }

@@ -13,11 +13,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.dayatang.utils.Assert;
 import org.openkoala.security.core.CorrelationException;
 import org.openkoala.security.core.NameIsExistedException;
-import org.openkoala.security.core.NullArgumentException;
 
 /**
  * 权限资源,它是{@link MethodInvocationResource}、{@link MenuResource}、{@link PageElementResource}、{@link UrlAccessResource}共同的基类。
@@ -31,7 +30,8 @@ import org.openkoala.security.core.NullArgumentException;
 @DiscriminatorColumn(name = "CATEGORY", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({
         @NamedQuery(name = "SecurityResource.findAllByType", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType"),
-        @NamedQuery(name = "SecurityResource.findByName", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType AND _securityResource.name = :name")})
+        @NamedQuery(name = "SecurityResource.findByName", query = "SELECT _securityResource  FROM SecurityResource _securityResource WHERE TYPE(_securityResource) = :securityResourceType AND _securityResource.name = :name")
+})
 public abstract class SecurityResource extends SecurityAbstractEntity {
 
     private static final long serialVersionUID = 6064565786784560656L;
@@ -49,10 +49,11 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    protected SecurityResource() {}
+    protected SecurityResource() {
+    }
 
     public SecurityResource(String name) {
-        checkArgumentIsNull("name", name);
+        checkName(name);
         isNameExisted(name);
         this.name = name;
     }
@@ -65,25 +66,22 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
         super.remove();
     }
 
-    /**
-     * 批量保存。
-     *
-     * @param securityResources
-     */
     public static void batchSave(List<? extends SecurityResource> securityResources) {
         for (SecurityResource securityResource : securityResources) {
             securityResource.save();
         }
     }
 
-    /**
-     * @param name name of the SecurityResource, can't be null.
-     * @return
-     */
-    public abstract SecurityResource findByName(String name);
+    public SecurityResource findByName(String name) {
+        return getRepository()
+                .createNamedQuery("SecurityResource.findByName")
+                .addParameter("securityResourceType", this.getClass())
+                .addParameter("name", name)
+                .singleResult();
+    }
 
     public void changeName(String name) {
-        checkArgumentIsNull("name", name);
+        checkName(name);
         if (!name.equals(this.getName())) {
             isNameExisted(name);
             this.name = name;
@@ -91,16 +89,14 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
         }
     }
 
-    protected static void checkArgumentIsNull(String nullMessage, String argument) {
-        if (StringUtils.isBlank(argument)) {
-            throw new NullArgumentException(nullMessage);
+    protected void isNameExisted(String name) {
+        if (findByName(name) != null) {
+            throw new NameIsExistedException("securityResource name existed.");
         }
     }
 
-    protected void isNameExisted(String name) {
-        if (findByName(name) != null) {
-            throw new NameIsExistedException("securityResource.name.exist");
-        }
+    private void checkName(String name) {
+        Assert.notBlank(name, "name cannot be empty.");
     }
 
     @Override
@@ -110,9 +106,9 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)//
-                .append(name)//
-                .append(description)//
+        return new ToStringBuilder(this)
+                .append(name)
+                .append(description)
                 .build();
     }
 
@@ -127,5 +123,4 @@ public abstract class SecurityResource extends SecurityAbstractEntity {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

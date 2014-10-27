@@ -68,7 +68,6 @@
 			<artifactId>shiro-spring</artifactId>
 			<version>1.2.3</version>
 		</dependency>
-<!-- 	验证码 -->
 		<dependency>
 			<groupId>com.octo.captcha</groupId>
 			<artifactId>jcaptcha-api</artifactId>
@@ -84,6 +83,11 @@
 					<groupId>javax.servlet</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.jhlabs</groupId>
+			<artifactId>filters</artifactId>
+			<version>2.0.235-1</version>
 		</dependency>
 	</root>
          ]]>

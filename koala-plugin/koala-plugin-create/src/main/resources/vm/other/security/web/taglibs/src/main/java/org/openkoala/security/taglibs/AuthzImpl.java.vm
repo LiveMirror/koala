@@ -29,17 +29,17 @@ public class AuthzImpl implements Authz {
 		this.applicationContext = applicationContext;
 	}
 
-	
+	@Override
 	public Object getPrincipal() {
 		return CurrentUser.getPrincipal();
 	}
 
-	
+	@Override
 	public boolean ifAllRole(Collection<String> roles) {
 		return CurrentUser.getSubject().hasAllRoles(roles);
 	}
 
-	
+	@Override
 	public boolean ifAnyRole(Collection<String> roles) {
 		for (String role : roles) {
 			if (CurrentUser.getSubject().hasRole(role)) {
@@ -49,17 +49,17 @@ public class AuthzImpl implements Authz {
 		return false;
 	}
 
-	
+	@Override
 	public boolean ifNotRole(Collection<String> roles) {
 		return !ifAnyRole(roles);
 	}
 
-	
+	@Override
 	public boolean ifAllPermission(Collection<String> permissions) {
 		return CurrentUser.getSubject().isPermittedAll(permissions.toString());
 	}
 
-	
+	@Override
 	public boolean ifAnyPermission(Collection<String> permissions) {
 		for (String permission : permissions) {
 			if (CurrentUser.getSubject().isPermitted(permission)) {
@@ -69,12 +69,12 @@ public class AuthzImpl implements Authz {
 		return false;
 	}
 
-	
+	@Override
 	public boolean ifNotPermission(Collection<String> permissions) {
 		return !ifAnyPermission(permissions);
 	}
 
-	
+	@Override
 	public boolean hasSecurityResource(String securityResourceIdentifier) {
 		ShiroUser shiroUser = (ShiroUser) getPrincipal();
 		if (shiroUser == null) {

@@ -17,6 +17,7 @@ import org.openkoala.koala.deploy.curd.module.core.model.ObjectValueFieldModel;
 import org.openkoala.koala.deploy.curd.module.core.model.PKFieldModel;
 import org.openkoala.koala.deploy.curd.module.core.model.PersistenceFieldModel;
 import org.openkoala.koala.deploy.curd.module.core.model.RelationFieldModel;
+import org.openkoala.koala.deploy.curd.module.core.model.VersionFieldModel;
 import org.openkoala.koala.deploy.curd.module.core.relation.ManyToManyRelationModel;
 import org.openkoala.koala.deploy.curd.module.core.relation.ManyToOneRelationModel;
 import org.openkoala.koala.deploy.curd.module.core.relation.OneToManyRelationModel;
@@ -177,7 +178,7 @@ public class CURDCoreAnalysis {
                 if(isStatic)continue;
                 String fieldName =field.getName();
                 if("serialVersionUID".equals(fieldName))continue;
-                if("version".equals(fieldName.toLowerCase()))continue;
+//                if("version".equals(fieldName.toLowerCase()))continue;
                 FieldType fieldType = null;
                 if(Modifier.isTransient(field.getModifiers())){
                     fieldType = FieldType.Other;
@@ -211,14 +212,21 @@ public class CURDCoreAnalysis {
             FieldModel fieldModel = new PersistenceFieldModel(field.getName(),field.getType().getName());
             entity.getFields().add(fieldModel);
          }
-         else  if(fieldType.equals(FieldType.ID)){
+         else if(fieldType.equals(FieldType.ID)){
         	 //将主键的基本类型转换成对应的封装类型
         	 String type = field.getType().getName();
         	 type = convertPrimitive(type);
              FieldModel fieldModel = new PKFieldModel(field.getName(),type);
              entity.getFields().add(fieldModel);
              
-         }else if(fieldType.equals(FieldType.EmbeddedId)){
+         } else if(fieldType.equals(FieldType.VERSION)){
+        	 //将版本的基本类型转换成对应的封装类型
+        	 String type = field.getType().getName();
+        	 type = convertPrimitive(type);
+             FieldModel fieldModel = new VersionFieldModel(field.getName(),type);
+             entity.getFields().add(fieldModel);
+             
+         } else if(fieldType.equals(FieldType.EmbeddedId)){
              String javasrc = field.getType().getSimpleName();
              EntityModel entityModel = analysisField(javasrc);
              for(PersistenceFieldModel persistence:entityModel.getPersistenceFieldModel()){
@@ -337,6 +345,9 @@ public class CURDCoreAnalysis {
             }
             if(name.equals("Id")){
                 return FieldType.ID;
+            }
+            if(name.equals("Version")){
+                return FieldType.VERSION;
             }
             if(name.equals("EmbeddedId")){
                 return FieldType.EmbeddedId;

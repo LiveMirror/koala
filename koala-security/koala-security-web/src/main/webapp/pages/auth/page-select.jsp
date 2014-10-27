@@ -22,21 +22,17 @@
 			</div>
 			<div class="modal-body" style="padding-left:45px; padding-right:65px;">
                 <form id=“selectPageFrom” target="_self" class="form-inline searchCondition">
-                    <input type="hidden" class="form-control" name="page" value="0">
-                    <input type="hidden"  class="form-control"  name="pagesize" value="10">
                     <div class="panel">
                         <table border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td>
                                     <div class="form-group">
-                                        <label class="control-label">页面名称:&nbsp;</label>
+                                        <label class="control-label">页面元素名称:&nbsp;</label>
                                         <input name="name" class="form-control" type="text" style="width:180px;"/>
 
-                                        <label class="control-label">页面标识:&nbsp;</label>
+                                        <label class="control-label">页面元素标识:&nbsp;</label>
                                         <input name="identifier" class="form-control" type="text" style="width:180px;"/>
 
-                                        <label class="control-label" >页面描述:&nbsp;</label>
-                                        <input name="description" class="form-control" type="text"/>
                                         <td>
                                             <button id="search" type="button" class="btn btn-success glyphicon glyphicon-search"></button>
                                         </td>

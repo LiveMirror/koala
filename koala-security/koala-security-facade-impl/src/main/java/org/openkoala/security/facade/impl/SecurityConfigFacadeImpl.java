@@ -592,13 +592,11 @@ public class SecurityConfigFacadeImpl implements SecurityConfigFacade {
 
         Set<Authority> authorities = new HashSet<Authority>();
         // 可能用户并没有分配角色。因此需要对其获取异常。
-        try{
-            Role role = securityAccessApplication.getRoleBy(roleNameOfUser);
+        Role role = securityAccessApplication.getRoleBy(roleNameOfUser);
+        if(role != null){
             Set<Permission> rolePermissions = role.getPermissions();
             authorities.add(role);
             authorities.addAll(rolePermissions);
-        }catch(IllegalArgumentException e){
-            // do not something.
         }
 
         List<Permission> userPermissions = User.findAllPermissionsBy(userAccount);

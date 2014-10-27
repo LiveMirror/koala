@@ -19,7 +19,7 @@ public class SecurityOrgDBInitListener implements ServletContextListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityDBInitListener.class);
 
-    
+    @Override
     public void contextInitialized(ServletContextEvent sce) {
         WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
         SecurityOrgConfigFacade SecurityOrgConfigFacade = applicationContext.getBean(SecurityOrgConfigFacade.class);
@@ -27,7 +27,7 @@ public class SecurityOrgDBInitListener implements ServletContextListener {
         LOGGER.info("init Security db.");
     }
 
-    
+    @Override
     public void contextDestroyed(ServletContextEvent sce) {
     }
 }

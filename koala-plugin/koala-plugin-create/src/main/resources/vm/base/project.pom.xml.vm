@@ -20,12 +20,12 @@
 
     <properties>
         <!-- version config -->
-        <dddlib.version>4.3.6-SNAPSHOT</dddlib.version>
+        <dddlib.version>4.3.6</dddlib.version>
         <struts2.version>2.3.15.1</struts2.version>
         <spring.version>3.2.6.RELEASE</spring.version>
         <spring.security.version>3.2.0.RELEASE</spring.security.version>
         <quartz.version>2.1.3</quartz.version>
-        <koala.version>4.0.0-SNAPSHOT</koala.version>
+        <koala.version>4.0.0</koala.version>
         <jcaptcha.version>2.0-alpha-1</jcaptcha.version>
 
         <!--DB实现以及MVC模型的实现支持，不要修改这两个值-->
@@ -839,6 +839,16 @@
         </testResources>
 
         <plugins>
+        	 <plugin> 
+	            <groupId>org.apache.maven.plugins</groupId> 
+	            <artifactId>maven-compiler-plugin</artifactId>
+	            <version>3.1</version>
+	            <configuration>
+	                <source>1.6</source>
+	                <target>1.6</target>
+	                <encoding>UTF8</encoding>
+	            </configuration> 
+	         </plugin> 
         </plugins>
 
         <pluginManagement>

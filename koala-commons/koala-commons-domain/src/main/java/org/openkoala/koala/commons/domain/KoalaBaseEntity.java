@@ -89,7 +89,9 @@ public abstract class KoalaBaseEntity implements Entity {
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder(13, 37);
         Map<String, Object> propValues = new BeanUtils(this).getPropValues();
-        
+        if(businessKeys() == null){
+            return builder.toHashCode();
+        }
         for (String businessKey : businessKeys()) {
             builder = builder.append(propValues.get(businessKey));
         }

@@ -32,15 +32,19 @@
 		<property name="failureKeyAttribute" value="shiroLoginFailure" />
 		<property name="loginUrl" value="/login.koala"></property>
 	</bean>
- 
+
+    <!--验证码-->
+    <bean id="jCaptchaValidateFilter" class="org.openkoala.security.shiro.jcaptcha.JCaptchaValidateFilter">
+        <!-- 是否启用验证码 从属性配置文件中读取，可以灵活配置-->
+        <property name="jCaptchaDisabled" value="${security.jCaptchaDisabled}"/>
+        <!-- 页面输入的验证码-->
+        <property name="jCaptchaCode" value="jCaptchaCode"/>
+        <!-- 验证失败  -->
+        <property name="failureKeyAttribute" value="shiroLoginFailure"/>
+    </bean>
+
 	<bean id="anyRoleFilter" class="org.openkoala.security.shiro.filter.AnyRoleAuthorizationFilter"></bean>
  	
-	<bean id="jCaptchaValidateFilter" class="org.openkoala.security.shiro.jcaptcha.JCaptchaValidateFilter">
-		<property name="jCaptchaDisabled" value="${security.jCaptchaDisabled}" />
-		<property name="jCaptchaCode" value="jCaptchaCode" />
-		<property name="failureKeyAttribute" value="shiroLoginFailure" />
-	</bean>
-	
 	<!-- 自定义过滤器链管理 -->
 	<bean id="filterChainManager" class="org.openkoala.security.shiro.extend.CustomDefaultFilterChainManager">
 		<property name="loginUrl" value="/login.koala" />

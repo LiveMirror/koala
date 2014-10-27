@@ -193,7 +193,7 @@
 	<jsp-config>
 		<taglib>
 			<taglib-uri>http://www.openkoala.com/token</taglib-uri>
-			<taglib-location>/WEB-INF/k.tld</taglib-location>
+			<taglib-location>/WEB-INF/token.tld</taglib-location>
 		</taglib>
 	</jsp-config>
 

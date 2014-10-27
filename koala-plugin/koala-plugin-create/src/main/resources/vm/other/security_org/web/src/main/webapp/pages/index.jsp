@@ -114,7 +114,7 @@
                                     type : 'success',
                                     content : '更改联系电话成功!'
                                 });
-                                window.location.href=contextPath+"/index.koala";
+                                dialog.modal('hide');
                             }else{
                                 dialog.find('#changeTelePhoneOfUserMessage').message({
                                     type : 'error',
@@ -127,6 +127,13 @@
                     }).on({
                         'hidden.bs.modal' : function() {
                             $(this).remove();
+                        },
+                        'complete': function(){
+                            dialog.message({
+                                type: 'success',
+                                content: '更改联系电话成功!'
+                            });
+                            $(this).modal('hide');
                         }
                     });
                     //兼容IE8 IE9
@@ -160,7 +167,7 @@
                                     type : 'success',
                                     content : '更改邮箱成功!'
                                 });
-                               window.location.href=contextPath+"/index.koala";
+                                dialog.modal('hide');
                             }else{
                                 dialog.find('#changeEmailOfUserMessage').message({
                                     type : 'error',
@@ -173,6 +180,13 @@
                     }).on({
                         'hidden.bs.modal' : function() {
                             $(this).remove();
+                        },
+                        'complete': function(){
+                            dialog.message({
+                                type: 'success',
+                                content: '更改邮箱成功'
+                            });
+                            $(this).modal('hide');
                         }
                     });
                     //兼容IE8 IE9
@@ -302,7 +316,6 @@
                 <div class="btn-group navbar-right">
                     <label for = "roles" class = "user_name">角色: </label>
 	            	<span id="roles" style="font-size: 12px"><ks:user property="roleName" /></span>
-                    &nbsp;
                     <ul class="dropdown-menu" id="allRolesId"></ul>
                 </div>
 	            <!-- 账号信息 -->

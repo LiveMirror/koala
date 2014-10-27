@@ -16,6 +16,7 @@ public class PersonInfoAssembler {
 		PersonInfo result = new PersonInfo();
 		result.setBirthday(personInfoDTO.getBirthday());
 		result.setId(personInfoDTO.getId());
+		result.setVersion(personInfoDTO.getVersion());
 		result.setIdentityCardNumber(personInfoDTO.getIdentityCardNumber());
 		result.setMarried(personInfoDTO.getMarried());
 		result.setName(personInfoDTO.getName());
@@ -42,6 +43,7 @@ public class PersonInfoAssembler {
 		PersonInfoDTO result = new PersonInfoDTO();
 		result.setBirthday(personInfo.getBirthday());
 		result.setId(personInfo.getId());
+		result.setVersion(personInfo.getVersion());
 		result.setIdentityCardNumber(personInfo.getIdentityCardNumber());
 		result.setMarried(personInfo.getMarried());
 		result.setName(personInfo.getName());

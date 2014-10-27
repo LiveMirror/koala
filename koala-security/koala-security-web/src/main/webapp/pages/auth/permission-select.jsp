@@ -32,11 +32,9 @@
                                         <label class="control-label">权限名称:&nbsp;</label>
                                         <input name="name" class="form-control" type="text"/>
 
-                                        <label class="control-label">菜单标识:&nbsp;</label>
+                                        <label class="control-label">权限标识:&nbsp;</label>
                                         <input name="identifier" class="form-control" type="text"/>
 
-                                        <label class="control-label" >权限描述:&nbsp;</label>
-                                        <input name="description" class="form-control" type="text"/>
                                     </div>
                                 </td>
                                 <td style="vertical-align: bottom; padding: 0 5px;">

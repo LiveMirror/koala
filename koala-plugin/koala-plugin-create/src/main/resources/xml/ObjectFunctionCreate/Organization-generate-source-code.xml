@@ -34,8 +34,4 @@
 		<property name="pathDir">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/</property>
 	</VelocityDirObject>
 	
-	
-	
-	
-	
 </XmlParse>

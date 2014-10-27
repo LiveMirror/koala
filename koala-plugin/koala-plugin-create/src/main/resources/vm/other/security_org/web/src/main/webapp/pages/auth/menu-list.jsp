@@ -11,11 +11,12 @@
 			
 			var form = dialog.find(".menu_form");
 			validate(form, dialog, item, opreate);
-			if(item != null){//添加菜单的时候不选中记录，那么就不显示父菜单。
-				form.find("input[name='parentId']").val(item.name);
-            }else{
+			if(item != null){
+                form.find("input[name='parentId']").val(item.name);
+			}else{//添加菜单的时候不选中记录，那么就不显示父菜单。
                 form.find(".parentName").hide();
             }
+
 			if(item && opreate == "modify"){
                 form.find("input[name='parentId']").val(item.parentName);
                 form.find("input[name='name']").val(item.name);
@@ -111,19 +112,19 @@
 	        			}else{
 	        				var url = baseUrl + 'add.koala';
 	        			}
-                        if (item && opreate == 'modify') {
-                            url = baseUrl + 'update.koala';
-                            data += ("&id=" + item.id);
-
-                        }
+	        			if (item&&opreate =='modify') {
+	        				url = baseUrl + 'update.koala';
+	        			    data += ("&id=" + item.id);
+	        				
+	        			}
 	        			$.ajax({
-                            url: url,
-                            data: data,
-                            type: "POST",
-                            dataType: "json",
+	        				url : url,
+	        				data: data,
+	        				type: "POST",
+	        				dataType:"json",
 	        				success:function(data){
 	        					if (data.success) {
-		        					dialog.trigger('complete');			
+		        					dialog.trigger('complete');
 		        				} else {
 		        					dialog.find('.modal-content').message({
 		        						type : 'error',
@@ -169,7 +170,6 @@
 			});
 		};
 		
-		
 		var columns = [{
 				title : "菜单名称",
 				name : "name",
@@ -182,7 +182,7 @@
 					return '<span class="'+item[name]+'"></span>';
 				}
 			},{
-				title : "菜单url",
+				title : "菜单URL",
 				name : "url",
 				width : 250
 			},{
@@ -200,7 +200,7 @@
 					content: '<ks:hasSecurityResource identifier="menuResourceManagerUpdate"><button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-edit"><span>修改</button></ks:hasSecurityResource>',
 					action: 'modify'
 				},{
-					content: '<ks:hasSecurityResource identifier="menuResourceManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>删除</button></ks:hasSecurityResource>',
+					content: '<ks:hasSecurityResource identifier="menuResourceManagerTerminate"><button class="btn btn-danger" type="button"><span class="glyphicon glyphicon-remove"><span>撤销</button></ks:hasSecurityResource>',
 					action: 'delete'
 				},{
 					content: '<ks:hasSecurityResource identifier="menuResourceManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-remove"><span>分配权限</button></ks:hasSecurityResource>',
@@ -284,8 +284,9 @@
 				}
 				
 				var menu = items[0];
-				openTab('/pages/auth/permission-list.jsp', menu.name+'的权限管理', 'roleManager_' + menu.id, menu.id, {menuId : menu.id});
+				openTab('/pages/auth/menu-grant-permission.jsp', menu.name+'的权限管理', 'menuGrantPermissionManager_' + menu.id, menu.id, {menuId : menu.id});
         	}
 		});
+		
 	});
 </script>

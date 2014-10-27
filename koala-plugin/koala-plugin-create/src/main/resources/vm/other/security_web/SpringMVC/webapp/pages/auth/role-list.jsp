@@ -1,15 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@include file="/commons/taglibs.jsp"%>
-<%@ page import="java.util.Date"%>
-<% String formId = "form_" + new Date().getTime();
-   String gridId = "grid_" + new Date().getTime();
-   String path = request.getContextPath()+request.getServletPath().substring(0,request.getServletPath().lastIndexOf("/")+1);
-%>
+
 <!-- strat form -->
-<form name=<%=formId%> id=<%=formId%> target="_self" class="form-horizontal searchCondition">
-<input type="hidden" class="form-control" name="page" value="0">
-<input type="hidden"  class="form-control"  name="pagesize" value="10">
-<div class="panel" hidden="true" >
+<form name="roleListForm" id="${formId}" target="_self" class="form-horizontal searchCondition">
+<div  id="roleManagerQueryDivId" hidden="true" >
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
       <td>
@@ -25,7 +19,7 @@
               </div>
           </div>
       </td>
-      <td style="vertical-align: bottom;"><button id="search" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
+      <td style="vertical-align: bottom;"><button id="roleManagerSearch" type="button" style="position:relative; margin-left:35px; top: -15px" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;</button></td>
   </tr>
 </table>	
 </div>
@@ -35,9 +29,6 @@
 <script>
 
 	$(function() {
-		var tabData 	= $('[data-role="roleGrid"]').closest('.tab-pane.active').data();
-		var userId 		= tabData.userId;
-		var form;
 		var columns = [{
 			title : "角色名称",
 			name : "name",
@@ -72,16 +63,13 @@
                 content : '<ks:hasSecurityResource identifier="roleManagerGrantPermission"><button class="btn btn-info" type="button"><span class="glyphicon glyphicon-th-large"></span>&nbsp;分配权限</button></ks:hasSecurityResource>',
                 action : 'permissionAssign'
             },{
-                content : '<ks:hasSecurityResource identifier="roleManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;查询&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
-                action : 'search'
+                content : '<ks:hasSecurityResource identifier="roleManagerQuery"><button class="btn btn-success" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;高级搜索&nbsp; <span class="caret"></span> </button></ks:hasSecurityResource>',
+                action : 'roleManagerQuery'
             }];
 		})();
 		
 		var url = contextPath + '/auth/role/pagingQuery.koala';
-		if (userId) {
-			url = contextPath + '/auth/user/pagingQueryGrantRoleByUserId.koala?userId=' + userId;
-		}
-		
+
 		$('[data-role="roleGrid"]').grid({
 			identity : 'id',
 			columns : columns,
@@ -127,8 +115,8 @@
 					}
 				});
 			},
-			'search' : function() {						
-				$(".panel").slideToggle("slow");						 
+			'roleManagerQuery' : function() {
+				$("#roleManagerQueryDivId").slideToggle("slow");
 			},
 			"urlAssign" : function(event, data){
 				var items 	= data.item;
@@ -142,8 +130,9 @@
 				}
 				
 				var role = items[0];
+                console.log(role);
 				/*打开url表格*/
-				openTab('/pages/auth/url-list.jsp', role.name+'的url管理', 'roleManager_' + role.id, role.id, {roleId : role.id});
+				openTab('/pages/auth/role-grant-url.jsp', role.name+'的URL访问资源管理', 'roleGrantUrlManager_' + role.id, role.id, {roleId : role.id});
 			},
 			"menuAssign" : function(event, data) {
 				var items = data.item;
@@ -181,9 +170,8 @@
 					});
 					return;
 				}
-				//roleManager().pageAssign($(this), items[0].roleId);
 				var page = items[0];
-				openTab('/pages/auth/page-list.jsp', page.name+'的page管理', 'roleManager_' + page.id, page.id, {pageId : page.id});
+				openTab('/pages/auth/role-grant-page.jsp', page.name+'的页面元素资源管理', 'roleGrantPageManager_' + page.id, page.id, {pageId : page.id});
 			},
 			'permissionAssign' : function(event, data) {
 				var items = data.item;
@@ -202,9 +190,8 @@
 					});
 					return;
 				}
-				//roleManager().pageAssign($(this), items[0].roleId);
-				var permissions = items[0];
-				openTab('/pages/auth/permission-list.jsp', permissions.name+'的权限管理', 'roleManager_' + permissions.id, permissions.id, {permissionsId : permissions.id});
+				var permission = items[0];
+				openTab('/pages/auth/role-grant-permission.jsp', permission.name+'的权限管理', 'roleGrantPermissionManager_' + permission.id, permission.id, {permissionId : permission.id});
 			},
 			'assignResource' : function(event, data) {
 				var indexs = data.data;
@@ -223,12 +210,11 @@
 					});
 					return;
 				}
-				console.log(data.data[0]);
 				roleManager().assignResource($(this), data.data[0]);
 			}
 		});
-		 form = $("#<%=formId%>");
-		form.find('#search').on('click', function(){
+        var form = $('#'+'${formId}');
+		form.find('#roleManagerSearch').on('click', function(){
 	            var params = {};
 	            form.find('.form-control').each(function(){
 	                var $this = $(this);
@@ -236,7 +222,6 @@
 	                 if(name){
 	                    params[name] = $this.val();
 	                }
-	                 console.log(name+"=="+params[name]);
 	            });
 	           $('[data-role="roleGrid"]').getGrid().search(params);
 	        });
