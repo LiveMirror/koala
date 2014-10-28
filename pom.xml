@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openkoala</groupId>
 	<artifactId>koala-project</artifactId>
-	<version>4.0.0-SNAPSHOT</version>
+	<version>4.0.0</version>
 	<packaging>pom</packaging>
 	<name>koala project</name>
 	<url>http://www.openkoala.org/</url>
@@ -182,7 +182,7 @@
 		<!--<module>koala-bpm</module>-->
 		<!--<module>koala-monitor</module>-->
 		<module>koala-gqc</module>
-		<module>koala-opencis</module>
+		<!-- <module>koala-opencis</module> -->
 		<module>koala-businesslog</module>
 		<module>koala-plugin</module>
 	</modules>
@@ -190,7 +190,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<dddlib.version>4.3.6-SNAPSHOT</dddlib.version>
+		<dddlib.version>4.3.6</dddlib.version>
 		<struts2.version>2.3.16</struts2.version>
 		<spring.version>3.2.6.RELEASE</spring.version>
 		<spring.security.version>3.2.0.RELEASE</spring.security.version>
@@ -1244,16 +1244,7 @@
 					<configLocation>config/sun_checks.xml</configLocation>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-changes-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<tracUser>${trac.username}</tracUser>
-					<tracPassword>${trac.password}</tracPassword>
-					<query>status!=closed&amp;order=type</query>
-				</configuration>
-			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-changelog-plugin</artifactId>
@@ -1262,36 +1253,7 @@
 					<passphrase>${passphase}</passphrase>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>taglist-maven-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<tags>
-						<tag>TODO</tag>
-						<tag>@todo</tag>
-						<tag>FIXME</tag>
-						<tag>XXX</tag>
-					</tags>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<check />
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>clirr-maven-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<minSeverity>info</minSeverity>
-				</configuration>
-			</plugin>
+			
 		</plugins>
 	</reporting>
 </project>
