@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openkoala.koala.ftp.FTPFacotry;
+import org.openkoala.koala.ftp.FTPFactory;
 import org.openkoala.koala.ftp.exception.FtpException;
 import org.openkoala.koala.ftp.util.FtpUtil;
 
@@ -45,7 +45,7 @@ public class FTPTest {
         // create and start the server
         server = createFtpServer();
         server.start();
-        ftpUtil = FTPFacotry.getFtpUtil("ftp.properties");
+        ftpUtil = FTPFactory.getFtpUtil("ftp.properties");
     }
 
     @AfterClass

@@ -1,10 +1,10 @@
 package org.openkoala.koala.ftp;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
+
 import org.openkoala.koala.ftp.impl.FtpUtilImpl;
 import org.openkoala.koala.ftp.util.FtpUtil;
 
@@ -14,7 +14,7 @@ import org.openkoala.koala.ftp.util.FtpUtil;
  * @author lingen.liu
  * 
  */
-public class FTPFacotry {
+public class FTPFactory {
 
 	private static String username;
 
@@ -36,14 +36,6 @@ public class FTPFacotry {
 		initConfig(properties);
 		FtpUtilImpl ftpUtil = new FtpUtilImpl(serverIp, port, username, password,encoding,retryCount,mode);
 		ftpUtil.initTmpDir(tmpDir);
-		//ftpUtil.initMaxPoolSize(maxPoolSize);
-		return ftpUtil;
-	}
-	
-	private static FtpUtil getFtpUtil(String serverIp,int port,String username,String password,String encoding) {
-		FtpUtilImpl ftpUtil = new FtpUtilImpl(serverIp, port, username, password,encoding,3,"PORT");
-		ftpUtil.initTmpDir(tmpDir);
-		//ftpUtil.initMaxPoolSize(maxPoolSize);
 		return ftpUtil;
 	}
 
