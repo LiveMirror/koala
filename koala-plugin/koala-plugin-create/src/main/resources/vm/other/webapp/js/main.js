@@ -4,7 +4,7 @@ $(function(){
 	 */
 	var self = $(this);
 
-	loadContent($('#home'), '/pages/welcome.jsp');
+	loadContent($('#home'), '/welcome.jsp');
 	/*
 	* 菜单收缩样式变化
 	 */

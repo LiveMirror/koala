@@ -33,9 +33,9 @@
     <div class="main_ten">
         <h4>核心功能：</h4>
         <ul>
-            <li><img src="images/openci_icon.png"/><p>向导式创建、导入项目，集成版本控制 (GIT/SVN)、项目管理(Trac/Redmine)、代码质量(Sonar)、持续集成(Jenkins)</p></li>
-            <li><img src="images/koalaui_icon.png"/><p>基于Bootstrap3、基于开源的或定制实现的JS组件，简化前端开发。</p></li>
-            <li class="last"><img src="images/lyjm_icon.png"/><p>以业务分析和领域建模为出发点和依归自动生成领域类，消除问题域与解决方案域之间的鸿沟</p> </li>
+            <li><img src="/images/openci_icon.png"/><p>向导式创建、导入项目，集成版本控制 (GIT/SVN)、项目管理(Trac/Redmine)、代码质量(Sonar)、持续集成(Jenkins)</p></li>
+            <li><img src="/images/koalaui_icon.png"/><p>基于Bootstrap3、基于开源的或定制实现的JS组件，简化前端开发。</p></li>
+            <li class="last"><img src="/images/lyjm_icon.png"/><p>以业务分析和领域建模为出发点和依归自动生成领域类，消除问题域与解决方案域之间的鸿沟</p> </li>
         </ul>
     </div>
 </div>
