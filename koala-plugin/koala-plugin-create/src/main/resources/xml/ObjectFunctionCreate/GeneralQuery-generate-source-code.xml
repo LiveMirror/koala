@@ -4,39 +4,39 @@
 
 	<property name="description">Koala-General-Query-General-Source-Code</property>
 
-	<VelocityDirObject>
-		<property name="vmDir">vm/other/general_query_source_code/application</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.applicationModule.moduleName}/</property>
-	</VelocityDirObject>
+	<CopyFiles>
+		<property name="srcDir">vm/other/general_query_source_code/application</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.applicationModule.moduleName}/</property>
+	</CopyFiles>
 	
-	<VelocityDirObject>
-		<property name="vmDir">vm/other/general_query_source_code/core</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/</property>
-	</VelocityDirObject>
+	<CopyFiles>
+		<property name="srcDir">vm/other/general_query_source_code/core</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/</property>
+	</CopyFiles>
 	
 	<CopyFiles>
 		<property name="srcDir">vm/other/general_query_source_code/conf</property>
 		<property name="destDir">${Project.path}/${Project.appName}/${Project.appName}-conf/</property>
 	</CopyFiles>
 	
-	<VelocityDirObject>
-		<property name="vmDir">vm/other/general_query_source_code/facade</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.facadeModule.moduleName}/</property>
-	</VelocityDirObject>
-	<VelocityDirObject>
-		<property name="vmDir">vm/other/general_query_source_code/impl</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.facadeImplModule.moduleName}/</property>
-	</VelocityDirObject>
+	<CopyFiles>
+		<property name="srcDir">vm/other/general_query_source_code/facade</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.facadeModule.moduleName}/</property>
+	</CopyFiles>
+	<CopyFiles>
+		<property name="srcDir">vm/other/general_query_source_code/impl</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.facadeImplModule.moduleName}/</property>
+	</CopyFiles>
 	
-	<VelocityDirObject>
-		<property name="vmDir">vm/other/general_query_source_code/infra</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.infraModule.moduleName}/</property>
-	</VelocityDirObject>
+	<CopyFiles>
+		<property name="srcDir">vm/other/general_query_source_code/infra</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.infraModule.moduleName}/</property>
+	</CopyFiles>
 	
-	<VelocityDirObject>
-		<property name="vmDir">vm/other/general_query_source_code/web/controller</property>
-		<property name="pathDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
-	</VelocityDirObject>
+	<CopyFiles>
+		<property name="srcDir">vm/other/general_query_source_code/web/controller</property>
+		<property name="destDir">${Project.path}/${Project.appName}/${Project.webModule.moduleName}/</property>
+	</CopyFiles>
 	
 	<XmlAdd>
 		<property name="xmlFile">${Project.path}/${Project.appName}/${Project.coreModule.moduleName}/pom.xml</property>
@@ -56,6 +56,11 @@
         	<groupId>com.oracle</groupId>
         	<artifactId>ojdbc14</artifactId>
         	<version>10.2.0.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.22</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

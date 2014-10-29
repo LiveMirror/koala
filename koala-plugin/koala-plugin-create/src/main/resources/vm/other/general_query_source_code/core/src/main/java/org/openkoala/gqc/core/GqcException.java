@@ -2,6 +2,8 @@ package org.openkoala.gqc.core;
 
 public abstract class GqcException extends RuntimeException {
 
+	private static final long serialVersionUID = 4331400917444670599L;
+
 	public GqcException() {
 		super();
 	}

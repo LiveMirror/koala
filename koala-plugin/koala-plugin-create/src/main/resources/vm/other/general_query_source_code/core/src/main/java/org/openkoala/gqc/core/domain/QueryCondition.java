@@ -42,7 +42,7 @@ public abstract class QueryCondition implements ValueObject, Comparable<QueryCon
 	
 	@Transient
 	private DataSource dataSource;
-    
+
 	public String getFieldName() {
 		return fieldName;
 	}

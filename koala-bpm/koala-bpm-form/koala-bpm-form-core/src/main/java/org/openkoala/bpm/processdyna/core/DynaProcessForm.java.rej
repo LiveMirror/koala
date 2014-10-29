@@ -1,0 +1,6 @@
+diff a/koala-bpm/koala-bpm-form/koala-bpm-form-core/src/main/java/org/openkoala/bpm/processdyna/core/DynaProcessForm.java b/koala-bpm/koala-bpm-form/koala-bpm-form-core/src/main/java/org/openkoala/bpm/processdyna/core/DynaProcessForm.java	(rejected hunks)
+@@ -2,3 +3,4 @@
++<<<<<<< HEAD
+ package org.openkoala.bpm.processdyna.core;
+ 
+ import java.util.ArrayList;

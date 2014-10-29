@@ -57,7 +57,7 @@ public class GqcFacadeImpl implements GqcFacade {
 		return queryChannel;
 	}
 
-	
+	@Override
 	@SuppressWarnings("unchecked")
 	public Page<GeneralQueryDTO> getQueriers(int currentPage, int pagesize) {
 		StringBuilder jpql = null;
@@ -72,7 +72,7 @@ public class GqcFacadeImpl implements GqcFacade {
 		}
 	}
 
-	
+	@Override
 	@SuppressWarnings("unchecked")
 	public Page<GeneralQueryDTO> getQueriersByName(String queryName, int currentPage, int pagesize) {
 		StringBuilder jpql = null;
@@ -93,7 +93,7 @@ public class GqcFacadeImpl implements GqcFacade {
 		}
 	}
 
-	
+	@Override
 	public Page<Map<String, Object>> queryWithQuerier(long querierID, Map<String, Object[]> params, int currentPage,
 			int pagesize) {
 		GeneralQuery querier = gqcApplication.getQuerier(querierID);
@@ -130,7 +130,7 @@ public class GqcFacadeImpl implements GqcFacade {
 		return gqcApplication.pagingQueryWithPage(querier, currentPage, pagesize);
 	}
 
-	
+	@Override
 	public InvokeResult createQuerier(GeneralQueryDTO dto) {
 		/*gqcApplication.saveQuerier(GqcAssembler.toEntity(dto));
 		return InvokeResult.success();*/
@@ -142,12 +142,12 @@ public class GqcFacadeImpl implements GqcFacade {
 		}
 	}
 
-	
+	@Override
 	public GeneralQueryDTO getQuerier(Long id) {
 		return GqcAssembler.toDTO(gqcApplication.getQuerier(id));
 	}
 
-	
+	@Override
 	public InvokeResult updateQuerier(GeneralQueryDTO dto) {
 		try {
 			GeneralQuery realQuerier = gqcApplication.getQuerier(dto.getId());
@@ -164,7 +164,7 @@ public class GqcFacadeImpl implements GqcFacade {
 		}
 	}
 
-	
+	@Override
 	public InvokeResult removeQuerier(Long id) {
 		try {
 			gqcApplication.removeQueier(id);
@@ -174,7 +174,7 @@ public class GqcFacadeImpl implements GqcFacade {
 		}
 	}
 
-	
+	@Override
 	public InvokeResult removeQueriers(Long[] ids) {
 		try {
 			gqcApplication.removeQueiers(ids);
@@ -184,7 +184,7 @@ public class GqcFacadeImpl implements GqcFacade {
 		}
 	}
 
-	
+	@Override
 	public Map<String, Object> getForDisplay(Long id) {
 		// 查询出该实体
 		GeneralQuery querier = gqcApplication.getQuerier(id);

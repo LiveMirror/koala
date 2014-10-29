@@ -1,3 +1,4 @@
+
 package org.openkoala.gqc.facade;
 
 import java.util.List;

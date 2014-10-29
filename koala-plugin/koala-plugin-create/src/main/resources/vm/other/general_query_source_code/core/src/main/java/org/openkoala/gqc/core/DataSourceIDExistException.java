@@ -22,4 +22,8 @@ public class DataSourceIDExistException extends RuntimeException {
 		super(message, cause);
 	}
 
+	public DataSourceIDExistException(String message, Throwable cause, boolean enableSuppression,boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
+
 }
