@@ -11,7 +11,9 @@ import  ${entity.className};
 
 public interface ${applicationClass.name} {
 
+#if($applicationClass.entityModel.singleIDFieldModel)
 	public ${domainClass} get${domainClass}($applicationClass.entityModel.singleIDFieldModel.simpleType ${applicationClass.entityModel.singleIDFieldModel.name});
+#end
 	
 	public void creat${domainClass}(${domainClass} ${variableName});
 	

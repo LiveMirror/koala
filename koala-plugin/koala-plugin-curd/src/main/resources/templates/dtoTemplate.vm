@@ -12,10 +12,10 @@ public class ${dtoClass.name} implements Serializable {
 
 	private ${dtoClass.entityModel.singleIDFieldModel.simpleType} ${dtoClass.entityModel.singleIDFieldModel.name};
 
-#if(!$dtoClass.entityModel.versionFieldModel)
+#if($dtoClass.entityModel.versionFieldModel)
 	private ${dtoClass.entityModel.versionFieldModel.simpleType} ${dtoClass.entityModel.versionFieldModel.name};
 #end
-	
+
 #foreach($entry in ${dtoClass.fieldMap.entrySet()})
 	#if($entry.value.indexOf(".") == -1)
 		#if(${entry.value} == "int" || ${entry.value}=="Integer")
@@ -113,6 +113,7 @@ public class ${dtoClass.name} implements Serializable {
 		this.${dtoClass.entityModel.singleIDFieldModel.name} = ${dtoClass.entityModel.singleIDFieldModel.name};
 	}
 	
+#if($dtoClass.entityModel.versionFieldModel)
 	public ${dtoClass.entityModel.versionFieldModel.simpleType} get${dtoClass.entityModel.versionFieldModel.nameToFirstLetterUpper}() {
 		return ${dtoClass.entityModel.versionFieldModel.name};
 	}
@@ -120,6 +121,7 @@ public class ${dtoClass.name} implements Serializable {
 	public void set${dtoClass.entityModel.versionFieldModel.nameToFirstLetterUpper}(${dtoClass.entityModel.versionFieldModel.simpleType} ${dtoClass.entityModel.versionFieldModel.name}) {
 		this.${dtoClass.entityModel.versionFieldModel.name} = ${dtoClass.entityModel.versionFieldModel.name};
 	}
+#end
 
     @Override
 	public int hashCode() {

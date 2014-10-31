@@ -17,9 +17,11 @@ import ${entity.className};
 @Transactional
 public class ${applicationClass.name} implements ${applicationClass.name.replaceAll("Impl","")} {
 
+#if($applicationClass.entityModel.singleIDFieldModel)
 	public ${domainClass} get${domainClass}(${applicationClass.entityModel.singleIDFieldModel.simpleType} ${applicationClass.entityModel.singleIDFieldModel.name}) {
 		return ${domainClass}.get(${domainClass}.class, ${applicationClass.entityModel.singleIDFieldModel.name});
 	}
+#end
 	
 	public void creat${domainClass}(${domainClass} ${variableName}) {
 		${variableName}.save();

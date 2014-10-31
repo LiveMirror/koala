@@ -9,11 +9,11 @@
 <body>
 <form class="form-horizontal">
 #if(!${pageParams.isAddForm})
-	<input type="hidden" id="${pageParams.entityModel.singleIDFieldModel.name}ID" name="${pageParams.entityModel.singleIDFieldModel.name}" /> 
-#if(${pageParams.entityModel.versionFieldModel})	
-	<input type="hidden" id="${pageParams.entityModel.versionFieldModel.name}ID" name="${pageParams.entityModel.versionFieldModel.name}" /> 
+	<input type="hidden" id="${pageParams.entityModel.singleIDFieldModel.name}ID" name="${pageParams.entityModel.singleIDFieldModel.name}" />
+	#if($pageParams.entityModel.versionFieldModel)
+	<input type="hidden" id="${pageParams.entityModel.versionFieldModel.name}ID" name="${pageParams.entityModel.versionFieldModel.name}" />
+	#end
 #end
-#end	
 #foreach( $view in $pageParams.formWidgets)
 #if(${view.express} !='id')
 	           <div class="form-group">

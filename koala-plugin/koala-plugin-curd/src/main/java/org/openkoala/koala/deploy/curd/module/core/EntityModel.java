@@ -97,7 +97,8 @@ public class EntityModel {
     }
 
     public PKFieldModel getSingleIDFieldModel() {
-    	return getIDFieldModel().get(0);
+    	List<PKFieldModel> models = getIDFieldModel();
+    	return models.isEmpty() ? null : models.get(0);
     }
     
     /**
