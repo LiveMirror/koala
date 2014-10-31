@@ -20,7 +20,7 @@
 	</VelocityDirObject>
 	
 	<VelocityFileObject>
-	    <property name="express"><![CDATA[($Module.moduleType=='war' && $Project.mvcProtocol=='SpringMVC') || $Module.security || $Module.organization || $Module.generalQuery || businessLog ]]></property>
+	    <property name="express"><![CDATA[($Module.moduleType=='war' && $Project.mvcProtocol=='SpringMVC') || $Module.security || $Module.organization || $Module.generalQuery || $Module.businessLog ]]></property>
 		<property name="vm">vm/other/koala-spring-servlet.xml.vm</property>
 		<property name="path">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/resources/koala-spring-servlet.xml</property>
 	</VelocityFileObject>
@@ -66,7 +66,7 @@
 	
 	<CopyFiles>
 		<property name="express">$Module.moduleType=='war'</property>
-		<property name="srcDir">vm/other/index_page/index.jsp</property>
+		<property name="srcDir">vm/other/index_page/</property>
 		<property name="destDir">${Project.path}/${Project.appName}/${Module.moduleName}/src/main/webapp/pages/</property>
 	</CopyFiles>
 	

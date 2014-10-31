@@ -187,13 +187,13 @@
 	</error-page>
 	
 	<welcome-file-list>
-#if ($Module.security || $Module.securityOrg)
+#if($Module.security || $Module.securityOrg)
 		<welcome-file>/login.jsp</welcome-file>
-#elesif ($Module.organization && !$Module.generalQuery && !$Module.security)
+#elseif($Module.organization && !$Module.generalQuery && !$Module.security)
 		<welcome-file>/pages/organisation/index.jsp</welcome-file>
-#elesif ($Module.generalQuery && !$Module.organization &&  !$Module.security)
+#elseif($Module.generalQuery && !$Module.organization &&  !$Module.security)
 		<welcome-file>/pages/gqc/index.jsp</welcome-file>
-#eles
+#else
 		<welcome-file>/pages/index.jsp</welcome-file>
 #end
 	</welcome-file-list>
